@@ -5,14 +5,26 @@
         </div>
         <div class="flex items-center justify-center">
             <article class="flex-1 pl-[100px]">
-                <p class="text-lg">Yale Home App is available on</p>
-                <div>
+                <p class="text-xl font-light">Yale Home App is available on</p>
+                <div class="flex items-center mt-5">
+                    <qrcode-vue
+                        class="mr-5"
+                        :value="value"
+                        :size="size"
+                        level="H"
+                    />
                     <NuxtImg
                         class="min-w-[200px]"
                         src="/img/home/app/app-store.jpg"
                     />
                 </div>
-                <div>
+                <div class="flex items-center mt-5">
+                    <qrcode-vue
+                        class="mr-5"
+                        :value="value"
+                        :size="size"
+                        level="H"
+                    />
                     <NuxtImg
                         class="min-w-[200px]"
                         src="/img/home/app/google-play.jpg"
@@ -24,7 +36,7 @@
                 src="/img/home/app/phone.png"
             />
             <article class="flex-1">
-                <h2 class="text-gray-100 md:text-[80px] text-3xl font-bold">Download</h2>
+                <h2 class="text-gray-100 md:text-[80px] text-3xl font-bold">DOWNLOAD</h2>
                 <h3 class="font-medium md:text-[30px] text-2xl md:mt-[30px]">Yale Home APP</h3>
             </article>
         </div>
@@ -34,4 +46,9 @@
     </section>
 </template>
 
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+import QrcodeVue from "qrcode.vue";
+
+const value = ref("https://google.com");
+const size = ref(100);
+</script>

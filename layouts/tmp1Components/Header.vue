@@ -1,5 +1,5 @@
 <template>
-    <header>
+    <header class="min-h-[94px] flex items-center">
         <nav class="mx-10 my-5">
             <ul class="flex items-center text-base leading-5">
                 <li class="mr-5">

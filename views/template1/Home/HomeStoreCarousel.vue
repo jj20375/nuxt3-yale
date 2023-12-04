@@ -26,7 +26,6 @@
                         class="w-full rounded-2xl"
                         src="/img/store/shop3.jpg"
                     />
-                    Slide {{ item }}
                 </SwiperSlide>
             </Swiper>
         </div>

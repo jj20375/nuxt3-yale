@@ -22,11 +22,28 @@
                         v-for="item in 10"
                         :key="item"
                     >
-                        <div class="bg-white rounded-2xl">
+                        <div
+                            class="relative bg-white rounded-2xl"
+                            @mouseover="mouseoverEvent(item)"
+                            @mouseleave="mouseleaveEvent(item)"
+                        >
                             <NuxtImg
                                 class="w-full rounded-2xl"
                                 src="/img/home/product/product1.jpg"
                             />
+                            <div
+                                :class="currentHover === item ? 'opacity-100' : 'opacity-0'"
+                                class="absolute top-0 flex items-end w-full h-full transition-all duration-500"
+                            >
+                                <div class="absolute text-3xl text-gray-300 top-2 right-5">
+                                    <font-awesome-icon :icon="['far', 'heart']" />
+                                </div>
+                                <div class="absolute z-50 mb-5 text-center">
+                                    <button class="bg-yellow-500 hover:bg-yellow-600 transition-all duration-500 rounded-full text-lg font-light min-w-[200px] min-h-[50px]">加入購物車</button>
+                                    <button class="mt-2 z-10 bg-gray-200 rounded-full text-lg font-light min-w-[200px] min-h-[50px] hover:bg-black hover:text-white transition-all duration-500">瞭解更多</button>
+                                </div>
+                                <div class="absolute top-0 left-0 z-10 w-full h-full bg-white opacity-30 rounded-2xl"></div>
+                            </div>
                         </div>
                         <h3 class="mt-1 text-2xl font-bold">YDM 4109A-{{ item }}</h3>
                         <h3 class="">指紋密碼鑰匙三合一</h3>
@@ -44,12 +61,23 @@
 <script lang="ts" setup>
 // import required modules
 import { Scrollbar } from "swiper/modules";
+import { current } from "tailwindcss/colors";
 
 function onSwiper(swiper: any) {
     console.log(swiper);
 }
 function onSlideChange() {
     console.log("slide change");
+}
+
+const currentHover = ref<null | number>(null);
+
+function mouseoverEvent(index: number) {
+    currentHover.value = index;
+}
+
+function mouseleaveEvent(index: number) {
+    currentHover.value = null;
 }
 
 const modules = ref([Scrollbar]);

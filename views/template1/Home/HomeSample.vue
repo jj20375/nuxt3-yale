@@ -25,7 +25,8 @@
                 :inverseScaling="200"
                 :width="800"
                 :height="500"
-                :clickable="false"
+                :startIndex="currentIndex"
+                @after-slide-change="onSlideChange"
             >
                 <Slide
                     v-for="(slide, i) in items"
@@ -34,15 +35,15 @@
                     class="flex justify-center m-5"
                 >
                     <template v-slot="{ index, isCurrent, leftIndex, rightIndex }">
-                        <div class="w-full p-10">
+                        <div class="w-full p-10 transition-all duration-500">
                             <div :class="currentIndex === index ? 'bg-white p-5 drop-shadow-lg rounded-2xl  ' : ' opacity-30'">
                                 <NuxtImg
                                     class="rounded-2xl"
                                     src="/img/home/sample/fix.jpg"
                                 />
                                 <!-- {{ slide }} -->
-                                {{ index }}
-                                {{ currentIndex }}
+                                <!-- {{ index }} -->
+                                <!-- {{ currentIndex }} -->
                             </div>
                         </div>
                     </template>
@@ -55,11 +56,12 @@
                     :display="1"
                     :disable3d="true"
                     :space="365"
+                    :controls-visible="false"
                     :clickable="false"
                     :width="1000"
                     :height="200"
-                    :count="items.length"
-                    @onMainSlideClick="onSlideChange"
+                    :startIndex="currentIndex"
+                    @after-slide-change="onSlideChange"
                 >
                     <Slide
                         v-for="(slide, i) in items"
@@ -83,9 +85,7 @@
                                             <h6 class="text-xl font-bold">2023 / 12 / 01</h6>
                                         </div>
                                         <p class="my-2 text-base">Yale Access 應用程序巧妙地提高您的家庭安全性了，讓我們能夠在有限的空閒時間處理最重要的事情。</p>
-                                        {{ leftIndex }}
-                                        {{ index }}
-                                        {{ rightIndex }}
+                                        <!-- {{ index }} -->
                                     </div>
                                     <div
                                         class="ml-20 text-2xl bg-gray-100 p-2 h-[50px] w-[50px] flex justify-center items-center rounded-full cursor-pointer"
@@ -144,7 +144,9 @@ function prev(index: number) {
 }
 
 function onSlideChange(val: any) {
-    console.log(val);
+    currentIndex.value = val;
+    carousel3d2RefDom.value.goSlide(val);
+    console.log("onSlideChange =>>", val);
 }
 
 onMounted(() => {

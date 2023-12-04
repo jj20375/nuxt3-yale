@@ -22,7 +22,7 @@
                     </article>
                     <NuxtImg
                         src="/img/banner/banner1.png"
-                        class="min-h-[600px]"
+                        class="min-h-[660px]"
                     />
                 </div>
             </SwiperSlide>
