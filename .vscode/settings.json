@@ -1,0 +1,71 @@
+{
+    "editor.formatOnSave": true,
+    "vue.codeActions.enabled": false,
+    "workbench.colorTheme": "Gooey",
+    "files.trimFinalNewlines": true, //刪除多餘空白
+    "vetur.format.defaultFormatter.js": "prettier",
+    "vetur.format.defaultFormatter.scss": "prettier",
+    "prettier.eslintIntegration": true,
+    "vetur.format.defaultFormatter.html": "js-beautify-html",
+    "prettier.bracketSpacing": true, // 字與括號保有空格
+    "prettier.printWidth": 520,
+    "prettier.semi": true, // 句尾加上分號
+    "javascript.format.insertSpaceBeforeFunctionParenthesis": true, //讓函式(名)和後面的括號之間加個空格
+    "vetur.format.options.tabSize": 4,
+    "prettier.tabWidth": 4,
+    "vue3snippets.tabWidth": 4,
+    "[vue]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[javascript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "vetur.format.defaultFormatterOptions": {
+        // 對屬性進行換行。
+        // - auto: 僅在超出行長度時才對屬性進行換行。
+        // - force: 對除第一個屬性外的其他每個屬性進行換行。
+        // - force-aligned: 對除第一個屬性外的其他每個屬性進行換行，並保持對齊。
+        // - force-expand-multiline: 對每個屬性進行換行。
+        // - aligned-multiple: 當超出折行長度時，將屬性進行垂直對齊。
+
+        "js-beautify-html": {
+            "printWidth": 500,
+            "wrap_line_length": 500, // 设置多个字符后换行 0 表示忽略
+            "wrap_attributes": "force-aligned",
+            "end_with_newline": false // 在文件结尾添加新行
+        },
+        "prettyhtml": {
+            "printWidth": 500,
+            "singleQuote": true,
+            "wrapAttributes": false,
+            "sortAttributes": false
+        },
+        "prettier": {
+            "semi": true,
+            "singleQuote": false, // 可使用雙引號
+            // "eslintIntegration": true,
+            "trailingComma": "none",
+            "printWidth": 500 // 用來控制何時要換行的寬度
+        }
+    },
+    "[jsonc]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "php-cs-fixer.executablePath": "${extensionPath}/php-cs-fixer.phar",
+    "php-cs-fixer.lastDownload": 1624888727733,
+    "workbench.editor.enablePreview": false,
+    "[php]": {
+        "editor.defaultFormatter": "junstyle.php-cs-fixer"
+    },
+    "editor.fontLigatures": null,
+    "[html]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[json]": {
+        "editor.defaultFormatter": "vscode.json-language-features"
+    },
+    "vue3snippets.enable-compile-vue-file-on-did-save-code": false,
+    "i18n-ally.localesPaths": ["langs", "locales"],
+    "i18n-ally.keystyle": "nested",
+    "i18n-ally.sourceLanguage": "zh" // 選到檔案時 另開tab視窗
+}

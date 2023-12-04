@@ -1,0 +1,55 @@
+@import "variable";
+@import "./btn";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+// nucleo icon
+@import "./nucleo/css/nucleo.css";
+// icofont icon
+@import "./icofont/icofont.min.css";
+
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100;300;400;500;700;900&family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300&family=Pattaya&display=swap");
+
+html,
+body {
+    touch-action: manipulation;
+    overscroll-behavior-y: none;
+}
+
+body {
+    // background-color: theme("colors.gray.50");
+    font-family: "Noto Sans TC", sans-serif;
+    height: 100%;
+}
+
+input:focus,
+textarea:focus {
+    font-size: initial !important;
+}
+
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+// 將小費輸入匡內文字靠右
+#tip {
+    text-align: right !important;
+}
+
+.disabled {
+    @apply disabled:cursor-not-allowed disabled:bg-gray-300 disabled:opacity-70;
+}
+
+.btnDisabled {
+    @apply disabled:cursor-not-allowed disabled:border-gray-300 disabled:bg-gray-300 disabled:text-white;
+}
+
+.NotoSansTCFont {
+    font-family: "Noto Sans TC", sans-serif;
+}
+.OpenSansFont {
+    font-family: "Open Sans", sans-serif;
+}
+.PattayaFont {
+    font-family: "Pattaya", sans-serif;
+}

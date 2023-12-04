@@ -1,0 +1,86 @@
+.disabled {
+    @apply opacity-50 cursor-not-allowed;
+}
+.blue-btn {
+    @apply cursor-pointer bg-blue-500 border-2 border-blue-500 text-white px-3 py-2 rounded-lg;
+    @apply transition duration-1000 ease-in-out;
+}
+.blue-btn-outline {
+    @apply cursor-pointer border-2 border-blue-500 text-blue-500 px-3 py-2 rounded-lg;
+    @apply transition duration-1000 ease-in-out;
+}
+.red-btn-600 {
+    @apply cursor-pointer bg-red-600 border-2 border-red-600 text-white px-3 py-2 rounded-lg;
+    @apply transition duration-1000 ease-in-out;
+}
+.red-btn-outline-600 {
+    @apply cursor-pointer border-2 border-red-600 text-red-600 px-3 py-0.5 rounded;
+    @apply transition duration-1000 ease-in-out;
+}
+.red-btn-700 {
+    @apply cursor-pointer bg-red-700 border-2 border-red-700 text-white px-3 py-2 rounded-lg;
+    @apply transition duration-1000 ease-in-out;
+}
+.red-btn-outline-700 {
+    @apply cursor-pointer border-2 border-red-700 text-red-700 px-3 py-2 rounded-lg;
+    @apply transition duration-1000 ease-in-out;
+}
+.green-btn {
+    @apply cursor-pointer border-2 border-green-500 bg-green-500 text-white px-3 py-2 rounded-lg;
+    @apply transition duration-1000 ease-in-out;
+}
+.green-btn-outline {
+    @apply cursor-pointer border-2 border-green-500 text-green-500 px-3 py-2 rounded-lg;
+    @apply duration-1000 ease-in-out;
+}
+.green-blue-text-btn {
+    @apply cursor-pointer border-2 border-blue-500 bg-green-100 text-blue-500 px-3 py-2 rounded-lg;
+    @apply transition duration-1000 ease-in-out;
+    box-shadow: 3px 5px 10px theme("colors.blue.500");
+}
+
+.purple-btn {
+    @apply cursor-pointer bg-purple-500 border-2 border-purple-500 text-white px-3 py-2 rounded-lg;
+    @apply transition duration-1000 ease-in-out;
+}
+.purple-btn-outline {
+    @apply cursor-pointer border-2 border-purple-500 text-purple-500 px-3 py-2 rounded-lg;
+    @apply transition duration-1000 ease-in-out;
+}
+.purple-btn-sm {
+    @apply cursor-pointer bg-purple-500 border-2 border-purple-500 text-white px-3 py-2 sm:text-xs md:text-sm rounded-lg;
+    @apply transition duration-1000 ease-in-out;
+}
+.purple-btn-outline-sm {
+    @apply cursor-pointer border-2 border-purple-500 text-purple-500 px-3 py-2 sm:text-xs md:text-sm rounded-lg;
+    @apply transition duration-1000 ease-in-out;
+}
+
+.orange-btn-600 {
+    @apply cursor-pointer border-2 bg-orange-600 border-orange-600 text-white px-3 py-0.5 rounded;
+    @apply transition duration-1000 ease-in-out;
+}
+.orange-btn-outline-600 {
+    @apply cursor-pointer border-2 border-orange-600 text-orange-600 px-3 py-0.5 rounded;
+    @apply transition duration-1000 ease-in-out;
+}
+.yellow-btn-500 {
+    @apply cursor-pointer bg-gradient-to-r from-red-500 to-pink-500 border-2 border-orange-600 text-white px-3 py-0.5 rounded;
+    @apply transition duration-1000 ease-in-out;
+}
+.yellow-btn-outline-500 {
+    @apply cursor-pointer border-2 border-yellow-500 text-yellow-500 px-3 py-2 rounded-lg;
+    @apply transition duration-1000 ease-in-out;
+}
+.gray-btn-200 {
+    @apply cursor-pointer bg-gray-200 border-2 border-gray-200 text-black px-3 py-2 rounded-lg;
+    @apply transition duration-1000 ease-in-out;
+}
+.gray-btn-outline-200 {
+    @apply cursor-pointer border-2 border-gray-200 text-gray-200 px-3 py-2 rounded-lg;
+    @apply transition duration-1000 ease-in-out;
+}
+.black-btn {
+    @apply cursor-pointer bg-black border-2 border-black text-yellow-500 px-3 py-2 rounded-lg;
+    @apply transition duration-1000 ease-in-out;
+}
