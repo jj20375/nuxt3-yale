@@ -11,6 +11,10 @@
 
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100;300;400;500;700;900&family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300&family=Pattaya&display=swap");
 
+@import "./yale-font/YaleSolisW-Bd.css";
+@import "./yale-font/YaleSolisW-Lt.css";
+@import "./yale-font/YaleSolisW-Rg.css";
+
 html,
 body {
     touch-action: manipulation;
@@ -19,7 +23,7 @@ body {
 
 body {
     // background-color: theme("colors.gray.50");
-    font-family: "Noto Sans TC", sans-serif;
+    font-family: "YaleSolisW-Rg", sans-serif;
     height: 100%;
 }
 
@@ -52,4 +56,14 @@ input[type="number"] {
 }
 .PattayaFont {
     font-family: "Pattaya", sans-serif;
+}
+
+.YaleSolisW-Bd {
+    font-family: "YaleSolisW-Bd", sans-serif;
+}
+.YaleSolisW-Rg {
+    font-family: "YaleSolisW-Rg", sans-serif;
+}
+.YaleSolisW-Lt {
+    font-family: "YaleSolisW-Lt", sans-serif;
 }

@@ -1,0 +1,14 @@
+/*
+        This font software is the property of Assa Abloy.
+        You may not modify the font software, use it on another website, or install it on a computer.
+        Copyright (C) Assa Abloy. All rights reserved. 
+*/
+
+@font-face {
+    font-family: 'YaleSolisW-Bd';
+    src: url('YaleSolisW-Bd/YaleSolisW-Bd.woff2') format('woff2'),
+         url('YaleSolisW-Bd/YaleSolisW-Bd.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}

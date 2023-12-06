@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-gradient-to-br from-yellow-300 from-40% via-yellow-600 to-yellow-700">
+    <div class="min-h-[800px] max-h-[800px]">
         <Swiper
             :slidesPerView="1"
             :navigation="true"
@@ -8,22 +8,24 @@
             @slideChange="onSlideChange"
         >
             <SwiperSlide
-                class="mx-2"
                 v-for="item in 10"
                 :key="item"
             >
-                <div class="flex items-center justify-center">
-                    <article>
-                        <div class="text-[50px] font-bold mr-10">Yale Link 智能鎖{{ item }} 家居保護，安心無憂</div>
-                        <div class="font-light">我們不僅讓家保持安全，更讓人們感到安全。</div>
-                        <div class="mt-5">
-                            <button class="font-light text-black bg-white rounded-full min-w-[300px] min-h-[50px] text-center">暸解更多</button>
+                <div
+                    class="flex items-center min-h-[800px] bg-cover"
+                    style="background-image: url('/img/banner/banner1.jpg')"
+                >
+                    <article class="max-w-[440px] ml-[271px] mr-[126px]">
+                        <div class="text-[48px] YaleSolisW-Bd font-bold">Yale Link 智能鎖{{ item }} 家居保護，安心無憂</div>
+                        <div class="text-[16px] mt-[20px]">我們不僅讓家保持安全，更讓人們感到安全。</div>
+                        <div class="mt-[40px]">
+                            <button class="font-light text-gray-600 bg-white rounded-full min-w-[300px] min-h-[60px] text-center">暸解更多</button>
                         </div>
                     </article>
-                    <NuxtImg
+                    <!-- <NuxtImg
                         src="/img/banner/banner1.png"
-                        class="min-h-[660px]"
-                    />
+                        class="min-h-[600px]"
+                    /> -->
                 </div>
             </SwiperSlide>
         </Swiper>

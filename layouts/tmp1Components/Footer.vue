@@ -1,98 +1,79 @@
 <template>
-    <footer class="text-white bg-gray-800">
-        <section class="p-10">
-            <ul class="grid grid-cols-5 gap-4">
-                <li>
-                    <NuxtImg
-                        class="max-w-[150px] w-full"
-                        src="/img/logo/logo-1.svg"
-                        alt=""
-                    />
-                </li>
-                <li
-                    class="my-5"
-                    v-for="(data, key) in footerDatas"
-                    :key="key"
-                >
-                    {{ data.title }}
-                    <ul>
-                        <li
-                            class="my-5"
-                            v-for="(menu, index) in data.menus"
-                        >
-                            <NuxtLink :to="{ path: menu.url }">
-                                {{ menu.text }}
-                            </NuxtLink>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <ul class="flex my-5">
-                        <li
-                            v-for="(icon, index) in contact.icons"
-                            class="mr-2"
-                        >
-                            <a :href="icon.url"
-                                ><NuxtImg
-                                    class="min-w-[30px]"
-                                    :src="icon.imgUrl"
-                                    :alt="icon.alt"
-                            /></a>
-                        </li>
-                    </ul>
-                    <div class="my-5">{{ contact.name }}</div>
-                    <div class="my-5">{{ contact.phone }}</div>
-                </li>
-            </ul>
-            <aside class="flex justify-between mt-20 text-sm font-light">
-                <div>{{ copyright.text }}</div>
-                <ul class="flex">
+    <div>
+        <footer class="flex justify-center w-full text-white bg-gray-800">
+            <section class="w-full pl-[158px] pr-[160px] mt-[98px]">
+                <ul class="flex justify-between w-full">
+                    <li class="mr-[128px]">
+                        <NuxtImg
+                            class="min-w-[136px] max-w-[136px] w-full"
+                            src="/img/logo/logo-1.svg"
+                            alt=""
+                        />
+                    </li>
                     <li
-                        v-for="(caluse, index) in copyright['caluses']"
-                        :key="index"
-                        class="mr-5"
+                        class="flx-1 mr-[40px]"
+                        v-for="(data, key) in footerDatas"
+                        :key="key"
                     >
-                        <a :href="caluse.url">{{ caluse.text }}</a>
+                        <h6 class="font-bold text-[14px] YaleSolisW-Bd">{{ data.title }}</h6>
+                        <ul>
+                            <li
+                                class="my-[17px] text-[14px] hover:text-yellow-600 duration-500 transition-all"
+                                v-for="(menu, index) in data.menus"
+                            >
+                                <NuxtLink :to="{ path: menu.url }">
+                                    {{ menu.text }}
+                                </NuxtLink>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="flx-1">
+                        <ul class="flex">
+                            <li
+                                v-for="(icon, index) in contact.icons"
+                                class="mr-[24px]"
+                            >
+                                <a :href="icon.url"
+                                    ><NuxtImg
+                                        class="min-w-[24px]"
+                                        :src="icon.imgUrl"
+                                        :alt="icon.alt"
+                                /></a>
+                            </li>
+                        </ul>
+                        <div class="mt-[30px]">{{ contact.name }}</div>
+                        <div class="mt-[8px]">{{ contact.phone }}</div>
                     </li>
                 </ul>
-            </aside>
-        </section>
+                <aside class="flex justify-between mt-20 text-sm font-light mb-[23px]">
+                    <div>{{ copyright.text }}</div>
+                    <ul class="flex">
+                        <li
+                            v-for="(caluse, index) in copyright['caluses']"
+                            :key="index"
+                            class="mr-5"
+                        >
+                            <a :href="caluse.url">{{ caluse.text }}</a>
+                        </li>
+                    </ul>
+                </aside>
+            </section>
+        </footer>
         <div class="w-full h-[10px] bg-yellow-500"></div>
-    </footer>
+    </div>
 </template>
 
 <script setup lang="ts">
 const footerDatas = ref({
     footer1: {
-        title: "ABOUT YALE",
-        menus: [
-            {
-                text: "關於Yale",
-                url: "",
-            },
-            {
-                text: "服務流程",
-                url: "",
-            },
-            {
-                text: "國際認證專利",
-                url: "",
-            },
-        ],
-    },
-    footer2: {
         title: "PRODUCTS",
         menus: [
             {
-                text: "Yale電子鎖",
+                text: "訂製您的專屬門扇",
                 url: "",
             },
             {
-                text: "門扇",
-                url: "",
-            },
-            {
-                text: "五金配件",
+                text: "Yale 電子鎖",
                 url: "",
             },
             {
@@ -100,11 +81,33 @@ const footerDatas = ref({
                 url: "",
             },
             {
-                text: "Yale Home App",
+                text: "電子鎖配件",
                 url: "",
             },
         ],
     },
+    footer2: {
+        title: "STORE",
+        menus: [
+            {
+                text: "直營門市",
+                url: "",
+            },
+            {
+                text: "授權展售店",
+                url: "",
+            },
+            {
+                text: "全國電子通路",
+                url: "",
+            },
+            {
+                text: "電商通路",
+                url: "",
+            },
+        ],
+    },
+
     footer3: {
         title: "SUPPORT",
         menus: [
@@ -126,6 +129,23 @@ const footerDatas = ref({
             },
             {
                 text: "聯絡我們",
+                url: "",
+            },
+        ],
+    },
+    footer4: {
+        title: "ABOUT US",
+        menus: [
+            {
+                text: "關於Yale",
+                url: "",
+            },
+            {
+                text: "服務流程",
+                url: "",
+            },
+            {
+                text: "國際認證專利",
                 url: "",
             },
         ],
