@@ -1,5 +1,8 @@
 <template>
-    <header class="min-h-[94px] flex items-center">
+    <header
+        class="min-h-[94px] flex z-[500] items-center w-full duration-500 transition-all"
+        :class="isHomeMenuFixed ? ' bg-white fixed top-0' : 'absolute top-0'"
+    >
         <nav class="mx-10 my-5">
             <ul class="flex items-center text-base leading-5">
                 <li class="mr-5">
@@ -38,7 +41,12 @@
 </template>
 
 <script lang="ts" setup>
+import { useTemplateStore } from "~/store/templateStore";
+
 const $config = useRuntimeConfig();
+const templateStore = useTemplateStore();
+
+const isHomeMenuFixed = computed(() => templateStore.isHomeMenuFixed);
 
 const menus = ref({
     menu1: {

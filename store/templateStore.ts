@@ -18,6 +18,8 @@ export const useTemplateStore = defineStore({
             firstIn: true,
             // 目前選軸滾動位置高度
             scrollY: 0,
+            // 首頁選單判斷是否固定跟出現白底
+            isHomeMenuFixed: false,
         };
     },
     getters: {
@@ -54,6 +56,10 @@ export const useTemplateStore = defineStore({
         // 設定服務商列表紀錄滾輪位置
         setScrollY(val: 0) {
             this.scrollY = val;
+        },
+        // 設定 首頁選單固定
+        setHomeMenuFixed(val: boolean) {
+            this.isHomeMenuFixed = val;
         },
     },
 });

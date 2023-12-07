@@ -1,17 +1,13 @@
-<style lang="scss" sccped>
-.carousel-3d-container {
-    .carousel-3d-slide {
-        @apply border-none w-full  bg-[rgba(255,255,255,0)];
-    }
-}
-</style>
-
 <template>
     <ClientOnly>
         <div class="bg-gradient-to-r from-yellow-100 from-5% via-yellow-500 via-50% to-yellow-500 to-90% ml-auto w-full relative top-0 right-0 h-[100px]">
             <div class="rounded-tr-[120px] bg-white ml-auto w-full absolute top-0 right-0 h-[100px]"></div>
         </div>
-        <section class="flex items-center justify-center mt-5">
+        <section
+            id="HomeSample"
+            ref="HomeSampleDomRef"
+            class="flex items-center justify-center mt-5"
+        >
             <main class="flex-1 mx-auto w-[1113px]">
                 <div class="text-center">
                     <h2 class="font-bold text-gray-100 text-[66px] YaleSolisW-Bd leading-none">PROJECT</h2>
@@ -111,11 +107,14 @@
 </template>
 
 <script lang="ts" setup>
-// import required modules
+import { useTemplateStore } from "~/store/templateStore";
+
+const templateStore = useTemplateStore();
 
 const carousel3dRefDom = ref<any>(null);
 const carousel3d2RefDom = ref<any>(null);
-
+// 區塊 dom
+const HomeSampleDomRef = ref<any>(null);
 const items = ref([]);
 
 for (let i = 0; i < 10; i++) {
@@ -151,16 +150,32 @@ function onSlideChange(val: any) {
     console.log("onSlideChange =>>", val);
 }
 
+function scrollInit() {
+    // 判斷滾動高度 大於 裝修實績區塊時 固定選單在上方
+    if (window.scrollY > HomeSampleDomRef.value.offsetTop) {
+        templateStore.setHomeMenuFixed(true);
+    } else {
+        templateStore.setHomeMenuFixed(false);
+    }
+}
+
 onMounted(() => {
     nextTick(() => {
-        console.log("carousel3dRefDom.value =>", carousel3dRefDom.value);
-        // mainCarousel.value.init();
-        // thumbCarousel.value.init();
+        if (process.client && HomeSampleDomRef.value) {
+            window.addEventListener("scroll", scrollInit);
+        }
     });
 });
 
-// transform: translate3d(10px, 0px, -100px) rotateX(0deg) rotateY(00deg) scale(1);
-//     z-index: -1;
-//     width: 488px;
-//     transition-duration: 0ms;
+onBeforeUnmount(() => {
+    window.removeEventListener("scroll", scrollInit);
+});
 </script>
+
+<style lang="scss" sccped>
+.carousel-3d-container {
+    .carousel-3d-slide {
+        @apply border-none w-full  bg-[rgba(255,255,255,0)];
+    }
+}
+</style>
