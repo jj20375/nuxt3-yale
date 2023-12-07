@@ -8,3 +8,7 @@ node_modules
 dist
 .DS_Store
 .vercel
+.idea
+
+# OS or Editor folders
+._*
