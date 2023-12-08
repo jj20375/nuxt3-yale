@@ -1,7 +1,7 @@
 <template>
     <header
         class="min-h-[94px] flex z-[500] items-center w-full duration-500 transition-all"
-        :class="isHomeMenuFixed ? ' bg-white fixed top-0' : 'absolute top-0'"
+        :class="[isHomeMenuFixed ? ' bg-white fixed top-0' : 'absolute top-0', route.name !== 'index' ? 'fixed top-0' : '']"
     >
         <nav class="mx-10 my-5">
             <ul class="flex items-center text-base leading-5">
@@ -44,6 +44,7 @@
 import { useTemplateStore } from "~/store/templateStore";
 
 const $config = useRuntimeConfig();
+const route = useRoute();
 const templateStore = useTemplateStore();
 
 const isHomeMenuFixed = computed(() => templateStore.isHomeMenuFixed);
