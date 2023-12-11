@@ -1,12 +1,12 @@
 <template>
     <header
         class="min-h-[94px] flex z-[500] items-center w-full duration-500 transition-all"
-        :class="[isHomeMenuFixed ? ' bg-white fixed top-0' : 'absolute top-0', route.name !== 'index' ? 'fixed top-0' : '']"
+        :class="[isHomeMenuFixed ? ' bg-white fixed top-0' : route.name === 'index' ? 'absolute top-0' : '', route.name !== 'index' ? 'fixed top-0 bg-white' : '']"
     >
-        <nav class="mx-10 my-5">
+        <nav class="mx-10">
             <ul class="flex items-center text-base leading-5">
                 <li class="mr-5">
-                    <NuxtLink :to="{ path: '/' }">
+                    <NuxtLink :to="{ name: 'index' }">
                         <NuxtImg
                             src="/img/logo/logo-1.svg"
                             :alt="$config.public.webSite"
@@ -27,12 +27,19 @@
                         </span>
                         <template #dropdown>
                             <el-dropdown-menu>
-                                <el-dropdown-item v-for="(submenu, index) in menu.submenus">{{ submenu.text }}</el-dropdown-item>
+                                <el-dropdown-item v-for="(submenu, index) in menu.submenus">
+                                    {{ submenu.text }}
+                                </el-dropdown-item>
                             </el-dropdown-menu>
                         </template>
                     </el-dropdown>
                     <div v-else>
-                        <NuxtLink :to="{ path: menu.url }">{{ menu.title }}</NuxtLink>
+                        <div
+                            class="cursor-pointer"
+                            @click="router.push(menu.url)"
+                        >
+                            {{ menu.title }}
+                        </div>
                     </div>
                 </li>
             </ul>
@@ -44,29 +51,42 @@
 import { useTemplateStore } from "~/store/templateStore";
 
 const $config = useRuntimeConfig();
+const router = useRouter();
 const route = useRoute();
 const templateStore = useTemplateStore();
 
 const isHomeMenuFixed = computed(() => templateStore.isHomeMenuFixed);
 
-const menus = ref({
+const menus = ref<any>({
     menu1: {
         title: "訂製您的專屬門扇",
-        url: "/",
+        url: {
+            name: "custom-slug",
+            params: { slug: "slug" },
+        },
         submenus: [],
     },
     menu2: {
         title: "關於我們",
-        url: "/",
+        url: {
+            name: "about-slug",
+            params: { slug: "slug" },
+            query: { id: "id1" },
+        },
         submenus: [],
     },
     menu3: {
         title: "最新消息",
-        url: "/",
+        url: {
+            name: "news-slug",
+            params: { slug: "slug" },
+            query: { id: "id1" },
+        },
         submenus: [],
     },
     menu4: {
         title: "產品資訊",
+        url: {},
         submenus: [
             {
                 text: "Yale 電子鎖",
@@ -77,7 +97,7 @@ const menus = ref({
     },
     menu5: {
         title: "展示門市",
-        url: "/",
+        url: {},
         submenus: [
             {
                 text: "Yale 承德門市",
@@ -93,7 +113,7 @@ const menus = ref({
     },
     menu6: {
         title: "裝修實績",
-        url: "/",
+        url: {},
         submenus: [
             {
                 text: "電子鎖",
@@ -109,7 +129,7 @@ const menus = ref({
     },
     menu7: {
         title: "服務支援",
-        url: "/",
+        url: {},
         submenus: [
             {
                 text: "服務中心",

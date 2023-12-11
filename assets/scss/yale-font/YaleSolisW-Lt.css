@@ -7,8 +7,9 @@
 @font-face {
     font-family: 'YaleSolisW-Lt';
     src: url('YaleSolisW-Lt/YaleSolisW-Lt.woff2') format('woff2'),
-         url('YaleSolisW-Lt/YaleSolisW-Lt.woff') format('woff');
+         url('YaleSolisW-Lt/YaleSolisW-Lt.woff') format('woff'),
+         local("Arial"), local("Helvetica");
     font-weight: normal;
     font-style: normal;
-
+    unicode-range: U+4E00-9FFF;
 }

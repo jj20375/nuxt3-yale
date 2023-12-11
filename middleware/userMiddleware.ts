@@ -10,7 +10,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
     console.log("user middleware");
 
     if (!$utils().isEmpty(token)) {
-        await userStore.getUserProfile();
+        // await userStore.getUserProfile();
     }
     return;
 });

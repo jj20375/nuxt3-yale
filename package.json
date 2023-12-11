@@ -10,6 +10,7 @@
         "heroku-postbuild": "yarn run build"
     },
     "devDependencies": {
+        "@element-plus/nuxt": "^1.0.7",
         "@fortawesome/free-regular-svg-icons": "^6.4.2",
         "@nuxt/devtools": "^0.8.2",
         "@nuxt/image-edge": "^1.0.0-27968280.9739e4d",
