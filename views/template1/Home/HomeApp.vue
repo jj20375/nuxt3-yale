@@ -4,8 +4,8 @@
             <div class="rounded-tr-[200px] bg-white ml-auto w-full absolute top-0 right-0 h-[100px]"></div>
         </div>
         <div class="max-w-[971px] mx-auto">
-            <div class="flex items-center justify-center">
-                <article class="flex-1 mr-[133px]">
+            <div class="flex items-center justify-center gap-[132px]">
+                <article class="flex-1">
                     <p class="text-[16px] YaleSolisW-Rg font-light">Yale Home App is available on</p>
                     <div class="flex items-center mt-[41px]">
                         <qrcode-vue
@@ -16,7 +16,7 @@
                         />
                         <NuxtImg
                             class="min-w-[163.08px]"
-                            src="/img/home/app/app-store.jpg"
+                            src="/img/home/app/app-store.png"
                         />
                     </div>
                     <div class="flex items-center mt-[24px]">
@@ -28,12 +28,12 @@
                         />
                         <NuxtImg
                             class="min-w-[163.08px]"
-                            src="/img/home/app/google-play.jpg"
+                            src="/img/home/app/google-play.png"
                         />
                     </div>
                 </article>
                 <NuxtImg
-                    class="flex-1 min-w-[267px] max-w-[300px] mr-[69px]"
+                    class="flex-1 min-w-[267px] max-w-[300px]"
                     src="/img/home/app/phone.png"
                 />
                 <article class="flex-1">
