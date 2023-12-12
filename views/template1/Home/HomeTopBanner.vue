@@ -1,5 +1,5 @@
 <template>
-    <div class="min-h-[800px] max-h-[800px]">
+    <div class="h-screen">
         <Swiper
             :slidesPerView="1"
             :navigation="true"
@@ -12,14 +12,16 @@
                 :key="item"
             >
                 <div
-                    class="flex items-center min-h-[800px] bg-cover"
+                    class="flex items-center h-screen bg-cover bg-center"
                     style="background-image: url('/img/banner/banner1.jpg')"
                 >
-                    <article class="max-w-[440px] ml-[271px] mr-[126px]">
-                        <div class="text-[48px] YaleSolisW-Bd font-bold">Yale Link 智能鎖{{ item }} 家居保護，安心無憂</div>
-                        <div class="text-[16px] mt-[20px]">我們不僅讓家保持安全，更讓人們感到安全。</div>
-                        <div class="mt-[40px]">
-                            <button class="font-light text-gray-600 bg-white rounded-full min-w-[300px] min-h-[60px] text-center">暸解更多</button>
+                    <article class="container">
+                        <div class="w-full lg:w-1/2">
+                            <div class="text-[48px] YaleSolisW-Bd font-bold">Yale Link 智能鎖{{ item }}<br/>家居保護，安心無憂</div>
+                            <div class="text-[16px] mt-[20px]">我們不僅讓家保持安全，更讓人們感到安全。</div>
+                            <div class="mt-[40px]">
+                                <button class="animation-btn btn-lg">了解更多</button>
+                            </div>
                         </div>
                     </article>
                     <!-- <NuxtImg

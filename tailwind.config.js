@@ -28,13 +28,13 @@ module.exports = {
             },
             // yellow: colors.amber,
             yellow: {
-                50: "#fffff5",
+                50: "#fffff5", // for gradient
                 100: "#FFF1C4",
                 200: "#ffffcf",
                 300: "#FAFED2",
-                400: "#F7F294",
-                500: "#FFD500",
-                600: "#FFCC00",
+                400: "#FFD800", // Yale Yellow-hover
+                500: "#FFD500", // Yale Yellow-default
+                600: "#FFCC00", // Yale Yellow-active
                 700: "#FF7A1F",
                 800: "#c49500",
                 900: "#a88000",
@@ -138,6 +138,14 @@ module.exports = {
             72: "18rem",
             80: "20rem",
             96: "24rem",
+            '5%': '5%',
+            '10%': '10%',
+            '15%': '15%',
+            '20%': '20%'
+        },
+        aspectRatio: {
+            '1/1': '1 / 1',
+            '3/5': '3 / 5',
         },
         boxShadow: {
             sm: "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
@@ -148,6 +156,16 @@ module.exports = {
             "2xl": "0 25px 50px -12px rgba(0, 0, 0, 0.25)",
             inner: "inset 0 2px 4px 0 rgba(0, 0, 0, 0.06)",
             none: "none",
+        },
+        container: {
+            center: true,
+            padding: {
+                DEFAULT: '1rem',
+                sm: '2rem',
+                lg: '4rem',
+                xl: '5rem',
+                '2xl': '6rem',
+            },
         },
     },
     variants: {

@@ -3,9 +3,9 @@
         <div class="bg-gray-100 ml-auto w-full relative top-0 right-0 h-[100px]">
             <div class="rounded-tr-[200px] bg-white ml-auto w-full absolute top-0 right-0 h-[100px]"></div>
         </div>
-        <div class="max-w-[971px] mx-auto">
-            <div class="flex items-center justify-center gap-[132px]">
-                <article class="flex-1">
+        <div class="container">
+            <div class="flex items-center justify-between">
+                <article>
                     <p class="text-[16px] YaleSolisW-Rg font-light">Yale Home App is available on</p>
                     <div class="flex items-center mt-[41px]">
                         <qrcode-vue
@@ -36,7 +36,7 @@
                     class="flex-1 min-w-[267px] max-w-[300px]"
                     src="/img/home/app/phone.png"
                 />
-                <article class="flex-1">
+                <article>
                     <h2 class="text-gray-100 YaleSolisW-Bd text-[66px]">DOWNLOAD</h2>
                     <h3 class="font-bold text-[45px] YaleSolisW-Bd leading-[56.25px]">Yale Home APP</h3>
                 </article>

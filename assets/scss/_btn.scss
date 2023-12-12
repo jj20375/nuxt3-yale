@@ -84,3 +84,24 @@
     @apply cursor-pointer bg-black border-2 border-black text-yellow-500 px-3 py-2 rounded-lg;
     @apply transition duration-1000 ease-in-out;
 }
+
+// 白色按鈕(有圓形動畫效果的按鈕，只有首頁才會用到)
+.animation-btn{
+    @apply relative cursor-pointer text-gray-600 rounded-full w-[220px] px-7 py-4 flex items-center justify-center z-[1] overflow-hidden;
+    @apply before:absolute before:w-0 before:h-0 before:bg-yellow-400 before:opacity-0 before:rounded-full before:-z-[1] before:transition-all before:duration-[400ms] before:ease-in;
+    @apply after:absolute after:w-full after:h-full after:bg-white after:-z-[2];
+    &.btn-lg{
+        @apply w-[300px];
+    }
+    &.btn-sm{
+        @apply w-[160px];
+    }
+    // 適應性尺寸
+    &.btn-fit{
+        @apply w-auto;
+    }
+    &:hover{
+        @apply before:absolute before:w-[350px] before:h-[350px] before:opacity-100;
+        @apply before:transition-all before:duration-[400ms] before:ease-in;
+    }
+}

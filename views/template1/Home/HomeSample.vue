@@ -1,7 +1,7 @@
 <template>
     <ClientOnly>
-        <div class="bg-gradient-to-r from-yellow-100 from-5% via-yellow-500 via-50% to-yellow-500 to-90% ml-auto w-full relative top-0 right-0 h-[100px]">
-            <div class="rounded-tr-[120px] bg-white ml-auto w-full absolute top-0 right-0 h-[100px]"></div>
+        <div class="relative bg-gradient-to-r from-yellow-100 from-5% via-yellow-500 via-50% to-yellow-500 to-90% ml-auto w-full relative top-0 right-0 h-[100px]">
+            <div class="rounded-tr-[100px] bg-white ml-auto w-full absolute top-0 right-0 h-[100px]"></div>
         </div>
         <section
             id="HomeSample"
