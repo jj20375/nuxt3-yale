@@ -28,8 +28,8 @@ export default defineNuxtConfig({
         // pageTransition: { name: "page", mode: "out-in" },
     },
 
-    modules: ["@pinia/nuxt", "@vueuse/nuxt", "@nuxt/image-edge", "nuxt-viewport", "@nuxtjs/device", "nuxt-lodash", "vue3-carousel-nuxt"],
-    css: ["@/assets/scss/main.scss", "@fortawesome/fontawesome-svg-core/styles.css"],
+    modules: ["@pinia/nuxt", "@vueuse/nuxt", "@nuxt/image-edge", "nuxt-viewport", "@nuxtjs/device", "nuxt-lodash", "vue3-carousel-nuxt", "@nuxtjs/tailwindcss"],
+    css: ["@/assets/scss/main.scss", "@fortawesome/fontawesome-svg-core/styles.css", "@/assets/scss/element-plus.scss"],
 
     // vu3-carousel 套件 component
     carousel: {
@@ -52,15 +52,15 @@ export default defineNuxtConfig({
     //     viewer: true,
     // },
     vite: {
-        css: {
-            preprocessorOptions: {
-                scss: {
-                    additionalData: `
-                  @import "assets/scss/element-plus.scss";
-                  `,
-                },
-            },
-        },
+        // css: {
+        //     preprocessorOptions: {
+        //         scss: {
+        //             additionalData: `
+        //           @import "assets/scss/element-plus.scss";
+        //           `,
+        //         },
+        //     },
+        // },
     },
 
     // lodash 套件
