@@ -4,9 +4,9 @@
             class="absolute w-full h-full object-cover rounded-bl-[120px]"
             src="/img/home/custom/section-bg.jpg"
         />
-        <main class="container flex item items-center justify-between gap-10 relative">
+        <main class="relative container flex item items-center justify-between gap-6 xl:gap-10">
             <article>
-                <h3 class="text-white text-[66px] font-bold YaleSolisW-Bd leading-[66px]">CUSTOMIZED</h3>
+                <h3 class="text-white text-[56px] xl:text-[66px] font-bold YaleSolisW-Bd leading-[66px]">CUSTOMIZED</h3>
                 <h5 class="text-zinc-800 text-[40px] mt-[14px] font-bold font-['Yale Solis'] leading-[50px] tracking-wide">訂製您的專屬門扇</h5>
                 <p class="w-[329px] mt-[20px] text-zinc-800 text-base font-normal font-['Yale Solis'] leading-relaxed tracking-tight">最新智慧電子鎖，從卡片密碼鎖到最先進的指紋鎖，一應俱全。</p>
                 <div class="mt-[40px]">
@@ -20,7 +20,7 @@
                     </button>
                 </div>
             </article>
-            <article class="relative right-0 top-0 aspect-[3/5] ml-[80px] flex-1 max-w-[400px]">
+            <article class="relative right-0 top-0 aspect-[3/5] xl:ml-[80px] flex-1 max-w-[400px]">
                 <div
                     v-for="(door, key) in doors"
                     :key="key"
@@ -32,7 +32,7 @@
                     />
                 </div>
             </article>
-            <article class="relative self-start mt-[10%]">
+            <article class="relative self-start mt-[5%] 2xl:mt-[10%]">
                 <div class="inline-block relative left-[-15px] mb-2">
                     <div class="text-center mb-4">點擊變換風格</div>
                     <div class="flex justify-center">
@@ -53,13 +53,13 @@
                                 @click="handleClick(key)"
                             />
                             <div
-                                class="flex gap-3 mr-4"
+                                class="flex"
                                 :class="isHover[key] ? 'opacity-100 pointer-events-auto transition-all duration-400 before:ease-in-out delay-500' : 'opacity-0 pointer-events-none'"
                             >
                                 <div
                                     v-for="item in icon.styles"
-                                    :class="doorStyles[icon.key] === item.style ? 'bg-yellow-600 rounded-full pointer-events-none' : 'pointer-events-auto'"
-                                    class="cursor-pointer w-[30px] h-[30px] flex items-center justify-center hover:bg-gray-100 duration-500 transition-all rounded-full"
+                                    :class="doorStyles[icon.key] === item.style ? 'bg-yellow-600 rounded-full pointer-events-none' : ''"
+                                    class="cursor-pointer mr-3 w-[30px] h-[30px] flex items-center justify-center hover:bg-gray-100 duration-500 transition-all rounded-full"
                                     @click="doorStyles[icon.key] = item.style"
                                 >
                                     {{ item.value }}
@@ -159,10 +159,10 @@ function handleClick(key: string) {
 
 <style lang="scss" scoped>
 .icon-wrap{
-    @apply relative flex gap-4 p-2 mt-1 mb-1 items-center z-0 duration-1000 overflow-hidden rounded-full;
+    @apply relative flex gap-6 p-2 mt-1 mb-1 items-center z-0 duration-1000 overflow-hidden rounded-full;
     @apply before:absolute before:bg-white before:top-0 before:left-0 before:h-full before:rounded-full before:opacity-0 before:min-w-[66px] before:-z-[1];
     &.active{
-        @apply mt-2 mb-2 before:opacity-100 before:min-w-[600px] before:opacity-100;
+        @apply mt-2 mb-2 before:opacity-100 before:min-w-[400px] before:opacity-100;
         @apply before:transition-opacity before:duration-200 before:ease-in-out;
         @apply before:transition-[min-width] before:duration-1000 before:ease-in-out before:delay-200;
     }

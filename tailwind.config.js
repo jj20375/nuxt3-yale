@@ -143,10 +143,6 @@ module.exports = {
             '15%': '15%',
             '20%': '20%'
         },
-        aspectRatio: {
-            '1/1': '1 / 1',
-            '3/5': '3 / 5',
-        },
         boxShadow: {
             sm: "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
             DEFAULT: "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)",
@@ -162,7 +158,7 @@ module.exports = {
             padding: {
                 DEFAULT: '1rem',
                 sm: '2rem',
-                lg: '4rem',
+                lg: '3rem',
                 xl: '5rem',
                 '2xl': '6rem',
             },

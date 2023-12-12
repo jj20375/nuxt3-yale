@@ -85,6 +85,28 @@
     @apply transition duration-1000 ease-in-out;
 }
 
+// 主要按鈕(黃色)
+.yellow-btn{
+    @apply bg-yellow-500 hover:bg-yellow-600 transition-all duration-500 rounded-full w-[160px] py-2 px-4 text-[15px];
+    &.btn-lg{
+        @apply w-[300px];
+    }
+    &.btn-sm{
+        @apply w-[128px];
+    }
+}
+
+// 次要按鈕(灰色)
+.gray-btn{
+    @apply bg-gray-200 rounded-full py-2 px-4 hover:bg-black hover:text-white transition-all duration-500 text-[15px];
+    &.btn-lg{
+        @apply w-[300px];
+    }
+    &.btn-sm{
+        @apply w-[128px];
+    }
+}
+
 // 白色按鈕(有圓形動畫效果的按鈕，只有首頁才會用到)
 .animation-btn{
     @apply relative cursor-pointer text-gray-600 rounded-full w-[220px] px-7 py-4 flex items-center justify-center z-[1] overflow-hidden;
