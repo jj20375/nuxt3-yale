@@ -7,10 +7,10 @@
             <div class="absolute top-0 w-full h-full bg-black bg-opacity-40"></div>
             <h1 class="text-white text-[40px] YaleSolisW-Bd font-bold absolute z-10">最新消息</h1>
         </div>
-        <div class="flex justify-center">
-            <div class="flex">
+        <div class="flex justify-center w-full">
+            <div class="flex justify-center w-[1440px]">
                 <SideBar class="mt-[60px] bg-white" />
-                <main class="mt-[60px] ml-[40px] w-full overflow-y-auto">
+                <main class="mt-[60px] ml-[40px] flex-1 overflow-y-auto">
                     <!-- 客製化網址{{ route.params.slug }}
             <div>搜尋參數 id:{{ route.query.id }}</div> -->
                     <article
