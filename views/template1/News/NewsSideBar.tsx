@@ -50,7 +50,7 @@ export default defineComponent({
                     {Object.keys(menus.value).map((key) => 
                     (
                         <li class={["border-b border-gray-200","flex text-[16px]", key !== 'id1' ? 'py-[16px]':'pb-[16px]']}>
-                            <span class={[key ===route.query.id ?'text-black YaleSolisW-Bd font-bold':'font-[300] YaleSolisW-Rg text-gray-300', 'flex-1']}>{menus.value[key].text}</span>
+                            <span class={[key ===route.query.id ?'text-black YaleSolisW-Bd font-bold':'font-[300] YaleSolisW-Rg text-gray-400', 'flex-1']}>{menus.value[key].text}</span>
                             { key ===route.query.id ? <span><font-awesome-icon icon={['fas', 'chevron-right']} /></span> : null }
                         </li>
                     )
