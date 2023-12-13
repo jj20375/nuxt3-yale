@@ -98,17 +98,17 @@ const doors = computed(() => ({
     main: {
         style1: "/img/home/custom/customized_door1.png",
         style2: "/img/home/custom/customized_door2.png",
-        style3: "/img/home/custom/customized_door1.png",
+        style3: "/img/home/custom/customized_door3.png",
     },
     out: {
         style1: "/img/home/custom/customized_frame1.png",
         style2: "/img/home/custom/customized_frame2.png",
-        style3: "/img/home/custom/customized_door1.png",
+        style3: "/img/home/custom/customized_frame3.png",
     },
     lock: {
         style1: "/img/home/custom/customized_lock1.png",
         style2: "/img/home/custom/customized_lock2.png",
-        style3: "/img/home/custom/customized_door1.png",
+        style3: "/img/home/custom/customized_lock3.png",
     },
 }));
 
