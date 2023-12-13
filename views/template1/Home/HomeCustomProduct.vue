@@ -4,13 +4,13 @@
             class="absolute w-full h-full object-cover rounded-bl-[120px]"
             src="/img/home/custom/section-bg.jpg"
         />
-        <main class="relative container flex item items-center justify-between gap-6 xl:gap-10">
+        <main class="container relative flex items-center justify-between gap-6 item xl:gap-10">
             <article>
-                <h3 class="text-white text-[56px] xl:text-[66px] font-bold YaleSolisW-Bd leading-[66px]">CUSTOMIZED</h3>
-                <h5 class="text-zinc-800 text-[40px] mt-[14px] font-bold font-['Yale Solis'] leading-[50px] tracking-wide">訂製您的專屬門扇</h5>
+                <h3 class="text-white text-[56px] xl:text-[66px] font-medium YaleSolisW-Bd leading-[66px]">CUSTOMIZED</h3>
+                <h5 class="text-zinc-800 text-[40px] mt-[14px] font-medium font-['Yale Solis'] leading-[50px] tracking-wide">訂製您的專屬門扇</h5>
                 <p class="w-[329px] mt-[20px] text-zinc-800 text-base font-normal font-['Yale Solis'] leading-relaxed tracking-tight">最新智慧電子鎖，從卡片密碼鎖到最先進的指紋鎖，一應俱全。</p>
                 <div class="mt-[40px]">
-                    <button class="animation-btn gap-2">
+                    <button class="gap-2 animation-btn">
                         <img
                             class="w-[30px]"
                             src="/img/home/custom/button-icon.svg"
@@ -34,16 +34,19 @@
             </article>
             <article class="relative self-start mt-[5%] 2xl:mt-[10%]">
                 <div class="inline-block relative left-[-15px] mb-2">
-                    <div class="text-center mb-4">點擊變換風格</div>
+                    <div class="mb-4 text-center">點擊變換風格</div>
                     <div class="flex justify-center">
                         <div class="bg-black w-[1px] h-[30px]"></div>
                     </div>
                 </div>
-                <div class="flex flex-column gap-4" v-for="(icon, key) in icons">
+                <div
+                    class="flex gap-4 flex-column"
+                    v-for="(icon, key) in icons"
+                >
                     <div>
                         <div
                             class="icon-wrap"
-                            :class="isHover[key] ? 'active': null"
+                            :class="isHover[key] ? 'active' : null"
                         >
                             <NuxtImg
                                 @mouseover="mouseoverEvent(key)"
@@ -68,8 +71,9 @@
                         </div>
                         <div
                             class="relative w-[66px] text-center overflow-hidden"
-                            :class="isHover[key] ? 'max-h-[30px] mb-4 top-0 transition-all duration-1000 ease-in-out opacity-1': 'max-h-0 top-2 opacity-0'"
-                        >{{ icon.text }}
+                            :class="isHover[key] ? 'max-h-[30px] mb-4 top-0 transition-all duration-1000 ease-in-out opacity-1' : 'max-h-0 top-2 opacity-0'"
+                        >
+                            {{ icon.text }}
                         </div>
                     </div>
                 </div>
@@ -151,17 +155,17 @@ function mouseleaveEvent(key: string) {
 
 // icon按鈕只能開不能關
 function handleClick(key: string) {
-    if(isHover[key] === false) {
-        isHover[key] = !isHover[key]
+    if (isHover[key] === false) {
+        isHover[key] = !isHover[key];
     }
 }
 </script>
 
 <style lang="scss" scoped>
-.icon-wrap{
+.icon-wrap {
     @apply relative flex gap-6 p-2 mt-1 mb-1 items-center z-0 duration-1000 overflow-hidden rounded-full;
     @apply before:absolute before:bg-white before:top-0 before:left-0 before:h-full before:rounded-full before:opacity-0 before:min-w-[66px] before:-z-[1];
-    &.active{
+    &.active {
         @apply mt-2 mb-2 before:opacity-100 before:min-w-[400px] before:opacity-100;
         @apply before:transition-opacity before:duration-200 before:ease-in-out;
         @apply before:transition-[min-width] before:duration-1000 before:ease-in-out before:delay-200;

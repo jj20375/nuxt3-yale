@@ -5,7 +5,7 @@
 </template>
 
 <script setup lang="ts">
-const AsyncComp = defineAsyncComponent(() => import("@/views/template1/News/NewsIndex.vue"));
+const AsyncComp = defineAsyncComponent(() => import("~/views/template1/Post/News/NewsIndex.vue"));
 definePageMeta({
     middleware: [],
 });

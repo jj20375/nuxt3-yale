@@ -1,10 +1,10 @@
 <template>
     <section>
-        <article class="bg-gray-100 overflow-hidden">
+        <article class="overflow-hidden bg-gray-100">
             <div class="container">
                 <div class="relative pt-[140px] pb-[140px]">
-                    <h2 class="font-bold text-white text-[66px] leading-none YaleSolisW-Bd">BEST SELLER</h2>
-                    <h3 class="font-bold text-[40px] YaleSolisW-Bd mt-[14px] mb-8">精選商品</h3>
+                    <h2 class="font-medium text-white text-[66px] leading-none YaleSolisW-Bd">BEST SELLER</h2>
+                    <h3 class="font-medium text-[40px] YaleSolisW-Bd mt-[14px] mb-8">精選商品</h3>
                     <Swiper
                         :slidesPerView="4"
                         :spaceBetween="30"
@@ -25,7 +25,7 @@
                                 @mouseleave="mouseleaveEvent(item)"
                             >
                                 <NuxtImg
-                                    class="w-full rounded-2xl aspect-1/1 object-cover"
+                                    class="object-cover w-full rounded-2xl aspect-1/1"
                                     src="/img/home/product/product1.jpg"
                                 />
                                 <div
@@ -40,16 +40,16 @@
                                             <button class="yellow-btn btn-sm">加入購物車</button>
                                         </div>
                                         <div>
-                                            <button class="mt-2 z-10 gray-btn btn-sm">了解更多</button>
+                                            <button class="z-10 mt-2 gray-btn btn-sm">了解更多</button>
                                         </div>
                                     </div>
                                     <div class="absolute top-0 left-0 z-10 w-full h-full bg-white opacity-30 rounded-2xl"></div>
                                 </div>
                             </div>
-                            <h3 class="mt-[16px] text-[20px] font-bold YaleSolisW-Bd">YDM 4109A-{{ item }}</h3>
+                            <h3 class="mt-[16px] text-[20px] font-medium YaleSolisW-Bd">YDM 4109A-{{ item }}</h3>
                             <h3 class="text-[14px] font-[400p] YaleSolisW-Lt">指紋密碼鑰匙三合一</h3>
                             <div class="flex mt-3">
-                                <span class="mr-[8px] font-bold YaleSolisW-Bd">NT$1,760</span>
+                                <span class="mr-[8px] font-medium YaleSolisW-Bd">NT$1,760</span>
                                 <span class="text-gray-400 YaleSolisW-Lt">NT$1,760</span>
                             </div>
                         </SwiperSlide>
