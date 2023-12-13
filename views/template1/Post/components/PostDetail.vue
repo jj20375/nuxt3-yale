@@ -23,7 +23,7 @@
                         class="YaleSolisW-Rg text-[16px] flex items-center"
                     >
                         <NuxtImg
-                            class="w-[20px]"
+                            class="w-[10px]"
                             src="/img/icons/post/arrow-prev.svg"
                         />
                         <span class="ml-[8px]">上一篇</span>
@@ -41,7 +41,7 @@
                         <span class="mr-[20px] text-gray-400">{{ pagination.next.title.substr(0, 10) }}...</span>
                         <span class="mr-[8px]">下一篇</span>
                         <NuxtImg
-                            class="w-[20px]"
+                            class="w-[10px]"
                             src="/img/icons/post/arrow-next.svg"
                         />
                     </button>
