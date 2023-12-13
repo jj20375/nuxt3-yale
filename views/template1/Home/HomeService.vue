@@ -2,7 +2,7 @@
     <div>
         <section class="pb-[100px] rounded-tl-[120px] rounded-bl-[120px] bg-gradient-to-r from-yellow-100 from-5% via-yellow-500 via-50% to-yellow-500 to-90%">
             <div class="pt-[100px] text-center">
-                <h2 class="font-bold text-white leading-[66px] text-[66px] YaleSolisW-Bd">OUR PROMISE</h2>
+                <h2 class="font-medium text-white leading-[66px] text-[66px] YaleSolisW-Bd">OUR PROMISE</h2>
                 <h3 class="font-medium leading-[50px] mt-[14px] text-[40px] YaleSolisW-Bd">Yale 四大安心宣言</h3>
             </div>
             <article class="container">

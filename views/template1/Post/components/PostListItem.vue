@@ -9,7 +9,7 @@
             class="w-full max-w-[400px] mr-[48px]"
         />
         <div class="w-[440px]">
-            <h2 class="text-[24px] font-bold YaleSolisW-Bd">{{ item.title }}</h2>
+            <h2 class="text-[24px] font-medium YaleSolisW-Bd">{{ item.title }}</h2>
             <p class="leading-relaxed text-[16px] font-[300] YaleSolisW-Lt pt-[12px] line-clamp-3">
                 {{ item.content }}
             </p>

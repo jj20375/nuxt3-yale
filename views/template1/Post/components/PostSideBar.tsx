@@ -31,7 +31,7 @@ export default defineComponent({
                     {menus.value.map((menu, index):any => 
                     (
                         <li class={["border-b border-gray-200","flex text-[16px]", index !== 0 ? 'py-[16px]':'pb-[16px]']}>
-                            <span class={[menu.id ===route.query.id ?'text-black YaleSolisW-Bd font-bold':'font-[300] YaleSolisW-Rg text-gray-400', 'flex-1']}>{menu.text}</span>
+                            <span class={[menu.id ===route.query.id ?'text-black YaleSolisW-Bd font-medium':'font-[300] YaleSolisW-Rg text-gray-400', 'flex-1']}>{menu.text}</span>
                             { menu.id ===route.query.id ? <span><font-awesome-icon icon={['fas', 'chevron-right']} /></span> : null }
                         </li>
                     )

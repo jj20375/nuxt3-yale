@@ -15,7 +15,7 @@
                         v-for="(data, key) in footerDatas"
                         :key="key"
                     >
-                        <h6 class="font-bold text-[14px] YaleSolisW-Bd">{{ data.title }}</h6>
+                        <h6 class="font-medium text-[14px] YaleSolisW-Bd">{{ data.title }}</h6>
                         <ul>
                             <li
                                 class="my-[17px] text-[14px] hover:text-yellow-600 duration-500 transition-all"

@@ -5,7 +5,7 @@
         </nav>
         <div class="bg-[url('/img/news/news-banner.jpg')] relative min-h-[320px] bg-cover flex items-center justify-center">
             <div class="absolute top-0 w-full h-full bg-black bg-opacity-40"></div>
-            <h1 class="text-white text-[40px] YaleSolisW-Bd font-bold absolute z-10">最新消息</h1>
+            <h1 class="text-white text-[40px] YaleSolisW-Bd font-medium absolute z-10">最新消息</h1>
         </div>
         <div class="flex justify-center w-full">
             <div class="flex justify-center w-[1440px]">

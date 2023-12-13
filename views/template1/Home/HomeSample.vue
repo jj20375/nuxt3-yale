@@ -10,8 +10,8 @@
         >
             <main class="flex-1 mx-auto w-[1113px]">
                 <div class="text-center">
-                    <h2 class="font-bold text-gray-100 text-[66px] YaleSolisW-Bd leading-none">PROJECT</h2>
-                    <h3 class="font-bold leading-[50px] text-[40px] YaleSolisW-Bd mt-[14px]">裝修實績</h3>
+                    <h2 class="font-medium text-gray-100 text-[66px] YaleSolisW-Bd leading-none">PROJECT</h2>
+                    <h3 class="font-medium leading-[50px] text-[40px] YaleSolisW-Bd mt-[14px]">裝修實績</h3>
                 </div>
                 <Carousel3d
                     v-if="items.length > 0"
@@ -78,8 +78,8 @@
                                         </div>
                                         <div class="flex-1 max-w-[600px]">
                                             <div class="flex">
-                                                <h5 class="flex-1 text-[24px] YaleSolisW-Bd font-bold">實現您的智慧家庭{{ slide }}</h5>
-                                                <h6 class="text-[14px] font-bold YaleSolisW-Bd">2023 / 12 / 01</h6>
+                                                <h5 class="flex-1 text-[24px] YaleSolisW-Bd font-medium">實現您的智慧家庭{{ slide }}</h5>
+                                                <h6 class="text-[14px] font-medium YaleSolisW-Bd">2023 / 12 / 01</h6>
                                             </div>
                                             <p class="mt-[12px] YaleSolisW-Lt font-[400] text-[16px]">Yale Access 應用程序巧妙地提高您的家庭安全性了，讓我們能夠在有限的空閒時間處理最重要的事情。</p>
                                             <!-- {{ index }} -->
