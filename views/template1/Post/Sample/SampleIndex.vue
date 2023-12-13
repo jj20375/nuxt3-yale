@@ -13,7 +13,7 @@
                     class="mt-[60px] bg-white"
                     :menus="sidebar"
                 />
-                <main class="mt-[60px] ml-[40px] flex-1 overflow-y-auto max-h-[800px]">
+                <main class="mt-[60px] ml-[40px] flex-1">
                     <ListItem :datas="datas" />
                 </main>
             </div>
@@ -69,7 +69,7 @@ const sidebar = ref([
 
 const datas = ref([]);
 
-for (let i = 0; i < 10; i++) {
+for (let i = 0; i < 5; i++) {
     datas.value.push({
         title: "質感居家，將舒適與風格融為一體。精緻材質、簡約設計，打造溫馨空間",
         content: "質感居家，將舒適與風格融為一體。精緻材質、簡約設計，打造溫馨空間。體驗細膩觸感，品味生活的奢華享受。電子鎖革新，提升居家氛圍，享受安心與便利的極致體驗。",
