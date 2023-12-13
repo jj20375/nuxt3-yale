@@ -103,6 +103,11 @@ for (let i = 0; i < 5; i++) {
             "韓國是現今電子鎖普及率最高的國家，高達 90% 以上的門鎖採用電子鎖 ; 而 Gateman wide 及其姐妹品牌 Gateman 是目前韓國市佔率最高，同時也是全球市佔率第一的電子鎖品牌。韓國是現今電子鎖普及率最高的國家，高達 90% 以上的門鎖採用電子鎖 ; 而 Gateman wide 及其姐妹品牌 Gateman是目前韓國市佔率最高，同時也是全球市佔率第一的電子鎖品牌。",
         imgSrc: "/img/news/item-1.jpg",
         date: "2023/10/28",
+        url: {
+            name: "news-details-slug",
+            params: { slug: "測試" },
+            query: { id: "123" },
+        },
     });
 }
 </script>
