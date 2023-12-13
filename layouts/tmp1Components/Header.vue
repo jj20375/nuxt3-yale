@@ -85,6 +85,15 @@ const menus = ref<any>({
         submenus: [],
     },
     menu4: {
+        title: "裝修實績",
+        url: {
+            name: "sample-slug",
+            params: { slug: "耶魯裝修實績" },
+            query: { id: "id2" },
+        },
+        submenus: [],
+    },
+    menu5: {
         title: "產品資訊",
         url: {},
         submenus: [
@@ -95,7 +104,7 @@ const menus = ref<any>({
             },
         ],
     },
-    menu5: {
+    menu6: {
         title: "展示門市",
         url: {},
         submenus: [
@@ -106,22 +115,6 @@ const menus = ref<any>({
             },
             {
                 text: "Yale 百貨門市",
-                imgUrl: "/",
-                url: "/",
-            },
-        ],
-    },
-    menu6: {
-        title: "裝修實績",
-        url: {},
-        submenus: [
-            {
-                text: "電子鎖",
-                imgUrl: "/",
-                url: "/",
-            },
-            {
-                text: "訂製門扇",
                 imgUrl: "/",
                 url: "/",
             },
