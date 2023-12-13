@@ -3,13 +3,16 @@
         v-for="(item, index) in datas"
         :key="index"
         class="flex items-center mb-[48px]"
+        @click="router.push(item.url)"
     >
         <NuxtImg
             :src="item.imgSrc"
-            class="w-full max-w-[400px] mr-[48px]"
+            class="w-full max-w-[400px] mr-[48px] cursor-pointer"
         />
-        <div class="w-[440px]">
-            <h2 class="text-[24px] font-medium YaleSolisW-Bd">{{ item.title }}</h2>
+        <div class="w-[440px] cursor-pointer">
+            <h2 class="text-[24px] font-medium YaleSolisW-Bd">
+                {{ item.title }}
+            </h2>
             <p class="leading-relaxed text-[16px] font-[300] YaleSolisW-Lt pt-[12px] line-clamp-3">
                 {{ item.content }}
             </p>
@@ -30,9 +33,11 @@
 
 <script setup lang="ts">
 interface Props {
-    datas: { title: string; content: string; imgSrc: string; date: string }[];
+    datas: { title: string; content: string; imgSrc: string; date: string; url: { name: string; params?: { slug?: string }; query: any } }[];
 }
 const props = withDefaults(defineProps<Props>(), {
-    datas: [{ title: "title", content: "is content", imgSrc: "/img/logo-1.svg" }],
+    datas: [{ title: "title", content: "is content", imgSrc: "/img/logo-1.svg", url: { name: "index", params: { slug: "home" } } }],
 });
+
+const router = useRouter();
 </script>

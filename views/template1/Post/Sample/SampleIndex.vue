@@ -75,6 +75,11 @@ for (let i = 0; i < 5; i++) {
         content: "質感居家，將舒適與風格融為一體。精緻材質、簡約設計，打造溫馨空間。體驗細膩觸感，品味生活的奢華享受。電子鎖革新，提升居家氛圍，享受安心與便利的極致體驗。",
         imgSrc: "/img/sample/item-1.jpg",
         date: "2023/10/28",
+        url: {
+            name: "sample-details-slug",
+            params: { slug: "測試" },
+            query: { id: "123" },
+        },
     });
 }
 </script>
