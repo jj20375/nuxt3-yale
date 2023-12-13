@@ -5,7 +5,6 @@
         </div>
         <section
             id="HomeSample"
-            ref="HomeSampleDomRef"
             class="flex items-center justify-center mt-5"
         >
             <main class="flex-1 mx-auto w-[1113px]">
@@ -113,8 +112,6 @@ const templateStore = useTemplateStore();
 
 const carousel3dRefDom = ref<any>(null);
 const carousel3d2RefDom = ref<any>(null);
-// 區塊 dom
-const HomeSampleDomRef = ref<any>(null);
 const items = ref([]);
 
 for (let i = 0; i < 10; i++) {
@@ -151,8 +148,8 @@ function onSlideChange(val: any) {
 }
 
 function scrollInit() {
-    // 判斷滾動高度 大於 裝修實績區塊時 固定選單在上方
-    if (window.scrollY > HomeSampleDomRef.value.offsetTop) {
+    // 判斷滾動高度 大於50px時 固定選單在上方
+    if (window.scrollY > 50) {
         templateStore.setHomeMenuFixed(true);
     } else {
         templateStore.setHomeMenuFixed(false);
@@ -161,7 +158,7 @@ function scrollInit() {
 
 onMounted(() => {
     nextTick(() => {
-        if (process.client && HomeSampleDomRef.value) {
+        if (process.client) {
             window.addEventListener("scroll", scrollInit);
         }
     });
@@ -172,7 +169,7 @@ onBeforeUnmount(() => {
 });
 </script>
 
-<style lang="scss" sccped>
+<style lang="scss" scoped>
 .carousel-3d-container {
     .carousel-3d-slide {
         @apply border-none w-full  bg-[rgba(255,255,255,0)];

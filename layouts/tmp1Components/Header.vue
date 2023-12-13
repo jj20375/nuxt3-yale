@@ -1,13 +1,14 @@
 <template>
     <header
-        class="min-h-[94px] flex z-[500] items-center w-full duration-500 transition-all"
-        :class="[isHomeMenuFixed ? ' bg-white fixed top-0' : route.name === 'index' ? 'absolute top-0' : '', route.name !== 'index' ? 'fixed top-0 bg-white' : '']"
+        class="fixed py-3 z-[500] items-center w-full duration-500 transition-all"
+        :class="[isHomeMenuFixed ? ' bg-white fixed top-0' : route.name === 'index' ? 'top-0' : '', route.name !== 'index' ? 'fixed top-0 bg-white' : '']"
     >
-        <nav class="mx-10">
+        <nav class="mx-[50px]">
             <ul class="flex items-center text-base leading-5">
-                <li class="mr-5">
+                <li class="mr-14">
                     <NuxtLink :to="{ name: 'index' }">
                         <NuxtImg
+                            class="h-[66px] w-[66px]"
                             src="/img/logo/logo-1.svg"
                             :alt="$config.public.webSite"
                         />

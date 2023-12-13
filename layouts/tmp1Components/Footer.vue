@@ -11,14 +11,14 @@
                         />
                     </li>
                     <li
-                        class="flx-1 mr-[40px]"
+                        class="flex-1 mr-[40px]"
                         v-for="(data, key) in footerDatas"
                         :key="key"
                     >
                         <h6 class="font-bold text-[14px] YaleSolisW-Bd">{{ data.title }}</h6>
                         <ul>
                             <li
-                                class="my-[17px] text-[14px] hover:text-yellow-600 duration-500 transition-all"
+                                class="my-[17px] text-[14px] hover:text-yellow-400 duration-500 transition-all"
                                 v-for="(menu, index) in data.menus"
                             >
                                 <NuxtLink :to="{ path: menu.url }">
@@ -27,18 +27,15 @@
                             </li>
                         </ul>
                     </li>
-                    <li class="flx-1">
-                        <ul class="flex">
+                    <li class="flex-1">
+                        <ul class="flex gap-6">
                             <li
                                 v-for="(icon, index) in contact.icons"
-                                class="mr-[24px]"
+                                class="text-[24px]"
                             >
-                                <a :href="icon.url"
-                                    ><NuxtImg
-                                        class="min-w-[24px]"
-                                        :src="icon.imgUrl"
-                                        :alt="icon.alt"
-                                /></a>
+                                <a :href="icon.url" class="hover:text-yellow-400 transition-all"
+                                    ><font-awesome-icon :icon="['fab', icon.iconName]" />
+                                </a>
                             </li>
                         </ul>
                         <div class="mt-[30px]">{{ contact.name }}</div>
@@ -155,22 +152,22 @@ const footerDatas = ref({
 const contact = ref({
     icons: [
         {
-            imgUrl: "/img/footer/fb.svg",
+            iconName: "facebook",
             alt: "耶魯電子鎖粉絲專頁",
             url: "",
         },
         {
-            imgUrl: "/img/footer/line.svg",
+            iconName: "line",
             alt: "耶魯電子鎖LINE",
             url: "",
         },
         {
-            imgUrl: "/img/footer/ig.svg",
+            iconName: "instagram",
             alt: "耶魯電子鎖IG",
             url: "",
         },
         {
-            imgUrl: "/img/footer/youtube.svg",
+            iconName: "youtube",
             alt: "耶魯電子鎖Youtube",
             url: "",
         },

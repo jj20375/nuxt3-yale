@@ -32,7 +32,7 @@ module.exports = {
                 100: "#FFF1C4",
                 200: "#ffffcf",
                 300: "#FAFED2",
-                400: "#FFD800", // Yale Yellow-hover
+                400: "#FFE44C", // Yale Yellow-hover
                 500: "#FFD500", // Yale Yellow-default
                 600: "#FFCC00", // Yale Yellow-active
                 700: "#FF7A1F",
