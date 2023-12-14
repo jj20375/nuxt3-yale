@@ -1,5 +1,5 @@
 <template>
-    <section class="min-h-screen mt-[94px]">
+    <section class="min-h-screen mt-[94px] mb-[80px]">
         <nav class="border-t border-gray-300 py-[16px] pl-[122px]">
             <Breadcrumb :menus="breadcrumbs" />
         </nav>
@@ -7,14 +7,15 @@
             <div class="absolute top-0 w-full h-full bg-black bg-opacity-40"></div>
             <h1 class="text-white text-[40px] YaleSolisW-Bd font-medium absolute z-10">裝修實績</h1>
         </div>
-        <div class="flex justify-center w-full">
-            <div class="flex justify-center w-[1440px]">
+        <div class="container">
+            <div class="grid grid-cols-8 gap-4">
                 <SideBar
-                    class="mt-[60px] bg-white"
+                    class="mt-[60px] bg-white w-[240px] col-span-3"
                     :menus="sidebar"
                 />
-                <main class="mt-[60px] ml-[40px] flex-1">
+                <main class="mt-[60px] w-full col-span-5">
                     <ListItem :datas="datas" />
+                    <Pagination class="mt-[80px]" />
                 </main>
             </div>
         </div>
@@ -25,6 +26,7 @@
 import Breadcrumb from "~/views/template1/components/Breadcrumb.vue";
 import SideBar from "~/views/template1/Post/components/PostSideBar";
 import ListItem from "~/views/template1/Post/components/PostListItem.vue";
+import Pagination from "~/views/template1/components/Pagination.vue";
 
 const route = useRoute();
 

@@ -2,7 +2,8 @@
     <article
         v-for="(item, index) in datas"
         :key="index"
-        class="flex items-center mb-[48px]"
+        class="flex items-center"
+        :class="datas.length - 1 === index ? '' : 'mb-[48px]'"
         @click="router.push(item.url)"
     >
         <NuxtImg
