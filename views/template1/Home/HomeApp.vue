@@ -6,7 +6,7 @@
         <div class="container">
             <div class="flex items-center justify-between w-full mx-auto xl:w-5/6">
                 <article>
-                    <p class="text-[16px] YaleSolisW-Rg font-light">Yale Home App is available on</p>
+                    <p class="text-[16px] text-center YaleSolisW-Rg font-light">Yale Home App is available on</p>
                     <div class="flex items-center mt-[41px]">
                         <qrcode-vue
                             class="mr-5"

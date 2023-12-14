@@ -19,12 +19,12 @@
                         v-for="item in 10"
                         :key="item"
                     >
-                        <div class="relative top-0 left-0 aspect-[16/9] overflow-hidden rounded-[20px]">
+                        <div class="relative top-0 left-0 aspect-[16/9] overflow-hidden rounded-[20px] transition-all duration-500 hover:drop-shadow-lg">
                             <NuxtImg
                                 class="absolute w-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 object-cover cursor-pointer hover:scale-[1.07] transition-all duration-300"
                                 src="/img/store/shop3.jpg"
                             />
-                            <h5 class="absolute z-10 bottom-[24px] YaleSolisW-Bd font-medium left-[24px] text-white">Yale 承德門市</h5>
+                            <h5 class="absolute z-10 bottom-[24px] YaleSolisW-Bd text-[20px] font-medium left-[24px] text-white">Yale 承德門市</h5>
                             <div class="min-h-[100px] w-full bg-gradient-to-t from-black to-black/0 absolute bottom-0 left-0 pointer-events-none rounded-b-[20px]"></div>
                         </div>
                     </SwiperSlide>

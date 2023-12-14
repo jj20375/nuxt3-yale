@@ -6,11 +6,11 @@
                 <h3 class="font-medium leading-[50px] mt-[14px] text-[40px] YaleSolisW-Bd">Yale 四大安心宣言</h3>
             </div>
             <article class="container">
-                <div class="grid grid-cols-4 items-center justify-center gap-4 lg:gap-[30px] mt-[40px] mx-auto w-full xl:w-5/6">
+                <div class="grid grid-cols-4 items-center justify-center gap-4 lg:gap-[30px] mt-[52px] mx-auto w-full xl:w-[90%] 2xl:w-[70%]">
                     <div
                         v-for="(item, index) in items"
                         :key="index"
-                        class="relative aspect-[1/1] p-6 bg-white rounded-lg flex items-center justify-center top-0 transition-all duration-500 hover:-top-2.5 hover:drop-shadow-lg"
+                        class="relative aspect-[1/1] p-6 bg-white rounded-lg flex items-center justify-center top-0 transition-all duration-300 hover:-top-2.5 hover:drop-shadow-lg"
                     >
                         <div>
                             <NuxtImg
