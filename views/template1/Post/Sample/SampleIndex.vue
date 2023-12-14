@@ -8,14 +8,16 @@
             <h1 class="text-white text-[40px] YaleSolisW-Bd font-medium absolute z-10">裝修實績</h1>
         </div>
         <div class="container">
-            <div class="grid grid-cols-8 gap-4">
+            <div class="grid grid-cols-7 gap-4">
                 <SideBar
-                    class="mt-[60px] bg-white w-[240px] col-span-3"
+                    class="mt-[60px] bg-white w-[240px] col-span-2"
                     :menus="sidebar"
                 />
                 <main class="mt-[60px] w-full col-span-5">
                     <ListItem :datas="datas" />
-                    <Pagination class="mt-[80px]" />
+                    <div class="flex justify-center">
+                        <Pagination class="mt-[80px]" />
+                    </div>
                 </main>
             </div>
         </div>
