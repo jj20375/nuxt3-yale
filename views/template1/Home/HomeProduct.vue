@@ -47,10 +47,10 @@
                                 </div>
                             </div>
                             <h3 class="mt-[16px] text-[20px] font-medium YaleSolisW-Bd">YDM 4109A-{{ item }}</h3>
-                            <h3 class="text-[14px] font-[400p] YaleSolisW-Lt">指紋密碼鑰匙三合一</h3>
+                            <h3 class="text-[14px] font-[400p] YaleSolisW-Lt mt-1">指紋密碼鑰匙三合一</h3>
                             <div class="flex mt-3">
                                 <span class="mr-[8px] font-medium YaleSolisW-Bd">NT$1,760</span>
-                                <span class="text-gray-400 YaleSolisW-Lt">NT$1,760</span>
+                                <span class="text-gray-400 line-through YaleSolisW-Lt">NT$1,760</span>
                             </div>
                         </SwiperSlide>
                     </Swiper>

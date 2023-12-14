@@ -117,7 +117,7 @@ const footerDatas = ref({
                 url: "",
             },
             {
-                text: "檔按下載",
+                text: "檔案下載",
                 url: "",
             },
             {
@@ -134,15 +134,19 @@ const footerDatas = ref({
         title: "ABOUT US",
         menus: [
             {
-                text: "關於Yale",
+                text: "關於我們",
                 url: "",
             },
             {
-                text: "服務流程",
+                text: "最新消息",
                 url: "",
             },
             {
-                text: "國際認證專利",
+                text: "裝修實績",
+                url: "",
+            },
+            {
+                text: "Yale Home APP",
                 url: "",
             },
         ],
