@@ -95,27 +95,20 @@ const menus = ref<any>({
         submenus: [],
     },
     menu5: {
+        title: "展示門市",
+        url: {
+            name: "store-slug",
+            params: { slug: "耶魯展示門市" },
+            query: { id: "id1" },
+        },
+        submenus: [],
+    },
+    menu6: {
         title: "產品資訊",
         url: {},
         submenus: [
             {
                 text: "Yale 電子鎖",
-                imgUrl: "/",
-                url: "/",
-            },
-        ],
-    },
-    menu6: {
-        title: "展示門市",
-        url: {},
-        submenus: [
-            {
-                text: "Yale 承德門市",
-                imgUrl: "/",
-                url: "/",
-            },
-            {
-                text: "Yale 百貨門市",
                 imgUrl: "/",
                 url: "/",
             },

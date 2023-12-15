@@ -1,7 +1,7 @@
 <template>
     <PostListLayout
-        :title="'裝修實績'"
-        :banner="'/img/sample/sample-banner.jpg'"
+        :title="'展售門市'"
+        :banner="'/img/store/store-banner.jpg'"
     >
         <template #breadcrumbs>
             <Breadcrumb :menus="breadcrumbs" />
@@ -25,7 +25,7 @@
 import PostListLayout from "~/views/template1/Post/components/PostListLayout.vue";
 import Breadcrumb from "~/views/template1/components/Breadcrumb.vue";
 import SideBar from "~/views/template1/Post/components/PostSideBar";
-import ListItem from "~/views/template1/Post/components/PostListItem.vue";
+import ListItem from "~/views/template1/Post/Store/components/StoreListItem.vue";
 import Pagination from "~/views/template1/components/Pagination.vue";
 
 const route = useRoute();
@@ -37,34 +37,52 @@ const breadcrumbs = ref([
     },
     {
         name: "news-slug",
-        text: "裝修實績",
-        params: { slug: "耶魯裝修實績" },
+        text: "展售門市",
+        params: { slug: "耶魯展售門市" },
     },
     {
         name: "news-slug",
-        text: "電子鎖",
-        params: { slug: "耶魯電子鎖" },
+        text: "直營門市",
+        params: { slug: "耶魯直營門市" },
         query: { id: "id1" },
     },
 ]);
 
 const sidebar = ref([
     {
-        text: "訂製專屬門扇",
+        text: "直營門市",
         id: "id1",
         url: {
-            params: "訂製專屬門扇",
+            params: "直營門市",
             query: "id1",
-            name: "sample-slug",
+            name: "store-slug",
         },
     },
     {
-        text: "電子鎖",
+        text: "授權展售店",
         id: "id2",
         url: {
-            params: "電子鎖",
+            params: "授權展售店",
             query: "id2",
-            name: "sample-slug",
+            name: "store-slug",
+        },
+    },
+    {
+        text: "全國電子通路",
+        id: "id3",
+        url: {
+            params: "全國電子通路",
+            query: "id3",
+            name: "store-slug",
+        },
+    },
+    {
+        text: "電商通路",
+        id: "id4",
+        url: {
+            params: "電商通路",
+            query: "id4",
+            name: "store-slug",
         },
     },
 ]);
@@ -73,15 +91,13 @@ const datas = ref([]);
 
 for (let i = 0; i < 5; i++) {
     datas.value.push({
-        title: "質感居家，將舒適與風格融為一體。精緻材質、簡約設計，打造溫馨空間",
-        content: "質感居家，將舒適與風格融為一體。精緻材質、簡約設計，打造溫馨空間。體驗細膩觸感，品味生活的奢華享受。電子鎖革新，提升居家氛圍，享受安心與便利的極致體驗。",
-        imgSrc: "/img/sample/item-1.jpg",
-        date: "2023/10/28",
-        url: {
-            name: "sample-details-slug",
-            params: { slug: "測試" },
-            query: { id: "123" },
+        title: "Yale 承德門市",
+        contact: {
+            phone: { icon: "/img/icons/store/phone.svg", value: "02-2597-3123" },
+            time: { icon: "/img/icons/store/time.svg", value: "11:00 - 21:00" },
+            location: { icon: "/img/icons/store/location.svg", value: "台北市大同區承德路三段 217 號 1 樓" },
         },
+        imgSrc: "/img/store/item-1.jpg",
     });
 }
 </script>
