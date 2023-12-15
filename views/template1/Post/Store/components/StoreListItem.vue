@@ -7,7 +7,7 @@
     >
         <NuxtImg
             :src="item.imgSrc"
-            class="w-full max-w-[400px] mr-[48px] cursor-pointer"
+            class="w-full max-w-[360px] mr-[48px] cursor-pointer"
         />
         <div class="w-[440px] cursor-pointer">
             <h2 class="text-[24px] font-medium YaleSolisW-Bd">

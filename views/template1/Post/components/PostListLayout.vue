@@ -13,9 +13,9 @@
         </div>
 
         <div class="container">
-            <div class="grid grid-cols-7 gap-4">
+            <div class="grid grid-cols-7 gap-0">
                 <slot name="sidebar"></slot>
-                <main class="mt-[60px] w-full col-span-5">
+                <main class="mt-[60px] w-full col-span-5 pl-[80px]">
                     <slot name="list"></slot>
                     <div class="flex justify-center">
                         <slot name="pagination"></slot>
