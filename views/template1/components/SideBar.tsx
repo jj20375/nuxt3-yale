@@ -26,7 +26,7 @@ export default defineComponent({
 
 
         return () => (
-                <ul class="ml-[122px] pr-[32px] border-r border-gray-200 ">
+                <ul class="ml-[122px] pr-[32px] border-r border-gray-200 mt-[60px]">
                     {menus.value.map((menu, index):any => 
                     (
                         <li class={["border-b border-gray-200","flex text-[16px]", index !== 0 ? 'py-[16px]':'pb-[16px]']}>

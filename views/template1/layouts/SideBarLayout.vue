@@ -1,7 +1,13 @@
 <template>
     <section class="min-h-screen mt-[94px] mb-[80px]">
-        <nav class="border-t border-gray-300 py-[16px] pl-[122px]">
-            <slot name="breadcrumbs"></slot>
+        <nav class="border-t border-gray-300 py-[16px]">
+            <div class="container">
+                <div class="grid grid-cols-7 gap-0">
+                    <div class="col-span-2 ml-[122px]">
+                        <slot name="breadcrumbs"></slot>
+                    </div>
+                </div>
+            </div>
         </nav>
         <div
             :style="`background-image: url(${banner})`"
@@ -13,7 +19,7 @@
         </div>
 
         <div class="container">
-            <div class="grid grid-cols-7 gap-0">
+            <div class="grid grid-cols-8 gap-0">
                 <slot name="sidebar"></slot>
                 <main class="mt-[60px] w-full col-span-5 pl-[80px]">
                     <slot name="list"></slot>

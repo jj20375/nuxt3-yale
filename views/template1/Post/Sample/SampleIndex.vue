@@ -1,5 +1,5 @@
 <template>
-    <PostListLayout
+    <SideBarLayout
         :title="'裝修實績'"
         :banner="'/img/sample/sample-banner.jpg'"
     >
@@ -8,7 +8,7 @@
         </template>
         <template #sidebar>
             <SideBar
-                class="mt-[60px] bg-white w-[240px] col-span-2"
+                class="col-span-2"
                 :menus="sidebar"
             />
         </template>
@@ -18,13 +18,13 @@
         <template #pagination>
             <Pagination class="mt-[80px]" />
         </template>
-    </PostListLayout>
+    </SideBarLayout>
 </template>
 
 <script lang="ts" setup>
-import PostListLayout from "~/views/template1/Post/components/PostListLayout.vue";
+import SideBarLayout from "~/views/template1/layouts/SideBarLayout.vue";
 import Breadcrumb from "~/views/template1/components/Breadcrumb.vue";
-import SideBar from "~/views/template1/Post/components/PostSideBar";
+import SideBar from "~/views/template1/components/SideBar";
 import ListItem from "~/views/template1/Post/components/PostListItem.vue";
 import Pagination from "~/views/template1/components/Pagination.vue";
 
