@@ -26,7 +26,7 @@ import Breadcrumb from "~/views/template1/components/Breadcrumb.vue";
 import SideBar from "~/views/template1/components/SideBar";
 import FaqContact from "~/views/template1/ContactService/components/ContactData.vue";
 import FaqList from "~/views/template1/ContactService/Faq/components/FaqList.vue";
-import FaqTItle from "~/views/template1/ContactService/components/ContactTItle";
+import FaqTItle from "~/views/template1/ContactService/components/ContactTitle";
 
 const route = useRoute();
 
