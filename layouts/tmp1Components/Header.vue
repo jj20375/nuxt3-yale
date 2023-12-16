@@ -29,7 +29,9 @@
                         <template #dropdown>
                             <el-dropdown-menu>
                                 <el-dropdown-item v-for="(submenu, index) in menu.submenus">
-                                    {{ submenu.text }}
+                                    <NuxtLink :to="submenu.url">
+                                        {{ submenu.text }}
+                                    </NuxtLink>
                                 </el-dropdown-item>
                             </el-dropdown-menu>
                         </template>
@@ -121,7 +123,11 @@ const menus = ref<any>({
             {
                 text: "服務中心",
                 imgUrl: "/",
-                url: "/",
+                url: {
+                    name: "faq-slug",
+                    params: { slug: "耶魯服務中心" },
+                    query: { id: "id1" },
+                },
             },
             {
                 text: "維修與保固",
@@ -129,9 +135,13 @@ const menus = ref<any>({
                 url: "/",
             },
             {
-                text: "檔按下載",
+                text: "檔案下載",
                 imgUrl: "/",
-                url: "/",
+                url: {
+                    name: "file-download-slug",
+                    params: { slug: "耶魯檔案下載" },
+                    query: { id: "id1" },
+                },
             },
             {
                 text: "預約安裝",
