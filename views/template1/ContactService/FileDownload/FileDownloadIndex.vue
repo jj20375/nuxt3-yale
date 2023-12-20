@@ -1,7 +1,7 @@
 <template>
     <SideBarLayout
         :title="'服務中心'"
-        :banner="'/img/faq/faq-banner.jpg'"
+        :banner="'/img/file-download/file-download-banner.jpg'"
     >
         <template #breadcrumbs>
             <Breadcrumb :menus="breadcrumbs" />
@@ -70,8 +70,8 @@ for (let i = 0; i < 4; i++) {
         text: `分類${i + 1}`,
         id: `id${i + 2}`,
         url: {
-            params: `分類${i + 1}`,
-            query: "id1",
+            params: { slug: `分類${i + 1}` },
+            query: { id: "id" + (i + 2) },
             name: "file-download-slug",
         },
     });
