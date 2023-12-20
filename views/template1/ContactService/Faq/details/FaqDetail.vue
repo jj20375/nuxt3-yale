@@ -78,7 +78,7 @@ const sidebar = ref([
         text: "電子鎖",
         id: "id1",
         url: {
-            params: "電子鎖",
+            params: { slug: "電子鎖" },
             query: "id1",
             name: "news-slug",
         },
@@ -87,7 +87,7 @@ const sidebar = ref([
         text: "保險箱",
         id: "id2",
         url: {
-            params: "保險箱",
+            params: { slug: "保險箱" },
             query: "id2",
             name: "news-slug",
         },
@@ -96,7 +96,7 @@ const sidebar = ref([
         text: "Yale Home App 及配件",
         id: "id3",
         url: {
-            params: "Yale Home App 及配件",
+            params: { slug: "Yale Home App 及配件" },
             query: "id3",
             name: "news-slug",
         },
@@ -105,7 +105,7 @@ const sidebar = ref([
         text: "訂製專屬門扇",
         id: "id4",
         url: {
-            params: "訂製專屬門扇",
+            params: { slug: "訂製專屬門扇" },
             query: "id4",
             name: "news-slug",
         },
@@ -114,7 +114,7 @@ const sidebar = ref([
         text: "型錄及檔案下載",
         id: "id5",
         url: {
-            params: "型錄及檔案下載",
+            params: { slug: "型錄及檔案下載" },
             query: "id5",
             name: "news-slug",
         },

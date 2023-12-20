@@ -58,8 +58,8 @@ const sidebar = ref([
         text: "Yale 電子鎖使用說明書",
         id: "id1",
         url: {
-            params: "Yale 電子鎖使用說明書",
-            query: "id1",
+            params: { slug: "Yale 電子鎖使用說明書" },
+            query: { id: "id1" },
             name: "file-download-slug",
         },
     },

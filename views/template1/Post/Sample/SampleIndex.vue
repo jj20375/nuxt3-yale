@@ -53,8 +53,8 @@ const sidebar = ref([
         text: "訂製專屬門扇",
         id: "id1",
         url: {
-            params: "訂製專屬門扇",
-            query: "id1",
+            params: { slug: "訂製專屬門扇" },
+            query: { id: "id1" },
             name: "sample-slug",
         },
     },
@@ -62,8 +62,8 @@ const sidebar = ref([
         text: "電子鎖",
         id: "id2",
         url: {
-            params: "電子鎖",
-            query: "id2",
+            params: { slug: "電子鎖" },
+            query: { id: "id2" },
             name: "sample-slug",
         },
     },

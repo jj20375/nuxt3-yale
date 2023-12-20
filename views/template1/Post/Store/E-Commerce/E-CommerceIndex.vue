@@ -1,7 +1,7 @@
 <template>
     <SideBarLayout
         :title="'展售門市'"
-        :banner="'/img/store/store-banner.jpg'"
+        :banner="'/img/store/e-commerce/e-commerce-banner.jpg'"
     >
         <template #breadcrumbs>
             <Breadcrumb :menus="breadcrumbs" />
@@ -12,11 +12,18 @@
                 :menus="sidebar"
             />
         </template>
-        <template #list>
-            <ListItem :datas="datas" />
-        </template>
-        <template #pagination>
-            <Pagination class="mt-[80px]" />
+        <template #content>
+            <ul class="grid grid-cols-3 gap-4 min-h-[560px] mt-10">
+                <li
+                    v-for="(item, index) in datas"
+                    :key="index"
+                >
+                    <NuxtImg
+                        class="max-w-[200px] w-full"
+                        :src="item.imgSrc"
+                    />
+                </li>
+            </ul>
         </template>
     </SideBarLayout>
 </template>
@@ -42,7 +49,7 @@ const breadcrumbs = ref([
     },
     {
         name: "news-slug",
-        text: "直營門市",
+        text: "電商通路  ",
         params: { slug: "耶魯直營門市" },
         query: { id: "id1" },
     },
@@ -91,13 +98,7 @@ const datas = ref([]);
 
 for (let i = 0; i < 5; i++) {
     datas.value.push({
-        title: "Yale 承德門市",
-        contact: {
-            phone: { icon: "/img/icons/store/phone.svg", value: "02-2597-3123" },
-            time: { icon: "/img/icons/store/time.svg", value: "11:00 - 21:00" },
-            location: { icon: "/img/icons/store/location.svg", value: "台北市大同區承德路三段 217 號 1 樓" },
-        },
-        imgSrc: "/img/store/item-1.jpg",
+        imgSrc: "/img/store/e-commerce/item-1.png",
     });
 }
 </script>
