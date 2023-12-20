@@ -151,7 +151,11 @@ const menus = ref<any>({
             {
                 text: "聯絡我們",
                 imgUrl: "/",
-                url: "/",
+                url: {
+                    name: "contact-slug",
+                    params: { slug: "耶魯聯絡我們" },
+                    query: { id: "id1" },
+                },
             },
         ],
     },
