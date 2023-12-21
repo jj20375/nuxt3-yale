@@ -9135,7 +9135,7 @@ vue3-marquee-slider@^1.0.5:
   dependencies:
     vue "^3.2.45"
 
-vue3-recaptcha2@^1.7.0:
+vue3-recaptcha2@^1.8.0:
   version "1.8.0"
   resolved "https://registry.yarnpkg.com/vue3-recaptcha2/-/vue3-recaptcha2-1.8.0.tgz#4a50b0dbfa052568de347dc64d1839d02bdc3384"
   integrity sha512-lICGpLGv9wsdVjgWZ0usbZ+Ki52YX5kOzjt8l/ADun9GxdjJ5/AkGpxE7dZ+mG3VcE4ASZG2B/nYWB4wWFadvQ==

@@ -77,6 +77,16 @@
                 </div>
             </div>
         </el-form>
+        <div class="flex justify-start mt-[30px] mb-[40px]">
+            <vue-recaptcha
+                ref="reCaptcha2Dom"
+                @verify="isVerify"
+                @error="isVerifyError"
+                :sitekey="sitekey"
+            >
+            </vue-recaptcha>
+        </div>
+
         <div class="flex justify-center">
             <button class="bg-yellow-600 text-[16px] rounded-full w-[160px] text-center py-[11px]">確認送出</button>
         </div>
@@ -84,9 +94,41 @@
 </template>
 
 <script lang="ts" setup>
+// google recaptcha2
+import vueRecaptcha from "vue3-recaptcha2";
 import { ElMessage } from "element-plus";
 import type { FormInstance, UploadProps, FormRules } from "element-plus";
 import FileUpload from "./ContactWebFileUpload.vue";
+
+const {
+    public: { googleRecaptcha2Key },
+} = useRuntimeConfig();
+
+// gooogle recaptcha dom
+const reCaptcha2Dom = ref<any>(null);
+
+// 判斷是否有驗證 google recaptcha
+const isRecaptchaVerify = ref<boolean>(false);
+
+// google recaptcha key
+const sitekey = googleRecaptcha2Key;
+
+// 驗證 recaptcha 通過時 回傳的 token
+function isVerify(token: string) {
+    // 判斷是否有取得token
+    if (!$utils().isEmpty(token)) {
+        // 將是否有驗證過google recaptcha 驗證改為 true
+        isRecaptchaVerify.value = true;
+    }
+    form.value["g-recaptcha-response"] = token;
+}
+// 驗證 recaptcha 失敗時 回傳的 error
+function isVerifyError(error: any) {
+    // 將是否有驗證過google recaptcha 驗證改為 false
+    console.log(error);
+    isRecaptchaVerify.value = false;
+}
+
 const formRefDom = ref<FormInstance | undefined>();
 
 const form = ref({
