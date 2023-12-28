@@ -107,14 +107,12 @@ const menus = ref<any>({
     },
     menu6: {
         title: "產品資訊",
-        url: {},
-        submenus: [
-            {
-                text: "Yale 電子鎖",
-                imgUrl: "/",
-                url: "/",
-            },
-        ],
+        url: {
+            name: "product-slug",
+            params: { slug: "耶魯產品資訊-電子鎖-主鎖" },
+            query: { category: "id1", tag: "id1" },
+        },
+        submenus: [],
     },
     menu7: {
         title: "服務支援",

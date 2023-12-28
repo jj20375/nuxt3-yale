@@ -96,7 +96,7 @@ module.exports = {
                 600: "#4E4E51",
                 700: "#55595D", // Yale Dark Grey-dark bg
                 800: "#2d2c2e", // Yale Text Grey
-                900: "#202022",
+                900: "#212121",
             },
             pink: {
                 500: "#FB3C9C",

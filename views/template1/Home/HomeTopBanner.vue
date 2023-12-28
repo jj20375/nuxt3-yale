@@ -1,6 +1,7 @@
 <template>
     <div class="h-screen">
         <Swiper
+            ref="swiper"
             :slidesPerView="1"
             :navigation="true"
             :modules="modules"
@@ -40,7 +41,7 @@
 import { Navigation } from "swiper/modules";
 
 function onSwiper(swiper: any) {
-    console.log(swiper);
+    console.log("swiper => ", swiper);
 }
 
 function onSlideChange() {
@@ -52,8 +53,9 @@ const modules = ref([Navigation]);
 
 <style lang="scss" scoped>
 :deep(.swiper) {
-    &:hover{
-        .swiper-button-next, .swiper-button-prev{
+    &:hover {
+        .swiper-button-next,
+        .swiper-button-prev {
             @apply opacity-100;
         }
     }
@@ -62,7 +64,7 @@ const modules = ref([Navigation]);
         @apply h-8 w-8;
         @apply bg-no-repeat bg-center;
         @apply transition-all duration-300 ease-in-out;
-        background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTciIGhlaWdodD0iMjMiIHZpZXdCb3g9IjAgMCAxNyAyMyIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTIuNjk5NjcgMjIuOTg2TDAuMzMzMDA4IDIwLjk0NkwxMS4yOTk3IDExLjQ5M0wwLjMzMzAwOCAyLjA0MDAxTDIuNjk5NjcgMEwxNi4wMzMgMTEuNDkzTDIuNjk5NjcgMjIuOTg2WiIgZmlsbD0iIzRFNEU1MSIvPgo8L3N2Zz4=');
+        background-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTciIGhlaWdodD0iMjMiIHZpZXdCb3g9IjAgMCAxNyAyMyIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTIuNjk5NjcgMjIuOTg2TDAuMzMzMDA4IDIwLjk0NkwxMS4yOTk3IDExLjQ5M0wwLjMzMzAwOCAyLjA0MDAxTDIuNjk5NjcgMEwxNi4wMzMgMTEuNDkzTDIuNjk5NjcgMjIuOTg2WiIgZmlsbD0iIzRFNEU1MSIvPgo8L3N2Zz4=");
         @apply after:content-none;
         @apply hover:opacity-80;
         @apply hover:transition-all hover:duration-300 hover:ease-in-out;
@@ -73,15 +75,15 @@ const modules = ref([Navigation]);
         @apply h-8 w-8;
         @apply bg-no-repeat bg-center;
         @apply transition-all duration-300 ease-in-out;
-        background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMjMiIHZpZXdCb3g9IjAgMCAxNiAyMyIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMTMuMzMzMyAyMi45ODZMMCAxMS40OTNMMTMuMzMzMyAwTDE1LjcgMi4wNDAwMUw0LjczMzMzIDExLjQ5M0wxNS43IDIwLjk0NkwxMy4zMzMzIDIyLjk4NloiIGZpbGw9IiM0RTRFNTEiLz48L3N2Zz4=');
+        background-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMjMiIHZpZXdCb3g9IjAgMCAxNiAyMyIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMTMuMzMzMyAyMi45ODZMMCAxMS40OTNMMTMuMzMzMyAwTDE1LjcgMi4wNDAwMUw0LjczMzMzIDExLjQ5M0wxNS43IDIwLjk0NkwxMy4zMzMzIDIyLjk4NloiIGZpbGw9IiM0RTRFNTEiLz48L3N2Zz4=");
         @apply after:content-none;
         @apply hover:opacity-80;
         @apply hover:transition-all hover:duration-300 hover:ease-in-out;
     }
-    .swiper-button-prev{
+    .swiper-button-prev {
         @apply left-[44px];
     }
-    .swiper-button-next{
+    .swiper-button-next {
         @apply right-[44px];
     }
 }
