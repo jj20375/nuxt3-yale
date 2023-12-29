@@ -70,7 +70,9 @@
                 </div>
             </div>
             <div
-                v-if="products.length < 3"
+                v-show="products.length < 3"
+                v-for="item in 3 - products.length"
+                :key="item"
                 class="flex flex-col"
             >
                 <div
