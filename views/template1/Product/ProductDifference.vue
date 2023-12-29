@@ -13,10 +13,16 @@
                         </NuxtLink>
                     </div>
                     <div class="mr-[16px]">
-                        <NuxtImg src="/img/icons/medias/icon-black-1.svg" />
+                        <NuxtImg
+                            class="w-[28px]"
+                            src="/img/icons/medias/icon-black-1.svg"
+                        />
                     </div>
                     <div class="mr-[16px]">
-                        <NuxtImg src="/img/icons/medias/icon-black-2.svg" />
+                        <NuxtImg
+                            class="w-[28px]"
+                            src="/img/icons/medias/icon-black-2.svg"
+                        />
                     </div>
                 </div>
             </div>
