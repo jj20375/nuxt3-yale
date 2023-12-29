@@ -25,7 +25,9 @@
                         </li>
                     </ul>
                     <div class="py-[30px] flex items-center">
-                        <p class="mr-[20px]">規格比較</p>
+                        <NuxtLink :to="{ name: 'product-compare-slug', params: { slug: '主鎖比較' }, query: { category: 'id1', tag: 'id1' } }">
+                            <div class="mr-[20px] cursor-pointer">規格比較</div>
+                        </NuxtLink>
                         <font-awesome-icon
                             class="text-gray-300 text-[20px]"
                             :icon="['far', 'heart']"
@@ -136,6 +138,10 @@
                     產品規格內容
                 </div>
             </div>
+            <div>
+                <h3 class="text-[32px] YaleSolisW-Bd font-medium text-gray-800 text-center">相關產品</h3>
+                <ProductSameCarousel :photos="photos" />
+            </div>
         </div>
     </section>
 </template>
@@ -143,7 +149,10 @@
 <script setup lang="ts">
 // 麵包屑組件
 import Breadcrumb from "~/views/template1/components/Breadcrumb.vue";
+// 產品描述 幻燈片
 import ProductDetailCarousel from "~/views/template1/Product/components/ProductDetailCarousel.vue";
+// 相關產品幻燈片
+import ProductSameCarousel from "~/views/template1/Product/components/ProductSameCarousel.vue";
 const breadcrumbs = ref([
     {
         name: "index",
@@ -174,10 +183,10 @@ const breadcrumbs = ref([
     },
 ]);
 
-const photos = ref<{ imgSrc: string }[]>([]);
+const photos = ref<{ id: string | number; imgSrc: string }[]>([]);
 
 for (let i = 0; i < 10; i++) {
-    photos.value.push({ imgSrc: "/img/product/demo/product-carousel.jpg" });
+    photos.value.push({ id: i, imgSrc: "/img/product/demo/product-carousel.jpg" });
 }
 
 const details = ref(["YDM 4109A 卡片密碼鑰匙三合一電子鎖", "結合卡片、密碼功能的入門款", "建案指定使用，卡片格式相容大部分社區磁釦", "標配語音提示輕鬆設定"]);

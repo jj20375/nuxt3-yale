@@ -85,6 +85,9 @@ const props = withDefaults(defineProps<Props>(), {
     ],
 });
 
+// swiper slider 模組
+const modules = [FreeMode, Thumbs, Navigation];
+
 // 縮圖 dom
 const thumbsSwiper = ref<any>(null);
 
@@ -99,9 +102,6 @@ const mainSwiper = ref<any>(null);
 function onSwiper(swiper: any) {
     mainSwiper.value = swiper;
 }
-
-// swiper slider 模組
-const modules = [FreeMode, Thumbs, Navigation];
 </script>
 
 <style scoped lang="scss">

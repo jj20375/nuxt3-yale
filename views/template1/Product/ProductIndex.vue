@@ -31,7 +31,9 @@
                 </div>
             </div>
             <div class="flex justify-end mr-10 mb-[24px]">
-                <button class="border mr-[30px] border-gray-600 w-[100px] text-center rounded-full h-[36px]">規格比較</button>
+                <NuxtLink :to="{ name: 'product-compare-slug', params: { slug: '主鎖比較' }, query: { category: 'id1', tag: 'id1' } }">
+                    <button class="border mr-[30px] border-gray-600 w-[100px] text-center rounded-full h-[36px]">規格比較</button>
+                </NuxtLink>
                 <div class="flex items-center">
                     <p class="text-[16px] text-gray-800">排序：</p>
                     <el-select
