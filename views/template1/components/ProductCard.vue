@@ -18,7 +18,12 @@
                 </div>
                 <div class="absolute z-50 mb-[40px] w-full text-center">
                     <div>
-                        <button class="yellow-btn btn-sm">加入購物車</button>
+                        <button
+                            @click="showDialog = true"
+                            class="yellow-btn btn-sm"
+                        >
+                            加入購物車
+                        </button>
                     </div>
                     <div>
                         <NuxtLink :to="{ name: 'product-detail-slug', params: { slug: '產品1' }, query: { id: 'id1' } }">
@@ -35,10 +40,12 @@
             <span class="mr-[8px] font-medium YaleSolisW-Bd">NT$1,760</span>
             <span class="text-gray-400 line-through YaleSolisW-Lt">NT$1,760</span>
         </div>
+        <AddToShoppingCarDialog v-model:showDialog="showDialog" />
     </div>
 </template>
 
 <script lang="ts" setup>
+import AddToShoppingCarDialog from "~/views/template1/components/AddToShoppingCarDialog.vue";
 interface Props {
     product: { id: number; [key: string]: any };
 }
@@ -47,6 +54,9 @@ const props: Props = withDefaults(defineProps<Props>(), {
         id: 1,
     },
 });
+
+// 判斷是否顯示彈窗
+const showDialog = ref(false);
 
 const currentHover = ref<null | number>(null);
 

@@ -3,8 +3,8 @@
         class="fixed py-3 z-[500] items-center w-full duration-500 transition-all"
         :class="[isHomeMenuFixed ? ' bg-white fixed top-0' : route.name === 'index' ? 'top-0' : '', route.name !== 'index' ? 'fixed top-0 bg-white' : '']"
     >
-        <nav class="mx-[50px]">
-            <ul class="flex items-center text-base leading-5">
+        <nav class="mx-[50px] flex items-center">
+            <ul class="flex items-center flex-1 text-base leading-5">
                 <li class="mr-14">
                     <NuxtLink :to="{ name: 'index' }">
                         <NuxtImg
@@ -44,6 +44,33 @@
                             {{ menu.title }}
                         </div>
                     </div>
+                </li>
+            </ul>
+            <ul class="flex border-r border-gray-400">
+                <li
+                    v-for="(icon, index) in rightIcons"
+                    :key="index"
+                    :class="index === 0 ? 'mr-[22px]' : 'mr-[26px]'"
+                >
+                    <NuxtLink :to="icon.url">
+                        <NuxtImg
+                            class="w-[20px]"
+                            :src="icon.imgSrc"
+                        />
+                    </NuxtLink>
+                </li>
+            </ul>
+            <ul class="flex ml-[26px]">
+                <li
+                    v-for="socialMedia in 4"
+                    :key="socialMedia"
+                    class="mr-[22px]"
+                    :class="socialMedia !== 1 ? '' : ''"
+                >
+                    <NuxtImg
+                        class="w-[20px]"
+                        :src="`/img/icons/medias/icon-black-${socialMedia}.svg`"
+                    />
                 </li>
             </ul>
         </nav>
@@ -120,7 +147,7 @@ const menus = ref<any>({
         submenus: [
             {
                 text: "服務中心",
-                imgUrl: "/",
+                imgSrc: "/",
                 url: {
                     name: "faq-slug",
                     params: { slug: "耶魯服務中心" },
@@ -129,12 +156,12 @@ const menus = ref<any>({
             },
             {
                 text: "維修與保固",
-                imgUrl: "/",
+                imgSrc: "/",
                 url: "/",
             },
             {
                 text: "檔案下載",
-                imgUrl: "/",
+                imgSrc: "/",
                 url: {
                     name: "file-download-slug",
                     params: { slug: "耶魯檔案下載" },
@@ -143,12 +170,12 @@ const menus = ref<any>({
             },
             {
                 text: "預約安裝",
-                imgUrl: "/",
+                imgSrc: "/",
                 url: "/",
             },
             {
                 text: "聯絡我們",
-                imgUrl: "/",
+                imgSrc: "/",
                 url: {
                     name: "contact-slug",
                     params: { slug: "耶魯聯絡我們" },
@@ -158,6 +185,24 @@ const menus = ref<any>({
         ],
     },
 });
+
+const rightIcons = ref([
+    {
+        imgSrc: "/img/icons/user.svg",
+        url: {
+            path: "/",
+        },
+    },
+    {
+        imgSrc: "/img/icons/shop-card.svg",
+        url: {
+            name: "shopping-car-slug",
+            params: {
+                slug: "耶魯電子鎖購物車",
+            },
+        },
+    },
+]);
 </script>
 
 <style lang="scss" scoped>
