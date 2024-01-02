@@ -16,8 +16,8 @@ export default () => {
         /**
          * 取得首頁裝修實績
          */
-        HomeSampleAPI() {
-            return useMyFetch(`${apiUrl}/article/list`, { method: "get", params: { type: "renovation", per_page: 10 } });
+        HomeSampleAPI(params: { per_page: number; page: number }) {
+            return useMyFetch(`${apiUrl}/article/list`, { method: "get", query: { "articleCategory.type": "renovation", ...params } });
         },
     };
 };

@@ -161,9 +161,9 @@ function scrollInit() {
 /**
  * 取得裝修實績列表
  */
-async function getList() {
+async function getList(params: { per_page: number; page: number }) {
     try {
-        const { data } = await $api().HomeSampleAPI();
+        const { data } = await $api().HomeSampleAPI(params);
         console.log("home sample api => ", data.value);
     } catch (err) {
         console.log("HomeSampleAPI => ", err);
@@ -174,13 +174,12 @@ async function getList() {
  * 初始化
  */
 async function init() {
-    await getList();
+    await getList({ per_page: 10, page: 1 });
 }
-
 await init();
 
 onMounted(async () => {
-    nextTick(() => {
+    nextTick(async () => {
         if (process.client) {
             window.addEventListener("scroll", scrollInit);
         }
