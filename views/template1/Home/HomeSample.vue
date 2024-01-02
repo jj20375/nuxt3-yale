@@ -176,11 +176,12 @@ async function getList(params: { per_page: number; page: number }) {
 async function init() {
     await getList({ per_page: 10, page: 1 });
 }
-await init();
+// await init();
 
 onMounted(async () => {
     nextTick(async () => {
         if (process.client) {
+            await init();
             window.addEventListener("scroll", scrollInit);
         }
     });
