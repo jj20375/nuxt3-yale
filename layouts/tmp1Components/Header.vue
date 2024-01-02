@@ -19,23 +19,27 @@
                     class="mr-5 text-gray-800"
                     :key="key"
                 >
-                    <el-dropdown
-                        v-if="menu.submenus.length > 0"
-                        trigger="click"
-                    >
-                        <span class="el-dropdown-link">
-                            {{ menu.title }}<el-icon class="el-icon--right"><arrow-down /></el-icon>
-                        </span>
-                        <template #dropdown>
-                            <el-dropdown-menu>
-                                <el-dropdown-item v-for="(submenu, index) in menu.submenus">
-                                    <NuxtLink :to="submenu.url">
-                                        {{ submenu.text }}
-                                    </NuxtLink>
-                                </el-dropdown-item>
-                            </el-dropdown-menu>
-                        </template>
-                    </el-dropdown>
+                    <div v-if="menu.submenus.length > 0">
+                        <div
+                            @click=""
+                            class="cursor-pointer"
+                        >
+                            {{ menu.title }}
+                        </div>
+                        <ul class="flex">
+                            <li
+                                v-for="(submenu, index) in menus.submenus"
+                                :key="index"
+                                :class="menu.marginSize"
+                            >
+                                <NuxtLink :to="submenu.url">
+                                    <NuxtImg :src="submenu.imgSrc" />
+                                    {{ submenu.text }}
+                                </NuxtLink>
+                            </li>
+                        </ul>
+                    </div>
+
                     <div v-else>
                         <div
                             class="cursor-pointer"
@@ -121,6 +125,7 @@ const menus = ref<any>({
             params: { slug: "耶魯裝修實績" },
             query: { id: "id2" },
         },
+        marginSize: "mr-[80px]",
         submenus: [],
     },
     menu5: {
@@ -130,7 +135,49 @@ const menus = ref<any>({
             params: { slug: "耶魯展示門市" },
             query: { id: "id1" },
         },
-        submenus: [],
+        marginSize: "mr-[80px]",
+        submenus: [
+            {
+                id: "id1",
+                imgSrc: "/img/menu/store/menu-store-icon-1.svg",
+                text: "直營門市",
+                url: {
+                    params: { slug: "直營門市" },
+                    query: { id: "id1" },
+                    name: "store-slug",
+                },
+            },
+            {
+                id: "id2",
+                imgSrc: "/img/menu/store/menu-store-icon-2.svg",
+                text: "授權展售店",
+                url: {
+                    params: { slug: "授權展售店" },
+                    query: { id: "id2" },
+                    name: "store-slug",
+                },
+            },
+            {
+                id: "id3",
+                imgSrc: "/img/menu/store/menu-store-icon-2.svg",
+                text: "全國電子通路",
+                url: {
+                    params: { slug: "全國電子通路" },
+                    query: { id: "id3" },
+                    name: "store-slug",
+                },
+            },
+            {
+                id: "id4",
+                imgSrc: "/img/menu/store/menu-store-icon-2.svg",
+                text: "電商通路",
+                url: {
+                    params: { slug: "電商通路" },
+                    query: { id: "id4" },
+                    name: "store-e-commerce-slug",
+                },
+            },
+        ],
     },
     menu6: {
         title: "產品資訊",
@@ -139,11 +186,13 @@ const menus = ref<any>({
             params: { slug: "耶魯產品資訊-電子鎖-主鎖" },
             query: { category: "id1", tag: "id1" },
         },
+        marginSize: "mr-[40px]",
         submenus: [],
     },
     menu7: {
         title: "服務支援",
         url: {},
+        marginSize: "mr-[80px]",
         submenus: [
             {
                 text: "服務中心",
@@ -186,6 +235,7 @@ const menus = ref<any>({
     },
 });
 
+// 右側 icon
 const rightIcons = ref([
     {
         imgSrc: "/img/icons/user.svg",

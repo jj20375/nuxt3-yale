@@ -13,5 +13,11 @@ export default () => {
         HomePageMediaAPI() {
             return useMyFetch(`${apiUrl}/expo/media`, { method: "get" });
         },
+        /**
+         * 取得首頁裝修實績
+         */
+        HomeSampleAPI() {
+            return useMyFetch(`${apiUrl}/article/list`, { method: "get", params: { type: "renovation", per_page: 10 } });
+        },
     };
 };
