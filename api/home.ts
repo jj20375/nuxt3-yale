@@ -19,5 +19,11 @@ export default () => {
         HomeSampleAPI(params: { per_page: number; page: number }) {
             return useMyFetch(`${apiUrl}/article/list`, { method: "get", query: { "articleCategory|type": "renovation", search_fields: "articleCategory|type:has", ...params } });
         },
+        /**
+         * 取得直營門市
+         */
+        HomeStoreCarouselAPI() {
+            return useMyFetch(`${apiUrl}/stronghold`, { method: "get", query: { "stronghold_category_id": 1}});
+        },
     };
 };
