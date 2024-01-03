@@ -19,7 +19,7 @@
                 <div class="absolute z-50 mb-[40px] w-full text-center">
                     <div>
                         <button
-                            @click="showDialog = true"
+                            @click="addToShoppingCar(product)"
                             class="yellow-btn btn-sm"
                         >
                             加入購物車
@@ -55,6 +55,8 @@ const props: Props = withDefaults(defineProps<Props>(), {
     },
 });
 
+const { $shoppingCarService } = useNuxtApp();
+
 // 判斷是否顯示彈窗
 const showDialog = ref(false);
 
@@ -66,5 +68,15 @@ function mouseoverEvent(index: number) {
 
 function mouseleaveEvent(index: number) {
     currentHover.value = null;
+}
+/**
+ * 加入購物車
+ */
+function addToShoppingCar(data: any) {
+    showDialog.value = true;
+    console.log("addToShoppingCar => ", data);
+    if (process.client) {
+        $shoppingCarService().addToShoppingCar({ ...data, mark: "YDM 4109A", name: "指紋密碼鑰匙三合一", price: 1760, color: "黑色", imgSrc: "/img/home/product/product1.jpg", count: 1 });
+    }
 }
 </script>

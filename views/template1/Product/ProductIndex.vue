@@ -49,7 +49,7 @@
             </div>
             <div class="grid grid-cols-3 gap-4 mr-10">
                 <div v-for="item in 12">
-                    <ProductCard :product="item" />
+                    <ProductCard :product="{ id: item }" />
                 </div>
             </div>
         </template>
