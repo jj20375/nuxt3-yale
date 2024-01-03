@@ -78,13 +78,22 @@ function countDelete(index: number) {
         shoppingCar.value[index].count = 1;
         return;
     }
+
+    // 總價除以數量得到 刪除一個數量後的金額
+    shoppingCar.value[index].price = shoppingCar.value[index].price / shoppingCar.value[index].count;
     shoppingCar.value[index].count--;
+    $shoppingCarService().setShoppingCar(shoppingCar.value);
+    shoppingCarStore.setShoppingCar($shoppingCarService().getShoppingCar());
 }
 /**
  * 點擊增加數量按鈕
  */
 function countAdd(index: number) {
     shoppingCar.value[index].count++;
+    // 總價乘以數量得到 增加一個數量後的金額
+    shoppingCar.value[index].price = shoppingCar.value[index].count * shoppingCar.value[index].price;
+    $shoppingCarService().setShoppingCar(shoppingCar.value);
+    shoppingCarStore.setShoppingCar($shoppingCarService().getShoppingCar());
 }
 
 /**
