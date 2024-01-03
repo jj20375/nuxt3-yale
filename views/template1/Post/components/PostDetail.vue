@@ -6,10 +6,10 @@
         <div class="border-t h-[1px] border-gray-300 w-full"></div>
         <div class="container mt-[60px]">
             <div class="max-w-[795px] mx-auto">
-                <h1 class="text-[32px] YaleSolisW-Bd font-medium text-black">質感居家，將舒適與風格融為一體。精緻材質、簡約設計，打造溫馨空間{{ route.query.id }}</h1>
+                <h1 class="text-[32px] YaleSolisW-Bd font-medium text-black">{{ postData.title }}</h1>
                 <div class="flex mt-[20px] border-b border-gray-300 pb-[24px]">
                     <div class="text-center mr-[16px] w-[90px] border border-gray-300 py-[6px] px-[12px] text-gray-400 text-[12px]">
-                        <span>2023/10/28</span>
+                        <span>{{ postData.published_at }}</span>
                     </div>
                     <span
                         ><img
@@ -19,7 +19,7 @@
                 </div>
                 <div
                     class="my-10 text-gray-500 YaleSolisW-Rg text-[16px]"
-                    v-html="postContent"
+                    v-html="postData.content"
                 ></div>
                 <div class="flex items-center justify-center pt-[24px] border-t border-gray-300">
                     <div class="mr-[40px]">
@@ -61,6 +61,8 @@
 import Breadcrumb from "~/views/template1/components/Breadcrumb.vue";
 const route = useRoute();
 
+const { $api, $utils } = useNuxtApp();
+
 const breadcrumbs = ref([
     {
         name: "index",
@@ -85,14 +87,47 @@ const breadcrumbs = ref([
     },
 ]);
 
-const postContent = ref(`
-<div class="mb-2">耶魯電子鎖為您的家居帶來前所未有的安全與風格體驗。客製化多樣選擇，打造獨一無二的門扇，搭配智慧門鎖，不僅提升居家氛圍，更為生活增添了便捷和時尚感。
-    <br />
-    <br />
-從材質到設計，每個細節都彰顯品味，營造出令人滿意的居住環境。耶魯電子鎖，將現代科技巧妙結合於居家生活，為您打造安全、舒適又富有品味的家居新風貌。</div>
-<img class="w-full my-5" src="/img/sample/item-1.jpg" />
-<div class="mt-2">耶魯電子鎖為您的家居帶來前所未有的安全與風格體驗。客製化多樣選擇，打造獨一無二的門扇，搭配智慧門鎖，不僅提升居家氛圍，更為生活增添了便捷和時尚感。從材質到設計，每個細節都彰顯品味，營造出令人滿意的居住環境。耶魯電子鎖，將現代科技巧妙結合於居家生活，為您打造安全、舒適又富有品味的家居新風貌。</div>
- `);
+const postData = ref<any>({
+    id: "",
+    title: "",
+    content: "",
+    published_at: "",
+});
+
+/**
+ * 取得裝修實績詳細資料
+ */
+async function getList(params: { articleId: any }) {
+    try {
+        const { data } = await $api().SampleDetailAPI(params);
+        console.log("home sample api => ", data.value);
+        const detail = (data.value as any).data;
+
+        postData.value = {
+            id: detail.id,
+            title: detail.title,
+            content: detail.content,
+            published_at: $utils().formatToDate(detail.published_at),
+        };
+    } catch (err) {
+        console.log("HomeSampleAPI => ", err);
+    }
+}
+
+/**
+ * 初始化
+ */
+async function init() {
+    await getList({ articleId: route.query.id });
+}
+
+onMounted(async () => {
+    nextTick(async () => {
+        if (process.client) {
+            await init();
+        }
+    });
+});
 
 const pagination = ref({
     prev: {

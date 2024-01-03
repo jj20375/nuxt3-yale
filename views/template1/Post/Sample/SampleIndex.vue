@@ -73,7 +73,7 @@ const handlePageChange = (val: any) => {
  */
 async function getType() {
     try {
-        const { data } = await $api().HomeSampleTypeAPI();
+        const { data } = await $api().SampleTypeAPI();
         sidebar.value = [];
         console.log("home sampleType api => ", data.value);
 
@@ -102,7 +102,7 @@ const datas = ref<any>([]);
  */
 async function getList(params: { per_page: number; page: number; article_category_id: any }) {
     try {
-        const { data } = await $api().HomeSampleAPI(params);
+        const { data } = await $api().SampleListAPI(params);
         datas.value = [];
         console.log("home sample api => ", data.value);
 
@@ -111,13 +111,17 @@ async function getList(params: { per_page: number; page: number; article_categor
 
         pagination.value.total = meta.total;
 
-        rows.forEach((item: { title: any; description: any; thumbnail: any; published_at: any }) => {
+        rows.forEach((item: { title: any; description: any; thumbnail: any; published_at: any; id: any }) => {
             datas.value.push({
                 title: item.title,
                 content: item.description,
                 imgSrc: item.thumbnail,
                 date: moment(item.published_at).format("YYYY/MM/DD"),
-                url: { name: "index", params: { slug: "home" } },
+                url: {
+                    name: "sample-details-slug",
+                    params: { slug: route.params.slug },
+                    query: { id: item.id },
+                },
             });
         });
     } catch (err) {
@@ -130,7 +134,7 @@ async function getList(params: { per_page: number; page: number; article_categor
  */
 async function init() {
     await getType();
-    console.log("route.query.id");
+    console.log("route.query.id", route);
     await getList({ per_page: pagination.value.pageSize, page: 1, article_category_id: route.query.id });
 }
 
