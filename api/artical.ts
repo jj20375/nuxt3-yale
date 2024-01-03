@@ -6,14 +6,14 @@ export default () => {
         /**
          * 取得首頁裝修實績分類
          */
-        SampleTypeAPI() {
-            return useMyFetch(`${apiUrl}/article-category`, { method: "get", query: { "type": 'renovation' } });
+        ArticalTypeAPI(params: { type: string;}) {
+            return useMyFetch(`${apiUrl}/article-category`, { method: "get", query: { ...params } });
         },
         /**
          * 取得裝修實績列表
          */
-        SampleListAPI(params: { per_page: number; page: number, article_category_id: number|string }) {
-            return useMyFetch(`${apiUrl}/article/list`, { method: "get", query: { "articleCategory|type": "renovation", search_fields: "articleCategory|type:has", ...params } });
+        ArticalListAPI(params: { per_page: number; page: number, article_category_id: number|string, 'articleCategory|type': string }) {
+            return useMyFetch(`${apiUrl}/article/list`, { method: "get", query: { search_fields: "articleCategory|type:has", ...params } });
         },
         /**
          * 取得文章詳情

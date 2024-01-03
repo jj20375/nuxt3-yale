@@ -17,7 +17,7 @@ interface Props {
     pagination: { page: number; total: number; pageSize: number };
 }
 const props = withDefaults(defineProps<Props>(), {
-    pagination: { page: 1, pageSize: 10, total: 1000 },
+    pagination: { page: 1, pageSize: 10, total: 0 },
 });
 
 const emit = defineEmits(["handlePageChange"]);

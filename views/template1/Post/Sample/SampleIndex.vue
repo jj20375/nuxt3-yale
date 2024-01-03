@@ -31,12 +31,10 @@ import Breadcrumb from "~/views/template1/components/Breadcrumb.vue";
 import SideBar from "~/views/template1/components/SideBar";
 import ListItem from "~/views/template1/Post/components/PostListItem.vue";
 import Pagination from "~/views/template1/components/Pagination.vue";
-// 日期套件
-import moment from "moment";
 
 const route = useRoute();
 
-const { $api } = useNuxtApp();
+const { $api, $utils } = useNuxtApp();
 
 const breadcrumbs = ref([
     {
@@ -61,11 +59,11 @@ const sidebar = ref<any>([]);
 const pagination = ref<any>({
     page: 1,
     pageSize: 10,
-    total: 1000,
+    total: 0,
 });
 
 const handlePageChange = (val: any) => {
-    getList({ per_page: pagination.value.pageSize, page: val, article_category_id: route.query.id });
+    getList({ per_page: pagination.value.pageSize, page: val, article_category_id: route.query.id, "articleCategory|type": "renovation" });
 };
 
 /**
@@ -73,7 +71,7 @@ const handlePageChange = (val: any) => {
  */
 async function getType() {
     try {
-        const { data } = await $api().SampleTypeAPI();
+        const { data } = await $api().ArticalTypeAPI({ type: "renovation" });
         sidebar.value = [];
         console.log("home sampleType api => ", data.value);
 
@@ -100,9 +98,9 @@ const datas = ref<any>([]);
 /**
  * 取得裝修實績列表
  */
-async function getList(params: { per_page: number; page: number; article_category_id: any }) {
+async function getList(params: { per_page: number; page: number; article_category_id: any; "articleCategory|type": string }) {
     try {
-        const { data } = await $api().SampleListAPI(params);
+        const { data } = await $api().ArticalListAPI(params);
         datas.value = [];
         console.log("home sample api => ", data.value);
 
@@ -116,7 +114,7 @@ async function getList(params: { per_page: number; page: number; article_categor
                 title: item.title,
                 content: item.description,
                 imgSrc: item.thumbnail,
-                date: moment(item.published_at).format("YYYY/MM/DD"),
+                date: $utils().formatToDate(item.published_at),
                 url: {
                     name: "sample-details-slug",
                     params: { slug: route.params.slug },
@@ -135,7 +133,7 @@ async function getList(params: { per_page: number; page: number; article_categor
 async function init() {
     await getType();
     console.log("route.query.id", route);
-    await getList({ per_page: pagination.value.pageSize, page: 1, article_category_id: route.query.id });
+    await getList({ per_page: pagination.value.pageSize, page: 1, article_category_id: route.query.id, "articleCategory|type": "renovation" });
 }
 
 onMounted(async () => {
@@ -146,3 +144,5 @@ onMounted(async () => {
     });
 });
 </script>
+
+'articleCategory|type': 'renovation'

@@ -16,7 +16,11 @@
             <ListItem :datas="datas" />
         </template>
         <template #pagination>
-            <Pagination class="mt-[80px]" />
+            <Pagination
+                :pagination="pagination"
+                @handlePageChange="handlePageChange"
+                class="mt-[80px]"
+            />
         </template>
     </SideBarLayout>
 </template>
@@ -29,6 +33,8 @@ import ListItem from "~/views/template1/Post/components/PostListItem.vue";
 import Pagination from "~/views/template1/components/Pagination.vue";
 
 const route = useRoute();
+
+const { $api, $utils } = useNuxtApp();
 
 const breadcrumbs = ref([
     {
@@ -48,68 +54,93 @@ const breadcrumbs = ref([
     },
 ]);
 
-const sidebar = ref([
-    {
-        text: "電子鎖",
-        id: "id1",
-        url: {
-            params: { slug: "電子鎖" },
-            query: { id: "id1" },
-            name: "news-slug",
-        },
-    },
-    {
-        text: "保險箱",
-        id: "id2",
-        url: {
-            params: { slug: "保險箱" },
-            query: { id: "id2" },
-            name: "news-slug",
-        },
-    },
-    {
-        text: "Yale Home App 及配件",
-        id: "id3",
-        url: {
-            params: { slug: "Yale Home App 及配件" },
-            query: { id: "id3" },
-            name: "news-slug",
-        },
-    },
-    {
-        text: "訂製專屬門扇",
-        id: "id4",
-        url: {
-            params: { slug: "訂製專屬門扇" },
-            query: { id: "id4" },
-            name: "news-slug",
-        },
-    },
-    {
-        text: "型錄及檔案下載",
-        id: "id5",
-        url: {
-            params: { slug: "型錄及檔案下載" },
-            query: { id: "id5" },
-            name: "news-slug",
-        },
-    },
-]);
+const sidebar = ref<any>([]);
 
-const datas = ref([]);
+const pagination = ref<any>({
+    page: 1,
+    pageSize: 10,
+    total: 0,
+});
 
-for (let i = 0; i < 5; i++) {
-    datas.value.push({
-        title: "質感居家，將舒適與風格融為一體。精緻材質、簡約設計，打造溫馨空間",
-        content:
-            "韓國是現今電子鎖普及率最高的國家，高達 90% 以上的門鎖採用電子鎖 ; 而 Gateman wide 及其姐妹品牌 Gateman 是目前韓國市佔率最高，同時也是全球市佔率第一的電子鎖品牌。韓國是現今電子鎖普及率最高的國家，高達 90% 以上的門鎖採用電子鎖 ; 而 Gateman wide 及其姐妹品牌 Gateman是目前韓國市佔率最高，同時也是全球市佔率第一的電子鎖品牌。",
-        imgSrc: "/img/news/item-1.jpg",
-        date: "2023/10/28",
-        url: {
-            name: "news-details-slug",
-            params: { slug: "測試" },
-            query: { id: "123" },
-        },
-    });
+const handlePageChange = (val: any) => {
+    getList({ per_page: pagination.value.pageSize, page: val, article_category_id: route.query.id, "articleCategory|type": "news" });
+};
+
+/**
+ * 取得裝修實績分類
+ */
+async function getType() {
+    try {
+        const { data } = await $api().ArticalTypeAPI({ type: "news" });
+        sidebar.value = [];
+        console.log("home sampleType api => ", data.value);
+
+        const rows = (data.value as any).data;
+
+        rows.forEach((item: { name: any; id: any }) => {
+            sidebar.value.push({
+                text: item.name,
+                id: item.id,
+                url: {
+                    params: { slug: item.name },
+                    query: { id: item.id },
+                    name: "news-slug",
+                },
+            });
+        });
+    } catch (err) {
+        console.log("HomeSampleAPI => ", err);
+    }
 }
+
+const datas = ref<any>([]);
+
+/**
+ * 取得裝修實績列表
+ */
+async function getList(params: { per_page: number; page: number; article_category_id: any; "articleCategory|type": string }) {
+    try {
+        const { data } = await $api().ArticalListAPI(params);
+        datas.value = [];
+        console.log("home sample api => ", data.value);
+
+        const rows = (data.value as any).data.rows;
+        const meta = (data.value as any).data.meta;
+
+        pagination.value.total = meta.total;
+
+        rows.forEach((item: { title: any; description: any; thumbnail: any; published_at: any; id: any }) => {
+            datas.value.push({
+                title: item.title,
+                content: item.description,
+                imgSrc: item.thumbnail,
+                date: $utils().formatToDate(item.published_at),
+                url: {
+                    name: "sample-details-slug",
+                    params: { slug: route.params.slug },
+                    query: { id: item.id },
+                },
+            });
+        });
+    } catch (err) {
+        console.log("HomeSampleAPI => ", err);
+    }
+}
+
+/**
+ * 初始化
+ */
+async function init() {
+    await getType();
+    console.log("route.query.id", route);
+    await getList({ per_page: pagination.value.pageSize, page: 1, article_category_id: route.query.id, "articleCategory|type": "news" });
+}
+
+onMounted(async () => {
+    nextTick(async () => {
+        if (process.client) {
+            await init();
+        }
+    });
+});
 </script>
