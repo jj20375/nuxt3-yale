@@ -14,7 +14,7 @@
                     :key="index"
                     class="px-[3px]"
                 >
-                    <ProductCard :product="item" />
+                    <ProductCard :product="{ id: index }" />
                 </SwiperSlide>
             </Swiper>
             <div class="absolute top-0 left-0 z-50 flex items-center h-full">
