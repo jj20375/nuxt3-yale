@@ -16,7 +16,11 @@
             <ListItem :datas="datas" />
         </template>
         <template #pagination>
-            <Pagination class="mt-[80px]" />
+            <Pagination
+                :pagination="pagination"
+                @handlePageChange="handlePageChange"
+                class="mt-[80px]"
+            />
         </template>
     </SideBarLayout>
 </template>
@@ -27,8 +31,12 @@ import Breadcrumb from "~/views/template1/components/Breadcrumb.vue";
 import SideBar from "~/views/template1/components/SideBar";
 import ListItem from "~/views/template1/Post/components/PostListItem.vue";
 import Pagination from "~/views/template1/components/Pagination.vue";
+// 日期套件
+import moment from "moment";
 
 const route = useRoute();
+
+const { $api } = useNuxtApp();
 
 const breadcrumbs = ref([
     {
@@ -48,40 +56,89 @@ const breadcrumbs = ref([
     },
 ]);
 
-const sidebar = ref([
-    {
-        text: "訂製專屬門扇",
-        id: "id1",
-        url: {
-            params: { slug: "訂製專屬門扇" },
-            query: { id: "id1" },
-            name: "sample-slug",
-        },
-    },
-    {
-        text: "電子鎖",
-        id: "id2",
-        url: {
-            params: { slug: "電子鎖" },
-            query: { id: "id2" },
-            name: "sample-slug",
-        },
-    },
-]);
+const sidebar = ref<any>([]);
 
-const datas = ref([]);
+const pagination = ref<any>({
+    page: 1,
+    pageSize: 10,
+    total: 1000,
+});
 
-for (let i = 0; i < 5; i++) {
-    datas.value.push({
-        title: "質感居家，將舒適與風格融為一體。精緻材質、簡約設計，打造溫馨空間",
-        content: "質感居家，將舒適與風格融為一體。精緻材質、簡約設計，打造溫馨空間。體驗細膩觸感，品味生活的奢華享受。電子鎖革新，提升居家氛圍，享受安心與便利的極致體驗。",
-        imgSrc: "/img/sample/item-1.jpg",
-        date: "2023/10/28",
-        url: {
-            name: "sample-details-slug",
-            params: { slug: "測試" },
-            query: { id: "123" },
-        },
-    });
+const handlePageChange = (val: any) => {
+    getList({ per_page: pagination.value.pageSize, page: val, article_category_id: route.query.id });
+};
+
+/**
+ * 取得裝修實績分類
+ */
+async function getType() {
+    try {
+        const { data } = await $api().HomeSampleTypeAPI();
+        sidebar.value = [];
+        console.log("home sampleType api => ", data.value);
+
+        const rows = (data.value as any).data;
+
+        rows.forEach((item: { name: any; id: any }) => {
+            sidebar.value.push({
+                text: item.name,
+                id: item.id,
+                url: {
+                    params: { slug: item.name },
+                    query: { id: item.id },
+                    name: "sample-slug",
+                },
+            });
+        });
+    } catch (err) {
+        console.log("HomeSampleAPI => ", err);
+    }
 }
+
+const datas = ref<any>([]);
+
+/**
+ * 取得裝修實績列表
+ */
+async function getList(params: { per_page: number; page: number; article_category_id: any }) {
+    try {
+        const { data } = await $api().HomeSampleAPI(params);
+        datas.value = [];
+        console.log("home sample api => ", data.value);
+
+        const rows = (data.value as any).data.rows;
+        const meta = (data.value as any).data.meta;
+
+        pagination.value.total = meta.total;
+
+        rows.forEach((item: { title: any; description: any; thumbnail: any; published_at: any }) => {
+            datas.value.push({
+                title: item.title,
+                content: item.description,
+                imgSrc: item.thumbnail,
+                date: moment(item.published_at).format("YYYY/MM/DD"),
+                url: { name: "index", params: { slug: "home" } },
+            });
+        });
+    } catch (err) {
+        console.log("HomeSampleAPI => ", err);
+    }
+}
+
+/**
+ * 初始化
+ */
+async function init() {
+    await getType();
+    console.log("route.query.id");
+    await getList({ per_page: pagination.value.pageSize, page: 1, article_category_id: route.query.id });
+}
+
+onMounted(async () => {
+    nextTick(async () => {
+        if (process.client) {
+            await init();
+        }
+    });
+});
 </script>

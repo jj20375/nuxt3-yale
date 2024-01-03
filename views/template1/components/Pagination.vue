@@ -1,14 +1,31 @@
 <template>
     <div id="myPagination">
         <el-pagination
-            :page-size="20"
+            v-model:current-page="pagination.page"
+            :page-size="pagination.pageSize"
             :pager-count="5"
             layout="prev, pager, next"
             :background="true"
-            :total="1000"
+            :total="pagination.total"
+            @update:current-page="handlePageChange"
         />
     </div>
 </template>
+
+<script setup lang="ts">
+interface Props {
+    pagination: { page: number; total: number; pageSize: number };
+}
+const props = withDefaults(defineProps<Props>(), {
+    pagination: { page: 1, pageSize: 10, total: 1000 },
+});
+
+const emit = defineEmits(["handlePageChange"]);
+
+const handlePageChange = (value: any) => {
+    emit("handlePageChange", value);
+};
+</script>
 
 <style lang="scss" scoped>
 :deep {

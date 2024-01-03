@@ -80,7 +80,7 @@
                                                 <h5 class="flex-1 text-[24px] YaleSolisW-Bd font-medium">{{ slide.title }}</h5>
                                                 <h6 class="text-[14px] font-medium YaleSolisW-Bd">{{ slide.published_at }}</h6>
                                             </div>
-                                            <p class="mt-[12px] YaleSolisW-Lt font-[400] text-[16px]">Yale Access 應用程序巧妙地提高您的家庭安全性了，讓我們能夠在有限的空閒時間處理最重要的事情。</p>
+                                            <p class="mt-[12px] YaleSolisW-Lt font-[400] text-[16px]">{{ slide.description }}</p>
                                             <!-- {{ index }} -->
                                         </div>
                                         <div
