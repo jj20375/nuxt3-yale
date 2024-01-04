@@ -20,7 +20,7 @@
             ></div>
             <FaqContact class="mt-[90px]" />
             <div class="mt-[60px]">
-                <NuxtLink :to="{ name: 'faq-slug', params: { slug: '耶魯服務支援-電子鎖' }, query: { id: 'id1' } }">
+                <NuxtLink :to="{ name: 'faq-slug', params: { slug: route.params.slug }, query: { id: route.query.id } }">
                     <div class="flex">
                         <NuxtImg
                             class="w-[16px] mr-[5px]"

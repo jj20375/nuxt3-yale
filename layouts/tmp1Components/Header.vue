@@ -127,7 +127,7 @@ const menus = ref<any>({
         url: {
             name: "news-slug",
             params: { slug: "slug" },
-            query: { id: "id1" },
+            query: { id: "4" },
         },
         submenus: [],
     },
@@ -136,7 +136,7 @@ const menus = ref<any>({
         url: {
             name: "sample-slug",
             params: { slug: "耶魯裝修實績" },
-            query: { id: "id1" },
+            query: { id: "1" },
         },
         marginSize: "mr-[40px]",
         submenus: [
@@ -146,7 +146,7 @@ const menus = ref<any>({
                 text: "訂製門扇",
                 url: {
                     params: { slug: "耶魯裝修實績-訂製門扇" },
-                    query: { id: "id1" },
+                    query: { id: "3" },
                     name: "sample-slug",
                 },
             },
@@ -156,7 +156,7 @@ const menus = ref<any>({
                 text: "電子鎖",
                 url: {
                     params: { slug: "耶魯裝修實績-電子鎖" },
-                    query: { id: "id2" },
+                    query: { id: "1" },
                     name: "sample-slug",
                 },
             },
@@ -177,7 +177,7 @@ const menus = ref<any>({
                 text: "直營門市",
                 url: {
                     params: { slug: "直營門市" },
-                    query: { id: "id1" },
+                    query: { id: "1" },
                     name: "store-slug",
                 },
             },
@@ -187,7 +187,7 @@ const menus = ref<any>({
                 text: "授權展售店",
                 url: {
                     params: { slug: "授權展售店" },
-                    query: { id: "id2" },
+                    query: { id: "3" },
                     name: "store-slug",
                 },
             },
@@ -197,7 +197,7 @@ const menus = ref<any>({
                 text: "全國電子通路",
                 url: {
                     params: { slug: "全國電子通路" },
-                    query: { id: "id3" },
+                    query: { id: "4" },
                     name: "store-slug",
                 },
             },
@@ -207,7 +207,7 @@ const menus = ref<any>({
                 text: "電商通路",
                 url: {
                     params: { slug: "電商通路" },
-                    query: { id: "id4" },
+                    query: { id: "2" },
                     name: "store-e-commerce-slug",
                 },
             },
@@ -266,7 +266,7 @@ const menus = ref<any>({
                 url: {
                     name: "faq-slug",
                     params: { slug: "耶魯服務中心" },
-                    query: { id: "id1" },
+                    query: { id: "1" },
                 },
             },
             {
@@ -282,7 +282,7 @@ const menus = ref<any>({
                 url: {
                     name: "file-download-slug",
                     params: { slug: "耶魯檔案下載" },
-                    query: { id: "id1" },
+                    query: { id: "1" },
                 },
             },
             {
@@ -298,7 +298,7 @@ const menus = ref<any>({
                 url: {
                     name: "contact-slug",
                     params: { slug: "耶魯聯絡我們" },
-                    query: { id: "id1" },
+                    query: { id: "1" },
                 },
             },
         ],
