@@ -21,5 +21,17 @@ export default () => {
         fqaDetailAPI(params: { fqaId: number|string }) {
             return useMyFetch(`${apiUrl}/fqa/${params.fqaId}`, { method: "get" });
         },
+        /**
+         * 取得文件分類
+         */
+        DocumentTypeAPI() {
+            return useMyFetch(`${apiUrl}/document-category`, { method: "get" });
+        },
+        /**
+         * 取得文章列表
+         */
+        DocumentListAPI(params: { document_category_id: number|string }) {
+            return useMyFetch(`${apiUrl}/document`, { method: "get", query: { ...params } });
+        },
     };
 };

@@ -6,7 +6,12 @@
             class="flex items-center list-disc list-inside pb-[28px]"
         >
             <div class="text-[16px] mr-[29px]">{{ data.text }}</div>
-            <button class="bg-gray-100 text-[15px] rounded-full py-[8px] px-[25px]">下載</button>
+            <button
+                @click="download(data.url)"
+                class="bg-gray-100 text-[15px] rounded-full py-[8px] px-[25px]"
+            >
+                下載
+            </button>
         </li>
     </ul>
 </template>
@@ -26,4 +31,8 @@ const props = withDefaults(defineProps<Props>(), {
         },
     ],
 });
+
+const download = (file: string | URL | undefined) => {
+    window.open(file);
+};
 </script>
