@@ -76,7 +76,7 @@ function addToShoppingCar(data: any) {
     showDialog.value = true;
     console.log("addToShoppingCar => ", data);
     if (process.client) {
-        $shoppingCarService().addToShoppingCar({ ...data, mark: "YDM 4109A", name: "指紋密碼鑰匙三合一", price: 1760, color: "黑色", imgSrc: "/img/home/product/product1.jpg", count: 1 });
+        $shoppingCarService().addToShoppingCar({ ...data, mark: "YDM 4109A", name: "指紋密碼鑰匙三合一", price: 1760, color: "黑色", imgSrc: "/img/home/product/product1.jpg", count: 1, singlePrice: 1760 });
     }
 }
 </script>

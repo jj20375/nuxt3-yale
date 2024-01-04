@@ -80,8 +80,8 @@ function countDelete(index: number) {
     }
 
     // 總價除以數量得到 刪除一個數量後的金額
-    shoppingCar.value[index].price = shoppingCar.value[index].price / shoppingCar.value[index].count;
     shoppingCar.value[index].count--;
+    shoppingCar.value[index].price = shoppingCar.value[index].singlePrice * shoppingCar.value[index].count;
     $shoppingCarService().setShoppingCar(shoppingCar.value);
     shoppingCarStore.setShoppingCar($shoppingCarService().getShoppingCar());
 }
@@ -91,7 +91,7 @@ function countDelete(index: number) {
 function countAdd(index: number) {
     shoppingCar.value[index].count++;
     // 總價乘以數量得到 增加一個數量後的金額
-    shoppingCar.value[index].price = shoppingCar.value[index].count * shoppingCar.value[index].price;
+    shoppingCar.value[index].price = shoppingCar.value[index].singlePrice * shoppingCar.value[index].count;
     $shoppingCarService().setShoppingCar(shoppingCar.value);
     shoppingCarStore.setShoppingCar($shoppingCarService().getShoppingCar());
 }

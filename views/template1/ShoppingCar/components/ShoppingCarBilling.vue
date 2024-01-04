@@ -22,9 +22,7 @@
                 </span>
             </div>
         </div>
-        <div class="mt-[40px]">
-            <button class="bg-yellow-600 w-[339px] py-[17px] rounded-full text-gray-800 text-[16px] text-center">下一步</button>
-        </div>
+        <slot name="button"></slot>
     </div>
 </template>
 

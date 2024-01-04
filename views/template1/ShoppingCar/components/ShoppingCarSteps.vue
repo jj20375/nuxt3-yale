@@ -32,7 +32,7 @@ const emit = defineEmits(["update:step"]);
 
 const props = defineProps({
     step: {
-        type: Number,
+        type: [Number, String],
         default: 0,
     },
 });
@@ -60,5 +60,13 @@ const currentStep = ref(props.step);
  */
 function changeStep(key) {
     currentStep.value = key;
+    emit("update:step", key);
 }
+
+watch(
+    () => props.step,
+    (val) => {
+        currentStep.value = val;
+    }
+);
 </script>
