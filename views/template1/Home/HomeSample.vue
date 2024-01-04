@@ -108,6 +108,8 @@
 <script lang="ts" setup>
 import { useTemplateStore } from "~/store/templateStore";
 
+const { $api } = useNuxtApp();
+
 const templateStore = useTemplateStore();
 
 const carousel3dRefDom = ref<any>(null);
@@ -156,9 +158,30 @@ function scrollInit() {
     }
 }
 
-onMounted(() => {
-    nextTick(() => {
+/**
+ * 取得裝修實績列表
+ */
+async function getList(params: { per_page: number; page: number }) {
+    try {
+        const { data } = await $api().HomeSampleAPI(params);
+        console.log("home sample api => ", data.value);
+    } catch (err) {
+        console.log("HomeSampleAPI => ", err);
+    }
+}
+
+/**
+ * 初始化
+ */
+async function init() {
+    await getList({ per_page: 10, page: 1 });
+}
+// await init();
+
+onMounted(async () => {
+    nextTick(async () => {
         if (process.client) {
+            await init();
             window.addEventListener("scroll", scrollInit);
         }
     });

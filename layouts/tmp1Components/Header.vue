@@ -19,27 +19,44 @@
                     class="mr-5 text-gray-800"
                     :key="key"
                 >
-                    <el-dropdown
+                    <div
                         v-if="menu.submenus.length > 0"
-                        trigger="click"
+                        class="w-full"
                     >
-                        <span class="el-dropdown-link">
-                            {{ menu.title }}<el-icon class="el-icon--right"><arrow-down /></el-icon>
-                        </span>
-                        <template #dropdown>
-                            <el-dropdown-menu>
-                                <el-dropdown-item v-for="(submenu, index) in menu.submenus">
-                                    <NuxtLink :to="submenu.url">
-                                        {{ submenu.text }}
-                                    </NuxtLink>
-                                </el-dropdown-item>
-                            </el-dropdown-menu>
-                        </template>
-                    </el-dropdown>
+                        <div
+                            @click="changeMenu(key)"
+                            class="cursor-pointer"
+                        >
+                            {{ menu.title }}
+                        </div>
+                        <ul
+                            v-if="currentMenu === key && showSubMenu"
+                            class="absolute z-50 flex items-center justify-center top-[90px] left-0 w-full h-[300px] whitespace-nowrap md:min-w-[1200px] bg-white text-center"
+                        >
+                            <li
+                                v-for="(submenu, index) in menu.submenus"
+                                :key="index"
+                                :class="menu.marginSize"
+                            >
+                                <NuxtLink :to="submenu.url">
+                                    <NuxtImg
+                                        :class="key !== 'menu4' ? 'w-[120px]' : 'w-[400px]'"
+                                        :src="submenu.imgSrc"
+                                    />
+                                    <div class="mt-[20px]">{{ submenu.text }}</div>
+                                </NuxtLink>
+                            </li>
+                        </ul>
+                    </div>
+
                     <div v-else>
                         <div
                             class="cursor-pointer"
-                            @click="router.push(menu.url)"
+                            @click="
+                                router.push(menu.url);
+                                showSubMenu = false;
+                                currentMenu = key;
+                            "
                         >
                             {{ menu.title }}
                         </div>
@@ -119,9 +136,31 @@ const menus = ref<any>({
         url: {
             name: "sample-slug",
             params: { slug: "耶魯裝修實績" },
-            query: { id: "id2" },
+            query: { id: "id1" },
         },
-        submenus: [],
+        marginSize: "mr-[40px]",
+        submenus: [
+            {
+                id: "id1",
+                imgSrc: "/img/menu/sample/menu-sample-1.jpg",
+                text: "訂製門扇",
+                url: {
+                    params: { slug: "耶魯裝修實績-訂製門扇" },
+                    query: { id: "id1" },
+                    name: "sample-slug",
+                },
+            },
+            {
+                id: "id2",
+                imgSrc: "/img/menu/sample/menu-sample-2.jpg",
+                text: "電子鎖",
+                url: {
+                    params: { slug: "耶魯裝修實績-電子鎖" },
+                    query: { id: "id2" },
+                    name: "sample-slug",
+                },
+            },
+        ],
     },
     menu5: {
         title: "展示門市",
@@ -130,7 +169,49 @@ const menus = ref<any>({
             params: { slug: "耶魯展示門市" },
             query: { id: "id1" },
         },
-        submenus: [],
+        marginSize: "mr-[80px]",
+        submenus: [
+            {
+                id: "id1",
+                imgSrc: "/img/menu/store/menu-store-icon-1.svg",
+                text: "直營門市",
+                url: {
+                    params: { slug: "直營門市" },
+                    query: { id: "id1" },
+                    name: "store-slug",
+                },
+            },
+            {
+                id: "id2",
+                imgSrc: "/img/menu/store/menu-store-icon-2.svg",
+                text: "授權展售店",
+                url: {
+                    params: { slug: "授權展售店" },
+                    query: { id: "id2" },
+                    name: "store-slug",
+                },
+            },
+            {
+                id: "id3",
+                imgSrc: "/img/menu/store/menu-store-icon-3.svg",
+                text: "全國電子通路",
+                url: {
+                    params: { slug: "全國電子通路" },
+                    query: { id: "id3" },
+                    name: "store-slug",
+                },
+            },
+            {
+                id: "id4",
+                imgSrc: "/img/menu/store/menu-store-icon-4.svg",
+                text: "電商通路",
+                url: {
+                    params: { slug: "電商通路" },
+                    query: { id: "id4" },
+                    name: "store-e-commerce-slug",
+                },
+            },
+        ],
     },
     menu6: {
         title: "產品資訊",
@@ -139,15 +220,49 @@ const menus = ref<any>({
             params: { slug: "耶魯產品資訊-電子鎖-主鎖" },
             query: { category: "id1", tag: "id1" },
         },
-        submenus: [],
+        marginSize: "mr-[40px]",
+        submenus: [
+            {
+                id: "id1",
+                imgSrc: "/img/menu/product/menu-product-1.png",
+                text: "電子鎖",
+                url: {
+                    params: { slug: "耶魯產品資訊-電子鎖-主鎖" },
+                    query: { category: "id1", tag: "id1" },
+                    name: "product-slug",
+                },
+            },
+            {
+                id: "id2",
+                imgSrc: "/img/menu/product/menu-product-2.png",
+                text: "保險箱",
+                url: {
+                    params: { slug: "耶魯產品資訊-保險箱-防火系列" },
+                    query: { category: "id2", tag: "id1" },
+                    name: "product-slug",
+                },
+            },
+            {
+                id: "id3",
+                imgSrc: "/img/menu/product/menu-product-3.png",
+                text: "電子鎖配件",
+                url: {
+                    params: { slug: "耶魯產品資訊-電子鎖配件" },
+                    query: { category: "id3" },
+                    name: "product-slug",
+                },
+            },
+        ],
     },
     menu7: {
         title: "服務支援",
         url: {},
+        marginSize: "mr-[80px]",
         submenus: [
             {
+                id: "id1",
                 text: "服務中心",
-                imgSrc: "/",
+                imgSrc: "/img/menu/service/menu-service-icon-1.svg",
                 url: {
                     name: "faq-slug",
                     params: { slug: "耶魯服務中心" },
@@ -155,13 +270,15 @@ const menus = ref<any>({
                 },
             },
             {
+                id: "id2",
                 text: "維修與保固",
-                imgSrc: "/",
+                imgSrc: "/img/menu/service/menu-service-icon-2.svg",
                 url: "/",
             },
             {
+                id: "id3",
                 text: "檔案下載",
-                imgSrc: "/",
+                imgSrc: "/img/menu/service/menu-service-icon-3.svg",
                 url: {
                     name: "file-download-slug",
                     params: { slug: "耶魯檔案下載" },
@@ -169,13 +286,15 @@ const menus = ref<any>({
                 },
             },
             {
+                id: "id4",
                 text: "預約安裝",
-                imgSrc: "/",
+                imgSrc: "/img/menu/service/menu-service-icon-4.svg",
                 url: "/",
             },
             {
+                id: "id5",
                 text: "聯絡我們",
-                imgSrc: "/",
+                imgSrc: "/img/menu/service/menu-service-icon-5.svg",
                 url: {
                     name: "contact-slug",
                     params: { slug: "耶魯聯絡我們" },
@@ -186,6 +305,7 @@ const menus = ref<any>({
     },
 });
 
+// 右側 icon
 const rightIcons = ref([
     {
         imgSrc: "/img/icons/user.svg",
@@ -203,6 +323,19 @@ const rightIcons = ref([
         },
     },
 ]);
+
+// 預設選擇的 menu 判斷是否呈現 submenu
+const currentMenu = ref<null | string>(null);
+const showSubMenu = ref<boolean>(false);
+
+function changeMenu(key: string) {
+    if (key === currentMenu.value) {
+        showSubMenu.value = !showSubMenu.value;
+    } else {
+        currentMenu.value = key;
+        showSubMenu.value = true;
+    }
+}
 </script>
 
 <style lang="scss" scoped>
