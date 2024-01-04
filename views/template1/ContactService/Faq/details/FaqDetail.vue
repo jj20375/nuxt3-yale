@@ -43,6 +43,8 @@ import FaqTItle from "~/views/template1/ContactService/components/ContactTitle";
 
 const route = useRoute();
 
+const { $api } = useNuxtApp();
+
 const breadcrumbs = ref([
     {
         name: "index",
@@ -73,59 +75,69 @@ const breadcrumbs = ref([
     },
 ]);
 
-const sidebar = ref([
-    {
-        text: "電子鎖",
-        id: "id1",
-        url: {
-            params: { slug: "電子鎖" },
-            query: "id1",
-            name: "news-slug",
-        },
-    },
-    {
-        text: "保險箱",
-        id: "id2",
-        url: {
-            params: { slug: "保險箱" },
-            query: "id2",
-            name: "news-slug",
-        },
-    },
-    {
-        text: "Yale Home App 及配件",
-        id: "id3",
-        url: {
-            params: { slug: "Yale Home App 及配件" },
-            query: "id3",
-            name: "news-slug",
-        },
-    },
-    {
-        text: "訂製專屬門扇",
-        id: "id4",
-        url: {
-            params: { slug: "訂製專屬門扇" },
-            query: "id4",
-            name: "news-slug",
-        },
-    },
-    {
-        text: "型錄及檔案下載",
-        id: "id5",
-        url: {
-            params: { slug: "型錄及檔案下載" },
-            query: "id5",
-            name: "news-slug",
-        },
-    },
-]);
+const sidebar = ref<any>([]);
 
-const title = computed(() => {
-    return "電子鎖沒電怎麼辦？";
+/**
+ * 取得問答分類
+ */
+async function getType() {
+    try {
+        const { data } = await $api().fqaTypeAPI();
+        sidebar.value = [];
+        console.log("home sampleType api => ", data.value);
+
+        const rows = (data.value as any).data;
+
+        rows.forEach((item: { name: any; id: any }) => {
+            sidebar.value.push({
+                text: item.name,
+                id: item.id,
+                url: {
+                    params: { slug: item.name },
+                    query: { id: item.id },
+                    name: "faq-slug",
+                },
+            });
+        });
+    } catch (err) {
+        console.log("HomeSampleAPI => ", err);
+    }
+}
+
+const title = ref("");
+
+const content = ref("");
+
+/**
+ * 取得問答詳情
+ */
+async function getDetail(params: { fqaId: any }) {
+    try {
+        const { data } = await $api().fqaDetailAPI(params);
+        console.log("home sample api => ", data.value);
+        const detail = (data.value as any).data;
+
+        title.value = detail.name;
+        content.value = detail.content;
+    } catch (err) {
+        console.log("HomeSampleAPI => ", err);
+    }
+}
+
+/**
+ * 初始化
+ */
+async function init() {
+    await getType();
+    console.log("route.query.id", route);
+    await getDetail({ fqaId: route.query.id });
+}
+
+onMounted(async () => {
+    nextTick(async () => {
+        if (process.client) {
+            await init();
+        }
+    });
 });
-
-const content = ref(`
-<p>耶魯電子鎖皆有低電量提示，建議您看到低電量提示燈亮起時，盡速更換全部電池；請注意不要混用新舊電池，建議使用鹼性電池以避免發生無法預期的損壞。若遇電池沒電、無法開鎖的狀況，可以至便利商店購買 9V 方型電池，從外部緊急提供電源即可開鎖。</p>
-`);
 </script>
