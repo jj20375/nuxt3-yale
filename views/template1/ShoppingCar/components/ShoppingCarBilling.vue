@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-gray-50 px-[24px] pt-[24px] pb-[49px] rounded-[20px] mt-[20px]">
+    <div class="bg-gray-50 px-[24px] pt-[24px] pb-[49px] rounded-[20px]">
         <div class="flex text-gray-800 text-[14px] mb-[4px]">
             <span class="flex-1">小計</span>
             <span>NT$ {{ $utils().formatCurrency(total) }}</span>
@@ -12,14 +12,13 @@
             <span class="flex-1">優惠券折扣</span>
             <span>-NT$ {{ $utils().formatCurrency(salePrice) }}</span>
         </div>
+        <slot name="other"></slot>
         <div class="my-[20px] border-gray-300 border-b h-[1px] w-full"></div>
         <div class="flex text-gray-800">
             <span class="font-medium YaleSolisW-Bd text-[24px] flex-1">總計</span>
             <div class="flex items-center font-medium YaleSolisW-Bd">
                 <span class="text-[16px] mr-[4px]">NT$ </span>
-                <span class="text-[24px]">
-                    {{ $utils().formatCurrency(total - salePrice - salePrice) }}
-                </span>
+                <slot name="total"></slot>
             </div>
         </div>
         <slot name="button"></slot>

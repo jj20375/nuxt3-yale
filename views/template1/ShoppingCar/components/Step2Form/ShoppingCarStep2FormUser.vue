@@ -1,5 +1,5 @@
 <template>
-    <div class="mt-[88px]">
+    <div class="mt-[40px]">
         <h5 class="bg-gray-50 py-[8px] pl-[16px] w-full mb-[30px]">訂購人</h5>
         <el-form>
             <div class="grid grid-cols-2 gap-[30px]">

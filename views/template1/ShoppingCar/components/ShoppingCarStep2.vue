@@ -1,13 +1,25 @@
 <template>
-    <div class="flex">
-        <!-- <pre>{{ formMain }}</pre> -->
-        <!-- <pre>{{ formContactUser }}</pre> -->
-        <div class="flex-1">
-            <ShoppingCarStep2FormUser v-model:form="formMain" />
-            <ShoppingCarStep2FormContactUser v-model:form="formContactUser" />
-            <ShoppingCarStep2FormLogistics v-model:form="formLogistics" />
-            <ShoppingCarStep2FormPayment v-model:form="formPayment" />
-            <ShoppingCarStep2FormInvoice v-model:form="formInvoice" />
+    <div class="mr-[40px] flex-1">
+        <ShoppingCarStep2FormUser v-model:form="formMain" />
+        <ShoppingCarStep2FormContactUser v-model:form="formContactUser" />
+        <ShoppingCarStep2FormLogistics v-model:form="formLogistics" />
+        <ShoppingCarStep2FormPayment v-model:form="formPayment" />
+        <ShoppingCarStep2FormInvoice v-model:form="formInvoice" />
+        <ShoppingCarStep2FormGift
+            :gifts="gifts"
+            v-model:form="formGift"
+            v-model:selectGiftIds="selectGiftIds"
+        />
+        <div class="mt-[60px]">
+            <el-checkbox
+                v-model="formConfirm.confirmRule"
+                size="large"
+            >
+                <div class="text-[14px] text-gray-800"></div>
+                <span class="font-normal">我已閱讀並同意</span><span class="mx-2 font-medium YaleSolisW-Bd">網站服務條款</span>
+                <span class="font-normal">與</span>
+                <span class="mx-2 font-medium YaleSolisW-Bd">隱私權政策</span>
+            </el-checkbox>
         </div>
     </div>
 </template>
@@ -23,6 +35,8 @@ import ShoppingCarStep2FormLogistics from "~/views/template1/ShoppingCar/compone
 import ShoppingCarStep2FormPayment from "~/views/template1/ShoppingCar/components/Step2Form/ShoppingCarStep2FormPayment.vue";
 // 發票
 import ShoppingCarStep2FormInvoice from "~/views/template1/ShoppingCar/components/Step2Form/ShoppingCarStep2FormInvoice.vue";
+// 滿額贈
+import ShoppingCarStep2FormGift from "~/views/template1/ShoppingCar/components/Step2Form/ShoppingCarStep2FormGift.vue";
 
 // 訂單主表單
 const formMain = ref({
@@ -64,6 +78,25 @@ const formInvoice = ref({
     invoiceType: "type1",
     // 載具編碼 ｜ 統編 ｜ 捐贈單位編碼 等等
     invoiceCode: null,
+});
+
+// 贈品表單
+const formGift = ref([
+    {
+        id: "id1",
+        color: "red",
+        count: 1,
+    },
+    {
+        id: "id2",
+        color: "black",
+        count: 2,
+    },
+]);
+
+// 確認閱讀合約
+const formConfirm = ref({
+    confirmRule: true,
 });
 
 // 滿額贈品
@@ -114,5 +147,25 @@ const gifts = ref([
     },
 ]);
 
+// 贈品選中商品 id
+const selectGiftIds = ref<number | string[]>([]);
+
 const rules = ref([]);
 </script>
+
+<style lang="scss" scoped>
+:deep {
+    .el-checkbox-group {
+        @apply text-base leading-normal #{!important};
+    }
+    .is-checked {
+        .el-checkbox__inner {
+            @apply bg-yellow-600 border-yellow-600 #{!important};
+        }
+    }
+
+    .el-checkbox {
+        @apply h-auto #{!important};
+    }
+}
+</style>
