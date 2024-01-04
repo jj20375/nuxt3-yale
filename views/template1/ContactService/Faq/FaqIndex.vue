@@ -30,6 +30,8 @@ import FaqTItle from "~/views/template1/ContactService/components/ContactTitle";
 
 const route = useRoute();
 
+const { $api } = useNuxtApp();
+
 const breadcrumbs = ref([
     {
         name: "index",
@@ -54,126 +56,85 @@ const breadcrumbs = ref([
     },
 ]);
 
-const sidebar = ref([
-    {
-        text: "電子鎖",
-        id: "id1",
-        url: {
-            params: { slug: "電子鎖" },
-            query: { id: "id1" },
-            name: "faq-slug",
-        },
-    },
-    {
-        text: "保險箱",
-        id: "id2",
-        url: {
-            params: { slug: "保險箱" },
-            query: { id: "id2" },
-            name: "faq-slug",
-        },
-    },
-    {
-        text: "Yale Home App 及配件",
-        id: "id3",
-        url: {
-            params: { slug: "Yale Home App 及配件" },
-            query: { id: "id3" },
-            name: "faq-slug",
-        },
-    },
-    {
-        text: "訂製專屬門扇",
-        id: "id4",
-        url: {
-            params: { slug: "訂製專屬門扇" },
-            query: { id: "id4" },
-            name: "faq-slug",
-        },
-    },
-    {
-        text: "型錄及檔案下載",
-        id: "id5",
-        url: {
-            params: { slug: "型錄及檔案下載" },
-            query: { id: "id5" },
-            name: "faq-slug",
-        },
-    },
-]);
+const sidebar = ref<any>([]);
+
+/**
+ * 取得問答分類
+ */
+async function getType() {
+    try {
+        const { data } = await $api().fqaTypeAPI();
+        sidebar.value = [];
+        console.log("home sampleType api => ", data.value);
+
+        const rows = (data.value as any).data;
+
+        rows.forEach((item: { name: any; id: any }) => {
+            sidebar.value.push({
+                text: item.name,
+                id: item.id,
+                url: {
+                    params: { slug: item.name },
+                    query: { id: item.id },
+                    name: "faq-slug",
+                },
+            });
+        });
+    } catch (err) {
+        console.log("HomeSampleAPI => ", err);
+    }
+}
 
 const title = computed(() => {
-    const title = sidebar.value.find((item) => item.id === route.query.id);
+    const title = sidebar.value.find((item: { id: any }) => item.id == route.query.id);
     if (title !== undefined) {
         return title.text;
     }
     return "未定義";
 });
 
-const datas = ref([
-    {
-        text: "電子鎖沒電怎麼辦？",
-        url: {
-            name: "faq-details-slug",
-            params: { slug: "電子鎖沒電怎麼辦？" },
-            query: { id: "id1" },
-        },
-    },
-    {
-        text: "如果電子鎖突然故障，何時能到場修繕？",
-        url: {
-            name: "faq-details-slug",
-            params: { slug: "如果電子鎖突然故障，何時能到場修繕？" },
-            query: { id: "id1" },
-        },
-    },
-    {
-        text: "耶魯電子鎖有經過認證嗎？",
-        url: {
-            name: "faq-details-slug",
-            params: { slug: "耶魯電子鎖有經過認證嗎？" },
-            query: { id: "id1" },
-        },
-    },
-    {
-        text: "操作上遇到問題怎麼辦？",
-        url: {
-            name: "faq-details-slug",
-            params: { slug: "操作上遇到問題怎麼辦？" },
-            query: { id: "id1" },
-        },
-    },
-    {
-        text: "電子鎖服務條款與保固範圍？",
-        url: {
-            name: "faq-details-slug",
-            params: { slug: "電子鎖服務條款與保固範圍？" },
-            query: { id: "id1" },
-        },
-    },
-    {
-        text: "安裝會有額外費用嗎？",
-        url: {
-            name: "faq-details-slug",
-            params: { slug: "安裝會有額外費用嗎？" },
-            query: { id: "id1" },
-        },
-    },
-    {
-        text: "我可以自己安裝嗎？",
-        url: {
-            name: "faq-details-slug",
-            params: { slug: "我可以自己安裝嗎？" },
-            query: { id: "id1" },
-        },
-    },
-    {
-        text: "我們家的門可以裝嗎？",
-        url: {
-            name: "faq-details-slug",
-            params: { slug: "我們家的門可以裝嗎？" },
-            query: { id: "id1" },
-        },
-    },
-]);
+const datas = ref<any>([]);
+
+/**
+ * 取得問答列表
+ */
+async function getList(params: { fqa_category_id: any }) {
+    try {
+        const { data } = await $api().fqaListAPI(params);
+        datas.value = [];
+        console.log("home sample api => ", data.value);
+
+        const rows = (data.value as any).data;
+
+        rows.forEach((item: { id: any; name: any; fqa_category: any }) => {
+            datas.value.push({
+                text: item.name,
+                url: {
+                    name: "faq-details-slug",
+                    params: { slug: item.fqa_category.name },
+                    query: { id: item.id },
+                },
+            });
+        });
+    } catch (err) {
+        console.log("HomeSampleAPI => ", err);
+    }
+}
+
+/**
+ * 初始化
+ */
+async function init() {
+    await getType();
+    console.log("route.query.id", route);
+    await getList({ fqa_category_id: route.query.id });
+}
+
+onMounted(async () => {
+    nextTick(async () => {
+        if (process.client) {
+            await init();
+        }
+    });
+});
 </script>

@@ -35,7 +35,7 @@
                                 <div :class="currentIndex === index ? 'bg-white p-2 drop-shadow-lg rounded-2xl  ' : ' opacity-30'">
                                     <NuxtImg
                                         class="rounded-2xl"
-                                        src="/img/home/sample/fix.jpg"
+                                        :src="slide.thumbnail"
                                     />
                                     <!-- {{ slide }} -->
                                     <!-- {{ index }} -->
@@ -76,11 +76,16 @@
                                             </button>
                                         </div>
                                         <div class="flex-1 max-w-[600px]">
-                                            <div class="flex">
-                                                <h5 class="flex-1 text-[24px] YaleSolisW-Bd font-medium">實現您的智慧家庭{{ slide }}</h5>
-                                                <h6 class="text-[14px] font-medium YaleSolisW-Bd">2023 / 12 / 01</h6>
+                                            <div class="flex items-center">
+                                                <h5
+                                                    @click="router.push(slide.url)"
+                                                    class="flex-1 text-[24px] YaleSolisW-Bd font-medium cursor-pointer"
+                                                >
+                                                    {{ slide.title }}
+                                                </h5>
+                                                <h6 class="text-[14px] font-medium YaleSolisW-Bd">{{ slide.published_at }}</h6>
                                             </div>
-                                            <p class="mt-[12px] YaleSolisW-Lt font-[400] text-[16px]">Yale Access 應用程序巧妙地提高您的家庭安全性了，讓我們能夠在有限的空閒時間處理最重要的事情。</p>
+                                            <p class="mt-[12px] YaleSolisW-Lt font-[400] text-[16px] line-clamp-2">{{ slide.description }}</p>
                                             <!-- {{ index }} -->
                                         </div>
                                         <div
@@ -110,15 +115,13 @@ import { useTemplateStore } from "~/store/templateStore";
 
 const { $api } = useNuxtApp();
 
+const router = useRouter();
+
 const templateStore = useTemplateStore();
 
 const carousel3dRefDom = ref<any>(null);
 const carousel3d2RefDom = ref<any>(null);
-const items = ref([]);
-
-for (let i = 0; i < 10; i++) {
-    items.value.push(i);
-}
+const items = ref<any>([]);
 
 const currentIndex = ref(0);
 
@@ -158,13 +161,55 @@ function scrollInit() {
     }
 }
 
+const sampleType = ref<any>([]);
+/**
+ * 取得裝修實績分類
+ */
+async function getType() {
+    try {
+        const { data } = await $api().ArticalTypeAPI({ type: "renovation" });
+        sampleType.value = [];
+        console.log("home sampleType api => ", data.value);
+
+        const rows = (data.value as any).data;
+
+        rows.forEach((item: { name: any; id: any }) => {
+            sampleType.value.push({
+                text: item.name,
+                id: item.id,
+            });
+        });
+    } catch (err) {
+        console.log("HomeSampleAPI => ", err);
+    }
+}
+
+function sampleSlug(val: any) {
+    const data = sampleType.value.find((item: { id: any }) => item.id === val);
+    return data?.text;
+}
+
 /**
  * 取得裝修實績列表
  */
 async function getList(params: { per_page: number; page: number }) {
     try {
         const { data } = await $api().HomeSampleAPI(params);
+        items.value = [];
         console.log("home sample api => ", data.value);
+
+        const rows = (data.value as any).data.rows;
+
+        rows.forEach((item: { article_category_id: any; id: any }) => {
+            items.value.push({
+                ...item,
+                url: {
+                    name: "sample-details-slug",
+                    params: { slug: sampleSlug(item.article_category_id) },
+                    query: { id: item.id },
+                },
+            });
+        });
     } catch (err) {
         console.log("HomeSampleAPI => ", err);
     }
@@ -174,6 +219,7 @@ async function getList(params: { per_page: number; page: number }) {
  * 初始化
  */
 async function init() {
+    await getType();
     await getList({ per_page: 10, page: 1 });
 }
 // await init();
