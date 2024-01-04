@@ -2,6 +2,7 @@ import home from "~/api/home";
 import utils from "~/api/utils";
 import oauth from "~/api/oauth";
 import article from "~/api/artical";
+import store from "~/api/store";
 
 export default defineNuxtPlugin((nuxtApp) => {
     return {
@@ -11,6 +12,7 @@ export default defineNuxtPlugin((nuxtApp) => {
                 ...utils(),
                 ...oauth(),
                 ...article(),
+                ...store()
             }),
         },
     };
