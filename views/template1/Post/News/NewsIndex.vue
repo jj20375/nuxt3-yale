@@ -116,7 +116,7 @@ async function getList(params: { per_page: number; page: number; article_categor
                 imgSrc: item.thumbnail,
                 date: $utils().formatToDate(item.published_at),
                 url: {
-                    name: "sample-details-slug",
+                    name: "news-details-slug",
                     params: { slug: route.params.slug },
                     query: { id: item.id },
                 },
