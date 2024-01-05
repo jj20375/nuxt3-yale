@@ -56,9 +56,19 @@
 <script setup lang="ts">
 import { ElMessage } from "element-plus";
 import type { UploadProps, UploadFile } from "element-plus";
-const { $utils } = useNuxtApp();
+const { $api, $utils } = useNuxtApp();
+
+const emit = defineEmits(["tempPath"]);
+const props = defineProps({
+    // 顯示彈窗
+    prop: {
+        type: String,
+        default: "",
+    },
+});
 
 const fileList = ref<any>(null);
+const fileDataList = ref<any>([]);
 // 預覽彈窗圖
 const dialogImageUrl = ref("");
 // 顯示預覽彈窗
@@ -68,7 +78,7 @@ const showDialog = ref(false);
  * @param file
  * @param fcFileList
  */
-function handleChange(file: any, fcFileList: any) {
+async function handleChange(file: any, fcFileList: any) {
     console.log("fcFileList =>", file, fcFileList);
     fileList.value = fcFileList;
     if (file.size > 10 * 1024 * 1024) {
@@ -86,14 +96,29 @@ function handleChange(file: any, fcFileList: any) {
         });
         return;
     }
+    const formData = new FormData();
+    formData.append("file", file.raw);
+    formData.append("scene", "work-order");
+    try {
+        const { data } = await $api().UploadAPI(formData);
+        console.log("UploadAPI api => ", data.value);
+        const file = (data.value as any).data;
+        fileDataList.value.push(file.path);
+        fileList.value[fileList.value.length - 1].url = file.preview_url;
+        emit("tempPath", fileDataList.value, props.prop);
+    } catch (err) {
+        console.log("HomeSampleAPI => ", err);
+    }
 }
 
 const handleRemove: UploadProps["onRemove"] = (removeFile) => {
     console.log(removeFile);
-    const index = fileList.value.findIndex((item) => item.uid === removeFile.uid);
+    const index = fileList.value.findIndex((item: { uid: number }) => item.uid === removeFile.uid);
     if (index !== -1) {
         fileList.value.splice(index, 1);
+        fileDataList.value.splice(index, 1);
     }
+    emit("tempPath", fileDataList.value, props.prop);
 };
 
 const handlePictureCardPreview = (file: UploadFile) => {
