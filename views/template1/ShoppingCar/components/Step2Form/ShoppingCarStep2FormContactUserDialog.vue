@@ -69,7 +69,7 @@
                     </div>
                     <div>
                         <button
-                            @click="closeDialog"
+                            @click="closeDialogByConfirm"
                             class="border border-yellow-600 bg-yellow-600 text-gray-800 rounded-full w-[140px] py-[11px] hover:bg-yellow-700 duration-500 transition-all"
                         >
                             確認
@@ -106,12 +106,6 @@ const props = defineProps({
 // 判斷是否顯示彈窗
 const showDialog2 = ref(props.showDialog);
 
-function closeDialog() {
-    showDialog2.value = false;
-    emit("update:showDialog", false);
-    emit("update:defaultContactUserId", defaultContactUserIdData.value);
-}
-
 watch(
     () => props.showDialog,
     (val) => {
@@ -130,9 +124,29 @@ const columns = {
 // 預設聯絡人 id
 const defaultContactUserIdData = ref<number>(props.defaultContactUserId);
 
-// 設定預設聯絡人
-function setDefaultContactUser(val) {
-    defaultContactUserIdData.value = val;
+/**
+ * 當預設聯絡人 id 變更時
+ * @param id
+ */
+function setDefaultContactUser(id) {
+    defaultContactUserIdData.value = id;
+}
+
+/**
+ * 關閉彈窗事件
+ */
+function closeDialog() {
+    showDialog2.value = false;
+    emit("update:showDialog", false);
+}
+
+/**
+ * 確認關閉彈窗事件
+ */
+function closeDialogByConfirm() {
+    showDialog2.value = false;
+    emit("update:showDialog", false);
+    emit("update:defaultContactUserId", defaultContactUserIdData.value);
 }
 
 function init() {}
