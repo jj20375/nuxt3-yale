@@ -26,13 +26,16 @@
                     <ShoppingCarSteps v-model:step="currentStep" />
                 </div>
             </div>
-            <div class="flex">
+            <div class="flex justify-center">
                 <component
                     :is="showComponent"
                     v-model:step="currentStep"
                     v-model:selectProductIds="selectProductIds"
                 ></component>
-                <div class="mt-[40px] w-[387px]">
+                <div
+                    class="mt-[40px] w-[387px]"
+                    v-if="currentStep !== 2"
+                >
                     <ShoppingCarInputCoupon v-if="currentStep == 0" />
                     <ShoppingCarBilling
                         :class="currentStep == 0 ? 'mt-[20px]' : ''"
@@ -80,7 +83,15 @@
                 class="flex justify-center mb-[100px] mt-[41px]"
                 v-if="currentStep == 1"
             >
-                <button class="bg-yellow-600 text-gray-800 text-center py-[17px] w-[339px] rounded-full text-[16px]">前往付訂</button>
+                <button
+                    @click.prevent="
+                        currentStep = 2;
+                        showComponent = ShoppingCarStep3;
+                    "
+                    class="bg-yellow-600 text-gray-800 text-center py-[17px] w-[339px] rounded-full text-[16px]"
+                >
+                    前往付訂
+                </button>
             </div>
         </div>
     </section>
