@@ -11,7 +11,7 @@
                     <div class="text-center mr-[16px] w-[90px] border border-gray-300 py-[6px] px-[12px] text-gray-400 text-[12px]">
                         <span>{{ postData.published_at }}</span>
                     </div>
-                    <span
+                    <span v-if="postData.is_top"
                         ><img
                             class="w-[28px]"
                             src="/img/news/pin-icon.svg"
@@ -105,6 +105,7 @@ const postData = ref<any>({
     title: "",
     content: "",
     published_at: "",
+    is_top: 0,
 });
 
 const pagination = ref<any>({
@@ -126,6 +127,7 @@ async function getList(params: { articleId: any }) {
             title: detail.title,
             content: detail.content,
             article_category: detail.article_category,
+            is_top: detail.is_top,
             published_at: $utils().formatToDate(detail.published_at),
         };
 
