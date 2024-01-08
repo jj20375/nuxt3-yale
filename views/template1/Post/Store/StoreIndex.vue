@@ -113,14 +113,14 @@ const datas = ref<any>([]);
  */
 async function getList(params: { per_page: number; page: number; stronghold_category_id: any }) {
     try {
-        const { data } = await $api().StoreListAPI(params);
+        const { data } = await $api().StoreListPaginateAPI(params);
         datas.value = [];
         console.log("home sample api => ", data.value);
 
-        const rows = (data.value as any).data;
-        // const meta = (data.value as any).data.meta;
+        const rows = (data.value as any).data.rows;
+        const meta = (data.value as any).data.meta;
 
-        // pagination.value.total = meta.total;
+        pagination.value.total = meta.total;
 
         rows.forEach((item: { name: any; phone: any; image: any; business_hours: any; address: any }) => {
             datas.value.push({

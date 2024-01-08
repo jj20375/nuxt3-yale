@@ -109,7 +109,7 @@ const datas = ref<any>([]);
 /**
  * 取得據點列表
  */
-async function getList(params: { per_page: number; page: number; stronghold_category_id: any }) {
+async function getList(params: { stronghold_category_id: any }) {
     try {
         const { data } = await $api().StoreListAPI(params);
         datas.value = [];
@@ -137,7 +137,7 @@ async function getList(params: { per_page: number; page: number; stronghold_cate
 async function init() {
     await getType();
     console.log("route.query.id", route);
-    await getList({ per_page: pagination.value.pageSize, page: 1, stronghold_category_id: route.query.id });
+    await getList({ stronghold_category_id: route.query.id });
 }
 
 onMounted(async () => {
