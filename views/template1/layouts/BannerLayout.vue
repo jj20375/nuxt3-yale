@@ -1,7 +1,7 @@
 <template>
     <section class="min-h-screen mt-[94px] mb-[80px]">
         <nav class="border-t border-gray-300 py-[16px]">
-            <div class="container">
+            <div>
                 <div class="grid grid-cols-7 gap-0">
                     <div class="col-span-7 ml-[122px]">
                         <slot name="breadcrumbs"></slot>

@@ -273,7 +273,11 @@ const menus = ref<any>({
                 id: "id2",
                 text: "維修與保固",
                 imgSrc: "/img/menu/service/menu-service-icon-2.svg",
-                url: "/",
+                url: {
+                    name: "repair-slug",
+                    params: { slug: "耶魯維修與保固" },
+                    query: { id: "1" },
+                },
             },
             {
                 id: "id3",
@@ -289,7 +293,11 @@ const menus = ref<any>({
                 id: "id4",
                 text: "預約安裝",
                 imgSrc: "/img/menu/service/menu-service-icon-4.svg",
-                url: "/",
+                url: {
+                    name: "reservation-slug",
+                    params: { slug: "耶魯預約安裝" },
+                    query: { id: "1" },
+                },
             },
             {
                 id: "id5",
