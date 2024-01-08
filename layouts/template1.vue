@@ -83,11 +83,15 @@ useHead({
 });
 
 async function getInitializationData() {
-    const { data } = await $api().GetInitializationDatasAPI();
-    console.log("GetInitializationDatasAPI => ", data.value);
-    const initialData = (data.value as any).data;
+    try {
+        const { data } = await $api().GetInitializationDatasAPI();
+        console.log("GetInitializationDatasAPI => ", data.value);
+        const initialData = (data.value as any).data;
 
-    initializationStore.initializationData = initialData;
+        initializationStore.initializationData = initialData;
+    } catch (err) {
+        console.log(err);
+    }
 }
 
 onMounted(async () => {

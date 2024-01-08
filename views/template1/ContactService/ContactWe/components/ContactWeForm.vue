@@ -75,12 +75,13 @@
                                 class="w-full"
                                 v-model="form[item2.prop]"
                                 :placeholder="item2.placeholder"
+                                @change="item2.function ? item2.function(form) : null"
                             >
                                 <el-option
-                                    v-for="option in 10"
-                                    :key="option"
-                                    :label="'下拉-' + option"
-                                    :value="option"
+                                    v-for="(option, index) in item2.options"
+                                    :key="index"
+                                    :label="option.label"
+                                    :value="option.value"
                                 ></el-option>
                             </el-select>
                         </el-form-item>
@@ -107,10 +108,12 @@
 // google recaptcha2
 import vueRecaptcha from "vue3-recaptcha2";
 import GoogleReCaptchaV2 from "@/components/GoogleRecaptchaV2.vue";
-import { ElMessage } from "element-plus";
+import { ElMessage, ElLoading } from "element-plus";
 import type { FormInstance, UploadProps, FormRules } from "element-plus";
 import FileUpload from "./ContactWebFileUpload.vue";
 import { validateEmail, validateTWMobileNumber } from "~/service/validator";
+import { useInitializationStore } from "~/store/initializationStore";
+const router = useRouter();
 
 const { $api, $utils } = useNuxtApp();
 
@@ -143,7 +146,20 @@ function isVerifyError(error: any) {
     isRecaptchaVerify.value = false;
 }
 
-const formRefDom = ref<FormInstance | undefined>();
+// 預先加載縣市資料
+const initializationStore = useInitializationStore();
+const { data, pending, error, refresh } = await useAsyncData("city", () => getCity());
+
+async function getCity() {
+    const { data } = await $api().GetCityAreaAPI();
+    initializationStore.cityAreaData = (data.value as any).data;
+
+    initializationStore.cityData = initializationStore.cityAreaData.map((item: { name: any }) => {
+        return { label: item.name, value: item.name };
+    });
+}
+
+const formRefDom = ref<any>();
 
 const form = ref<any>({
     name: "",
@@ -157,7 +173,7 @@ const form = ref<any>({
     recaptchaToken: "",
 });
 
-const rules = ref<FormRules>({
+const rules = ref<any>({
     name: [
         {
             required: true,
@@ -212,6 +228,13 @@ const rules = ref<FormRules>({
             trigger: ["change", "blur"],
         },
     ],
+    photo: [
+        {
+            required: false,
+            message: "請上傳圖片",
+            trigger: ["change", "blur"],
+        },
+    ],
     content: [
         {
             required: true,
@@ -247,13 +270,28 @@ const formDatas = ref<any>([
                 prop: "city",
                 label: "縣市",
                 placeholder: "請選擇",
+                options: initializationStore.cityData,
                 type: "inline",
                 style: "select",
+                function: (e: any) => {
+                    console.log(e);
+                    e.location = "";
+
+                    const cityDataFilter = initializationStore.cityAreaData.find((item: { name: any }) => item.name === e.city);
+                    console.log("cityDataFilter.district", cityDataFilter);
+                    formDatas.value[3].datas[1].options = cityDataFilter.district.map((item: { name: any }) => {
+                        return {
+                            label: item.name,
+                            value: item.name,
+                        };
+                    });
+                },
             },
             {
                 prop: "location",
                 label: "地區",
                 placeholder: "請選擇",
+                options: [],
                 type: "inline",
                 style: "select",
             },
@@ -272,12 +310,14 @@ const formDatas = ref<any>([
                         item.isHide = false;
                     }
                 });
+                rules.value.photo[0].required = true;
             } else {
                 formDatas.value.forEach((item: any) => {
                     if (item.prop === "photo") {
                         item.isHide = true;
                     }
                 });
+                rules.value.photo[0].required = false;
             }
         },
     },
@@ -323,17 +363,29 @@ async function getSubjectType() {
 
 function handlefile(tempPath: any, prop: string) {
     form.value[prop] = tempPath;
+    formRefDom.value.validateField("photo");
 }
 
 async function onSubmit() {
-    formRefDom.value.validate(async (valid) => {
+    if (!form.value.recaptchaToken) {
+        ElMessage({
+            type: "error",
+            message: `請勾選我不是機器人`,
+        });
+        return;
+    }
+    formRefDom.value.validate(async (valid: any) => {
         if (!valid) {
             ElMessage({
                 type: "error",
                 message: `尚有欄位未填`,
             });
         } else {
-            console.log("OK!!!");
+            const loading = ElLoading.service({
+                lock: true,
+                text: "送出中...",
+                background: "rgba(0, 0, 0, 0.7)",
+            });
             try {
                 const params = {
                     work_order_category_id: form.value.title.id,
@@ -351,18 +403,10 @@ async function onSubmit() {
                     type: "success",
                     message: `送出成功`,
                 });
-                // 資料清空
-                form.value = {
-                    name: "",
-                    phone: "",
-                    email: "",
-                    city: "",
-                    location: "",
-                    title: "",
-                    photo: [],
-                    content: "",
-                };
+                router.push({ name: "index" });
+                loading.close();
             } catch (err) {
+                loading.close();
                 console.log("HomeSampleAPI => ", err);
             }
         }

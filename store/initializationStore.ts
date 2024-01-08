@@ -8,6 +8,8 @@ export const useInitializationStore = defineStore({
     return {
       // 初始化資料
       initializationData: null,
+      cityAreaData: [],
+      cityData: [],
     };
   },
   getters: {},

@@ -14,9 +14,9 @@
                     <div class="text-gray-800 text-center ml-[150px] flex-1">
                         <NuxtImg
                             class="w-[120px] mx-auto"
-                            src="/img/logo/logo-1.svg"
+                            :src="initializationData?.site.site_logo"
                         />
-                        <p class="text-[20px] mt-[40px] YaleSolisW-Bd font-medium">耶魯台灣零售總代理 - 灝翔有限公司</p>
+                        <p class="text-[20px] mt-[40px] YaleSolisW-Bd font-medium">{{ initializationData?.site.meta_title }}</p>
                         <p class="text-[16px] mt-[12px]">{{ initializationData?.site.contact_phone }}</p>
                         <P class="text-[16px] mt-[4px]">{{ initializationData?.site.contact_email }}</P>
                         <ul class="flex justify-center mt-[40px]">

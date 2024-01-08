@@ -26,5 +26,11 @@ export default () => {
         body: data,
       });
     },
+    /**
+     * 縣市鄉鎮列表
+     */
+    GetCityAreaAPI() {
+      return useMyFetch(`${apiUrl}/zip-code/city`, { method: "get" });
+    },
   };
 };
