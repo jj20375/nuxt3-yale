@@ -18,7 +18,12 @@
                         class="flex-1"
                         v-if="item.type !== 'inline'"
                     >
-                        <label class="block w-full text-[15px] text-gray-800"> {{ item.label }} <span class="text-red-500">*</span> </label>
+                        <label
+                            v-if="!item.isHide"
+                            class="block w-full text-[15px] text-gray-800"
+                        >
+                            {{ item.label }} <span class="text-red-500">*</span>
+                        </label>
                         <el-input
                             v-if="item.style === 'input'"
                             :placeholder="item.placeholder"
@@ -29,12 +34,14 @@
                             class="w-full"
                             v-model="form[item.prop]"
                             :placeholder="item.placeholder"
+                            value-key="id"
+                            @change="item.function ? item.function(form) : null"
                         >
                             <el-option
-                                v-for="option in 10"
-                                :key="option"
-                                :label="'下拉-' + option"
-                                :value="option"
+                                v-for="(option, index) in item.options"
+                                :key="index"
+                                :label="option.label"
+                                :value="option.value"
                             ></el-option>
                         </el-select>
                         <el-input
@@ -44,7 +51,11 @@
                             :placeholder="item.placeholder"
                             v-model="form[item.prop]"
                         ></el-input>
-                        <FileUpload v-if="item.style === 'file'" />
+                        <FileUpload
+                            v-if="item.style === 'file' && !item.isHide"
+                            :prop="item.prop"
+                            @tempPath="handlefile"
+                        />
                     </div>
                 </el-form-item>
 
@@ -78,17 +89,16 @@
             </div>
         </el-form>
         <div class="flex justify-start mt-[30px] mb-[40px]">
-            <vue-recaptcha
-                ref="reCaptcha2Dom"
-                @verify="isVerify"
-                @error="isVerifyError"
-                :sitekey="sitekey"
-            >
-            </vue-recaptcha>
+            <GoogleReCaptchaV2 v-model="form.recaptchaToken" />
         </div>
 
         <div class="flex justify-center">
-            <button class="bg-yellow-600 text-[16px] rounded-full w-[160px] text-center py-[11px]">確認送出</button>
+            <button
+                @click="onSubmit"
+                class="bg-yellow-600 text-[16px] rounded-full w-[160px] text-center py-[11px]"
+            >
+                確認送出
+            </button>
         </div>
     </div>
 </template>
@@ -96,9 +106,13 @@
 <script lang="ts" setup>
 // google recaptcha2
 import vueRecaptcha from "vue3-recaptcha2";
+import GoogleReCaptchaV2 from "@/components/GoogleRecaptchaV2.vue";
 import { ElMessage } from "element-plus";
 import type { FormInstance, UploadProps, FormRules } from "element-plus";
 import FileUpload from "./ContactWebFileUpload.vue";
+import { validateEmail, validateTWMobileNumber } from "~/service/validator";
+
+const { $api, $utils } = useNuxtApp();
 
 const {
     public: { googleRecaptcha2Key },
@@ -131,15 +145,16 @@ function isVerifyError(error: any) {
 
 const formRefDom = ref<FormInstance | undefined>();
 
-const form = ref({
+const form = ref<any>({
     name: "",
     phone: "",
     email: "",
     city: "",
     location: "",
     title: "",
-    photo: null,
+    photo: [],
     content: "",
+    recaptchaToken: "",
 });
 
 const rules = ref<FormRules>({
@@ -150,9 +165,63 @@ const rules = ref<FormRules>({
             trigger: "blur",
         },
     ],
+    email: [
+        {
+            required: true,
+            message: "請輸入電子信箱",
+            trigger: "blur",
+        },
+        {
+            required: true,
+            validator: validateEmail,
+            trigger: ["change", "blur"],
+            message: "格式不正確",
+        },
+    ],
+    phone: [
+        {
+            required: true,
+            message: "請輸入聯絡電話",
+            trigger: "blur",
+        },
+        {
+            required: true,
+            validator: validateTWMobileNumber,
+            trigger: ["change", "blur"],
+            message: "格式不正確",
+        },
+    ],
+    city: [
+        {
+            required: true,
+            message: "請選擇縣市",
+            trigger: ["change", "blur"],
+        },
+    ],
+    location: [
+        {
+            required: true,
+            message: "請選擇地區",
+            trigger: ["change", "blur"],
+        },
+    ],
+    title: [
+        {
+            required: true,
+            message: "請選擇主旨",
+            trigger: ["change", "blur"],
+        },
+    ],
+    content: [
+        {
+            required: true,
+            message: "請輸入詢問內容",
+            trigger: ["change", "blur"],
+        },
+    ],
 });
 
-const formDatas = ref([
+const formDatas = ref<any>([
     {
         prop: "name",
         label: "姓名",
@@ -194,7 +263,23 @@ const formDatas = ref([
         prop: "title",
         label: "主旨",
         placeholder: "請選擇",
+        options: [],
         style: "select",
+        function: (e: any) => {
+            if (e.title.allow_attachments === 1) {
+                formDatas.value.forEach((item: any) => {
+                    if (item.prop === "photo") {
+                        item.isHide = false;
+                    }
+                });
+            } else {
+                formDatas.value.forEach((item: any) => {
+                    if (item.prop === "photo") {
+                        item.isHide = true;
+                    }
+                });
+            }
+        },
     },
     {
         prop: "photo",
@@ -202,6 +287,7 @@ const formDatas = ref([
         placeholder: "請上傳照片",
         type: "photo",
         style: "file",
+        isHide: true,
     },
     {
         prop: "content",
@@ -211,15 +297,92 @@ const formDatas = ref([
     },
 ]);
 
-async function onSubmit(formEl: FormInstance | undefined) {
-    if (!formEl) {
-        ElMessage({
-            type: "error",
-            message: "資訊資訊",
+// 取得主旨options
+async function getSubjectType() {
+    try {
+        const { data } = await $api().WorkTypeAPI();
+        console.log("home sampleType api => ", data.value);
+
+        const rows = (data.value as any).data;
+
+        formDatas.value.forEach((item: any) => {
+            if (item.prop === "title") {
+                rows.forEach((opt: any) => {
+                    item.options.push({
+                        id: opt.id,
+                        label: opt.name,
+                        value: opt,
+                    });
+                });
+            }
         });
-        return;
+    } catch (err) {
+        console.log("HomeSampleAPI => ", err);
     }
 }
+
+function handlefile(tempPath: any, prop: string) {
+    form.value[prop] = tempPath;
+}
+
+async function onSubmit() {
+    formRefDom.value.validate(async (valid) => {
+        if (!valid) {
+            ElMessage({
+                type: "error",
+                message: `尚有欄位未填`,
+            });
+        } else {
+            console.log("OK!!!");
+            try {
+                const params = {
+                    work_order_category_id: form.value.title.id,
+                    name: form.value.name,
+                    phone: form.value.phone,
+                    email: form.value.email,
+                    city: form.value.city,
+                    area: form.value.area,
+                    content: form.value.content,
+                    attachments: form.value.photo,
+                    captcha: form.value.recaptchaToken,
+                };
+                await $api().WorkOrderCreateAPI(params);
+                ElMessage({
+                    type: "success",
+                    message: `送出成功`,
+                });
+                // 資料清空
+                form.value = {
+                    name: "",
+                    phone: "",
+                    email: "",
+                    city: "",
+                    location: "",
+                    title: "",
+                    photo: [],
+                    content: "",
+                };
+            } catch (err) {
+                console.log("HomeSampleAPI => ", err);
+            }
+        }
+    });
+}
+
+/**
+ * 初始化
+ */
+async function init() {
+    await getSubjectType();
+}
+
+onMounted(async () => {
+    nextTick(async () => {
+        if (process.client) {
+            await init();
+        }
+    });
+});
 </script>
 
 <style lang="scss" scoped>
