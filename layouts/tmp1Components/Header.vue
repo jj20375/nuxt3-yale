@@ -108,8 +108,8 @@ const menus = ref<any>({
     menu1: {
         title: "訂製您的專屬門扇",
         url: {
-            name: "custom-slug",
-            params: { slug: "slug" },
+            name: "custom-product-slug",
+            params: { slug: "耶魯訂製門扇" },
         },
         submenus: [],
     },
