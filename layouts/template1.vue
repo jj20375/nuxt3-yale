@@ -18,6 +18,7 @@
 <script lang="ts" setup>
 import { useUtilityStore } from "~/store/utilityStore";
 import { useUserStore } from "~/store/userStore";
+import { useInitializationStore } from "~/store/initializationStore";
 import { ElMessage } from "element-plus";
 import { onMessage } from "firebase/messaging";
 import { useLineLogin } from "./hooks/template1Hook";
@@ -36,13 +37,19 @@ const route = useRoute();
 const { redirectRightHome, getLineUserProfile, getLineToken, checkUrlQuery } = useLineLogin();
 const utilityStore = useUtilityStore();
 const userStore = useUserStore();
+const initializationStore = useInitializationStore();
 const { isMobile } = useDevice();
 const $config = useRuntimeConfig();
+
+import { onBeforeRouteUpdate, onBeforeRouteLeave } from "vue-router";
 
 // 判斷是否登入
 const isAuth = computed(() => userStore.isAuth);
 
 const pageLoading = ref(useState("loading"));
+
+// 預先加載初始化資料
+const { data, pending, error, refresh } = await useAsyncData("bootstrap", () => getInitializationData());
 
 useHead({
     title: "耶魯電子鎖",
@@ -74,6 +81,14 @@ useHead({
         { property: "al:ios:app_name", content: "Facebook" },
     ],
 });
+
+async function getInitializationData() {
+    const { data } = await $api().GetInitializationDatasAPI();
+    console.log("GetInitializationDatasAPI => ", data.value);
+    const initialData = (data.value as any).data;
+
+    initializationStore.initializationData = initialData;
+}
 
 onMounted(async () => {
     if (process.client) {

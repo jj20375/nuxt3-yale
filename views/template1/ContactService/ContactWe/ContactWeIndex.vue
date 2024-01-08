@@ -17,8 +17,8 @@
                             src="/img/logo/logo-1.svg"
                         />
                         <p class="text-[20px] mt-[40px] YaleSolisW-Bd font-medium">耶魯台灣零售總代理 - 灝翔有限公司</p>
-                        <p class="text-[16px] mt-[12px]">0800-314-109</p>
-                        <P class="text-[16px] mt-[4px]">twyale0800314109@gmail.com</P>
+                        <p class="text-[16px] mt-[12px]">{{ initializationData?.site.contact_phone }}</p>
+                        <P class="text-[16px] mt-[4px]">{{ initializationData?.site.contact_email }}</P>
                         <ul class="flex justify-center mt-[40px]">
                             <li
                                 v-for="(media, index) in medias"
@@ -42,7 +42,14 @@
 import BannerLayout from "~/views/template1/layouts/BannerLayout.vue";
 import Breadcrumb from "~/views/template1/components/Breadcrumb.vue";
 import ContactWeForm from "~/views/template1/ContactService/ContactWe/components/ContactWeForm.vue";
+import { useInitializationStore } from "~/store/initializationStore";
 const route = useRoute();
+
+const initializationStore = useInitializationStore();
+
+const initializationData = computed(() => {
+    return initializationStore.initializationData;
+});
 
 const breadcrumbs = ref([
     {

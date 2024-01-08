@@ -6,6 +6,12 @@ export default () => {
   } = useRuntimeConfig();
   return {
     /**
+     * 取得 初始化 資料
+     */
+    GetInitializationDatasAPI() {
+      return useMyFetch(`${apiUrl}/bootstrap`, { method: "get" });
+    },
+    /**
      * 取得 footer 資料
      */
     GetFooterDatasAPI() {
