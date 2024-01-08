@@ -135,23 +135,43 @@ const footerDatas = ref({
         menus: [
             {
                 text: "常見問答",
-                url: "",
+                url: {
+                    name: "faq-slug",
+                    params: { slug: "耶魯服務中心" },
+                    query: { id: "1" },
+                },
             },
             {
                 text: "維修與保固",
-                url: "",
+                url: {
+                    name: "repair-slug",
+                    params: { slug: "耶魯維修與保固" },
+                    query: { id: "1" },
+                },
             },
             {
                 text: "檔案下載",
-                url: "",
+                url: {
+                    name: "file-download-slug",
+                    params: { slug: "耶魯檔案下載" },
+                    query: { id: "1" },
+                },
             },
             {
                 text: "預約安裝",
-                url: "",
+                url: {
+                    name: "reservation-slug",
+                    params: { slug: "耶魯預約安裝" },
+                    query: { id: "1" },
+                },
             },
             {
                 text: "聯絡我們",
-                url: "",
+                url: {
+                    name: "contact-slug",
+                    params: { slug: "耶魯聯絡我們" },
+                    query: { id: "1" },
+                },
             },
         ],
     },
@@ -164,11 +184,19 @@ const footerDatas = ref({
             },
             {
                 text: "最新消息",
-                url: "",
+                url: {
+                    name: "news-slug",
+                    params: { slug: "slug" },
+                    query: { id: "4" },
+                },
             },
             {
                 text: "裝修實績",
-                url: "",
+                url: {
+                    name: "sample-slug",
+                    params: { slug: "耶魯裝修實績" },
+                    query: { id: "3" },
+                },
             },
             {
                 text: "Yale Home APP",
