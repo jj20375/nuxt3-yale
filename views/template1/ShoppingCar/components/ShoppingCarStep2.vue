@@ -56,8 +56,10 @@ const formContactUser = ref({
     area: null,
     // 地址
     address: null,
-    // 加入常用地址
-    saveAddress: false,
+    // 加入常用聯絡人
+    saveContctUser: false,
+    // 選擇預設聯繫人
+    chooseDefaultContactUser: false,
 });
 
 // 配送方式
