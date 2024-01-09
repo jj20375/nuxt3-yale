@@ -3,8 +3,9 @@
         <h3 class="text-[16px] font-medium YaleSolisW-Bd mb-[20px]">場景</h3>
         <ul class="flex">
             <li
+                @click="currentTabData = tab.id"
                 v-for="(tab, index) in tabs.slice(0, 3)"
-                class="rounded-[8px] py-[16px] px-[24px] mr-[12px]"
+                class="rounded-[8px] py-[16px] px-[24px] mr-[12px] cursor-pointer"
                 :class="currentTabData == tab.id ? 'border-2 border-yellow-600' : 'border border-gray-300'"
             >
                 <div class="flex items-center">
@@ -20,8 +21,9 @@
         </ul>
         <ul class="flex mt-[12px]">
             <li
+                @click="currentTabData = tab.id"
                 v-for="(tab, index) in tabs.slice(3, 5)"
-                class="rounded-[8px] py-[16px] px-[24px] mr-[12px]"
+                class="rounded-[8px] py-[16px] px-[24px] mr-[12px] cursor-pointer"
                 :class="currentTabData == tab.id ? 'border-2 border-yellow-600' : 'border border-gray-300'"
             >
                 <div class="flex items-center">

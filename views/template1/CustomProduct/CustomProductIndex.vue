@@ -2,34 +2,181 @@
     <section class="mt-[94px] flex">
         <CustomProductPrewView v-model:currentAngle="currentAngle" />
         <div class="mx-[55px] min-w-[430px]">
-            <CustomProductBackground v-model:currentTab="currentBackground" />
-            <CustomProductDoor
-                class="mt-[20px]"
-                v-model:currentDoor="currentDoor"
-                :doors="doorColors[0].doors"
-            />
-            <CustomProductColor
-                class="mt-[20px]"
-                v-model:currentColor="currentDoorColor"
-                :colors="doorColors"
-            />
-            <CustomProductDoor
-                class="mt-[20px]"
-                v-model:currentDoor="currentDoorOut"
-                :doors="doorOutColors[0].doors"
-            />
-            <CustomProductColor
-                class="mt-[20px]"
-                v-model:currentColor="currentDoorOutColor"
-                :colors="doorOutColors"
-            />
-            <div>
-                <h3 class="text-gray-800 text-[20px] font-medium YaleSolisW-Bd">03 選擇門鎖</h3>
+            <CustomProductContent />
+
+            <div class="border-b border-gray-300 py-[30px]">
+                <div
+                    @click="stepMenuShow['step1'].show = !stepMenuShow['step1'].show"
+                    class="flex items-center mb-[30px] mt-[40px] cursor-pointer"
+                >
+                    <h3 class="flex-1 text-gray-800 text-[20px] font-medium YaleSolisW-Bd">{{ stepMenuShow["step1"].text }}</h3>
+                    <font-awesome-icon
+                        class="transition-all duration-500"
+                        :class="!stepMenuShow['step1'].show ? 'rotate-180' : ''"
+                        :icon="['fas', 'chevron-up']"
+                    />
+                </div>
+                <div v-if="stepMenuShow['step1'].show">
+                    <CustomProductBackground v-model:currentTab="currentBackground" />
+                    <CustomProductPlan
+                        class="mt-[20px]"
+                        v-model:currentPlan="currentPlan"
+                    />
+                    <CustomProduct
+                        class="mt-[20px]"
+                        v-model:currentProduct="currentDoor"
+                        :products="doorColors[0].doors"
+                    />
+                    <CustomProductColor
+                        class="mt-[20px]"
+                        v-model:currentColor="currentDoorColor"
+                        :colors="doorColors"
+                    />
+                    <CustomProductSize
+                        class="mt-[20px]"
+                        :sizes="doorSizes"
+                        v-model:currentSizeId="currentDoorSize"
+                    />
+                </div>
+            </div>
+            <div class="border-b border-gray-300 pb-[30px]">
+                <div
+                    @click="stepMenuShow['step2'].show = !stepMenuShow['step2'].show"
+                    class="flex items-center mb-[30px] mt-[30px] cursor-pointer"
+                >
+                    <h3 class="flex-1 text-gray-800 text-[20px] font-medium YaleSolisW-Bd">{{ stepMenuShow["step2"].text }}</h3>
+                    <font-awesome-icon
+                        class="transition-all duration-500"
+                        :class="!stepMenuShow['step2'].show ? 'rotate-180' : ''"
+                        :icon="['fas', 'chevron-up']"
+                    />
+                </div>
+                <div v-if="stepMenuShow['step2'].show">
+                    <CustomProduct
+                        class="mt-[20px]"
+                        v-model:currentProduct="currentDoorOut"
+                        :products="doorOutColors[0].doors"
+                    />
+                    <CustomProductColor
+                        class="mt-[20px]"
+                        v-model:currentColor="currentDoorOutColor"
+                        :colors="doorOutColors"
+                    />
+                </div>
+            </div>
+            <div class="border-b border-gray-300 pb-[30px]">
+                <div
+                    @click="stepMenuShow['step3'].show = !stepMenuShow['step3'].show"
+                    class="flex items-center mb-[30px] mt-[30px] cursor-pointer"
+                >
+                    <h3 class="flex-1 text-gray-800 text-[20px] font-medium YaleSolisW-Bd">{{ stepMenuShow["step3"].text }}</h3>
+                    <font-awesome-icon
+                        class="transition-all duration-500"
+                        :class="!stepMenuShow['step3'].show ? 'rotate-180' : ''"
+                        :icon="['fas', 'chevron-up']"
+                    />
+                </div>
                 <CustomProductLock
+                    v-if="stepMenuShow['step3'].show"
                     v-model:lockCategory="lockCategory"
                     v-model:currentLock="currentLock"
                     :locks="locks"
                 />
+            </div>
+            <div class="border-b border-gray-300 pb-[30px]">
+                <div
+                    @click="stepMenuShow['step4'].show = !stepMenuShow['step4'].show"
+                    class="flex items-center mb-[30px] mt-[30px] cursor-pointer"
+                >
+                    <h3 class="flex-1 text-gray-800 text-[20px] font-medium YaleSolisW-Bd">{{ stepMenuShow["step4"].text }}</h3>
+                    <font-awesome-icon
+                        class="transition-all duration-500"
+                        :class="!stepMenuShow['step4'].show ? 'rotate-180' : ''"
+                        :icon="['fas', 'chevron-up']"
+                    />
+                </div>
+                <div v-if="stepMenuShow['step4'].show">
+                    <CustomProduct
+                        class="mt-[20px]"
+                        title="掛門"
+                        v-model:currentProduct="currentTool1"
+                        :products="doorColors[0].doors"
+                    />
+                    <CustomProduct
+                        class="mt-[20px]"
+                        title="氣密條"
+                        v-model:currentProduct="currentTool2"
+                        :products="doorColors[0].doors"
+                    />
+                </div>
+            </div>
+            <div class="border-b border-gray-300 pb-[30px]">
+                <div
+                    @click="stepMenuShow['step5'].show = !stepMenuShow['step5'].show"
+                    class="flex items-center mb-[30px] mt-[30px] cursor-pointer"
+                >
+                    <h3 class="flex-1 text-gray-800 text-[20px] font-medium YaleSolisW-Bd">{{ stepMenuShow["step5"].text }}</h3>
+                    <font-awesome-icon
+                        class="transition-all duration-500"
+                        :class="!stepMenuShow['step5'].show ? 'rotate-180' : ''"
+                        :icon="['fas', 'chevron-up']"
+                    />
+                </div>
+                <div v-if="stepMenuShow['step5'].show">
+                    <CustomProductOtherChoose
+                        class="mt-[20px]"
+                        title="下將壓條"
+                        v-model:selectedProducts="currentOther1"
+                        :products="doorColors[0].doors"
+                    />
+                    <CustomProductOtherChoose
+                        class="mt-[20px]"
+                        title="門弓器"
+                        v-model:selectedProducts="currentOther2"
+                        :products="doorColors[0].doors"
+                    />
+                </div>
+            </div>
+            <div class="border-b border-gray-300 pb-[30px]">
+                <div
+                    @click="stepMenuShow['step6'].show = !stepMenuShow['step6'].show"
+                    class="flex items-center mb-[30px] mt-[30px] cursor-pointer"
+                >
+                    <h3 class="flex-1 text-gray-800 text-[20px] font-medium YaleSolisW-Bd">{{ stepMenuShow["step6"].text }}</h3>
+                    <font-awesome-icon
+                        class="transition-all duration-500"
+                        :class="!stepMenuShow['step6'].show ? 'rotate-180' : ''"
+                        :icon="['fas', 'chevron-up']"
+                    />
+                </div>
+                <CustomProductCount
+                    v-if="stepMenuShow['step6'].show"
+                    v-model:count="count"
+                />
+            </div>
+            <div class="border-b border-gray-300 pb-[30px]">
+                <div
+                    @click="stepMenuShow['step7'].show = !stepMenuShow['step7'].show"
+                    class="flex items-center mb-[30px] mt-[30px] cursor-pointer"
+                >
+                    <h3 class="flex-1 text-gray-800 text-[20px] font-medium YaleSolisW-Bd">{{ stepMenuShow["step7"].text }}</h3>
+                    <font-awesome-icon
+                        class="transition-all duration-500"
+                        :class="!stepMenuShow['step7'].show ? 'rotate-180' : ''"
+                        :icon="['fas', 'chevron-up']"
+                    />
+                </div>
+
+                <CustomProductOtherService
+                    v-if="stepMenuShow['step7'].show"
+                    v-model:selectedServices="selectedServices"
+                />
+            </div>
+            <div class="my-[30px] flex">
+                <div class="mr-[16px] flex-1">
+                    <button class="max-w-[207px] w-full text-center py-[11px] border border-gray-600 transition-all duration-500 hover:text-white hover:bg-black rounded-full">加入購物車</button>
+                </div>
+                <button class="max-w-[207px] w-full text-center py-[11px] bg-yellow-500 hover:bg-yellow-600 transition-all duration-500 rounded-full">結帳</button>
             </div>
         </div>
     </section>
@@ -41,13 +188,59 @@ import CustomProductPrewView from "~/views/template1/CustomProduct/components/Cu
 // 選擇場景
 import CustomProductBackground from "~/views/template1/CustomProduct/components/CustomProductBackground.vue";
 // 選擇門扇
-import CustomProductDoor from "~/views/template1/CustomProduct/components/CustomProductDoor.vue";
+import CustomProduct from "~/views/template1/CustomProduct/components/CustomProduct.vue";
 // 選擇顏色
 import CustomProductColor from "~/views/template1/CustomProduct/components/CustomProductColor.vue";
 // 選擇門鎖
 import CustomProductLock from "~/views/template1/CustomProduct/components/CustomProductLock.vue";
+// 內文資訊
+import CustomProductContent from "~/views/template1/CustomProduct/components/CustomProductContent.vue";
+// 門扇數量
+import CustomProductCount from "~/views/template1/CustomProduct/components/CustomProductCount.vue";
+// 額外服務
+import CustomProductOtherService from "~/views/template1/CustomProduct/components/CustomProductOtherService.vue";
+// 尺寸
+import CustomProductSize from "~/views/template1/CustomProduct/components/CustomProductSize.vue";
+// 方案
+import CustomProductPlan from "~/views/template1/CustomProduct/components/CustomProducPlan.vue";
+// 選擇選配區
+import CustomProductOtherChoose from "~/views/template1/CustomProduct/components/CustomProductOtherChoose.vue";
+import { current } from "tailwindcss/colors";
+const stepMenuShow = ref({
+    step1: {
+        show: true,
+        text: "01 選擇門扇",
+    },
+    step2: {
+        show: true,
+        text: "02 選擇門框",
+    },
+    step3: {
+        show: true,
+        text: "03 選擇門鎖",
+    },
+    step4: {
+        show: true,
+        text: "04 選擇基本五金",
+    },
+    step5: {
+        show: true,
+        text: "05 選配區",
+    },
+    step6: {
+        show: true,
+        text: "06 門扇數量",
+    },
+    step7: {
+        show: true,
+        text: "07 施作服務",
+    },
+});
+
 // 預設選擇場景
 const currentBackground = ref("id1");
+// 預設選擇方案
+const currentPlan = ref("id1");
 // 預設選擇門扇
 const currentDoor = ref("id1");
 // 預設選擇門扇
@@ -58,8 +251,20 @@ const currentDoorOut = ref("id1");
 const currentDoorOutColor = ref("id1");
 // 預設選擇門的角度
 const currentAngle = ref("front");
+// 選擇基本五金 掛門 參數值
+const currentTool1 = ref("id1");
+// 選擇基本五金 氣密條 參數值
+const currentTool2 = ref("id1");
+// 選擇選配區 下將壓條
+const currentOther1 = ref("id1");
+// 選擇選配區 門弓器
+const currentOther2 = ref("id1");
 // 預設選擇鎖種類 default = 水平把手; smartLock = 智慧電子鎖
 const lockCategory = ref("default");
+// 訂購數量
+const count = ref(1);
+// 選擇得服務
+const selectedServices = ref([]);
 // 預設選擇鎖樣式
 const currentLock = ref({
     imgSrc: "/img/custom-product/demo/custom-product-door-demo-1.jpg",
@@ -68,7 +273,7 @@ const currentLock = ref({
     price: 20000,
 });
 // 門扇資料
-const doors = ref([]);
+const doors = ref<any>([]);
 // 門扇假資料
 for (let i = 1; i < 6; i++) {
     doors.value.push({
@@ -102,7 +307,7 @@ const doorColors = ref([
     },
 ]);
 // 門框資料
-const doorsOut = ref([]);
+const doorsOut = ref<any>([]);
 // 門框假資料
 for (let i = 1; i < 6; i++) {
     doorsOut.value.push({
@@ -137,7 +342,7 @@ const doorOutColors = ref([
 ]);
 
 // 鎖的種類
-const locks = ref({
+const locks = ref<any>({
     default: [],
     smartLock: [],
 });
@@ -156,4 +361,22 @@ for (let i = 1; i < 20; i++) {
         id: `id${i}`,
     });
 }
+
+// 尺寸
+const doorSizes = ref<any>([]);
+
+for (let i = 1; i < 5; i++) {
+    doorSizes.value.push({
+        id: `id${i}`,
+        // 門高
+        height: "200cm-215cm",
+        // 門寬
+        width: "100cm",
+        // 門厚
+        bold: "7cm",
+    });
+}
+
+// 預設選擇尺寸
+const currentDoorSize = ref("id1");
 </script>

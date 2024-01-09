@@ -81,7 +81,7 @@
                     <div class="my-[30px]">
                         <button class="max-w-[387px] w-full text-center py-[11px] border border-gray-600 transition-all duration-500 hover:text-white hover:bg-black rounded-full">加入購物車</button>
                         <div class="mt-[12px]">
-                            <button class="max-w-[387px] w-full text-center py-[11px] bg-yellow-500 hover:bg-yellow-600 transition-all duration-500 rounded-full">加入購物車</button>
+                            <button class="max-w-[387px] w-full text-center py-[11px] bg-yellow-500 hover:bg-yellow-600 transition-all duration-500 rounded-full">結帳</button>
                         </div>
                     </div>
                     <div class="bg-gray-50 p-[30px] max-w-[387px] rounded-xl mb-[20px]">
