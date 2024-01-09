@@ -109,12 +109,13 @@ async function getList(params: { per_page: number; page: number; article_categor
 
         pagination.value.total = meta.total;
 
-        rows.forEach((item: { title: any; description: any; thumbnail: any; published_at: any; id: any }) => {
+        rows.forEach((item: { title: any; description: any; thumbnail: any; published_at: any; id: any; is_top: any }) => {
             datas.value.push({
                 title: item.title,
                 content: item.description,
                 imgSrc: item.thumbnail,
                 date: $utils().formatToDate(item.published_at),
+                is_top: item.is_top,
                 url: {
                     name: "sample-details-slug",
                     params: { slug: route.params.slug },

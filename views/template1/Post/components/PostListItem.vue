@@ -22,7 +22,7 @@
                 <div class="text-center mr-[16px] w-[90px] border border-gray-300 py-[6px] px-[12px] text-gray-400 text-[12px]">
                     <span>{{ item.date }}</span>
                 </div>
-                <span
+                <span v-if="item.is_top"
                     ><img
                         class="w-[28px]"
                         src="/img/news/pin-icon.svg"
@@ -34,10 +34,10 @@
 
 <script setup lang="ts">
 interface Props {
-    datas: { title: string; content: string; imgSrc: string; date: string; url: { name: string; params?: { slug?: string }; query: any } }[];
+    datas: { title: string; content: string; is_top: number; imgSrc: string; date: string; url: { name: string; params?: { slug?: string }; query: any } }[];
 }
 const props = withDefaults(defineProps<Props>(), {
-    datas: [{ title: "title", content: "is content", imgSrc: "/img/logo-1.svg", url: { name: "index", params: { slug: "home" } } }],
+    datas: [{ title: "title", content: "is content", is_top: 0, imgSrc: "/img/logo-1.svg", url: { name: "index", params: { slug: "home" } } }],
 });
 
 const router = useRouter();

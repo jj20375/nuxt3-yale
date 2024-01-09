@@ -51,6 +51,7 @@
         "h3": "^1.6.2",
         "js-cookie": "^3.0.1",
         "jwt-decode": "^3.1.2",
+        "libphonenumber-js": "^1.10.53",
         "moment": "^2.29.4",
         "nuxt-swiper": "^1.2.2",
         "pinia": "^2.1.6",

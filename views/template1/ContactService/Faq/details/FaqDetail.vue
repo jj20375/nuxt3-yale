@@ -82,7 +82,7 @@ const sidebar = ref<any>([]);
  */
 async function getType() {
     try {
-        const { data } = await $api().fqaTypeAPI();
+        const { data } = await $api().FQATypeAPI();
         sidebar.value = [];
         console.log("home sampleType api => ", data.value);
 
@@ -113,7 +113,7 @@ const content = ref("");
  */
 async function getDetail(params: { fqaId: any }) {
     try {
-        const { data } = await $api().fqaDetailAPI(params);
+        const { data } = await $api().FQADetailAPI(params);
         console.log("home sample api => ", data.value);
         const detail = (data.value as any).data;
 

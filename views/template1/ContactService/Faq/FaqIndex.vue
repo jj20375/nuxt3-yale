@@ -63,7 +63,7 @@ const sidebar = ref<any>([]);
  */
 async function getType() {
     try {
-        const { data } = await $api().fqaTypeAPI();
+        const { data } = await $api().FQATypeAPI();
         sidebar.value = [];
         console.log("home sampleType api => ", data.value);
 
@@ -100,7 +100,7 @@ const datas = ref<any>([]);
  */
 async function getList(params: { fqa_category_id: any }) {
     try {
-        const { data } = await $api().fqaListAPI(params);
+        const { data } = await $api().FQAListAPI(params);
         datas.value = [];
         console.log("home sample api => ", data.value);
 
