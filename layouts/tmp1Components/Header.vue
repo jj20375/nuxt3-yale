@@ -9,7 +9,7 @@
                     <NuxtLink :to="{ name: 'index' }">
                         <NuxtImg
                             class="h-[66px] w-[66px]"
-                            src="/img/logo/logo-1.svg"
+                            :src="initializationData.site.site_logo"
                             :alt="$config.public.webSite"
                         />
                     </NuxtLink>
@@ -96,13 +96,51 @@
 
 <script lang="ts" setup>
 import { useTemplateStore } from "~/store/templateStore";
+import { useInitializationStore } from "~/store/initializationStore";
 
 const $config = useRuntimeConfig();
 const router = useRouter();
 const route = useRoute();
 const templateStore = useTemplateStore();
+const initializationStore = useInitializationStore();
 
 const isHomeMenuFixed = computed(() => templateStore.isHomeMenuFixed);
+
+const initializationData = computed(() => {
+    return JSON.parse(JSON.stringify(initializationStore.initializationData));
+});
+
+// 裝修實績
+const renovation_categories: { id: any; imgSrc: any; text: any; url: { params: { slug: any }; query: { id: any }; name: string } }[] = [];
+
+initializationData.value.site.renovation_categories.forEach((item: { id: any; image: any; name: any }) => {
+    renovation_categories.push({
+        id: item.id,
+        imgSrc: item.image,
+        text: item.name,
+        url: {
+            params: { slug: item.name },
+            query: { id: item.id },
+            name: "sample-slug",
+        },
+    });
+});
+
+// 展示門市
+const stronghold_categories: { id: any; imgSrc: any; text: any; url: { params: { slug: any }; query: { id: any }; name: string } }[] = [];
+
+initializationData.value.site.stronghold_categories.forEach((item: { id: any; icon: any; name: any }) => {
+    stronghold_categories.push({
+        id: item.id,
+        imgSrc: item.icon,
+        text: item.name,
+        url: {
+            params: { slug: item.name },
+            query: { id: item.id },
+            name: item.id === 2 ? "store-e-commerce-slug" : "store-slug",
+        },
+    });
+});
 
 const menus = ref<any>({
     menu1: {
@@ -139,28 +177,7 @@ const menus = ref<any>({
             query: { id: "1" },
         },
         marginSize: "mr-[40px]",
-        submenus: [
-            {
-                id: "id1",
-                imgSrc: "/img/menu/sample/menu-sample-1.jpg",
-                text: "訂製門扇",
-                url: {
-                    params: { slug: "耶魯裝修實績-訂製門扇" },
-                    query: { id: "3" },
-                    name: "sample-slug",
-                },
-            },
-            {
-                id: "id2",
-                imgSrc: "/img/menu/sample/menu-sample-2.jpg",
-                text: "電子鎖",
-                url: {
-                    params: { slug: "耶魯裝修實績-電子鎖" },
-                    query: { id: "1" },
-                    name: "sample-slug",
-                },
-            },
-        ],
+        submenus: renovation_categories,
     },
     menu5: {
         title: "展示門市",
@@ -170,48 +187,7 @@ const menus = ref<any>({
             query: { id: "id1" },
         },
         marginSize: "mr-[80px]",
-        submenus: [
-            {
-                id: "id1",
-                imgSrc: "/img/menu/store/menu-store-icon-1.svg",
-                text: "直營門市",
-                url: {
-                    params: { slug: "直營門市" },
-                    query: { id: "1" },
-                    name: "store-slug",
-                },
-            },
-            {
-                id: "id2",
-                imgSrc: "/img/menu/store/menu-store-icon-2.svg",
-                text: "授權展售店",
-                url: {
-                    params: { slug: "授權展售店" },
-                    query: { id: "3" },
-                    name: "store-slug",
-                },
-            },
-            {
-                id: "id3",
-                imgSrc: "/img/menu/store/menu-store-icon-3.svg",
-                text: "全國電子通路",
-                url: {
-                    params: { slug: "全國電子通路" },
-                    query: { id: "4" },
-                    name: "store-slug",
-                },
-            },
-            {
-                id: "id4",
-                imgSrc: "/img/menu/store/menu-store-icon-4.svg",
-                text: "電商通路",
-                url: {
-                    params: { slug: "電商通路" },
-                    query: { id: "2" },
-                    name: "store-e-commerce-slug",
-                },
-            },
-        ],
+        submenus: stronghold_categories,
     },
     menu6: {
         title: "產品資訊",

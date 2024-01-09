@@ -6,7 +6,7 @@
                     <li class="mr-[128px]">
                         <NuxtImg
                             class="min-w-[136px] max-w-[136px] w-full"
-                            src="/img/logo/logo-1.svg"
+                            :src="initializationData.site.site_logo"
                             alt=""
                         />
                     </li>
@@ -20,10 +20,9 @@
                             <li
                                 class="my-[17px] text-[14px] hover:text-yellow-400 duration-500 transition-all"
                                 v-for="(menu, index) in data.menus"
+                                :key="index"
                             >
-                                <NuxtLink :to="{ path: menu.url }">
-                                    {{ menu.text }}
-                                </NuxtLink>
+                                <NuxtLink :to="menu.url">{{ menu.text }}</NuxtLink>
                             </li>
                         </ul>
                     </li>
@@ -32,8 +31,11 @@
                             <li
                                 v-for="(icon, index) in contact.icons"
                                 class="text-[24px]"
+                                :key="index"
                             >
-                                <a :href="icon.url" class="hover:text-yellow-400 transition-all"
+                                <a
+                                    :href="icon.url"
+                                    class="hover:text-yellow-400 transition-all"
                                     ><font-awesome-icon :icon="['fab', icon.iconName]" />
                                 </a>
                             </li>
@@ -61,6 +63,46 @@
 </template>
 
 <script setup lang="ts">
+import { useInitializationStore } from "~/store/initializationStore";
+
+const initializationStore = useInitializationStore();
+
+const initializationData = computed(() => {
+    return JSON.parse(JSON.stringify(initializationStore.initializationData));
+});
+
+// 裝修實績
+const renovation_categories: { id: any; imgSrc: any; text: any; url: { params: { slug: any }; query: { id: any }; name: string } }[] = [];
+
+initializationData.value.site.renovation_categories.forEach((item: { id: any; image: any; name: any }) => {
+    renovation_categories.push({
+        id: item.id,
+        imgSrc: item.image,
+        text: item.name,
+        url: {
+            params: { slug: item.name },
+            query: { id: item.id },
+            name: "sample-slug",
+        },
+    });
+});
+
+// 展示門市
+const stronghold_categories: { id: any; imgSrc: any; text: any; url: { params: { slug: any }; query: { id: any }; name: string } }[] = [];
+
+initializationData.value.site.stronghold_categories.forEach((item: { id: any; icon: any; name: any }) => {
+    stronghold_categories.push({
+        id: item.id,
+        imgSrc: item.icon,
+        text: item.name,
+        url: {
+            params: { slug: item.name },
+            query: { id: item.id },
+            name: item.id === 2 ? "store-e-commerce-slug" : "store-slug",
+        },
+    });
+});
+
 const footerDatas = ref({
     footer1: {
         title: "PRODUCTS",
@@ -85,24 +127,7 @@ const footerDatas = ref({
     },
     footer2: {
         title: "STORE",
-        menus: [
-            {
-                text: "直營門市",
-                url: "",
-            },
-            {
-                text: "授權展售店",
-                url: "",
-            },
-            {
-                text: "全國電子通路",
-                url: "",
-            },
-            {
-                text: "電商通路",
-                url: "",
-            },
-        ],
+        menus: stronghold_categories,
     },
 
     footer3: {
@@ -110,23 +135,43 @@ const footerDatas = ref({
         menus: [
             {
                 text: "常見問答",
-                url: "",
+                url: {
+                    name: "faq-slug",
+                    params: { slug: "耶魯服務中心" },
+                    query: { id: "1" },
+                },
             },
             {
                 text: "維修與保固",
-                url: "",
+                url: {
+                    name: "repair-slug",
+                    params: { slug: "耶魯維修與保固" },
+                    query: { id: "1" },
+                },
             },
             {
                 text: "檔案下載",
-                url: "",
+                url: {
+                    name: "file-download-slug",
+                    params: { slug: "耶魯檔案下載" },
+                    query: { id: "1" },
+                },
             },
             {
                 text: "預約安裝",
-                url: "",
+                url: {
+                    name: "reservation-slug",
+                    params: { slug: "耶魯預約安裝" },
+                    query: { id: "1" },
+                },
             },
             {
                 text: "聯絡我們",
-                url: "",
+                url: {
+                    name: "contact-slug",
+                    params: { slug: "耶魯聯絡我們" },
+                    query: { id: "1" },
+                },
             },
         ],
     },
@@ -139,11 +184,19 @@ const footerDatas = ref({
             },
             {
                 text: "最新消息",
-                url: "",
+                url: {
+                    name: "news-slug",
+                    params: { slug: "slug" },
+                    query: { id: "4" },
+                },
             },
             {
                 text: "裝修實績",
-                url: "",
+                url: {
+                    name: "sample-slug",
+                    params: { slug: "耶魯裝修實績" },
+                    query: { id: "3" },
+                },
             },
             {
                 text: "Yale Home APP",
@@ -176,12 +229,12 @@ const contact = ref({
             url: "",
         },
     ],
-    name: "灝翔有限公司",
-    phone: "0800-314-109",
+    name: initializationData.value.site.site_name,
+    phone: initializationData.value.site.contact_phone,
 });
 
 const copyright = {
-    text: "灝翔有限公司 © Copyright All Rights Reserved. Powerd by 可思科技-網站架設",
+    text: `${initializationData.value.site.site_name} © Copyright All Rights Reserved. Powerd by 可思科技-網站架設`,
     caluses: [
         { text: "隱私權政策", url: "" },
         { text: "網站服務條款", url: "" },
