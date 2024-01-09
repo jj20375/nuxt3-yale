@@ -35,7 +35,7 @@ export const useOauthStore = defineStore({
                     if (!useNuxtApp().$utils().isEmpty(error.value.data.error)) {
                         // 判斷狀態值為 401 且 錯誤代碼為1014 代表此第三方帳號尚未與 平台帳號綁定
                         if (error.value.statusCode === 401 && error.value.data.error.error === 1014) {
-                            router.push({ name: "register-socialMedia-accessToken", params: { socialMedia: "facebook" }, query: { accessToken: token } });
+                            router.push({ name: "Register-socialMedia-accessToken", params: { socialMedia: "facebook" }, query: { accessToken: token } });
                             return;
                         }
                         // 停權後導向申訴頁
@@ -89,7 +89,7 @@ export const useOauthStore = defineStore({
                     return;
                 }
                 // 尚未登入
-                console.log("is fb not login");
+                console.log("is fb not Login");
             });
         },
         /**
@@ -113,7 +113,7 @@ export const useOauthStore = defineStore({
                         console.log("error.value.data => ", error.value.statusCode, error.value.data.error.error);
                         // 判斷狀態值為 401 且 錯誤代碼為1014 代表此第三方帳號尚未與 平台帳號綁定
                         if (error.value.statusCode === 401 && error.value.data.error.error === 1014) {
-                            router.push({ name: "register-socialMedia-accessToken", params: { socialMedia: "google" }, query: { accessToken: accessToken } });
+                            router.push({ name: "Register-socialMedia-accessToken", params: { socialMedia: "google" }, query: { accessToken: accessToken } });
                             return;
                         }
                         // 停權後導向申訴頁
@@ -250,11 +250,11 @@ export const useOauthStore = defineStore({
                             // 判斷是否走 liff 瀏覽器
                             if (isLiff) {
                                 nextTick(() => {
-                                    router.push({ name: "register-socialMedia-accessToken", params: { socialMedia: "line" }, query: { accessToken: token, isLiff: String(isLiff), orderId: query.id } });
+                                    router.push({ name: "Register-socialMedia-accessToken", params: { socialMedia: "line" }, query: { accessToken: token, isLiff: String(isLiff), orderId: query.id } });
                                 });
                             } else {
                                 nextTick(() => {
-                                    router.push({ name: "register-socialMedia-accessToken", params: { socialMedia: "line" }, query: { accessToken: token } });
+                                    router.push({ name: "Register-socialMedia-accessToken", params: { socialMedia: "line" }, query: { accessToken: token } });
                                 });
                             }
                             return;

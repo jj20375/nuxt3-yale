@@ -1,0 +1,32 @@
+// 修改element的表單樣式
+.custom-form {
+  .form-item {
+    @apply relative flex flex-col justify-stretch flex-wrap mb-0 bg-white;
+    font-size: 16px;
+    .el-input__wrapper{
+      padding-left: 8px;
+      padding-right: 8px;
+    }
+    .el-form-item__label {
+      justify-content: flex-start;
+      text-align: start;
+      font-weight: 400;
+      font-size: 15px;
+    }
+    .el-form-item__content{
+      .el-input__wrapper {
+        @apply shadow-formDefault rounded-none py-1.5 px-0 bg-transparent text-[16px];
+        &.is-focus{
+          @apply shadow-formFocus;
+        }
+        .el-input__inner {
+          @apply text-gray-800;
+
+          &::placeholder {
+            @apply text-gray-300;
+          }
+        }
+      }
+    }
+  }
+}
