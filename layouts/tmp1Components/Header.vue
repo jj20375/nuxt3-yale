@@ -294,7 +294,10 @@ const rightIcons = ref([
     {
         imgSrc: "/img/icons/user.svg",
         url: {
-            path: "/",
+            name: "auth-login-slug",
+            params: {
+                slug: "耶魯會員註冊",
+            },
         },
     },
     {

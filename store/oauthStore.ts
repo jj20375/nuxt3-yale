@@ -89,7 +89,7 @@ export const useOauthStore = defineStore({
                     return;
                 }
                 // 尚未登入
-                console.log("is fb not login");
+                console.log("is fb not Login");
             });
         },
         /**
