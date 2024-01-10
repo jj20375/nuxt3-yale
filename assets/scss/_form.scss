@@ -1,32 +1,118 @@
 // 修改element的表單樣式
 .custom-form {
-  .form-item {
-    @apply relative flex flex-col justify-stretch flex-wrap mb-0 bg-white;
-    font-size: 16px;
-    .el-input__wrapper{
-      padding-left: 8px;
-      padding-right: 8px;
+  .el-form-item {
+    @apply relative flex flex-col justify-stretch flex-wrap mb-0 bg-white text-base;
+    .el-form-item__label{
+      @apply justify-start text-[15px];
     }
-    .el-form-item__label {
-      justify-content: flex-start;
-      text-align: start;
-      font-weight: 400;
-      font-size: 15px;
+    .el-input__wrapper{
+      @apply px-2;
     }
     .el-form-item__content{
-      .el-input__wrapper {
-        @apply shadow-formDefault rounded-none py-1.5 px-0 bg-transparent text-[16px];
-        &.is-focus{
-          @apply shadow-formFocus;
+      // 輸入框
+      .el-input{
+        &.is-disabled{
+          @apply bg-gray-50;
+          .el-input__wrapper {
+            @apply p-1.5;
+            .el-input__inner{
+              -webkit-text-fill-color: #2d2c2e;
+            }
+          }
         }
-        .el-input__inner {
-          @apply text-gray-800;
+        .el-input__wrapper {
+          @apply shadow-formDefault rounded-none py-1.5 px-0 bg-transparent text-[16px] #{!important};
+          &.is-focus{
+            @apply shadow-formFocus #{!important};
+          }
+          .el-input__inner {
+            @apply text-gray-800;
 
-          &::placeholder {
-            @apply text-gray-300;
+            &::placeholder {
+              -webkit-text-fill-color: #ABABAC;
+            }
           }
         }
       }
+      // 單選
+      .el-checkbox{
+        .el-checkbox__label{
+          @apply text-gray-800 font-normal text-[15px] #{!important};
+        }
+        .el-checkbox__input{
+          .el-checkbox__inner {
+            &:hover{
+              @apply border-yellow-600;
+            }
+          }
+          &.is-checked{
+            .el-checkbox__inner {
+              @apply border-yellow-600 bg-yellow-600;
+            }
+          }
+        }
+      }
+      // 日曆
+      .el-date-editor{
+        @apply w-full h-[42px];
+        .el-input__wrapper{
+
+        }
+      }
+    }
+    .el-form-item__error{
+      @apply text-red-700 pt-2;
     }
   }
+  .el-form-item.is-required:not(.is-no-asterisk).asterisk-right > .el-form-item__label:after, .el-form-item.is-required:not(.is-no-asterisk).asterisk-right > .el-form-item__label-wrap > .el-form-item__label:after{
+    @apply text-red-500;
+  }
 }
+
+// 日曆樣式改成黃色
+.date-box {
+  .el-picker-panel__icon-btn {
+    margin-top: 0;
+
+    &:hover {
+      @apply text-yellow-600;
+    }
+  }
+
+  .el-date-table td.current:not(.disabled) .el-date-table-cell__text {
+    @apply bg-yellow-600;
+  }
+
+  .el-date-table td.today .el-date-table-cell__text {
+    @apply text-yellow-600;
+  }
+
+  .el-month-table td.today .cell {
+    @apply text-yellow-600;
+  }
+
+  .el-date-picker__header-label:hover {
+    @apply text-yellow-600;
+  }
+
+  .el-year-table td.today .cell {
+    @apply text-yellow-600;
+  }
+
+  .el-month-table td.current:not(.disabled) .cell {
+    @apply text-yellow-600;
+  }
+
+  .el-month-table td .cell:hover {
+    @apply text-yellow-600;
+  }
+
+  .el-date-table td.available:hover {
+    @apply text-yellow-600;
+  }
+
+  .el-date-table th {
+    text-align: center;
+  }
+}
+
