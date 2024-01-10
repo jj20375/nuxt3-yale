@@ -5,7 +5,7 @@
 </template>
 
 <script setup lang="ts">
-const AsyncComp = defineAsyncComponent(() => import("~/views/template1/Auth/Register/RegisterSuccess.vue"));
+const AsyncComp = defineAsyncComponent(() => import("~/views/template1/Auth/Panel/LogoutSuccess.vue"));
 definePageMeta({
     middleware: [],
 });

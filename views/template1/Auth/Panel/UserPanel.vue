@@ -15,7 +15,7 @@
                         <div class="mb-1.5">您好，王小明</div>
                     </div>
                     <NuxtLink
-                        :to="{ name: 'index', params: { slug: '' }}"
+                        :to="{ name: 'auth-panel-logout-slug', params: { slug: '登出成功' }}"
                     >
                         <div
                             class="flex gap-2 mb-1.5 cursor-pointer transition-all duration-400 hover:text-gray-500 hover:transition-all hover:duration-400">
