@@ -110,9 +110,13 @@
                             </el-checkbox>
                         </el-form-item>
                         <div class="flex justify-center col-span-2 mt-10">
-                            <button class="yellow-btn btn-lg !py-3">
-                                立即註冊
-                            </button>
+                            <NuxtLink
+                                :to="{ name: 'auth-register-success-slug', params: { slug: '註冊成功' }}"
+                            >
+                                <button class="yellow-btn btn-lg !py-3">
+                                    立即註冊
+                                </button>
+                            </NuxtLink>
                         </div>
                     </div>
                 </el-form>
@@ -143,11 +147,12 @@ const form = ref<any>({
     name: "",
     email: "",
     cellphone: "",
+    telephone: "",
     birthday: "",
     gender: "",
     city: "",
     location: "",
-    zip3: "235",
+    zip3: "235", // TODO 這邊是測試用資料，串完請清空
     password: "",
     confirmPassword: "",
     agree: false,

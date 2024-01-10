@@ -34,7 +34,7 @@
           }
         }
       }
-      // 單選
+      // 單選(checkbox)
       .el-checkbox{
         .el-checkbox__label{
           @apply text-gray-800 font-normal text-[15px] #{!important};
@@ -47,6 +47,21 @@
           }
           &.is-checked{
             .el-checkbox__inner {
+              @apply border-yellow-600 bg-yellow-600;
+            }
+          }
+        }
+      }
+      // 單選(radio)
+      .el-radio{
+        .el-radio__input{
+          .el-radio__inner{
+            &:hover{
+              @apply border-yellow-600;
+            }
+          }
+          &.is-checked{
+            .el-radio__inner {
               @apply border-yellow-600 bg-yellow-600;
             }
           }
