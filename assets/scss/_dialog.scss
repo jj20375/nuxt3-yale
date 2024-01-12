@@ -1,0 +1,10 @@
+// 修改 element dialog的樣式
+.custom-dialog{
+  @apply rounded-2xl #{!important};
+  .el-dialog__close{
+    @apply text-[20px] text-yellow-600 #{!important};
+  }
+  .el-dialog__body{
+    @apply p-[40px] pt-2 #{!important};
+  }
+}
