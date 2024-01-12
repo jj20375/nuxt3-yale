@@ -34,7 +34,8 @@
                         :key="index"
                     >
                         <NuxtLink :to="item.url">
-                            <div class="flex flex-col gap-3 items-center bg-gray-100 rounded-[8px] py-12">
+                            <div
+                                class="relative flex flex-col gap-3 items-center bg-gray-100 transition-all duration-300 hover:bg-transparent hover:transition-all hover:duration-300 rounded-[8px] py-12 after:absolute after:w-full after:h-full after:top-0 after:left-0 after:from-yellow-100 after:to-yellow-500 after:rounded-[8px] after:bg-gradient-[296deg] after:bg-gradient-to-br after:opacity-0 after:-z-[1] after:transition-all after:duration-300 hover:after:opacity-100">
                                 <NuxtImg
                                     class="w-[24px] aspect-1/1"
                                     :src="item.imgSrc"
@@ -93,8 +94,8 @@ const panelDatas = ref([
     {
         title: "一般產品-訂單記錄",
         url: {
-            name: "",
-            params: { slug: "slug" }
+            name: "auth-order-slug",
+            params: { slug: "訂單記錄" }
         },
         imgSrc: "img/icons/auth/order-record.svg"
     },
