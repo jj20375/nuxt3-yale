@@ -5,14 +5,23 @@
                 class="w-full"
                 :src="'/img/custom-product/demo/background/custom-product-background-' + backgroundImg + '.jpg'"
             />
-            <div class="absolute z-10">
-                <NuxtImg :src="productData.door[currentViewAngleData]" />
+            <div class="absolute z-10 w-full">
+                <NuxtImg
+                    class="w-full"
+                    :src="productData.door[currentViewAngleData]"
+                />
             </div>
-            <div class="absolute">
-                <NuxtImg :src="productData.doorOut[currentViewAngleData]" />
+            <div class="absolute w-full">
+                <NuxtImg
+                    class="w-full"
+                    :src="productData.doorOut[currentViewAngleData]"
+                />
             </div>
-            <div class="absolute z-20">
-                <NuxtImg :src="productData.lock[currentViewAngleData]" />
+            <div class="absolute z-20 w-full">
+                <NuxtImg
+                    class="w-full"
+                    :src="productData.lock[currentViewAngleData]"
+                />
             </div>
         </div>
         <ul class="flex justify-center mt-[12px]">
