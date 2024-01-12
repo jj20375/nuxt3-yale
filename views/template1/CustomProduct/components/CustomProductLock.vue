@@ -58,7 +58,7 @@ const emit = defineEmits(["update:lockCategory", "update:currentLock"]);
 const props = defineProps({
     lockCategory: {
         type: String,
-        default: "default",
+        default: "handle",
     },
     // 預設選中的鎖
     currentLock: {
@@ -90,11 +90,11 @@ const props = defineProps({
 const lockCategories = ref([
     {
         text: "水平把手",
-        value: "default",
+        value: "handle",
     },
     {
         text: "智慧電子鎖",
-        value: "smartLock",
+        value: "lock",
     },
 ]);
 
