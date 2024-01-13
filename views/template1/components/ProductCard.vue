@@ -6,7 +6,7 @@
             @mouseleave="mouseleaveEvent(product.id)"
         >
             <NuxtImg
-                class="object-cover w-full rounded-2xl aspect-1/1"
+                class="object-cover w-full rounded-2xl aspect-square object-cover"
                 src="/img/home/product/product1.jpg"
             />
             <div

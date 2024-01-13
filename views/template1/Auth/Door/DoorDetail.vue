@@ -9,7 +9,7 @@
         </nav>
         <div class="container">
             <div class="pt-[60px] pb-[100px]">
-                <NuxtLink :to="{ name: 'auth-order-slug' }">
+                <NuxtLink :to="{ name: 'auth-door-slug' }">
                     <div class="flex">
                         <NuxtImg
                             class="w-[16px] mr-[5px]"
@@ -30,7 +30,7 @@
                 </div>
                 <RecordTimeline :orderNumber="orderData.orderNumber" :timeline="orderData.timeline" />
                 <div class="mt-12">
-                    <h4 class="font-bold mb-3">配送資訊</h4>
+                    <h4 class="font-bold mb-3">安裝資訊</h4>
                     <div class="border-b-[1px] border-gray-200 pb-5">
                         <div
                             class="grid grid-cols-2 gap-4 w-[100%] 2xl:w-[85%] 3xl:w-[70%]">
@@ -44,7 +44,7 @@
                                 聯絡電話：{{ orderData?.info?.phone }}
                             </div>
                             <div v-if="orderData?.info?.address" class="text-gray-700">
-                                門市名稱/收件地址：{{ orderData?.info?.address }}
+                                安裝地址：{{ orderData?.info?.address }}
                             </div>
                         </div>
                     </div>
@@ -107,10 +107,9 @@
                 v-model="dialogRefund"
             >
                 <h3 class="text-center text-gray-800 font-bold text-[24px] mb-4">取消訂單</h3>
-                <div class="text-center text-gray-800 text-[20px]">是否確定取消此筆預約</div>
+                <div class="text-center text-gray-800 text-[20px]">請撥打服務專線 0912345678<br/>取消此筆訂單</div>
                 <div class="flex gap-4 justify-center mt-6">
-                    <button class="transparent-btn btn-sm" @click="dialogRefund = false">否</button>
-                    <button class="yellow-btn btn-sm" @click="dialogRefund = false">是</button>
+                    <button class="yellow-btn btn-sm" @click="dialogRefund = false">確認</button>
                 </div>
             </el-dialog>
         </client-only>
@@ -135,12 +134,12 @@ const breadcrumbs = ref([
         params: { slug: "會員中心" }
     },
     {
-        name: "auth-order-slug",
-        text: "一般產品-訂單記錄",
-        params: { slug: "一般產品-訂單記錄" }
+        name: "auth-door-slug",
+        text: "訂製門扇-訂單記錄",
+        params: { slug: "訂製門扇-訂單記錄" }
     },
     {
-        name: "auth-order-detail-slug",
+        name: "auth-door-detail-slug",
         text: "#20211010001",
         params: { slug: "#20211010001" }
     }
@@ -159,7 +158,7 @@ const orderData = ref({
         {
             date: "2022-06-11",
             time: "11:00",
-            status: "未付款"
+            status: "代支付訂金"
         },
         {
             date: "2022-06-20",
@@ -192,26 +191,24 @@ const orderData = ref({
     products: [
         {
             name: "YDM 7216A 指紋卡片密碼鑰匙四合一",
-            color: "黑色",
+            color: "",
+            fireproof: "是",
+            size: "門高：200cm-215cm  門寬：100cm  門厚：7cm",
+            doorLeaf: ["現代北歐玄關門", "R53", "米白"],
+            doorFrame: ["門框型號一", "fuden wood door frame", "曜石黑"],
+            doorLock: ["卡片密碼鑰匙三合一電子鎖","YDM 7116A"],
+            doorHanging: "蝴蝶鉸鍊",
+            doorSealStrip: "ABC132",
+            doorGasket: "外裝式下降壓條",
+            doorOperator: "隱藏式門弓器",
+            otherService: ["• 拆除及清運", "• 泥作"],
             quantity: 1,
-            price: 3000,
-            image: "/img/shopping-car/shopping-gift-demo-1.jpg",
+            image: "/img/home/product/product1.jpg",
             rule: {
-                needPrice: 3000, // 滿額贈
+                needPrice: NaN, // 滿額贈
                 getFree: false, // 加價購
             }
         },
-        {
-            name: "YDM 7216A 指紋卡片密碼鑰匙四合一",
-            color: "紅色",
-            quantity: 3,
-            price: 7000,
-            image: "/img/shopping-car/shopping-gift-demo-1.jpg",
-            rule: {
-                needPrice: NaN, // 滿額贈
-                getFree: true, // 加價購
-            }
-        }
     ],
     price: {
         deliveryFee: 0,
@@ -229,6 +226,6 @@ const orderData = ref({
         totalPrice: 43399,
         memo: "備註內容備註內容備註內容備註內容備註內容備註內容備註內容備註內容備註內容備註內容備註內容備註內容"
     }
-})
+});
 
 </script>

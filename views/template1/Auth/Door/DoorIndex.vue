@@ -9,7 +9,7 @@
         </nav>
         <div class="container">
             <div class="pt-[60px] pb-[100px]">
-                <h3 class="text-[32px] font-bold mb-6">一般產品-訂單記錄</h3>
+                <h3 class="text-[32px] font-bold mb-6">訂製門扇-訂單記錄</h3>
                 <RecordTable :tableHeadData="tableHeadData" :tableBodyData="tableBodyData" />
                 <Pagination class="flex justify-center mb-[95px] mt-[80px]" />
             </div>
@@ -32,9 +32,9 @@ const breadcrumbs = ref([
         params: { slug: "會員中心" }
     },
     {
-        name: "auth-order-slug",
-        text: "一般產品-訂單記錄",
-        params: { slug: "一般產品-訂單記錄" }
+        name: "auth-door-slug",
+        text: "訂製門扇-訂單記錄",
+        params: { slug: "訂製門扇-訂單記錄" }
     }
 ]);
 
@@ -48,9 +48,9 @@ const tableBodyData = [
         date: "2021-10-10",
         quantity: "10",
         price: 8888,
-        status: "未付款",
+        status: "待支付訂金",
         url: {
-            name: "auth-order-detail-slug",
+            name: "auth-door-detail-slug",
             params: { slug: "訂單資訊" },
             query: { id: "1" },
         }
@@ -60,9 +60,9 @@ const tableBodyData = [
         date: "2021-10-10",
         quantity: "10",
         price: 1111,
-        status: "處理中",
+        status: "待付尾款",
         url: {
-            name: "auth-order-detail-slug",
+            name: "auth-door-detail-slug",
             params: { slug: "訂單資訊" },
             query: { id: "1" },
         }
@@ -72,9 +72,9 @@ const tableBodyData = [
         date: "2021-10-10",
         quantity: "10",
         price: 3333,
-        status: "已取消",
+        status: "派工確認完成",
         url: {
-            name: "auth-order-detail-slug",
+            name: "auth-door-detail-slug",
             params: { slug: "訂單資訊" },
             query: { id: "1" },
         }
@@ -84,9 +84,9 @@ const tableBodyData = [
         date: "2021-10-10",
         quantity: "10",
         price: 56565,
-        status: "已出貨",
+        status: "施工確認完成",
         url: {
-            name: "auth-order-detail-slug",
+            name: "auth-door-detail-slug",
             params: { slug: "訂單資訊" },
             query: { id: "1" },
         }
@@ -96,9 +96,21 @@ const tableBodyData = [
         date: "2021-10-10",
         quantity: "10",
         price: 8888,
-        status: "已出貨",
+        status: "已取消",
         url: {
-            name: "auth-order-detail-slug",
+            name: "auth-door-detail-slug",
+            params: { slug: "訂單資訊" },
+            query: { id: "1" },
+        }
+    },
+    {
+        number: "#20211010001",
+        date: "2021-10-10",
+        quantity: "5",
+        price: 7777,
+        status: "訂單完成",
+        url: {
+            name: "auth-door-detail-slug",
             params: { slug: "訂單資訊" },
             query: { id: "1" },
         }
