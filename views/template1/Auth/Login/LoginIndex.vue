@@ -1,5 +1,5 @@
 <template>
-    <section class="mt-[94px] border-t border-gray-300 bg-gray-50 flex items-center justify-center py-[60px]">
+    <section class="mt-[94px] min-h-screen border-t border-gray-300 bg-gray-50 py-[60px]">
         <div class="w-[504px] py-[60px] px-[72px] bg-white mx-auto rounded-[24px] border-[1px] border-gray-200">
             <h3 class="font-medium text-[28px] text-center mb-8">會員登入</h3>
             <el-form
@@ -58,15 +58,15 @@
                 </div>
                 <div class="flex gap-[30px] justify-center mt-4">
                     <NuxtImg
-                        class="w-10 aspect-1/1 object-cover cursor-pointer transition-all duration-400 hover:opacity-80 hover:transition-all hover:duration-400"
+                        class="w-10 aspect-square object-cover cursor-pointer transition-all duration-400 hover:opacity-80 hover:transition-all hover:duration-400"
                         src="/img/icons/medias/google.svg"
                     />
                     <NuxtImg
-                        class="w-10 aspect-1/1 object-cover cursor-pointer transition-all duration-400 hover:opacity-80 hover:transition-all hover:duration-400"
+                        class="w-10 aspect-square object-cover cursor-pointer transition-all duration-400 hover:opacity-80 hover:transition-all hover:duration-400"
                         src="/img/icons/medias/line.svg"
                     />
                     <NuxtImg
-                        class="w-10 aspect-1/1 object-cover cursor-pointer transition-all duration-400 hover:opacity-80 hover:transition-all hover:duration-400"
+                        class="w-10 aspect-square object-cover cursor-pointer transition-all duration-400 hover:opacity-80 hover:transition-all hover:duration-400"
                         src="/img/icons/medias/facebook.svg"
                     />
                 </div>

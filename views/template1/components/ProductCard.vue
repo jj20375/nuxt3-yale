@@ -36,11 +36,11 @@
                 <div class="absolute top-0 left-0 z-10 w-full h-full bg-white opacity-30 rounded-2xl"></div>
             </div>
         </div>
-        <h3 class="mt-[16px] text-[20px] font-medium YaleSolisW-Bd">{{product.model}}</h3>
-        <h3 class="text-[14px] font-[400] YaleSolisW-Lt mt-1">{{product.name}}</h3>
+        <h3 class="mt-[16px] text-[20px] font-medium YaleSolisW-Bd">{{ product.model }}</h3>
+        <h3 class="text-[14px] font-[400] YaleSolisW-Lt mt-1">{{ product.name }}</h3>
         <div class="flex mt-3">
-            <span class="mr-[8px] font-medium YaleSolisW-Bd">NT${{$utils().formatCurrency(product.price)}}</span>
-            <span class="text-gray-400 line-through YaleSolisW-Lt">NT${{$utils().formatCurrency(product.market_price)}}</span>
+            <span class="mr-[8px] font-medium YaleSolisW-Bd">NT${{ $utils().formatCurrency(product.price) }}</span>
+            <span class="text-gray-400 line-through YaleSolisW-Lt">NT${{ $utils().formatCurrency(product.market_price) }}</span>
         </div>
         <AddToShoppingCarDialog v-model:showDialog="showDialog" />
     </div>
