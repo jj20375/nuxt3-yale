@@ -33,6 +33,13 @@
             </div>
         </div>
     </div>
+    <div v-if="isDoor" class="flex gap-2 items-center h-fit cursor-pointer">
+        <NuxtImg
+            class="w-[20px] aspect-square object-cover"
+            src="img/icons/auth/info.svg"
+        />
+        <div class="underline underline-offset-2">查看商品詳情</div>
+    </div>
 </div>
 </template>
 <script setup lang="ts">
@@ -40,6 +47,7 @@
 const { $utils } = useNuxtApp();
 
 interface Props {
+    isDoor: boolean; // 是否為訂製門扇頁面
     order: {
         name: string;
         color: string;
@@ -62,6 +70,7 @@ interface Props {
 };
 
 const props = withDefaults(defineProps<Props>(), {
+    isDoor: false,
     order: [
         {
             name: "",
