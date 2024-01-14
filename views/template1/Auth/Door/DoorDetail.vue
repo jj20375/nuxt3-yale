@@ -83,7 +83,7 @@
                     <div class="bg-gray-100 px-[20px] py-[10px] font-bold">配送商品</div>
                 </div>
                 <div>
-                    <RecordProduct :order="orderData.products" />
+                    <RecordProduct isDoor :order="orderData.products" />
                 </div>
                 <div>
                     <OrderPrice :order="orderData.price" />
