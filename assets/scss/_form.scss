@@ -77,6 +77,23 @@
 
         }
       }
+      // 開關(switch)
+      .el-switch{
+        .el-switch__label{
+          @apply mr-4;
+          *{
+            @apply font-normal text-[15px] #{!important};
+          }
+        }
+        .el-switch__core{
+          @apply border-yellow-600;
+        }
+        &.is-checked{
+          .el-switch__core{
+            @apply bg-yellow-600;
+          }
+        }
+      }
     }
     .el-form-item__error{
       @apply text-red-700 pt-2;
