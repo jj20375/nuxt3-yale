@@ -97,12 +97,16 @@
 <script lang="ts" setup>
 import { useTemplateStore } from "~/store/templateStore";
 import { useInitializationStore } from "~/store/initializationStore";
+import { useUserStore } from "~/store/userStore";
+import { storeToRefs } from "pinia";
 
 const $config = useRuntimeConfig();
 const router = useRouter();
 const route = useRoute();
 const templateStore = useTemplateStore();
 const initializationStore = useInitializationStore();
+const userStore = useUserStore();
+const { isAuth } = storeToRefs(userStore);
 
 const isHomeMenuFixed = computed(() => templateStore.isHomeMenuFixed);
 
@@ -290,26 +294,38 @@ const menus = ref<any>({
 });
 
 // 右側 icon
-const rightIcons = ref([
-    {
-        imgSrc: "/img/icons/user.svg",
-        url: {
-            name: "auth-login-slug",
+const rightIcons = computed(() => {
+        let userUrl = {
+            name: "auth-panel-slug",
             params: {
-                slug: "耶魯會員註冊",
+                slug: "會員中心",
             },
-        },
-    },
-    {
-        imgSrc: "/img/icons/shop-card.svg",
-        url: {
-            name: "shopping-car-slug",
-            params: {
-                slug: "耶魯電子鎖購物車",
+        }
+        if (!isAuth.value) {
+            userUrl = {
+                name: "auth-login-slug",
+                params: {
+                    slug: "會員登入",
+                },
+            }
+        }
+        return  [
+            {
+                imgSrc: "/img/icons/user.svg",
+                url: userUrl
             },
-        },
-    },
-]);
+            {
+                imgSrc: "/img/icons/shop-card.svg",
+                url: {
+                    name: "shopping-car-slug",
+                    params: {
+                        slug: "耶魯電子鎖購物車",
+                    },
+                },
+            },
+        ]
+    }
+);
 
 // 預設選擇的 menu 判斷是否呈現 submenu
 const currentMenu = ref<null | string>(null);

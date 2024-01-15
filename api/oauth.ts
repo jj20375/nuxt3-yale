@@ -263,10 +263,16 @@ export default () => {
      * 會員登入
      */
     LoginAPI(data: any) {
-        return useMyFetch(`${apiUrl}/member/login`, {
-          method: "post",
-          body: data,
-        });
-      },
+      return useMyFetch(`${apiUrl}/member/login`, {
+        method: "post",
+        body: data,
+      });
+    },
+    /**
+     * 會員資料
+     */
+    GetUserProfileAPI() {
+      return useMyFetch(`${apiUrl}/member/profile`, { method: "get" });
+    },
   };
 };

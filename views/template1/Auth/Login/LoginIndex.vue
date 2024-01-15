@@ -79,7 +79,12 @@
 <script setup lang="ts">
 import { validateEmail } from "~/service/validator";
 import { ElMessage, ElLoading } from "element-plus";
+import { useUserStore } from "~/store/userStore";
+import Cookies from "js-cookie";
+
 const { $api } = useNuxtApp();
+const userStore = useUserStore();
+const router = useRouter();
 const formRefDom = ref<any>();
 
 const form = ref<any>({
@@ -147,12 +152,16 @@ async function onSubmit() {
                     email: form.value.email,
                 };
                 const { data, status, error } = await $api().LoginAPI(params);
-                console.log(data, status.value, error);
                 if (status.value === 'success') {
                     ElMessage({
                         type: "success",
                         message: `登入成功`,
                     });
+                    console.log((data.value as any).data.token)
+                    const token = (data.value as any).data.token
+                    Cookies.set('token', token)
+                    userStore.getUserProfile();
+                    router.push({ name: "auth-panel-slug" });
                 } else {
                     ElMessage({
                         type: "error",

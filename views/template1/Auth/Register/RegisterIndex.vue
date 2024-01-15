@@ -392,25 +392,24 @@ async function onSubmit() {
                     sex: form.value.gender,
                     password: form.value.password,
                 };
-                const { data } = await $api().RegisterAPI(params);
-                const status = (data.value as any).data;
-                if (status === 200) {
+                const { data, status, error } = await $api().RegisterAPI(params);
+                if (status.value === 'success') {
                     ElMessage({
                         type: "success",
                         message: `註冊成功`,
                     });
                     router.push({ name: "auth-register-success-slug", params: { slug: "註冊成功" } });
+
                 } else {
-                    const message = (data.value as any).message;
                     ElMessage({
-                        type: "success",
-                        message: message,
+                        type: "error",
+                        message: (error.value as any).data.message,
                     });
                 }
                 loading.close();
             } catch (err) {
                 ElMessage({
-                    type: "success",
+                    type: "error",
                     message: "註冊失敗",
                 });
                 loading.close();
