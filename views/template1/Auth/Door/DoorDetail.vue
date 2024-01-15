@@ -83,7 +83,7 @@
                     <div class="bg-gray-100 px-[20px] py-[10px] font-bold">配送商品</div>
                 </div>
                 <div>
-                    <RecordProduct isDoor :order="orderData.products" />
+                    <RecordProduct isDoor :order="orderData.products"  :dialogData="dialogData" />
                 </div>
                 <div>
                     <OrderPrice :order="orderData.price" />
@@ -99,7 +99,6 @@
                 close-on-click-modal
                 lock-scroll
                 show-close
-                :height="500"
                 :width="400"
                 center
                 align-center
@@ -192,18 +191,16 @@ const orderData = ref({
         {
             name: "YDM 7216A 指紋卡片密碼鑰匙四合一",
             color: "",
-            fireproof: "是",
-            size: "門高：200cm-215cm  門寬：100cm  門厚：7cm",
-            doorLeaf: ["現代北歐玄關門", "R53", "米白"],
-            doorFrame: ["門框型號一", "fuden wood door frame", "曜石黑"],
+            doorLeaf: ["現代北歐玄關門 R53", "米白", "門高：200cm-215cm, 門寬：100cm, 門厚：7cm"],
+            doorFrame: ["fuden wood door frame", "曜石黑"],
             doorLock: ["卡片密碼鑰匙三合一電子鎖","YDM 7116A"],
-            doorHanging: "蝴蝶鉸鍊",
+            doorHanging: ["蝴蝶鉸鍊","M65"],
             doorSealStrip: "ABC132",
-            doorGasket: "外裝式下降壓條",
-            doorOperator: "隱藏式門弓器",
+            doorGasket: ["外裝式下降壓條","K55"],
+            doorOperator: ["隱藏式門弓器", "L78"],
             otherService: ["• 拆除及清運", "• 泥作"],
             quantity: 1,
-            image: "/img/home/product/product1.jpg",
+            imgUrl: "/img/home/product/product1.jpg",
             rule: {
                 needPrice: NaN, // 滿額贈
                 getFree: false, // 加價購
@@ -227,5 +224,149 @@ const orderData = ref({
         memo: "備註內容備註內容備註內容備註內容備註內容備註內容備註內容備註內容備註內容備註內容備註內容備註內容"
     }
 });
+
+// 商品詳情彈窗資料
+const dialogData = ref([
+    {
+        title: "門扇",
+        imgUrl: "/img/home/product/product1.jpg",
+        data:[
+            {
+                label: "用途",
+                value: "防火門扇",
+            },
+            {
+                label: "方案",
+                value: "母親節特惠方案",
+            },
+            {
+                label: "品名",
+                value: "YDM 7216A 指紋卡片密碼鑰匙四合一",
+            },
+            {
+                label: "型號",
+                value: "R53",
+            },
+            {
+                label: "功能",
+                value: "防火門扇",
+            },
+            {
+                label: "顏色",
+                value: "曜石黑",
+            },
+            {
+                label: "尺寸",
+                value: "門高：200cm-215cm, 門寬：100cm, 門厚：7cm",
+            },
+        ]
+    },
+    {
+        title: "門框",
+        imgUrl: "/img/auth/product1.jpg",
+        data:[
+            {
+                label: "品名",
+                value: "fuden wood door frame",
+            },
+            {
+                label: "型號",
+                value: "B505",
+            },
+            {
+                label: "顏色",
+                value: "曜石黑",
+            },
+        ]
+    },
+    {
+        title: "門鎖",
+        imgUrl: "/img/auth/product1.jpg",
+        data:[
+            {
+                label: "品名",
+                value: "fuden wood door frame",
+            },
+            {
+                label: "型號",
+                value: "YDM 7116A",
+            },
+        ]
+    },
+    {
+        title: "掛門",
+        imgUrl: "/img/auth/product1.jpg",
+        data:[
+            {
+                label: "品名",
+                value: "蝴蝶鉸鍊",
+            },
+            {
+                label: "型號",
+                value: "M65",
+            },
+        ]
+    },
+    {
+        title: "氣密條",
+        imgUrl: "/img/auth/product1.jpg",
+        data:[
+            {
+                label: "品名",
+                value: "氣密條",
+            },
+            {
+                label: "型號",
+                value: "ABC132",
+            },
+        ]
+    },
+    {
+        title: "下降壓條",
+        imgUrl: "/img/auth/product1.jpg",
+        data:[
+            {
+                label: "品名",
+                value: "下降壓條",
+            },
+            {
+                label: "型號",
+                value: "ABC132",
+            },
+        ]
+    },
+    {
+        title: "開弓器",
+        imgUrl: "/img/auth/product1.jpg",
+        data:[
+            {
+                label: "品名",
+                value: "開弓器",
+            },
+            {
+                label: "型號",
+                value: "ABC132",
+            },
+        ]
+    },
+    {
+        title: "額外施作服務",
+        data:[
+            {
+                label: "拆除及清運",
+                value: "1000",
+            },
+            {
+                label: "泥作",
+                value: "5000",
+            },
+            {
+                label: "油漆",
+                value: "3000",
+            },
+        ],
+        type: "list",
+    }
+]);
 
 </script>
