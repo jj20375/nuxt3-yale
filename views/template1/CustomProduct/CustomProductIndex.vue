@@ -1,12 +1,12 @@
 <template>
-    <section class="mt-[94px] flex">
+    <section class="mt-[94px] flex max-h-screen min-h-screen">
         <!-- <pre>{{ customPreviewData }}</pre> -->
         <CustomProductPrewView
             v-model:currentAngle="currentAngle"
+            v-model:previewWidth="previewWidth"
             :productData="customPreviewData"
-            class="max-h-screen min-h-screen"
         />
-        <div class="mx-[55px] min-w-[430px] min-h-screen max-h-screen overflow-y-auto">
+        <div class="mx-[55px] min-w-[430px] overflow-y-auto">
             <CustomProductContent />
             <div class="border-b border-gray-300 py-[30px]">
                 <div
@@ -20,7 +20,7 @@
                         :icon="['fas', 'chevron-up']"
                     />
                 </div>
-                <div v-if="stepMenuShow['step1'].show">
+                <div v-show="stepMenuShow['step1'].show">
                     <CustomProductBackground v-model:currentTab="currentBackground" />
                     <CustomProductPlan
                         class="mt-[20px]"
@@ -55,7 +55,7 @@
                         :icon="['fas', 'chevron-up']"
                     />
                 </div>
-                <div v-if="stepMenuShow['step2'].show">
+                <div v-show="stepMenuShow['step2'].show">
                     <CustomProduct
                         class="mt-[20px]"
                         v-model:currentProduct="currentDoorOut"
@@ -99,7 +99,7 @@
                         :icon="['fas', 'chevron-up']"
                     />
                 </div>
-                <div v-if="stepMenuShow['step4'].show">
+                <div v-show="stepMenuShow['step4'].show">
                     <CustomProduct
                         class="mt-[20px]"
                         title="掛門"
@@ -126,7 +126,7 @@
                         :icon="['fas', 'chevron-up']"
                     />
                 </div>
-                <div v-if="stepMenuShow['step5'].show">
+                <div v-show="stepMenuShow['step5'].show">
                     <CustomProductOtherChoose
                         class="mt-[20px]"
                         title="下將壓條"
@@ -154,7 +154,7 @@
                     />
                 </div>
                 <CustomProductCount
-                    v-if="stepMenuShow['step6'].show"
+                    v-show="stepMenuShow['step6'].show"
                     v-model:count="count"
                 />
             </div>
@@ -172,7 +172,7 @@
                 </div>
 
                 <CustomProductOtherService
-                    v-if="stepMenuShow['step7'].show"
+                    v-show="stepMenuShow['step7'].show"
                     v-model:selectedServices="selectedServices"
                 />
             </div>
@@ -183,22 +183,41 @@
                 <button class="max-w-[207px] w-full text-center py-[11px] bg-yellow-500 hover:bg-yellow-600 transition-all duration-500 rounded-full">結帳</button>
             </div>
         </div>
-        <div class="fixed bottom-0 flex items-center justify-end w-full text-right pr-[55px] bg-white z-[500] h-[80px] bg-opacity-80 backdrop-blur-xl">
-            <div class="mr-[16px] flex items-center">
-                <p class="text-gray-600 text-[14px]">預估金額</p>
-                <div class="text-[14px] text-gray-800 flex items-center ml-2">
-                    NT$ <strong class="ml-2 font-medium YaleSolisW-Bd text-[24px]">{{ $utils().formatCurrency(total) }}</strong>
+        <div class="fixed bottom-0 flex items-center justify-end w-full text-right pr-[55px] bg-white z-[500] h-[120px] bg-opacity-80 backdrop-blur-xl">
+            <ul
+                v-if="previewWidth > 0"
+                class="flex justify-center mt-[12px]"
+                :style="{ width: previewWidth + 'px' }"
+            >
+                <li
+                    @click="currentAngle = angle.value"
+                    class="rounded-full px-[20px] py-[8px] text-white cursor-pointer"
+                    :class="[currentAngle === angle.value ? 'bg-gray-800' : 'bg-gray-300', index !== viewAngle.length - 1 ? 'mr-[12px]' : '']"
+                    v-for="(angle, index) in viewAngle"
+                    :key="angle.value"
+                >
+                    {{ angle.text }}
+                </li>
+            </ul>
+            <div class="flex items-center justify-end flex-1 text-right">
+                <div class="mr-[16px] flex items-center">
+                    <p class="text-gray-600 text-[14px]">預估金額</p>
+                    <div class="text-[14px] text-gray-800 flex items-center ml-2">
+                        NT$ <strong class="ml-2 font-medium YaleSolisW-Bd text-[24px]">{{ $utils().formatCurrency(total) }}</strong>
+                    </div>
                 </div>
-            </div>
-            <div class="flex text-gray-600">
-                <p class="text-[14px] mr-[4px]">訂金 (總價30%)</p>
-                <div class="text-[14px]">NT$ {{ $utils().formatCurrency(deposit) }}</div>
+                <div class="flex text-gray-600">
+                    <p class="text-[14px] mr-[4px]">訂金 (總價30%)</p>
+                    <div class="text-[14px]">NT$ {{ $utils().formatCurrency(deposit) }}</div>
+                </div>
             </div>
         </div>
     </section>
 </template>
 
 <script setup lang="ts">
+import { disableBodyScroll, enableBodyScroll, clearAllBodyScrollLocks } from "body-scroll-lock";
+
 // 預覽圖片
 import CustomProductPrewView from "~/views/template1/CustomProduct/components/CustomProductPrewView.vue";
 // 選擇場景
@@ -269,6 +288,22 @@ const currentDoorOut = ref("id1");
 const currentDoorOutColor = ref("id1");
 // 預設選擇門的角度
 const currentAngle = ref("front");
+// 預覽視窗 dom 寬度 用來計算 正面｜背面｜半開顯示位置
+const previewWidth = ref(0);
+const viewAngle = ref([
+    {
+        text: "正面",
+        value: "front",
+    },
+    {
+        text: "背面",
+        value: "backend",
+    },
+    {
+        text: "半開",
+        value: "half",
+    },
+]);
 // 選擇基本五金 掛門 參數值
 const currentTool1 = ref("id1");
 // 選擇基本五金 氣密條 參數值
@@ -442,4 +477,18 @@ const customPreviewData = computed(() => {
 const total = computed(() => 650000);
 // 訂金
 const deposit = computed(() => total.value * 0.3);
+
+onMounted(() => {
+    nextTick(() => {
+        const bodyDom = document.querySelector("body");
+        console.log("bodyDom =>", bodyDom);
+        disableBodyScroll(bodyDom);
+    });
+});
+
+onBeforeUnmount(() => {
+    const bodyDom = document.querySelector("body");
+
+    enableBodyScroll(bodyDom);
+});
 </script>
