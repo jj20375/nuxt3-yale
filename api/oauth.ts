@@ -274,5 +274,14 @@ export default () => {
     GetUserProfileAPI() {
       return useMyFetch(`${apiUrl}/member/profile`, { method: "get" });
     },
+    /**
+     * 修改會員資料
+     */
+    ChangeProfileAPI(data: any) {
+      return useMyFetch(`${apiUrl}/member/change-profile`, {
+        method: "post",
+        body: data,
+      });
+    },
   };
 };

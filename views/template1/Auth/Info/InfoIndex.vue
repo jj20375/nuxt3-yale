@@ -64,6 +64,7 @@
                                 </button>
                             </NuxtLink>
                             <button
+                                @click.prevent="onSubmit"
                                 class="yellow-btn btn-md"
                             >
                                 儲存
@@ -77,6 +78,14 @@
 </template>
 <script setup lang="ts">
 import Breadcrumb from "~/views/template1/components/Breadcrumb.vue";
+import { validateTWMobileNumber } from "~/service/validator";
+import { ElMessage, ElLoading } from "element-plus";
+import { useUserStore } from "~/store/userStore";
+import { storeToRefs } from "pinia";
+
+const { $api } = useNuxtApp();
+const userStore = useUserStore();
+const { user } = storeToRefs(userStore);
 
 const breadcrumbs = ref([
     {
@@ -97,18 +106,19 @@ const breadcrumbs = ref([
 
 const formRefDom = ref<any>();
 
+console.log(user)
 const form = ref<any>({
-    email: "a123@gmail.com",
-    name: "王小明",
-    cellphone: "0911222222",
-    telephone: "0212222222",
-    gender: 1,
-    birthday: "2000-01-01"
+    email: user.value.email,
+    name: user.value.name,
+    cellphone: user.value.phone,
+    telephone: user.value.telephone,
+    gender: user.value.sex,
+    birthday: user.value.birthday,
 });
 
 const genderRadios = ref<any>([
-    { value: 1, label: "先生" },
-    { value: 0, label: "女士" }
+    { value: "male", label: "先生" },
+    { value: "female", label: "女士" },
 ]);
 
 const formDatas = ref<any>([
@@ -162,7 +172,14 @@ const rules = ref<any>({
     name: [
         {
             required: true,
-            message: "請輸入姓名",
+            message: "請輸入會員姓名",
+            trigger: "blur"
+        }
+    ],
+    birthday: [
+        {
+            required: true,
+            message: "請輸入生日",
             trigger: "blur"
         }
     ],
@@ -170,15 +187,69 @@ const rules = ref<any>({
         {
             required: true,
             message: "請輸入聯絡電話",
-            trigger: "blur"
-        }
+            trigger: "blur",
+        },
+        {
+            required: true,
+            validator: validateTWMobileNumber,
+            trigger: ["change", "blur"],
+            message: "格式不正確",
+        },
     ],
     gender: [
         {
             required: true,
-            message: "請輸入聯絡電話",
-            trigger: "blur"
-        }
-    ]
+            message: "請選擇稱謂",
+            trigger: "blur",
+        },
+    ],
 });
+
+async function onSubmit() {
+    formRefDom.value.validate(async (valid: any) => {
+        if (!valid) {
+            ElMessage({
+                type: "error",
+                message: `尚有欄位未填`,
+            });
+        } else {
+            const loading = ElLoading.service({
+                lock: true,
+                text: "送出中...",
+                background: "rgba(0, 0, 0, 0.7)",
+            });
+            try {
+                const params = {
+                    name: form.value.name,
+                    email: form.value.email,
+                    phone: form.value.cellphone,
+                    telephone: form.value.telephone,
+                    birthday: form.value.birthday,
+                    sex: form.value.gender,
+                };
+                const { data, status, error } = await $api().ChangeProfileAPI(params);
+                if (status.value === 'success') {
+                    ElMessage({
+                        type: "success",
+                        message: `修改成功`,
+                    });
+                    userStore.getUserProfile();
+                } else {
+                    ElMessage({
+                        type: "error",
+                        message: (error.value as any).data.message,
+                    });
+                }
+                loading.close();
+            } catch (err) {
+                ElMessage({
+                    type: "error",
+                    message: "修改失敗",
+                });
+                loading.close();
+                console.log("HomeSampleAPI => ", err);
+            }
+        }
+    });
+}
 </script>

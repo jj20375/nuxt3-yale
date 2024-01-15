@@ -75,7 +75,7 @@ const panelDatas = ref([
         title: "會員資料",
         url: {
             name: "auth-info-slug",
-            params: { slug: "slug" }
+            params: { slug: "會員資料" }
         },
         imgSrc: "img/icons/auth/info.svg"
     },
