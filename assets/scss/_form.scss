@@ -85,12 +85,9 @@
             @apply font-normal text-[15px] #{!important};
           }
         }
-        .el-switch__core{
-          @apply border-yellow-600;
-        }
         &.is-checked{
           .el-switch__core{
-            @apply bg-yellow-600;
+            @apply bg-yellow-600 border-yellow-600;
           }
         }
       }
