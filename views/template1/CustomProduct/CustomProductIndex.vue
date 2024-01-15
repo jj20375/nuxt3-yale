@@ -1,9 +1,13 @@
 <template>
     <section class="mt-[94px] flex">
-        <CustomProductPrewView v-model:currentAngle="currentAngle" />
-        <div class="mx-[55px] min-w-[430px]">
+        <!-- <pre>{{ customPreviewData }}</pre> -->
+        <CustomProductPrewView
+            v-model:currentAngle="currentAngle"
+            :productData="customPreviewData"
+            class="max-h-screen min-h-screen"
+        />
+        <div class="mx-[55px] min-w-[430px] min-h-screen max-h-screen overflow-y-auto">
             <CustomProductContent />
-
             <div class="border-b border-gray-300 py-[30px]">
                 <div
                     @click="stepMenuShow['step1'].show = !stepMenuShow['step1'].show"
@@ -25,12 +29,12 @@
                     <CustomProduct
                         class="mt-[20px]"
                         v-model:currentProduct="currentDoor"
-                        :products="doorColors[0].doors"
+                        :products="doors"
                     />
                     <CustomProductColor
                         class="mt-[20px]"
                         v-model:currentColor="currentDoorColor"
-                        :colors="doorColors"
+                        :colors="doors[0].colors"
                     />
                     <CustomProductSize
                         class="mt-[20px]"
@@ -55,12 +59,12 @@
                     <CustomProduct
                         class="mt-[20px]"
                         v-model:currentProduct="currentDoorOut"
-                        :products="doorOutColors[0].doors"
+                        :products="doorsOut"
                     />
                     <CustomProductColor
                         class="mt-[20px]"
                         v-model:currentColor="currentDoorOutColor"
-                        :colors="doorOutColors"
+                        :colors="doorsOut[0].colors"
                     />
                 </div>
             </div>
@@ -100,13 +104,13 @@
                         class="mt-[20px]"
                         title="掛門"
                         v-model:currentProduct="currentTool1"
-                        :products="doorColors[0].doors"
+                        :products="doors"
                     />
                     <CustomProduct
                         class="mt-[20px]"
                         title="氣密條"
                         v-model:currentProduct="currentTool2"
-                        :products="doorColors[0].doors"
+                        :products="doors"
                     />
                 </div>
             </div>
@@ -127,13 +131,13 @@
                         class="mt-[20px]"
                         title="下將壓條"
                         v-model:selectedProducts="currentOther1"
-                        :products="doorColors[0].doors"
+                        :products="doors"
                     />
                     <CustomProductOtherChoose
                         class="mt-[20px]"
                         title="門弓器"
                         v-model:selectedProducts="currentOther2"
-                        :products="doorColors[0].doors"
+                        :products="doors"
                     />
                 </div>
             </div>
@@ -179,6 +183,18 @@
                 <button class="max-w-[207px] w-full text-center py-[11px] bg-yellow-500 hover:bg-yellow-600 transition-all duration-500 rounded-full">結帳</button>
             </div>
         </div>
+        <div class="fixed bottom-0 flex items-center justify-end w-full text-right pr-[55px] bg-white z-[500] h-[80px] bg-opacity-80 backdrop-blur-xl">
+            <div class="mr-[16px] flex items-center">
+                <p class="text-gray-600 text-[14px]">預估金額</p>
+                <div class="text-[14px] text-gray-800 flex items-center ml-2">
+                    NT$ <strong class="ml-2 font-medium YaleSolisW-Bd text-[24px]">{{ $utils().formatCurrency(total) }}</strong>
+                </div>
+            </div>
+            <div class="flex text-gray-600">
+                <p class="text-[14px] mr-[4px]">訂金 (總價30%)</p>
+                <div class="text-[14px]">NT$ {{ $utils().formatCurrency(deposit) }}</div>
+            </div>
+        </div>
     </section>
 </template>
 
@@ -205,7 +221,9 @@ import CustomProductSize from "~/views/template1/CustomProduct/components/Custom
 import CustomProductPlan from "~/views/template1/CustomProduct/components/CustomProducPlan.vue";
 // 選擇選配區
 import CustomProductOtherChoose from "~/views/template1/CustomProduct/components/CustomProductOtherChoose.vue";
-import { current } from "tailwindcss/colors";
+
+const { $utils } = useNuxtApp();
+
 const stepMenuShow = ref({
     step1: {
         show: true,
@@ -243,7 +261,7 @@ const currentBackground = ref("id1");
 const currentPlan = ref("id1");
 // 預設選擇門扇
 const currentDoor = ref("id1");
-// 預設選擇門扇
+// 預設選擇門扇顏色
 const currentDoorColor = ref("id1");
 // 預設選擇門框
 const currentDoorOut = ref("id1");
@@ -260,7 +278,7 @@ const currentOther1 = ref("id1");
 // 選擇選配區 門弓器
 const currentOther2 = ref("id1");
 // 預設選擇鎖種類 default = 水平把手; smartLock = 智慧電子鎖
-const lockCategory = ref("default");
+const lockCategory = ref("handle");
 // 訂購數量
 const count = ref(1);
 // 選擇得服務
@@ -283,29 +301,36 @@ for (let i = 1; i < 6; i++) {
         title: `門扇款式-${i}`,
         price: 2000,
         id: `id${i}`,
+        colors: [
+            {
+                id: "id1",
+                text: "琥珀",
+                imgSrc: "/img/product/demo/color-1.png",
+                previewImgSrc: {
+                    front: "/img/custom-product/demo/door/custom-product-door-black-close.png",
+                    backend: "/img/custom-product/demo/door/custom-product-door-black-close.png",
+                    half: "/img/custom-product/demo/door/custom-product-door-black-open.png",
+                },
+            },
+            {
+                id: "id2",
+                text: "白色",
+                imgSrc: "/img/product/demo/color-2.png",
+                previewImgSrc: {
+                    front: "/img/custom-product/demo/door/custom-product-door-test-close.png",
+                    backend: "/img/custom-product/demo/door/custom-product-door-test-close.png",
+                    half: "/img/custom-product/demo/door/custom-product-door-test-open.png",
+                },
+            },
+            // {
+            //     id: "id3",
+            //     text: "黑色",
+            //     imgSrc: "/img/product/demo/color-3.png",
+            //     doors: doors.value,
+            // },
+        ],
     });
 }
-// 門扇顏色
-const doorColors = ref([
-    {
-        id: "id1",
-        text: "琥珀",
-        imgSrc: "/img/product/demo/color-1.png",
-        doors: doors.value,
-    },
-    {
-        id: "id2",
-        text: "白色",
-        imgSrc: "/img/product/demo/color-2.png",
-        doors: doors.value,
-    },
-    {
-        id: "id3",
-        text: "黑色",
-        imgSrc: "/img/product/demo/color-3.png",
-        doors: doors.value,
-    },
-]);
 // 門框資料
 const doorsOut = ref<any>([]);
 // 門框假資料
@@ -314,48 +339,69 @@ for (let i = 1; i < 6; i++) {
         imgSrc: "/img/custom-product/demo/custom-product-door-out-demo-1.jpg",
         name: "品牌/ASSA ABLOY",
         style: `YDM3109A-${i}`,
-        title: `門扇款式-${i}`,
+        title: `門框款式-${i}`,
         price: 2000,
         id: `id${i}`,
+        colors: [
+            {
+                id: "id1",
+                text: "琥珀",
+                imgSrc: "/img/product/demo/color-1.png",
+                previewImgSrc: {
+                    front: "/img/custom-product/demo/door-out/custom-product-door-out-black.png",
+                    backend: "/img/custom-product/demo/door-out/custom-product-door-out-black.png",
+                    half: "/img/custom-product/demo/door-out/custom-product-door-out-black.png",
+                },
+            },
+            {
+                id: "id2",
+                text: "白色",
+                imgSrc: "/img/product/demo/color-2.png",
+                previewImgSrc: {
+                    front: "/img/custom-product/demo/door-out/custom-product-door-out-black.png",
+                    backend: "/img/custom-product/demo/door-out/custom-product-door-out-black.png",
+                    half: "/img/custom-product/demo/door-out/custom-product-door-out-black.png",
+                },
+            },
+            {
+                id: "id3",
+                text: "黑色",
+                imgSrc: "/img/product/demo/color-3.png",
+                previewImgSrc: {
+                    front: "/img/custom-product/demo/door-out/custom-product-door-out-black.png",
+                    backend: "/img/custom-product/demo/door-out/custom-product-door-out-black.png",
+                    half: "/img/custom-product/demo/door-out/custom-product-door-out-black.png",
+                },
+            },
+        ],
     });
 }
-// 門扇顏色
-const doorOutColors = ref([
-    {
-        id: "id1",
-        text: "琥珀",
-        imgSrc: "/img/product/demo/color-1.png",
-        doors: doorsOut.value,
-    },
-    {
-        id: "id2",
-        text: "白色",
-        imgSrc: "/img/product/demo/color-2.png",
-        doors: doorsOut.value,
-    },
-    {
-        id: "id3",
-        text: "黑色",
-        imgSrc: "/img/product/demo/color-3.png",
-        doors: doorsOut.value,
-    },
-]);
 
 // 鎖的種類
 const locks = ref<any>({
-    default: [],
-    smartLock: [],
+    handle: [],
+    lock: [],
 });
 
 for (let i = 1; i < 20; i++) {
-    locks.value.default.push({
+    locks.value.handle.push({
         imgSrc: "/img/custom-product/demo/custom-product-lock-demo-1.jpg",
+        previewImgSrc: {
+            front: "/img/custom-product/demo/handle/custom-product-handle-close.png",
+            backend: "/img/custom-product/demo/handle/custom-product-handle-close.png",
+            half: "/img/custom-product/demo/handle/custom-product-handle-open.png",
+        },
         style: `default lock-${i}`,
         price: 1000 + i,
         id: `id${i}`,
     });
-    locks.value.smartLock.push({
+    locks.value.lock.push({
         imgSrc: "/img/custom-product/demo/custom-product-lock-demo-1.jpg",
+        previewImgSrc: {
+            front: "/img/custom-product/demo/lock/custom-product-lock-close.png",
+            backend: "/img/custom-product/demo/lock/custom-product-lock-close.png",
+            half: "/img/custom-product/demo/lock/custom-product-lock-open.png",
+        },
         style: `smart lock-${i}`,
         price: 2000 + i,
         id: `id${i}`,
@@ -379,4 +425,21 @@ for (let i = 1; i < 5; i++) {
 
 // 預設選擇尺寸
 const currentDoorSize = ref("id1");
+
+// 所有客製化需求預覽圖
+const customPreviewData = computed(() => {
+    return {
+        // 門扇
+        door: doors.value.find((item) => item.id === currentDoor.value).colors.find((item) => item.id === currentDoorColor.value).previewImgSrc,
+        // 門把
+        doorOut: doorsOut.value.find((item) => item.id === currentDoorOut.value).colors.find((item) => item.id === currentDoorOutColor.value).previewImgSrc,
+        // 鎖
+        lock: locks.value[lockCategory.value].find((item) => item.id === currentLock.value.id).previewImgSrc,
+    };
+});
+
+// 總價
+const total = computed(() => 650000);
+// 訂金
+const deposit = computed(() => total.value * 0.3);
 </script>

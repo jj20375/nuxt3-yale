@@ -35,8 +35,8 @@
                         class="object-cover w-full rounded-2xl aspect-1/1"
                         src="/img/home/product/product1.jpg"
                     />
-                    <p class="text-[14px] text-gray-800">指紋密碼鑰匙三合一</p>
                     <h5 class="text-[18px] YaleSolisW-Bd font-medium">YDM 4109A</h5>
+                    <p class="text-[14px] text-gray-800">指紋密碼鑰匙三合一</p>
                 </div>
             </div>
         </div>
