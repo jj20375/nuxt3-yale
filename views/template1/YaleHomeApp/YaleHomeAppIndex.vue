@@ -22,7 +22,7 @@ const breadcrumbs = ref([
         text: "首頁",
     },
     {
-        name: "faq-slug",
+        name: "yale-home-app-slug",
         text: "Yale Home App",
         params: { slug: "Yale Home APP" },
     },
