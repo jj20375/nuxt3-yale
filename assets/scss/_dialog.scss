@@ -1,8 +1,8 @@
 // 修改 element dialog的樣式
 .custom-dialog{
-  @apply rounded-2xl #{!important};
+  @apply rounded-2xl overflow-scroll #{!important};
   .el-dialog__close{
-    @apply text-[20px] text-yellow-600 #{!important};
+    @apply text-[20px] text-gray-800 #{!important};
   }
   .el-dialog__body{
     @apply p-[40px] pt-2 #{!important};

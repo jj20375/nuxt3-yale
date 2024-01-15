@@ -99,7 +99,6 @@
                 close-on-click-modal
                 lock-scroll
                 show-close
-                :height="500"
                 :width="400"
                 center
                 align-center
@@ -195,7 +194,7 @@ const orderData = ref({
             color: "黑色",
             quantity: 1,
             price: 3000,
-            image: "/img/shopping-car/shopping-gift-demo-1.jpg",
+            imageUrl: "/img/shopping-car/shopping-gift-demo-1.jpg",
             rule: {
                 needPrice: 3000, // 滿額贈
                 getFree: false, // 加價購
@@ -206,7 +205,7 @@ const orderData = ref({
             color: "紅色",
             quantity: 3,
             price: 7000,
-            image: "/img/shopping-car/shopping-gift-demo-1.jpg",
+            imageUrl: "/img/shopping-car/shopping-gift-demo-1.jpg",
             rule: {
                 needPrice: NaN, // 滿額贈
                 getFree: true, // 加價購
