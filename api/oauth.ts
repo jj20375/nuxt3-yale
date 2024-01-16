@@ -278,5 +278,15 @@ export default () => {
         body: {...params},
       });
     },
+
+    /**
+     * 忘記密碼
+     */
+    ForgotPasswordAPI(params: { email: string; }) {
+      return useMyFetch(`${apiUrl}/member/forgot-password`, {
+        method: "post",
+        body: {...params},
+      });
+    },
   };
 };

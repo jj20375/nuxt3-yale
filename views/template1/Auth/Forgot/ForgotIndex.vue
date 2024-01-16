@@ -16,30 +16,23 @@
                             v-for="(item, index) in formDatas"
                             :key="index"
                         >
-                            <el-form-item :prop="item.prop" :label="item.label">
-                                <el-input :type="item.type" :show-password="item.showPassword"
-                                          :placeholder="item.placeholder" v-model="form[item.prop]"></el-input>
+                            <el-form-item
+                                :prop="item.prop"
+                                :label="item.label"
+                            >
+                                <el-input
+                                    :type="item.type"
+                                    :show-password="item.showPassword"
+                                    :placeholder="item.placeholder"
+                                    v-model="form[item.prop]"
+                                ></el-input>
                             </el-form-item>
                         </div>
                         <div class="flex gap-4 justify-center mt-6">
-                            <NuxtLink
-                                :to="{ name: 'auth-login-slug', params: { slug: '會員登入' }}"
-                            >
-                            <button
-                                class="transparent-btn btn-md"
-                            >
-                                返回登入頁
-                            </button>
+                            <NuxtLink :to="{ name: 'auth-login-slug', params: { slug: '會員登入' } }">
+                                <button class="transparent-btn btn-md">返回登入頁</button>
                             </NuxtLink>
-                            <NuxtLink
-                                :to="{ name: 'auth-forgot-success-slug', params: { slug: '送出成功' }}"
-                            >
-                                <button
-                                    class="yellow-btn btn-md"
-                                >
-                                    確認送出
-                                </button>
-                            </NuxtLink>
+                            <button @click.prevent="onSubmit" class="yellow-btn btn-md">確認送出</button>
                         </div>
                     </div>
                 </el-form>
@@ -48,6 +41,11 @@
     </section>
 </template>
 <script setup lang="ts">
+import { validateEmail } from "~/service/validator";
+import { ElMessage, ElLoading } from "element-plus";
+const { $api } = useNuxtApp();
+const router = useRouter();
+
 const formRefDom = ref<any>();
 
 const form = ref<any>({
@@ -59,7 +57,7 @@ const formDatas = ref<any>([
         prop: "email",
         label: "Email(帳號)",
         placeholder: "請輸入電子信箱",
-        style: "input"
+        style: "input",
     },
 ]);
 
@@ -68,8 +66,58 @@ const rules = ref<any>({
         {
             required: true,
             message: "請輸入電子信箱",
-            trigger: "blur"
-        }
+            trigger: ["change", "blur"],
+        },
+        {
+            required: true,
+            validator: validateEmail,
+            trigger: ["change", "blur"],
+            message: "格式不正確",
+        },
     ],
 });
+
+async function onSubmit() {
+    formRefDom.value.validate(async (valid: any) => {
+        if (!valid) {
+            ElMessage({
+                type: "error",
+                message: `尚有欄位未填`,
+            });
+        } else {
+            const loading = ElLoading.service({
+                lock: true,
+                text: "送出中...",
+                background: "rgba(0, 0, 0, 0.7)",
+            });
+            try {
+                const params = {
+                    email: form.value.email
+                };
+                const { data, status, error } = await $api().ForgotPasswordAPI(params);
+                if (status.value === 'success') {
+                    ElMessage({
+                        type: "success",
+                        message: `送出成功`,
+                    });
+                    router.push({ name: "auth-forgot-success-slug", params: { slug: "送出成功" } });
+
+                } else {
+                    ElMessage({
+                        type: "error",
+                        message: (error.value as any).data.message,
+                    });
+                }
+                loading.close();
+            } catch (err) {
+                ElMessage({
+                    type: "error",
+                    message: "送出失敗",
+                });
+                loading.close();
+                console.log("HomeSampleAPI => ", err);
+            }
+        }
+    });
+}
 </script>
