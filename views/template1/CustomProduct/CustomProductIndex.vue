@@ -186,7 +186,7 @@
         <div class="fixed bottom-0 flex items-center justify-end w-full text-right pr-[55px] bg-white z-[500] h-[80px] bg-opacity-80 backdrop-blur-xl">
             <ul
                 v-if="previewWidth > 0"
-                class="flex justify-center mt-[12px]"
+                class="flex justify-center"
                 :style="{ width: previewWidth + 'px' }"
             >
                 <li
