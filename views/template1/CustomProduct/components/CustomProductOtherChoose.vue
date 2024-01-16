@@ -16,6 +16,14 @@
                         size="large"
                     ></el-checkbox>
                     <h5 class="ml-[10px]">{{ product.title }}</h5>
+                    <div class="flex-1 text-right">
+                        <button @click.prevent="showDialog = true">
+                            <NuxtImg
+                                class="w-[24px]"
+                                src="/img/icons/info.svg"
+                            />
+                        </button>
+                    </div>
                 </div>
                 <div class="flex ml-[25px] mt-[8px]">
                     <div class="mr-[12px]">
@@ -32,10 +40,33 @@
                 </div>
             </div>
         </el-checkbox-group>
+        <el-dialog
+            v-model="showDialog"
+            :before-close="closeDialog"
+            :show-close="false"
+        >
+            <div class="text-right">
+                <button @click="closeDialog">
+                    <el-icon :size="30"><Close /></el-icon>
+                </button>
+            </div>
+            <h5 class="text-[20px] text-gray-800 YaleSolisW-Bd mb-[38px]">卡片密碼電子鎖-YDM 3109+</h5>
+            <CustomProductDailogCarousel :photos="photos" />
+            <p
+                class="text-[16px] text-gray-800 mt-[28px]"
+                v-html="dialogDetailHtml"
+            ></p>
+            <div class="flex justify-center mt-[40px]">
+                <button class="bg-yellow-600 text-gray-800 rounded-full w-[140px] py-[11px] text-center hover:bg-yellow-700 text-[16px]">加入選擇</button>
+            </div>
+        </el-dialog>
     </div>
 </template>
 
 <script setup lang="ts">
+// 導入細節彈窗 幻燈片
+import CustomProductDailogCarousel from "~/views/template1/CustomProduct/components/CustomProductDailogCarousel.vue";
+
 const { $utils } = useNuxtApp();
 
 const emit = defineEmits(["update:selectedProducts"]);
@@ -75,6 +106,29 @@ const selectedProducts = ref([]);
 function selectProduct(val: any) {
     emit("update:selectedProducts", val);
 }
+
+// 細節彈窗幻燈片圖
+const photos = ref<{ id: string | number; imgSrc: string }[]>([]);
+
+for (let i = 0; i < 10; i++) {
+    photos.value.push({ id: i, imgSrc: "/img/product/demo/product-carousel.jpg" });
+}
+
+const dialogDetailHtml = ref(`
+經典款式再升級！支援藍芽開門及遠端開門系統整合，手機也可以設定電子鎖。 <br /><br />
+ 熱感應輕觸式數位鍵盤，美觀便捷，且以手掌觸碰開啟有效避免指紋與密碼外洩。隱藏式機械鑰匙孔，緊急情況下，可以使用備用機械鑰匙。
+`);
+
+// 顯示彈窗
+const showDialog = ref(false);
+
+/**
+ * 關閉彈窗
+ */
+
+function closeDialog() {
+    showDialog.value = false;
+}
 </script>
 
 <style lang="scss" scoped>
@@ -95,6 +149,15 @@ function selectProduct(val: any) {
     }
     .el-checkbox.el-checkbox--large {
         @apply h-auto #{!important};
+    }
+}
+
+:deep {
+    .el-dialog__body {
+        @apply mx-10;
+    }
+    .el-dialog {
+        @apply rounded-[20px];
     }
 }
 </style>
