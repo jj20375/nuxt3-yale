@@ -14,6 +14,9 @@
             <YaleHomeAppCarousel :photos="carouselDatas" />
             <YaleHomeAppProduct />
             <YaleHomeAppProductFeature />
+            <YaleHomeAppVideo />
+            <YaleHomeAppSpec />
+            <YaleHomeAppInfo />
         </template>
     </BannerLayout>
 </template>
@@ -29,6 +32,12 @@ import YaleHomeAppCarousel from "~/views/template1/YaleHomeApp/components/YaleHo
 import YaleHomeAppProduct from "~/views/template1/YaleHomeApp/components/YaleHomeAppProduct.vue";
 // Yale home app 功能
 import YaleHomeAppProductFeature from "~/views/template1/YaleHomeApp/components/YaleHomeAppProductFeature.vue";
+// 影片介紹
+import YaleHomeAppVideo from "~/views/template1/YaleHomeApp/components/YaleHomeAppVideo.vue";
+// 產品規格
+import YaleHomeAppSpec from "~/views/template1/YaleHomeApp/components/YaleHomeAppSpec.vue";
+// 注意事項
+import YaleHomeAppInfo from "~/views/template1/YaleHomeApp/components/YaleHomeAppInfo.vue";
 
 const route = useRoute();
 
@@ -49,7 +58,7 @@ const topDatas = ref([]);
 
 for (let i = 1; i <= 2; i++) {
     topDatas.value.push({
-        imgSrc: "/img/yale-home-app/demo/yale-home-app-top-1.jpg",
+        imgSrc: `/img/yale-home-app/demo/yale-home-app-top-${i}.jpg`,
         title: "測試標題-" + i,
         content: "Yale Home是Yale耶魯提供住宅市場的全球智慧門鎖解決方案，Yale智慧鎖可以透過Yale Home應用程式進行管理，讓您完全控制您的門鎖，亦可藉由您的手機裝置上鎖或解鎖您的大門、允許他人進入，並記錄訪客使用情況。",
     });

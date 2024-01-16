@@ -1,24 +1,27 @@
 <template>
-    <section class="container text-center text-gray-800">
-        <div>
-            <h2 class="text-[32px] font-medium YaleSolisW-Bd">隨時掌握資訊，Yale Home 隨時反應門鎖狀態</h2>
-            <h5 class="text-[20px] mt-[12px] font-medium YaleSolisW-Bd">多元化開門方式，實現您的智慧家庭</h5>
-        </div>
-        <div class="mt-[40px] grid grid-cols-3 gap-[20px]">
-            <div
-                class="w-[285px] h-[300px] bg-gray-50 flex items-center px-10"
-                v-for="(feature, index) in features"
-            >
-                <div>
-                    <NuxtImg
-                        class="w-[64px] mx-auto"
-                        src="/img/yale-home-app/yale-home-app-feature-icon.svg"
-                    />
-                    <h5 class="text-[20px] YaleSolisW-Bd font-medium mt-[24px]">{{ feature.title }}</h5>
-                    <p class="text-[16px] mt-[12px]">{{ feature.content }}</p>
+    <section class="relative text-center text-gray-800">
+        <div class="container pb-[120px]">
+            <div>
+                <h2 class="text-[32px] font-medium YaleSolisW-Bd">隨時掌握資訊，Yale Home 隨時反應門鎖狀態</h2>
+                <h5 class="text-[20px] mt-[12px] font-medium YaleSolisW-Bd">多元化開門方式，實現您的智慧家庭</h5>
+            </div>
+            <div class="mt-[40px] grid grid-cols-3 gap-[20px]">
+                <div
+                    class="w-[285px] h-[300px] bg-gray-50 flex items-center px-10"
+                    v-for="(feature, index) in features"
+                >
+                    <div>
+                        <NuxtImg
+                            class="w-[64px] mx-auto"
+                            src="/img/yale-home-app/yale-home-app-feature-icon.svg"
+                        />
+                        <h5 class="text-[20px] YaleSolisW-Bd font-medium mt-[24px]">{{ feature.title }}</h5>
+                        <p class="text-[16px] mt-[12px]">{{ feature.content }}</p>
+                    </div>
                 </div>
             </div>
         </div>
+        <div class="absolute bottom-0 z-[-1] bg-gray-600 w-full h-[570px]"></div>
     </section>
 </template>
 
