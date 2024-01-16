@@ -73,7 +73,7 @@
 <script setup lang="ts">
 import Breadcrumb from "~/views/template1/components/Breadcrumb.vue";
 
-const { $utils } = useNuxtApp();
+const { $utils, $api } = useNuxtApp();
 
 const breadcrumbs = ref([
     {
@@ -96,41 +96,52 @@ const breadcrumbs = ref([
 const tableHeadData = [
     '', '聯繫人', '聯絡電話', '收件地址', '管理', ''
 ]
-const tableBodyData = [
-    {
-        default: true,
-        contactName: "王阿姨",
-        phone: "0911123123",
-        address: "701 台南市東區東寧路429號2樓-2",
-        url: {
-            name: "auth-contact-edit-slug",
-            params: { slug: "訂單資訊" },
-            query: { id: "1" },
+const tableBodyData = ref<any>([]);
+
+/**
+ * 取得聯絡人列表
+ */
+ async function getList() {
+    try {
+        const { data } = await $api().GetMemberContactAPI();
+        tableBodyData.value = [];
+        console.log("home sample api => ", data.value);
+
+        const rows = (data.value as any).data;
+
+        rows.forEach((item: { id: any; is_default: any; name: any; phone: any; full_address: any; }) => {
+            tableBodyData.value.push({
+                id: item.id,
+                default: item.is_default ? true : false,
+                contactName: item.name,
+                phone: item.phone,
+                address: item.full_address,
+                url: {
+                    name: "auth-contact-edit-slug",
+                    params: { slug: "訂單資訊" },
+                    query: { id: item.id },
+                }
+            });
+        });
+    } catch (err) {
+        console.log("HomeSampleAPI => ", err);
+    }
+}
+
+/**
+ * 初始化
+ */
+ async function init() {
+    await getList();
+}
+
+onMounted(async () => {
+    nextTick(async () => {
+        if (process.client) {
+            await init();
         }
-    },
-    {
-        default: false,
-        contactName: "王ＯＯ",
-        phone: "09.....3",
-        address: "701 台北市..........................路429號2樓",
-        url: {
-            name: "auth-contact-edit-slug",
-            params: { slug: "訂單資訊" },
-            query: { id: "1" },
-        }
-    },
-    {
-        default: false,
-        contactName: "陳ＯＯ",
-        phone: "09.....3",
-        address: "701 台北市..........................路429號2樓",
-        url: {
-            name: "auth-contact-edit-slug",
-            params: { slug: "訂單資訊" },
-            query: { id: "1" },
-        }
-    },
-];
+    });
+});
 
 </script>
 

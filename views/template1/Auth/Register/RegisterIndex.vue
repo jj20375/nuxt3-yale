@@ -233,7 +233,8 @@ const formDatas = ref<any>([
 
             const cityDataFilter = initializationStore.cityAreaData.find((item: { name: any }) => item.name === e.city);
             console.log("cityDataFilter.district", cityDataFilter);
-            formDatas.value[1].options = cityDataFilter.district.map((item: { name: any; zip3: any }) => {
+            const addressProps = formDatas.value.find((item: { prop: string; }) => item.prop === 'location')
+            addressProps.options = cityDataFilter.district.map((item: { name: any; zip3: any }) => {
                 return {
                     label: item.name,
                     value: item.name,
@@ -251,7 +252,8 @@ const formDatas = ref<any>([
         style: "select",
         function: (e: any) => {
             console.log(e);
-            e.zip3 = formDatas.value[1].options.find((item: { value: any }) => item.value === e.location).zip3;
+            const addressProps = formDatas.value.find((item: { prop: string; }) => item.prop === 'location')
+            e.zip3 = addressProps.options.find((item: { value: any }) => item.value === e.location).zip3;
         },
     },
     {
@@ -387,7 +389,7 @@ async function onSubmit() {
                     city: form.value.city,
                     district: form.value.location,
                     zip3: form.value.zip3,
-                    address: form.value.location,
+                    address: form.value.address,
                     birthday: form.value.birthday,
                     sex: form.value.gender,
                     password: form.value.password,

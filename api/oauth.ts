@@ -268,19 +268,14 @@ export default () => {
         body: data,
       });
     },
+
     /**
-     * 會員資料
+     * 修改密碼
      */
-    GetUserProfileAPI() {
-      return useMyFetch(`${apiUrl}/member/profile`, { method: "get" });
-    },
-    /**
-     * 修改會員資料
-     */
-    ChangeProfileAPI(data: any) {
-      return useMyFetch(`${apiUrl}/member/change-profile`, {
+    ChangePassewordAPI(params: { old_password: string; new_password: string; new_password_confirmation: string; }) {
+      return useMyFetch(`${apiUrl}/member/change-password`, {
         method: "post",
-        body: data,
+        body: {...params},
       });
     },
   };

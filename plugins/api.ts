@@ -4,6 +4,7 @@ import oauth from "~/api/oauth";
 import article from "~/api/artical";
 import store from "~/api/store";
 import contactService from "~/api/contactService";
+import member from "~/api/member";
 
 export default defineNuxtPlugin((nuxtApp) => {
     return {
@@ -14,7 +15,8 @@ export default defineNuxtPlugin((nuxtApp) => {
                 ...oauth(),
                 ...article(),
                 ...store(),
-                ...contactService()
+                ...contactService(),
+                ...member(),
             }),
         },
     };
