@@ -30,10 +30,10 @@ export default () => {
      * 聯絡人資料(單筆)
      */
     GetMemberContactDetailAPI(params: { memberAddressId: any }) {
-        return useMyFetch(`${apiUrl}/member-address/${params.memberAddressId}`, {
-          method: "get",
-        });
-      },
+      return useMyFetch(`${apiUrl}/member-address/${params.memberAddressId}`, {
+        method: "get",
+      });
+    },
     /**
      * 新增聯絡人
      */
@@ -47,10 +47,18 @@ export default () => {
      * 新增聯絡人
      */
     EditChangeProfileAPI(params: { memberAddressId: any }, data: any) {
-        return useMyFetch(`${apiUrl}/member-address/${params.memberAddressId}`, {
-          method: "post",
-          body: data,
-        });
-      },
+      return useMyFetch(`${apiUrl}/member-address/${params.memberAddressId}`, {
+        method: "post",
+        body: data,
+      });
+    },
+    /**
+     * 刪除聯絡人
+     */
+    DeleteProfileAPI(params: { memberAddressId: any }) {
+      return useMyFetch(`${apiUrl}/member-address/${params.memberAddressId}`, {
+        method: "delete",
+      });
+    },
   };
 };
