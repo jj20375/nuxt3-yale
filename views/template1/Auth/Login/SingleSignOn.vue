@@ -102,7 +102,7 @@ const rules = ref<any>({
     ],
 });
 
-// 訂單資料
+// 會員資料
 const memberData = ref({
     email: "ABC@gmail.com",
     social: "google",
@@ -124,6 +124,7 @@ const socialData = ref([
     },
 ])
 
+// 給對應的社群圖片
 const socialIconPath = computed(() => {
     const selectedSocial = socialData.value.find(social => social.name === memberData.value.social);
     return selectedSocial ? selectedSocial.icon : '';
