@@ -38,7 +38,11 @@
                                 size="large"
                             />
                         </el-form-item>
-                        <div class="text-[15px]">忘記密碼?</div>
+                        <NuxtLink
+                            :to="{ name: 'auth-forgot-slug', params: { slug: '忘記密碼' }}"
+                        >
+                            <div class="text-[15px]">忘記密碼?</div>
+                        </NuxtLink>
                     </div>
                     <button
                         class="yellow-btn !py-3 !w-full"
