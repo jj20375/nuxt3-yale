@@ -115,7 +115,7 @@ const panelDatas = ref([
     {
         title: "產品收藏清單",
         url: {
-            name: "",
+            name: "auth-favorite-slug",
             params: { slug: "slug" }
         },
         imgSrc: "img/icons/auth/favorite.svg"
