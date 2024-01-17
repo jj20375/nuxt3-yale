@@ -29,7 +29,7 @@ import Footer from "~/layouts/tmp1Components/Footer.vue";
 import Cookies from "js-cookie";
 
 definePageMeta({
-    middleware: [],
+    middleware: ["user-middleware"],
 });
 
 const { $api, $firebaseAuth, $firebaseMessaging, $utils } = useNuxtApp();

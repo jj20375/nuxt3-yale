@@ -7,7 +7,7 @@
 <script setup lang="ts">
 const AsyncComp = defineAsyncComponent(() => import("~/views/template1/Auth/Contact/EditContact.vue"));
 definePageMeta({
-    middleware: [],
+    middleware: ["user-middleware", "auth-middleware"],
 });
 const pageLoading = ref(useState("loading"));
 onMounted(() => {

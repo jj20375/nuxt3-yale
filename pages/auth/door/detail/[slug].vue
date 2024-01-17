@@ -7,7 +7,7 @@
 <script setup lang="ts">
 const AsyncComp = defineAsyncComponent(() => import("~/views/template1/Auth/Door/DoorDetail.vue"));
 definePageMeta({
-    middleware: [],
+    middleware: ["user-middleware", "auth-middleware"],
 });
 const pageLoading = ref(useState("loading"));
 onMounted(() => {
