@@ -111,7 +111,7 @@
                         </el-form-item>
                         <div class="flex justify-center col-span-2 mt-10">
                             <NuxtLink
-                                :to="{ name: 'auth-verification-slug', params: { slug: '寄送驗證信件' }}"
+                                :to="{ name: 'auth-verification-slug', params: { slug: 'slug' }}"
                             >
                                 <button class="yellow-btn btn-lg !py-3">
                                     立即註冊
