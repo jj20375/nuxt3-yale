@@ -81,7 +81,7 @@
                     />
                 </div>
                 <CustomProductLock
-                    v-if="stepMenuShow['step3'].show"
+                    v-show="stepMenuShow['step3'].show"
                     v-model:lockCategory="lockCategory"
                     v-model:currentLock="currentLock"
                     :locks="locks"
@@ -176,17 +176,17 @@
                     v-model:selectedServices="selectedServices"
                 />
             </div>
-            <div class="my-[30px] flex">
+            <div class="my-[30px] flex pb-[300px]">
                 <div class="mr-[16px] flex-1">
                     <button class="max-w-[207px] w-full text-center py-[11px] border border-gray-600 transition-all duration-500 hover:text-white hover:bg-black rounded-full">加入購物車</button>
                 </div>
                 <button class="max-w-[207px] w-full text-center py-[11px] bg-yellow-500 hover:bg-yellow-600 transition-all duration-500 rounded-full">結帳</button>
             </div>
         </div>
-        <div class="fixed bottom-0 flex items-center justify-end w-full text-right pr-[55px] bg-white z-[500] h-[120px] bg-opacity-80 backdrop-blur-xl">
+        <div class="fixed bottom-0 flex items-center justify-end w-full text-right pr-[55px] bg-white z-[500] h-[80px] bg-opacity-80 backdrop-blur-xl">
             <ul
                 v-if="previewWidth > 0"
-                class="flex justify-center mt-[12px]"
+                class="flex justify-center"
                 :style="{ width: previewWidth + 'px' }"
             >
                 <li

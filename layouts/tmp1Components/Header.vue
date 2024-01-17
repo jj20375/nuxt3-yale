@@ -291,6 +291,15 @@ const menus = ref<any>({
             },
         ],
     },
+    menu8: {
+        title: "Yale Home APP",
+        url: {
+            name: "yale-home-app-slug",
+            params: { slug: "Yale Home APP下載" },
+            query: { id: "1" },
+        },
+        submenus: [],
+    },
 });
 
 // 右側 icon
