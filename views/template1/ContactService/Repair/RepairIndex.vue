@@ -27,25 +27,29 @@
                     </p>
                     <div class="mt-[60px] flex justify-center text-[20px] font-medium YaleSolisW-Bd">
                         <div class="mr-[24px]">
+                            <NuxtLink :to="{ name: 'repair-warranty-slug', params: { slug: '保固登記' } }">
+                                <button class="px-[38px] w-[385px] h-[100px] rounded-[20px] text-center bg-gray-100 hover:bg-yellow-600 duration-500 transit flex items-center justify-center">
+                                    <div class="mr-[20px]">
+                                        <NuxtImg
+                                            class="w-[36px]"
+                                            src="/img/repair/repair-doc-icon.svg"
+                                        />
+                                    </div>
+                                    <div>保固登記</div>
+                                </button>
+                            </NuxtLink>
+                        </div>
+                        <NuxtLink :to="{ name: 'repair-detail-slug', params: { slug: '線上報修' } }">
                             <button class="px-[38px] w-[385px] h-[100px] rounded-[20px] text-center bg-gray-100 hover:bg-yellow-600 duration-500 transit flex items-center justify-center">
                                 <div class="mr-[20px]">
                                     <NuxtImg
                                         class="w-[36px]"
-                                        src="/img/repair/repair-doc-icon.svg"
+                                        src="/img/repair/repair-tool-icon.svg"
                                     />
                                 </div>
-                                <div>保固登記</div>
+                                <div>線上報修申請</div>
                             </button>
-                        </div>
-                        <button class="px-[38px] w-[385px] h-[100px] rounded-[20px] text-center bg-gray-100 hover:bg-yellow-600 duration-500 transit flex items-center justify-center">
-                            <div class="mr-[20px]">
-                                <NuxtImg
-                                    class="w-[36px]"
-                                    src="/img/repair/repair-tool-icon.svg"
-                                />
-                            </div>
-                            <div>線上報修申請</div>
-                        </button>
+                        </NuxtLink>
                     </div>
                 </div>
             </div>
@@ -61,11 +65,6 @@ const breadcrumbs = ref([
     {
         name: "index",
         text: "首頁",
-    },
-    {
-        name: "faq-slug",
-        text: "服務支援",
-        params: { slug: "耶魯服務支援" },
     },
     {
         name: "repair-slug",
