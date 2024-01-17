@@ -27,8 +27,8 @@
                     :src="productTypeDetail.media"
                 />
                 <div class="ml-[40px]">
-                    <h2 class="text-[24px] font-medium">{{productTypeDetail.name}}</h2>
-                    <p class="mt-[16px] text-[16px]">{{productTypeDetail.description}}</p>
+                    <h2 class="text-[24px] font-medium">{{ productTypeDetail.name }}</h2>
+                    <p class="mt-[16px] text-[16px]">{{ productTypeDetail.description }}</p>
                 </div>
             </div>
             <div class="flex justify-end mr-10 mb-[24px]">
@@ -49,7 +49,10 @@
                 </div>
             </div>
             <div class="grid grid-cols-3 gap-4 mr-10">
-                <div v-for="(product, index) in datas" :key=index>
+                <div
+                    v-for="(product, index) in datas"
+                    :key="index"
+                >
                     <ProductCard :product="product" />
                 </div>
             </div>
@@ -72,6 +75,11 @@ import SideBar from "~/views/template1/components/SideBarByDeep.vue";
 import Pagination from "~/views/template1/components/Pagination.vue";
 // 產品卡片樣板
 import ProductCard from "~/views/template1/components/ProductCard.vue";
+/**
+ * ProductListAPIInterface: 產品分頁 api 回應值
+ * ProductList: 產品分頁列表內容
+ */
+import { ProductListAPIInterface, ProductList } from "~/views/template1/Product/interface/Product.d";
 
 const { $api } = useNuxtApp();
 
@@ -141,27 +149,27 @@ async function getType() {
 }
 
 const productTypeDetail = ref<any>({
-    media: '',
-    description: '',
-    name: ''
-})
+    media: "",
+    description: "",
+    name: "",
+});
 /**
  * 取得商品分類詳情
  */
- async function getTypeDetail() {
+async function getTypeDetail() {
     try {
-        const params = { productCategoryId: route.query.tag }
+        const params = { productCategoryId: route.query.tag };
         const { data } = await $api().ProductTypeDetailAPI(params);
         console.log("home getTypeDetail api => ", data.value);
 
         const rows = (data.value as any).data;
-        console.log(rows)
+        console.log(rows);
 
         productTypeDetail.value = {
             media: rows.media,
             description: rows.description,
             name: rows.name,
-        }
+        };
     } catch (err) {
         console.log("HomeSampleAPI => ", err);
     }
@@ -177,23 +185,23 @@ const handlePageChange = (val: any) => {
     getList({ per_page: pagination.value.pageSize, page: val });
 };
 
-const datas = ref<any>([]);
+const datas = ref<ProductList[]>([]);
 
 const sortBy = ref(0);
 
 /**
  * 取得商品列表
  */
-async function getList(params: { per_page: number; page: number; }) {
+async function getList(params: { per_page: number; page: number }) {
     try {
-        const { data } = await $api().ProductLListPaginateAPI(params);
+        const { data } = await $api().ProductListPaginateAPI<ProductListAPIInterface>(params);
         datas.value = [];
         console.log("home sample api => ", data.value);
 
         const rows = (data.value as any).data.rows;
         const meta = (data.value as any).data.meta;
 
-        rows.forEach((item: { id: any; model: any; name: any; shape: any; price: any; market_price: any; main_image: any; other_images: any; }) => {
+        rows.forEach((item: { id: any; model: any; name: any; shape: any; price: any; market_price: any; main_image: any; other_images: any }) => {
             datas.value.push({
                 id: item.id,
                 model: item.model,

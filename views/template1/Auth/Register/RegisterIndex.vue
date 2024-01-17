@@ -441,7 +441,7 @@ async function login(form: { email: string; password: string }) {
         } else {
             ElMessage({
                 type: "error",
-                message: data.message,
+                message: error.value.data.message,
             });
         }
     } catch (err) {
