@@ -1,15 +1,15 @@
 <template>
     <section class="min-h-screen mt-[94px] pb-[60px] bg-gray-50">
-        <nav class="border-t border-b border-gray-300 py-[16px] bg-white">
+        <nav v-if="!userData" class="border-t border-b border-gray-300 py-[16px] bg-white">
             <div class="grid grid-cols-7 gap-0">
                 <div class="col-span-7 ml-[122px]">
                     <Breadcrumb :menus="breadcrumbs" />
                 </div>
             </div>
         </nav>
-        <div class="container">
+        <div class="container overflow-auto">
             <div class="w-[620px] mt-[60px] py-[60px] px-[60px] bg-white mx-auto rounded-[24px] border-[1px] border-gray-200">
-                <h3 class="font-medium text-[28px] text-center mb-8">變更密碼</h3>
+                <h3 class="font-medium text-[28px] mb-8">{{ userData ? '重設密碼' : '變更密碼'}}</h3>
                 <el-form
                     class="custom-form"
                     ref="formRefDom"
@@ -26,38 +26,15 @@
                                 <el-input :type="item.type" :show-password="item.showPassword" :disabled="item.disabled"
                                           :placeholder="item.placeholder" v-model="form[item.prop]"></el-input>
                             </el-form-item>
-                            <el-form-item v-else-if="item.style === 'radio'" :prop="item.prop" :label="item.label">
-                                <el-radio-group v-model="form[item.prop]">
-                                    <el-radio
-                                        v-for="(option, radio_index) in item.radioData"
-                                        :key="radio_index"
-                                        :label="option.value"
-                                        size="large"
-                                    >{{ option.label }}</el-radio
-                                    >
-                                </el-radio-group>
-                            </el-form-item>
-                            <el-form-item v-else-if="item.style === 'datepicker'" :prop="item.prop">
-                                <div class="el-form-item w-full">
-                                    <div class="el-form-item__label">{{ item.label }}<span class="ml-[2px] text-red-500" v-if="item.required">*</span></div>
-                                    <el-date-picker
-                                        v-model="form[item.prop]"
-                                        type="date"
-                                        valueFormat="YYYY-MM-DD"
-                                        :placeholder="item.placeholder"
-                                        popper-class="date-box"
-                                    />
-                                </div>
-                            </el-form-item>
                         </div>
                         <div class="flex mt-4 gap-4 justify-center">
-                            <NuxtLink
+                            <NuxtLink v-if="!userData"
                                 :to="{ name: 'auth-panel-slug', params: { slug: '會員中心' }}"
                             >
                                 <button
                                     class="transparent-btn btn-md"
                                 >
-                                    返回
+                                    {{ userData ? '確認' : '儲存'}}
                                 </button>
                             </NuxtLink>
                             <NuxtLink
@@ -79,6 +56,8 @@
 <script setup lang="ts">
 import Breadcrumb from "~/views/template1/components/Breadcrumb.vue";
 
+const route = useRoute();
+
 const breadcrumbs = ref([
     {
         name: "index",
@@ -99,26 +78,19 @@ const breadcrumbs = ref([
 const formRefDom = ref<any>();
 
 const form = ref<any>({
-    email: "a123@gmail.com",
-    name: "王小明",
-    cellphone: "0911222222",
-    telephone: "0212222222",
-    gender: 1,
-    birthday: "2000-01-01",
+    oldPassword: "",
+    newPassword: "",
+    confirmPassword: "",
 });
 
-const genderRadios = ref<any>([
-    { value: 1, label: "先生" },
-    { value: 0, label: "女士" }
-]);
-
-const formDatas = ref<any>([
+const initFormDatas = ref<any>([
     {
         prop: "oldPassword",
         label: "舊密碼",
         placeholder: "請輸入舊密碼",
         style: "input",
         showPassword: true,
+        isVisible: computed(() => !userData.value),
     },
     {
         prop: "newPassword",
@@ -136,34 +108,42 @@ const formDatas = ref<any>([
     },
 ]);
 
+const formDatas:any = computed(() => initFormDatas.value.filter(item => item.isVisible !== false));
+
 const rules = ref<any>({
-    email: [
+    oldPassword: [
         {
             required: true,
-            message: "請輸入帳號",
+            message: "請輸入舊密碼",
             trigger: "blur"
         }
     ],
-    name: [
+    newPassword: [
         {
             required: true,
-            message: "請輸入姓名",
+            message: "請輸入新密碼",
             trigger: "blur"
         }
     ],
-    cellphone: [
+    confirmPassword: [
         {
             required: true,
-            message: "請輸入聯絡電話",
+            message: "請輸入密碼",
             trigger: "blur"
         }
     ],
-    gender: [
-        {
-            required: true,
-            message: "請輸入聯絡電話",
-            trigger: "blur"
-        }
-    ]
 });
+
+// TODO 這邊僅供參考畫面用，串接請修改掉
+const userData = ref<any>();
+
+/**
+ * 初始化
+ */
+function init() {
+    console.log("route.query.id", route.query.id);
+    userData.value = route.query.id;
+}
+
+init();
 </script>
