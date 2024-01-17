@@ -6,6 +6,7 @@
         <div class="container mt-[60px]">
             <div class="grid grid-cols-3">
                 <ProductDetailCarousel
+                    ref="productDetailCarouselRef"
                     class="pr-[72px] col-span-2"
                     :photos="photos"
                 />
@@ -189,13 +190,17 @@ const photos = ref<{ id: string | number; imgSrc: string }[]>([]);
 const detailData = ref<any>({});
 
 const productOptions = ref<any>([]);
+// 預設選中顏色
+const currentColor = ref<any>([]);
 
 function optionChange(opt: { id: any }, index: number) {
     currentColor.value[index] = opt.id;
     optionChangePrice();
 }
 
-function optionChangePrice() {
+const productDetailCarouselRef = ref<any>(null)
+
+function optionChangePrice(init: boolean = false) {
     let key = "option";
     currentColor.value.forEach((item: string) => {
         key += `-${item}`;
@@ -203,13 +208,18 @@ function optionChangePrice() {
     detailData.value.price = detailData.value.productVariations[key].price;
     detailData.value.market_price = detailData.value.productVariations[key].marketPrice;
     detailData.value.stock = detailData.value.productVariations[key].stock;
+    if (!init) {
+        if (detailData.value.productVariations[key].image) {
+            const index = photos.value.findIndex(item => item.imgSrc === detailData.value.productVariations[key].image)
+            console.log(index, detailData.value.productVariations[key].image)
+            productDetailCarouselRef.value.slideTo(index + 1)
+        }
+    }
 }
+
 
 // 折扣文案
 const salesDetail = ref(["[活動] 滿 NT$1,700 折 NT$560", "[活動] 歡慶十週年，滿 NT$1,700 打 8 折", "[活動] 全站滿千免運"]);
-
-// 預設選中顏色
-const currentColor = ref<any>([]);
 
 // 數量
 const count = ref(1);
@@ -287,7 +297,7 @@ async function getData() {
                     options: option,
                 });
             });
-            optionChangePrice();
+            optionChangePrice(true);
         } else {
             detailData.value.price = rows.price
             detailData.value.market_price = rows.market_price
