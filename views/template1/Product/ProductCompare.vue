@@ -32,7 +32,7 @@
                     class="bg-white p-[30px] rounded-[16px] cursor-pointer"
                 >
                     <NuxtImg
-                        class="object-cover w-full rounded-2xl aspect-1/1"
+                        class="object-cover w-full rounded-2xl aspect-square object-cover"
                         src="/img/home/product/product1.jpg"
                     />
                     <h5 class="text-[18px] YaleSolisW-Bd font-medium">YDM 4109A</h5>

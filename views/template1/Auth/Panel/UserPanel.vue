@@ -1,5 +1,5 @@
 <template>
-    <section class="mt-[94px] border-t border-gray-300">
+    <section class="min-h-screen mt-[94px] border-t border-gray-300">
         <nav class="border-t border-b border-gray-300 py-[16px] bg-white">
             <div class="grid grid-cols-7 gap-0">
                 <div class="col-span-7 ml-[122px]">
@@ -20,7 +20,7 @@
                         <div
                             class="flex gap-2 mb-1.5 cursor-pointer transition-all duration-400 hover:text-gray-500 hover:transition-all hover:duration-400">
                             <NuxtImg
-                                class="w-[20px] aspect-1/1"
+                                class="w-[20px] aspect-square object-cover"
                                 src="img/icons/auth/logout.svg"
                                 alt=""
                             />
@@ -34,9 +34,10 @@
                         :key="index"
                     >
                         <NuxtLink :to="item.url">
-                            <div class="flex flex-col gap-3 items-center bg-gray-100 rounded-[8px] py-12">
+                            <div
+                                class="relative flex flex-col gap-3 items-center bg-gray-100 transition-all duration-300 hover:bg-transparent hover:transition-all hover:duration-300 rounded-[8px] py-12 after:absolute after:w-full after:h-full after:top-0 after:left-0 after:from-yellow-100 after:to-yellow-500 after:rounded-[8px] after:bg-gradient-[296deg] after:bg-gradient-to-br after:opacity-0 after:-z-[1] after:transition-all after:duration-300 hover:after:opacity-100">
                                 <NuxtImg
-                                    class="w-[24px] aspect-1/1"
+                                    class="w-[24px] aspect-square object-cover"
                                     :src="item.imgSrc"
                                 />
                                 <h4>
@@ -93,15 +94,15 @@ const panelDatas = ref([
     {
         title: "一般產品-訂單記錄",
         url: {
-            name: "",
-            params: { slug: "slug" }
+            name: "auth-order-slug",
+            params: { slug: "訂單記錄" }
         },
         imgSrc: "img/icons/auth/order-record.svg"
     },
     {
         title: "訂製門扇-訂單記錄",
         url: {
-            name: "",
+            name: "auth-door-slug",
             params: { slug: "slug" }
         },
         imgSrc: "img/icons/auth/door-record.svg"
