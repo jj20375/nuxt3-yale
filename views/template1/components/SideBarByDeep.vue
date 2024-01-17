@@ -34,13 +34,13 @@
                             currentActive = menu.categoryId;
                         "
                         class="text-[15px] ml-[10px]"
-                        :class="[currentActiveTag === subMenu.categoryId && currentActive === menu.categoryId ? 'text-gray-800' : 'text-gray-400', index2 !== 0 ? 'pb-[10px]' : 'pb-[10px]']"
+                        :class="[currentActiveTag == subMenu.categoryId && currentActive == menu.categoryId ? 'text-gray-800' : 'text-gray-400', index2 !== 0 ? 'pb-[10px]' : 'pb-[10px]']"
                     >
                         <NuxtLink
                             v-if="subMenu.url"
                             :to="subMenu.url"
                         >
-                            {{ subMenu.text }}{{ subMenu.categoryId }}
+                            {{ subMenu.text }}
                         </NuxtLink>
                     </li>
                 </ul>

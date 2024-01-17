@@ -23,45 +23,52 @@
                 </div>
                 <table>
                     <thead>
-                    <tr>
-                        <th v-for="item in tableHeadData" :key="item.index">{{ item }}</th>
-                    </tr>
+                        <tr>
+                            <th
+                                v-for="(item, index) in tableHeadData"
+                                :key="index"
+                            >
+                                {{ item }}
+                            </th>
+                        </tr>
                     </thead>
                     <tbody>
-                    <tr v-for="item in tableBodyData" :key="item.index">
-                        <td>
-                            <div class="font-bold">{{ item.default ? "預設" : "" }}</div>
-                        </td>
-                        <td>
-                            {{ item.contactName }}
-                        </td>
-                        <td>
-                            {{ item.phone }}
-                        </td>
-                        <td>
-                            {{ item.address }}
-                        </td>
-                        <td>
-                            <NuxtLink :to="item.url">
+                        <tr
+                            v-for="item in tableBodyData"
+                            :key="item.index"
+                        >
+                            <td>
+                                <div class="font-bold">{{ item.default ? "預設" : "" }}</div>
+                            </td>
+                            <td>
+                                {{ item.contactName }}
+                            </td>
+                            <td>
+                                {{ item.phone }}
+                            </td>
+                            <td>
+                                {{ item.address }}
+                            </td>
+                            <td>
+                                <NuxtLink :to="item.url">
+                                    <NuxtImg
+                                        class="w-[20px] aspect-square object-cover"
+                                        src="img/icons/auth/edit.svg"
+                                    />
+                                </NuxtLink>
+                            </td>
+                            <td>
                                 <NuxtImg
-                                    class="w-[20px] aspect-square object-cover"
-                                    src="img/icons/auth/edit.svg"
+                                    @click.prevent="deleteData(item)"
+                                    class="w-[20px] aspect-square object-cover cursor-pointer"
+                                    src="img/icons/auth/delete.svg"
                                 />
-                            </NuxtLink>
-                        </td>
-                        <td>
-                            <NuxtImg
-                                class="w-[20px] aspect-square object-cover"
-                                src="img/icons/auth/delete.svg"
-                            />
-                        </td>
-                    </tr>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
                 <div class="flex justify-center mt-10">
-                    <NuxtLink
-                        :to="{ name: 'auth-panel-slug', params: { slug: '會員中心' }}"
-                    >
+                    <NuxtLink :to="{ name: 'auth-panel-slug', params: { slug: '會員中心' } }">
                         <button class="transparent-btn btn-md">返回會員中心</button>
                     </NuxtLink>
                 </div>
@@ -72,84 +79,120 @@
 
 <script setup lang="ts">
 import Breadcrumb from "~/views/template1/components/Breadcrumb.vue";
+import { ElMessage, ElMessageBox } from "element-plus";
+import type { Action } from "element-plus";
 
-const { $utils } = useNuxtApp();
+const { $utils, $api } = useNuxtApp();
 
 const breadcrumbs = ref([
     {
         name: "index",
-        text: "首頁"
+        text: "首頁",
     },
     {
         name: "auth-panel-slug",
         text: "會員中心",
-        params: { slug: "會員中心" }
+        params: { slug: "會員中心" },
     },
     {
         name: "auth-contact-slug",
         text: "常用聯繫人",
-        params: { slug: "常用聯繫人" }
-    }
+        params: { slug: "常用聯繫人" },
+    },
 ]);
 
 // 表格資料
-const tableHeadData = [
-    '', '聯繫人', '聯絡電話', '收件地址', '管理', ''
-]
-const tableBodyData = [
-    {
-        default: true,
-        contactName: "王阿姨",
-        phone: "0911123123",
-        address: "701 台南市東區東寧路429號2樓-2",
-        url: {
-            name: "auth-contact-edit-slug",
-            params: { slug: "訂單資訊" },
-            query: { id: "1" },
-        }
-    },
-    {
-        default: false,
-        contactName: "王ＯＯ",
-        phone: "09.....3",
-        address: "701 台北市..........................路429號2樓",
-        url: {
-            name: "auth-contact-edit-slug",
-            params: { slug: "訂單資訊" },
-            query: { id: "1" },
-        }
-    },
-    {
-        default: false,
-        contactName: "陳ＯＯ",
-        phone: "09.....3",
-        address: "701 台北市..........................路429號2樓",
-        url: {
-            name: "auth-contact-edit-slug",
-            params: { slug: "訂單資訊" },
-            query: { id: "1" },
-        }
-    },
-];
+const tableHeadData = ["", "聯繫人", "聯絡電話", "收件地址", "管理", ""];
+const tableBodyData = ref<any>([]);
 
+/**
+ * 取得聯絡人列表
+ */
+async function getList() {
+    try {
+        const { data } = await $api().GetMemberContactAPI();
+        tableBodyData.value = [];
+        console.log("home sample api => ", data.value);
+
+        const rows = (data.value as any).data;
+
+        rows.forEach((item: { id: any; is_default: any; name: any; phone: any; full_address: any }) => {
+            tableBodyData.value.push({
+                id: item.id,
+                default: item.is_default ? true : false,
+                contactName: item.name,
+                phone: item.phone,
+                address: item.full_address,
+                url: {
+                    name: "auth-contact-edit-slug",
+                    params: { slug: "訂單資訊" },
+                    query: { id: item.id },
+                },
+            });
+        });
+    } catch (err) {
+        console.log("HomeSampleAPI => ", err);
+    }
+}
+
+function deleteData(item: { id: any }) {
+    ElMessageBox.confirm("是否刪除此聯絡人?", "警告", {
+        confirmButtonText: "是",
+        cancelButtonText: "否",
+        type: "warning",
+    })
+        .then(async () => {
+            const params = { memberAddressId: item.id };
+            const { data, status, error } = await $api().DeleteProfileAPI(params);
+            if (status.value === "success") {
+                ElMessage({
+                    type: "success",
+                    message: "刪除成功",
+                });
+                await getList();
+            } else {
+                ElMessage({
+                    type: "error",
+                    message: (error.value as any).data.message,
+                });
+            }
+        })
+        .catch(() => {});
+}
+
+/**
+ * 初始化
+ */
+async function init() {
+    await getList();
+}
+
+onMounted(async () => {
+    nextTick(async () => {
+        if (process.client) {
+            await init();
+        }
+    });
+});
 </script>
 
 <style lang="scss" scoped>
 // 會員的table樣式
-table{
+table {
     @apply w-full;
-    th{
+    th {
         @apply text-start bg-gray-100 text-gray-800 py-3 text-sm;
-        &:nth-child(5),&:nth-child(6){
+        &:nth-child(5),
+        &:nth-child(6) {
             width: 48px;
         }
     }
-    td{
+    td {
         @apply py-5 border-b border-gray-100;
-        &:first-child{
+        &:first-child {
             @apply pl-4;
         }
-        &:last-child{
+        &:last-child {
             @apply pr-4;
         }
     }

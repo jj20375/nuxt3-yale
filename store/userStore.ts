@@ -8,6 +8,7 @@ interface State {
 }
 export const useUserStore = defineStore({
     id: "userStore",
+    persist: true,
     state: (): State | any => {
         return {
             name: "userStore",
@@ -71,7 +72,7 @@ export const useUserStore = defineStore({
                     if (data.value === null) {
                         data.value = {};
                     }
-                    this.setUser(data.value);
+                    this.setUser(data.value.data);
                     this.setIsAuth(true);
                 } catch (err) {
                     console.log("GetUserProfileAPI => ", err);

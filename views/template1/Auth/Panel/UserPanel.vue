@@ -12,7 +12,7 @@
                 <div class="flex justify-between items-end">
                     <div class="flex gap-7 items-end">
                         <h3 class="text-[32px] font-bold">會員中心</h3>
-                        <div class="mb-1.5">您好，王小明</div>
+                        <div class="mb-1.5">您好，{{ user.name }}</div>
                     </div>
                     <NuxtLink
                         :to="{ name: 'auth-panel-logout-slug', params: { slug: '登出成功' }}"
@@ -53,6 +53,11 @@
 </template>
 <script setup lang="ts">
 import Breadcrumb from "~/views/template1/components/Breadcrumb.vue";
+import { useUserStore } from "~/store/userStore";
+import { storeToRefs } from "pinia";
+
+const userStore = useUserStore();
+const { user } = storeToRefs(userStore);
 
 const breadcrumbs = ref([
     {
@@ -71,7 +76,7 @@ const panelDatas = ref([
         title: "會員資料",
         url: {
             name: "auth-info-slug",
-            params: { slug: "slug" }
+            params: { slug: "會員資料" }
         },
         imgSrc: "img/icons/auth/info.svg"
     },

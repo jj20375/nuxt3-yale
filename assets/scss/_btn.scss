@@ -125,20 +125,6 @@
     &.btn-lg {
         @apply w-[300px];
     }
-    &.btn-sm {
-        @apply w-[128px];
-    }
-    &.btn-xs {
-        @apply w-[108px] py-2;
-    }
-}
-
-// 透明按鈕(淡灰色)
-.transparent-btn {
-    @apply bg-transparent border-[1px] border-gray-800 rounded-full py-3 px-4 hover:bg-black hover:text-white transition-all duration-500 text-[16px];
-    &.btn-lg {
-        @apply w-[300px];
-    }
     &.btn-md {
         @apply w-[160px];
     }

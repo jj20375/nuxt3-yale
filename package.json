@@ -15,6 +15,7 @@
         "@nuxt/devtools": "^0.8.2",
         "@nuxt/image-edge": "^1.0.0-27968280.9739e4d",
         "@nuxtjs/device": "^3.1.0",
+        "@pinia-plugin-persistedstate/nuxt": "^1.2.0",
         "@types/jquery": "^3.5.16",
         "nuxt": "^3.7.0",
         "nuxt-icon": "^0.6.6",

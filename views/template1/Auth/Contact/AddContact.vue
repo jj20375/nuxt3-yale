@@ -94,6 +94,7 @@
                                 </button>
                             </NuxtLink>
                             <button
+                                @click.prevent="onSubmit"
                                 class="yellow-btn btn-md"
                             >
                                 儲存
@@ -107,9 +108,12 @@
 </template>
 <script setup lang="ts">
 import Breadcrumb from "~/views/template1/components/Breadcrumb.vue";
+import { validateTWMobileNumber } from "~/service/validator";
 import { useInitializationStore } from "~/store/initializationStore";
+import { ElMessage, ElLoading } from "element-plus";
 
 const { $api } = useNuxtApp();
+const router = useRouter();
 
 // 預先加載縣市資料
 const initializationStore = useInitializationStore();
@@ -172,6 +176,7 @@ const formDatas = ref<any>([
         style: "input"
     },
     {
+        prop: "address",
         type: "inline",
         datas: [
             {
@@ -183,13 +188,16 @@ const formDatas = ref<any>([
                 function: (e: any) => {
                     console.log(e);
                     e.location = "";
+                    e.zip3 = "";
 
                     const cityDataFilter = initializationStore.cityAreaData.find((item: { name: any }) => item.name === e.city);
                     console.log("cityDataFilter.district", cityDataFilter);
-                    formDatas.value[2].datas[1].options = cityDataFilter.district.map((item: { name: any }) => {
+                    const addressProps = formDatas.value.find((item: { prop: string; }) => item.prop === 'address')
+                    addressProps.datas.find((item: { prop: string }) => item.prop === 'location').options = cityDataFilter.district.map((item: { name: any; zip3: any }) => {
                         return {
                             label: item.name,
-                            value: item.name
+                            value: item.name,
+                            zip3: item.zip3,
                         };
                     });
                 }
@@ -199,7 +207,12 @@ const formDatas = ref<any>([
                 label: "地區",
                 placeholder: "請選擇",
                 options: [],
-                style: "select"
+                style: "select",
+                function: (e: any) => {
+                    console.log(e);
+                    const addressProps = formDatas.value.find((item: { prop: string; }) => item.prop === 'address')
+                    e.zip3 = addressProps.datas.find((item: { prop: string }) => item.prop === 'location').options.find((item: { value: any }) => item.value === e.location).zip3;
+                },
             },
             {
                 prop: "zip3",
@@ -223,36 +236,91 @@ const rules = ref<any>({
         {
             required: true,
             message: "請輸入聯繫人姓名",
-            trigger: "blur"
+            trigger: ["change", "blur"],
         }
     ],
     phone: [
         {
             required: true,
             message: "請輸入聯絡電話",
-            trigger: "blur"
-        }
+            trigger: ["change", "blur"],
+        },
+        {
+            required: true,
+            validator: validateTWMobileNumber,
+            trigger: ["change", "blur"],
+            message: "格式不正確",
+        },
     ],
     city: [
         {
             required: true,
             message: "請選擇縣市",
-            trigger: "blur"
+            trigger: ["change", "blur"],
         }
     ],
     location: [
         {
             required: true,
             message: "請選擇稱地區",
-            trigger: "blur"
+            trigger: ["change", "blur"],
         }
     ],
     address: [
         {
             required: true,
             message: "請輸入地址",
-            trigger: "blur"
+            trigger: ["change", "blur"],
         }
     ],
 });
+
+async function onSubmit() {
+    formRefDom.value.validate(async (valid: any) => {
+        if (!valid) {
+            ElMessage({
+                type: "error",
+                message: `尚有欄位未填`,
+            });
+        } else {
+            const loading = ElLoading.service({
+                lock: true,
+                text: "儲存中...",
+                background: "rgba(0, 0, 0, 0.7)",
+            });
+            try {
+                const params = {
+                    name: form.value.contactName,
+                    phone: form.value.phone,
+                    city: form.value.city,
+                    district: form.value.location,
+                    zip3: form.value.zip3,
+                    address: form.value.address,
+                };
+                const { data, status, error } = await $api().ADDChangeProfileAPI(params);
+                if (status.value === 'success') {
+                    ElMessage({
+                        type: "success",
+                        message: `新增成功`,
+                    });
+                    router.push({ name: "auth-contact-slug", params: { slug: "常用聯繫人" } });
+
+                } else {
+                    ElMessage({
+                        type: "error",
+                        message: (error.value as any).data.message,
+                    });
+                }
+                loading.close();
+            } catch (err) {
+                ElMessage({
+                    type: "error",
+                    message: "新增失敗",
+                });
+                loading.close();
+                console.log("HomeSampleAPI => ", err);
+            }
+        }
+    });
+}
 </script>
