@@ -2,6 +2,24 @@ import { InternalRuleItem } from "async-validator/dist-types/interface";
 import { getNumberType, isValidPhoneNumber } from "libphonenumber-js";
 import parseMobile from "libphonenumber-js/mobile";
 
+//密碼驗證
+export const validatePassword = (
+  rule: InternalRuleItem,
+  value: string,
+  callback: (error?: string | Error) => void
+) => {
+  if (value) {
+    const reg = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+    if (!reg.test(value)) {
+      callback(new Error());
+    } else {
+      callback();
+    }
+  } else {
+    callback();
+  }
+};
+
 //email驗證
 export const validateEmail = (
   rule: InternalRuleItem,

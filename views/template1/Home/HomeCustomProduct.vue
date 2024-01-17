@@ -51,7 +51,7 @@
                             <NuxtImg
                                 @mouseover="mouseoverEvent(key)"
                                 @mouseleave="mouseleaveEvent(key)"
-                                class="w-[50px] aspect-1/1 cursor-pointer"
+                                class="w-[50px] aspect-square object-cover cursor-pointer"
                                 :src="icon.img"
                                 @click="handleClick(key)"
                             />

@@ -86,43 +86,75 @@
 }
 
 // 主要按鈕(黃色)
-.yellow-btn{
-    @apply bg-yellow-500 hover:bg-yellow-600 transition-all duration-500 rounded-full w-[160px] py-2 px-4 text-[15px];
-    &.btn-lg{
+.yellow-btn {
+    @apply bg-yellow-500 hover:bg-yellow-600 transition-all duration-500 rounded-full w-[160px] py-3 px-4 text-[16px];
+    &.btn-lg {
         @apply w-[300px];
     }
-    &.btn-sm{
+    &.btn-md {
+        @apply w-[160px];
+    }
+    &.btn-sm {
         @apply w-[128px];
+    }
+    &.btn-xs {
+        @apply w-[108px] py-2;
     }
 }
 
 // 次要按鈕(灰色)
-.gray-btn{
-    @apply bg-gray-200 rounded-full py-2 px-4 hover:bg-black hover:text-white transition-all duration-500 text-[15px];
-    &.btn-lg{
+.gray-btn {
+    @apply bg-gray-200 rounded-full py-3 px-4 hover:bg-black hover:text-white transition-all duration-500 text-[16px];
+    &.btn-lg {
         @apply w-[300px];
     }
-    &.btn-sm{
+    &.btn-md {
+        @apply w-[160px];
+    }
+    &.btn-sm {
         @apply w-[128px];
+    }
+    &.btn-xs {
+        @apply w-[108px] py-2;
+    }
+}
+
+// 透明按鈕(淡灰色)
+.transparent-btn {
+    @apply bg-transparent border-[1px] border-gray-800 rounded-full py-3 px-4 hover:bg-black hover:text-white transition-all duration-500 text-[16px];
+    &.btn-lg {
+        @apply w-[300px];
+    }
+    &.btn-md {
+        @apply w-[160px];
+    }
+    &.btn-sm {
+        @apply w-[128px];
+    }
+    &.btn-xs {
+        @apply w-[108px] py-2;
     }
 }
 
 // 白色按鈕(有圓形動畫效果的按鈕，只有首頁才會用到)
-.animation-btn{
+.animation-btn {
     @apply relative cursor-pointer text-gray-600 rounded-full w-[220px] px-7 py-4 flex items-center justify-center z-[1] overflow-hidden;
     @apply before:absolute before:w-0 before:h-0 before:bg-yellow-400 before:opacity-0 before:rounded-full before:-z-[1] before:transition-all before:duration-[400ms] before:ease-in;
     @apply after:absolute after:w-full after:h-full after:bg-white after:-z-[2];
-    &.btn-lg{
+    &.btn-lg {
         @apply w-[300px];
     }
-    &.btn-sm{
+
+    &.btn-sm {
         @apply w-[160px];
     }
+
     // 適應性尺寸
-    &.btn-fit{
+    &.btn-fit {
         @apply w-auto;
     }
-    &:hover{
+
+    &:hover {
         @apply before:absolute before:w-[350px] before:h-[350px] before:opacity-100;
         @apply before:transition-all before:duration-[400ms] before:ease-in;
     }

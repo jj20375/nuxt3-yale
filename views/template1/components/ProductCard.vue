@@ -5,10 +5,12 @@
             @mouseover="mouseoverEvent(product.id)"
             @mouseleave="mouseleaveEvent(product.id)"
         >
-            <NuxtImg
-                class="object-cover w-full rounded-2xl aspect-1/1"
-                src="/img/home/product/product1.jpg"
-            />
+            <div class="flex justify-center items-center h-[441px]">
+                <NuxtImg
+                    class="object-cover max-w-[441px] h-full w-full rounded-2xl aspect-1/1"
+                    :src="product.main_image"
+                />
+            </div>
             <div
                 :class="currentHover === product.id ? 'opacity-100' : 'opacity-0'"
                 class="absolute top-0 flex items-end w-full h-full transition-all duration-500"
@@ -26,7 +28,7 @@
                         </button>
                     </div>
                     <div>
-                        <NuxtLink :to="{ name: 'product-detail-slug', params: { slug: '產品1' }, query: { id: 'id1' } }">
+                        <NuxtLink :to="{ name: 'product-detail-slug', params: { slug: product.name }, query: { id: product.id } }">
                             <button class="z-10 mt-2 gray-btn btn-sm">了解更多</button>
                         </NuxtLink>
                     </div>
@@ -34,11 +36,11 @@
                 <div class="absolute top-0 left-0 z-10 w-full h-full bg-white opacity-30 rounded-2xl"></div>
             </div>
         </div>
-        <h3 class="mt-[16px] text-[20px] font-medium YaleSolisW-Bd">YDM 4109A-{{ product.id }}</h3>
-        <h3 class="text-[14px] font-[400] YaleSolisW-Lt mt-1">指紋密碼鑰匙三合一</h3>
+        <h3 class="mt-[16px] text-[20px] font-medium YaleSolisW-Bd">{{ product.model }}</h3>
+        <h3 class="text-[14px] font-[400] YaleSolisW-Lt mt-1">{{ product.name }}</h3>
         <div class="flex mt-3">
-            <span class="mr-[8px] font-medium YaleSolisW-Bd">NT$1,760</span>
-            <span class="text-gray-400 line-through YaleSolisW-Lt">NT$1,760</span>
+            <span class="mr-[8px] font-medium YaleSolisW-Bd">NT${{ $utils().formatCurrency(product.price) }}</span>
+            <span class="text-gray-400 line-through YaleSolisW-Lt">NT${{ $utils().formatCurrency(product.market_price) }}</span>
         </div>
         <AddToShoppingCarDialog v-model:showDialog="showDialog" />
     </div>
@@ -46,6 +48,8 @@
 
 <script lang="ts" setup>
 import AddToShoppingCarDialog from "~/views/template1/components/AddToShoppingCarDialog.vue";
+
+const { $utils } = useNuxtApp();
 interface Props {
     product: { id: number; [key: string]: any };
 }

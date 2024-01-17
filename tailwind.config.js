@@ -9,6 +9,14 @@ module.exports = {
         extend: {},
         textColor: (theme) => theme("colors"),
         textOpacity: (theme) => theme("opacity"),
+        screens: {
+            sm: "640px",
+            md: "768px",
+            lg: "992px",
+            xl: "1200px",
+            "2xl": "1400px",
+            "3xl": "1600px",
+        },
         colors: {
             transparent: "transparent",
             current: "currentColor",
@@ -45,7 +53,7 @@ module.exports = {
                 200: "#ffd5a1",
                 300: "#ffbc69",
                 400: "#ffaf4d",
-                500: "#ffa333",
+                500: "#FAA134", // Afternoon Orange
                 600: "#ff5733",
                 700: "#d17400",
                 800: "#b36300",
@@ -68,7 +76,7 @@ module.exports = {
                 200: "#d3e2f2",
                 300: "#accff2",
                 400: "#8cbff2",
-                500: "#4DB3E5",
+                500: "#4DB3E5", // Morning Blue
                 600: "#51AAF8",
                 700: "#1F86E3",
                 800: "#3071ab",
@@ -99,7 +107,11 @@ module.exports = {
                 900: "#212121",
             },
             pink: {
-                500: "#FB3C9C",
+                100: "#FCE0DE", // Sunset Pink 100
+                300: "#F8A7A4", // Sunset Pink 300
+                500: "#FB3C9C", // Sunset Pink 500
+                700: "#F25558", // Sunset Pink 700
+                900: "#E64144", // Sunset Pink 900
             },
         },
         spacing: {
@@ -167,7 +179,8 @@ module.exports = {
                 sm: "2rem",
                 lg: "3rem",
                 xl: "5rem",
-                "2xl": "6rem",
+                "2xl": "10rem",
+                "3xl": "15rem",
             },
         },
     },

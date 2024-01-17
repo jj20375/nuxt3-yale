@@ -11,27 +11,45 @@
                     require-asterisk-position="right"
                 >
                     <div class="grid grid-cols-2 gap-6">
-                        <el-form-item prop="name" label="會員姓名">
+                        <el-form-item
+                            prop="name"
+                            label="會員姓名"
+                        >
                             <el-input v-model="form.name"></el-input>
                         </el-form-item>
                         <!--  佔位用  -->
                         <div></div>
-                        <el-form-item prop="email" label="電子信箱">
+                        <el-form-item
+                            prop="email"
+                            label="電子信箱"
+                        >
                             <el-input v-model="form.email"></el-input>
                         </el-form-item>
                         <!--  佔位用  -->
                         <div></div>
-                        <el-form-item prop="cellphone" label="聯絡電話">
-                            <el-input v-model="form.cellphone" placeholder="例：0911-222-222"></el-input>
+                        <el-form-item
+                            prop="cellphone"
+                            label="聯絡電話"
+                        >
+                            <el-input
+                                v-model="form.cellphone"
+                                placeholder="例：0911-222-222"
+                            ></el-input>
                         </el-form-item>
-                        <el-form-item prop="telephone" label="市話">
-                            <el-input v-model="form.telephone" placeholder="例：02-1222-2222"></el-input>
+                        <el-form-item
+                            prop="telephone"
+                            label="市話"
+                        >
+                            <el-input
+                                v-model="form.telephone"
+                                placeholder="例：02-1222-2222"
+                            ></el-input>
                         </el-form-item>
                         <el-form-item prop="birthday">
                             <div class="el-form-item w-full">
                                 <div class="el-form-item__label">生日<span class="ml-[2px] text-red-500">*</span></div>
                                 <el-date-picker
-                                    v-model="form.date"
+                                    v-model="form.birthday"
                                     type="date"
                                     valueFormat="YYYY-MM-DD"
                                     placeholder="請點選生日"
@@ -41,14 +59,17 @@
                         </el-form-item>
                         <!--  佔位用  -->
                         <div></div>
-                        <el-form-item prop="gender" label="稱謂">
+                        <el-form-item
+                            prop="gender"
+                            label="稱謂"
+                        >
                             <el-radio-group v-model="form.gender">
                                 <el-radio
                                     v-for="(option, index) in genderRadios"
                                     :key="index"
                                     :label="option.value"
                                     size="large"
-                                >{{ option.label }}</el-radio
+                                    >{{ option.label }}</el-radio
                                 >
                             </el-radio-group>
                         </el-form-item>
@@ -60,9 +81,17 @@
                                     v-for="(item, index) in formDatas"
                                     :key="index"
                                 >
-                                    <el-form-item :prop="item.prop" :label="item.label">
-                                        <el-input v-if="item.style === 'input'" :type="item.type" :disabled="item.disabled"
-                                                  :placeholder="item.placeholder" v-model="form[item.prop]"></el-input>
+                                    <el-form-item
+                                        :prop="item.prop"
+                                        :label="item.label"
+                                    >
+                                        <el-input
+                                            v-if="item.style === 'input'"
+                                            :type="item.type"
+                                            :disabled="item.disabled"
+                                            :placeholder="item.placeholder"
+                                            v-model="form[item.prop]"
+                                        ></el-input>
                                         <el-select
                                             v-if="item.style === 'select'"
                                             class="w-full"
@@ -81,42 +110,69 @@
                                 </div>
                             </div>
                         </div>
-                        <el-form-item class="col-span-2" prop="address" label="詳細地址">
-                            <el-input v-model="form.name"></el-input>
+                        <el-form-item
+                            class="col-span-2"
+                            prop="address"
+                            label="詳細地址"
+                        >
+                            <el-input v-model="form.address"></el-input>
                         </el-form-item>
-                        <el-form-item prop="password" label="密碼">
-                            <el-input v-model="form.password" showPassword type="password"></el-input>
+                        <el-form-item
+                            prop="password"
+                            label="密碼"
+                        >
+                            <el-input
+                                v-model="form.password"
+                                showPassword
+                                type="password"
+                            ></el-input>
                         </el-form-item>
                         <!--  佔位用  -->
                         <div></div>
-                        <el-form-item prop="confirmPassword" label="確認密碼">
-                            <el-input v-model="form.confirmPassword" showPassword type="password"></el-input>
+                        <el-form-item
+                            prop="confirmPassword"
+                            label="確認密碼"
+                        >
+                            <el-input
+                                v-model="form.confirmPassword"
+                                showPassword
+                                type="password"
+                            ></el-input>
                         </el-form-item>
                         <!--  佔位用  -->
                         <div></div>
-                        <el-form-item class="!mb-0"
-                                      prop="agree"
+                        <el-form-item
+                            class="!mb-0"
+                            prop="agree"
                         >
                             <el-checkbox
                                 class="!h-fit text-[15px]"
                                 v-model="form.agree"
                                 size="large"
                             >
-                                <slot name="label">我已閱讀並同意
-                                    <NuxtLink class="underline font-bold underline-offset-2 cursor-pointer hover:no-underline" :to="{ name: ''}">網站服務條款</NuxtLink>
+                                <slot name="label"
+                                    >我已閱讀並同意
+                                    <NuxtLink
+                                        class="underline font-bold underline-offset-2 cursor-pointer hover:no-underline"
+                                        :to="{ name: '' }"
+                                        >網站服務條款</NuxtLink
+                                    >
                                     與
-                                    <NuxtLink class="underline font-bold underline-offset-2 cursor-pointer hover:no-underline" :to="{ name: ''}">隱私權政策</NuxtLink>
+                                    <NuxtLink
+                                        class="underline font-bold underline-offset-2 cursor-pointer hover:no-underline"
+                                        :to="{ name: '' }"
+                                        >隱私權政策</NuxtLink
+                                    >
                                 </slot>
                             </el-checkbox>
                         </el-form-item>
                         <div class="flex justify-center col-span-2 mt-10">
-                            <NuxtLink
-                                :to="{ name: 'auth-register-success-slug', params: { slug: '註冊成功' }}"
+                            <button
+                                @click.prevent="onSubmit"
+                                class="yellow-btn btn-lg !py-3"
                             >
-                                <button class="yellow-btn btn-lg !py-3">
-                                    立即註冊
-                                </button>
-                            </NuxtLink>
+                                立即註冊
+                            </button>
                         </div>
                     </div>
                 </el-form>
@@ -126,7 +182,11 @@
 </template>
 <script setup lang="ts">
 import { useInitializationStore } from "~/store/initializationStore";
+import { InternalRuleItem } from "async-validator/dist-types/interface";
+import { validateEmail, validateTWMobileNumber, validatePassword } from "~/service/validator";
+import { ElMessage, ElLoading } from "element-plus";
 const { $api } = useNuxtApp();
+const router = useRouter();
 
 // 預先加載縣市資料
 const initializationStore = useInitializationStore();
@@ -152,7 +212,7 @@ const form = ref<any>({
     gender: "",
     city: "",
     location: "",
-    zip3: "235", // TODO 這邊是測試用資料，串完請清空
+    zip3: "",
     password: "",
     confirmPassword: "",
     agree: false,
@@ -169,13 +229,16 @@ const formDatas = ref<any>([
         function: (e: any) => {
             console.log(e);
             e.location = "";
+            e.zip3 = "";
 
             const cityDataFilter = initializationStore.cityAreaData.find((item: { name: any }) => item.name === e.city);
             console.log("cityDataFilter.district", cityDataFilter);
-            formDatas.value[1].options = cityDataFilter.district.map((item: { name: any }) => {
+            const addressProps = formDatas.value.find((item: { prop: string; }) => item.prop === 'location')
+            addressProps.options = cityDataFilter.district.map((item: { name: any; zip3: any }) => {
                 return {
                     label: item.name,
                     value: item.name,
+                    zip3: item.zip3,
                 };
             });
         },
@@ -187,6 +250,11 @@ const formDatas = ref<any>([
         options: [],
         type: "inline",
         style: "select",
+        function: (e: any) => {
+            console.log(e);
+            const addressProps = formDatas.value.find((item: { prop: string; }) => item.prop === 'location')
+            e.zip3 = addressProps.options.find((item: { value: any }) => item.value === e.location).zip3;
+        },
     },
     {
         prop: "zip3",
@@ -199,8 +267,8 @@ const formDatas = ref<any>([
 ]);
 
 const genderRadios = ref<any>([
-    { value: 1, label: "先生" },
-    { value: 0, label: "女士" }
+    { value: "male", label: "先生" },
+    { value: "female", label: "女士" },
 ]);
 
 const rules = ref<any>({
@@ -208,64 +276,148 @@ const rules = ref<any>({
         {
             required: true,
             message: "請輸入會員姓名",
-            trigger: "blur"
-        }
+            trigger: "blur",
+        },
     ],
     email: [
         {
             required: true,
             message: "請輸入電子信箱",
-            trigger: "blur"
-        }
+            trigger: "blur",
+        },
+        {
+            required: true,
+            validator: validateEmail,
+            trigger: ["change", "blur"],
+            message: "格式不正確",
+        },
     ],
     cellphone: [
         {
             required: true,
             message: "請輸入聯絡電話",
-            trigger: "blur"
-        }
+            trigger: "blur",
+        },
+        {
+            required: true,
+            validator: validateTWMobileNumber,
+            trigger: ["change", "blur"],
+            message: "格式不正確",
+        },
     ],
     gender: [
         {
             required: true,
             message: "請選擇稱謂",
-            trigger: "blur"
-        }
+            trigger: "blur",
+        },
     ],
     city: [
         {
             required: true,
             message: "請選擇縣市",
-            trigger: "blur"
-        }
+            trigger: "blur",
+        },
     ],
     location: [
         {
             required: true,
             message: "請選擇稱地址",
-            trigger: "blur"
-        }
+            trigger: "blur",
+        },
     ],
     address: [
         {
             required: true,
             message: "請輸入地址",
-            trigger: "blur"
-        }
+            trigger: "blur",
+        },
     ],
     password: [
         {
             required: true,
             message: "請輸入密碼",
-            trigger: "blur"
-        }
+            trigger: "blur",
+        },
+        {
+            required: true,
+            validator: validatePassword,
+            trigger: ["change", "blur"],
+            message: "必須包含至少一個大寫字母、一個小寫字母和一個數字，並且長度至少為 8 個字元。",
+        },
     ],
     confirmPassword: [
         {
             required: true,
             message: "請輸入密碼",
-            trigger: "blur"
-        }
+            trigger: "blur",
+        },
+        {
+            required: true,
+            message: "密碼不一致",
+            validator: (rule: InternalRuleItem, value: string, callback: (error?: string | Error) => void) => {
+                if (value !== form.value.password) {
+                    callback(new Error());
+                } else {
+                    callback();
+                }
+            },
+            trigger: "change",
+        },
     ],
 });
+
+async function onSubmit() {
+    formRefDom.value.validate(async (valid: any) => {
+        if (!valid) {
+            ElMessage({
+                type: "error",
+                message: `尚有欄位未填`,
+            });
+        } else {
+            const loading = ElLoading.service({
+                lock: true,
+                text: "送出中...",
+                background: "rgba(0, 0, 0, 0.7)",
+            });
+            try {
+                const params = {
+                    name: form.value.name,
+                    email: form.value.email,
+                    phone: form.value.cellphone,
+                    telephone: form.value.telephone,
+                    city: form.value.city,
+                    district: form.value.location,
+                    zip3: form.value.zip3,
+                    address: form.value.address,
+                    birthday: form.value.birthday,
+                    sex: form.value.gender,
+                    password: form.value.password,
+                };
+                const { data, status, error } = await $api().RegisterAPI(params);
+                if (status.value === 'success') {
+                    ElMessage({
+                        type: "success",
+                        message: `註冊成功`,
+                    });
+                    router.push({ name: "auth-register-success-slug", params: { slug: "註冊成功" } });
+
+                } else {
+                    ElMessage({
+                        type: "error",
+                        message: (error.value as any).data.message,
+                    });
+                }
+                loading.close();
+            } catch (err) {
+                ElMessage({
+                    type: "error",
+                    message: "註冊失敗",
+                });
+                loading.close();
+                console.log("HomeSampleAPI => ", err);
+            }
+        }
+    });
+}
 </script>
