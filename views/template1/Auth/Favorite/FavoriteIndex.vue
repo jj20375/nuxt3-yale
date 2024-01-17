@@ -38,7 +38,7 @@ const breadcrumbs = ref([
     },
     {
         name: "auth-favorite-slug",
-        text: "會員資料",
+        text: "產品收藏清單",
         params: { slug: "產品收藏清單" }
     }
 ]);
