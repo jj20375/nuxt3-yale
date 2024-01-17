@@ -46,7 +46,7 @@
                             ></el-input>
                         </el-form-item>
                         <el-form-item prop="birthday">
-                            <div class="el-form-item w-full">
+                            <div class="w-full el-form-item">
                                 <div class="el-form-item__label">生日<span class="ml-[2px] text-red-500">*</span></div>
                                 <el-date-picker
                                     v-model="form.birthday"
@@ -153,13 +153,13 @@
                                 <slot name="label"
                                     >我已閱讀並同意
                                     <NuxtLink
-                                        class="underline font-bold underline-offset-2 cursor-pointer hover:no-underline"
+                                        class="font-bold underline cursor-pointer underline-offset-2 hover:no-underline"
                                         :to="{ name: '' }"
                                         >網站服務條款</NuxtLink
                                     >
                                     與
                                     <NuxtLink
-                                        class="underline font-bold underline-offset-2 cursor-pointer hover:no-underline"
+                                        class="font-bold underline cursor-pointer underline-offset-2 hover:no-underline"
                                         :to="{ name: '' }"
                                         >隱私權政策</NuxtLink
                                     >
@@ -185,8 +185,13 @@ import { useInitializationStore } from "~/store/initializationStore";
 import { InternalRuleItem } from "async-validator/dist-types/interface";
 import { validateEmail, validateTWMobileNumber, validatePassword } from "~/service/validator";
 import { ElMessage, ElLoading } from "element-plus";
+import { useUserStore } from "~/store/userStore";
+import Cookies from "js-cookie";
+
 const { $api } = useNuxtApp();
 const router = useRouter();
+
+const userStore = useUserStore();
 
 // 預先加載縣市資料
 const initializationStore = useInitializationStore();
@@ -233,7 +238,7 @@ const formDatas = ref<any>([
 
             const cityDataFilter = initializationStore.cityAreaData.find((item: { name: any }) => item.name === e.city);
             console.log("cityDataFilter.district", cityDataFilter);
-            const addressProps = formDatas.value.find((item: { prop: string; }) => item.prop === 'location')
+            const addressProps = formDatas.value.find((item: { prop: string }) => item.prop === "location");
             addressProps.options = cityDataFilter.district.map((item: { name: any; zip3: any }) => {
                 return {
                     label: item.name,
@@ -252,7 +257,7 @@ const formDatas = ref<any>([
         style: "select",
         function: (e: any) => {
             console.log(e);
-            const addressProps = formDatas.value.find((item: { prop: string; }) => item.prop === 'location')
+            const addressProps = formDatas.value.find((item: { prop: string }) => item.prop === "location");
             e.zip3 = addressProps.options.find((item: { value: any }) => item.value === e.location).zip3;
         },
     },
@@ -395,13 +400,13 @@ async function onSubmit() {
                     password: form.value.password,
                 };
                 const { data, status, error } = await $api().RegisterAPI(params);
-                if (status.value === 'success') {
+                if (status.value === "success") {
+                    await login({ email: form.value.email, password: form.value.password });
                     ElMessage({
                         type: "success",
                         message: `註冊成功`,
                     });
                     router.push({ name: "auth-register-success-slug", params: { slug: "註冊成功" } });
-
                 } else {
                     ElMessage({
                         type: "error",
@@ -419,5 +424,28 @@ async function onSubmit() {
             }
         }
     });
+}
+
+/**
+ * 登入
+ * @param form 登入資料
+ */
+async function login(form: { email: string; password: string }) {
+    try {
+        const { data, status, error }: any = await $api().LoginAPI(form);
+        if (status.value === "success") {
+            const token = data.value.data.token;
+            Cookies.set("token", token);
+            // 取得使用者資料
+            await userStore.getUserProfile();
+        } else {
+            ElMessage({
+                type: "error",
+                message: data.message,
+            });
+        }
+    } catch (err) {
+        console.log("LoginAPI => ", err);
+    }
 }
 </script>

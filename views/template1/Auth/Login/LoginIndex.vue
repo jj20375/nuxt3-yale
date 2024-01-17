@@ -38,9 +38,7 @@
                                 size="large"
                             />
                         </el-form-item>
-                        <NuxtLink
-                            :to="{ name: 'auth-forgot-slug', params: { slug: '忘記密碼' }}"
-                        >
+                        <NuxtLink :to="{ name: 'auth-forgot-slug', params: { slug: '忘記密碼' } }">
                             <div class="text-[15px]">忘記密碼?</div>
                         </NuxtLink>
                     </div>
@@ -53,20 +51,20 @@
                 </div>
             </el-form>
             <div class="relative px-5 mt-[30px]">
-                <div class="relative divide-text text-center before:absolute before:absolute before:top-1/2 before:left-0 before:h-px before:w-full before:bg-gray-400 before:z-0">
+                <div class="relative text-center divide-text before:absolute before:top-1/2 before:left-0 before:h-px before:w-full before:bg-gray-400 before:z-0">
                     <span class="relative px-3 text-gray-400 text-[15px] bg-white z-[2]">使用其他帳號登入</span>
                 </div>
                 <div class="flex gap-[30px] justify-center mt-4">
                     <NuxtImg
-                        class="w-10 aspect-square object-cover cursor-pointer transition-all duration-400 hover:opacity-80 hover:transition-all hover:duration-400"
+                        class="object-cover w-10 transition-all cursor-pointer aspect-square duration-400 hover:opacity-80 hover:transition-all hover:duration-400"
                         src="/img/icons/medias/google.svg"
                     />
                     <NuxtImg
-                        class="w-10 aspect-square object-cover cursor-pointer transition-all duration-400 hover:opacity-80 hover:transition-all hover:duration-400"
+                        class="object-cover w-10 transition-all cursor-pointer aspect-square duration-400 hover:opacity-80 hover:transition-all hover:duration-400"
                         src="/img/icons/medias/line.svg"
                     />
                     <NuxtImg
-                        class="w-10 aspect-square object-cover cursor-pointer transition-all duration-400 hover:opacity-80 hover:transition-all hover:duration-400"
+                        class="object-cover w-10 transition-all cursor-pointer aspect-square duration-400 hover:opacity-80 hover:transition-all hover:duration-400"
                         src="/img/icons/medias/facebook.svg"
                     />
                 </div>
@@ -156,14 +154,14 @@ async function onSubmit() {
                     email: form.value.email,
                 };
                 const { data, status, error } = await $api().LoginAPI(params);
-                if (status.value === 'success') {
+                if (status.value === "success") {
                     ElMessage({
                         type: "success",
                         message: `登入成功`,
                     });
-                    console.log((data.value as any).data.token)
-                    const token = (data.value as any).data.token
-                    Cookies.set('token', token)
+                    console.log((data.value as any).data.token);
+                    const token = (data.value as any).data.token;
+                    Cookies.set("token", token);
                     userStore.getUserProfile();
                     router.push({ name: "auth-panel-slug" });
                 } else {
@@ -172,11 +170,11 @@ async function onSubmit() {
                         message: (error.value as any).data.message,
                     });
                 }
-                
+
                 loading.close();
             } catch (err) {
                 loading.close();
-                console.log("HomeSampleAPI => ", err);
+                console.log("LoginAPI => ", err);
             }
         }
     });
