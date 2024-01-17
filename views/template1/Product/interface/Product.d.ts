@@ -42,3 +42,38 @@ export interface ProductInterface {
     // 保固
     warranty: string;
 }
+
+// 產品分頁 api 回應值
+export interface ProductListAPIInterface {
+    data: {
+        value: {
+            data: {
+                rows: ProductList[];
+                meta: {
+                    total: number;
+                    per_page: number;
+                    current_page: number;
+                };
+            };
+        };
+    };
+}
+
+// 產品分頁列表內容
+export interface ProductList {
+    id: number;
+    // 產品名稱
+    name: string;
+    // 型號
+    model: string;
+    // 描述
+    shape: string;
+    // 價格
+    price: number;
+    // 促銷價格
+    market_price: number;
+    // 主要圖片
+    main_image: string;
+    // 其他僕片
+    other_images?: string[];
+}

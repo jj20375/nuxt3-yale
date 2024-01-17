@@ -1,10 +1,10 @@
 import { useUserStore } from "@/store/userStore";
 import Cookies from "js-cookie";
-export function useMyFetch(url: string, opts: any) {
+export function useMyFetch<T>(url: string, opts: any) {
     const userStore = useUserStore();
     const router = useRouter();
     console.log(url, opts, "url");
-    return useFetch(url, {
+    return useFetch<T>(url, {
         // onResponse: transFormResponse,
         onRequest: ({ request, options }) => {
             // alert(JSON.stringify(request));
