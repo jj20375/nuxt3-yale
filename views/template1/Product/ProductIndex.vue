@@ -22,12 +22,13 @@
         <template #custom-content>
             <div class="flex items-center mb-[40px] mt-[32px] mr-10">
                 <NuxtImg
+                    v-if="productTypeDetail.media"
                     class="max-w-[387px] w-full"
-                    src="/img/product/category-1.jpg"
+                    :src="productTypeDetail.media"
                 />
                 <div class="ml-[40px]">
-                    <h2 class="text-[24px] font-medium">商品分類標題</h2>
-                    <p class="mt-[16px] text-[16px]">耶魯電子門鎖系列，門內把手上設有安全按鈕，按下安全按鈕並轉動內把手時，房門才能開啟，防止孩童或大型寵物誤開。以最先進的科技成果，為您免去隨身攜帶鑰匙的不便，用戶可透過自己的智慧型手機確保居家安全。</p>
+                    <h2 class="text-[24px] font-medium">{{productTypeDetail.name}}</h2>
+                    <p class="mt-[16px] text-[16px]">{{productTypeDetail.description}}</p>
                 </div>
             </div>
             <div class="flex justify-end mr-10 mb-[24px]">
@@ -48,13 +49,17 @@
                 </div>
             </div>
             <div class="grid grid-cols-3 gap-4 mr-10">
-                <div v-for="item in 12">
-                    <ProductCard :product="{ id: item }" />
+                <div v-for="(product, index) in datas" :key=index>
+                    <ProductCard :product="product" />
                 </div>
             </div>
         </template>
         <template #custom-pagination>
-            <Pagination class="flex justify-center mb-[95px] mt-[80px]" />
+            <Pagination
+                :pagination="pagination"
+                @handlePageChange="handlePageChange"
+                class="flex justify-center mb-[95px] mt-[80px]"
+            />
         </template>
     </SideBarDeepLayout>
 </template>
@@ -67,6 +72,8 @@ import SideBar from "~/views/template1/components/SideBarByDeep.vue";
 import Pagination from "~/views/template1/components/Pagination.vue";
 // 產品卡片樣板
 import ProductCard from "~/views/template1/components/ProductCard.vue";
+
+const { $api } = useNuxtApp();
 
 const route = useRoute();
 
@@ -94,78 +101,133 @@ const breadcrumbs = ref([
     },
 ]);
 
-const sidebar = ref([
-    {
-        text: "電子鎖",
-        categoryId: "id1",
-        options: [
-            {
-                text: "主鎖",
-                categoryId: "id1",
-                url: {
-                    name: "product-slug",
-                    query: { category: "id1", tag: "id1" },
-                    params: { slug: "耶魯產品資訊-電子鎖-主鎖" },
-                },
-            },
-            {
-                text: "輔助鎖",
-                categoryId: "id2",
-                url: {
-                    name: "product-slug",
-                    query: { category: "id1", tag: "id2" },
-                    params: { slug: "耶魯產品資訊-電子鎖-輔助鎖" },
-                },
-            },
-        ],
-    },
-    {
-        text: "保險箱",
-        categoryId: "id2",
-        options: [
-            {
-                text: "防火系列",
-                categoryId: "id1",
-                url: {
-                    name: "product-slug",
-                    query: { category: "id2", tag: "id1" },
-                    params: { slug: "耶魯產品資訊-保險箱-防火系列" },
-                },
-            },
-            {
-                text: "通用系列",
-                categoryId: "id2",
-                url: {
-                    name: "product-slug",
-                    query: { category: "id2", tag: "id2" },
-                    params: { slug: "耶魯產品資訊-保險箱-通用系列" },
-                },
-            },
-            {
-                text: "認證系列",
-                categoryId: "id3",
-                url: {
-                    name: "product-slug",
-                    query: { category: "id2", tag: "id3" },
-                    params: { slug: "耶魯產品資訊-保險箱-認證系列" },
-                },
-            },
-        ],
-    },
-    {
-        text: "電子鎖配件",
-        categoryId: "id3",
-        url: {
-            name: "product-slug",
-            query: { category: "id3" },
-            params: { slug: "耶魯產品資訊-電子鎖配件" },
-        },
-    },
-]);
+const sidebar = ref<any>([]);
 
-const datas = ref([]);
+/**
+ * 取得商品分類
+ */
+async function getType() {
+    try {
+        const { data } = await $api().ProductTypeAPI();
+        sidebar.value = [];
+        console.log("home sampleType api => ", data.value);
+
+        const rows = (data.value as any).data;
+
+        sidebar.value = [];
+        rows.forEach((item: { name: any; id: any; children: any }) => {
+            console.log(item);
+            const children: { text: any; categoryId: any; url: { name: string; query: { category: any; tag: any }; params: { slug: any } } }[] = [];
+            item.children.forEach((child: { name: any; id: any }) => {
+                children.push({
+                    text: child.name,
+                    categoryId: child.id,
+                    url: {
+                        name: "product-slug",
+                        query: { category: item.id, tag: child.id },
+                        params: { slug: `產品資訊-${item.name}-${child.name}` },
+                    },
+                });
+            });
+            sidebar.value.push({
+                text: item.name,
+                categoryId: item.id,
+                options: children,
+            });
+        });
+    } catch (err) {
+        console.log("HomeSampleAPI => ", err);
+    }
+}
+
+const productTypeDetail = ref<any>({
+    media: '',
+    description: '',
+    name: ''
+})
+/**
+ * 取得商品分類詳情
+ */
+ async function getTypeDetail() {
+    try {
+        const params = { productCategoryId: route.query.tag }
+        const { data } = await $api().ProductTypeDetailAPI(params);
+        console.log("home getTypeDetail api => ", data.value);
+
+        const rows = (data.value as any).data;
+        console.log(rows)
+
+        productTypeDetail.value = {
+            media: rows.media,
+            description: rows.description,
+            name: rows.name,
+        }
+    } catch (err) {
+        console.log("HomeSampleAPI => ", err);
+    }
+}
+
+const pagination = ref<any>({
+    page: 1,
+    pageSize: 12,
+    total: 0,
+});
+
+const handlePageChange = (val: any) => {
+    getList({ per_page: pagination.value.pageSize, page: val });
+};
+
+const datas = ref<any>([]);
 
 const sortBy = ref(0);
+
+/**
+ * 取得商品列表
+ */
+async function getList(params: { per_page: number; page: number; }) {
+    try {
+        const { data } = await $api().ProductLListPaginateAPI(params);
+        datas.value = [];
+        console.log("home sample api => ", data.value);
+
+        const rows = (data.value as any).data.rows;
+        const meta = (data.value as any).data.meta;
+
+        rows.forEach((item: { id: any; model: any; name: any; shape: any; price: any; market_price: any; main_image: any; other_images: any; }) => {
+            datas.value.push({
+                id: item.id,
+                model: item.model,
+                name: item.name,
+                shape: item.shape,
+                price: item.price,
+                market_price: item.market_price,
+                main_image: item.main_image,
+            });
+        });
+
+        pagination.value.total = meta.total;
+    } catch (err) {
+        console.log("HomeSampleAPI => ", err);
+    }
+}
+
+/**
+ * 初始化
+ */
+async function init() {
+    await getType();
+    await getTypeDetail();
+    console.log("route.query.id", route);
+    await getList({ per_page: pagination.value.pageSize, page: 1 });
+}
+
+onMounted(async () => {
+    nextTick(async () => {
+        if (process.client) {
+            await init();
+        }
+    });
+});
 </script>
 
 <style lang="scss" scoped>

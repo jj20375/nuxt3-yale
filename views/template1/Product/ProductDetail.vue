@@ -10,20 +10,15 @@
                     :photos="photos"
                 />
                 <div class="col-span-1">
-                    <h1 class="text-[24px] font-medium text-gray-800 YaleSolisW-Bd">YDM 4109A</h1>
-                    <h2 class="mt-[8px] text-[16px] font-medium text-gray-300">指紋密碼鑰匙三合一</h2>
+                    <h1 class="text-[24px] font-medium text-gray-800 YaleSolisW-Bd">{{ detailData.model }}</h1>
+                    <h2 class="mt-[8px] text-[16px] font-medium text-gray-300">{{ detailData.name }}</h2>
                     <div class="flex mt-[8px]">
-                        <p class="text-gray-800 text-[20px] font-medium mr-[12px] YaleSolisW-Bd">NT$1,760</p>
-                        <p class="text-gray-500 text-[20px] font-light line-through">NT$1,900</p>
+                        <p class="text-gray-800 text-[20px] font-medium mr-[12px] YaleSolisW-Bd">NT${{ $utils().formatCurrency(detailData.price) }}</p>
+                        <p class="text-gray-500 text-[20px] font-light line-through">NT${{ $utils().formatCurrency(detailData.market_price) }}</p>
                     </div>
-                    <ul class="mt-[16px]">
-                        <li
-                            class="text-gray-900 list-disc list-inside text-[15px] mb-1"
-                            v-for="(detail, index) in details"
-                        >
-                            {{ detail }}
-                        </li>
-                    </ul>
+                    <div class="mt-[16px] text-gray-900 list-disc list-inside text-[16px] mb-1">
+                        {{ detailData.description }}
+                    </div>
                     <div class="py-[30px] flex items-center">
                         <NuxtLink :to="{ name: 'product-compare-slug', params: { slug: '主鎖比較' }, query: { category: 'id1', tag: 'id1' } }">
                             <div class="mr-[20px] cursor-pointer">規格比較</div>
@@ -33,29 +28,32 @@
                             :icon="['far', 'heart']"
                         />
                     </div>
-                    <div>
-                        <h5 class="text-[16px] font-medium text-gray-800 YaleSolisW-Bd">顏色</h5>
+                    <div
+                        v-for="(item, index) in productOptions"
+                        :key="index"
+                    >
+                        <h5 class="text-[16px] font-medium text-gray-800 YaleSolisW-Bd">{{ item.name }}</h5>
                         <ul class="flex mt-[20px]">
                             <li
-                                v-for="color in colors"
-                                :key="color.id"
+                                v-for="opt in item.options"
+                                :key="opt.id"
                                 class="mr-[20px] cursor-pointer"
-                                @click="currentColor = color.id"
+                                @click="optionChange(opt, index)"
                             >
                                 <div
                                     class="p-2"
-                                    :class="currentColor === color.id ? 'border border-yellow-600  rounded-full' : ''"
+                                    :class="currentColor[index] === opt.id ? 'border border-yellow-600  rounded-full' : ''"
                                 >
                                     <NuxtImg
                                         class="w-[32px]"
-                                        :src="color.imgSrc"
+                                        :src="opt.imgSrc"
                                     />
                                 </div>
                                 <p
-                                    v-if="currentColor === color.id"
+                                    v-if="currentColor[index] === opt.id"
                                     class="text-[14px] text-gray-800 px-2 pt-[8px]"
                                 >
-                                    {{ color.text }}
+                                    {{ opt.text }}
                                 </p>
                             </li>
                         </ul>
@@ -129,7 +127,7 @@
                     v-if="currentTab === 0"
                     class="min-h-[500px] text-center flex items-center justify-center"
                 >
-                    詳細介紹內容
+                    <div v-html="detailData.content"></div>
                 </div>
                 <div
                     v-if="currentTab === 1"
@@ -138,10 +136,10 @@
                     產品規格內容
                 </div>
             </div>
-            <div>
+            <!-- <div>
                 <h3 class="text-[32px] YaleSolisW-Bd font-medium text-gray-800 text-center">相關產品</h3>
                 <ProductSameCarousel :photos="photos" />
-            </div>
+            </div> -->
         </div>
     </section>
 </template>
@@ -153,6 +151,10 @@ import Breadcrumb from "~/views/template1/components/Breadcrumb.vue";
 import ProductDetailCarousel from "~/views/template1/Product/components/ProductDetailCarousel.vue";
 // 相關產品幻燈片
 import ProductSameCarousel from "~/views/template1/Product/components/ProductSameCarousel.vue";
+
+const { $api, $utils } = useNuxtApp();
+const route = useRoute();
+
 const breadcrumbs = ref([
     {
         name: "index",
@@ -184,36 +186,30 @@ const breadcrumbs = ref([
 ]);
 
 const photos = ref<{ id: string | number; imgSrc: string }[]>([]);
+const detailData = ref<any>({});
 
-for (let i = 0; i < 10; i++) {
-    photos.value.push({ id: i, imgSrc: "/img/product/demo/product-carousel.jpg" });
+const productOptions = ref<any>([]);
+
+function optionChange(opt: { id: any }, index: number) {
+    currentColor.value[index] = opt.id;
+    optionChangePrice();
 }
 
-const details = ref(["YDM 4109A 卡片密碼鑰匙三合一電子鎖", "結合卡片、密碼功能的入門款", "建案指定使用，卡片格式相容大部分社區磁釦", "標配語音提示輕鬆設定"]);
-
-const colors = ref([
-    {
-        id: 1,
-        text: "琥珀",
-        imgSrc: "/img/product/demo/color-1.png",
-    },
-    {
-        id: 2,
-        text: "白色",
-        imgSrc: "/img/product/demo/color-2.png",
-    },
-    {
-        id: 3,
-        text: "黑色",
-        imgSrc: "/img/product/demo/color-3.png",
-    },
-]);
+function optionChangePrice() {
+    let key = "option";
+    currentColor.value.forEach((item: string) => {
+        key += `-${item}`;
+    });
+    detailData.value.price = detailData.value.productVariations[key].price;
+    detailData.value.market_price = detailData.value.productVariations[key].marketPrice;
+    detailData.value.stock = detailData.value.productVariations[key].stock;
+}
 
 // 折扣文案
 const salesDetail = ref(["[活動] 滿 NT$1,700 折 NT$560", "[活動] 歡慶十週年，滿 NT$1,700 打 8 折", "[活動] 全站滿千免運"]);
 
 // 預設選中顏色
-const currentColor = ref(1);
+const currentColor = ref<any>([]);
 
 // 數量
 const count = ref(1);
@@ -232,6 +228,10 @@ function countDelete() {
  * 點擊增加數量按鈕
  */
 function countAdd() {
+    if (count.value >= detailData.value.stock) {
+        count.value = detailData.value.stock;
+        return;
+    }
     count.value++;
 }
 
@@ -243,4 +243,73 @@ const tabs = ["詳細介紹", "產品規格"];
  * 預設選中 tab
  */
 const currentTab = ref(0);
+
+/**
+ * 取得商品分類詳情
+ */
+async function getData() {
+    try {
+        const params = { productId: route.query.id };
+        const { data } = await $api().ProductDetailAPI(params);
+
+        const rows = (data.value as any).data;
+
+        photos.value = [];
+        photos.value.push({ id: 0, imgSrc: rows.main_image });
+        rows.other_images.forEach((item: any, index: number) => {
+            photos.value.push({ id: index + 1, imgSrc: item });
+        });
+        detailData.value.model = rows.model;
+        detailData.value.name = rows.name;
+        detailData.value.description = rows.description;
+        detailData.value.content = rows.content;
+        detailData.value.attributes = rows.attributes;
+
+        if (rows.is_single_variation === 0) {
+            productOptions.value = []
+            detailData.value.productVariations = rows.productVariations;
+            rows.productOptions.forEach((item: { values: any[]; name: any }, index: number) => {
+                const option: {
+                    id: any;
+                    text: any;
+                    imgSrc: string;
+                }[] = [];
+                currentColor.value[index] = item.values[0].id;
+                item.values.forEach((opt: { id: any; name: any; icon: any }) => {
+                    option.push({
+                        id: opt.id,
+                        text: opt.name,
+                        imgSrc: opt.icon,
+                    });
+                });
+                productOptions.value.push({
+                    name: item.name,
+                    options: option,
+                });
+            });
+            optionChangePrice();
+        } else {
+            detailData.value.price = rows.price
+            detailData.value.market_price = rows.market_price
+            detailData.value.stock = rows.stock
+        }
+    } catch (err) {
+        console.log("HomeSampleAPI => ", err);
+    }
+}
+
+/**
+ * 初始化
+ */
+async function init() {
+    await getData();
+}
+
+onMounted(async () => {
+    nextTick(async () => {
+        if (process.client) {
+            await init();
+        }
+    });
+});
 </script>
