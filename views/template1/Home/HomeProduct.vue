@@ -16,10 +16,10 @@
                     >
                         <SwiperSlide
                             class="min-h-[150px] min-w-[250px] w-full"
-                            v-for="item in 10"
+                            v-for="item in datas"
                             :key="item"
                         >
-                            <ProductCard :product="{ id: item }" />
+                            <ProductCard :product="item" />
                         </SwiperSlide>
                     </Swiper>
                 </div>
@@ -34,6 +34,13 @@ import { Scrollbar } from "swiper/modules";
 import { current } from "tailwindcss/colors";
 // 產品卡片樣板
 import ProductCard from "@/views/template1/components/ProductCard.vue";
+/**
+ * ProductListAPIInterface: 產品分頁 api 回應值
+ * ProductList: 產品分頁列表內容
+ */
+import { ProductListAPIInterface, ProductList } from "~/views/template1/Product/interface/Product.d";
+
+const { $api } = useNuxtApp();
 
 const modules = ref([Scrollbar]);
 
@@ -43,6 +50,37 @@ function onSwiper(swiper: any) {
 function onSlideChange() {
     console.log("slide change");
 }
+
+const datas = ref<ProductList[]>([]);
+/**
+ * 取得商品列表
+ */
+async function getList(params: { per_page: number; page: number }) {
+    try {
+        const { data } = await $api().ProductListPaginateAPI<ProductListAPIInterface>(params);
+        datas.value = [];
+        console.log("home sample api => ", data.value);
+
+        const rows = (data.value as any).data.rows;
+        const meta = (data.value as any).data.meta;
+
+        rows.forEach((item: { id: any; model: any; name: any; shape: any; price: any; market_price: any; main_image: any; other_images: any }) => {
+            datas.value.push({
+                id: item.id,
+                model: item.model,
+                name: item.name,
+                shape: item.shape,
+                price: item.price,
+                market_price: item.market_price,
+                main_image: item.main_image,
+            });
+        });
+    } catch (err) {
+        console.log("HomeSampleAPI => ", err);
+    }
+}
+
+await getList({ per_page: 10, page: 1 });
 </script>
 
 <style lang="scss" scoped>
