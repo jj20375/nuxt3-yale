@@ -37,21 +37,10 @@ const route = useRoute();
 
 const { $api } = useNuxtApp();
 
-const breadcrumbs = ref([
+const breadcrumbs = ref<any>([
     {
         name: "index",
         text: "首頁",
-    },
-    {
-        name: "news-slug",
-        text: "展售門市",
-        params: { slug: "耶魯展售門市" },
-    },
-    {
-        name: "news-slug",
-        text: "直營門市",
-        params: { slug: "耶魯直營門市" },
-        query: { id: "id1" },
     },
 ]);
 
@@ -91,6 +80,25 @@ async function getType() {
                 });
             }
         });
+
+        // 取得最後面的 麵包屑路徑
+        const lastBreadcrumbs = rows.find((item: any) => item.id == route.query.id);
+        // 判斷是否有匹配的 id 來新增 後續的麵包屑 路徑
+        if (lastBreadcrumbs !== undefined) {
+            breadcrumbs.value.push({
+                name: "store-slug",
+                text: "展售門市",
+                params: { slug: lastBreadcrumbs.name },
+                query: { id: lastBreadcrumbs.id },
+            });
+
+            breadcrumbs.value.push({
+                name: lastBreadcrumbs.name === "電商平台" ? "store-e-commerce-slug" : "store-slug",
+                text: lastBreadcrumbs.name,
+                params: { slug: lastBreadcrumbs.name },
+                query: { id: lastBreadcrumbs.id },
+            });
+        }
     } catch (err) {
         console.log("HomeSampleAPI => ", err);
     }

@@ -36,21 +36,10 @@ const route = useRoute();
 
 const { $api, $utils } = useNuxtApp();
 
-const breadcrumbs = ref([
+const breadcrumbs = ref<any>([
     {
         name: "index",
         text: "首頁",
-    },
-    {
-        name: "news-slug",
-        text: "最新消息",
-        params: { slug: "耶魯最新消息" },
-    },
-    {
-        name: "news-slug",
-        text: "電子鎖",
-        params: { slug: "耶魯最新消息" },
-        query: { id: "id1" },
     },
 ]);
 
@@ -88,6 +77,23 @@ async function getType() {
                 },
             });
         });
+        // 取得最後面的 麵包屑路徑
+        const lastBreadcrumbs = rows.find((item: any) => item.id == route.query.id);
+        // 判斷是否有匹配的 id 來新增 後續的麵包屑 路徑
+        if (lastBreadcrumbs !== undefined) {
+            breadcrumbs.value.push({
+                name: "news-slug",
+                text: "最新消息",
+                params: { slug: "耶魯最新消息" },
+                query: { id: lastBreadcrumbs.id },
+            });
+            breadcrumbs.value.push({
+                name: "news-slug",
+                text: lastBreadcrumbs.name,
+                params: { slug: "耶魯最新消息" },
+                query: { id: lastBreadcrumbs.id },
+            });
+        }
     } catch (err) {
         console.log("HomeSampleAPI => ", err);
     }
