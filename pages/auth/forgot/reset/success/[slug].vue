@@ -5,7 +5,7 @@
 </template>
 
 <script setup lang="ts">
-const AsyncComp = defineAsyncComponent(() => import("~/views/template1/Auth/Forgot/ForgotIndex.vue"));
+const AsyncComp = defineAsyncComponent(() => import("~/views/template1/Auth/Forgot/resetSuccess.vue"));
 definePageMeta({
     middleware: ["user-middleware"],
 });

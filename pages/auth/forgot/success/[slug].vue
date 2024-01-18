@@ -7,7 +7,7 @@
 <script setup lang="ts">
 const AsyncComp = defineAsyncComponent(() => import("~/views/template1/Auth/Forgot/SendSuccess.vue"));
 definePageMeta({
-    middleware: ["user-middleware", "auth-middleware"],
+    middleware: ["user-middleware"],
 });
 const pageLoading = ref(useState("loading"));
 onMounted(() => {

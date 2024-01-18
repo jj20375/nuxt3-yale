@@ -272,20 +272,52 @@ export default () => {
     /**
      * 修改密碼
      */
-    ChangePassewordAPI(params: { old_password: string; new_password: string; new_password_confirmation: string; }) {
+    ChangePassewordAPI(params: {
+      old_password: string;
+      new_password: string;
+      new_password_confirmation: string;
+    }) {
       return useMyFetch(`${apiUrl}/member/change-password`, {
         method: "post",
-        body: {...params},
+        body: { ...params },
       });
     },
 
     /**
      * 忘記密碼
      */
-    ForgotPasswordAPI(params: { email: string; }) {
+    ForgotPasswordAPI(params: { email: string }) {
       return useMyFetch(`${apiUrl}/member/forgot-password`, {
         method: "post",
-        body: {...params},
+        body: { ...params },
+      });
+    },
+    /**
+     * 註冊信件驗證
+     */
+    EmailVerificationAPI(params: {
+      scene: string;
+      email: string;
+      token: string;
+    }) {
+      return useMyFetch(`${apiUrl}/member/email-verification`, {
+        method: "post",
+        body: { ...params },
+      });
+    },
+    /**
+     * 忘記密碼信件驗證
+     */
+    PasswordEmailVerificationAPI(params: {
+      scene: string;
+      email: string;
+      token: string;
+      password: string;
+      password_confirmation: string;
+    }) {
+      return useMyFetch(`${apiUrl}/member/email-verification`, {
+        method: "post",
+        body: { ...params },
       });
     },
   };
