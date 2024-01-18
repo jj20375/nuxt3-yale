@@ -7,7 +7,7 @@
 <script setup lang="ts">
 const AsyncComp = defineAsyncComponent(() => import("~/views/template1/Post/News/NewsIndex.vue"));
 definePageMeta({
-    middleware: [],
+    middleware: ["user-middleware"],
 });
 const pageLoading = ref(useState("loading"));
 onMounted(() => {
