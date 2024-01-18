@@ -125,7 +125,7 @@ async function getList(params: { per_page: number; page: number; article_categor
                 url: {
                     name: "news-details-slug",
                     params: { slug: route.params.slug },
-                    query: { id: item.id },
+                    query: { id: item.id, breadcrumbs: JSON.stringify(breadcrumbs.value) },
                 },
             });
         });
