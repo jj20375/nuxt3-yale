@@ -1,6 +1,6 @@
 <template>
     <section class="min-h-screen mt-[94px] pb-[60px] bg-gray-50">
-        <nav v-if="!userData" class="border-t border-b border-gray-300 py-[16px] bg-white">
+        <nav class="border-t border-b border-gray-300 py-[16px] bg-white">
             <div class="grid grid-cols-7 gap-0">
                 <div class="col-span-7 ml-[122px]">
                     <Breadcrumb :menus="breadcrumbs" />
@@ -9,7 +9,7 @@
         </nav>
         <div class="container overflow-auto">
             <div class="w-[620px] mt-[60px] py-[60px] px-[60px] bg-white mx-auto rounded-[24px] border-[1px] border-gray-200">
-                <h3 class="font-medium text-[28px] mb-8">{{ userData ? '重設密碼' : '變更密碼'}}</h3>
+                <h3 class="font-medium text-[28px] mb-8">變更密碼</h3>
                 <el-form
                     class="custom-form"
                     ref="formRefDom"
@@ -127,7 +127,6 @@ const formDatas = ref<any>([
         placeholder: "請輸入舊密碼",
         style: "input",
         showPassword: true,
-        isVisible: computed(() => !userData.value),
     },
     {
         prop: "newPassword",
@@ -145,7 +144,6 @@ const formDatas = ref<any>([
     },
 ]);
 
-const formDatas:any = computed(() => initFormDatas.value.filter(item => item.isVisible !== false));
 
 const rules = ref<any>({
     oldPassword: [
