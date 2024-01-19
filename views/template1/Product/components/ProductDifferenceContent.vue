@@ -32,10 +32,11 @@
                         v-if="productKey === 'imgSrc'"
                     >
                         <NuxtImg
+                            v-if="productData"
                             class="h-[200px]"
                             :src="productData"
                         />
-                        <div>
+                        <div v-if="productData">
                             <button class="py-[9px] px-[33px] bg-yellow-600 rounded-full text-gray-800 hover:bg-yellow-700 duration-500 transition-all">立即選購</button>
                         </div>
                     </div>
@@ -43,10 +44,17 @@
                         class="ml-[50px]"
                         v-else-if="productKey === 'style'"
                     >
-                        <el-select v-model="form.category[index]">
+                        <el-select
+                            class="w-full"
+                            @change="categoryChange(index)"
+                            v-model="form.category[index]"
+                            clearable
+                        >
                             <el-option
-                                :label="'卡片入門款'"
-                                :value="productData"
+                                v-for="(item, index) in shapeArr"
+                                :key="index"
+                                :label="item"
+                                :value="item"
                             ></el-option>
                         </el-select>
                     </div>
@@ -54,10 +62,17 @@
                         class="ml-[50px]"
                         v-else-if="productKey === 'category'"
                     >
-                        <el-select v-model="form.style[index]">
+                        <el-select
+                            class="w-full"
+                            @change="modelChange(index)"
+                            v-model="form.style[index]"
+                            clearable
+                        >
                             <el-option
-                                :label="'YDM-3109'"
-                                :value="productData"
+                                v-for="(item, index) in modelArr"
+                                :key="index"
+                                :label="item"
+                                :value="item"
                             ></el-option>
                         </el-select>
                     </div>
@@ -65,14 +80,19 @@
                         v-else
                         class="py-[12px] border-b border-gray-300 text-[16px] text-gray-800 flex justify-center"
                     >
-                        {{ productData }}
+                        <div
+                            :title="productData"
+                            class="truncate"
+                        >
+                            {{ productData ? productData : "-" }}
+                        </div>
                     </div>
                 </div>
             </div>
             <div
                 v-show="products.length < 3"
-                v-for="item in 3 - products.length"
-                :key="item"
+                v-for="(item, index) in 3 - products.length"
+                :key="index"
                 class="flex flex-col"
             >
                 <div
@@ -88,12 +108,17 @@
                         v-else-if="key === 'style'"
                     >
                         <el-select
-                            v-model="form.category[3]"
+                            class="w-full"
+                            v-model="form.category[index + products.length]"
+                            @change="categoryChange(index + products.length)"
                             placeholder="選擇分類"
+                            clearable
                         >
                             <el-option
-                                :label="'卡片入門款'"
-                                :value="'id1'"
+                                v-for="(item, index) in shapeArr"
+                                :key="index"
+                                :label="item"
+                                :value="item"
                             ></el-option>
                         </el-select>
                     </div>
@@ -102,12 +127,17 @@
                         v-else-if="key === 'category'"
                     >
                         <el-select
-                            v-model="form.category[3]"
+                            class="w-full"
+                            v-model="form.style[index + products.length]"
+                            @change="modelChange(index + products.length)"
                             placeholder="選擇型號"
+                            clearable
                         >
                             <el-option
-                                :label="'YDM-3109'"
-                                :value="'id1'"
+                                v-for="(item, index) in modelArr"
+                                :key="index"
+                                :label="item"
+                                :value="item"
                             ></el-option>
                         </el-select>
                     </div>
@@ -124,7 +154,11 @@
 </template>
 
 <script setup lang="ts">
-import type { ProductInterface } from "~/views/template1/Product/interface/Product";
+import type { ProductListAPIInterface, ProductCompareList, ProductInterface } from "~/views/template1/Product/interface/Product";
+import { useProductCompareStore } from "~/store/productCompareStore";
+
+const { $api } = useNuxtApp();
+const productCompareStore = useProductCompareStore();
 
 interface Props {
     // 比較產品資料
@@ -205,16 +239,101 @@ const props = withDefaults(defineProps<Props>(), {
     },
 });
 
-const form = ref({
+const form = ref<any>({
     category: [],
     style: [],
 });
+
+// 商品列表
+const datas = ref<ProductCompareList[]>([]);
+const shapeArr = ref<string | number[]>([]);
+const modelArr = ref<string | number[]>([]);
+
+const pagination = ref<any>({
+    page: 1,
+    pageSize: 12,
+    total: 0,
+});
+
+/**
+ * 取得商品列表
+ */
+async function getList(params: { per_page: number; page: number }) {
+    try {
+        const { data } = await $api().ProductListPaginateAPI<ProductListAPIInterface>(params);
+        datas.value = [];
+        console.log("home sample api => ", data.value);
+
+        const rows = (data.value as any).data.rows;
+        const meta = (data.value as any).data.meta;
+
+        rows.forEach((item: { id: any; model: any; name: any; shape: any; main_image: any; attributes: any }) => {
+            datas.value.push({
+                id: item.id,
+                model: item.model,
+                name: item.name,
+                shape: item.shape,
+                main_image: item.main_image,
+                attributes: item.attributes,
+            });
+        });
+
+        shapeArr.value = rows.map((item: { shape: string }) => item.shape);
+        modelArr.value = rows.map((item: { model: string }) => item.model);
+
+        pagination.value.total = meta.total;
+    } catch (err) {
+        console.log("HomeSampleAPI => ", err);
+    }
+}
+
+function categoryChange(index: string | number) {
+    form.value.style[index] = null;
+    deleteCompareProduct(index);
+}
+
+function deleteCompareProduct(index: string | number) {
+    productCompareStore.compareStore[index] = {
+        attributes: {},
+        id: null,
+        main_image: "",
+        model: "",
+        name: "",
+        shape: "",
+    };
+}
+
+function modelChange(index: string | number) {
+    console.log(form.value.style[index]);
+    if (form.value.style[index]) {
+        form.value.category[index] = datas.value.find((data) => data.model === form.value.style[index]).shape;
+        productCompareStore.compareStore = [];
+        form.value.style.forEach((item: string) => {
+            productCompareStore.compareStore.push(datas.value.find((data) => data.model === item));
+        });
+    } else {
+        form.value.category[index] = null;
+        deleteCompareProduct(index);
+    }
+}
+
+/**
+ * 初始化
+ */
+async function init() {
+    await getList({ per_page: pagination.value.pageSize, page: 1 });
+}
 
 onMounted(() => {
     console.log("props.products => ", props.products);
     props.products.forEach((item, index) => {
         form.value.category.push(item.category);
         form.value.style.push(item.style);
+    });
+    nextTick(async () => {
+        if (process.client) {
+            await init();
+        }
     });
 });
 </script>

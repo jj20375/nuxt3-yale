@@ -41,6 +41,14 @@
 import Breadcrumb from "~/views/template1/components/Breadcrumb.vue";
 // 產品比較內容頁
 import ProductDifferenceContent from "~/views/template1/Product/components/ProductDifferenceContent.vue";
+import { useProductCompareStore } from "~/store/productCompareStore";
+import type { ProductInterface } from "~/views/template1/Product/interface/Product";
+
+const productCompareStore = useProductCompareStore();
+
+const compareStore = computed(() => {
+    return JSON.stringify(productCompareStore.compareStore)
+})
 
 const breadcrumbs = ref([
     {
@@ -78,90 +86,107 @@ const breadcrumbs = ref([
     },
 ]);
 
-const products = ref([
-    {
-        style: "id1",
-        category: "id1",
-        imgSrc: "/img/home/product/product1.jpg",
-        // 顏色
-        color: "消光霧黑",
-        // 專利安全按鈕
-        safeBtn: "有",
-        // 自動上鎖功能
-        autoLock: "有",
-        // 入侵 / 破壞 / 高溫警報功能
-        feature: "有",
-        // 節電設計
-        savePower: "有",
-        // 低電量提示
-        lowPower: "9V 緊急後備電源啟動電源",
-        // 卡片解鎖
-        cardUnlock: "4張",
-        // 密碼解鎖
-        passwordUnlock: "100組",
-        // 虛位密碼
-        virtualPassword: "有",
-        // 指紋解鎖
-        fingerUnlock: "100組",
-        // 備用機械鑰匙
-        copyMachineKey: "2把",
-        // 語音提示
-        voiceCheck: "無",
-        // Yale home 遠端管理
-        yaleHomeApp: "可",
-        // 正面尺寸
-        frontSize: "68.6(W) × 306.6(H) × 27(D)",
-        // 背面尺寸
-        backendSize: "72.8(W) × 306.6(H) × 37(D)",
-        // 鎖體
-        type: "歐規不鏽鋼",
-        // 電源
-        power: "1.5V",
-        // 保固
-        warranty: "2 年原廠",
-    },
-    {
-        style: "id2",
-        category: "id2",
-        imgSrc: "/img/home/product/product1.jpg",
-        // 顏色
-        color: "消光霧黑",
-        // 專利安全按鈕
-        safeBtn: "有",
-        // 自動上鎖功能
-        autoLock: "有",
-        // 入侵 / 破壞 / 高溫警報功能
-        feature: "有",
-        // 節電設計
-        savePower: "有",
-        // 低電量提示
-        lowPower: "9V 緊急後備電源啟動電源",
-        // 卡片解鎖
-        cardUnlock: "4張",
-        // 密碼解鎖
-        passwordUnlock: "100組",
-        // 虛位密碼
-        virtualPassword: "有",
-        // 指紋解鎖
-        fingerUnlock: "100組",
-        // 備用機械鑰匙
-        copyMachineKey: "2把",
-        // 語音提示
-        voiceCheck: "無",
-        // Yale home 遠端管理
-        yaleHomeApp: "可",
-        // 正面尺寸
-        frontSize: "68.6(W) × 306.6(H) × 27(D)",
-        // 背面尺寸
-        backendSize: "72.8(W) × 306.6(H) × 37(D)",
-        // 鎖體
-        type: "歐規不鏽鋼",
-        // 電源
-        power: "1.5V",
-        // 保固
-        warranty: "2 年原廠",
-    },
+const products = ref<ProductInterface[]>([
+    // {
+    //     style: "YDM 3109A",
+    //     category: "卡片密碼入門款",
+    //     imgSrc: "/img/home/product/product1.jpg",
+    //     // 顏色
+    //     color: "消光霧黑",
+    //     // 專利安全按鈕
+    //     safeBtn: "有",
+    //     // 自動上鎖功能
+    //     autoLock: "有",
+    //     // 入侵 / 破壞 / 高溫警報功能
+    //     feature: "有",
+    //     // 節電設計
+    //     savePower: "有",
+    //     // 低電量提示
+    //     lowPower: "9V 緊急後備電源啟動電源",
+    //     // 卡片解鎖
+    //     cardUnlock: "4張",
+    //     // 密碼解鎖
+    //     passwordUnlock: "100組",
+    //     // 虛位密碼
+    //     virtualPassword: "有",
+    //     // 指紋解鎖
+    //     fingerUnlock: "100組",
+    //     // 備用機械鑰匙
+    //     copyMachineKey: "2把",
+    //     // 語音提示
+    //     voiceCheck: "無",
+    //     // Yale home 遠端管理
+    //     yaleHomeApp: "可",
+    //     // 正面尺寸
+    //     frontSize: "68.6(W) × 306.6(H) × 27(D)",
+    //     // 背面尺寸
+    //     backendSize: "72.8(W) × 306.6(H) × 37(D)",
+    //     // 鎖體
+    //     type: "歐規不鏽鋼",
+    //     // 電源
+    //     power: "1.5V",
+    //     // 保固
+    //     warranty: "2 年原廠",
+    // },
 ]);
+
+watch(
+    () => compareStore.value,
+    (val) => {
+        productsCompareData()
+    }
+);
+
+
+function productsCompareData () {
+    products.value = []
+    console.log(productCompareStore.compareStore)
+    productCompareStore.compareStore.forEach((item: { model: any; shape: any; main_image: any; attributes: { [x: string]: any; }; }) => {
+        console.log(item)
+        products.value.push({
+            style: item?.model,
+            category: item?.shape,
+            imgSrc: item?.main_image,
+            // 顏色
+            color: item?.attributes['顏色'],
+            // 專利安全按鈕
+            safeBtn: item?.attributes['專利安全按鈕'],
+            // 自動上鎖功能
+            autoLock: item?.attributes['自動上鎖功能'],
+            // 入侵 / 破壞 / 高溫警報功能
+            feature: item?.attributes['入侵/破壞/高溫警報功能'],
+            // 節電設計
+            savePower: item?.attributes['節電設計'],
+            // 低電量提示
+            lowPower: item?.attributes['低電量提示'],
+            // 卡片解鎖
+            cardUnlock: item?.attributes['卡片解鎖'],
+            // 密碼解鎖
+            passwordUnlock: item?.attributes['密碼解鎖'],
+            // 虛位密碼
+            virtualPassword: item?.attributes['虛位密碼'],
+            // 指紋解鎖
+            fingerUnlock: item?.attributes['指紋解鎖'],
+            // 備用機械 鑰匙
+            copyMachineKey: item?.attributes['備用機械 鑰匙'],
+            // 語音提示
+            voiceCheck: item?.attributes['語音提示'],
+            // Yale home 遠端管理
+            yaleHomeApp: item?.attributes['Yale home遠端管理'],
+            // 正面尺寸
+            frontSize: item?.attributes['正面尺寸'],
+            // 背面尺寸
+            backendSize: item?.attributes['背面尺寸'],
+            // 鎖體
+            type: item?.attributes['鎖體'],
+            // 電源
+            power: item?.attributes['電源'],
+            // 保固
+            warranty: item?.attributes['保固'],
+        })
+    })
+}
+productsCompareData()
 
 const columns = ref({
     style: "產品款式",

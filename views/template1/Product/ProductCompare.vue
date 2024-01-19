@@ -26,17 +26,17 @@
             <div class="container grid grid-cols-4 gap-4 mt-[30px] pb-[104px]">
                 <div
                     @click="selectProduct(item)"
-                    v-for="item in 14"
-                    :key="item"
-                    :class="[selectProducts.includes(item) ? 'border border-yellow-600' : '', selectProducts.length === 3 && !selectProducts.includes(item) ? 'opacity-50' : '']"
+                    v-for="(item, index) in datas"
+                    :key="index"
+                    :class="[selectProducts.includes(item.id) ? 'border border-yellow-600' : '', selectProducts.length === 3 && !selectProducts.includes(item) ? 'opacity-50' : '']"
                     class="bg-white p-[30px] rounded-[16px] cursor-pointer"
                 >
                     <NuxtImg
                         class="object-cover w-full rounded-2xl aspect-square object-cover"
-                        src="/img/home/product/product1.jpg"
+                        :src="item.main_image"
                     />
-                    <h5 class="text-[18px] YaleSolisW-Bd font-medium">YDM 4109A</h5>
-                    <p class="text-[14px] text-gray-800">指紋密碼鑰匙三合一</p>
+                    <h5 class="text-[18px] YaleSolisW-Bd font-medium">{{item.model}}</h5>
+                    <p class="text-[14px] text-gray-800">{{item.name}}</p>
                 </div>
             </div>
         </div>
@@ -46,6 +46,11 @@
 <script setup lang="ts">
 // 麵包屑組件
 import Breadcrumb from "~/views/template1/components/Breadcrumb.vue";
+import { ProductCompareList } from "~/views/template1/Product/interface/Product.d";
+import { useProductCompareStore } from "~/store/productCompareStore";
+
+const { $api } = useNuxtApp();
+const productCompareStore = useProductCompareStore();
 
 const router = useRouter();
 
@@ -89,15 +94,18 @@ const cnaSelected = ref(false);
  * 選擇事件
  * @param { type String or Number(字串或數字) } val 選中地區值
  */
-function selectProduct(val: string | number) {
-    if (selectProducts.value.map((item: any) => item).includes(val)) {
+function selectProduct(val: {id: string | number; model: any; name: any; shape: any; price: any; market_price: any; main_image: any; attributes: any }) {
+    productCompareStore.compareStore = []
+    if (selectProducts.value.includes(val.id)) {
         // 將可選擇狀態改為 true
         cnaSelected.value = true;
+        
         // 取得選擇區域 index索引位置
         const arrIndex = _FindIndex(selectProducts.value, function (item: any) {
             // 尋找與 val 相同位置的值
-            return item == val;
+            return item == val.id;
         });
+        console.log('arrIndex', arrIndex)
         // 刪除選中的地區值
         selectProducts.value.splice(arrIndex, 1);
     } else {
@@ -108,7 +116,64 @@ function selectProduct(val: string | number) {
             return;
         }
         // 新增選中的地區值
-        selectProducts.value.push(val);
+        selectProducts.value.push(val.id);
+    }
+    selectProducts.value.forEach((item: string | number) => {
+        productCompareStore.compareStore.push(datas.value.find(data => data.id === item))
+    })
+}
+
+// 商品列表
+const datas = ref<ProductCompareList[]>([]);
+
+const pagination = ref<any>({
+    page: 1,
+    pageSize: 12,
+    total: 0,
+});
+
+/**
+ * 取得商品列表
+ */
+ async function getList(params: { per_page: number; page: number }) {
+    try {
+        productCompareStore.compareStore = []
+        const { data } = await $api().ProductListPaginateAPI<ProductListAPIInterface>(params);
+        datas.value = [];
+        console.log("home sample api => ", data.value);
+
+        const rows = (data.value as any).data.rows;
+        const meta = (data.value as any).data.meta;
+
+        rows.forEach((item: { id: any; model: any; name: any; shape: any; price: any; market_price: any; main_image: any; attributes: any }) => {
+            datas.value.push({
+                id: item.id,
+                model: item.model,
+                name: item.name,
+                main_image: item.main_image,
+                attributes: item.attributes,
+                shape: item.shape,
+            });
+        });
+
+        pagination.value.total = meta.total;
+    } catch (err) {
+        console.log("HomeSampleAPI => ", err);
     }
 }
+
+/**
+ * 初始化
+ */
+async function init() {
+    await getList({ per_page: pagination.value.pageSize, page: 1 });
+}
+
+onMounted(async () => {
+    nextTick(async () => {
+        if (process.client) {
+            await init();
+        }
+    });
+});
 </script>
