@@ -76,29 +76,7 @@ const router = useRouter();
 
 const { $api, $utils } = useNuxtApp();
 
-const breadcrumbs = ref([
-    {
-        name: "index",
-        text: "首頁",
-    },
-    {
-        name: "news-slug",
-        text: "最新消息",
-        params: { slug: "耶魯最新消息" },
-    },
-    {
-        name: "news-slug",
-        text: "電子鎖",
-        params: { slug: "耶魯最新消息" },
-        query: { id: "id1" },
-    },
-    {
-        name: "news-slug",
-        text: "質感居家，將舒適與風格融為一體。精緻材質、簡約設計，打造溫馨空間".substr(0, 10) + "...",
-        params: { slug: "耶魯最新消息" },
-        query: { id: "id1" },
-    },
-]);
+const breadcrumbs = ref(JSON.parse(route.query.breadcrumbs));
 
 const postData = ref<any>({
     id: "",
@@ -114,9 +92,9 @@ const pagination = ref<any>({
 });
 
 /**
- * 取得裝修實績詳細資料
+ * 取得績詳資料
  */
-async function getList(params: { articleId: any }) {
+async function getData(params: { articleId: any }, isChangePost: boolean) {
     try {
         const { data } = await $api().SampleDetailAPI(params);
         console.log("home sample api => ", data.value);
@@ -131,6 +109,18 @@ async function getList(params: { articleId: any }) {
             published_at: $utils().formatToDate(detail.published_at),
         };
 
+        //判斷在內頁切換文章時 麵包屑 只更新最後一筆陣列簪料
+        if (!isChangePost) {
+            if (breadcrumbs.value.find((item: any) => item.name === route.name) === undefined) {
+                breadcrumbs.value.push({
+                    name: route.name,
+                    params: { slug: detail.title.substr(0, 10) },
+                    text: detail.title.length > 10 ? detail.title.substr(0, 10) + "..." : detail.title,
+                    query: { id: detail.id, breadcrumbs: JSON.stringify(breadcrumbs.value) },
+                });
+            }
+        }
+
         if (detail.previous_article) {
             pagination.value.prev = {
                 id: detail.previous_article.id,
@@ -140,7 +130,7 @@ async function getList(params: { articleId: any }) {
                     params: {
                         slug: route.params.slug,
                     },
-                    query: { id: detail.previous_article.id },
+                    query: { id: detail.previous_article.id, breadcrumbs: JSON.stringify(breadcrumbs.value) },
                 },
             };
         } else {
@@ -156,7 +146,7 @@ async function getList(params: { articleId: any }) {
                     params: {
                         slug: route.params.slug,
                     },
-                    query: { id: detail.next_article.id },
+                    query: { id: detail.next_article.id, breadcrumbs: JSON.stringify(breadcrumbs.value) },
                 },
             };
         } else {
@@ -169,7 +159,7 @@ async function getList(params: { articleId: any }) {
 
 async function jumpPage(page: { id: any; url: any }) {
     router.push(page.url);
-    await getList({ articleId: page.id });
+    await getData({ articleId: page.id }, true);
 }
 
 function backList() {
@@ -184,7 +174,7 @@ function backList() {
  * 初始化
  */
 async function init() {
-    await getList({ articleId: route.query.id });
+    await getData({ articleId: route.query.id }, false);
 }
 
 onMounted(async () => {

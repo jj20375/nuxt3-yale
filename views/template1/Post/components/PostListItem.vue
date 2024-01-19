@@ -34,7 +34,7 @@
 
 <script setup lang="ts">
 interface Props {
-    datas: { title: string; content: string; is_top: number; imgSrc: string; date: string; url: { name: string; params?: { slug?: string }; query: any } }[];
+    datas: { title: string; content: string; is_top: number; imgSrc: string; date: string; url: { name: string; params?: { slug?: string; query: { breadcrumbs: any } }; query: any } }[];
 }
 const props = withDefaults(defineProps<Props>(), {
     datas: [{ title: "title", content: "is content", is_top: 0, imgSrc: "/img/logo-1.svg", url: { name: "index", params: { slug: "home" } } }],
