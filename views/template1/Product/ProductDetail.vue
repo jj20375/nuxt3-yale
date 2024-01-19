@@ -131,9 +131,22 @@
                 </div>
                 <div
                     v-if="currentTab === 1"
-                    class="min-h-[500px] text-center flex items-center justify-center"
+                    class="min-h-[500px] flex mt-[60px]"
                 >
-                    產品規格內容
+                    <div class="flex-1 mr-[80px]">
+                        <h5 class="text-[18px] font-medium YaleSolisW-Bd text-gray-800 mb-[20px]">產品規格內容</h5>
+                        <div
+                            v-for="(attr, key) in detailData.attributes"
+                            :key="key"
+                            class="flex border-b border-gray-100 text-[15px] py-[8px]"
+                        >
+                            <div class="flex-1">{{ key }}</div>
+                            <div class="flex-1">{{ attr }}</div>
+                        </div>
+                    </div>
+                    <div class="flex-1">
+                        <h5 class="text-[18px] font-medium YaleSolisW-Bd text-gray-800">檔案下載</h5>
+                    </div>
                 </div>
             </div>
             <!-- <div>
@@ -266,7 +279,7 @@ async function getData() {
         detailData.value.attributes = rows.attributes;
 
         if (rows.is_single_variation === 0) {
-            productOptions.value = []
+            productOptions.value = [];
             detailData.value.productVariations = rows.productVariations;
             rows.productOptions.forEach((item: { values: any[]; name: any }, index: number) => {
                 const option: {
@@ -289,9 +302,9 @@ async function getData() {
             });
             optionChangePrice();
         } else {
-            detailData.value.price = rows.price
-            detailData.value.market_price = rows.market_price
-            detailData.value.stock = rows.stock
+            detailData.value.price = rows.price;
+            detailData.value.market_price = rows.market_price;
+            detailData.value.stock = rows.stock;
         }
     } catch (err) {
         console.log("HomeSampleAPI => ", err);
