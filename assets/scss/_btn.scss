@@ -89,7 +89,7 @@
 .yellow-btn {
     @apply bg-yellow-500 hover:bg-yellow-600 transition-all duration-500 rounded-full w-[160px] py-3 px-4 text-[16px];
     &.btn-lg {
-        @apply w-[300px];
+        @apply w-[300px] py-4;
     }
     &.btn-md {
         @apply w-[160px];
@@ -106,7 +106,7 @@
 .gray-btn {
     @apply bg-gray-200 rounded-full py-3 px-4 hover:bg-black hover:text-white transition-all duration-500 text-[16px];
     &.btn-lg {
-        @apply w-[300px];
+        @apply w-[300px] py-4;
     }
     &.btn-md {
         @apply w-[160px];
@@ -123,7 +123,7 @@
 .transparent-btn {
     @apply bg-transparent border-[1px] border-gray-800 rounded-full py-3 px-4 hover:bg-black hover:text-white transition-all duration-500 text-[16px];
     &.btn-lg {
-        @apply w-[300px];
+        @apply w-[300px] py-4;
     }
     &.btn-md {
         @apply w-[160px];

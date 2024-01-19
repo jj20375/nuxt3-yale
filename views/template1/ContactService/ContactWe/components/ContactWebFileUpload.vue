@@ -6,6 +6,7 @@
             :on-change="handleChange"
             :auto-upload="false"
             drag
+            multiple
             action=""
             :limit="5"
             :on-exceed="imageOverLimit"
@@ -42,7 +43,7 @@
                 </div>
             </template>
         </el-upload>
-        <p class="text-gray-700 text-[14px] mt-[4px]">(僅限JPEG、PNG，且不得超過10mb)</p>
+        <p class="text-gray-700 text-[14px] mt-[4px]">(僅限JPEG、PNG)</p>
         <el-dialog v-model="showDialog">
             <img
                 w-full
@@ -140,8 +141,22 @@ function imageOverLimit(files: any, fileList: any) {
 </script>
 
 <style lang="scss" scoped>
+:deep .el-upload.is-drag{
+    @apply border-none;
+}
+
 :deep .el-upload-dragger {
-    @apply h-full flex items-center justify-center #{!important};
+    @apply h-full border-gray-300 rounded-none flex items-center justify-center #{!important};
+    &:hover{
+        @apply border-yellow-600 #{!important};
+    }
+}
+
+:deep .el-upload-list__item {
+    @apply rounded-none border-gray-300;
+    > *{
+        @apply w-full;
+    }
 }
 // :deep .el-upload-dragger {
 //     @apply flex items-center justify-center border-none;

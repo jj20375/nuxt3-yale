@@ -3,7 +3,7 @@
   .el-form-item {
     @apply relative flex flex-col justify-stretch flex-wrap mb-0 bg-white text-base;
     .el-form-item__label{
-      @apply justify-start text-[15px];
+      @apply justify-start text-[15px] text-gray-800;
     }
     .el-input__wrapper{
       @apply px-2;
@@ -37,6 +37,14 @@
           @apply text-[20px];
         }
       }
+      // 多行文字輸入框
+      .el-textarea{
+        .el-textarea__inner {
+          @apply text-gray-800 rounded-none py-2 px-4 bg-transparent text-[16px] #{!important};
+          --el-input-border-color: #D9D9D9;
+          --el-input-focus-border-color: #FFCC00;
+        }
+      }
       // 單選(checkbox)
       .el-checkbox{
         .el-checkbox__label{
@@ -57,6 +65,9 @@
       }
       // 單選(radio)
       .el-radio{
+        .el-radio__label{
+          @apply font-normal;
+        }
         .el-radio__input{
           .el-radio__inner{
             &:hover{

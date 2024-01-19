@@ -5,7 +5,7 @@
         class="bg-gray-50"
     >
         <template #breadcrumbs>
-            <Breadcrumb :menus="breadcrumbs" />
+            <Breadcrumb :menus="breadcrumbs"/>
         </template>
         <template #content>
             <div class="container">
@@ -60,7 +60,6 @@
                                         ></el-option>
                                     </el-select>
                                 </el-form-item>
-
                             </div>
                         </div>
                     </div>
@@ -101,14 +100,13 @@
                                         @change="item.function ? item.function(form) : null"
                                     >
                                         <el-option
-                                            v-for="(option, index) in item.options"
-                                            :key="index"
+                                            v-for="(option, option_index) in item.options"
+                                            :key="option_index"
                                             :label="option.label"
                                             :value="option.value"
                                         ></el-option>
                                     </el-select>
                                 </el-form-item>
-
                             </div>
                         </div>
                     </div>
@@ -128,7 +126,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="flex justify-center mt-[60px]">
+                    <div class="flex justify-center mt-[40px]">
                         <NuxtLink :to="{ name: 'repair-warranty-success-slug', params: { slug: '保固登記成功' } }">
                             <button class="yellow-btn btn-lg">確認送出</button>
                         </NuxtLink>
@@ -178,7 +176,6 @@ const form = ref<any>({
     customerAddress: "",
     memo: "",
     building: "",
-    ...Array.from({ length: 16 }, (v, i) => ({ [`serial${i + 1}`]: "" })).reduce((acc, obj) => ({ ...acc, ...obj }), {}),
 });
 
 const formDatas = ref<any>({
@@ -207,14 +204,14 @@ const formDatas = ref<any>({
             label: "銷售用途",
             placeholder: "請選擇",
             style: "select",
-            radioData: "" // 選項放在這裡
+            options: "" // 選項放在這裡
         },
         {
             prop: "serial",
             label: "型號",
             style: "select",
             placeholder: "請選擇",
-            radioData: "" // 選項放在這裡
+            options: "" // 選項放在這裡
         },
         {
             prop: "quantity",
