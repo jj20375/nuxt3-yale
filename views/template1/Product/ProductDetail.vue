@@ -146,7 +146,11 @@
                         </div>
                     </div>
                     <div class="flex-1">
-                        <h5 class="text-[18px] font-medium YaleSolisW-Bd text-gray-800">檔案下載</h5>
+                        <h5 class="text-[18px] font-medium YaleSolisW-Bd text-gray-800 mb-[20px]">檔案下載</h5>
+                        <div class="cursor-pointer" @click.prevent="downloadFile(item)" v-for="(item, index) in detailData.documents" :key="index">
+                            <el-icon><Document /></el-icon>
+                            {{ item.name }}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -287,6 +291,7 @@ async function getData() {
         detailData.value.description = rows.description;
         detailData.value.content = rows.content;
         detailData.value.attributes = rows.attributes;
+        detailData.value.documents = rows.documents;
 
         if (rows.is_single_variation === 0) {
             productOptions.value = [];
@@ -319,6 +324,12 @@ async function getData() {
     } catch (err) {
         console.log("HomeSampleAPI => ", err);
     }
+}
+
+// 下載檔案
+function downloadFile (file: { url: string|URL|undefined; }) {
+    console.log(file)
+    window.open(file.url, "_blank")
 }
 
 /**
