@@ -122,6 +122,15 @@
                                                         :placeholder="item.placeholder"
                                                         popper-class="date-box"
                                         />
+                                        <FileUpload
+                                            v-else-if="item.style === 'file'"
+                                            :prop="item.prop"
+                                            @tempPath="handlefile"
+                                        />
+                                        <el-checkbox-group v-else-if="item.style === 'checkbox'" v-model="form[item.prop]">
+                                          <el-checkbox v-for="checkbox in item.checkboxData" :key="checkbox.label" :label="checkbox.value">{{checkbox.label}}
+                                          </el-checkbox>
+                                        </el-checkbox-group>
                                     </el-form-item>
                                 </div>
                                 <div
@@ -158,18 +167,17 @@
                                 <template v-if="item.space">
                                     <div v-for="index in item.space" :key="index"></div>
                                 </template>
+                                <template v-if="item.memoText || item.memoUrl">
+                                  <div :class="item.span ? `col-span-${item.span}` : ''">
+                                    <span>{{ item.memoText }}</span>
+                                    <template v-if="item.memoUrl">
+                                      <NuxtLink :to="item.memoUrl">
+                                        <span class="text-blue-500 ml-2 underline cursor-pointer underline-offset-2 hover:no-underline">{{ item.memoUrlText }}</span>
+                                      </NuxtLink>
+                                    </template>
+                                  </div>
+                                </template>
                             </template>
-                            <div class="col-span-2">
-                                <div class="text-[15px] underline cursor-pointer underline-offset-2 hover:no-underline">
-                                    點我查看序號位置範例
-                                </div>
-                            </div>
-                            <el-form-item prop="time" label="維修時段">
-                                <el-checkbox-group v-model="form.time">
-                                    <el-checkbox v-for="checkbox in timeOptions" :key="checkbox.label" :label="checkbox.value">{{checkbox.label}}
-                                    </el-checkbox>
-                                </el-checkbox-group>
-                            </el-form-item>
                             <div class="col-span-2">
                                 <div class="bg-gray-50 px-4 py-3">
                                     <ul class="list-disc pl-4">
@@ -180,10 +188,6 @@
                             <el-form-item class="col-span-2" prop="description" label="狀況說明">
                                 <el-input  v-model="form.description" type="textarea" resize="none" :rows="5"></el-input>
                             </el-form-item>
-                            <div class="col-span-2">
-                                <div class="text-[15px] leading-[32px]">圖片上傳<span class="ml-[2px] text-red-500">*</span></div>
-                                <ContactWebFileUpload/>
-                            </div>
                             <div class="col-span-2">
                                 <div class="bg-gray-50 px-4 py-3">
                                     <ul class="list-disc pl-4">
@@ -211,8 +215,9 @@
 import BannerLayout from "~/views/template1/layouts/BannerLayout.vue";
 import Breadcrumb from "~/views/template1/components/Breadcrumb.vue";
 import { useInitializationStore } from "~/store/initializationStore";
-import ContactWebFileUpload from "~/views/template1/ContactService/ContactWe/components/ContactWebFileUpload.vue";
 import GoogleReCaptchaV2 from "~/components/GoogleRecaptchaV2.vue";
+import { ElMessage } from "element-plus";
+import FileUpload from "~/views/template1/ContactService/ContactWe/components/ContactWebFileUpload.vue";
 
 const { $api, $utils } = useNuxtApp();
 const router = useRouter();
@@ -291,9 +296,11 @@ const form = ref<any>({
     series: 1,
     date: "",
     model: "",
+    quantity: "",
     serial: "",
     time: [],
     description: "",
+    photo: "",
 });
 
 const seriesRadios = ref<any>([
@@ -415,10 +422,140 @@ const formDatas = ref<any>({
         {
             prop: "serial",
             label: "產品序號",
-            placeholder: "請輸入數量",
+            placeholder: "請輸入產品序號，共11碼英文+數字",
             style: "input",
             span: 2,
+            memoText: "序號位置：外盒開蓋地處有條碼貼紙",
+            memoUrl: {
+              name: "news-slug",
+              params: { slug: "slug" },
+            },
+            memoUrlText: "點我查看序號位置範例",
         },
+        {
+          prop: "photo",
+          label: "圖片上傳",
+          placeholder: "請上傳圖片",
+          type: "photo",
+          style: "file",
+          span: 2,
+        },
+        {
+          prop: "time",
+          label: "維修時段",
+          style: "checkbox",
+          checkboxData: timeOptions,
+        }
     ]
 })
+
+const rules = ref<any>({
+  contactPerson: [
+    {
+      required: true,
+      message: "請輸入聯絡人",
+      trigger: "blur"
+    }
+  ],
+  cellphone: [
+    {
+      required: true,
+      message: "請輸入聯絡電話",
+      trigger: "blur"
+    }
+  ],
+  city: [
+    {
+      required: true,
+      message: "請選擇縣市",
+      trigger: "blur"
+    }
+  ],
+  location: [
+    {
+      required: true,
+      message: "請輸入地區",
+      trigger: "blur"
+    }
+  ],
+  address: [
+    {
+      required: true,
+      message: "請輸入詳細地址",
+      trigger: "blur"
+    }
+  ],
+  series: [
+    {
+      required: true,
+      message: "請輸入填單人聯絡電話",
+      trigger: "blur"
+    }
+  ],
+  date: [
+    {
+      required: true,
+      message: "請選擇安裝日期",
+      trigger: "blur"
+    }
+  ],
+  model: [
+    {
+      required: true,
+      message: "請輸入報修型號",
+      trigger: "change"
+    }
+  ],
+  serial: [
+    {
+      required: true,
+      message: "請輸入報修數量",
+      trigger: "blur"
+    }
+  ],
+  quantity: [
+    {
+      required: true,
+      message: "請輸入序號",
+      trigger: "blur"
+    }
+  ],
+  time: [
+    {
+      required: true,
+      message: "請選擇維修時段",
+      trigger: "change",
+    }
+  ],
+  description: [
+    {
+      required: true,
+      message: "請輸入狀況說明",
+      trigger: "blur"
+    }
+  ],
+  photo: [
+    {
+      required: true,
+      message: "請選擇照片",
+      trigger: "blur"
+    }
+  ],
+});
+
+function handlefile(tempPath: any, prop: string) {
+  form.value[prop] = tempPath;
+  formRefDom.value.validateField("photo");
+}
+
+// async function onSubmit() {
+//   formRefDom.value.validate(async (valid: any) => {
+//     if (!valid) {
+//       ElMessage({
+//         type: "error",
+//         message: `尚有欄位未填`,
+//       });
+//     }
+//   })
+// }
 </script>
