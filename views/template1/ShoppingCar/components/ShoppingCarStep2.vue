@@ -10,16 +10,39 @@
             v-model:form="formGift"
             v-model:selectGiftIds="selectGiftIds"
         />
+        <ShoppingCarStep2FormCustomProductRule
+            v-model:showDialog="showDialogByCustomRule"
+            :customRuleData="customRuleData"
+        />
         <div class="mt-[60px]">
-            <el-checkbox
-                v-model="formConfirm.confirmRule"
-                size="large"
+            <div
+                v-if="currentTab === 'type2'"
+                class="flex items-center"
             >
-                <div class="text-[14px] text-gray-800"></div>
-                <span class="font-normal">我已閱讀並同意</span><span class="mx-2 font-medium YaleSolisW-Bd">網站服務條款</span>
-                <span class="font-normal">與</span>
-                <span class="mx-2 font-medium YaleSolisW-Bd">隱私權政策</span>
-            </el-checkbox>
+                <el-checkbox
+                    v-model="formConfirm.confirmCustomRule"
+                    size="large"
+                >
+                    <div class="text-[14px] text-gray-800"></div>
+                    <span class="font-normal">我已閱讀並同意</span>
+                </el-checkbox>
+                <span
+                    @click="showDialogByCustomRule = true"
+                    class="mx-2 font-medium underline cursor-pointer YaleSolisW-Bd text-[14px]"
+                    >定型化契約</span
+                >
+            </div>
+            <div>
+                <el-checkbox
+                    v-model="formConfirm.confirmRule"
+                    size="large"
+                >
+                    <div class="text-[14px] text-gray-800"></div>
+                    <span class="font-normal">我已閱讀並同意</span><span class="mx-2 font-medium underline YaleSolisW-Bd">網站服務條款</span>
+                    <span class="font-normal">與</span>
+                    <span class="mx-2 font-medium underline YaleSolisW-Bd">隱私權政策</span>
+                </el-checkbox>
+            </div>
         </div>
     </div>
 </template>
@@ -37,6 +60,26 @@ import ShoppingCarStep2FormPayment from "~/views/template1/ShoppingCar/component
 import ShoppingCarStep2FormInvoice from "~/views/template1/ShoppingCar/components/Step2Form/ShoppingCarStep2FormInvoice.vue";
 // 滿額贈
 import ShoppingCarStep2FormGift from "~/views/template1/ShoppingCar/components/Step2Form/ShoppingCarStep2FormGift.vue";
+// 定型化契約彈窗
+import ShoppingCarStep2FormCustomProductRule from "~/views/template1/ShoppingCar/components/Step2Form/ShoppingCarStep2FormCustomProductRule.vue";
+
+const props = defineProps({
+    currentTab: {
+        type: String,
+        default: "type1",
+    },
+});
+
+// 顯示定型化契約彈窗
+const showDialogByCustomRule = ref(false);
+
+// 定型化契約資料
+const customRuleData = ref(`
+    <div class="text-gray-800">
+        <h5 class="text-[16px] YaleSolisW-Bd font-medium">訂購條款</h5>
+        <p class="text-[15px]">基於服務消費者之精神，本公司茲就Yale購物會員資料保護事宜，特提供使用保護聲明如下。凡欲申請加入Yale會員者，均應事先充分閱讀且瞭解本聲明書之內容，並在認同此一內容精神與同意遵守相關規定下申請加入成為Yale會員。本公司因應經營之需要得於任何時候可隨時修改本條款之 內容，將不再另行通知修改後的條款，會以公告之方式通知會員。若您於條款修改公告後仍繼續使用Yale網站，即表示您同意修改後的條款並遵守。</p>
+    </div>
+`);
 
 // 訂單主表單
 const formMain = ref({
@@ -98,8 +141,12 @@ const formGift = ref([
 
 // 確認閱讀合約
 const formConfirm = ref({
+    // 網站服務條款｜隱私權政策
     confirmRule: true,
+    // 確認閱讀定型化契約
+    confirmCustomRule: true,
 });
+//
 
 // 滿額贈品
 const gifts = ref([

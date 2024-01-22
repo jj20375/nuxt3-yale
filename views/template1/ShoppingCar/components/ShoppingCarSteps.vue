@@ -58,7 +58,7 @@ const currentStep = ref(props.step);
  * 更換狀態
  * @param {type Nubmer or String(數字或字串)} key step 值
  */
-function changeStep(key) {
+function changeStep(key: string | number) {
     currentStep.value = key;
     emit("update:step", key);
 }
