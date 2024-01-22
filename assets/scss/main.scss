@@ -95,7 +95,6 @@ input[type="number"] {
 
 // 後台編輯區區塊
 .edit-section {
-
     h1,
     h2,
     h3,
@@ -146,6 +145,7 @@ input[type="number"] {
     img {
         object-fit: cover;
         height: auto;
+        max-width: 100%;
     }
 
     hr {

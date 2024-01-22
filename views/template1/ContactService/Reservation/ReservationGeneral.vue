@@ -83,7 +83,7 @@
                             <div class="col-span-2">
                                 <div class="bg-gray-50 px-4 py-3">
                                     <ul class="list-disc pl-4">
-                                        <li class="text-[15px]">指定區域將會額外收費1000~1500元，請參考<span class="text-blue-500 ml-1 underline cursor-pointer underline-offset-2 hover:no-underline">收費標準</span></li>
+                                      <li class="text-[15px]">指定區域將會額外收費1000~1500元，請參考<NuxtLink target="_blank" :to="{ name: 'charge-slug', params: { slug: '指定地區費用加收說明' } }"><span class="text-blue-500 ml-1 underline cursor-pointer underline-offset-2 hover:no-underline">收費標準</span></NuxtLink></li>
                                     </ul>
                                 </div>
                             </div>
@@ -483,11 +483,6 @@ const formDatas = ref<any>({
             style: "input",
             span: 2,
             memoText: "序號位置：外盒開蓋地處有條碼貼紙",
-            memoUrl: {
-                name: "news-slug",
-                params: { slug: "slug" },
-            },
-            memoUrlText: "點我查看序號位置範例",
         },
         {
             prop: "time",
