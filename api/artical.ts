@@ -13,7 +13,7 @@ export default () => {
          * 取得裝修實績列表
          */
         ArticalListAPI(params: { per_page: number; page: number; article_category_id: number | string; search_relations?: string }) {
-            return useMyFetch(`${apiUrl}/article/list`, { method: "get", query: { ...params } });
+            return useMyFetch(`${apiUrl}/article/paginate`, { method: "get", query: { ...params } });
         },
         /**
          * 取得文章詳情
