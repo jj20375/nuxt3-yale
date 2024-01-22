@@ -172,7 +172,7 @@
                                     <span>{{ item.memoText }}</span>
                                     <template v-if="item.memoUrl">
                                       <NuxtLink :to="item.memoUrl">
-                                        <span class="text-blue-500 ml-2 underline cursor-pointer underline-offset-2 hover:no-underline">{{ item.memoUrlText }}</span>
+                                        <span class="text-blue-500 ml-1 underline cursor-pointer underline-offset-2 hover:no-underline">{{ item.memoUrlText }}</span>
                                       </NuxtLink>
                                     </template>
                                   </div>
@@ -410,7 +410,7 @@ const formDatas = ref<any>({
         {
             prop: "model",
             label: "報修型號",
-            placeholder: "請輸入購買日期或安裝日期",
+            placeholder: "請選擇型號",
             style: "select"
         },
         {

@@ -80,23 +80,23 @@
                                     <div v-for="index in item.space" :key="index"></div>
                                 </template>
                             </template>
-                        </div>
-                        <div class="col-span-2">
-                            <div class="bg-gray-50 px-4 py-3">
-                                <ul class="list-disc pl-4">
-                                    <li class="text-[15px]">指定區域將會額外收費1000~1500元，請參考<span >收費標準</span></li>
-                                </ul>
+                            <div class="col-span-2">
+                                <div class="bg-gray-50 px-4 py-3">
+                                    <ul class="list-disc pl-4">
+                                        <li class="text-[15px]">指定區域將會額外收費1000~1500元，請參考<span class="text-blue-500 ml-1 underline cursor-pointer underline-offset-2 hover:no-underline">收費標準</span></li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div class="w-3/4 mt-[40px] p-[60px] pt-[50px] bg-white mx-auto rounded-[24px] border-[1px] border-gray-200">
-                        <h3 class="text-[24px] font-bold mb-6">報修商品資訊</h3>
+                        <h3 class="text-[24px] font-bold mb-6">商品安裝相關</h3>
                         <div class="grid grid-cols-2 gap-6">
                             <template
-                                v-for="(item, index) in formDatas.productDatas"
+                                v-for="(item, index) in formDatas.installDatas"
                                 :key="index"
                             >
-                                <div v-if="item?.type !== 'inline'" :class="item.span ? `col-span-${item.span}` : ''">
+                                <div :class="item.span ? `col-span-${item.span}` : ''">
                                     <el-form-item :prop="item.prop" :label="item.label">
                                         <el-input v-if="item.style === 'input'" :type="item.type" :show-password="item.showPassword" :disabled="item.disabled"
                                                   :placeholder="item.placeholder" v-model="form[item.prop]"></el-input>
@@ -131,64 +131,108 @@
                                                         :placeholder="item.placeholder"
                                                         popper-class="date-box"
                                         />
+                                        <FileUpload
+                                            v-else-if="item.style === 'file'"
+                                            :prop="item.prop"
+                                            @tempPath="handlefile"
+                                        />
+                                        <el-checkbox-group v-else-if="item.style === 'checkbox'" v-model="form[item.prop]">
+                                            <el-checkbox v-for="checkbox in item.checkboxData" :key="checkbox.label" :label="checkbox.value">{{checkbox.label}}
+                                            </el-checkbox>
+                                        </el-checkbox-group>
                                     </el-form-item>
-                                </div>
-                                <div
-                                    v-else
-                                    class="flex flex-1"
-                                    :class="item.span ? `col-span-${item.span}` : ''"
-                                >
-                                    <div
-                                        v-for="(item2, index2) in item.datas"
-                                        class="flex-1"
-                                        :key="index2"
-                                        :class="item.datas.length - 1 === index2 ? '' : 'mr-[30px]'"
-                                    >
-                                        <el-form-item :prop="item2.prop" :label="item2.label">
-                                            <el-input v-if="item2.style === 'input'" :type="item2?.type" :show-password="item2.showPassword" :disabled="item2.disabled"
-                                                      :placeholder="item2.placeholder" v-model="form[item2.prop]"></el-input>
-                                            <el-select
-                                                v-if="item2.style === 'select'"
-                                                class="w-full"
-                                                v-model="form[item2.prop]"
-                                                :placeholder="item2.placeholder"
-                                                @change="item2.function ? item2.function(form) : null"
-                                            >
-                                                <el-option
-                                                    v-for="(option, optionIndex) in item2.options"
-                                                    :key="optionIndex"
-                                                    :label="option.label"
-                                                    :value="option.value"
-                                                ></el-option>
-                                            </el-select>
-                                        </el-form-item>
-                                    </div>
                                 </div>
                                 <template v-if="item.space">
                                     <div v-for="index in item.space" :key="index"></div>
                                 </template>
+                                <template v-if="item.memoText || item.memoUrl">
+                                    <div :class="item.span ? `col-span-${item.span}` : ''">
+                                        <span>{{ item.memoText }}</span>
+                                        <template v-if="item.memoUrl">
+                                            <NuxtLink :to="item.memoUrl">
+                                                <span class="text-blue-500 ml-1 underline cursor-pointer underline-offset-2 hover:no-underline">{{ item.memoUrlText }}</span>
+                                            </NuxtLink>
+                                        </template>
+                                    </div>
+                                </template>
                             </template>
                             <div class="col-span-2">
-                                <div class="text-[15px] underline cursor-pointer underline-offset-2 hover:no-underline">
-                                    點我查看序號位置範例
-                                </div>
-                            </div>
-                            <div class="col-span-2">
-                                <div class="bg-gray-50 px-4 py-3">
+                                <div class="bg-gray-50 px-4 py-3 leading-7">
                                     <ul class="list-disc pl-4">
                                         <li class="text-[15px]">請預填，後續將派專人與您聯繫</li>
+                                        <li class="text-[15px]">安裝過程中會有敲打、電鑽挖孔噪音，請先確認大樓社區能否假日施工，謝謝。</li>
                                     </ul>
                                 </div>
                             </div>
-                            <el-form-item class="col-span-2" prop="description" label="狀況說明">
-                                <el-input  v-model="form.description" type="textarea" resize="none" :rows="5"></el-input>
-                            </el-form-item>
+                        </div>
+                    </div>
+                    <div class="w-3/4 mt-[40px] p-[60px] pt-[50px] bg-white mx-auto rounded-[24px] border-[1px] border-gray-200">
+                        <h3 class="text-[24px] font-bold mb-6">廠商資訊</h3>
+                        <div class="grid grid-cols-2 gap-6">
+                            <template
+                                v-for="(item, index) in formDatas.firmDatas"
+                                :key="index"
+                            >
+                                <div :class="item.span ? `col-span-${item.span}` : ''">
+                                    <el-form-item :prop="item.prop" :label="item.label">
+                                        <el-input v-if="item.style === 'input'" :type="item.type" :show-password="item.showPassword" :disabled="item.disabled"
+                                                  :placeholder="item.placeholder" v-model="form[item.prop]"></el-input>
+                                    </el-form-item>
+                                </div>
+                                <template v-if="item.space">
+                                    <div v-for="index in item.space" :key="index"></div>
+                                </template>
+                                <template v-if="item.memoText || item.memoUrl">
+                                    <div :class="item.span ? `col-span-${item.span}` : ''">
+                                        <span>{{ item.memoText }}</span>
+                                        <template v-if="item.memoUrl">
+                                            <NuxtLink :to="item.memoUrl">
+                                                <span class="text-blue-500 ml-1 underline cursor-pointer underline-offset-2 hover:no-underline">{{ item.memoUrlText }}</span>
+                                            </NuxtLink>
+                                        </template>
+                                    </div>
+                                </template>
+                            </template>
+                        </div>
+                    </div>
+                    <div class="w-3/4 mt-[40px] p-[60px] pt-[50px] bg-white mx-auto rounded-[24px] border-[1px] border-gray-200">
+                        <h3 class="text-[24px] font-bold mb-6">上傳照片</h3>
+                        <div class="grid gap-6">
+                            <template
+                                v-for="(item, index) in formDatas.updateDatas"
+                                :key="index"
+                            >
+                                <div :class="item.span ? `col-span-${item.span}` : ''">
+                                    <el-form-item :prop="item.prop">
+                                        <label
+                                            class="block w-full text-[15px] text-gray-800"
+                                        >
+                                            {{ item.label }} <span class="text-red-500">*</span>
+                                        </label>
+                                        <div class="flex gap-4 w-full mt-2 mb-4">
+                                            <div class="flex gap-1 items-center underline cursor-pointer underline-offset-2 hover:no-underline">
+                                                <NuxtImg
+                                                    class="w-4 h-fit aspect-square object-cover"
+                                                    src="/img/repair/repair-doc-icon.svg"
+                                                />
+                                                電子鎖安裝照片範例說明</div>
+                                            <div class="flex gap-1 items-center underline cursor-pointer underline-offset-2 hover:no-underline">
+                                                <NuxtImg
+                                                    class="w-4 h-fit aspect-square object-cover"
+                                                    src="/img/repair/repair-doc-icon.svg"
+                                                />
+                                                保險箱安裝照片範例說明</div>
+                                        </div>
+                                        <FileUpload
+                                            v-if="item.style === 'file'"
+                                            :prop="item.prop"
+                                            @tempPath="handlefile"
+                                        />
+                                    </el-form-item>
+                                </div>
+                            </template>
                             <div class="col-span-2">
-                                <div class="text-[15px] leading-[32px]">圖片上傳<span class="ml-[2px] text-red-500">*</span></div>
-                                <ContactWebFileUpload/>
-                            </div>
-                            <div class="col-span-2">
-                                <div class="bg-gray-50 px-4 py-3">
+                                <div class="bg-gray-50 px-4 py-3 leading-7">
                                     <ul class="list-disc pl-4">
                                         <li class="text-[15px]">請注意：如因門扇特殊 或需要額外使用其他安裝配件、耗材，將由專人報價收費。</li>
                                     </ul>
@@ -217,6 +261,7 @@ import { validateTWMobileNumber } from "~/service/validator";
 import { useInitializationStore } from "~/store/initializationStore";
 import ContactWebFileUpload from "~/views/template1/ContactService/ContactWe/components/ContactWebFileUpload.vue";
 import GoogleReCaptchaV2 from "~/components/GoogleRecaptchaV2.vue";
+import FileUpload from "~/views/template1/ContactService/ContactWe/components/ContactWebFileUpload.vue";
 
 const { $api } = useNuxtApp();
 
@@ -262,6 +307,29 @@ const form = ref<any>({
     zip3: "",
     address: "",
 });
+
+const placeOptions = ref<any>([
+    { value: 1, label: "PChome" },
+    { value: 2, label: "MOMO" },
+    { value: 3, label: "蝦皮" },
+    { value: 4, label: "官方網站" },
+    { value: 5, label: "好市多" },
+    { value: 6, label: "鎖店" },
+    { value: 7, label: "全國電子代理商" },
+    { value: 8, label: "經銷商/其他" },
+]);
+
+const seriesRadios = ref<any>([
+    { value: 1, label: "電子門鎖" },
+    { value: 2, label: "電子保險箱" },
+]);
+
+const timeOptions = ref<any>([
+    { value: 1, label: "平日時段 (週一~週五) 早上" },
+    { value: 2, label: "平日時段 (週一~週五) 下午" },
+    { value: 3, label: "假日時段 (六、日) 早上" },
+    { value: 4, label: "假日時段 (六、日) 下午" },
+]);
 
 const formDatas = ref<any>({
     applyDatas: [
@@ -341,48 +409,70 @@ const formDatas = ref<any>({
             span: 2,
         },
     ],
-    customerDatas:[
+    installDatas: [
         {
-            prop: "customerName",
-            label: "客戶名稱",
-            placeholder: "",
-            style: "input",
+            prop: "place",
+            label: "購買通路",
+            placeholder: "請選擇",
+            style: "select",
+            options: placeOptions,
         },
         {
-            prop: "customerPhone",
-            label: "聯絡電話",
+            prop: "series",
+            label: "系列選擇",
             placeholder: "",
-            style: "input",
+            style: "radio",
+            radioData: seriesRadios
         },
         {
-            prop: "customerAddress",
-            label: "安裝或出貨地址",
-            placeholder: "",
+            prop: "model",
+            label: "安裝型號",
+            placeholder: "請選擇安裝型號",
+            style: "select"
+        },
+        {
+            prop: "quantity",
+            label: "報修數量",
+            placeholder: "請輸入數量",
+            style: "input"
+        },
+        {
+            prop: "serial",
+            label: "產品序號(請收到門鎖後再預約)",
+            placeholder: "請輸入產品序號，共11碼英文+數字",
             style: "input",
             span: 2,
+            memoText: "序號位置：外盒開蓋地處有條碼貼紙",
+            memoUrl: {
+                name: "news-slug",
+                params: { slug: "slug" },
+            },
+            memoUrlText: "點我查看序號位置範例",
         },
         {
-            prop: "memo",
-            label: "備註",
-            placeholder: "",
-            style: "input",
-            span: 2,
-        },
+            prop: "time",
+            label: "維修時段",
+            style: "checkbox",
+            checkboxData: timeOptions,
+        }
+    ],
+    firmDatas: [
         {
-            prop: "building",
-            label: "建案名稱",
-            placeholder: "",
+            prop: "firmName",
+            label: "如果您是廠商、代理商，請填寫您的大名、電話、公司名稱",
+            placeholder: "例：灝翔有限公司/王小姐/02-2555-6666",
             style: "input",
             span: 2,
         },
     ],
-    serialDatas: Array.from({ length: 16 }, (v, i) => ({
-        prop: `serial${i + 1}`,
-        label: "序號",
-        placeholder: "",
-        style: "input",
-        span: 1,
-    })),
+    updateDatas: [
+        {
+            prop: "update",
+            label: "請參考【安裝照片範例說明】，並上傳照片共 3~5 張",
+            style: "file",
+            span: 2,
+        },
+    ]
 });
 
 const rules = ref<any>({
@@ -422,5 +512,10 @@ const rules = ref<any>({
         }
     ],
 });
+
+function handlefile(tempPath: any, prop: string) {
+    form.value[prop] = tempPath;
+    formRefDom.value.validateField("photo");
+}
 
 </script>
