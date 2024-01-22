@@ -509,14 +509,14 @@ const rules = ref<any>({
   serial: [
     {
       required: true,
-      message: "請輸入報修數量",
+      message: "請輸入產品序號",
       trigger: "blur"
     }
   ],
   quantity: [
     {
       required: true,
-      message: "請輸入序號",
+      message: "請輸入報修數量",
       trigger: "blur"
     }
   ],

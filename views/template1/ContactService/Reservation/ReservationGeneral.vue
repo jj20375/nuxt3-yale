@@ -210,13 +210,13 @@
                                             {{ item.label }} <span class="text-red-500">*</span>
                                         </label>
                                         <div class="flex gap-4 w-full mt-2 mb-4">
-                                            <div class="flex gap-1 items-center underline cursor-pointer underline-offset-2 hover:no-underline">
+                                            <div class="flex gap-1 items-center underline cursor-pointer underline-offset-2 hover:no-underline" @click="handleLocker">
                                                 <NuxtImg
                                                     class="w-4 h-fit aspect-square object-cover"
                                                     src="/img/repair/repair-doc-icon.svg"
                                                 />
                                                 電子鎖安裝照片範例說明</div>
-                                            <div class="flex gap-1 items-center underline cursor-pointer underline-offset-2 hover:no-underline">
+                                            <div class="flex gap-1 items-center underline cursor-pointer underline-offset-2 hover:no-underline" @click="handleCoffer">
                                                 <NuxtImg
                                                     class="w-4 h-fit aspect-square object-cover"
                                                     src="/img/repair/repair-doc-icon.svg"
@@ -252,6 +252,36 @@
             </div>
         </template>
     </BannerLayout>
+    <client-only>
+        <el-dialog
+            class="custom-dialog max-h-[600px]"
+            close-on-click-modal
+            lock-scroll
+            show-close
+            :width="600"
+            center
+            align-center
+            append-to-body
+            v-model="dialogLocker"
+        >
+            <h3 class="text-[24px] font-bold text-gray-800 mb-[30px]">電子鎖安裝照片範例說明</h3>
+            <div class="text-gray-800 edit-section" v-html="lockerData"></div>
+        </el-dialog>
+        <el-dialog
+            class="custom-dialog max-h-[600px]"
+            close-on-click-modal
+            lock-scroll
+            show-close
+            :width="600"
+            center
+            align-center
+            append-to-body
+            v-model="dialogCoffer"
+        >
+          <h3 class="text-[24px] font-bold text-gray-800 mb-[30px]">保險箱安裝照片範例說明</h3>
+          <div class="text-gray-800 edit-section" v-html="cofferData"></div>
+        </el-dialog>
+    </client-only>
 </template>
 
 <script setup lang="ts">
@@ -262,6 +292,8 @@ import { useInitializationStore } from "~/store/initializationStore";
 import ContactWebFileUpload from "~/views/template1/ContactService/ContactWe/components/ContactWebFileUpload.vue";
 import GoogleReCaptchaV2 from "~/components/GoogleRecaptchaV2.vue";
 import FileUpload from "~/views/template1/ContactService/ContactWe/components/ContactWebFileUpload.vue";
+import ProductDialog from "~/views/template1/components/ProductDialog.vue";
+import CustomProductDailogCarousel from "~/views/template1/CustomProduct/components/CustomProductDailogCarousel.vue";
 
 const { $api } = useNuxtApp();
 
@@ -306,6 +338,14 @@ const form = ref<any>({
     location: "",
     zip3: "",
     address: "",
+    place: "",
+    series: "",
+    model: "",
+    quantity: "",
+    serial: "",
+    time: [],
+    firmName: "",
+    photo: "",
 });
 
 const placeOptions = ref<any>([
@@ -566,6 +606,26 @@ function handlefile(tempPath: any, prop: string) {
     form.value[prop] = tempPath;
     formRefDom.value.validateField("photo");
 }
+
+// 電子鎖安裝照片彈窗
+const dialogLocker = ref(false);
+
+const handleLocker = () => {
+  dialogLocker.value = true;
+};
+
+// 電子鎖彈窗資料
+const lockerData = "<div>範例如圖</div><ol><li>門室外(全)</li><li>門室內(全景)</li><li>門鎖正面(長度尺寸)</li><li>門鎖側面(量門厚)</li></ol>"
+
+// 保險箱安裝照片彈窗
+const dialogCoffer = ref(false);
+
+const handleCoffer = () => {
+  dialogCoffer.value = true;
+};
+
+// 保險箱彈窗資料
+const cofferData = "<div>範例如圖</div><ol><li>門室外(全)</li><li>門室內(全景)</li><li>門鎖正面(長度尺寸)</li><li>門鎖側面(量門厚)</li></ol>"
 
 // async function onSubmit() {
 //   formRefDom.value.validate(async (valid: any) => {

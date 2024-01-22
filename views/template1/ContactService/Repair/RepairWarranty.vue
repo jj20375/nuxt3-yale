@@ -345,20 +345,6 @@ const rules = ref<any>({
             trigger: "blur"
         }
     ],
-    memo: [
-        {
-            required: true,
-            message: "請輸入備註",
-            trigger: "blur"
-        }
-    ],
-    building: [
-        {
-            required: true,
-            message: "請輸入建案名稱",
-            trigger: "blur"
-        }
-    ],
     serial1: [
         {
             required: true,

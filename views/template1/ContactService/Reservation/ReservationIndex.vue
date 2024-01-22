@@ -44,7 +44,7 @@
                                 </button>
                             </NuxtLink>
                         </div>
-                        <NuxtLink :to="{ name: 'reservation-warranty-slug', params: { slug: '一般安裝' } }">
+                        <NuxtLink :to="{ name: 'reservation-guard-slug', params: { slug: '一般安裝' } }">
                             <button
                                 class="px-[38px] w-[385px] h-[100px] rounded-[20px] text-center bg-gray-100 hover:bg-yellow-600 duration-500 transit flex items-center justify-center">
                                 <div class="mr-[20px]">
