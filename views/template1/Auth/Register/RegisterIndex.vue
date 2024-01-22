@@ -11,97 +11,72 @@
                     require-asterisk-position="right"
                 >
                     <div class="grid grid-cols-2 gap-6">
-                        <el-form-item
-                            prop="name"
-                            label="會員姓名"
+                        <template
+                            v-for="(item, index) in formDatas"
+                            :key="index"
                         >
-                            <el-input v-model="form.name"></el-input>
-                        </el-form-item>
-                        <!--  佔位用  -->
-                        <div></div>
-                        <el-form-item
-                            prop="email"
-                            label="電子信箱"
-                        >
-                            <el-input v-model="form.email"></el-input>
-                        </el-form-item>
-                        <!--  佔位用  -->
-                        <div></div>
-                        <el-form-item
-                            prop="cellphone"
-                            label="聯絡電話"
-                        >
-                            <el-input
-                                v-model="form.cellphone"
-                                placeholder="例：0911-222-222"
-                            ></el-input>
-                        </el-form-item>
-                        <el-form-item
-                            prop="telephone"
-                            label="市話"
-                        >
-                            <el-input
-                                v-model="form.telephone"
-                                placeholder="例：02-1222-2222"
-                            ></el-input>
-                        </el-form-item>
-                        <el-form-item prop="birthday">
-                            <div class="w-full el-form-item">
-                                <div class="el-form-item__label">生日<span class="ml-[2px] text-red-500">*</span></div>
-                                <el-date-picker
-                                    v-model="form.birthday"
-                                    type="date"
-                                    valueFormat="YYYY-MM-DD"
-                                    placeholder="請點選生日"
-                                    popper-class="date-box"
-                                />
-                            </div>
-                        </el-form-item>
-                        <!--  佔位用  -->
-                        <div></div>
-                        <el-form-item
-                            prop="gender"
-                            label="稱謂"
-                        >
-                            <el-radio-group v-model="form.gender">
-                                <el-radio
-                                    v-for="(option, index) in genderRadios"
-                                    :key="index"
-                                    :label="option.value"
-                                    size="large"
-                                    >{{ option.label }}</el-radio
-                                >
-                            </el-radio-group>
-                        </el-form-item>
-                        <!--  佔位用  -->
-                        <div></div>
-                        <div class="col-span-2">
-                            <div class="grid grid-cols-3 gap-6">
-                                <div
-                                    v-for="(item, index) in formDatas"
-                                    :key="index"
-                                >
-                                    <el-form-item
-                                        :prop="item.prop"
-                                        :label="item.label"
+                            <div v-if="item?.type !== 'inline'" :class="item.span ? `col-span-${item.span}` : ''">
+                                <el-form-item :prop="item.prop" :label="item.label">
+                                    <el-input v-if="item.style === 'input'" :type="item.type" :show-password="item.showPassword" :disabled="item.disabled"
+                                              :placeholder="item.placeholder" v-model="form[item.prop]"></el-input>
+                                    <el-radio-group v-else-if="item.style === 'radio'" v-model="form[item.prop]">
+                                    <el-radio
+                                        v-for="(option, radio_index) in item.radioData"
+                                        :key="radio_index"
+                                        :label="option.value"
+                                        size="large"
+                                        >{{ option.label }}
+                                        </el-radio
+                                        >
+                                    </el-radio-group>
+                                    <el-date-picker v-else-if="item.style === 'datepicker'"
+                                                    v-model="form[item.prop]"
+                                                    type="date"
+                                                    valueFormat="YYYY-MM-DD"
+                                                    :placeholder="item.placeholder"
+                                                    popper-class="date-box"
+                                    />
+
+                                    <el-select
+                                        v-if="item.style === 'select'"
+                                        class="w-full"
+                                        v-model="form[item.prop]"
+                                        :placeholder="item.placeholder"
+                                        @change="item.function ? item.function(form) : null"
                                     >
-                                        <el-input
-                                            v-if="item.style === 'input'"
-                                            :type="item.type"
-                                            :disabled="item.disabled"
-                                            :placeholder="item.placeholder"
-                                            v-model="form[item.prop]"
-                                        ></el-input>
+                                        <el-option
+                                            v-for="(option, optionIndex) in item.options"
+                                            :key="optionIndex"
+                                            :label="option.label"
+                                            :value="option.value"
+                                        ></el-option>
+                                    </el-select>
+                                </el-form-item>
+                            </div>
+                            <div
+                                v-else
+                                class="flex flex-1"
+                                :class="item.span ? `col-span-${item.span}` : ''"
+                            >
+                                <div
+                                    v-for="(item2, index2) in item.datas"
+                                    class="flex-1"
+                                    :key="index2"
+                                    :class="item.datas.length - 1 === index2 ? '' : 'mr-[30px]'"
+                                >
+                                    <el-form-item :prop="item2.prop" :label="item2.label">
+                                        <el-input v-if="item2.style === 'input'" :type="item2?.type" :show-password="item2.showPassword" :disabled="item2.disabled"
+                                                  :placeholder="item2.placeholder" v-model="form[item2.prop]"></el-input>
                                         <el-select
-                                            v-if="item.style === 'select'"
+                                            v-if="item2.style === 'select'"
                                             class="w-full"
-                                            v-model="form[item.prop]"
-                                            :placeholder="item.placeholder"
-                                            @change="item.function ? item.function(form) : null"
+                                            v-model="form[item2.prop]"
+                                            :placeholder="item2.placeholder"
+                                            @change="item2.function ? item2.function(form) : null"
                                         >
                                             <el-option
-                                                v-for="(option, index) in item.options"
-                                                :key="index"
+                                                v-for="(option, optionIndex) in item2.options"
+                                                :key="optionIndex"
                                                 :label="option.label"
                                                 :value="option.value"
                                             ></el-option>
@@ -109,38 +84,10 @@
                                     </el-form-item>
                                 </div>
                             </div>
-                        </div>
-                        <el-form-item
-                            class="col-span-2"
-                            prop="address"
-                            label="詳細地址"
-                        >
-                            <el-input v-model="form.address"></el-input>
-                        </el-form-item>
-                        <el-form-item
-                            prop="password"
-                            label="密碼"
-                        >
-                            <el-input
-                                v-model="form.password"
-                                showPassword
-                                type="password"
-                            ></el-input>
-                        </el-form-item>
-                        <!--  佔位用  -->
-                        <div></div>
-                        <el-form-item
-                            prop="confirmPassword"
-                            label="確認密碼"
-                        >
-                            <el-input
-                                v-model="form.confirmPassword"
-                                showPassword
-                                type="password"
-                            ></el-input>
-                        </el-form-item>
-                        <!--  佔位用  -->
-                        <div></div>
+                            <template v-if="item.space">
+                                <div v-for="index in item.space" :key="index"></div>
+                            </template>
+                        </template>
                         <el-form-item
                             class="!mb-0"
                             prop="agree"
@@ -208,6 +155,11 @@ async function getCity() {
 
 const formRefDom = ref<any>();
 
+const genderRadios = ref<any>([
+  { value: "male", label: "先生" },
+  { value: "female", label: "女士" },
+]);
+
 const form = ref<any>({
     name: "",
     email: "",
@@ -225,55 +177,118 @@ const form = ref<any>({
 
 const formDatas = ref<any>([
     {
-        prop: "city",
-        label: "縣市",
-        placeholder: "請選擇",
-        options: initializationStore.cityData,
-        type: "inline",
-        style: "select",
-        function: (e: any) => {
-            console.log(e);
-            e.location = "";
-            e.zip3 = "";
-
-            const cityDataFilter = initializationStore.cityAreaData.find((item: { name: any }) => item.name === e.city);
-            console.log("cityDataFilter.district", cityDataFilter);
-            const addressProps = formDatas.value.find((item: { prop: string }) => item.prop === "location");
-            addressProps.options = cityDataFilter.district.map((item: { name: any; zip3: any }) => {
-                return {
-                    label: item.name,
-                    value: item.name,
-                    zip3: item.zip3,
-                };
-            });
-        },
-    },
-    {
-        prop: "location",
-        label: "地區",
-        placeholder: "請選擇",
-        options: [],
-        type: "inline",
-        style: "select",
-        function: (e: any) => {
-            console.log(e);
-            const addressProps = formDatas.value.find((item: { prop: string }) => item.prop === "location");
-            e.zip3 = addressProps.options.find((item: { value: any }) => item.value === e.location).zip3;
-        },
-    },
-    {
-        prop: "zip3",
-        label: "郵遞區號",
+        prop: "name",
+        label: "會員姓名",
         placeholder: "",
-        type: "inline",
         style: "input",
-        disabled: true,
+        space: 1,
     },
-]);
+    {
+        prop: "email",
+        label: "電子信箱",
+        placeholder: "",
+        style: "input",
+        space: 1,
+    },
+    {
+        prop: "cellphone",
+        label: "聯絡電話",
+        placeholder: "例：0911-222-222",
+        style: "input"
+    },
+    {
+        prop: "telephone",
+        label: "市話",
+        placeholder: "例：02-1222-2222",
+        style: "input"
+    },
+    {
+        prop: "birthday",
+        label: "生日",
+        placeholder: "請選擇日期",
+        style: "datepicker",
+    },
+    {
+        prop: "gender",
+        label: "稱謂",
+        placeholder: "請選擇日期",
+        style: "radio",
+        radioData: genderRadios,
+    },
+    {
+        prop: "address",
+        type: "inline",
+        span: 2,
+        datas: [
 
-const genderRadios = ref<any>([
-    { value: "male", label: "先生" },
-    { value: "female", label: "女士" },
+              {
+                  prop: "city",
+                  label: "縣市",
+                  placeholder: "請選擇",
+                  options: initializationStore.cityData,
+                  type: "inline",
+                  style: "select",
+                  function: (e: any) => {
+                      console.log(e);
+                      e.location = "";
+                      e.zip3 = "";
+
+                      const cityDataFilter = initializationStore.cityAreaData.find((item: { name: any }) => item.name === e.city);
+                      console.log("cityDataFilter.district", cityDataFilter);
+                      const addressProps = formDatas.value.find((item: { prop: string; }) => item.prop === 'address')
+                      addressProps.datas.find((item: { prop: string }) => item.prop === 'location').options = cityDataFilter.district.map((item: { name: any; zip3: any }) => {
+                          return {
+                              label: item.name,
+                              value: item.name,
+                              zip3: item.zip3,
+                          };
+                      });
+                  },
+              },
+              {
+                  prop: "location",
+                  label: "地區",
+                  placeholder: "請選擇",
+                  options: [],
+                  type: "inline",
+                  style: "select",
+                  function: (e: any) => {
+                      console.log(e);
+                      const addressProps = formDatas.value.find((item: { prop: string; }) => item.prop === 'address')
+                      e.zip3 = addressProps.datas.find((item: { prop: string }) => item.prop === 'location').options.find((item: { value: any }) => item.value === e.location).zip3;
+                  },
+              },
+              {
+                  prop: "zip3",
+                  label: "郵遞區號",
+                  placeholder: "",
+                  type: "inline",
+                  style: "input",
+                  disabled: true,
+              },
+        ]
+    },
+    {
+        prop: "address",
+        label: "詳細地址",
+        placeholder: "",
+        style: "input",
+        span: 2,
+    },
+    {
+        prop: "password",
+        label: "密碼",
+        placeholder: "",
+        style: "input",
+        space: 1,
+    },
+    {
+        prop: "confirmPassword",
+        label: "確認密碼",
+        placeholder: "",
+        style: "input",
+        space: 1,
+    },
 ]);
 
 const rules = ref<any>({
@@ -308,6 +323,13 @@ const rules = ref<any>({
             validator: validateTWMobileNumber,
             trigger: ["change", "blur"],
             message: "格式不正確",
+        },
+    ],
+    birthday: [
+        {
+          required: true,
+          message: "請輸入生日",
+          trigger: "blur",
         },
     ],
     gender: [
