@@ -21,7 +21,7 @@
                         {{ detailData.description }}
                     </div>
                     <div class="py-[30px] flex items-center">
-                        <NuxtLink :to="{ name: 'product-compare-slug', params: { slug: '主鎖比較' }, query: { category: 'id1', tag: 'id1' } }">
+                        <NuxtLink :to="{ name: 'product-compare-slug', params: { slug: '主鎖比較' }, query: { compareId: detailData.product_type_id, productId: detailData.product_id } }">
                             <div class="mr-[20px] cursor-pointer">規格比較</div>
                         </NuxtLink>
                         <font-awesome-icon
@@ -126,7 +126,7 @@
                 </ul>
                 <div
                     v-if="currentTab === 0"
-                    class="min-h-[500px] text-center flex items-center justify-center"
+                    class="min-h-[500px] text-center flex items-center justify-center flex mt-[60px]"
                 >
                     <div v-html="detailData.content"></div>
                 </div>
@@ -262,12 +262,14 @@ async function getData() {
         rows.other_images.forEach((item: any, index: number) => {
             photos.value.push({ id: index + 1, imgSrc: item });
         });
+        detailData.value.product_id = rows.id;
         detailData.value.model = rows.model;
         detailData.value.name = rows.name;
         detailData.value.description = rows.description;
         detailData.value.content = rows.content;
         detailData.value.attributes = rows.attributes;
         detailData.value.documents = rows.documents;
+        detailData.value.product_type_id = rows.product_type_id;
 
         breadcrumbs.value.push({
             name: route.name,

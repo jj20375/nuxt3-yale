@@ -31,6 +31,15 @@ export default () => {
             });
         },
         /**
+         * 取得商品列表
+         */
+        ProductLisAPI<T>(params: { product_type_id: string }) {
+            return useMyFetch<ProductListAPIInterface>(`${apiUrl}/product`, {
+                method: "get",
+                query: { ...params },
+            });
+        },
+        /**
          * 取得商品詳細資料
          */
         ProductDetailAPI(params: { productId: any }) {
