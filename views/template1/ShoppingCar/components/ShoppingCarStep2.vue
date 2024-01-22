@@ -38,9 +38,18 @@
                     size="large"
                 >
                     <div class="text-[14px] text-gray-800"></div>
-                    <span class="font-normal">我已閱讀並同意</span><span class="mx-2 font-medium underline YaleSolisW-Bd">網站服務條款</span>
+                    <span class="font-normal">我已閱讀並同意</span
+                    ><span class="mx-2 font-medium underline YaleSolisW-Bd">
+                        <NuxtLink
+                            :to="{
+                                name: 'other-terms-slug',
+                                params: { slug: '耶魯網站服務條款' },
+                            }"
+                            >網站服務條款</NuxtLink
+                        ></span
+                    >
                     <span class="font-normal">與</span>
-                    <span class="mx-2 font-medium underline YaleSolisW-Bd">隱私權政策</span>
+                    <span class="mx-2 font-medium underline YaleSolisW-Bd"> <NuxtLink :to="{ name: 'other-privacy-slug', params: { slug: '耶魯隱私權政權' } }"> 隱私權政策 </NuxtLink></span>
                 </el-checkbox>
             </div>
         </div>

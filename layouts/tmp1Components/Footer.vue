@@ -35,7 +35,7 @@
                             >
                                 <a
                                     :href="icon.url"
-                                    class="hover:text-yellow-400 transition-all"
+                                    class="transition-all hover:text-yellow-400"
                                     ><font-awesome-icon :icon="['fab', icon.iconName]" />
                                 </a>
                             </li>
@@ -52,7 +52,9 @@
                             :key="index"
                             class="mr-5"
                         >
-                            <a :href="caluse.url">{{ caluse.text }}</a>
+                            <NuxtLink :to="caluse.url">
+                                {{ caluse.text }}
+                            </NuxtLink>
                         </li>
                     </ul>
                 </aside>
@@ -236,8 +238,20 @@ const contact = ref({
 const copyright = {
     text: `${initializationData.value.site.site_name} © Copyright All Rights Reserved. Powerd by 可思科技-網站架設`,
     caluses: [
-        { text: "隱私權政策", url: "" },
-        { text: "網站服務條款", url: "" },
+        {
+            text: "隱私權政策",
+            url: {
+                name: "other-privacy-slug",
+                params: { slug: "耶魯隱私權政權" },
+            },
+        },
+        {
+            text: "網站服務條款",
+            url: {
+                name: "other-terms-slug",
+                params: { slug: "耶魯網站服務條款" },
+            },
+        },
     ],
 };
 </script>
