@@ -10,11 +10,11 @@
                     <p class="text-[16px] mt-[13px]">請選擇產品進行規格比較</p>
                     <div class="mt-[20px]">
                         <button
+                            @click.prevent="router.push({ name: 'product-compare-difference-slug', params: { slug: '耶魯電子鎖-主鎖規格比較' }, query: { compareId: route.query.compareId } })"
                             :disabled="selectProducts.length === 0"
                             class="py-[11px] px-[31px] disabled:bg-gray-100 disabled:border-gray-300 disabled:text-gray-400 disabled:cursor-not-allowed bg-yellow-600 rounded-full text-gray-800 text-[16px]"
                         >
                             <span
-                                @click="router.push({ name: 'product-compare-difference-slug', params: { slug: '耶魯電子鎖-主鎖規格比較' }, query: { category: 'id1', tag: 'id1' } })"
                                 v-if="selectProducts.length > 0"
                                 >查看規格</span
                             >
@@ -50,6 +50,7 @@ import { ProductCompareList } from "~/views/template1/Product/interface/Product.
 import { useProductCompareStore } from "~/store/productCompareStore";
 
 const { $api } = useNuxtApp();
+const route = useRoute();
 const productCompareStore = useProductCompareStore();
 
 const router = useRouter();
@@ -126,24 +127,17 @@ function selectProduct(val: {id: string | number; model: any; name: any; shape: 
 // 商品列表
 const datas = ref<ProductCompareList[]>([]);
 
-const pagination = ref<any>({
-    page: 1,
-    pageSize: 12,
-    total: 0,
-});
 
 /**
  * 取得商品列表
  */
- async function getList(params: { per_page: number; page: number }) {
+ async function getList(params: { product_type_id: string }) {
     try {
         productCompareStore.compareStore = []
-        const { data } = await $api().ProductListPaginateAPI<ProductListAPIInterface>(params);
+        const { data } = await $api().ProductLisAPI<ProductListAPIInterface>(params);
         datas.value = [];
-        console.log("home sample api => ", data.value);
 
-        const rows = (data.value as any).data.rows;
-        const meta = (data.value as any).data.meta;
+        const rows = (data.value as any).data;
 
         rows.forEach((item: { id: any; model: any; name: any; shape: any; price: any; market_price: any; main_image: any; attributes: any }) => {
             datas.value.push({
@@ -156,7 +150,9 @@ const pagination = ref<any>({
             });
         });
 
-        pagination.value.total = meta.total;
+        if(route.query.productId) {
+            selectProduct(datas.value.find(item => item.id == route.query.productId))
+        }
     } catch (err) {
         console.log("HomeSampleAPI => ", err);
     }
@@ -166,7 +162,7 @@ const pagination = ref<any>({
  * 初始化
  */
 async function init() {
-    await getList({ per_page: pagination.value.pageSize, page: 1 });
+    await getList({ product_type_id: route.query.compareId });
 }
 
 onMounted(async () => {

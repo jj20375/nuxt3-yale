@@ -48,11 +48,12 @@
                             class="w-full"
                             @change="categoryChange(index)"
                             v-model="form.category[index]"
+                            placeholder="選擇分類"
                             clearable
                         >
                             <el-option
-                                v-for="(item, index) in shapeArr"
-                                :key="index"
+                                v-for="(item, key) in shapeArr"
+                                :key="key"
                                 :label="item"
                                 :value="item"
                             ></el-option>
@@ -66,11 +67,12 @@
                             class="w-full"
                             @change="modelChange(index)"
                             v-model="form.style[index]"
+                            placeholder="選擇型號"
                             clearable
                         >
                             <el-option
-                                v-for="(item, index) in modelArr"
-                                :key="index"
+                                v-for="(item, key) in styleArr[index]"
+                                :key="key"
                                 :label="item"
                                 :value="item"
                             ></el-option>
@@ -115,8 +117,8 @@
                             clearable
                         >
                             <el-option
-                                v-for="(item, index) in shapeArr"
-                                :key="index"
+                                v-for="(item, key) in shapeArr"
+                                :key="key"
                                 :label="item"
                                 :value="item"
                             ></el-option>
@@ -134,8 +136,8 @@
                             clearable
                         >
                             <el-option
-                                v-for="(item, index) in modelArr"
-                                :key="index"
+                                v-for="(item, key) in styleArr[index + products.length]"
+                                :key="key"
                                 :label="item"
                                 :value="item"
                             ></el-option>
@@ -158,6 +160,7 @@ import type { ProductListAPIInterface, ProductCompareList, ProductInterface } fr
 import { useProductCompareStore } from "~/store/productCompareStore";
 
 const { $api } = useNuxtApp();
+const route = useRoute();
 const productCompareStore = useProductCompareStore();
 
 interface Props {
@@ -165,6 +168,9 @@ interface Props {
     products: ProductInterface[];
     // 欄位名稱
     columns: ProductInterface;
+    // 產品列表
+    datas: ProductCompareList;
+    shapeArr: string | number[];
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -237,6 +243,15 @@ const props = withDefaults(defineProps<Props>(), {
         power: "電源",
         warranty: "保固",
     },
+    datas: {
+        id: 0,
+        model: '',
+        name: '',
+        shape: '',
+        main_image: '',
+        attributes: '',
+    },
+    shapeArr: [],
 });
 
 const form = ref<any>({
@@ -244,51 +259,26 @@ const form = ref<any>({
     style: [],
 });
 
-// 商品列表
-const datas = ref<ProductCompareList[]>([]);
-const shapeArr = ref<string | number[]>([]);
-const modelArr = ref<string | number[]>([]);
+const styleArr = computed(() => {
+    const arr: any[] = []
+    const defaultArr = props.datas.map((item: { model: string }) => item.model);
+    form.value.category.forEach((item, index) => {
+        if (item && item !== '') {
+            const filterArr = props.datas.filter((data: { shape: string }) => data.shape === item).map((item: { model: string }) => item.model);
+            console.log(filterArr)
+            arr[index] = filterArr
+        } else {
+            arr[index] = defaultArr
+        }
+    })
+    return arr
+})
 
-const pagination = ref<any>({
-    page: 1,
-    pageSize: 12,
-    total: 0,
-});
-
-/**
- * 取得商品列表
- */
-async function getList(params: { per_page: number; page: number }) {
-    try {
-        const { data } = await $api().ProductListPaginateAPI<ProductListAPIInterface>(params);
-        datas.value = [];
-        console.log("home sample api => ", data.value);
-
-        const rows = (data.value as any).data.rows;
-        const meta = (data.value as any).data.meta;
-
-        rows.forEach((item: { id: any; model: any; name: any; shape: any; main_image: any; attributes: any }) => {
-            datas.value.push({
-                id: item.id,
-                model: item.model,
-                name: item.name,
-                shape: item.shape,
-                main_image: item.main_image,
-                attributes: item.attributes,
-            });
-        });
-
-        shapeArr.value = rows.map((item: { shape: string }) => item.shape);
-        modelArr.value = rows.map((item: { model: string }) => item.model);
-
-        pagination.value.total = meta.total;
-    } catch (err) {
-        console.log("HomeSampleAPI => ", err);
-    }
-}
+const emit = defineEmits(["categorySelect"]);
 
 function categoryChange(index: string | number) {
     form.value.style[index] = null;
+    emit("categorySelect", index);
     deleteCompareProduct(index);
 }
 
@@ -306,10 +296,10 @@ function deleteCompareProduct(index: string | number) {
 function modelChange(index: string | number) {
     console.log(form.value.style[index]);
     if (form.value.style[index]) {
-        form.value.category[index] = datas.value.find((data) => data.model === form.value.style[index]).shape;
+        form.value.category[index] = props.datas.find((data) => data.model === form.value.style[index]).shape;
         productCompareStore.compareStore = [];
         form.value.style.forEach((item: string) => {
-            productCompareStore.compareStore.push(datas.value.find((data) => data.model === item));
+            productCompareStore.compareStore.push(props.datas.find((data) => data.model === item));
         });
     } else {
         form.value.category[index] = null;
@@ -320,20 +310,13 @@ function modelChange(index: string | number) {
 /**
  * 初始化
  */
-async function init() {
-    await getList({ per_page: pagination.value.pageSize, page: 1 });
-}
+
 
 onMounted(() => {
     console.log("props.products => ", props.products);
     props.products.forEach((item, index) => {
         form.value.category.push(item.category);
         form.value.style.push(item.style);
-    });
-    nextTick(async () => {
-        if (process.client) {
-            await init();
-        }
     });
 });
 </script>
