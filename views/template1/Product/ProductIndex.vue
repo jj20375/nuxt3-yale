@@ -53,7 +53,10 @@
                     v-for="(product, index) in datas"
                     :key="index"
                 >
-                    <ProductCard :product="product" />
+                    <ProductCard
+                        :breadcrumbs="breadcrumbs"
+                        :product="product"
+                    />
                 </div>
             </div>
         </template>
@@ -90,23 +93,6 @@ const breadcrumbs = ref([
         name: "index",
         text: "首頁",
     },
-    {
-        name: "product-slug",
-        text: "產品資訊",
-        params: { slug: "耶魯產品資訊" },
-    },
-    {
-        name: "product-slug",
-        text: "電子鎖",
-        params: { slug: "耶魯產品資訊-電子鎖" },
-        query: { category: "id1" },
-    },
-    {
-        name: "product-slug",
-        text: "主鎖",
-        params: { slug: "耶魯產品資訊-電子鎖-主鎖" },
-        query: { category: "id1", tag: "id1" },
-    },
 ]);
 
 const sidebar = ref<any>([]);
@@ -126,6 +112,20 @@ async function getType() {
         rows.forEach((item: { name: any; id: any; children: any }) => {
             console.log(item);
             const children: { text: any; categoryId: any; url: { name: string; query: { category: any; tag: any }; params: { slug: any } } }[] = [];
+            if (item.id == route.query.category) {
+                breadcrumbs.value.push({
+                    name: "product-slug",
+                    text: "產品資訊",
+                    params: { slug: "耶魯產品資訊" },
+                    query: { category: route.query.category, tag: route.query.tag },
+                });
+                breadcrumbs.value.push({
+                    name: route.name,
+                    text: item.name,
+                    params: { slug: item.name },
+                    query: { category: route.query.category, tag: route.query.tag },
+                });
+            }
             item.children.forEach((child: { name: any; id: any }) => {
                 children.push({
                     text: child.name,
@@ -136,6 +136,14 @@ async function getType() {
                         params: { slug: `產品資訊-${item.name}-${child.name}` },
                     },
                 });
+                if (child.id == route.query.tag) {
+                    breadcrumbs.value.push({
+                        name: route.name,
+                        text: child.name,
+                        params: { slug: child.name },
+                        query: { category: route.query.category, tag: route.query.tag },
+                    });
+                }
             });
             sidebar.value.push({
                 text: item.name,

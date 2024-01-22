@@ -208,7 +208,7 @@ const menus = ref<any>({
                 text: "電子鎖",
                 url: {
                     params: { slug: "耶魯產品資訊-電子鎖-主鎖" },
-                    query: { category: "id1", tag: "id1" },
+                    query: { category: "1", tag: "2" },
                     name: "product-slug",
                 },
             },
@@ -218,7 +218,7 @@ const menus = ref<any>({
                 text: "保險箱",
                 url: {
                     params: { slug: "耶魯產品資訊-保險箱-防火系列" },
-                    query: { category: "id2", tag: "id1" },
+                    query: { category: "2", tag: "5" },
                     name: "product-slug",
                 },
             },
@@ -228,7 +228,7 @@ const menus = ref<any>({
                 text: "電子鎖配件",
                 url: {
                     params: { slug: "耶魯產品資訊-電子鎖配件" },
-                    query: { category: "id3" },
+                    query: { category: "3" },
                     name: "product-slug",
                 },
             },
@@ -304,37 +304,36 @@ const menus = ref<any>({
 
 // 右側 icon
 const rightIcons = computed(() => {
-        let userUrl = {
-            name: "auth-panel-slug",
+    let userUrl = {
+        name: "auth-panel-slug",
+        params: {
+            slug: "會員中心",
+        },
+    };
+    if (!isAuth.value) {
+        userUrl = {
+            name: "auth-login-slug",
             params: {
-                slug: "會員中心",
+                slug: "會員登入",
             },
-        }
-        if (!isAuth.value) {
-            userUrl = {
-                name: "auth-login-slug",
-                params: {
-                    slug: "會員登入",
-                },
-            }
-        }
-        return  [
-            {
-                imgSrc: "/img/icons/user.svg",
-                url: userUrl
-            },
-            {
-                imgSrc: "/img/icons/shop-card.svg",
-                url: {
-                    name: "shopping-car-slug",
-                    params: {
-                        slug: "耶魯電子鎖購物車",
-                    },
-                },
-            },
-        ]
+        };
     }
-);
+    return [
+        {
+            imgSrc: "/img/icons/user.svg",
+            url: userUrl,
+        },
+        {
+            imgSrc: "/img/icons/shop-card.svg",
+            url: {
+                name: "shopping-car-slug",
+                params: {
+                    slug: "耶魯電子鎖購物車",
+                },
+            },
+        },
+    ];
+});
 
 // 預設選擇的 menu 判斷是否呈現 submenu
 const currentMenu = ref<null | string>(null);

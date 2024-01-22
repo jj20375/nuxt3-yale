@@ -28,7 +28,7 @@
                         </button>
                     </div>
                     <div>
-                        <NuxtLink :to="{ name: 'product-detail-slug', params: { slug: product.name }, query: { id: product.id } }">
+                        <NuxtLink :to="{ name: 'product-detail-slug', params: { slug: product.name }, query: { id: product.id, breadcrumbs: JSON.stringify(breadcrumbs) } }">
                             <button class="z-10 mt-2 gray-btn btn-sm">了解更多</button>
                         </NuxtLink>
                     </div>
@@ -52,11 +52,25 @@ import AddToShoppingCarDialog from "~/views/template1/components/AddToShoppingCa
 const { $utils } = useNuxtApp();
 interface Props {
     product: { id: number; [key: string]: any };
+    // 麵包屑
+    breadcrumbs: { name: string; text: string; params?: { slug: string } }[];
 }
 const props: Props = withDefaults(defineProps<Props>(), {
     product: {
         id: 1,
     },
+    // 麵包屑
+    breadcrumbs: [
+        {
+            name: "index",
+            text: "首頁",
+        },
+        {
+            name: "product-slug",
+            text: "產品資訊",
+            params: { slug: "耶魯產品資訊" },
+        },
+    ],
 });
 
 const { $shoppingCarService } = useNuxtApp();

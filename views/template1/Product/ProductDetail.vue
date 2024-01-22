@@ -147,7 +147,12 @@
                     </div>
                     <div class="flex-1">
                         <h5 class="text-[18px] font-medium YaleSolisW-Bd text-gray-800 mb-[20px]">檔案下載</h5>
-                        <div class="cursor-pointer" @click.prevent="downloadFile(item)" v-for="(item, index) in detailData.documents" :key="index">
+                        <div
+                            class="cursor-pointer"
+                            @click.prevent="downloadFile(item)"
+                            v-for="(item, index) in detailData.documents"
+                            :key="index"
+                        >
                             <el-icon><Document /></el-icon>
                             {{ item.name }}
                         </div>
@@ -173,35 +178,7 @@ import ProductSameCarousel from "~/views/template1/Product/components/ProductSam
 const { $api, $utils } = useNuxtApp();
 const route = useRoute();
 
-const breadcrumbs = ref([
-    {
-        name: "index",
-        text: "首頁",
-    },
-    {
-        name: "product-slug",
-        text: "產品資訊",
-        params: { slug: "耶魯產品資訊" },
-    },
-    {
-        name: "product-slug",
-        text: "電子鎖",
-        params: { slug: "耶魯產品資訊-電子鎖" },
-        query: { category: "id1" },
-    },
-    {
-        name: "product-slug",
-        text: "主鎖",
-        params: { slug: "耶魯產品資訊-電子鎖-主鎖" },
-        query: { category: "id1", tag: "id1" },
-    },
-    {
-        name: "product-slug",
-        text: "YDM 4109A",
-        params: { slug: "耶魯產品資訊-電子鎖-主鎖-YDM 4109A" },
-        query: { category: "id1", tag: "id1" },
-    },
-]);
+const breadcrumbs = ref(JSON.parse(route.query.breadcrumbs));
 
 const photos = ref<{ id: string | number; imgSrc: string }[]>([]);
 const detailData = ref<any>({});
@@ -215,7 +192,7 @@ function optionChange(opt: { id: any }, index: number) {
     optionChangePrice();
 }
 
-const productDetailCarouselRef = ref<any>(null)
+const productDetailCarouselRef = ref<any>(null);
 
 function optionChangePrice(init: boolean = false) {
     let key = "option";
@@ -227,13 +204,12 @@ function optionChangePrice(init: boolean = false) {
     detailData.value.stock = detailData.value.productVariations[key].stock;
     if (!init) {
         if (detailData.value.productVariations[key].image) {
-            const index = photos.value.findIndex(item => item.imgSrc === detailData.value.productVariations[key].image)
-            console.log(index, detailData.value.productVariations[key].image)
-            productDetailCarouselRef.value.slideTo(index + 1)
+            const index = photos.value.findIndex((item) => item.imgSrc === detailData.value.productVariations[key].image);
+            console.log(index, detailData.value.productVariations[key].image);
+            productDetailCarouselRef.value.slideTo(index + 1);
         }
     }
 }
-
 
 // 折扣文案
 const salesDetail = ref(["[活動] 滿 NT$1,700 折 NT$560", "[活動] 歡慶十週年，滿 NT$1,700 打 8 折", "[活動] 全站滿千免運"]);
@@ -293,6 +269,13 @@ async function getData() {
         detailData.value.attributes = rows.attributes;
         detailData.value.documents = rows.documents;
 
+        breadcrumbs.value.push({
+            name: route.name,
+            text: rows.model,
+            params: { slug: `${rows.model}-${rows.name}` },
+            query: { id: route.query.id },
+        });
+
         if (rows.is_single_variation === 0) {
             productOptions.value = [];
             detailData.value.productVariations = rows.productVariations;
@@ -327,9 +310,9 @@ async function getData() {
 }
 
 // 下載檔案
-function downloadFile (file: { url: string|URL|undefined; }) {
-    console.log(file)
-    window.open(file.url, "_blank")
+function downloadFile(file: { url: string | URL | undefined }) {
+    console.log(file);
+    window.open(file.url, "_blank");
 }
 
 /**
