@@ -17,7 +17,7 @@ export default () => {
          * 取得首頁裝修實績
          */
         HomeSampleAPI(params: { per_page: number; page: number }) {
-            return useMyFetch(`${apiUrl}/article/list`, { method: "get", query: { "articleCategory|type": "renovation", search_fields: "articleCategory|type:has", ...params } });
+            return useMyFetch(`${apiUrl}/article/list`, { method: "get", query: { "search_relations": "articleCategory.type:renovation", ...params } });
         },
         /**
          * 取得直營門市

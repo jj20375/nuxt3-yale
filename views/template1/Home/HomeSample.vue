@@ -200,13 +200,33 @@ async function getList(params: { per_page: number; page: number }) {
 
         const rows = (data.value as any).data.rows;
 
+
+        const breadcrumbs = [
+            {
+                name: "index",
+                text: "首頁",
+            },
+        ];
+
         rows.forEach((item: { article_category_id: any; id: any }) => {
+            breadcrumbs.push({
+                name: "sample-slug",
+                text: "裝修實績",
+                params: { slug: "耶魯裝修實績" },
+                query: { id: item.article_category_id },
+            });
+            breadcrumbs.push({
+                name: "sample-slug",
+                text: sampleSlug(item.article_category_id),
+                params: { slug: "耶魯裝修實績" },
+                query: { id: item.article_category_id },
+            });
             items.value.push({
                 ...item,
                 url: {
                     name: "sample-details-slug",
                     params: { slug: sampleSlug(item.article_category_id) },
-                    query: { id: item.id },
+                    query: { id: item.id, breadcrumbs: JSON.stringify(breadcrumbs) },
                 },
             });
         });
