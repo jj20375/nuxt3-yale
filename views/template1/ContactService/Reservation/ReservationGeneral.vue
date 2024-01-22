@@ -244,7 +244,7 @@
                         </div>
                     </div>
                     <div class="flex justify-center mt-[40px]">
-                        <NuxtLink :to="{ name: 'repair-detail-success-slug', params: { slug: '線上報修成功' } }">
+                        <NuxtLink :to="{ name: 'reservation-success-slug', params: { slug: '安裝預約送出成功' } }">
                             <button class="yellow-btn btn-lg">確認送出</button>
                         </NuxtLink>
                     </div>
@@ -451,7 +451,7 @@ const formDatas = ref<any>({
         },
         {
             prop: "time",
-            label: "維修時段",
+            label: "預約安裝時段",
             style: "checkbox",
             checkboxData: timeOptions,
         }
@@ -467,7 +467,7 @@ const formDatas = ref<any>({
     ],
     updateDatas: [
         {
-            prop: "update",
+            prop: "photo",
             label: "請參考【安裝照片範例說明】，並上傳照片共 3~5 張",
             style: "file",
             span: 2,
@@ -511,6 +511,55 @@ const rules = ref<any>({
             trigger: "blur"
         }
     ],
+    place: [
+        {
+            required: true,
+            message: "請輸入購買通路",
+            trigger: "blur"
+        }
+    ],
+    series: [
+        {
+            required: true,
+            message: "請選擇系列",
+            trigger: "blur"
+        }
+    ],
+    model: [
+        {
+            required: true,
+            message: "請選擇安裝型號",
+            trigger: "blur"
+        }
+    ],
+    quantity: [
+        {
+            required: true,
+            message: "請輸入報修數量",
+            trigger: "blur"
+        }
+    ],
+    serial: [
+        {
+            required: true,
+            message: "請輸入產品序號",
+            trigger: "blur"
+        }
+    ],
+    time: [
+        {
+            required: true,
+            message: "請選擇預約安裝時段",
+            trigger: "blur"
+        }
+    ],
+    photo: [
+        {
+            required: true,
+            message: "請選擇照片",
+            trigger: "blur"
+        }
+    ],
 });
 
 function handlefile(tempPath: any, prop: string) {
@@ -518,4 +567,14 @@ function handlefile(tempPath: any, prop: string) {
     formRefDom.value.validateField("photo");
 }
 
+// async function onSubmit() {
+//   formRefDom.value.validate(async (valid: any) => {
+//     if (!valid) {
+//       ElMessage({
+//         type: "error",
+//         message: `尚有欄位未填`,
+//       });
+//     }
+//   })
+// }
 </script>
