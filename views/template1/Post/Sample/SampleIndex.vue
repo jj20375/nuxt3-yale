@@ -52,7 +52,7 @@ const pagination = ref<any>({
 });
 
 const handlePageChange = (val: any) => {
-    getList({ per_page: pagination.value.pageSize, page: val, article_category_id: route.query.id, "articleCategory|type": "renovation" });
+    getList({ per_page: pagination.value.pageSize, page: val, article_category_id: route.query.id });
 };
 
 /**
@@ -104,8 +104,10 @@ const datas = ref<any>([]);
 /**
  * 取得裝修實績列表
  */
-async function getList(params: { per_page: number; page: number; article_category_id: any; "articleCategory|type": string }) {
+async function getList(params: { per_page: number; page: number; article_category_id: any; search_relations?: string } = { per_page: pagination.value.pageSize, page: 1, article_category_id: 1, search_relations: "articleCategory.type:renovation" }) {
     try {
+        params = { ...params };
+        params["search_relations"] = "articleCategory.type:renovation";
         const { data } = await $api().ArticalListAPI(params);
         datas.value = [];
         console.log("home sample api => ", data.value);
@@ -140,7 +142,7 @@ async function getList(params: { per_page: number; page: number; article_categor
 async function init() {
     await getType();
     console.log("route.query.id", route);
-    await getList({ per_page: pagination.value.pageSize, page: 1, article_category_id: route.query.id, "articleCategory|type": "renovation" });
+    await getList({ per_page: pagination.value.pageSize, page: 1, article_category_id: route.query.id });
 }
 
 onMounted(async () => {

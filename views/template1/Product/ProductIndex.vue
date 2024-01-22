@@ -194,6 +194,11 @@ const sortBy = ref(0);
  */
 async function getList(params: { per_page: number; page: number }) {
     try {
+        params = { ...params };
+        // 搜尋分類參數時 須帶上 搜尋模式 條件
+        params["search_fields"] = "productCategories.product_category_id:in";
+        // 搜尋分類參數 ("主鎖｜輔助鎖" 等等...)
+        params["search_relations"] = "productCategories.product_category_id:" + route.query.tag;
         const { data } = await $api().ProductListPaginateAPI<ProductListAPIInterface>(params);
         datas.value = [];
         console.log("home sample api => ", data.value);
