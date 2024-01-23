@@ -7,13 +7,12 @@
             class="pt-[16px]"
         >
             <NuxtLink
-                v-if="menu.url"
+                v-if="menu.options.length === 0"
                 :to="menu.url"
             >
                 {{ menu.text }}
             </NuxtLink>
             <div
-                v-else
                 class="border-b border-gray-200 py-[16px]"
             >
                 <div
@@ -21,9 +20,16 @@
                     class="flex items-center text-[16px] cursor-pointer font-medium"
                     :class="[index !== 0 ? 'pb-[16px]' : 'pb-[16px]']"
                 >
-                    <h5 class="flex-1">
+                    <!-- <h5 class="flex-1">
                         {{ menu.text }}
-                    </h5>
+                    </h5> -->
+                    <div class="mr-auto">
+                        <NuxtLink :to="menu.url">
+                            <h5>
+                                {{ menu.text }}
+                            </h5>
+                        </NuxtLink>
+                    </div>
                     <span :class="openSubMenu === menu.categoryId ? 'transition duration-500 rotate-90' : ''"><font-awesome-icon :icon="['fas', 'chevron-right']" /></span>
                 </div>
                 <ul v-show="openSubMenu === menu.categoryId">
@@ -103,4 +109,10 @@ const route = useRoute();
 const currentActive = ref(route.query.category);
 const currentActiveTag = ref(route.query.tag);
 const openSubMenu = ref(route.query.category);
+
+defineExpose({
+    currentActive,
+    currentActiveTag,
+    openSubMenu,
+})
 </script>

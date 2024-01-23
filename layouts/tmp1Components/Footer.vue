@@ -103,27 +103,34 @@ initializationData.value.site.stronghold_categories.forEach((item: { id: any; ic
     });
 });
 
+// 產品資訊
+const product_categories: { id: any; imgSrc: any; text: any; url: { params: { slug: any }; query: { tag: any; category: any }; name: string } }[] = [
+    {
+        text: "訂製您的專屬門扇",
+        url: {
+            name: "custom-product-slug",
+            params: { slug: "耶魯訂製門扇" },
+        },
+    },
+];
+
+initializationData.value.site.product_categories.forEach((item: { id: any; menu_image: any; name: any }) => {
+    product_categories.push({
+        id: item.id,
+        imgSrc: item.menu_image,
+        text: item.name,
+        url: {
+            params: { slug: `產品資訊-${item.name}` },
+            query: { category: item.id, tag: item.id },
+            name: "product-slug",
+        },
+    });
+});
+
 const footerDatas = ref({
     footer1: {
         title: "PRODUCTS",
-        menus: [
-            {
-                text: "訂製您的專屬門扇",
-                url: "",
-            },
-            {
-                text: "Yale 電子鎖",
-                url: "",
-            },
-            {
-                text: "保險箱",
-                url: "",
-            },
-            {
-                text: "電子鎖配件",
-                url: "",
-            },
-        ],
+        menus: product_categories
     },
     footer2: {
         title: "STORE",
