@@ -9,15 +9,9 @@
     </nav>
     <div class="container">
       <div class="mt-[60px] mx-auto">
-<!--  TODO 標題後台可改  -->
-        <h1 class="text-center font-bold text-[32px] mb-[40px]">指定地區費用加收說明</h1>
+        <h1 class="text-center font-bold text-[32px] mb-[40px]">{{ pageData.title }}</h1>
         <!--   編輯區區塊  -->
-        <div class="edit-section">
-<!--  TODO 這邊資料是稱畫面用，串完資料後請刪除   -->
-          <NuxtImg class="w-full"
-              src="/img/reservation/charge-table.jpg"
-          />
-        </div>
+        <div class="edit-section" v-html="pageData.content"></div>
       </div>
     </div>
   </section>
@@ -31,10 +25,16 @@ const breadcrumbs = ref([
     text: "首頁",
   },
   {
-    name: "charge-slug",
+    name: "other-charge-slug",
     text: "指定地區費用加收說明",
     params: { slug: "指定地區費用加收說明" },
   },
 ]);
+
+const pageData = {
+    title: "指定地區費用加收說明",
+    content: `<img class="w-full" src="/img/reservation/charge-table.jpg"/>`,
+}
+
 
 </script>

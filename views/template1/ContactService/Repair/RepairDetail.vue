@@ -170,10 +170,8 @@
                                 <template v-if="item.memoText || item.memoUrl">
                                   <div :class="item.span ? `col-span-${item.span}` : ''">
                                     <span>{{ item.memoText }}</span>
-                                    <template v-if="item.memoUrl">
-                                      <NuxtLink :to="item.memoUrl">
-                                        <span class="text-blue-500 ml-1 underline cursor-pointer underline-offset-2 hover:no-underline">{{ item.memoUrlText }}</span>
-                                      </NuxtLink>
+                                    <template v-if="item.memoFunctionText">
+                                        <span @click="item.memoFunction ? item.memoFunction() : null" class="text-blue-500 ml-1 underline cursor-pointer underline-offset-2 hover:no-underline">{{ item.memoFunctionText }}</span>
                                     </template>
                                   </div>
                                 </template>
@@ -209,6 +207,22 @@
             </div>
         </template>
     </BannerLayout>
+    <client-only>
+        <el-dialog
+            class="custom-dialog"
+            close-on-click-modal
+            lock-scroll
+            show-close
+            :width="600"
+            center
+            align-center
+            append-to-body
+            v-model="dialogSerial"
+        >
+            <h3 class="text-[24px] font-bold text-gray-800 mb-[30px]">{{serialData.title}}</h3>
+            <div class="text-gray-800 edit-section" v-html="serialData.content"></div>
+        </el-dialog>
+    </client-only>
 </template>
 
 <script setup lang="ts">
@@ -264,6 +278,9 @@ async function getCity() {
         return { label: item.name, value: item.name };
     });
 }
+
+const dialogSerial = ref(false);
+
 
 const breadcrumbs = ref([
     {
@@ -426,11 +443,10 @@ const formDatas = ref<any>({
             style: "input",
             span: 2,
             memoText: "序號位置：外盒開蓋地處有條碼貼紙",
-            memoUrl: {
-              name: "news-slug",
-              params: { slug: "slug" },
+            memoFunction: (e: any) => {
+                dialogSerial.value = true;
             },
-            memoUrlText: "點我查看序號位置範例",
+            memoFunctionText: "點我查看序號位置範例",
         },
         {
           prop: "photo",
@@ -546,6 +562,12 @@ const rules = ref<any>({
 function handlefile(tempPath: any, prop: string) {
   form.value[prop] = tempPath;
   formRefDom.value.validateField("photo");
+}
+
+// 序號位置彈窗資料
+const serialData = {
+    title: '序號位置範例',
+    content: '<div>範例如圖</div><ol><li>盒子底下</li><li>保固書</li></ol>'
 }
 
 // async function onSubmit() {

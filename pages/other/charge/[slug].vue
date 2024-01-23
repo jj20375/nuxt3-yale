@@ -5,7 +5,7 @@
 </template>
 
 <script setup lang="ts">
-const AsyncComp = defineAsyncComponent(() => import("~/views/template1/Charge/ChargeIndex.vue"));
+const AsyncComp = defineAsyncComponent(() => import("~/views/template1/Other/Charge/ChargeIndex.vue"));
 definePageMeta({
     middleware: [],
 });

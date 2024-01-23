@@ -289,34 +289,34 @@
     </template>
   </BannerLayout>
   <client-only>
-    <el-dialog
-        class="custom-dialog max-h-[600px]"
-        close-on-click-modal
-        lock-scroll
-        show-close
-        :width="600"
-        center
-        align-center
-        append-to-body
-        v-model="dialogLocker"
-    >
-      <h3 class="text-[24px] font-bold text-gray-800 mb-[30px]">電子鎖安裝照片範例說明</h3>
-      <div class="text-gray-800 edit-section" v-html="lockerData"></div>
-    </el-dialog>
-    <el-dialog
-        class="custom-dialog max-h-[600px]"
-        close-on-click-modal
-        lock-scroll
-        show-close
-        :width="600"
-        center
-        align-center
-        append-to-body
-        v-model="dialogCoffer"
-    >
-      <h3 class="text-[24px] font-bold text-gray-800 mb-[30px]">保險箱安裝照片範例說明</h3>
-      <div class="text-gray-800 edit-section" v-html="cofferData"></div>
-    </el-dialog>
+      <el-dialog
+          class="custom-dialog max-h-[600px]"
+          close-on-click-modal
+          lock-scroll
+          show-close
+          :width="600"
+          center
+          align-center
+          append-to-body
+          v-model="dialogLocker"
+      >
+          <h3 class="text-[24px] font-bold text-gray-800 mb-[30px]">{{lockerData.title}}</h3>
+          <div class="text-gray-800 edit-section" v-html="lockerData.content"></div>
+      </el-dialog>
+      <el-dialog
+          class="custom-dialog max-h-[600px]"
+          close-on-click-modal
+          lock-scroll
+          show-close
+          :width="600"
+          center
+          align-center
+          append-to-body
+          v-model="dialogCoffer"
+      >
+          <h3 class="text-[24px] font-bold text-gray-800 mb-[30px]">{{ cofferData.title }}</h3>
+          <div class="text-gray-800 edit-section" v-html="cofferData.content"></div>
+      </el-dialog>
   </client-only>
 </template>
 
@@ -650,7 +650,10 @@ const handleLocker = () => {
 };
 
 // 電子鎖彈窗資料
-const lockerData = "<div>範例如圖</div><ol><li>門室外(全)</li><li>門室內(全景)</li><li>門鎖正面(長度尺寸)</li><li>門鎖側面(量門厚)</li></ol>"
+const lockerData = {
+    title: "電子鎖安裝照片範例說明",
+    content: "<div>範例如圖</div><ol><li>門室外(全)</li><li>門室內(全景)</li><li>門鎖正面(長度尺寸)</li><li>門鎖側面(量門厚)</li></ol>"
+}
 
 // 保險箱安裝照片彈窗
 const dialogCoffer = ref(false);
@@ -660,7 +663,10 @@ const handleCoffer = () => {
 };
 
 // 保險箱彈窗資料
-const cofferData = "<div>範例如圖</div><ol><li>門室外(全)</li><li>門室內(全景)</li><li>門鎖正面(長度尺寸)</li><li>門鎖側面(量門厚)</li></ol>"
+const cofferData = {
+    title: "保險箱安裝照片範例說明",
+    content: "<div>範例如圖</div><ol><li>門室外(全)</li><li>門室內(全景)</li><li>門鎖正面(長度尺寸)</li><li>門鎖側面(量門厚)</li></ol>"
+}
 
 // async function onSubmit() {
 //   formRefDom.value.validate(async (valid: any) => {

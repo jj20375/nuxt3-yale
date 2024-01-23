@@ -83,7 +83,7 @@
                             <div class="col-span-2">
                                 <div class="bg-gray-50 px-4 py-3">
                                     <ul class="list-disc pl-4">
-                                      <li class="text-[15px]">指定區域將會額外收費1000~1500元，請參考<NuxtLink target="_blank" :to="{ name: 'charge-slug', params: { slug: '指定地區費用加收說明' } }"><span class="text-blue-500 ml-1 underline cursor-pointer underline-offset-2 hover:no-underline">收費標準</span></NuxtLink></li>
+                                      <li class="text-[15px]">指定區域將會額外收費1000~1500元，請參考<NuxtLink target="_blank" :to="{ name: 'other-charge-slug', params: { slug: '指定地區費用加收說明' } }"><span class="text-blue-500 ml-1 underline cursor-pointer underline-offset-2 hover:no-underline">收費標準</span></NuxtLink></li>
                                     </ul>
                                 </div>
                             </div>
@@ -264,8 +264,8 @@
             append-to-body
             v-model="dialogLocker"
         >
-            <h3 class="text-[24px] font-bold text-gray-800 mb-[30px]">電子鎖安裝照片範例說明</h3>
-            <div class="text-gray-800 edit-section" v-html="lockerData"></div>
+            <h3 class="text-[24px] font-bold text-gray-800 mb-[30px]">{{lockerData.title}}</h3>
+            <div class="text-gray-800 edit-section" v-html="lockerData.content"></div>
         </el-dialog>
         <el-dialog
             class="custom-dialog max-h-[600px]"
@@ -278,8 +278,8 @@
             append-to-body
             v-model="dialogCoffer"
         >
-          <h3 class="text-[24px] font-bold text-gray-800 mb-[30px]">保險箱安裝照片範例說明</h3>
-          <div class="text-gray-800 edit-section" v-html="cofferData"></div>
+          <h3 class="text-[24px] font-bold text-gray-800 mb-[30px]">{{ cofferData.title }}</h3>
+          <div class="text-gray-800 edit-section" v-html="cofferData.content"></div>
         </el-dialog>
     </client-only>
 </template>
@@ -610,7 +610,10 @@ const handleLocker = () => {
 };
 
 // 電子鎖彈窗資料
-const lockerData = "<div>範例如圖</div><ol><li>門室外(全)</li><li>門室內(全景)</li><li>門鎖正面(長度尺寸)</li><li>門鎖側面(量門厚)</li></ol>"
+const lockerData = {
+    title: "電子鎖安裝照片範例說明",
+    content: "<div>範例如圖</div><ol><li>門室外(全)</li><li>門室內(全景)</li><li>門鎖正面(長度尺寸)</li><li>門鎖側面(量門厚)</li></ol>"
+}
 
 // 保險箱安裝照片彈窗
 const dialogCoffer = ref(false);
@@ -620,7 +623,10 @@ const handleCoffer = () => {
 };
 
 // 保險箱彈窗資料
-const cofferData = "<div>範例如圖</div><ol><li>門室外(全)</li><li>門室內(全景)</li><li>門鎖正面(長度尺寸)</li><li>門鎖側面(量門厚)</li></ol>"
+const cofferData = {
+    title: "保險箱安裝照片範例說明",
+    content: "<div>範例如圖</div><ol><li>門室外(全)</li><li>門室內(全景)</li><li>門鎖正面(長度尺寸)</li><li>門鎖側面(量門厚)</li></ol>"
+}
 
 // async function onSubmit() {
 //   formRefDom.value.validate(async (valid: any) => {
