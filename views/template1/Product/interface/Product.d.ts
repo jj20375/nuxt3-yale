@@ -77,3 +77,18 @@ export interface ProductList {
     // 其他僕片
     other_images?: string[];
 }
+
+// 比較產品列表內容
+export interface ProductCompareList {
+    id: number;
+    // 產品名稱
+    name: string;
+    // 型號
+    model: string;
+    // 主要圖片
+    main_image: string;
+    // 屬性
+    attributes: any;
+    // 款式
+    shape: string;
+}

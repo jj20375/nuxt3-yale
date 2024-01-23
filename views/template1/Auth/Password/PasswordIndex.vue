@@ -7,9 +7,9 @@
                 </div>
             </div>
         </nav>
-        <div class="container">
+        <div class="container overflow-auto">
             <div class="w-[620px] mt-[60px] py-[60px] px-[60px] bg-white mx-auto rounded-[24px] border-[1px] border-gray-200">
-                <h3 class="font-medium text-[28px] text-center mb-8">變更密碼</h3>
+                <h3 class="font-medium text-[28px] mb-8">變更密碼</h3>
                 <el-form
                     class="custom-form"
                     ref="formRefDom"
@@ -93,6 +93,8 @@ import { ElMessage, ElLoading } from "element-plus";
 const { $api } = useNuxtApp();
 const router = useRouter();
 
+const route = useRoute();
+
 const breadcrumbs = ref([
     {
         name: "index",
@@ -141,6 +143,7 @@ const formDatas = ref<any>([
         showPassword: true,
     },
 ]);
+
 
 const rules = ref<any>({
     oldPassword: [

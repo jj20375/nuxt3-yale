@@ -7,10 +7,12 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
     useState<boolean>("loading", () => true);
 
     const token = Cookies.get("token");
-    console.log("user middleware");
+    console.log("user middleware not work", token);
 
     if (!$utils().isEmpty(token)) {
-        // await userStore.getUserProfile();
+        console.log("user middleware work", token);
+
+        await userStore.getUserProfile();
     }
     return;
 });

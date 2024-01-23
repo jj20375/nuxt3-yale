@@ -161,34 +161,6 @@ function scrollInit() {
     }
 }
 
-const sampleType = ref<any>([]);
-/**
- * 取得裝修實績分類
- */
-async function getType() {
-    try {
-        const { data } = await $api().ArticalTypeAPI({ type: "renovation" });
-        sampleType.value = [];
-        console.log("home sampleType api => ", data.value);
-
-        const rows = (data.value as any).data;
-
-        rows.forEach((item: { name: any; id: any }) => {
-            sampleType.value.push({
-                text: item.name,
-                id: item.id,
-            });
-        });
-    } catch (err) {
-        console.log("HomeSampleAPI => ", err);
-    }
-}
-
-function sampleSlug(val: any) {
-    const data = sampleType.value.find((item: { id: any }) => item.id === val);
-    return data?.text;
-}
-
 /**
  * 取得裝修實績列表
  */
@@ -200,13 +172,33 @@ async function getList(params: { per_page: number; page: number }) {
 
         const rows = (data.value as any).data.rows;
 
-        rows.forEach((item: { article_category_id: any; id: any }) => {
+
+        const breadcrumbs = [
+            {
+                name: "index",
+                text: "首頁",
+            },
+        ];
+
+        rows.forEach((item: { articleCategory: any; id: any }) => {
+            breadcrumbs.push({
+                name: "sample-slug",
+                text: "裝修實績",
+                params: { slug: "耶魯裝修實績" },
+                query: { id: item.articleCategory.id },
+            });
+            breadcrumbs.push({
+                name: "sample-slug",
+                text: item.articleCategory.name,
+                params: { slug: "耶魯裝修實績" },
+                query: { id: item.articleCategory.id },
+            });
             items.value.push({
                 ...item,
                 url: {
                     name: "sample-details-slug",
-                    params: { slug: sampleSlug(item.article_category_id) },
-                    query: { id: item.id },
+                    params: { slug: item.articleCategory.name, },
+                    query: { id: item.id, breadcrumbs: JSON.stringify(breadcrumbs) },
                 },
             });
         });
@@ -219,7 +211,6 @@ async function getList(params: { per_page: number; page: number }) {
  * 初始化
  */
 async function init() {
-    await getType();
     await getList({ per_page: 10, page: 1 });
 }
 // await init();

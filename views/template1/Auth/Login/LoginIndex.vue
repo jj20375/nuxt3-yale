@@ -55,18 +55,30 @@
                     <span class="relative px-3 text-gray-400 text-[15px] bg-white z-[2]">使用其他帳號登入</span>
                 </div>
                 <div class="flex gap-[30px] justify-center mt-4">
-                    <NuxtImg
-                        class="object-cover w-10 transition-all cursor-pointer aspect-square duration-400 hover:opacity-80 hover:transition-all hover:duration-400"
-                        src="/img/icons/medias/google.svg"
-                    />
-                    <NuxtImg
-                        class="object-cover w-10 transition-all cursor-pointer aspect-square duration-400 hover:opacity-80 hover:transition-all hover:duration-400"
-                        src="/img/icons/medias/line.svg"
-                    />
-                    <NuxtImg
-                        class="object-cover w-10 transition-all cursor-pointer aspect-square duration-400 hover:opacity-80 hover:transition-all hover:duration-400"
-                        src="/img/icons/medias/facebook.svg"
-                    />
+                    <NuxtLink
+                        :to="{ name: 'auth-login-sso-slug', params: { slug: '快速登入' }}"
+                    >
+                        <NuxtImg
+                            class="w-10 aspect-1/1 object-cover cursor-pointer transition-all duration-400 hover:opacity-80 hover:transition-all hover:duration-400"
+                            src="/img/icons/medias/google.svg"
+                        />
+                    </NuxtLink>
+                    <NuxtLink
+                        :to="{ name: 'auth-login-sso-slug', params: { slug: '快速登入' }}"
+                    >
+                        <NuxtImg
+                            class="w-10 aspect-1/1 object-cover cursor-pointer transition-all duration-400 hover:opacity-80 hover:transition-all hover:duration-400"
+                            src="/img/icons/medias/line.svg"
+                        />
+                    </NuxtLink>
+                    <NuxtLink
+                        :to="{ name: 'auth-login-sso-slug', params: { slug: '快速登入' }}"
+                    >
+                        <NuxtImg
+                            class="w-10 aspect-1/1 object-cover cursor-pointer transition-all duration-400 hover:opacity-80 hover:transition-all hover:duration-400"
+                            src="/img/icons/medias/facebook.svg"
+                        />
+                    </NuxtLink>
                 </div>
                 <div class="flex justify-center gap-3 mt-[30px]">
                     <div class="text-gray-400 text-[15px]">還不是會員?</div>

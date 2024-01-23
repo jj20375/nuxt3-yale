@@ -6,6 +6,7 @@
         <div class="container mt-[60px]">
             <div class="grid grid-cols-3">
                 <ProductDetailCarousel
+                    ref="productDetailCarouselRef"
                     class="pr-[72px] col-span-2"
                     :photos="photos"
                 />
@@ -20,7 +21,7 @@
                         {{ detailData.description }}
                     </div>
                     <div class="py-[30px] flex items-center">
-                        <NuxtLink :to="{ name: 'product-compare-slug', params: { slug: '主鎖比較' }, query: { category: 'id1', tag: 'id1' } }">
+                        <NuxtLink :to="{ name: 'product-compare-slug', params: { slug: '主鎖比較' }, query: { compareId: detailData.product_type_id, productId: detailData.product_id } }">
                             <div class="mr-[20px] cursor-pointer">規格比較</div>
                         </NuxtLink>
                         <font-awesome-icon
@@ -125,15 +126,37 @@
                 </ul>
                 <div
                     v-if="currentTab === 0"
-                    class="min-h-[500px] text-center flex items-center justify-center"
+                    class="min-h-[500px] text-center flex items-center justify-center flex mt-[60px]"
                 >
                     <div v-html="detailData.content"></div>
                 </div>
                 <div
                     v-if="currentTab === 1"
-                    class="min-h-[500px] text-center flex items-center justify-center"
+                    class="min-h-[500px] flex mt-[60px]"
                 >
-                    產品規格內容
+                    <div class="flex-1 mr-[80px]">
+                        <h5 class="text-[18px] font-medium YaleSolisW-Bd text-gray-800 mb-[20px]">產品規格內容</h5>
+                        <div
+                            v-for="(attr, key) in detailData.attributes"
+                            :key="key"
+                            class="flex border-b border-gray-100 text-[15px] py-[8px]"
+                        >
+                            <div class="flex-1">{{ key }}</div>
+                            <div class="flex-1">{{ attr }}</div>
+                        </div>
+                    </div>
+                    <div class="flex-1">
+                        <h5 class="text-[18px] font-medium YaleSolisW-Bd text-gray-800 mb-[20px]">檔案下載</h5>
+                        <div
+                            class="cursor-pointer"
+                            @click.prevent="downloadFile(item)"
+                            v-for="(item, index) in detailData.documents"
+                            :key="index"
+                        >
+                            <el-icon><Document /></el-icon>
+                            {{ item.name }}
+                        </div>
+                    </div>
                 </div>
             </div>
             <!-- <div>
@@ -155,47 +178,23 @@ import ProductSameCarousel from "~/views/template1/Product/components/ProductSam
 const { $api, $utils } = useNuxtApp();
 const route = useRoute();
 
-const breadcrumbs = ref([
-    {
-        name: "index",
-        text: "首頁",
-    },
-    {
-        name: "product-slug",
-        text: "產品資訊",
-        params: { slug: "耶魯產品資訊" },
-    },
-    {
-        name: "product-slug",
-        text: "電子鎖",
-        params: { slug: "耶魯產品資訊-電子鎖" },
-        query: { category: "id1" },
-    },
-    {
-        name: "product-slug",
-        text: "主鎖",
-        params: { slug: "耶魯產品資訊-電子鎖-主鎖" },
-        query: { category: "id1", tag: "id1" },
-    },
-    {
-        name: "product-slug",
-        text: "YDM 4109A",
-        params: { slug: "耶魯產品資訊-電子鎖-主鎖-YDM 4109A" },
-        query: { category: "id1", tag: "id1" },
-    },
-]);
+const breadcrumbs = ref(JSON.parse(route.query.breadcrumbs));
 
 const photos = ref<{ id: string | number; imgSrc: string }[]>([]);
 const detailData = ref<any>({});
 
 const productOptions = ref<any>([]);
+// 預設選中顏色
+const currentColor = ref<any>([]);
 
 function optionChange(opt: { id: any }, index: number) {
     currentColor.value[index] = opt.id;
     optionChangePrice();
 }
 
-function optionChangePrice() {
+const productDetailCarouselRef = ref<any>(null);
+
+function optionChangePrice(init: boolean = false) {
     let key = "option";
     currentColor.value.forEach((item: string) => {
         key += `-${item}`;
@@ -203,13 +202,17 @@ function optionChangePrice() {
     detailData.value.price = detailData.value.productVariations[key].price;
     detailData.value.market_price = detailData.value.productVariations[key].marketPrice;
     detailData.value.stock = detailData.value.productVariations[key].stock;
+    if (!init) {
+        if (detailData.value.productVariations[key].image) {
+            const index = photos.value.findIndex((item) => item.imgSrc === detailData.value.productVariations[key].image);
+            console.log(index, detailData.value.productVariations[key].image);
+            productDetailCarouselRef.value.slideTo(index + 1);
+        }
+    }
 }
 
 // 折扣文案
 const salesDetail = ref(["[活動] 滿 NT$1,700 折 NT$560", "[活動] 歡慶十週年，滿 NT$1,700 打 8 折", "[活動] 全站滿千免運"]);
-
-// 預設選中顏色
-const currentColor = ref<any>([]);
 
 // 數量
 const count = ref(1);
@@ -259,14 +262,24 @@ async function getData() {
         rows.other_images.forEach((item: any, index: number) => {
             photos.value.push({ id: index + 1, imgSrc: item });
         });
+        detailData.value.product_id = rows.id;
         detailData.value.model = rows.model;
         detailData.value.name = rows.name;
         detailData.value.description = rows.description;
         detailData.value.content = rows.content;
         detailData.value.attributes = rows.attributes;
+        detailData.value.documents = rows.documents;
+        detailData.value.product_type_id = rows.product_type_id;
+
+        breadcrumbs.value.push({
+            name: route.name,
+            text: rows.model,
+            params: { slug: `${rows.model}-${rows.name}` },
+            query: { id: route.query.id },
+        });
 
         if (rows.is_single_variation === 0) {
-            productOptions.value = []
+            productOptions.value = [];
             detailData.value.productVariations = rows.productVariations;
             rows.productOptions.forEach((item: { values: any[]; name: any }, index: number) => {
                 const option: {
@@ -287,15 +300,21 @@ async function getData() {
                     options: option,
                 });
             });
-            optionChangePrice();
+            optionChangePrice(true);
         } else {
-            detailData.value.price = rows.price
-            detailData.value.market_price = rows.market_price
-            detailData.value.stock = rows.stock
+            detailData.value.price = rows.price;
+            detailData.value.market_price = rows.market_price;
+            detailData.value.stock = rows.stock;
         }
     } catch (err) {
         console.log("HomeSampleAPI => ", err);
     }
+}
+
+// 下載檔案
+function downloadFile(file: { url: string | URL | undefined }) {
+    console.log(file);
+    window.open(file.url, "_blank");
 }
 
 /**

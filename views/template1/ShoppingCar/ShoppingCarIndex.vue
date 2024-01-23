@@ -29,7 +29,7 @@
             <div class="flex justify-center">
                 <component
                     :is="showComponent"
-                    v-model:step="currentStep"
+                    v-model:currentTab="currentTab"
                     v-model:selectProductIds="selectProductIds"
                 ></component>
                 <div

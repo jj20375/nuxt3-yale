@@ -83,15 +83,15 @@ export const useUserStore = defineStore({
         async logOutUser(userId: string | null) {
             const { $api }: any = useNuxtApp();
             try {
-                const { error } = await $api().LogoutUserAPI();
-                if (error.value !== null) {
-                    console.log("登出失敗 =>", error);
-                    ElMessage({
-                        type: "error",
-                        message: "登出失敗",
-                    });
-                    return;
-                }
+                // const { error } = await $api().LogoutUserAPI();
+                // if (error.value !== null) {
+                //     console.log("登出失敗 =>", error);
+                //     ElMessage({
+                //         type: "error",
+                //         message: "登出失敗",
+                //     });
+                //     return;
+                // }
                 this.removeLoginData(userId);
             } catch (err) {
                 console.log("LogoutUserAPI => ", err);
@@ -101,6 +101,9 @@ export const useUserStore = defineStore({
         removeLoginData(userId: string | null = null) {
             const $config = useRuntimeConfig();
             const router = useRouter();
+            this.setIsAuth(false);
+            this.setUser({});
+            Cookies.remove("token");
             if (process.client) {
                 window.location.href = $config.public.hostURL;
             }

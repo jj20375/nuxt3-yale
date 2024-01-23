@@ -32,7 +32,7 @@
                 </div>
             </div>
             <div class="flex justify-end mr-10 mb-[24px]">
-                <NuxtLink :to="{ name: 'product-compare-slug', params: { slug: '主鎖比較' }, query: { category: 'id1', tag: 'id1' } }">
+                <NuxtLink v-if="productTypeDetail.is_compare === 1" :to="{ name: 'product-compare-slug', params: { slug: '主鎖比較' }, query: { compareId: productTypeDetail.compare_id } }">
                     <button class="border mr-[30px] border-gray-600 w-[100px] text-center rounded-full h-[36px]">規格比較</button>
                 </NuxtLink>
                 <div class="flex items-center">
@@ -53,7 +53,10 @@
                     v-for="(product, index) in datas"
                     :key="index"
                 >
-                    <ProductCard :product="product" />
+                    <ProductCard
+                        :breadcrumbs="breadcrumbs"
+                        :product="product"
+                    />
                 </div>
             </div>
         </template>
@@ -90,23 +93,6 @@ const breadcrumbs = ref([
         name: "index",
         text: "首頁",
     },
-    {
-        name: "product-slug",
-        text: "產品資訊",
-        params: { slug: "耶魯產品資訊" },
-    },
-    {
-        name: "product-slug",
-        text: "電子鎖",
-        params: { slug: "耶魯產品資訊-電子鎖" },
-        query: { category: "id1" },
-    },
-    {
-        name: "product-slug",
-        text: "主鎖",
-        params: { slug: "耶魯產品資訊-電子鎖-主鎖" },
-        query: { category: "id1", tag: "id1" },
-    },
 ]);
 
 const sidebar = ref<any>([]);
@@ -126,6 +112,20 @@ async function getType() {
         rows.forEach((item: { name: any; id: any; children: any }) => {
             console.log(item);
             const children: { text: any; categoryId: any; url: { name: string; query: { category: any; tag: any }; params: { slug: any } } }[] = [];
+            if (item.id == route.query.category) {
+                breadcrumbs.value.push({
+                    name: "product-slug",
+                    text: "產品資訊",
+                    params: { slug: "耶魯產品資訊" },
+                    query: { category: route.query.category, tag: route.query.tag },
+                });
+                breadcrumbs.value.push({
+                    name: route.name,
+                    text: item.name,
+                    params: { slug: item.name },
+                    query: { category: route.query.category, tag: route.query.tag },
+                });
+            }
             item.children.forEach((child: { name: any; id: any }) => {
                 children.push({
                     text: child.name,
@@ -136,6 +136,14 @@ async function getType() {
                         params: { slug: `產品資訊-${item.name}-${child.name}` },
                     },
                 });
+                if (child.id == route.query.tag) {
+                    breadcrumbs.value.push({
+                        name: route.name,
+                        text: child.name,
+                        params: { slug: child.name },
+                        query: { category: route.query.category, tag: route.query.tag },
+                    });
+                }
             });
             sidebar.value.push({
                 text: item.name,
@@ -169,6 +177,8 @@ async function getTypeDetail() {
             media: rows.media,
             description: rows.description,
             name: rows.name,
+            is_compare: rows.is_compare,
+            compare_id: rows.compare_id,
         };
     } catch (err) {
         console.log("HomeSampleAPI => ", err);
@@ -194,6 +204,11 @@ const sortBy = ref(0);
  */
 async function getList(params: { per_page: number; page: number }) {
     try {
+        params = { ...params };
+        // 搜尋分類參數時 須帶上 搜尋模式 條件
+        params["search_fields"] = "productCategories.product_category_id:in";
+        // 搜尋分類參數 ("主鎖｜輔助鎖" 等等...)
+        params["search_relations"] = "productCategories.product_category_id:" + route.query.tag;
         const { data } = await $api().ProductListPaginateAPI<ProductListAPIInterface>(params);
         datas.value = [];
         console.log("home sample api => ", data.value);

@@ -102,6 +102,14 @@ const mainSwiper = ref<any>(null);
 function onSwiper(swiper: any) {
     mainSwiper.value = swiper;
 }
+
+function slideTo (index: any)  {
+    console.log(mainSwiper.value)
+    mainSwiper.value.slideTo(index - 1, 0);
+};
+defineExpose({
+    slideTo
+})
 </script>
 
 <style scoped lang="scss">

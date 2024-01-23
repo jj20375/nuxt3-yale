@@ -36,21 +36,10 @@ const route = useRoute();
 
 const { $api, $utils } = useNuxtApp();
 
-const breadcrumbs = ref([
+const breadcrumbs = ref<any>([
     {
         name: "index",
         text: "首頁",
-    },
-    {
-        name: "news-slug",
-        text: "裝修實績",
-        params: { slug: "耶魯裝修實績" },
-    },
-    {
-        name: "news-slug",
-        text: "電子鎖",
-        params: { slug: "耶魯電子鎖" },
-        query: { id: "id1" },
     },
 ]);
 
@@ -63,7 +52,7 @@ const pagination = ref<any>({
 });
 
 const handlePageChange = (val: any) => {
-    getList({ per_page: pagination.value.pageSize, page: val, article_category_id: route.query.id, "articleCategory|type": "renovation" });
+    getList({ per_page: pagination.value.pageSize, page: val, article_category_id: route.query.id });
 };
 
 /**
@@ -88,6 +77,23 @@ async function getType() {
                 },
             });
         });
+        // 取得最後面的 麵包屑路徑
+        const lastBreadcrumbs = rows.find((item: any) => item.id == route.query.id);
+        // 判斷是否有匹配的 id 來新增 後續的麵包屑 路徑
+        if (lastBreadcrumbs !== undefined) {
+            breadcrumbs.value.push({
+                name: "sample-slug",
+                text: "裝修實績",
+                params: { slug: "耶魯裝修實績" },
+                query: { id: lastBreadcrumbs.id },
+            });
+            breadcrumbs.value.push({
+                name: "sample-slug",
+                text: lastBreadcrumbs.name,
+                params: { slug: "耶魯裝修實績" },
+                query: { id: lastBreadcrumbs.id },
+            });
+        }
     } catch (err) {
         console.log("HomeSampleAPI => ", err);
     }
@@ -98,8 +104,10 @@ const datas = ref<any>([]);
 /**
  * 取得裝修實績列表
  */
-async function getList(params: { per_page: number; page: number; article_category_id: any; "articleCategory|type": string }) {
+async function getList(params: { per_page: number; page: number; article_category_id: any; search_relations?: string } = { per_page: pagination.value.pageSize, page: 1, article_category_id: 1, search_relations: "articleCategory.type:renovation" }) {
     try {
+        params = { ...params };
+        params["search_relations"] = "articleCategory.type:renovation";
         const { data } = await $api().ArticalListAPI(params);
         datas.value = [];
         console.log("home sample api => ", data.value);
@@ -119,7 +127,7 @@ async function getList(params: { per_page: number; page: number; article_categor
                 url: {
                     name: "sample-details-slug",
                     params: { slug: route.params.slug },
-                    query: { id: item.id },
+                    query: { id: item.id, breadcrumbs: JSON.stringify(breadcrumbs.value) },
                 },
             });
         });
@@ -134,7 +142,7 @@ async function getList(params: { per_page: number; page: number; article_categor
 async function init() {
     await getType();
     console.log("route.query.id", route);
-    await getList({ per_page: pagination.value.pageSize, page: 1, article_category_id: route.query.id, "articleCategory|type": "renovation" });
+    await getList({ per_page: pagination.value.pageSize, page: 1, article_category_id: route.query.id });
 }
 
 onMounted(async () => {

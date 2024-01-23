@@ -18,8 +18,8 @@ export function useMyFetch<T>(url: string, opts: any) {
             }
             // const token = useCookie("token");
             const token = Cookies.get("token");
-            console.log(token, options, "http-request toekn");
             if (token && opts.headers === undefined) {
+                console.log("jwt token => ", token);
                 options.headers = { Authorization: `Bearer ${token}`, Accept: "application/json" };
             }
         },
@@ -30,13 +30,13 @@ export function useMyFetch<T>(url: string, opts: any) {
             }
         },
         onResponse: ({ response, error }) => {
-            console.log("onResponse error=>", error, response);
             if (error) {
                 Promise.reject(error);
             } else if (response.status >= 400) {
-                console.log("onResponse2 error=>", error, response);
+                console.log("onResponse error=>", error, response);
                 Promise.reject(response);
             } else {
+                console.log("onResponse success=>", response);
                 Promise.resolve(response);
             }
         },
@@ -48,7 +48,7 @@ export function useMyFetch<T>(url: string, opts: any) {
             // alert("request");
             // alert(JSON.stringify(request));
             console.log("onResponseError=>", response);
-            if (response.status == 401 && response._data.message === "Unauthenticated.") {
+            if (response.status == 401 || response._data.message === "Unauthenticated.") {
                 userStore.setIsAuth(false);
                 userStore.setUser({});
                 userStore.setCheckStatus401(true);
