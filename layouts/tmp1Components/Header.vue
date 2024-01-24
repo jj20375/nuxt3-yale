@@ -146,6 +146,22 @@ initializationData.value.site.stronghold_categories.forEach((item: { id: any; ic
     });
 });
 
+// 產品資訊
+const product_categories: { id: any; imgSrc: any; text: any; url: { params: { slug: any }; query: { tag: any; category: any }; name: string } }[] = [];
+
+initializationData.value.site.product_categories.forEach((item: { id: any; menu_image: any; name: any }) => {
+    product_categories.push({
+        id: item.id,
+        imgSrc: item.menu_image,
+        text: item.name,
+        url: {
+            params: { slug: `產品資訊-${item.name}` },
+            query: { category: item.id, tag: item.id },
+            name: "product-slug",
+        },
+    });
+});
+
 const menus = ref<any>({
     menu1: {
         title: "訂製您的專屬門扇",
@@ -200,38 +216,7 @@ const menus = ref<any>({
             query: { category: "id1", tag: "id1" },
         },
         marginSize: "mr-[40px]",
-        submenus: [
-            {
-                id: "id1",
-                imgSrc: "/img/menu/product/menu-product-1.png",
-                text: "電子鎖",
-                url: {
-                    params: { slug: "耶魯產品資訊-電子鎖-主鎖" },
-                    query: { category: "1", tag: "2" },
-                    name: "product-slug",
-                },
-            },
-            {
-                id: "id2",
-                imgSrc: "/img/menu/product/menu-product-2.png",
-                text: "保險箱",
-                url: {
-                    params: { slug: "耶魯產品資訊-保險箱-防火系列" },
-                    query: { category: "2", tag: "5" },
-                    name: "product-slug",
-                },
-            },
-            {
-                id: "id3",
-                imgSrc: "/img/menu/product/menu-product-3.png",
-                text: "電子鎖配件",
-                url: {
-                    params: { slug: "耶魯產品資訊-電子鎖配件" },
-                    query: { category: "3" },
-                    name: "product-slug",
-                },
-            },
-        ],
+        submenus: product_categories,
     },
     menu7: {
         title: "服務支援",

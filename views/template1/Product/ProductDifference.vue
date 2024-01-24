@@ -105,11 +105,11 @@ watch(
 const datas = ref<ProductCompareList[]>([]);
 const shapeArr = ref<string | number[]>([]);
 const attributes = ref<any>({});
+const keys = ref<any>([]);
 async function getList(params: { product_type_id: string }) {
     try {
         const { data } = await $api().ProductLisAPI<ProductListAPIInterface>(params);
         datas.value = [];
-        console.log("home sample api => ", data.value);
 
         const rows = (data.value as any).data;
 
@@ -125,10 +125,13 @@ async function getList(params: { product_type_id: string }) {
         });
         shapeArr.value = rows.map((item: { shape: string }) => item.shape);
 
-        if (productCompareStore.compareStore.length > 0) {
+        if (rows[0]?.attributes) {
+            keys.value = []
+            Object.keys(rows[0]?.attributes).forEach(item => {
+                keys.value.push(item)
+            })
             const obj = {}
-            const keys = Object.keys(productCompareStore.compareStore[0].attributes)
-            keys.forEach((key) => {
+            keys.value.forEach((key: string|number) => {
                 obj[key] = key
             })
             attributes.value = obj
@@ -141,18 +144,14 @@ async function getList(params: { product_type_id: string }) {
 
 function productsCompareData () {
     products.value = []
-    console.log(productCompareStore.compareStore)
-    console.log(attributes.value)
-    const keys: any[] = []
     if (productCompareStore.compareStore[0]?.attributes) {
         Object.keys(productCompareStore.compareStore[0]?.attributes).forEach(item => {
-            keys.push(item)
+            keys.value.push(item)
         })
     }
     productCompareStore.compareStore.forEach((item: { model: any; shape: any; main_image: any; attributes: { [x: string]: any; }; }) => {
-        console.log(item)
         const obj = {}
-        keys.forEach(key => {
+        keys.value.forEach((key: string|number) => {
             obj[key] = item?.attributes[key]
         })
         products.value.push({

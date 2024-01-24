@@ -6,6 +6,7 @@
 
         <template #custom-sidebar>
             <SideBar
+                ref="sideBarRef"
                 class="col-span-2 bg-white"
                 :menus="sidebar"
             >
@@ -38,12 +39,16 @@
                 <div class="flex items-center">
                     <p class="text-[16px] text-gray-800">排序：</p>
                     <el-select
-                        class="w-[150px]"
+                        class="w-[180px]"
                         v-model="sortBy"
+                        @change="sortChange"
+                        value-key="label"
                     >
                         <el-option
-                            :label="'定價從高到低'"
-                            :value="0"
+                            v-for="(item, key) in sortOptions"
+                            :key="key"
+                            :label="item.label"
+                            :value="item.value"
                         ></el-option>
                     </el-select>
                 </div>
@@ -95,8 +100,66 @@ const breadcrumbs = ref([
     },
 ]);
 
-const sidebar = ref<any>([]);
+const sortOptions = ref([
+    {
+        label: "上架時間新至舊",
+        value: {
+            label: "上架時間新至舊",
+            order_by: "created_at",
+            order_direction: "desc",
+        },
 
+    },
+    {
+        label: "上架時間舊至新",
+        value: {
+            label: "上架時間舊至新",
+            order_by: "created_at",
+            order_direction: "asc",
+        }
+    },
+    {
+        label: "名稱A-Z",
+        value: {
+            label: "名稱A-Z",
+            order_by: "name",
+            order_direction: "desc",
+        }
+    },
+    {
+        label: "名稱Z-A",
+        value: {
+            label: "名稱Z-A",
+            order_by: "name",
+            order_direction: "asc",
+        }
+    },
+    {
+        label: "定價高到低",
+        value: {
+            label: "定價高到低",
+            order_by: "price",
+            order_direction: "desc",
+        }
+    },
+    {
+        label: "定價低到高",
+        value: {
+            label: "定價低到高",
+            order_by: "price",
+            order_direction: "asc",
+        }
+    },
+])
+
+function sortChange() {
+    getList({ per_page: pagination.value.pageSize, page: 1 });
+}
+
+const sidebar = ref<any>([]);
+const sideBarRef = ref<any>(null)
+
+const product_category_id = ref(route.query.tag);
 /**
  * 取得商品分類
  */
@@ -148,9 +211,21 @@ async function getType() {
             sidebar.value.push({
                 text: item.name,
                 categoryId: item.id,
+                url: {
+                    name: "product-slug",
+                    query: { category: item.id, tag: item.id },
+                    params: { slug: `產品資訊-${item.name}` },
+                },
                 options: children,
             });
         });
+
+        if (route.query.tag === route.query.category) {
+            const children_id = rows.find((item: { id: any }) => item.id == route.query.category).children.map((child: { id: any; }) => child.id)
+            console.log(children_id)
+            product_category_id.value = children_id.join()
+        }
+
     } catch (err) {
         console.log("HomeSampleAPI => ", err);
     }
@@ -197,7 +272,11 @@ const handlePageChange = (val: any) => {
 
 const datas = ref<ProductList[]>([]);
 
-const sortBy = ref(0);
+const sortBy = ref({
+    label: "上架時間新至舊",
+    order_by: "created_at",
+    order_direction: "desc",
+});
 
 /**
  * 取得商品列表
@@ -208,7 +287,9 @@ async function getList(params: { per_page: number; page: number }) {
         // 搜尋分類參數時 須帶上 搜尋模式 條件
         params["search_fields"] = "productCategories.product_category_id:in";
         // 搜尋分類參數 ("主鎖｜輔助鎖" 等等...)
-        params["search_relations"] = "productCategories.product_category_id:" + route.query.tag;
+        params["search_relations"] = "productCategories.product_category_id:" + product_category_id.value;
+        params["order_by"] = sortBy.value.order_by;
+        params["order_direction"] = sortBy.value.order_direction
         const { data } = await $api().ProductListPaginateAPI<ProductListAPIInterface>(params);
         datas.value = [];
         console.log("home sample api => ", data.value);
@@ -248,6 +329,8 @@ onMounted(async () => {
     nextTick(async () => {
         if (process.client) {
             await init();
+            console.log(sideBarRef.value.openSubMenu)
+            sideBarRef.value.openSubMenu = Number(route.query.category)
         }
     });
 });
