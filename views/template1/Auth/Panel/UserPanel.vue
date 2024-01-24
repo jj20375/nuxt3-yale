@@ -113,7 +113,7 @@ const panelDatas = ref([
         title: "訂製門扇-訂單記錄",
         url: {
             name: "auth-door-slug",
-            params: { slug: "slug" },
+            params: { slug: "訂製門扇-訂單記錄" },
         },
         imgSrc: "img/icons/auth/door-record.svg",
     },
@@ -121,7 +121,7 @@ const panelDatas = ref([
         title: "產品收藏清單",
         url: {
             name: "auth-favorite-slug",
-            params: { slug: "slug" },
+            params: { slug: "產品收藏清單" },
         },
         imgSrc: "img/icons/auth/favorite.svg",
     },

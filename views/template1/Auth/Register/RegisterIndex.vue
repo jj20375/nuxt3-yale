@@ -15,26 +15,41 @@
                             v-for="(item, index) in formDatas"
                             :key="index"
                         >
-                            <div v-if="item?.type !== 'inline'" :class="item.span ? `col-span-${item.span}` : ''">
-                                <el-form-item :prop="item.prop" :label="item.label">
-                                    <el-input v-if="item.style === 'input'" :type="item.type" :show-password="item.showPassword" :disabled="item.disabled"
-                                              :placeholder="item.placeholder" v-model="form[item.prop]"></el-input>
-                                    <el-radio-group v-else-if="item.style === 'radio'" v-model="form[item.prop]">
-                                    <el-radio
-                                        v-for="(option, radio_index) in item.radioData"
-                                        :key="radio_index"
-                                        :label="option.value"
-                                        size="large"
-                                        >{{ option.label }}
-                                        </el-radio
-                                        >
+                            <div
+                                v-if="item?.type !== 'inline'"
+                                :class="item.span ? `col-span-${item.span}` : ''"
+                            >
+                                <el-form-item
+                                    :prop="item.prop"
+                                    :label="item.label"
+                                >
+                                    <el-input
+                                        v-if="item.style === 'input'"
+                                        :type="item.type"
+                                        :show-password="item.showPassword"
+                                        :disabled="item.disabled"
+                                        :placeholder="item.placeholder"
+                                        v-model="form[item.prop]"
+                                    ></el-input>
+                                    <el-radio-group
+                                        v-else-if="item.style === 'radio'"
+                                        v-model="form[item.prop]"
+                                    >
+                                        <el-radio
+                                            v-for="(option, radio_index) in item.radioData"
+                                            :key="radio_index"
+                                            :label="option.value"
+                                            size="large"
+                                            >{{ option.label }}
+                                        </el-radio>
                                     </el-radio-group>
-                                    <el-date-picker v-else-if="item.style === 'datepicker'"
-                                                    v-model="form[item.prop]"
-                                                    type="date"
-                                                    valueFormat="YYYY-MM-DD"
-                                                    :placeholder="item.placeholder"
-                                                    popper-class="date-box"
+                                    <el-date-picker
+                                        v-else-if="item.style === 'datepicker'"
+                                        v-model="form[item.prop]"
+                                        type="date"
+                                        valueFormat="YYYY-MM-DD"
+                                        :placeholder="item.placeholder"
+                                        popper-class="date-box"
                                     />
 
                                     <el-select
@@ -64,9 +79,18 @@
                                     :key="index2"
                                     :class="item.datas.length - 1 === index2 ? '' : 'mr-[30px]'"
                                 >
-                                    <el-form-item :prop="item2.prop" :label="item2.label">
-                                        <el-input v-if="item2.style === 'input'" :type="item2?.type" :show-password="item2.showPassword" :disabled="item2.disabled"
-                                                  :placeholder="item2.placeholder" v-model="form[item2.prop]"></el-input>
+                                    <el-form-item
+                                        :prop="item2.prop"
+                                        :label="item2.label"
+                                    >
+                                        <el-input
+                                            v-if="item2.style === 'input'"
+                                            :type="item2?.type"
+                                            :show-password="item2.showPassword"
+                                            :disabled="item2.disabled"
+                                            :placeholder="item2.placeholder"
+                                            v-model="form[item2.prop]"
+                                        ></el-input>
                                         <el-select
                                             v-if="item2.style === 'select'"
                                             class="w-full"
@@ -85,7 +109,10 @@
                                 </div>
                             </div>
                             <template v-if="item.space">
-                                <div v-for="index in item.space" :key="index"></div>
+                                <div
+                                    v-for="index in item.space"
+                                    :key="index"
+                                ></div>
                             </template>
                         </template>
                         <el-form-item
@@ -156,8 +183,8 @@ async function getCity() {
 const formRefDom = ref<any>();
 
 const genderRadios = ref<any>([
-  { value: "male", label: "先生" },
-  { value: "female", label: "女士" },
+    { value: "male", label: "先生" },
+    { value: "female", label: "女士" },
 ]);
 
 const form = ref<any>({
@@ -194,13 +221,13 @@ const formDatas = ref<any>([
         prop: "cellphone",
         label: "聯絡電話",
         placeholder: "例：0911-222-222",
-        style: "input"
+        style: "input",
     },
     {
         prop: "telephone",
         label: "市話",
         placeholder: "例：02-1222-2222",
-        style: "input"
+        style: "input",
     },
     {
         prop: "birthday",
@@ -220,53 +247,52 @@ const formDatas = ref<any>([
         type: "inline",
         span: 2,
         datas: [
+            {
+                prop: "city",
+                label: "縣市",
+                placeholder: "請選擇",
+                options: initializationStore.cityData,
+                type: "inline",
+                style: "select",
+                function: (e: any) => {
+                    console.log(e);
+                    e.location = "";
+                    e.zip3 = "";
 
-              {
-                  prop: "city",
-                  label: "縣市",
-                  placeholder: "請選擇",
-                  options: initializationStore.cityData,
-                  type: "inline",
-                  style: "select",
-                  function: (e: any) => {
-                      console.log(e);
-                      e.location = "";
-                      e.zip3 = "";
-
-                      const cityDataFilter = initializationStore.cityAreaData.find((item: { name: any }) => item.name === e.city);
-                      console.log("cityDataFilter.district", cityDataFilter);
-                      const addressProps = formDatas.value.find((item: { prop: string; }) => item.prop === 'address')
-                      addressProps.datas.find((item: { prop: string }) => item.prop === 'location').options = cityDataFilter.district.map((item: { name: any; zip3: any }) => {
-                          return {
-                              label: item.name,
-                              value: item.name,
-                              zip3: item.zip3,
-                          };
-                      });
-                  },
-              },
-              {
-                  prop: "location",
-                  label: "地區",
-                  placeholder: "請選擇",
-                  options: [],
-                  type: "inline",
-                  style: "select",
-                  function: (e: any) => {
-                      console.log(e);
-                      const addressProps = formDatas.value.find((item: { prop: string; }) => item.prop === 'address')
-                      e.zip3 = addressProps.datas.find((item: { prop: string }) => item.prop === 'location').options.find((item: { value: any }) => item.value === e.location).zip3;
-                  },
-              },
-              {
-                  prop: "zip3",
-                  label: "郵遞區號",
-                  placeholder: "",
-                  type: "inline",
-                  style: "input",
-                  disabled: true,
-              },
-        ]
+                    const cityDataFilter = initializationStore.cityAreaData.find((item: { name: any }) => item.name === e.city);
+                    console.log("cityDataFilter.district", cityDataFilter);
+                    const addressProps = formDatas.value.find((item: { prop: string }) => item.prop === "address");
+                    addressProps.datas.find((item: { prop: string }) => item.prop === "location").options = cityDataFilter.district.map((item: { name: any; zip3: any }) => {
+                        return {
+                            label: item.name,
+                            value: item.name,
+                            zip3: item.zip3,
+                        };
+                    });
+                },
+            },
+            {
+                prop: "location",
+                label: "地區",
+                placeholder: "請選擇",
+                options: [],
+                type: "inline",
+                style: "select",
+                function: (e: any) => {
+                    console.log(e);
+                    const addressProps = formDatas.value.find((item: { prop: string }) => item.prop === "address");
+                    e.zip3 = addressProps.datas.find((item: { prop: string }) => item.prop === "location").options.find((item: { value: any }) => item.value === e.location).zip3;
+                },
+            },
+            {
+                prop: "zip3",
+                label: "郵遞區號",
+                placeholder: "",
+                type: "inline",
+                style: "input",
+                disabled: true,
+            },
+        ],
     },
     {
         prop: "address",
@@ -280,6 +306,7 @@ const formDatas = ref<any>([
         label: "密碼",
         placeholder: "",
         style: "input",
+        type: "password",
         space: 1,
     },
     {
@@ -287,6 +314,7 @@ const formDatas = ref<any>([
         label: "確認密碼",
         placeholder: "",
         style: "input",
+        type: "password",
         space: 1,
     },
 ]);
@@ -327,9 +355,9 @@ const rules = ref<any>({
     ],
     birthday: [
         {
-          required: true,
-          message: "請輸入生日",
-          trigger: "blur",
+            required: true,
+            message: "請輸入生日",
+            trigger: "blur",
         },
     ],
     gender: [
