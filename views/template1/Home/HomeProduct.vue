@@ -6,7 +6,7 @@
                     <h2 class="font-medium text-white text-[66px] leading-none YaleSolisW-Bd">BEST SELLER</h2>
                     <h3 class="font-medium text-[40px] YaleSolisW-Bd mt-[14px] mb-8">精選商品</h3>
                     <Swiper
-                        :slidesPerView="4"
+                        :slidesPerView="3.5"
                         :spaceBetween="30"
                         :freeMode="true"
                         :modules="modules"

@@ -7,7 +7,7 @@
         >
             <div class="flex justify-center items-center h-[441px]">
                 <NuxtImg
-                    class="object-cover max-w-[441px] h-full w-full rounded-2xl aspect-1/1"
+                    class="max-w-[441px] px-5 h-full object-contain w-full rounded-2xl aspect-1/1"
                     :src="product.main_image"
                 />
             </div>

@@ -41,8 +41,7 @@
                 :before-close="closeDialog"
             >
                 <iframe
-                    width="100%"
-                    height="350"
+                    class="w-full aspect-video"
                     :src="currentVideo.videoUrl"
                     title="YouTube video player"
                     frameborder="0"
