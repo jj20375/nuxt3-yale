@@ -182,7 +182,10 @@ const footerDatas = ref({
         menus: [
             {
                 text: "關於我們",
-                url: "",
+                url: {
+                    name: "about-slug",
+                    params: { slug: "關於我們" },
+                },
             },
             {
                 text: "最新消息",
