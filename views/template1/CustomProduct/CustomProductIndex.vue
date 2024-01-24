@@ -352,9 +352,9 @@ for (let i = 1; i < 6; i++) {
                 text: "白色",
                 imgSrc: "/img/product/demo/color-2.png",
                 previewImgSrc: {
-                    front: "/img/custom-product/demo/door/custom-product-door-test-close.png",
-                    backend: "/img/custom-product/demo/door/custom-product-door-test-close.png",
-                    half: "/img/custom-product/demo/door/custom-product-door-test-open.png",
+                    front: "/img/custom-product/demo/door/custom-product-door-white-close.png",
+                    backend: "/img/custom-product/demo/door/custom-product-door-white-close.png",
+                    half: "/img/custom-product/demo/door/custom-product-door-white-open.png",
                 },
             },
             // {
@@ -393,21 +393,21 @@ for (let i = 1; i < 6; i++) {
                 text: "白色",
                 imgSrc: "/img/product/demo/color-2.png",
                 previewImgSrc: {
-                    front: "/img/custom-product/demo/door-out/custom-product-door-out-black.png",
-                    backend: "/img/custom-product/demo/door-out/custom-product-door-out-black.png",
-                    half: "/img/custom-product/demo/door-out/custom-product-door-out-black.png",
+                    front: "/img/custom-product/demo/door-out/custom-product-door-out-white.png",
+                    backend: "/img/custom-product/demo/door-out/custom-product-door-out-white.png",
+                    half: "/img/custom-product/demo/door-out/custom-product-door-out-white.png",
                 },
             },
-            {
-                id: "id3",
-                text: "黑色",
-                imgSrc: "/img/product/demo/color-3.png",
-                previewImgSrc: {
-                    front: "/img/custom-product/demo/door-out/custom-product-door-out-black.png",
-                    backend: "/img/custom-product/demo/door-out/custom-product-door-out-black.png",
-                    half: "/img/custom-product/demo/door-out/custom-product-door-out-black.png",
-                },
-            },
+            // {
+            //     id: "id3",
+            //     text: "黑色",
+            //     imgSrc: "/img/product/demo/color-3.png",
+            //     previewImgSrc: {
+            //         front: "/img/custom-product/demo/door-out/custom-product-door-out-black.png",
+            //         backend: "/img/custom-product/demo/door-out/custom-product-door-out-black.png",
+            //         half: "/img/custom-product/demo/door-out/custom-product-door-out-black.png",
+            //     },
+            // },
         ],
     });
 }
@@ -419,17 +419,31 @@ const locks = ref<any>({
 });
 
 for (let i = 1; i < 20; i++) {
-    locks.value.handle.push({
-        imgSrc: "/img/custom-product/demo/custom-product-lock-demo-1.jpg",
-        previewImgSrc: {
-            front: "/img/custom-product/demo/handle/custom-product-handle-close.png",
-            backend: "/img/custom-product/demo/handle/custom-product-handle-close.png",
-            half: "/img/custom-product/demo/handle/custom-product-handle-open.png",
-        },
-        style: `default lock-${i}`,
-        price: 1000 + i,
-        id: `id${i}`,
-    });
+    if (i === 2) {
+        locks.value.handle.push({
+            imgSrc: "/img/custom-product/demo/custom-product-lock-demo-1.jpg",
+            previewImgSrc: {
+                front: "/img/custom-product/demo/handle/custom-product-handle-white-close.png",
+                backend: "/img/custom-product/demo/handle/custom-product-handle-white-close.png",
+                half: "/img/custom-product/demo/handle/custom-product-handle-white-open.png",
+            },
+            style: `default lock-${i}`,
+            price: 1000 + i,
+            id: `id${i}`,
+        });
+    } else {
+        locks.value.handle.push({
+            imgSrc: "/img/custom-product/demo/custom-product-lock-demo-1.jpg",
+            previewImgSrc: {
+                front: "/img/custom-product/demo/handle/custom-product-handle-black-close.png",
+                backend: "/img/custom-product/demo/handle/custom-product-handle-black-close.png",
+                half: "/img/custom-product/demo/handle/custom-product-handle-black-open.png",
+            },
+            style: `default lock-${i}`,
+            price: 1000 + i,
+            id: `id${i}`,
+        });
+    }
     locks.value.lock.push({
         imgSrc: "/img/custom-product/demo/custom-product-lock-demo-1.jpg",
         previewImgSrc: {
