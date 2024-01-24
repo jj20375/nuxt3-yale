@@ -159,8 +159,7 @@ const menus = ref<any>({
         title: "關於我們",
         url: {
             name: "about-slug",
-            params: { slug: "slug" },
-            query: { id: "id1" },
+            params: { slug: "關於我們" },
         },
         submenus: [],
     },
