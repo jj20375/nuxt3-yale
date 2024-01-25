@@ -9,11 +9,11 @@
                 v-for="color in rowColor"
                 :key="color.id"
                 class="mr-[20px] cursor-pointer"
-                @click="currentColorData = color.id"
+                @click="currentColorIdData = color.id"
             >
                 <div
                     class="p-2"
-                    :class="currentColorData === color.id ? 'border border-yellow-600  rounded-full' : ''"
+                    :class="currentColorIdData === color.id ? 'border border-yellow-600  rounded-full' : ''"
                 >
                     <NuxtImg
                         class="w-[32px]"
@@ -21,7 +21,7 @@
                     />
                 </div>
                 <p
-                    v-if="currentColorData === color.id"
+                    v-if="currentColorIdData === color.id"
                     class="text-[14px] text-gray-800 px-2 pt-[8px]"
                 >
                     {{ color.text }}
@@ -32,7 +32,7 @@
 </template>
 
 <script setup lang="ts">
-const emit = defineEmits(["update:currentColor"]);
+const emit = defineEmits(["update:currentColorId", "update:currentColorData"]);
 
 interface Props {
     colors: {
@@ -41,7 +41,7 @@ interface Props {
         value: string | number;
         imgSrc: string;
     }[];
-    currentColor: string | number;
+    currentColorId: string | number;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -59,7 +59,7 @@ const props = withDefaults(defineProps<Props>(), {
             imgSrc: "/img/product/demo/color-2.png",
         },
     ],
-    currentColor: "id1",
+    currentColorId: "id1",
 });
 
 // 顯示顏色規則 因為 6個顏色要換行 因此加上此演算法
@@ -85,12 +85,24 @@ const showColors = computed(() => {
 });
 
 // 預設選中顏色
-const currentColorData = ref(props.currentColor);
+const currentColorIdData = ref(props.currentColorId);
 
 watch(
-    () => currentColorData.value,
+    () => currentColorIdData.value,
     (val) => {
-        emit("update:currentColor", val);
+        emit("update:currentColorId", val);
+        emit(
+            "update:currentColorData",
+            props.colors.find((item) => item.id === val)
+        );
     }
 );
+
+onMounted(() => {
+    emit("update:currentColorId", props.currentColorId);
+    emit(
+        "update:currentColorData",
+        props.colors.find((item) => item.id === props.currentColorId)
+    );
+});
 </script>

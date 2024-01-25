@@ -69,7 +69,7 @@ import CustomProductDailogCarousel from "~/views/template1/CustomProduct/compone
 
 const { $utils } = useNuxtApp();
 
-const emit = defineEmits(["update:selectedProducts"]);
+const emit = defineEmits(["update:selectedProductIds", "update:selectedProducts"]);
 
 interface Props {
     products: {
@@ -104,7 +104,11 @@ const selectedProducts = ref([]);
  * 選擇服務
  */
 function selectProduct(val: any) {
-    emit("update:selectedProducts", val);
+    emit("update:selectedProductIds", val);
+    emit(
+        "update:selectedProducts",
+        props.products.filter((item) => val.includes(item.id))
+    );
 }
 
 // 細節彈窗幻燈片圖

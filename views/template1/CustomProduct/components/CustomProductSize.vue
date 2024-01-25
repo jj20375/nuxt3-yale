@@ -16,7 +16,7 @@
 </template>
 
 <script setup lang="ts">
-const emit = defineEmits(["update:currentSizeId"]);
+const emit = defineEmits(["update:currentSizeId", "update:currentSizeData"]);
 
 const props = defineProps({
     sizes: {
@@ -49,6 +49,18 @@ watch(
     () => currentSizeDataId.value,
     (val) => {
         emit("update:currentSizeId", val);
+        emit(
+            "update:currentSizeData",
+            props.sizes.find((item) => item.id === val)
+        );
     }
 );
+
+onMounted(() => {
+    emit("update:currentSizeId", props.currentSizeId);
+    emit(
+        "update:currentSizeData",
+        props.sizes.find((item) => item.id === props.currentSizeId)
+    );
+});
 </script>

@@ -110,6 +110,8 @@ import ShoppingCarBilling from "~/views/template1/ShoppingCar/components/Shoppin
 import { useShoppingCarStore } from "~/store/shoppingCarStore";
 const { $utils } = useNuxtApp();
 
+const route = useRoute();
+
 const shoppingCarStore = useShoppingCarStore();
 
 // 購物種類
@@ -167,4 +169,8 @@ watch(
         }
     }
 );
+
+onMounted(() => {
+    currentTab.value = route.query.tab as string;
+});
 </script>

@@ -19,13 +19,10 @@
                 </div>
                 <div class="flex-1">
                     <div class="flex w-full text-gray-800">
-                        <h3 class="YaleSolisW-Bd font-medium text-[18px] flex-1">{{ product.mark + product.name }}-{{ product.id }}</h3>
+                        <h3 class="YaleSolisW-Bd font-medium text-[18px] flex-1">訂製-{{ product.name }}</h3>
                         <p class="font-medium YaleSolisW-Bd">NT$ {{ $utils().formatCurrency(product.price) }}</p>
                     </div>
-                    <div class="flex text-gray-800 mt-[12px]">
-                        <p class="w-[90px] text-[14px]">顏色</p>
-                        <p>{{ product.color }}</p>
-                    </div>
+
                     <div class="flex justify-end">
                         <div class="flex justify-center items-center w-[150px] border border-gray-300 px-[2px] py-[10px] rounded-full mr-[18px]">
                             <div
@@ -82,8 +79,8 @@ function countDelete(index: number) {
     // 總價除以數量得到 刪除一個數量後的金額
     shoppingCar.value[index].count--;
     shoppingCar.value[index].price = shoppingCar.value[index].singlePrice * shoppingCar.value[index].count;
-    $shoppingCarService().setShoppingCar(shoppingCar.value);
-    shoppingCarStore.setShoppingCar($shoppingCarService().getShoppingCar());
+    $shoppingCarService().setCustomProductShoppingCar(shoppingCar.value);
+    shoppingCarStore.setShoppingCar($shoppingCarService().getCustomProductShoppingCar());
 }
 /**
  * 點擊增加數量按鈕
@@ -92,15 +89,15 @@ function countAdd(index: number) {
     shoppingCar.value[index].count++;
     // 總價乘以數量得到 增加一個數量後的金額
     shoppingCar.value[index].price = shoppingCar.value[index].singlePrice * shoppingCar.value[index].count;
-    $shoppingCarService().setShoppingCar(shoppingCar.value);
-    shoppingCarStore.setShoppingCar($shoppingCarService().getShoppingCar());
+    $shoppingCarService().setCustomProductShoppingCar(shoppingCar.value);
+    shoppingCarStore.setShoppingCar($shoppingCarService().getCustomProductShoppingCar());
 }
 
 /**
  * 刪除購物車
  */
 function removeShoppingCar(index: number) {
-    $shoppingCarService().removeSingleShoppingCarProduct(index);
+    $shoppingCarService().removeCustomProductSingleShoppingCarProduct(index);
     init();
 }
 
@@ -115,11 +112,11 @@ function init() {
     // 瀏覽器才執行
     if (process.client) {
         // 當購物車不為空時執行
-        if ($shoppingCarService().getShoppingCar() !== null) {
+        if ($shoppingCarService().getCustomProductShoppingCar() !== null) {
             // 購物車資料(過濾購物車重複資料)
-            shoppingCarStore.setShoppingCar($shoppingCarService().getShoppingCar());
+            shoppingCarStore.setShoppingCar($shoppingCarService().getCustomProductShoppingCar());
             // 設定購物車商品全選
-            checkList.value = shoppingCar.value.map((item) => item.id);
+            checkList.value = shoppingCar.value.map((item: any) => item.id);
             // 選中商品參數傳給母組件
             emit("update:selectProductIds", checkList.value);
         } else {
