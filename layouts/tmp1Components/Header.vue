@@ -56,18 +56,22 @@
                             class="relative px-5 xl:px-3 2xl:px-5 py-[20px] py-[35px] text-gray-800 hover:text-gray-500 cursor-pointer transition-all duration-300"
                             :class="key === 'menu1' ? 'has-door' : ''"
                         >
-
-                            <template v-if="key === 'menu1'">
-                                <div class="flex items-center">
-                                    <div class="title">{{ menu.title }}</div>
-                                    <div class="image-wrap">
-                                        <NuxtImg src="/img/icons/door.svg" />
+                            <div
+                                class="cursor-pointer"
+                                @click="router.push(menu.url);"
+                            >
+                                <template v-if="key === 'menu1'">
+                                    <div class="flex items-center">
+                                        <div class="title">{{ menu.title }}</div>
+                                        <div class="image-wrap">
+                                            <NuxtImg src="/img/icons/door.svg" />
+                                        </div>
                                     </div>
-                                </div>
-                            </template>
-                            <template v-else>
-                                {{ menu.title }}
-                            </template>
+                                </template>
+                                <template v-else>
+                                    {{ menu.title }}
+                                </template>
+                            </div>
                         </div>
                     </div>
                 </li>
