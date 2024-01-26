@@ -7,7 +7,7 @@
             id="HomeSample"
             class="flex items-center justify-center mt-5"
         >
-            <main class="flex-1 mx-auto w-[1113px]">
+            <main class="flex-1 mx-auto">
                 <div class="text-center">
                     <h2 class="inline-block font-medium text-gray-100 text-[66px] YaleSolisW-Bd leading-none gradient-title">PROJECT</h2>
                     <h3 class="font-medium leading-[50px] text-[40px] YaleSolisW-Bd mt-[14px]">裝修實績</h3>
@@ -75,22 +75,21 @@
                                                 <el-icon><ArrowLeft /></el-icon>
                                             </button>
                                         </div>
-                                        <div class="flex-1 max-w-[600px]">
+                                        <div class="flex-1 max-w-[600px] cursor-pointer" @click="router.push(slide.url)">
                                             <div class="flex items-center">
                                                 <h5
-                                                    @click="router.push(slide.url)"
-                                                    class="flex-1 text-[24px] YaleSolisW-Bd font-medium cursor-pointer"
+                                                    class="flex-1 text-[24px] YaleSolisW-Bd font-medium"
                                                 >
                                                     {{ slide.title }}
                                                 </h5>
                                                 <h6 class="text-[14px] font-medium YaleSolisW-Bd">{{ slide.published_at }}</h6>
                                             </div>
-                                            <p class="mt-[12px] YaleSolisW-Lt font-[400] text-[16px] line-clamp-2">{{ slide.description }}</p>
+                                            <p class="mt-[12px] YaleSolisW-Lt font-[400] text-[16px] line-clamp-2" v-if="slide.description">{{ slide.description }}</p>
                                             <!-- {{ index }} -->
                                         </div>
                                         <div
                                             class="ml-[50px] text-2xl bg-gray-100 p-2 h-[50px] w-[50px] flex justify-center items-center rounded-full cursor-pointer"
-                                            @click.previent="next(index)"
+                                            @click.prevent="next(index)"
                                         >
                                             <button class="flex items-center">
                                                 <el-icon><ArrowRight /></el-icon>

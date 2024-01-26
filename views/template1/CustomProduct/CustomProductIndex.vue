@@ -1,5 +1,5 @@
 <template>
-    <section class="mt-[94px] flex max-h-screen min-h-screen">
+    <section class="mt-[86px] flex max-h-screen min-h-screen">
         <!-- <pre>{{ customPreviewData }}</pre> -->
         <CustomProductPrewView
             v-model:currentAngle="currentAngle"

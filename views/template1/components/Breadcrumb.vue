@@ -3,15 +3,15 @@
         <li
             v-for="(menu, index) in menus"
             :key="menu.name"
-            class="text-gray-800 text-[12px] YaleSolisW-Rg"
+            class="text-gray-800 text-[14px] YaleSolisW-Rg flex items-center"
         >
-            <NuxtLink :to="menu">
+            <NuxtLink class="leading-none" :to="menu">
                 {{ menu.text }}
             </NuxtLink>
             <span
                 v-if="index < menus.length - 1"
-                class="mx-2 font-light"
-                ><font-awesome-icon :icon="['fas', 'chevron-right']"
+                class="mx-3 font-light"
+                ><font-awesome-icon class="text-[13px] leading-none" :icon="['fas', 'chevron-right']"
             /></span>
         </li>
     </ul>

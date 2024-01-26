@@ -1,6 +1,6 @@
 <template>
     <section
-        class="min-h-screen mt-[94px]"
+        class="mt-[86px]"
         :class="customClass"
     >
         <nav class="border-t border-b border-gray-300 py-[16px] bg-white">
@@ -19,10 +19,10 @@
             <h1 class="text-white text-[40px] YaleSolisW-Bd font-medium absolute z-10">{{ title }}</h1>
         </div>
 
-        <div>
-            <div class="grid grid-cols-8 gap-0">
+        <div class="container">
+            <div class="mt-[60px] flex">
                 <slot name="sidebar"></slot>
-                <main class="mt-[60px] w-full col-span-5 pl-[80px]">
+                <main class="flex-1 pl-[40px]">
                     <slot name="list"></slot>
                     <slot name="content"></slot>
                     <div class="flex justify-center">
@@ -46,7 +46,7 @@ const props = defineProps({
     },
     customClass: {
         type: String,
-        default: "mb-[80px]",
+        default: "mb-[100px]",
     },
 });
 </script>

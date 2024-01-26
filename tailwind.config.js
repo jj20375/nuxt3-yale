@@ -170,6 +170,7 @@ module.exports = {
             inner: "inset 0 2px 4px 0 rgba(0, 0, 0, 0.06)",
             formDefault: "inset 0 -1px 0 0px #D9D9D9",
             formFocus: "inset 0 -2px 0 0px #FFCC00",
+            header: "0 4px 6px rgba(0,0,0,.07)",
             none: "none",
         },
         container: {
@@ -179,8 +180,8 @@ module.exports = {
                 sm: "2rem",
                 lg: "3rem",
                 xl: "5rem",
-                "2xl": "10rem",
-                "3xl": "15rem",
+                "2xl": "9rem",
+                "3xl": "12rem",
             },
         },
     },
@@ -338,5 +339,7 @@ module.exports = {
             backgroundColor: ["odd", "even", "checked"],
         },
     },
-    plugins: [require("flowbite")],
+    plugins: [
+        require("flowbite"),
+    ],
 };

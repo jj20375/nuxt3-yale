@@ -1,11 +1,11 @@
 <template>
     <header
         class="fixed z-[500] items-center w-full duration-500 transition-all"
-        :class="[isHomeMenuFixed ? ' bg-white fixed top-0' : route.name === 'index' ? 'top-0' : '', route.name !== 'index' ? 'fixed top-0 bg-white' : '']"
+        :class="[isHomeMenuFixed ? ' bg-white fixed top-0 border-b border-gray-300' : route.name === 'index' ? 'top-0 border-b border-transparent' : '', route.name !== 'index' ? 'fixed top-0 bg-white border-b border-gray-300' : '']"
     >
         <nav class="mx-[32px] flex items-center">
             <ul class="flex items-center flex-1 text-base leading-5">
-                <li class="mr-14 xl:mr-8 2xl:mr-10 3xl:mr-14 py-3">
+                <li class="mr-14 xl:mr-8 2xl:mr-10 3xl:mr-14 py-[10px]">
                     <NuxtLink :to="{ name: 'index' }">
                         <NuxtImg
                             class="h-[66px] w-[66px]"
@@ -22,38 +22,39 @@
                         v-if="menu.submenus.length > 0"
                         @mouseover="changeMenu(key)"
                         @mouseleave="closeMenu"
-                        class="px-5 xl:px-3 2xl:px-4 3xl:px-5 py-[35px] text-gray-800 cursor-pointer hover:text-gray-500"
+                        class="px-5 xl:px-3 2xl:px-4 3xl:px-5 py-[33px] text-gray-800 cursor-pointer hover:text-gray-500"
                     >
                             {{ menu.title }}
-                        <div class="absolute left-0 top-[90px] z-50 bg-white w-full">
-                            <ul
-                                v-if="currentMenu === key && showSubMenu"
-                                class="container flex items-center justify-center min-h-[300px] py-[60px] flex-wrap text-center"
-                                :class="menu.marginSize"
-                            >
-                                <li
-                                    v-for="(submenu, index) in menu.submenus"
-                                    :key="index"
-                                    class="submenu-item"
-                                    :class="[key === 'menu5' || key === 'menu7' ? 'hover-scale' : key === 'menu6' ? 'hover-shadow' : key === 'menu4' ? 'hover-fade' : '']"
+                        <div class="absolute left-0 top-[86px] z-50 bg-white w-full">
+                            <div class="border-t border-gray-300 shadow-header" v-if="currentMenu === key && showSubMenu">
+                                <ul
+                                    class="container flex items-center justify-center min-h-[300px] py-[60px] flex-wrap text-center"
+                                    :class="menu.marginSize"
                                 >
-                                    <NuxtLink :to="submenu.url">
-                                        <div class="image-wrap">
-                                            <NuxtImg
-                                                :class="key !== 'menu4' ? 'w-[120px] aspect-square object-cover' : 'w-[400px] aspect-[16/9] rounded-xl object-cover'"
-                                                :src="submenu.imgSrc"
-                                            />
-                                        </div>
-                                        <div class="mt-[20px]">{{ submenu.text }}</div>
-                                    </NuxtLink>
-                                </li>
-                            </ul>
+                                    <li
+                                        v-for="(submenu, index) in menu.submenus"
+                                        :key="index"
+                                        class="submenu-item"
+                                        :class="[key === 'menu5' || key === 'menu7' ? 'hover-scale' : key === 'menu6' ? 'hover-shadow' : key === 'menu4' ? 'hover-fade' : '']"
+                                    >
+                                        <NuxtLink :to="submenu.url">
+                                            <div class="image-wrap">
+                                                <NuxtImg
+                                                    :class="key !== 'menu4' ? 'w-[120px] aspect-square object-cover' : 'w-[400px] aspect-[20/9] rounded-xl object-cover'"
+                                                    :src="submenu.imgSrc"
+                                                />
+                                            </div>
+                                            <div class="mt-[20px]">{{ submenu.text }}</div>
+                                        </NuxtLink>
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
 
                     <div v-else>
                         <div
-                            class="relative px-5 xl:px-3 2xl:px-5 py-[20px] py-[35px] text-gray-800 hover:text-gray-500 cursor-pointer transition-all duration-300"
+                            class="relative px-5 xl:px-3 2xl:px-5 py-[33px] text-gray-800 hover:text-gray-500 cursor-pointer transition-all duration-300"
                             :class="key === 'menu1' ? 'has-door' : ''"
                         >
                             <div
@@ -401,7 +402,7 @@ function closeMenu(){
         }
         img{
             @apply relative top-0;
-            transition: all .5s cubic-bezier(.04,.64,.35,1.58);
+            transition: all .3s ease-in-out;
         }
     }
     &:hover{
@@ -433,9 +434,9 @@ function closeMenu(){
         @apply mr-0 transition-all duration-300;
     }
     .image-wrap{
-        @apply max-w-0 h-[24px] overflow-hidden transition-all duration-300 opacity-0;
+        @apply max-w-0 h-[20px] overflow-hidden transition-all duration-300 opacity-0;
         img{
-            @apply h-[24px] w-[24px] max-w-none;
+            @apply h-[20px] w-[20px] max-w-none;
         }
     }
     &:hover{

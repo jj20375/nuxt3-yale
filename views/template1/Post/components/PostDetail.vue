@@ -1,5 +1,5 @@
 <template>
-    <section class="min-h-screen mt-[94px] mb-[100px]">
+    <section class="min-h-screen mt-[86px] mb-[100px]">
         <nav class="border-t border-gray-300 py-[16px] pl-[122px]">
             <Breadcrumb :menus="breadcrumbs" />
         </nav>
@@ -18,49 +18,51 @@
                     /></span>
                 </div>
                 <div
-                    class="my-10 text-gray-500 YaleSolisW-Rg text-[16px]"
+                    class="my-10 text-gray-500 YaleSolisW-Rg text-[16px] edit-section"
                     v-html="postData.content"
                 ></div>
                 <div class="flex items-center justify-center pt-[24px] border-t border-gray-300">
                     <div
-                        class="mr-[40px]"
-                        v-if="pagination.prev"
+                        class="flex-1 mr-[40px]"
                     >
-                        <button
-                            @click.prevent="jumpPage(pagination.prev)"
-                            class="YaleSolisW-Rg text-[16px] flex items-center"
-                        >
-                            <NuxtImg
-                                class="w-[10px]"
-                                src="/img/icons/post/arrow-prev.svg"
-                            />
-                            <span class="ml-[8px]">上一篇</span>
-                            <span class="ml-[20px] text-gray-400">{{ pagination.prev.title.substr(0, 10) }}...</span>
-                        </button>
+                        <template v-if="pagination.prev">
+                            <button
+                                @click.prevent="jumpPage(pagination.prev)"
+                                class="w-full YaleSolisW-Rg text-[16px] flex items-center justify-start"
+                            >
+                                <NuxtImg
+                                    class="w-[10px]"
+                                    src="/img/icons/post/arrow-prev.svg"
+                                />
+                                <span class="ml-[8px] whitespace-nowrap">上一篇</span>
+                                <span class="text-start ml-[20px] text-gray-400 line-clamp-1">{{ pagination.prev.title }}</span>
+                            </button>
+                        </template>
                     </div>
                     <div>
                         <button
                             @click.prevent="backList"
-                            class="YaleSolisW-Rg rounded-full text-center bg-gray-100 w-[111px] py-[8px] px-[32px] text-[15px]"
+                            class="gray-btn btn-xs"
                         >
                             回列表
                         </button>
                     </div>
                     <div
-                        class="ml-[40px]"
-                        v-if="pagination.next"
+                        class="flex-1 ml-[40px]"
                     >
-                        <button
-                            @click.prevent="jumpPage(pagination.next)"
-                            class="YaleSolisW-Rg text-[16px] flex items-center"
-                        >
-                            <span class="mr-[20px] text-gray-400">{{ pagination.next.title.substr(0, 10) }}...</span>
-                            <span class="mr-[8px]">下一篇</span>
-                            <NuxtImg
-                                class="w-[10px]"
-                                src="/img/icons/post/arrow-next.svg"
-                            />
-                        </button>
+                        <template v-if="pagination.next">
+                            <button
+                                @click.prevent="jumpPage(pagination.next)"
+                                class="w-full YaleSolisW-Rg text-[16px] flex items-center justify-end"
+                            >
+                                <span class="mr-[20px] text-gray-400 line-clamp-1">{{ pagination.next.title }}</span>
+                                <span class="mr-[8px] whitespace-nowrap">下一篇</span>
+                                <NuxtImg
+                                    class="w-[10px]"
+                                    src="/img/icons/post/arrow-next.svg"
+                                />
+                            </button>
+                        </template>
                     </div>
                 </div>
             </div>
