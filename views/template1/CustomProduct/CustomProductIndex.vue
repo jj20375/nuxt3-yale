@@ -394,30 +394,34 @@ function openShoppingCarDialog() {
 function addToShoppingCar() {
     const data = {
         id: uuidv4(),
+        // 模擬 是否有 防火功能
+        types: {
+            category1: false,
+        },
         name: currentBgData.value.text,
         imgSrc: currentDoorData.value.imgSrc,
         count: count.value,
-        size: currentDoorSizeData.value,
-        door: { ...currentDoorData.value, color: currentDoorColorData.value },
-        doorOut: { ...currentDoorOutData.value, color: currentDoorOutColorData.value },
-        currentTool1: currentTool1Data.value,
-        currentTool2: currentTool2Data.value,
+        size: { label: "尺寸", ...currentDoorSizeData.value },
+        door: { label: "門扇", ...currentDoorData.value, color: currentDoorColorData.value },
+        doorOut: { label: "門框", ...currentDoorOutData.value, color: currentDoorOutColorData.value },
+        currentTool1: { label: "掛門", ...currentTool1Data.value },
+        currentTool2: { label: "氣密條", ...currentTool2Data.value },
     };
     let price = currentDoorData.value.price + currentDoorOutData.value.price + currentTool1Data.value.price + currentTool2Data.value.price;
 
     // 判斷是否有選擇 選擇基本五金 掛門資料
     if (!$utils().isEmpty(currentOther1Datas.value)) {
-        data["currentOther1"] = currentOther1Datas.value;
+        data["currentOther1"] = { label: "下降壓條", ...currentOther1Datas.value };
         price = price + _SumBy(currentOther1Datas.value, "price");
     }
     // 判斷是否有選擇 選擇基本五金 氣密條
     if (!$utils().isEmpty(currentOther2Datas.value)) {
-        data["currentOther1"] = currentOther2Datas.value;
+        data["currentOther2"] = { label: "門弓器", ...currentOther2Datas.value };
         price = price + _SumBy(currentOther2Datas.value, "price");
     }
     // 判斷是否有選擇 施作服務
     if (!$utils().isEmpty(currentServiceDatas.value)) {
-        data["otherServices"] = currentServiceDatas.value;
+        data["otherServices"] = { label: "額外施作服務", ...currentServiceDatas.value };
         price = price + _SumBy(currentServiceDatas.value, "price");
     }
     data["price"] = price * count.value;

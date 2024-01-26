@@ -16,11 +16,33 @@
                         class="w-[180px]"
                         :src="product.imgSrc"
                     />
+                    {{ isMobile }}
                 </div>
-                <div class="flex-1">
+                <div class="flex-1 ml-[48px]">
                     <div class="flex w-full text-gray-800">
                         <h3 class="YaleSolisW-Bd font-medium text-[18px] flex-1">訂製-{{ product.name }}</h3>
                         <p class="font-medium YaleSolisW-Bd">NT$ {{ $utils().formatCurrency(product.price) }}</p>
+                    </div>
+                    <div
+                        class="flex"
+                        v-for="(item, key) in shoppingCar[index]"
+                    >
+                        <div class="w-[90px]">
+                            {{ item.label }}
+                        </div>
+                        <div v-show="['door', 'doorOut', 'currentTool1', 'currentTool2'].includes(key)">
+                            {{ item.title }}
+                        </div>
+                        <div v-show="['currentOther1', 'currentOther2', 'otherServices'].includes(key)">
+                            <ul class="ml-2">
+                                <li
+                                    v-for="(item2, index2) in shoppingCar[index][key]"
+                                    class="list-disc list-inside"
+                                >
+                                    {{ item2.name }}
+                                </li>
+                            </ul>
+                        </div>
                     </div>
 
                     <div class="flex justify-end">
@@ -56,6 +78,8 @@
 import { useShoppingCarStore } from "~/store/shoppingCarStore";
 
 const emit = defineEmits(["update:selectProductIds"]);
+
+const { isMobile } = useWindowResize();
 
 const { $shoppingCarService, $utils } = useNuxtApp();
 
