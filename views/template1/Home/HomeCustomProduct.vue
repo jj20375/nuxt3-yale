@@ -1,5 +1,5 @@
 <template>
-    <section class="relative flex items-center justify-center rounded-bl-[120px] min-h-[100%] py-[100px]">
+    <section class="relative flex items-center justify-center rounded-bl-[120px] min-h-[100%] py-[120px]">
         <NuxtImg
             class="absolute w-full h-full object-cover rounded-bl-[120px]"
             src="/img/home/custom/section-bg.jpg"
@@ -10,7 +10,7 @@
                 <h5 class="text-zinc-800 text-[40px] mt-[14px] font-medium font-['Yale Solis'] leading-[50px] tracking-wide">訂製您的專屬門扇</h5>
                 <p class="w-[329px] mt-[20px] text-zinc-800 text-base font-normal font-['Yale Solis'] leading-relaxed tracking-tight">最新智慧電子鎖，從卡片密碼鎖到最先進的指紋鎖，一應俱全。</p>
                 <div class="mt-[40px]">
-                    <button class="gap-2 animation-btn">
+                    <button class="gap-2 yellow-btn btn-lg flex items-center justify-center">
                         <img
                             class="w-[30px]"
                             src="/img/home/custom/button-icon.svg"

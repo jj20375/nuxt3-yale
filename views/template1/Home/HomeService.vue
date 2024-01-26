@@ -1,7 +1,7 @@
 <template>
     <div>
-        <section class="pb-[100px] rounded-tl-[120px] rounded-bl-[120px] bg-gradient-to-r from-yellow-100 from-5% via-yellow-500 via-50% to-yellow-500 to-90%">
-            <div class="pt-[100px] text-center">
+        <section class="pb-[120px] rounded-tl-[120px] rounded-bl-[120px] bg-gray-100">
+            <div class="pt-[120px] text-center">
                 <h2 class="font-medium text-white leading-[66px] text-[66px] YaleSolisW-Bd">OUR PROMISE</h2>
                 <h3 class="font-medium leading-[50px] mt-[14px] text-[40px] YaleSolisW-Bd">Yale 四大安心宣言</h3>
             </div>
@@ -10,7 +10,7 @@
                     <div
                         v-for="(item, index) in items"
                         :key="index"
-                        class="relative aspect-square object-cover p-6 bg-white rounded-lg flex items-center justify-center top-0 transition-all duration-300 hover:-top-2.5 hover:drop-shadow-lg"
+                        class="promise-card"
                     >
                         <div>
                             <NuxtImg
@@ -23,7 +23,7 @@
                 </div>
             </article>
         </section>
-        <div class="relative bg-gradient-to-r from-yellow-100 from-5% via-yellow-500 via-50% to-yellow-500 to-90% ml-auto w-full relative top-0 right-0 h-[100px]">
+        <div class="relative bg-gray-100 ml-auto w-full relative top-0 right-0 h-[120px]">
             <div class="rounded-tr-[120px] bg-white ml-auto w-full absolute top-0 right-0 h-[120px]"></div>
         </div>
     </div>
@@ -49,3 +49,16 @@ const items = [
     },
 ];
 </script>
+
+<style lang="scss" scoped>
+.promise-card {
+    @apply relative aspect-square object-cover p-6 bg-white rounded-lg flex items-center justify-center top-0 transition-all duration-300;
+    @apply  before:absolute before:top-0 before:left-0 before:rounded-lg before:w-full before:h-full before:opacity-0 before:-z-[1] before:bg-gradient-to-r before:from-yellow-100 before:from-5% before:via-yellow-500 before:via-50% before:to-yellow-500 before:to-90% before:transition-all before:duration-300;
+    &:hover{
+        @apply -top-2.5 drop-shadow-lg;
+        &::before {
+            @apply opacity-100 transition-all transition-all duration-300;
+        }
+    }
+}
+</style>

@@ -1,7 +1,7 @@
 <template>
     <ClientOnly>
-        <div class="relative bg-gradient-to-r from-yellow-100 from-5% via-yellow-500 via-50% to-yellow-500 to-90% ml-auto w-full relative top-0 right-0 h-[100px]">
-            <div class="rounded-tr-[100px] bg-white ml-auto w-full absolute top-0 right-0 h-[100px]"></div>
+        <div class="relative bg-gray-200 to-90% ml-auto w-full relative top-0 right-0 h-[100px]">
+            <div class="rounded-tr-[120px] bg-white ml-auto w-full absolute top-0 right-0 h-[120px]"></div>
         </div>
         <section
             id="HomeSample"
@@ -9,7 +9,7 @@
         >
             <main class="flex-1 mx-auto w-[1113px]">
                 <div class="text-center">
-                    <h2 class="font-medium text-gray-100 text-[66px] YaleSolisW-Bd leading-none">PROJECT</h2>
+                    <h2 class="inline-block font-medium text-gray-100 text-[66px] YaleSolisW-Bd leading-none gradient-title">PROJECT</h2>
                     <h3 class="font-medium leading-[50px] text-[40px] YaleSolisW-Bd mt-[14px]">裝修實績</h3>
                 </div>
                 <Carousel3d
@@ -104,8 +104,8 @@
                 </div>
             </main>
         </section>
-        <div class="bg-gray-100 ml-auto w-full relative top-0 right-0 h-[100px]">
-            <div class="bg-white rounded-br-[120px] ml-auto w-full absolute top-0 right-0 h-[100px]"></div>
+        <div class="bg-gray-100 ml-auto w-full relative top-0 right-0 h-[120px]">
+            <div class="bg-white rounded-br-[120px] ml-auto w-full absolute top-0 right-0 h-[120px]"></div>
         </div>
     </ClientOnly>
 </template>
