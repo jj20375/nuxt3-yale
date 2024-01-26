@@ -41,7 +41,7 @@
 </template>
 
 <script lang="ts" setup>
-const emit = defineEmits(["update:currentTab"]);
+const emit = defineEmits(["update:currentBgId", "update:currentBgData"]);
 
 const props = defineProps({
     currentTab: {
@@ -83,7 +83,19 @@ const currentTabData = ref(props.currentTab);
 watch(
     () => currentTabData.value,
     (val) => {
-        emit("update:currentTab", val);
+        emit("update:currentBgId", val);
+        emit(
+            "update:currentBgData",
+            tabs.value.find((item) => item.id === val)
+        );
     }
 );
+
+onMounted(() => {
+    emit("update:currentBgId", props.currentTab);
+    emit(
+        "update:currentBgData",
+        tabs.value.find((item) => item.id === props.currentTab)
+    );
+});
 </script>
