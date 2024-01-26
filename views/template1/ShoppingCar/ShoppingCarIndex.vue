@@ -43,6 +43,8 @@
                     <ShoppingCarBilling
                         :class="currentStep == 0 ? 'mt-[20px]' : ''"
                         :selectProductIds="selectProductIds"
+                        :currentTab="currentTab"
+                        :currentStep="currentStep"
                     >
                         <template
                             v-if="currentStep == 0"
@@ -64,6 +66,18 @@
                             <span class="text-[24px]">
                                 {{ $utils().formatCurrency(total - salePrice - salePrice) }}
                             </span>
+                        </template>
+                        <template
+                            v-if="currentStep == 0"
+                            #deposit
+                        >
+                            {{ $utils().formatCurrency(total * 0.3) }}
+                        </template>
+                        <template
+                            v-if="currentStep == 1"
+                            #depositBig
+                        >
+                            {{ $utils().formatCurrency(total * 0.3) }}
                         </template>
                     </ShoppingCarBilling>
                     <div
