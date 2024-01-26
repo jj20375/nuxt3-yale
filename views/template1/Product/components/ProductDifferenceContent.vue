@@ -262,15 +262,15 @@ const form = ref<any>({
 const styleArr = computed(() => {
     const arr: any[] = []
     const defaultArr = props.datas.map((item: { model: string }) => item.model);
-    form.value.category.forEach((item, index) => {
-        if (item && item !== '') {
-            const filterArr = props.datas.filter((data: { shape: string }) => data.shape === item).map((item: { model: string }) => item.model);
+    for(let i = 0; i < 3; i++) {
+        if (form.value.category[i] && form.value.category[i] !== '') {
+            const filterArr = props.datas.filter((data: { shape: string }) => data.shape === form.value.category[i]).map((item: { model: string }) => item.model);
             console.log(filterArr)
-            arr[index] = filterArr
+            arr[i] = filterArr
         } else {
-            arr[index] = defaultArr
+            arr[i] = defaultArr
         }
-    })
+    }
     return arr
 })
 

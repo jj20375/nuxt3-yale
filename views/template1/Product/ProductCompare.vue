@@ -15,8 +15,12 @@
                             class="py-[11px] px-[31px] disabled:bg-gray-100 disabled:border-gray-300 disabled:text-gray-400 disabled:cursor-not-allowed bg-yellow-600 rounded-full text-gray-800 text-[16px]"
                         >
                             <span
-                                v-if="selectProducts.length > 0"
+                                v-if="selectProducts.length === 1"
                                 >查看規格</span
+                            >
+                            <span
+                                v-else-if="selectProducts.length > 1"
+                                >規格比較</span
                             >
                             <span v-else>選擇一個產品</span>
                         </button>
@@ -28,7 +32,7 @@
                     @click="selectProduct(item)"
                     v-for="(item, index) in datas"
                     :key="index"
-                    :class="[selectProducts.includes(item.id) ? 'border border-yellow-600' : '', selectProducts.length === 3 && !selectProducts.includes(item) ? 'opacity-50' : '']"
+                    :class="[selectProducts.includes(item.id) ? 'border border-yellow-600' : '', selectProducts.length === 3 && !selectProducts.includes(item.id) ? 'opacity-50' : '']"
                     class="bg-white p-[30px] rounded-[16px] cursor-pointer"
                 >
                     <NuxtImg
