@@ -8,6 +8,13 @@
             v-else
             v-model:selectProductIds="selectProductIds"
         />
+        <ShoppingCarStep2FormAddPriceToBuy
+            v-if="currentTab === 'type1'"
+            :products="addPriceBuyProducts"
+            v-model:form="formAddPriceBuyProducts"
+            v-model:selectProudctIds="selectAddPriceProductIds"
+        />
+
         <ShoppingCarSales />
         <div class="mb-[100px]">
             <NuxtLink
@@ -31,6 +38,8 @@ import ShoppingCarProducts from "~/views/template1/ShoppingCar/components/Shoppi
 import ShoppingCarCustomProducts from "~/views/template1/ShoppingCar/components/ShoppingCarCustomProducts.vue";
 // 折扣優惠
 import ShoppingCarSales from "~/views/template1/ShoppingCar/components/ShoppingCarSales.vue";
+// 加價購產品
+import ShoppingCarStep2FormAddPriceToBuy from "~/views/template1/ShoppingCar/components/Step2Form/ShoppingCarStep2FormAddPriceToBuy.vue";
 
 const emit = defineEmits(["update:selectProductIds"]);
 
@@ -43,6 +52,65 @@ const props = defineProps({
 
 // 購物車選中商品 id
 const selectProductIds = ref<number[]>([]);
+
+// 加價購產品
+const addPriceBuyProducts = ref([
+    {
+        id: "id1",
+        name: "質感托特包-1",
+        colors: [
+            {
+                label: "紅色",
+                value: "red",
+            },
+            {
+                label: "黑色",
+                value: "black",
+            },
+        ],
+        // 商品價格
+        price: 150,
+        // 特價價格
+        market_price: 100,
+        count: 1,
+    },
+    {
+        id: "id1",
+        name: "質感托特包-2",
+        colors: [
+            {
+                label: "紅色",
+                value: "red",
+            },
+            {
+                label: "黑色",
+                value: "black",
+            },
+        ],
+        // 商品價格
+        price: 250,
+        // 特價價格
+        market_price: 150,
+        count: 1,
+    },
+]);
+
+// 加價購表單
+const formAddPriceBuyProducts = ref([
+    {
+        id: "id1",
+        color: "red",
+        count: 1,
+    },
+    {
+        id: "id2",
+        color: "black",
+        count: 2,
+    },
+]);
+
+// 加價購商品選中 id
+const selectAddPriceProductIds = ref<number | string[]>([]);
 
 watch(
     () => selectProductIds.value,

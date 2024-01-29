@@ -10,15 +10,11 @@
             v-model:form="formGift"
             v-model:selectGiftIds="selectGiftIds"
         />
-        <ShoppingCarStep2FormAddPriceToBuy
-            :products="addPriceBuyProducts"
-            v-model:form="formAddPriceBuyProducts"
-            v-model:selectProudctIds="selectAddPriceProductIds"
-        />
         <ShoppingCarStep2FormCustomProductRule
             v-model:showDialog="showDialogByCustomRule"
             :customRuleData="customRuleData"
         />
+
         <div class="mt-[60px]">
             <div
                 v-if="currentTab === 'type2'"
@@ -76,8 +72,6 @@ import ShoppingCarStep2FormInvoice from "~/views/template1/ShoppingCar/component
 import ShoppingCarStep2FormGift from "~/views/template1/ShoppingCar/components/Step2Form/ShoppingCarStep2FormGift.vue";
 // 定型化契約彈窗
 import ShoppingCarStep2FormCustomProductRule from "~/views/template1/ShoppingCar/components/Step2Form/ShoppingCarStep2FormCustomProductRule.vue";
-// 加價購產品
-import ShoppingCarStep2FormAddPriceToBuy from "~/views/template1/ShoppingCar/components/Step2Form/ShoppingCarStep2FormAddPriceToBuy.vue";
 
 const props = defineProps({
     currentTab: {
@@ -214,65 +208,6 @@ const gifts = ref([
 
 // 贈品選中商品 id
 const selectGiftIds = ref<number | string[]>([]);
-
-// 加價購產品
-const addPriceBuyProducts = ref([
-    {
-        id: "id1",
-        name: "質感托特包-1",
-        colors: [
-            {
-                label: "紅色",
-                value: "red",
-            },
-            {
-                label: "黑色",
-                value: "black",
-            },
-        ],
-        // 商品價格
-        price: 150,
-        // 特價價格
-        market_price: 100,
-        count: 1,
-    },
-    {
-        id: "id1",
-        name: "質感托特包-2",
-        colors: [
-            {
-                label: "紅色",
-                value: "red",
-            },
-            {
-                label: "黑色",
-                value: "black",
-            },
-        ],
-        // 商品價格
-        price: 250,
-        // 特價價格
-        market_price: 150,
-        count: 1,
-    },
-]);
-
-// 加價購表單
-const formAddPriceBuyProducts = ref([
-    {
-        id: "id1",
-        color: "red",
-        count: 1,
-    },
-    {
-        id: "id2",
-        color: "black",
-        count: 2,
-    },
-]);
-
-// 加價購商品選中 id
-const selectAddPriceProductIds = ref<number | string[]>([]);
 
 const rules = ref([]);
 </script>
