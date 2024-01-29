@@ -5,14 +5,12 @@
             @mouseover="mouseoverEvent(product.id)"
             @mouseleave="mouseleaveEvent(product.id)"
         >
-            <div class="flex justify-center items-center">
-                <NuxtLink :to="{ name: 'product-detail-slug', params: { slug: product.name }, query: { id: product.id, breadcrumbs: JSON.stringify(breadcrumbs) } }">
-                    <NuxtImg
-                        class="object-cover h-full w-full rounded-2xl aspect-square"
-                        :src="product.main_image"
-                    />
-                </NuxtLink>
-            </div>
+            <NuxtLink :to="{ name: 'product-detail-slug', params: { slug: product.name }, query: { id: product.id, breadcrumbs: JSON.stringify(breadcrumbs) } }">
+                <NuxtImg
+                    class="object-cover h-full w-full rounded-2xl aspect-square"
+                    :src="product.main_image"
+                />
+            </NuxtLink>
             <div
                 :class="currentHover === product.id ? 'opacity-100' : 'opacity-0'"
                 class="absolute top-0 flex items-end w-full h-full transition-all duration-500 pointer-events-none z-0"
@@ -82,8 +80,6 @@ const props: Props = withDefaults(defineProps<Props>(), {
         },
     ],
 });
-
-const { $shoppingCarService } = useNuxtApp();
 
 // 判斷是否為喜愛項目
 const isFavorite = ref(false);
