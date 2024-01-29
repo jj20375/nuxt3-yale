@@ -44,15 +44,15 @@ import Breadcrumb from "~/views/template1/components/Breadcrumb.vue";
 // 產品比較內容頁
 import ProductDifferenceContent from "~/views/template1/Product/components/ProductDifferenceContent.vue";
 import { useProductCompareStore } from "~/store/productCompareStore";
-import type { ProductListAPIInterface, ProductCompareList, ProductInterface } from "~/views/template1/Product/interface/Product";
+import type { ProductListAPIInterface, ProductCompareList, ProductInterface } from "~/interface/product";
 
 const { $api } = useNuxtApp();
 const route = useRoute();
 const productCompareStore = useProductCompareStore();
 
 const compareStore = computed(() => {
-    return JSON.stringify(productCompareStore.compareStore)
-})
+    return JSON.stringify(productCompareStore.compareStore);
+});
 
 const breadcrumbs = ref([
     {
@@ -95,7 +95,7 @@ const products = ref<any>([]);
 watch(
     () => compareStore.value,
     (val) => {
-        productsCompareData()
+        productsCompareData();
     }
 );
 
@@ -126,58 +126,58 @@ async function getList(params: { product_type_id: string }) {
         shapeArr.value = rows.map((item: { shape: string }) => item.shape);
 
         if (rows[0]?.attributes) {
-            keys.value = []
-            Object.keys(rows[0]?.attributes).forEach(item => {
-                keys.value.push(item)
-            })
-            const obj = {}
-            keys.value.forEach((key: string|number) => {
-                obj[key] = key
-            })
-            attributes.value = obj
+            keys.value = [];
+            Object.keys(rows[0]?.attributes).forEach((item) => {
+                keys.value.push(item);
+            });
+            const obj = {};
+            keys.value.forEach((key: string | number) => {
+                obj[key] = key;
+            });
+            attributes.value = obj;
         }
-        await productsCompareData()
+        await productsCompareData();
     } catch (err) {
         console.log("HomeSampleAPI => ", err);
     }
 }
 
-function productsCompareData () {
-    products.value = []
+function productsCompareData() {
+    products.value = [];
     if (productCompareStore.compareStore[0]?.attributes) {
-        Object.keys(productCompareStore.compareStore[0]?.attributes).forEach(item => {
-            keys.value.push(item)
-        })
+        Object.keys(productCompareStore.compareStore[0]?.attributes).forEach((item) => {
+            keys.value.push(item);
+        });
     }
-    productCompareStore.compareStore.forEach((item: { model: any; shape: any; main_image: any; attributes: { [x: string]: any; }; }) => {
-        const obj = {}
-        keys.value.forEach((key: string|number) => {
-            obj[key] = item?.attributes[key]
-        })
+    productCompareStore.compareStore.forEach((item: { model: any; shape: any; main_image: any; attributes: { [x: string]: any } }) => {
+        const obj = {};
+        keys.value.forEach((key: string | number) => {
+            obj[key] = item?.attributes[key];
+        });
         products.value.push({
             style: item?.model,
             category: item?.shape,
             imgSrc: item?.main_image,
-            ...obj
-        })
-    })
+            ...obj,
+        });
+    });
 }
 
-productsCompareData()
+productsCompareData();
 
 const columns = computed(() => {
     return {
         style: "產品款式",
         category: "產品型號",
         imgSrc: "",
-        ...attributes.value
-    }
-})
+        ...attributes.value,
+    };
+});
 
 /**
  * 初始化
  */
- async function init() {
+async function init() {
     await getList({ product_type_id: route.query.compareId });
 }
 

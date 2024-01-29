@@ -5,7 +5,7 @@
             @mouseover="mouseoverEvent(product.id)"
             @mouseleave="mouseleaveEvent(product.id)"
         >
-            <div class="flex justify-center items-center h-[441px]">
+            <div class="flex items-center justify-center">
                 <NuxtImg
                     class="max-w-[441px] px-5 h-full object-contain w-full rounded-2xl aspect-1/1"
                     :src="product.main_image"

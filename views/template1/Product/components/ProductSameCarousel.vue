@@ -1,5 +1,5 @@
 <template>
-    <div class="relative">
+    <div class="relative mt-[40px]">
         <div class="px-[100px]">
             <Swiper
                 v-if="photos.length > 0"
@@ -14,7 +14,8 @@
                     :key="index"
                     class="px-[3px]"
                 >
-                    <ProductCard :product="{ id: index }" />
+                    <!-- {{ item }} -->
+                    <ProductCard :product="item" />
                 </SwiperSlide>
             </Swiper>
             <div class="absolute top-0 left-0 z-50 flex items-center h-full">
@@ -41,15 +42,36 @@
 // swiper 幻燈片套件
 import { FreeMode, Navigation, Thumbs } from "swiper/modules";
 import ProductCard from "~/views/template1/components/ProductCard.vue";
+/**
+ * ProductCarInterface: 產品卡片樣式參數
+ */
+import type { ProductCarInterface } from "~/interface/product";
+/**
+ * BreadcrumbInterface: 麵包屑格式
+ */
+import type { BreadcrumbInterface } from "~/interface/global";
 
 interface Props {
-    photos: { imgSrc: string }[];
+    photos: ProductCarInterface[];
+    breadcrumbs: BreadcrumbInterface[];
 }
 
 const props = withDefaults(defineProps<Props>(), {
     photos: [
         {
-            imgSrc: "",
+            id: 1,
+            model: "",
+            name: "",
+            price: 0,
+            market_price: 0,
+            main_image: "",
+            other_images: [""],
+        },
+    ],
+    breadcrumbs: [
+        {
+            name: "",
+            text: "",
         },
     ],
 });
