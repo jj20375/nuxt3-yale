@@ -37,8 +37,9 @@ import ProductCard from "@/views/template1/components/ProductCard.vue";
 /**
  * ProductListAPIInterface: 產品分頁 api 回應值
  * ProductList: 產品分頁列表內容
+ * ProductCarInterface: 產品卡片樣式參數
  */
-import { ProductListAPIInterface, ProductList } from "~/views/template1/Product/interface/Product.d";
+import { ProductListAPIInterface, ProductList, ProductCarInterface } from "~/interface/product.d";
 
 const { $api } = useNuxtApp();
 
@@ -64,7 +65,7 @@ async function getList(params: { per_page: number; page: number }) {
         const rows = (data.value as any).data.rows;
         const meta = (data.value as any).data.meta;
 
-        rows.forEach((item: { id: any; model: any; name: any; shape: any; price: any; market_price: any; main_image: any; other_images: any }) => {
+        rows.forEach((item: ProductCarInterface) => {
             datas.value.push({
                 id: item.id,
                 model: item.model,

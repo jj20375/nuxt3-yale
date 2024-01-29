@@ -36,11 +36,11 @@
                     class="bg-white p-[30px] rounded-[16px] cursor-pointer"
                 >
                     <NuxtImg
-                        class="object-cover w-full rounded-2xl aspect-square object-cover"
+                        class="object-cover w-full rounded-2xl aspect-square"
                         :src="item.main_image"
                     />
-                    <h5 class="text-[18px] YaleSolisW-Bd font-medium">{{item.model}}</h5>
-                    <p class="text-[14px] text-gray-800">{{item.name}}</p>
+                    <h5 class="text-[18px] YaleSolisW-Bd font-medium">{{ item.model }}</h5>
+                    <p class="text-[14px] text-gray-800">{{ item.name }}</p>
                 </div>
             </div>
         </div>
@@ -50,7 +50,7 @@
 <script setup lang="ts">
 // 麵包屑組件
 import Breadcrumb from "~/views/template1/components/Breadcrumb.vue";
-import { ProductCompareList } from "~/views/template1/Product/interface/Product.d";
+import { ProductCompareList } from "~/interface/product.d";
 import { useProductCompareStore } from "~/store/productCompareStore";
 
 const { $api } = useNuxtApp();
@@ -99,18 +99,18 @@ const cnaSelected = ref(false);
  * 選擇事件
  * @param { type String or Number(字串或數字) } val 選中地區值
  */
-function selectProduct(val: {id: string | number; model: any; name: any; shape: any; price: any; market_price: any; main_image: any; attributes: any }) {
-    productCompareStore.compareStore = []
+function selectProduct(val: { id: string | number; model: any; name: any; shape: any; price: any; market_price: any; main_image: any; attributes: any }) {
+    productCompareStore.compareStore = [];
     if (selectProducts.value.includes(val.id)) {
         // 將可選擇狀態改為 true
         cnaSelected.value = true;
-        
+
         // 取得選擇區域 index索引位置
         const arrIndex = _FindIndex(selectProducts.value, function (item: any) {
             // 尋找與 val 相同位置的值
             return item == val.id;
         });
-        console.log('arrIndex', arrIndex)
+        console.log("arrIndex", arrIndex);
         // 刪除選中的地區值
         selectProducts.value.splice(arrIndex, 1);
     } else {
@@ -124,20 +124,19 @@ function selectProduct(val: {id: string | number; model: any; name: any; shape: 
         selectProducts.value.push(val.id);
     }
     selectProducts.value.forEach((item: string | number) => {
-        productCompareStore.compareStore.push(datas.value.find(data => data.id === item))
-    })
+        productCompareStore.compareStore.push(datas.value.find((data) => data.id === item));
+    });
 }
 
 // 商品列表
 const datas = ref<ProductCompareList[]>([]);
 
-
 /**
  * 取得商品列表
  */
- async function getList(params: { product_type_id: string }) {
+async function getList(params: { product_type_id: string }) {
     try {
-        productCompareStore.compareStore = []
+        productCompareStore.compareStore = [];
         const { data } = await $api().ProductLisAPI<ProductListAPIInterface>(params);
         datas.value = [];
 
@@ -154,8 +153,8 @@ const datas = ref<ProductCompareList[]>([]);
             });
         });
 
-        if(route.query.productId) {
-            selectProduct(datas.value.find(item => item.id == route.query.productId))
+        if (route.query.productId) {
+            selectProduct(datas.value.find((item) => item.id == route.query.productId));
         }
     } catch (err) {
         console.log("HomeSampleAPI => ", err);
