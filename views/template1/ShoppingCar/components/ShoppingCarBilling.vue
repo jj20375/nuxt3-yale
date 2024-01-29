@@ -21,6 +21,24 @@
                 <slot name="total"></slot>
             </div>
         </div>
+        <div
+            v-if="currentTab === 'type2' && currentStep === 0"
+            class="text-gray-600 text-[14px] flex mt-[4px]"
+        >
+            <div class="flex-1">訂金(總價30%)</div>
+            <!-- 訂金 -->
+            <span class="mr-[4px]">NT$ </span>
+            <slot name="deposit"></slot>
+        </div>
+        <div
+            v-if="currentTab === 'type2' && currentStep === 1"
+            class="text-gray-800 text-[30px] font-medium YaleSolisW-Bd flex mt-[4px]"
+        >
+            <div class="flex-1">支付訂金</div>
+            <!-- 訂金 -->
+            <span class="mr-[4px]">NT$ </span>
+            <slot name="depositBig"></slot>
+        </div>
         <slot name="button"></slot>
     </div>
 </template>
@@ -30,10 +48,16 @@ import { useShoppingCarStore } from "~/store/shoppingCarStore";
 
 interface Props {
     selectProductIds: number[];
+    // 判斷是一般訂單購物車 還是 訂製門扇
+    currentTab: string;
+    // 訂單狀態
+    currentStep: number;
 }
 
 const props = withDefaults(defineProps<Props>(), {
     selectProductIds: [],
+    currentTab: "type1",
+    currentStep: 0,
 });
 
 const { $utils } = useNuxtApp();

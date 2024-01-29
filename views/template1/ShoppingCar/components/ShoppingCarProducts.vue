@@ -122,6 +122,8 @@ function init() {
             checkList.value = shoppingCar.value.map((item) => item.id);
             // 選中商品參數傳給母組件
             emit("update:selectProductIds", checkList.value);
+        } else {
+            shoppingCarStore.setShoppingCar([]);
         }
     }
 }

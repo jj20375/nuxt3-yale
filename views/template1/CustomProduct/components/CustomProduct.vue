@@ -71,10 +71,10 @@ import CustomProductDailogCarousel from "~/views/template1/CustomProduct/compone
 
 const { $utils } = useNuxtApp();
 
-const emit = defineEmits(["update:currentProduct"]);
+const emit = defineEmits(["update:currentProductId", "update:currentProductData"]);
 
 interface Props {
-    currentProduct: string | number;
+    currentProductId: string | number;
     products: {
         imgSrc: string;
         title: string;
@@ -89,7 +89,7 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), {
     // 預設選擇產品
-    currentProduct: "id1",
+    currentProductId: "id1",
     // 可選擇產品
     products: [
         {
@@ -104,7 +104,7 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 // 預設選擇產品資料
-const currentProductData = ref(props.currentProduct);
+const currentProductData = ref(props.currentProductId);
 
 /**
  * 設定選擇產品資料
@@ -116,7 +116,11 @@ function setProduct(val) {
 watch(
     () => currentProductData.value,
     (val) => {
-        emit("update:currentProduct", val);
+        emit("update:currentProductId", val);
+        emit(
+            "update:currentProductData",
+            props.products.find((item) => item.id === val)
+        );
     }
 );
 
@@ -142,6 +146,14 @@ const showDialog = ref(false);
 function closeDialog() {
     showDialog.value = false;
 }
+
+onMounted(() => {
+    emit("update:currentProductId", props.currentProductId);
+    emit(
+        "update:currentProductData",
+        props.products.find((item) => item.id === props.currentProductId)
+    );
+});
 </script>
 
 <style lang="scss" scoped>

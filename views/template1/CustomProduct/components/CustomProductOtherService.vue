@@ -29,7 +29,7 @@
 <script setup lang="ts">
 const { $utils } = useNuxtApp();
 
-const emit = defineEmits(["update:selectedServices"]);
+const emit = defineEmits(["update:selectedServiceIds", "update:selectedServiceDatas"]);
 
 const selectedServices = ref([]);
 
@@ -57,7 +57,11 @@ const descriptions = ref(["1. 實際價格將依現場丈量評估後為準，�
  * 選擇服務
  */
 function selectService(val: any) {
-    emit("update:selectedServices", val);
+    emit("update:selectedServiceIds", val);
+    emit(
+        "update:selectedServiceDatas",
+        services.value.filter((item) => val.includes(item.id))
+    );
 }
 
 /**

@@ -4,8 +4,7 @@
             <li
                 v-for="(item, key) in steps"
                 :key="key"
-                class="flex-1 cursor-pointer"
-                @click="changeStep(key)"
+                class="flex-1"
             >
                 <div
                     class="w-[36px] h-[36px] border rounded-full text-center flex items-center justify-center mx-auto"

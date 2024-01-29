@@ -1,6 +1,13 @@
 <template>
     <div class="mr-[40px] flex-1">
-        <ShoppingCarProducts v-model:selectProductIds="selectProductIds" />
+        <ShoppingCarProducts
+            v-if="currentTab === 'type1'"
+            v-model:selectProductIds="selectProductIds"
+        />
+        <ShoppingCarCustomProducts
+            v-else
+            v-model:selectProductIds="selectProductIds"
+        />
         <ShoppingCarSales />
         <div class="mb-[100px]">
             <NuxtLink
@@ -20,10 +27,19 @@
 <script setup lang="ts">
 // 購物車商品
 import ShoppingCarProducts from "~/views/template1/ShoppingCar/components/ShoppingCarProducts.vue";
+// 訂製門扇商品
+import ShoppingCarCustomProducts from "~/views/template1/ShoppingCar/components/ShoppingCarCustomProducts.vue";
 // 折扣優惠
 import ShoppingCarSales from "~/views/template1/ShoppingCar/components/ShoppingCarSales.vue";
 
 const emit = defineEmits(["update:selectProductIds"]);
+
+const props = defineProps({
+    currentTab: {
+        type: String,
+        default: "type1",
+    },
+});
 
 // 購物車選中商品 id
 const selectProductIds = ref<number[]>([]);

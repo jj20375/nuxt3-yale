@@ -10,7 +10,10 @@
                     :key="key"
                     class="flex py-[24px] px-[36px] rounded-[8px] cursor-pointer"
                     :class="[currentTab === key ? 'border-2 border-yellow-600' : 'border border-gray-300 ', key === 'type1' ? 'mr-[24px]' : '']"
-                    @click="currentTab = key"
+                    @click="
+                        currentTab = key;
+                        router.push({ name: route.name, query: { tab: key } });
+                    "
                 >
                     <div class="mr-[12px]">
                         <NuxtImg
@@ -40,6 +43,8 @@
                     <ShoppingCarBilling
                         :class="currentStep == 0 ? 'mt-[20px]' : ''"
                         :selectProductIds="selectProductIds"
+                        :currentTab="currentTab"
+                        :currentStep="currentStep"
                     >
                         <template
                             v-if="currentStep == 0"
@@ -61,6 +66,18 @@
                             <span class="text-[24px]">
                                 {{ $utils().formatCurrency(total - salePrice - salePrice) }}
                             </span>
+                        </template>
+                        <template
+                            v-if="currentStep == 0"
+                            #deposit
+                        >
+                            {{ $utils().formatCurrency(total * 0.3) }}
+                        </template>
+                        <template
+                            v-if="currentStep == 1"
+                            #depositBig
+                        >
+                            {{ $utils().formatCurrency(total * 0.3) }}
                         </template>
                     </ShoppingCarBilling>
                     <div
@@ -109,6 +126,9 @@ import ShoppingCarInputCoupon from "~/views/template1/ShoppingCar/components/Sho
 import ShoppingCarBilling from "~/views/template1/ShoppingCar/components/ShoppingCarBilling.vue";
 import { useShoppingCarStore } from "~/store/shoppingCarStore";
 const { $utils } = useNuxtApp();
+
+const route = useRoute();
+const router = useRouter();
 
 const shoppingCarStore = useShoppingCarStore();
 
@@ -167,4 +187,8 @@ watch(
         }
     }
 );
+
+onMounted(() => {
+    currentTab.value = route.query.tab as string;
+});
 </script>

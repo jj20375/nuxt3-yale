@@ -49,7 +49,7 @@
 <script lang="ts" setup>
 import AddToShoppingCarDialog from "~/views/template1/components/AddToShoppingCarDialog.vue";
 
-const { $utils } = useNuxtApp();
+const { $utils, $shoppingCarService } = useNuxtApp();
 interface Props {
     product: { id: number; [key: string]: any };
     // 麵包屑
@@ -73,8 +73,6 @@ const props: Props = withDefaults(defineProps<Props>(), {
     ],
 });
 
-const { $shoppingCarService } = useNuxtApp();
-
 // 判斷是否顯示彈窗
 const showDialog = ref(false);
 
@@ -94,7 +92,7 @@ function addToShoppingCar(data: any) {
     showDialog.value = true;
     console.log("addToShoppingCar => ", data);
     if (process.client) {
-        $shoppingCarService().addToShoppingCar({ ...data, mark: "YDM 4109A", name: "指紋密碼鑰匙三合一", price: 1760, color: "黑色", imgSrc: "/img/home/product/product1.jpg", count: 1, singlePrice: 1760 });
+        $shoppingCarService().addToShoppingCar({ ...data, mark: "YDM 4109A", name: "指紋密碼鑰匙三合一", color: "黑色", imgSrc: "/img/home/product/product1.jpg", count: 1, singlePrice: 1760 });
     }
 }
 </script>
