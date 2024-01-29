@@ -46,7 +46,7 @@ const props = defineProps({
     // 判斷是否為一般產品 還是 訂製門扇購物車
     tab: {
         type: String,
-        default: "tye1",
+        default: "type1",
     },
 });
 
