@@ -162,6 +162,7 @@
                 </div>
             </el-dialog>
         </client-only>
+        <div class="pdf-page"><span>test page 測試</span></div>
     </section>
 </template>
 <script setup lang="ts">
@@ -280,28 +281,29 @@ const orderData = ref({
 });
 
 import { jsPDF } from "jspdf";
-import Font from "~/public/font/NotoSansTC-Regular-normal";
+import html2canvas from 'html2canvas';
+// import Font from "~/public/font/NotoSansTC-Regular-normal";
 
 function downloadPdf() {
     // Default export is a4 paper, portrait, using millimeters for units
     if (process.client) {
-        const doc = new jsPDF();
-        const myfont = Font;
-        doc.addFileToVFS("NotoSansTC-Regular-normal.ttf", myfont);
-        doc.addFont("NotoSansTC-Regular-normal.ttf", "NotoSansTC-Regular", "normal");
-        doc.setFont("NotoSansTC-Regular");
+        // const doc = new jsPDF();
+        // const myfont = Font;
+        // doc.addFileToVFS("NotoSansTC-Regular-normal.ttf", myfont);
+        // doc.addFont("NotoSansTC-Regular-normal.ttf", "NotoSansTC-Regular", "normal");
+        // doc.setFont("NotoSansTC-Regular");
 
-        const element = "<span style='font-size:100px; font-family:SourceHanSans-Normal;'>測試!</span>";
-        doc.html(element, {
-            callback: function (doc) {
-                // doc.addFont("SourceHanSans-Normal.ttf", "SourceHanSans-Normal", "normal");
-                // doc.setFont("SourceHanSans-Normal");
+        // const element = "<span style='font-size:100px; font-family:SourceHanSans-Normal;'>測試!</span>";
+        // doc.html(element, {
+        //     callback: function (doc) {
+        //         // doc.addFont("SourceHanSans-Normal.ttf", "SourceHanSans-Normal", "normal");
+        //         // doc.setFont("SourceHanSans-Normal");
 
-                doc.save("a4.pdf");
-            },
-            x: 10,
-            y: 10,
-        });
+        //         doc.save("a4.pdf");
+        //     },
+        //     x: 10,
+        //     y: 10,
+        // });
         // doc.text("簡體中文、繁體體中文、English、ジャパン、한국어", 10, 10);
         // doc.addFont("SourceHanSans-Normal.ttf", "SourceHanSans-Normal", "normal");
         // doc.setFont("SourceHanSans-Normal");
@@ -310,5 +312,36 @@ function downloadPdf() {
 
     // doc.addFileToVFS("MyFont.ttf", Font);
     // doc.addFont("MyFont.ttf", "MyFont", "normal");
+
+
+
+    const pageElements = document.querySelectorAll('.pdf-page'); // 選取所有需要匯出的頁面元素
+
+      const pdf = new jsPDF(); // 創建一個新的 jspdf 實例
+      let currentY = 0; // 目前的 Y 座標
+
+      // 遍歷每個頁面元素，並使用 'html2canvas' 將每個頁面元素渲染為 canvas，並將其添加到 PDF 中
+      for (let i = 0; i < pageElements.length; i++) {
+        const pageElement = pageElements[i];
+
+        const canvas = await html2canvas(pageElement); // 將頁面元素渲染為 canvas
+
+        const imgDataURL = canvas.toDataURL('image/png'); // 取得 canvas 的圖片 URL
+        const imgWidth = pdf.internal.pageSize.getWidth(); // 圖片的寬度，與 PDF 頁面的寬度相同
+        const imgHeight = (canvas.height * imgWidth) / canvas.width; // 計算圖片的高度，以保持比例
+
+        if (i > 0) {
+          pdf.addPage(); // 添加新的頁面
+          currentY = 0; // 重置 Y 座標
+        }
+
+        pdf.addImage(imgDataURL, 'PNG', 0, currentY, imgWidth, imgHeight); // 在 PDF 頁面上繪製圖片
+        currentY += imgHeight; // 更新目前的 Y 座標
+      }
+
+      pdf.save('example.pdf'); // 下載生成的 PDF 文件
+    },
+
+
 }
 </script>
