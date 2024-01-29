@@ -25,7 +25,7 @@
                             class="w-[20px] aspect-square object-cover"
                             src="/img/icons/auth/download.svg"
                         />
-                        <span>下載訂購單</span>
+                        <span @click="downloadPdf">下載訂購單</span>
                     </div>
                 </div>
                 <RecordTimeline
@@ -278,4 +278,37 @@ const orderData = ref({
         memo: "備註內容備註內容備註內容備註內容備註內容備註內容備註內容備註內容備註內容備註內容備註內容備註內容",
     },
 });
+
+import { jsPDF } from "jspdf";
+import Font from "~/public/font/NotoSansTC-Regular-normal";
+
+function downloadPdf() {
+    // Default export is a4 paper, portrait, using millimeters for units
+    if (process.client) {
+        const doc = new jsPDF();
+        const myfont = Font;
+        doc.addFileToVFS("NotoSansTC-Regular-normal.ttf", myfont);
+        doc.addFont("NotoSansTC-Regular-normal.ttf", "NotoSansTC-Regular", "normal");
+        doc.setFont("NotoSansTC-Regular");
+
+        const element = "<span style='font-size:100px; font-family:SourceHanSans-Normal;'>測試!</span>";
+        doc.html(element, {
+            callback: function (doc) {
+                // doc.addFont("SourceHanSans-Normal.ttf", "SourceHanSans-Normal", "normal");
+                // doc.setFont("SourceHanSans-Normal");
+
+                doc.save("a4.pdf");
+            },
+            x: 10,
+            y: 10,
+        });
+        // doc.text("簡體中文、繁體體中文、English、ジャパン、한국어", 10, 10);
+        // doc.addFont("SourceHanSans-Normal.ttf", "SourceHanSans-Normal", "normal");
+        // doc.setFont("SourceHanSans-Normal");
+        // doc.save("my.pdf");
+    }
+
+    // doc.addFileToVFS("MyFont.ttf", Font);
+    // doc.addFont("MyFont.ttf", "MyFont", "normal");
+}
 </script>
