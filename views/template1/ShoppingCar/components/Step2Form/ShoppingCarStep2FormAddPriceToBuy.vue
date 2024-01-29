@@ -28,7 +28,7 @@
                     >
                         <div class="flex">
                             <h5 class="flex-1 text-[18px] text-gray-800 font-medium mb-[12px]">{{ product.name }}</h5>
-                            <div class="">
+                            <div class="flex">
                                 <p class="text-gray-400 line-through YaleSolisW-Lt mr-[4px]">NT${{ $utils().formatCurrency(product.price) }}</p>
                                 <p class="font-medium YaleSolisW-Bd">NT$ {{ $utils().formatCurrency(product.market_price * formData[index].count) }}</p>
                             </div>
