@@ -30,7 +30,7 @@ import ProductCard from "~/views/template1/components/ProductCard.vue";
  * ProductListAPIInterface: 產品分頁 api 回應值
  * ProductList: 產品分頁列表內容
  */
-import { ProductListAPIInterface, ProductList } from "~/views/template1/Product/interface/Product.d";
+import { ProductListAPIInterface, ProductList } from "~/interface/product.d";
 
 const { $api } = useNuxtApp();
 

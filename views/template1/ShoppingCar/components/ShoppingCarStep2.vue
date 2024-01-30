@@ -14,6 +14,7 @@
             v-model:showDialog="showDialogByCustomRule"
             :customRuleData="customRuleData"
         />
+
         <div class="mt-[60px]">
             <div
                 v-if="currentTab === 'type2'"

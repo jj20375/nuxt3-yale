@@ -33,7 +33,10 @@
                 </div>
             </div>
             <div class="flex justify-end mr-10 mb-[24px]">
-                <NuxtLink v-if="productTypeDetail.is_compare === 1" :to="{ name: 'product-compare-slug', params: { slug: '主鎖比較' }, query: { compareId: productTypeDetail.compare_id } }">
+                <NuxtLink
+                    v-if="productTypeDetail.is_compare === 1"
+                    :to="{ name: 'product-compare-slug', params: { slug: '主鎖比較' }, query: { compareId: productTypeDetail.compare_id } }"
+                >
                     <button class="border mr-[30px] border-gray-600 w-[100px] text-center rounded-full h-[36px]">規格比較</button>
                 </NuxtLink>
                 <div class="flex items-center">
@@ -87,7 +90,7 @@ import ProductCard from "~/views/template1/components/ProductCard.vue";
  * ProductListAPIInterface: 產品分頁 api 回應值
  * ProductList: 產品分頁列表內容
  */
-import { ProductListAPIInterface, ProductList } from "~/views/template1/Product/interface/Product.d";
+import { ProductListAPIInterface, ProductList } from "~/interface/product.d";
 
 const { $api } = useNuxtApp();
 
@@ -108,7 +111,6 @@ const sortOptions = ref([
             order_by: "created_at",
             order_direction: "desc",
         },
-
     },
     {
         label: "上架時間舊至新",
@@ -116,7 +118,7 @@ const sortOptions = ref([
             label: "上架時間舊至新",
             order_by: "created_at",
             order_direction: "asc",
-        }
+        },
     },
     {
         label: "名稱A-Z",
@@ -124,7 +126,7 @@ const sortOptions = ref([
             label: "名稱A-Z",
             order_by: "name",
             order_direction: "desc",
-        }
+        },
     },
     {
         label: "名稱Z-A",
@@ -132,7 +134,7 @@ const sortOptions = ref([
             label: "名稱Z-A",
             order_by: "name",
             order_direction: "asc",
-        }
+        },
     },
     {
         label: "定價高到低",
@@ -140,7 +142,7 @@ const sortOptions = ref([
             label: "定價高到低",
             order_by: "price",
             order_direction: "desc",
-        }
+        },
     },
     {
         label: "定價低到高",
@@ -148,16 +150,16 @@ const sortOptions = ref([
             label: "定價低到高",
             order_by: "price",
             order_direction: "asc",
-        }
+        },
     },
-])
+]);
 
 function sortChange() {
     getList({ per_page: pagination.value.pageSize, page: 1 });
 }
 
 const sidebar = ref<any>([]);
-const sideBarRef = ref<any>(null)
+const sideBarRef = ref<any>(null);
 
 const product_category_id = ref(route.query.tag);
 /**
@@ -221,11 +223,10 @@ async function getType() {
         });
 
         if (route.query.tag === route.query.category) {
-            const children_id = rows.find((item: { id: any }) => item.id == route.query.category).children.map((child: { id: any; }) => child.id)
-            console.log(children_id)
-            product_category_id.value = children_id.join()
+            const children_id = rows.find((item: { id: any }) => item.id == route.query.category).children.map((child: { id: any }) => child.id);
+            console.log(children_id);
+            product_category_id.value = children_id.join();
         }
-
     } catch (err) {
         console.log("HomeSampleAPI => ", err);
     }
@@ -289,7 +290,7 @@ async function getList(params: { per_page: number; page: number }) {
         // 搜尋分類參數 ("主鎖｜輔助鎖" 等等...)
         params["search_relations"] = "productCategories.product_category_id:" + product_category_id.value;
         params["order_by"] = sortBy.value.order_by;
-        params["order_direction"] = sortBy.value.order_direction
+        params["order_direction"] = sortBy.value.order_direction;
         const { data } = await $api().ProductListPaginateAPI<ProductListAPIInterface>(params);
         datas.value = [];
         console.log("home sample api => ", data.value);
@@ -329,8 +330,8 @@ onMounted(async () => {
     nextTick(async () => {
         if (process.client) {
             await init();
-            console.log(sideBarRef.value.openSubMenu)
-            sideBarRef.value.openSubMenu = Number(route.query.category)
+            console.log(sideBarRef.value.openSubMenu);
+            sideBarRef.value.openSubMenu = Number(route.query.category);
         }
     });
 });

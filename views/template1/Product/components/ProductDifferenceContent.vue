@@ -156,7 +156,7 @@
 </template>
 
 <script setup lang="ts">
-import type { ProductListAPIInterface, ProductCompareList, ProductInterface } from "~/views/template1/Product/interface/Product";
+import type { ProductListAPIInterface, ProductCompareList, ProductInterface } from "~/interface/product";
 import { useProductCompareStore } from "~/store/productCompareStore";
 
 const { $api } = useNuxtApp();
@@ -245,11 +245,11 @@ const props = withDefaults(defineProps<Props>(), {
     },
     datas: {
         id: 0,
-        model: '',
-        name: '',
-        shape: '',
-        main_image: '',
-        attributes: '',
+        model: "",
+        name: "",
+        shape: "",
+        main_image: "",
+        attributes: "",
     },
     shapeArr: [],
 });
@@ -260,19 +260,19 @@ const form = ref<any>({
 });
 
 const styleArr = computed(() => {
-    const arr: any[] = []
+    const arr: any[] = [];
     const defaultArr = props.datas.map((item: { model: string }) => item.model);
     form.value.category.forEach((item, index) => {
-        if (item && item !== '') {
+        if (item && item !== "") {
             const filterArr = props.datas.filter((data: { shape: string }) => data.shape === item).map((item: { model: string }) => item.model);
-            console.log(filterArr)
-            arr[index] = filterArr
+            console.log(filterArr);
+            arr[index] = filterArr;
         } else {
-            arr[index] = defaultArr
+            arr[index] = defaultArr;
         }
-    })
-    return arr
-})
+    });
+    return arr;
+});
 
 const emit = defineEmits(["categorySelect"]);
 
@@ -310,7 +310,6 @@ function modelChange(index: string | number) {
 /**
  * 初始化
  */
-
 
 onMounted(() => {
     console.log("props.products => ", props.products);

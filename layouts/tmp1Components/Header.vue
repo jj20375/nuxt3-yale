@@ -331,6 +331,9 @@ const rightIcons = computed(() => {
                 params: {
                     slug: "耶魯電子鎖購物車",
                 },
+                query: {
+                    tab: "type1",
+                },
             },
         },
     ];

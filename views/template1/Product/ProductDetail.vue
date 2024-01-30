@@ -159,10 +159,13 @@
                     </div>
                 </div>
             </div>
-            <!-- <div>
+            <div>
                 <h3 class="text-[32px] YaleSolisW-Bd font-medium text-gray-800 text-center">相關產品</h3>
-                <ProductSameCarousel :photos="photos" />
-            </div> -->
+                <ProductSameCarousel
+                    :photos="sameProducts"
+                    :breadcrumbs="breadcrumbs"
+                />
+            </div>
         </div>
     </section>
 </template>
@@ -174,6 +177,12 @@ import Breadcrumb from "~/views/template1/components/Breadcrumb.vue";
 import ProductDetailCarousel from "~/views/template1/Product/components/ProductDetailCarousel.vue";
 // 相關產品幻燈片
 import ProductSameCarousel from "~/views/template1/Product/components/ProductSameCarousel.vue";
+/**
+ * ProductListAPIInterface: 產品分頁 api 回應值
+ * ProductList: 產品分頁列表內容
+ * ProductCarInterface: 產品卡片樣式參數
+ */
+import { ProductListAPIInterface, ProductList, ProductCarInterface } from "~/interface/product.d";
 
 const { $api, $utils } = useNuxtApp();
 const route = useRoute();
@@ -182,6 +191,8 @@ const breadcrumbs = ref(JSON.parse(route.query.breadcrumbs));
 
 const photos = ref<{ id: string | number; imgSrc: string }[]>([]);
 const detailData = ref<any>({});
+// 相關商品列表
+const sameProducts = ref<ProductList[]>([]);
 
 const productOptions = ref<any>([]);
 // 預設選中顏色
@@ -318,10 +329,39 @@ function downloadFile(file: { url: string | URL | undefined }) {
 }
 
 /**
+ * 取得相關商品列表
+ * test-mock: 模擬相關商品 api
+ */
+async function getList(params: { per_page: number; page: number }) {
+    try {
+        const { data } = await $api().ProductListPaginateAPI<ProductListAPIInterface>(params);
+        sameProducts.value = [];
+        console.log("home sample api => ", data.value);
+
+        const rows = (data.value as any).data.rows;
+
+        rows.forEach((item: ProductCarInterface) => {
+            sameProducts.value.push({
+                id: item.id,
+                model: item.model,
+                name: item.name,
+                shape: item.shape,
+                price: item.price,
+                market_price: item.market_price,
+                main_image: item.main_image,
+            });
+        });
+    } catch (err) {
+        console.log("HomeSampleAPI => ", err);
+    }
+}
+
+/**
  * 初始化
  */
 async function init() {
     await getData();
+    await getList({ per_page: 10, page: 1 });
 }
 
 onMounted(async () => {
