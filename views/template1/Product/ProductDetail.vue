@@ -78,7 +78,7 @@
                         </div>
                     </div>
                     <div class="my-[30px]">
-                        <button class="max-w-[387px] w-full text-center py-[11px] border border-gray-600 transition-all duration-500 hover:text-white hover:bg-black rounded-full">加入購物車</button>
+                        <button class="max-w-[387px] w-full text-center py-[11px] border border-gray-600 transition-all duration-500 hover:text-white hover:bg-black rounded-full" @click="addToShoppingCar(product)">加入購物車</button>
                         <div class="mt-[12px]">
                             <button class="max-w-[387px] w-full text-center py-[11px] bg-yellow-500 hover:bg-yellow-600 transition-all duration-500 rounded-full">結帳</button>
                         </div>
@@ -167,6 +167,7 @@
                 />
             </div>
         </div>
+        <AddToShoppingCarDialog v-model:showDialog="showDialog" />
     </section>
 </template>
 
@@ -183,8 +184,9 @@ import ProductSameCarousel from "~/views/template1/Product/components/ProductSam
  * ProductCarInterface: 產品卡片樣式參數
  */
 import { ProductListAPIInterface, ProductList, ProductCarInterface } from "~/interface/product.d";
+import AddToShoppingCarDialog from "~/views/template1/components/AddToShoppingCarDialog.vue";
 
-const { $api, $utils } = useNuxtApp();
+const { $api, $utils, $shoppingCarService } = useNuxtApp();
 const route = useRoute();
 
 const breadcrumbs = ref(JSON.parse(route.query.breadcrumbs));
@@ -354,6 +356,20 @@ async function getList(params: { per_page: number; page: number }) {
     } catch (err) {
         console.log("HomeSampleAPI => ", err);
     }
+}
+
+// 判斷是否顯示彈窗
+const showDialog = ref(false);
+
+/**
+ * 加入購物車
+ */
+function addToShoppingCar(data: any) {
+  showDialog.value = true;
+  console.log("addToShoppingCar => ", data);
+  if (process.client) {
+    $shoppingCarService().addToShoppingCar({ ...data, mark: "YDM 4109A", name: "指紋密碼鑰匙三合一", color: "黑色", imgSrc: "/img/home/product/product1.jpg", count: 1, singlePrice: 1760 });
+  }
 }
 
 /**
