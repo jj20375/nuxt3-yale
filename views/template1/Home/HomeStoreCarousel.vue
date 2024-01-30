@@ -25,7 +25,7 @@
                                 :src="item.image"
                             />
                             <h5 class="absolute z-10 bottom-[24px] YaleSolisW-Bd text-[20px] font-medium left-[24px] text-white">{{ item.name }}</h5>
-                            <div class="min-h-[100px] w-full bg-gradient-to-t from-black to-black/0 absolute bottom-0 left-0 pointer-events-none rounded-b-[20px]"></div>
+                            <div class="min-h-[100px] w-full bg-gradient-to-t from-gray-900 to-gray-50/0 absolute bottom-0 left-0 opacity-70 pointer-events-none rounded-b-[20px]"></div>
                         </div>
                     </SwiperSlide>
                 </Swiper>
