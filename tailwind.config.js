@@ -13,7 +13,7 @@ module.exports = {
             sm: "640px",
             md: "768px",
             lg: "992px",
-            xl: "1200px",
+            xl: "1280px",
             "2xl": "1400px",
             "3xl": "1600px",
         },
@@ -109,7 +109,8 @@ module.exports = {
             pink: {
                 100: "#FCE0DE", // Sunset Pink 100
                 300: "#F8A7A4", // Sunset Pink 300
-                500: "#FB3C9C", // Sunset Pink 500
+                400: "#FF898B", // Sunset Pink 400
+                500: "#F26B6D", // Sunset Pink 500
                 700: "#F25558", // Sunset Pink 700
                 900: "#E64144", // Sunset Pink 900
             },
@@ -170,6 +171,7 @@ module.exports = {
             inner: "inset 0 2px 4px 0 rgba(0, 0, 0, 0.06)",
             formDefault: "inset 0 -1px 0 0px #D9D9D9",
             formFocus: "inset 0 -2px 0 0px #FFCC00",
+            header: "0 4px 6px rgba(0,0,0,.07)",
             none: "none",
         },
         container: {
@@ -179,8 +181,8 @@ module.exports = {
                 sm: "2rem",
                 lg: "3rem",
                 xl: "5rem",
-                "2xl": "10rem",
-                "3xl": "15rem",
+                "2xl": "9rem",
+                "3xl": "12rem",
             },
         },
     },
@@ -338,5 +340,7 @@ module.exports = {
             backgroundColor: ["odd", "even", "checked"],
         },
     },
-    plugins: [require("flowbite")],
+    plugins: [
+        require("flowbite"),
+    ],
 };

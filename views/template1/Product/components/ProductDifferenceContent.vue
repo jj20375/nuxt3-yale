@@ -84,7 +84,7 @@
                     >
                         <div
                             :title="productData"
-                            class="truncate"
+                            class="line-clamp-1"
                         >
                             {{ productData ? productData : "-" }}
                         </div>

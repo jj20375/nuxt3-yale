@@ -1,7 +1,7 @@
 <template>
     <section>
-        <div class="bg-gray-100 ml-auto w-full relative top-0 right-0 h-[100px]">
-            <div class="rounded-tr-[200px] bg-white ml-auto w-full absolute top-0 right-0 h-[100px]"></div>
+        <div class="bg-gray-100 ml-auto w-full relative top-0 right-0 h-[120px]">
+            <div class="rounded-tr-[200px] bg-white ml-auto w-full absolute top-0 right-0 h-[120px]"></div>
         </div>
         <div class="container">
             <div class="flex items-center justify-between w-full mx-auto xl:w-5/6">
@@ -37,13 +37,13 @@
                     src="/img/home/app/phone.png"
                 />
                 <article>
-                    <h2 class="text-gray-100 YaleSolisW-Bd text-[66px] font-medium">DOWNLOAD</h2>
+                    <h2 class="text-gray-100 YaleSolisW-Bd text-[66px] font-medium gradient-title">DOWNLOAD</h2>
                     <h3 class="font-medium text-[45px] YaleSolisW-Bd leading-[56.25px]">Yale Home APP</h3>
                 </article>
             </div>
         </div>
-        <div class="bg-gradient-to-r from-yellow-100 from-5% via-yellow-500 via-50% to-yellow-500 to-90% ml-auto w-full relative top-0 right-0 h-[100px]">
-            <div class="bg-white rounded-br-[120px] ml-auto w-full absolute top-0 right-0 h-[100px]"></div>
+        <div class="bg-gray-100 ml-auto w-full relative top-0 right-0 h-[120px]">
+            <div class="bg-white rounded-br-[120px] ml-auto w-full absolute top-0 right-0 h-[120px]"></div>
         </div>
     </section>
 </template>

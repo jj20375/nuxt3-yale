@@ -7,7 +7,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 
     const token = Cookies.get("token");
 
-    if ($utils().isEmpty(token)) {
+    if (process.client && $utils().isEmpty(token)) {
         return navigateTo("/", { redirectCode: 301 });
     }
 });

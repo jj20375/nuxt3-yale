@@ -1,6 +1,6 @@
 <template>
     <section
-        class="min-h-screen mt-[94px]"
+        class="min-h-screen mt-[86px]"
         :class="customClass"
     >
         <nav class="border-t border-b border-gray-300 py-[16px] bg-white">
@@ -29,7 +29,7 @@
 const props = defineProps({
     customClass: {
         type: String,
-        default: "mb-[80px]",
+        default: "mb-[100px]",
     },
 });
 </script>

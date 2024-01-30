@@ -1,5 +1,5 @@
 <template>
-    <section class="min-h-screen mt-[94px] py-[140px] border-t border-gray-300">
+    <section class="min-h-screen mt-[86px] py-[140px] border-t border-gray-300">
         <div class="container flex justify-center">
             <div class="max-w-[500px]">
                 <div class="font-bold text-[28px] text-center mt-5 mb-5">{{ userData.verification ? '驗證失敗，已經重新寄送驗證信' : '已經寄送驗證信' }}</div>

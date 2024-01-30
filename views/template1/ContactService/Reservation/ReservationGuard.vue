@@ -290,7 +290,7 @@
   </BannerLayout>
   <client-only>
       <el-dialog
-          class="custom-dialog max-h-[600px]"
+          class="custom-dialog h-[600px]"
           close-on-click-modal
           lock-scroll
           show-close
@@ -304,7 +304,7 @@
           <div class="text-gray-800 edit-section" v-html="lockerData.content"></div>
       </el-dialog>
       <el-dialog
-          class="custom-dialog max-h-[600px]"
+          class="custom-dialog h-[600px]"
           close-on-click-modal
           lock-scroll
           show-close

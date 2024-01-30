@@ -6,34 +6,34 @@ export function useWindowResize() {
     const isMobile = ref(false);
     const isPad = ref(false);
     const isDesktop = ref(false);
+    const isLargeDesktop = ref(false);
 
     // 監控目前視窗大小
     function handleResize() {
         nowWindowSize.value.width = window.innerWidth;
         nowWindowSize.value.height = window.innerHeight;
-        if (nowWindowSize.value.width > 600 && nowWindowSize.value.width < 1024) {
+        if (nowWindowSize.value.width < 767) {
             isMobile.value = true;
             isDesktop.value = false;
             isPad.value = false;
-        } else {
-            isMobile.value = false;
-            isDesktop.value = true;
-            isPad.value = true;
+            isLargeDesktop.value = false;
         }
-        if (nowWindowSize.value.width > 600 && nowWindowSize.value.width < 1400) {
+        else if (nowWindowSize.value.width >= 767 && nowWindowSize.value.width < 1280) {
             isPad.value = true;
             isDesktop.value = false;
             isMobile.value = false;
-        } else {
-            isPad.value = false;
-            isDesktop.value = true;
-            isMobile.value = true;
+            isLargeDesktop.value = false;
         }
-        if (nowWindowSize.value.width > 1400) {
+        else if (nowWindowSize.value.width >= 1280 && nowWindowSize.value.width < 1600) {
             isDesktop.value = true;
             isMobile.value = false;
             isPad.value = false;
-        } else {
+            isLargeDesktop.value = false;
+        }
+        else {
+            isLargeDesktop.value = true;
+            isMobile.value = false;
+            isPad.value = false;
             isDesktop.value = false;
         }
         console.log("nowWindowSize => ", nowWindowSize.value);
@@ -56,5 +56,6 @@ export function useWindowResize() {
         isMobile,
         isPad,
         isDesktop,
+        isLargeDesktop
     };
 }

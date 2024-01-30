@@ -17,7 +17,7 @@
                     require-asterisk-position="right"
                 >
                     <div class="w-3/4 mt-[80px] p-[60px] pt-[50px] bg-white mx-auto rounded-[24px] border-[1px] border-gray-200">
-                        <h3 class="text-[24px] font-bold mb-6">序號登錄</h3>
+                        <h3 class="text-[24px] font-bold mb-6">報修聯絡人</h3>
                         <div class="grid grid-cols-2 gap-6">
                             <template
                                 v-for="(item, index) in formDatas.contactDatas"
@@ -90,7 +90,7 @@
                                 <div v-if="item?.type !== 'inline'" :class="item.span ? `col-span-${item.span}` : ''">
                                     <el-form-item :prop="item.prop" :label="item.label">
                                         <el-input v-if="item.style === 'input'" :type="item.type" :show-password="item.showPassword" :disabled="item.disabled"
-                                                  :placeholder="item.placeholder" v-model="form[item.prop]"></el-input>
+                                                  :placeholder="item.placeholder" resize="none" :rows="item.row" v-model="form[item.prop]"></el-input>
                                         <el-select
                                             v-else-if="item.style === 'select'"
                                             class="w-full"
@@ -124,6 +124,11 @@
                                         />
                                         <FileUpload
                                             v-else-if="item.style === 'file'"
+                                            :prop="item.prop"
+                                            @tempPath="handlefile"
+                                        />
+                                        <VideoUpload
+                                            v-else-if="item.style === 'video'"
                                             :prop="item.prop"
                                             @tempPath="handlefile"
                                         />
@@ -167,32 +172,20 @@
                                 <template v-if="item.space">
                                     <div v-for="index in item.space" :key="index"></div>
                                 </template>
-                                <template v-if="item.memoText || item.memoUrl">
-                                  <div :class="item.span ? `col-span-${item.span}` : ''">
-                                    <span>{{ item.memoText }}</span>
-                                    <template v-if="item.memoFunctionText">
-                                        <span @click="item.memoFunction ? item.memoFunction() : null" class="text-blue-500 ml-1 underline cursor-pointer underline-offset-2 hover:no-underline">{{ item.memoFunctionText }}</span>
-                                    </template>
-                                  </div>
+                                <!--   備註小字   -->
+                                <template v-if="item.memoText">
+                                    <div :class="item.span ? `col-span-${item.span}` : ''">
+                                      <span>{{ item.memoText }}</span>
+                                      <template v-if="item.memoFunctionText">
+                                          <span @click="item.memoFunction ? item.memoFunction() : null" class="text-blue-500 ml-1 underline cursor-pointer underline-offset-2 hover:no-underline">{{ item.memoFunctionText }}</span>
+                                      </template>
+                                    </div>
+                                </template>
+                                <!--   備註列表   -->
+                                <template v-if="item.listText">
+                                  <div class="col-span-2" v-html="item.listText"></div>
                                 </template>
                             </template>
-                            <div class="col-span-2">
-                                <div class="bg-gray-50 px-4 py-3">
-                                    <ul class="list-disc pl-4">
-                                        <li class="text-[15px]">請預填，後續將派專人與您聯繫</li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <el-form-item class="col-span-2" prop="description" label="狀況說明">
-                                <el-input  v-model="form.description" type="textarea" resize="none" :rows="5"></el-input>
-                            </el-form-item>
-                            <div class="col-span-2">
-                                <div class="bg-gray-50 px-4 py-3">
-                                    <ul class="list-disc pl-4">
-                                        <li class="text-[15px]">請注意：如因門扇特殊 或需要額外使用其他安裝配件、耗材，將由專人報價收費。</li>
-                                    </ul>
-                                </div>
-                            </div>
                             <div class="flex justify-start">
                                 <GoogleReCaptchaV2 v-model="form.recaptchaToken" />
                             </div>
@@ -232,6 +225,7 @@ import { useInitializationStore } from "~/store/initializationStore";
 import GoogleReCaptchaV2 from "~/components/GoogleRecaptchaV2.vue";
 import { ElMessage } from "element-plus";
 import FileUpload from "~/views/template1/ContactService/ContactWe/components/ContactWebFileUpload.vue";
+import VideoUpload from "~/views/template1/ContactService/Repair/components/VideoUpload.vue";
 
 const { $api, $utils } = useNuxtApp();
 const router = useRouter();
@@ -449,19 +443,36 @@ const formDatas = ref<any>({
             memoFunctionText: "點我查看序號位置範例",
         },
         {
-          prop: "photo",
-          label: "圖片上傳",
-          placeholder: "請上傳圖片",
-          type: "photo",
-          style: "file",
-          span: 2,
+            prop: "time",
+            label: "維修時段",
+            style: "checkbox",
+            checkboxData: timeOptions,
+            listText: "<div class='grid-cols-2'><div class='bg-gray-50 px-4 py-3'><ul class='list-disc pl-4'><li class='text-[15px]'>請預填，後續將派專人與您聯繫</li></ul></div></div>"
         },
         {
-          prop: "time",
-          label: "維修時段",
-          style: "checkbox",
-          checkboxData: timeOptions,
-        }
+            prop: "description",
+            label: "狀況說明",
+            placeholder: "",
+            style: "input",
+            type: "textarea",
+            span: 2,
+            row: 5,
+        },
+        {
+            prop: "photo",
+            label: "圖片上傳",
+            placeholder: "請上傳圖片",
+            type: "photo",
+            style: "file",
+            span: 2,
+        },
+        {
+            prop: "video",
+            label: "影片上傳",
+            placeholder: "請上傳影片",
+            style: "video",
+            span: 2,
+        },
     ]
 })
 

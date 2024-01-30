@@ -43,8 +43,8 @@ const breadcrumbs = ref([
     },
     {
         name: "file-download-slug",
-        text: "檔按下載",
-        params: { slug: "耶魯檔按下載" },
+        text: "檔案下載",
+        params: { slug: "耶魯檔案下載" },
         query: { id: "id1" },
     },
     {

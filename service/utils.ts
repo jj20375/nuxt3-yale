@@ -219,3 +219,26 @@ export const isImageType = (type: string) => {
             return false;
     }
 };
+
+/**
+ * 判斷是否為 video 的 file
+ * @param { type String(字串) } type 檔案類型
+ */
+export const isVideoType = (type: string) => {
+    switch (type) {
+        case "video/mp4":
+            return true;
+        case "video/avi":
+            return true;
+        case "video/msvideo":
+            return true;
+        case "video/x-msvideo":
+            return true;
+        case "video/quicktime":
+            return true;
+        case "video/x-ms-wmv":
+            return true;
+        default:
+            return false;
+    }
+};
