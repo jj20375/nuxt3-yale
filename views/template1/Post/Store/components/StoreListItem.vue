@@ -2,14 +2,14 @@
     <article
         v-for="(item, index) in datas"
         :key="index"
-        class="flex items-center"
+        class="flex items-center gap-[48px]"
         :class="datas.length - 1 === index ? '' : 'mb-[48px]'"
     >
         <NuxtImg
             :src="item.imgSrc"
-            class="w-full max-w-[360px] mr-[48px] cursor-pointer"
+            class="object-cover w-full aspect-[16/9] rounded-2xl overflow-hidden w-full max-w-[360px]"
         />
-        <div class="w-[440px] cursor-pointer">
+        <div class="w-[440px]">
             <h2 class="text-[24px] font-medium YaleSolisW-Bd">
                 {{ item.title }}
             </h2>

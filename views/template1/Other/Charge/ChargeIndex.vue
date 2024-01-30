@@ -1,5 +1,5 @@
 <template>
-  <section class="min-h-screen mt-[94px] pb-[60px]">
+  <section class="min-h-screen mt-[86px] pb-[60px]">
     <nav class="border-t border-b border-gray-300 py-[16px] bg-white">
       <div class="grid grid-cols-7 gap-0">
         <div class="col-span-7 ml-[122px]">

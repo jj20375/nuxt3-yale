@@ -17,7 +17,7 @@
                     >
                         <div class="carousel__item">
                             <img
-                                class="w-full cursor-pointer md:rounded-lg md:p-1"
+                                class="w-full cursor-pointer md:p-1 aspect-square object-cover"
                                 :src="item.imgSrc"
                                 alt=""
                             />
@@ -59,7 +59,7 @@
                     :key="index"
                 >
                     <img
-                        class="w-full p-1 rounded-lg cursor-pointer"
+                        class="w-full p-1 aspect-square cursor-pointer"
                         :src="item.imgSrc"
                         alt=""
                     />

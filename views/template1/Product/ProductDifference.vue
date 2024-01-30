@@ -1,5 +1,5 @@
 <template>
-    <section class="min-h-screen mt-[94px]">
+    <section class="min-h-screen mt-[86px]">
         <nav class="border-t border-b border-gray-300 py-[16px] pl-[122px] bg-white">
             <Breadcrumb :menus="breadcrumbs" />
         </nav>
@@ -9,7 +9,7 @@
                 <div class="flex items-center">
                     <div class="mr-[20px]">
                         <NuxtLink :to="{ name: 'product-compare-slug', params: { slug: '耶魯產品資訊-主鎖-主鎖比較' }, query: { compareId: route.query.compareId } }">
-                            <button class="text-gray-800 text-[15px]">重新選擇</button>
+                            <button class="text-blue-500 underline underline-offset-2 hover:no-underline">重新選擇</button>
                         </NuxtLink>
                     </div>
                     <div class="mr-[16px]">

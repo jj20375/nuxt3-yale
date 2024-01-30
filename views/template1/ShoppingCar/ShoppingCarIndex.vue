@@ -1,5 +1,5 @@
 <template>
-    <section class="min-h-screen mt-[94px] border-t border-gray-300">
+    <section class="min-h-screen mt-[86px] border-t border-gray-300">
         <div class="container">
             <ul
                 v-if="currentStep == 0"
@@ -8,7 +8,7 @@
                 <li
                     v-for="(tab, key) in tabs"
                     :key="key"
-                    class="flex py-[24px] px-[36px] rounded-[8px] cursor-pointer"
+                    class="relative flex py-[24px] px-[36px] rounded-[8px] cursor-pointer"
                     :class="[currentTab === key ? 'border-2 border-yellow-600' : 'border border-gray-300 ', key === 'type1' ? 'mr-[24px]' : '']"
                     @click="
                         currentTab = key;
@@ -22,6 +22,9 @@
                         />
                     </div>
                     <div class="text-[16px] text-gray-800 font-medium">{{ tab.text }}</div>
+                    <template v-if="tab.quality > 0">
+                      <div class="absolute bg-red-500 rounded-2xl text-white text-[12px] px-1 top-1.5 right-2">{{ tab.quality }}</div>
+                    </template>
                 </li>
             </ul>
             <div class="flex justify-center">
@@ -137,10 +140,12 @@ const tabs = ref({
     type1: {
         text: "一般產品",
         imgSrc: "/img/shopping-car/shopping-car-icon-lock.svg",
+        quality: 0,
     },
     type2: {
         text: "訂製門扇",
         imgSrc: "/img/shopping-car/shopping-car-icon-door.svg",
+        quality: 99,
     },
 });
 
@@ -171,16 +176,18 @@ const salePrice = computed(() => 1000);
 watch(
     () => currentStep.value,
     (val) => {
+        window.scrollTo({top: 0, left: 0});
         switch (val) {
-            case "0":
+            case 0:
                 console.log("step0 val =>", val);
                 showComponent.value = ShoppingCarStep1;
+
                 return;
-            case "1":
+            case 1:
                 console.log("step1 val =>", val);
                 showComponent.value = ShoppingCarStep2;
                 return;
-            case "2":
+            case 2:
                 console.log("step2 val =>", val);
                 showComponent.value = ShoppingCarStep3;
                 return;

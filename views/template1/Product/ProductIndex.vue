@@ -24,7 +24,7 @@
             <div class="flex items-center mb-[40px] mt-[32px] mr-10">
                 <NuxtImg
                     v-if="productTypeDetail.media"
-                    class="max-w-[387px] w-full"
+                    class="max-w-[387px] w-full aspect-[16/9] object-cover"
                     :src="productTypeDetail.media"
                 />
                 <div class="ml-[40px]">

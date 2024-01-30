@@ -254,7 +254,7 @@
     </BannerLayout>
     <client-only>
         <el-dialog
-            class="custom-dialog max-h-[600px]"
+            class="custom-dialog h-[600px]"
             close-on-click-modal
             lock-scroll
             show-close
@@ -268,7 +268,7 @@
             <div class="text-gray-800 edit-section" v-html="lockerData.content"></div>
         </el-dialog>
         <el-dialog
-            class="custom-dialog max-h-[600px]"
+            class="custom-dialog h-[600px]"
             close-on-click-modal
             lock-scroll
             show-close
@@ -472,7 +472,7 @@ const formDatas = ref<any>({
         },
         {
             prop: "quantity",
-            label: "報修數量",
+            label: "安裝數量",
             placeholder: "請輸入數量",
             style: "input"
         },
@@ -570,7 +570,7 @@ const rules = ref<any>({
     quantity: [
         {
             required: true,
-            message: "請輸入報修數量",
+            message: "請輸入數量",
             trigger: "blur"
         }
     ],
