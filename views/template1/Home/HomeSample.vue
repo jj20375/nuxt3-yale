@@ -19,8 +19,8 @@
                     :display="3"
                     :perspective="0"
                     :inverseScaling="300"
-                    :width="640"
-                    :height="400"
+                    :width="isLargeDesktop ? 800 : 640"
+                    :height="isLargeDesktop ? 500 : 400"
                     :startIndex="currentIndex"
                     @after-slide-change="onSlideChange"
                 >
@@ -113,7 +113,7 @@
 import { useTemplateStore } from "~/store/templateStore";
 
 const { $api } = useNuxtApp();
-
+const { isLargeDesktop } = useWindowResize();
 const router = useRouter();
 
 const templateStore = useTemplateStore();
