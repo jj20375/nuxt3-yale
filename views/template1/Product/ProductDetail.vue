@@ -113,7 +113,7 @@
                 </div>
             </div>
             <div class="mt-[80px]">
-                <ul class="flex justify-center">
+                <ul class="flex justify-center border-b border-gray-200">
                     <li
                         @click="currentTab = index"
                         v-for="(tab, index) in tabs"

@@ -31,7 +31,7 @@
                                 class="w-full YaleSolisW-Rg text-[16px] flex items-center justify-start"
                             >
                                 <NuxtImg
-                                    class="w-[10px]"
+                                    class="w-[12px]"
                                     src="/img/icons/post/arrow-prev.svg"
                                 />
                                 <span class="ml-[8px] whitespace-nowrap">上一篇</span>
@@ -58,7 +58,7 @@
                                 <span class="mr-[20px] text-gray-400 line-clamp-1">{{ pagination.next.title }}</span>
                                 <span class="mr-[8px] whitespace-nowrap">下一篇</span>
                                 <NuxtImg
-                                    class="w-[10px]"
+                                    class="w-[12px]"
                                     src="/img/icons/post/arrow-next.svg"
                                 />
                             </button>

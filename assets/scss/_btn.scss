@@ -87,7 +87,7 @@
 
 // 主要按鈕(黃色)
 .yellow-btn {
-    @apply bg-yellow-500 hover:bg-yellow-600 transition-all duration-500 rounded-full w-[160px] py-3 px-4 text-[16px];
+    @apply bg-yellow-500 hover:bg-yellow-600 transition-all duration-500 rounded-full py-3 px-4 text-[16px];
     &.btn-lg {
         @apply w-[300px] py-4;
     }

@@ -109,7 +109,8 @@ module.exports = {
             pink: {
                 100: "#FCE0DE", // Sunset Pink 100
                 300: "#F8A7A4", // Sunset Pink 300
-                500: "#FB3C9C", // Sunset Pink 500
+                400: "#FF898B", // Sunset Pink 400
+                500: "#F26B6D", // Sunset Pink 500
                 700: "#F25558", // Sunset Pink 700
                 900: "#E64144", // Sunset Pink 900
             },

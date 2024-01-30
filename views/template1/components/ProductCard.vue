@@ -10,6 +10,10 @@
                     class="object-cover h-full w-full rounded-2xl aspect-square"
                     :src="product.main_image"
                 />
+                <div class="absolute bottom-[20px] left-[20px] flex gap-2">
+                    <div class="bg-yellow-500 text-[12px] px-2 py-1 rounded-md">NEW</div>
+                    <div class="bg-pink-400 text-[12px] px-2 py-1 rounded-md">SALE</div>
+                </div>
             </NuxtLink>
             <div
                 :class="currentHover === product.id ? 'opacity-100' : 'opacity-0'"
@@ -31,7 +35,7 @@
                         </NuxtLink>
                     </div>
                 </div>
-                <div class="absolute top-0 left-0 z-10 w-full h-full bg-white opacity-20 rounded-2xl"></div>
+                <div class="absolute top-0 left-0 z-10 w-full h-full bg-white opacity-80 rounded-2xl"></div>
             </div>
             <div class="absolute favorite w-[30px] h-[30px] text-gray-300 top-[16px] right-[16px] cursor-pointer z-50 duration-300 transition-all" :class="isFavorite === true ? 'opacity-100': 'opacity-0' " @click="handleFavorite">
                 <template v-if="isFavorite">
