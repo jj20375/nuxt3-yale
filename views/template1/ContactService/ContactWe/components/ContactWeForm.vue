@@ -5,89 +5,92 @@
             ref="formRefDom"
             :model="form"
             :rules="rules"
+            class="flex flex-col gap-6"
         >
-            <div
+            <template
                 v-for="(item, index) in formDatas"
                 :key="index"
             >
-                <el-form-item
-                    v-if="item.type !== 'inline'"
-                    :prop="item.prop"
-                >
-                    <div
-                        class="flex-1"
+                <template v-if="!item.isHide">
+                    <el-form-item
                         v-if="item.type !== 'inline'"
+                        :prop="item.prop"
                     >
-                        <label
-                            v-if="!item.isHide"
-                            class="block w-full text-[15px] text-gray-800"
+                        <div
+                            class="flex-1"
+                            v-if="item.type !== 'inline'"
                         >
-                            {{ item.label }} <span class="text-red-500">*</span>
-                        </label>
-                        <el-input
-                            v-if="item.style === 'input'"
-                            :placeholder="item.placeholder"
-                            v-model="form[item.prop]"
-                        ></el-input>
-                        <el-select
-                            v-if="item.style === 'select'"
-                            class="w-full"
-                            v-model="form[item.prop]"
-                            :placeholder="item.placeholder"
-                            value-key="id"
-                            @change="item.function ? item.function(form) : null"
-                        >
-                            <el-option
-                                v-for="(option, index) in item.options"
-                                :key="index"
-                                :label="option.label"
-                                :value="option.value"
-                            ></el-option>
-                        </el-select>
-                        <el-input
-                            v-if="item.style === 'textarea'"
-                            type="textarea"
-                            rows="10"
-                            :placeholder="item.placeholder"
-                            v-model="form[item.prop]"
-                        ></el-input>
-                        <FileUpload
-                            v-if="item.style === 'file' && !item.isHide"
-                            :prop="item.prop"
-                            @tempPath="handlefile"
-                        />
-                    </div>
-                </el-form-item>
-
-                <div
-                    v-if="item.type === 'inline'"
-                    class="flex flex-1"
-                >
-                    <div
-                        v-for="(item2, index2) in item.datas"
-                        class="flex-1"
-                        :key="index2"
-                        :class="index2 === 0 ? 'mr-[30px]' : ''"
-                    >
-                        <el-form-item :prop="item2.prop">
-                            <label class="block w-full text-[15px] text-gray-800"> {{ item2.label }} <span class="text-red-500">*</span> </label>
+                            <label
+                                v-if="!item.isHide"
+                                class="block w-full text-[15px] text-gray-800"
+                            >
+                                {{ item.label }} <span class="text-red-500">*</span>
+                            </label>
+                            <el-input
+                                v-if="item.style === 'input'"
+                                :placeholder="item.placeholder"
+                                v-model="form[item.prop]"
+                            ></el-input>
                             <el-select
+                                v-if="item.style === 'select'"
                                 class="w-full"
-                                v-model="form[item2.prop]"
-                                :placeholder="item2.placeholder"
-                                @change="item2.function ? item2.function(form) : null"
+                                v-model="form[item.prop]"
+                                :placeholder="item.placeholder"
+                                value-key="id"
+                                @change="item.function ? item.function(form) : null"
                             >
                                 <el-option
-                                    v-for="(option, index) in item2.options"
+                                    v-for="(option, index) in item.options"
                                     :key="index"
                                     :label="option.label"
                                     :value="option.value"
                                 ></el-option>
                             </el-select>
-                        </el-form-item>
+                            <el-input
+                                v-if="item.style === 'textarea'"
+                                type="textarea"
+                                rows="5"
+                                resize="none"
+                                :placeholder="item.placeholder"
+                                v-model="form[item.prop]"
+                            ></el-input>
+                            <FileUpload
+                                v-if="item.style === 'file' && !item.isHide"
+                                :prop="item.prop"
+                                @tempPath="handlefile"
+                            />
+                        </div>
+                    </el-form-item>
+                    <div
+                        v-if="item.type === 'inline'"
+                        class="flex flex-1"
+                    >
+                        <div
+                            v-for="(item2, index2) in item.datas"
+                            class="flex-1"
+                            :key="index2"
+                            :class="index2 === 0 ? 'mr-[30px]' : ''"
+                        >
+                            <el-form-item :prop="item2.prop">
+                                <label class="block w-full text-[15px] text-gray-800"> {{ item2.label }} <span class="text-red-500">*</span> </label>
+                                <el-select
+                                    class="w-full"
+                                    v-model="form[item2.prop]"
+                                    :placeholder="item2.placeholder"
+                                    @change="item2.function ? item2.function(form) : null"
+                                >
+                                    <el-option
+                                        v-for="(option, index) in item2.options"
+                                        :key="index"
+                                        :label="option.label"
+                                        :value="option.value"
+                                    ></el-option>
+                                </el-select>
+                            </el-form-item>
+                        </div>
                     </div>
-                </div>
-            </div>
+                </template>
+            </template>
         </el-form>
         <div class="flex justify-start mt-[30px] mb-[40px]">
             <GoogleReCaptchaV2 v-model="form.recaptchaToken" />
@@ -96,7 +99,7 @@
         <div class="flex justify-center">
             <button
                 @click="onSubmit"
-                class="bg-yellow-600 text-[16px] rounded-full w-[160px] text-center py-[11px]"
+                class="yellow-btn btn-md"
             >
                 確認送出
             </button>
@@ -146,27 +149,12 @@ function isVerifyError(error: any) {
     isRecaptchaVerify.value = false;
 }
 
-// 預先加載縣市資料
-const initializationStore = useInitializationStore();
-const { data, pending, error, refresh } = await useAsyncData("city", () => getCity());
-
-async function getCity() {
-    const { data } = await $api().GetCityAreaAPI();
-    initializationStore.cityAreaData = (data.value as any).data;
-
-    initializationStore.cityData = initializationStore.cityAreaData.map((item: { name: any }) => {
-        return { label: item.name, value: item.name };
-    });
-}
-
 const formRefDom = ref<any>();
 
 const form = ref<any>({
     name: "",
     phone: "",
     email: "",
-    city: "",
-    location: "",
     title: "",
     photo: [],
     content: "",
@@ -205,20 +193,6 @@ const rules = ref<any>({
             validator: validateTWMobileNumber,
             trigger: ["change", "blur"],
             message: "格式不正確",
-        },
-    ],
-    city: [
-        {
-            required: true,
-            message: "請選擇縣市",
-            trigger: ["change", "blur"],
-        },
-    ],
-    location: [
-        {
-            required: true,
-            message: "請選擇地區",
-            trigger: ["change", "blur"],
         },
     ],
     title: [
@@ -262,40 +236,6 @@ const formDatas = ref<any>([
         label: "電子信箱",
         placeholder: "請輸入信箱",
         style: "input",
-    },
-    {
-        type: "inline",
-        datas: [
-            {
-                prop: "city",
-                label: "縣市",
-                placeholder: "請選擇",
-                options: initializationStore.cityData,
-                type: "inline",
-                style: "select",
-                function: (e: any) => {
-                    console.log(e);
-                    e.location = "";
-
-                    const cityDataFilter = initializationStore.cityAreaData.find((item: { name: any }) => item.name === e.city);
-                    console.log("cityDataFilter.district", cityDataFilter);
-                    formDatas.value[3].datas[1].options = cityDataFilter.district.map((item: { name: any }) => {
-                        return {
-                            label: item.name,
-                            value: item.name,
-                        };
-                    });
-                },
-            },
-            {
-                prop: "location",
-                label: "地區",
-                placeholder: "請選擇",
-                options: [],
-                type: "inline",
-                style: "select",
-            },
-        ],
     },
     {
         prop: "title",
@@ -429,16 +369,3 @@ onMounted(async () => {
 });
 </script>
 
-<style lang="scss" scoped>
-:deep .el-input__wrapper {
-    @apply shadow-none border-b border-gray-200 mx-0 rounded-none #{!important};
-}
-:deep .el-select {
-    .el-input__wrapper {
-        @apply mx-0;
-    }
-}
-:deep .el-textarea__inner {
-    @apply rounded-none;
-}
-</style>
