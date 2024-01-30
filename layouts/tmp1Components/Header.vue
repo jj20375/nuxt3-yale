@@ -24,9 +24,12 @@
                         @mouseleave="closeMenu"
                         class="px-5 xl:px-3 2xl:px-4 3xl:px-5 py-[33px] text-gray-800 cursor-pointer hover:text-gray-500"
                     >
-                            {{ menu.title }}
+                        {{ menu.title }}
                         <div class="absolute left-0 top-[86px] z-50 bg-white w-full">
-                            <div class="border-t border-gray-300 shadow-header" v-if="currentMenu === key && showSubMenu">
+                            <div
+                                class="border-t border-gray-300 shadow-header"
+                                v-if="currentMenu === key && showSubMenu"
+                            >
                                 <ul
                                     class="container flex items-center justify-center min-h-[300px] py-[60px] flex-wrap text-center"
                                     :class="menu.marginSize"
@@ -59,7 +62,7 @@
                         >
                             <div
                                 class="cursor-pointer"
-                                @click="router.push(menu.url);"
+                                @click="router.push(menu.url)"
                             >
                                 <template v-if="key === 'menu1'">
                                     <div class="flex items-center">
@@ -84,7 +87,10 @@
                     :class="index === 0 ? 'mr-[16px] 2xl:mr-[22px]' : 'mr-[20px] 2xl:mr-[26px]'"
                 >
                     <NuxtLink :to="icon.url">
-                      <component class="!w-[20px] !h-[20px] transition-all duration-300 hover:text-gray-400 hover:transition-all hover:duration-300" :is="icon.name" />
+                        <component
+                            class="!w-[20px] !h-[20px] transition-all duration-300 hover:text-gray-400 hover:transition-all hover:duration-300"
+                            :is="icon.name"
+                        />
                     </NuxtLink>
                 </li>
             </ul>
@@ -96,7 +102,10 @@
                     :class="media !== 1 ? '' : ''"
                 >
                     <NuxtLink :to="media.url">
-                        <component class="!w-[20px] !h-[20px] transition-all duration-300 hover:text-gray-400 hover:transition-all hover:duration-300" :is="media.name" />
+                        <component
+                            class="!w-[20px] !h-[20px] transition-all duration-300 hover:text-gray-400 hover:transition-all hover:duration-300"
+                            :is="media.name"
+                        />
                     </NuxtLink>
                 </li>
             </ul>
@@ -118,12 +127,12 @@ const userStore = useUserStore();
 const { isAuth } = storeToRefs(userStore);
 
 // icon 路徑
-import IconUser from '~/assets/img/icons/user.svg';
-import IconCart from '~/assets/img/icons/shop-cart.svg';
-import IconFacebook from '~/assets/img/icons/medias/icon-black-1.svg';
-import IconInstagram from '~/assets/img/icons/medias/icon-black-2.svg';
-import IconLine from '~/assets/img/icons/medias/icon-black-3.svg';
-import IconYoutube from '~/assets/img/icons/medias/icon-black-4.svg';
+import IconUser from "~/assets/img/icons/user.svg";
+import IconCart from "~/assets/img/icons/shop-cart.svg";
+import IconFacebook from "~/assets/img/icons/medias/icon-black-1.svg";
+import IconInstagram from "~/assets/img/icons/medias/icon-black-2.svg";
+import IconLine from "~/assets/img/icons/medias/icon-black-3.svg";
+import IconYoutube from "~/assets/img/icons/medias/icon-black-4.svg";
 
 const isHomeMenuFixed = computed(() => templateStore.isHomeMenuFixed);
 
@@ -205,26 +214,6 @@ const menus = ref<any>({
         },
         submenus: [],
     },
-    menu4: {
-        title: "裝修實績",
-        url: {
-            name: "sample-slug",
-            params: { slug: "耶魯裝修實績" },
-            query: { id: "1" },
-        },
-        marginSize: "gap-x-[40px] gap-y-[20px]",
-        submenus: renovation_categories,
-    },
-    menu5: {
-        title: "展示門市",
-        url: {
-            name: "store-slug",
-            params: { slug: "耶魯展示門市" },
-            query: { id: "id1" },
-        },
-        marginSize: "gap-x-[80px] gap-y-[20px]",
-        submenus: stronghold_categories,
-    },
     menu6: {
         title: "產品資訊",
         url: {
@@ -234,6 +223,26 @@ const menus = ref<any>({
         },
         marginSize: "gap-x-[40px] gap-y-[20px]",
         submenus: product_categories,
+    },
+    menu5: {
+        title: "展售門市",
+        url: {
+            name: "store-slug",
+            params: { slug: "耶魯展售門市" },
+            query: { id: "id1" },
+        },
+        marginSize: "gap-x-[80px] gap-y-[20px]",
+        submenus: stronghold_categories,
+    },
+    menu4: {
+        title: "裝修實績",
+        url: {
+            name: "sample-slug",
+            params: { slug: "耶魯裝修實績" },
+            query: { id: "1" },
+        },
+        marginSize: "gap-x-[40px] gap-y-[20px]",
+        submenus: renovation_categories,
     },
     menu7: {
         title: "服務支援",
@@ -341,23 +350,23 @@ const rightIcons = computed(() => {
 
 // 社群資料
 const socialMedia = [
-  {
-    name: IconFacebook,
-    url: {}
-  },
-  {
-    name: IconInstagram,
-    url: {}
-  },
-  {
-    name: IconLine,
-    url: {}
-  },
-  {
-    name: IconYoutube,
-    url: {}
-  },
-]
+    {
+        name: IconFacebook,
+        url: {},
+    },
+    {
+        name: IconInstagram,
+        url: {},
+    },
+    {
+        name: IconLine,
+        url: {},
+    },
+    {
+        name: IconYoutube,
+        url: {},
+    },
+];
 
 // 預設選擇的 menu 判斷是否呈現 submenu
 const currentMenu = ref<null | string>(null);
@@ -368,9 +377,9 @@ function changeMenu(key: string) {
     showSubMenu.value = true;
 }
 
-function closeMenu(){
-  currentMenu.value = null;
-  showSubMenu.value = false;
+function closeMenu() {
+    currentMenu.value = null;
+    showSubMenu.value = false;
 }
 </script>
 
@@ -382,80 +391,80 @@ function closeMenu(){
 }
 
 // 有黃色背景的特效
-.hover-scale{
-    .image-wrap{
-      @apply relative;
-      @apply before:absolute before:bg-white before:top-0 before:left-0 before:h-full before:w-full before:rounded-full before:bg-yellow-400 before:scale-0 before:opacity-0 before:-z-[1] before:transition-all before:duration-300;
-      @apply after:absolute after:bg-gray-50 after:top-0 after:left-0 after:h-full after:w-full after:rounded-full after:-z-[2];
+.hover-scale {
+    .image-wrap {
+        @apply relative;
+        @apply before:absolute before:bg-white before:top-0 before:left-0 before:h-full before:w-full before:rounded-full before:bg-yellow-400 before:scale-0 before:opacity-0 before:-z-[1] before:transition-all before:duration-300;
+        @apply after:absolute after:bg-gray-50 after:top-0 after:left-0 after:h-full after:w-full after:rounded-full after:-z-[2];
     }
-    &:hover{
-        .image-wrap{
-          @apply before:opacity-100 before:scale-100 before:transition-all before:duration-300;
+    &:hover {
+        .image-wrap {
+            @apply before:opacity-100 before:scale-100 before:transition-all before:duration-300;
         }
     }
 }
 
 // 有陰影的特效
-.hover-shadow{
-    .image-wrap{
+.hover-shadow {
+    .image-wrap {
         @apply relative before:w-[150px] before:h-[10px] before:absolute before:-bottom-2 before:left-1/2 before:-translate-x-1/2 before:-z-[1] before:opacity-0 before:transition-all before:duration-300;
-        &::before{
+        &::before {
             background-image: radial-gradient(rgba(0, 0, 0, 0.5) 5%, #ffffff 35%);
             filter: blur(3px);
         }
-        img{
+        img {
             @apply relative top-0;
-            transition: all .3s ease-in-out;
+            transition: all 0.3s ease-in-out;
         }
     }
-    &:hover{
-        .image-wrap{
+    &:hover {
+        .image-wrap {
             @apply before:opacity-100 before:transition-all before:duration-300;
-            img{
+            img {
                 @apply -top-3;
-                transition: all .5s cubic-bezier(.04,.64,.35,1.58);
+                transition: all 0.5s cubic-bezier(0.04, 0.64, 0.35, 1.58);
             }
         }
     }
 }
 
 // 淡入的特效
-.hover-fade{
-    img{
+.hover-fade {
+    img {
         @apply opacity-100 transition-all duration-300;
     }
-    &:hover{
-        img{
+    &:hover {
+        img {
             @apply opacity-80 transition-all duration-300;
         }
     }
 }
 
 // hover會多門的標題
-.has-door{
-    .title{
+.has-door {
+    .title {
         @apply mr-0 transition-all duration-300;
     }
-    .image-wrap{
+    .image-wrap {
         @apply max-w-0 h-[20px] overflow-hidden transition-all duration-300 opacity-0;
-        img{
+        img {
             @apply h-[20px] w-[20px] max-w-none;
         }
     }
-    &:hover{
+    &:hover {
         @apply px-1 xl:px-2 2xl:px-3 transition-all duration-300;
-        .image-wrap{
+        .image-wrap {
             @apply max-w-[24px] transition-all duration-300 opacity-100;
         }
-        .title{
+        .title {
             @apply mr-2 transition-all duration-300;
         }
     }
 }
 
-.submenu-item{
+.submenu-item {
     @apply text-gray-800;
-    &:hover{
+    &:hover {
         @apply text-gray-600;
     }
 }

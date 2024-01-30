@@ -8,10 +8,10 @@
         </template>
 
         <template #content>
-            <section class="container mt-[80px]">
-                <div class="flex">
-                    <ContactWeForm class="flex-1" />
-                    <div class="text-gray-800 text-center ml-[150px] flex-1">
+            <section class="container mt-[80px] custom-form">
+                <div class="flex gap-[150px]">
+                    <ContactWeForm class="flex-[1.5]" />
+                    <div class="text-gray-800 text-center flex-1">
                         <NuxtImg
                             class="w-[120px] mx-auto"
                             :src="initializationData?.site.site_logo"
