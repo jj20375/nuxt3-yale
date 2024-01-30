@@ -127,6 +127,11 @@
                                             :prop="item.prop"
                                             @tempPath="handlefile"
                                         />
+                                        <VideoUpload
+                                            v-else-if="item.style === 'video'"
+                                            :prop="item.prop"
+                                            @tempPath="handlefile"
+                                        />
                                         <el-checkbox-group v-else-if="item.style === 'checkbox'" v-model="form[item.prop]">
                                           <el-checkbox v-for="checkbox in item.checkboxData" :key="checkbox.label" :label="checkbox.value">{{checkbox.label}}
                                           </el-checkbox>
@@ -220,6 +225,7 @@ import { useInitializationStore } from "~/store/initializationStore";
 import GoogleReCaptchaV2 from "~/components/GoogleRecaptchaV2.vue";
 import { ElMessage } from "element-plus";
 import FileUpload from "~/views/template1/ContactService/ContactWe/components/ContactWebFileUpload.vue";
+import VideoUpload from "~/views/template1/ContactService/Repair/components/VideoUpload.vue";
 
 const { $api, $utils } = useNuxtApp();
 const router = useRouter();
@@ -437,28 +443,35 @@ const formDatas = ref<any>({
             memoFunctionText: "點我查看序號位置範例",
         },
         {
-          prop: "time",
-          label: "維修時段",
-          style: "checkbox",
-          checkboxData: timeOptions,
-          listText: "<div class='grid-cols-2'><div class='bg-gray-50 px-4 py-3'><ul class='list-disc pl-4'><li class='text-[15px]'>請預填，後續將派專人與您聯繫</li></ul></div></div>"
+            prop: "time",
+            label: "維修時段",
+            style: "checkbox",
+            checkboxData: timeOptions,
+            listText: "<div class='grid-cols-2'><div class='bg-gray-50 px-4 py-3'><ul class='list-disc pl-4'><li class='text-[15px]'>請預填，後續將派專人與您聯繫</li></ul></div></div>"
         },
         {
-          prop: "description",
-          label: "狀況說明",
-          placeholder: "",
-          style: "input",
-          type: "textarea",
-          span: 2,
-          row: 5,
+            prop: "description",
+            label: "狀況說明",
+            placeholder: "",
+            style: "input",
+            type: "textarea",
+            span: 2,
+            row: 5,
         },
         {
-          prop: "photo",
-          label: "圖片上傳",
-          placeholder: "請上傳圖片",
-          type: "photo",
-          style: "file",
-          span: 2,
+            prop: "photo",
+            label: "圖片上傳",
+            placeholder: "請上傳圖片",
+            type: "photo",
+            style: "file",
+            span: 2,
+        },
+        {
+            prop: "video",
+            label: "影片上傳",
+            placeholder: "請上傳影片",
+            style: "video",
+            span: 2,
         },
     ]
 })
