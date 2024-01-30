@@ -6,7 +6,7 @@
     >
         <NuxtImg
             class="w-[180px] aspect-square object-cover h-fit"
-            :src="product.imgUrl"
+            :src="product.imgSrc"
         />
         <div class="flex-1">
             <h5 class="text-[18px] font-bold mb-4 YaleSolisW-Bd">{{ product.name }}</h5>

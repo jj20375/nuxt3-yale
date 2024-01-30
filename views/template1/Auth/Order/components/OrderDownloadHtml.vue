@@ -8,10 +8,13 @@
                 <h5>Trusted</h5>
                 <p>every day</p>
             </div>
-            <NuxtImg
+            <!-- {{ initializationData.site.site_logo }} -->
+            <!-- {{ imageUrlToBase64(initializationData.site.site_logo) }} -->
+            {{ base64Image }}
+            <!-- <NuxtImg
                 class="mr-[20px]"
-                :src="initializationData.site.site_logo"
-            />
+                :src="base64Image"
+            /> -->
             <h1 class="text-[28px] font-medium YaleSolisW-Bd">一般產品訂購單</h1>
             <div class="flex-1 text-right">
                 <p class="text-grqy-800 text-[16px]">訂單編號</p>
@@ -156,6 +159,37 @@ import html2canvas from "html2canvas";
 defineExpose({
     downloadPdf,
 });
+const base64Image = ref("");
+
+async function getImageBase64(url) {
+    try {
+        const response = await fetch(url);
+        const blob = await response.blob();
+        const reader = new FileReader();
+
+        reader.onloadend = () => {
+            base64Image.value = reader.result;
+        };
+
+        reader.readAsDataURL(blob);
+    } catch (error) {
+        console.error("Failed to fetch image:", error);
+    }
+}
+
+// const imageUrlToBase64 = async (url: string) => {
+//     // const data = await fetch(url);
+//     const blob = await data.blob();
+//     return new Promise((resolve, reject) => {
+//         const reader = new FileReader();
+//         reader.readAsDataURL(blob);
+//         reader.onloadend = () => {
+//             const base64data = reader.result;
+//             resolve(base64data);
+//         };
+//         reader.onerror = reject;
+//     });
+// };
 
 const { $utils } = useNuxtApp();
 
@@ -163,6 +197,9 @@ const initializationStore = useInitializationStore();
 
 const initializationData = computed(() => {
     return initializationStore.initializationData;
+});
+onMounted(async () => {
+    await getImageBase64(initializationData.value.site.site_logo);
 });
 
 const paymentData = ref({
