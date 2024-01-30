@@ -13,7 +13,12 @@
                 假如您有任何疑問，請撥打服務專線 {{ contactPhone }}，感謝您的訂購。
             </p>
             <div class="flex justify-center">
-                <button class="yellow-btn !px-16">查看訂單狀態</button>
+                <button
+                    @click.prevent="goToOrderList"
+                    class="yellow-btn !px-16"
+                >
+                    查看訂單狀態
+                </button>
             </div>
         </div>
     </div>
@@ -22,5 +27,21 @@
 <script setup lang="ts">
 import { Vue3Lottie } from "vue3-lottie";
 
+const router = useRouter();
+
+const props = defineProps({
+    currentTab: {
+        type: String,
+        default: "type1",
+    },
+});
 const contactPhone = ref("0912345678");
+
+function goToOrderList() {
+    if (props.currentTab === "type1") {
+        router.push({ name: "auth-order-slug", params: { slug: "訂單記錄" } });
+    } else {
+        router.push({ name: "auth-door-slug", params: { slug: "訂製門扇-訂單記錄" } });
+    }
+}
 </script>
