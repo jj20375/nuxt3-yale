@@ -13,17 +13,17 @@
             />
         </template>
         <template #content>
-            <ul class="grid grid-cols-3 gap-4 min-h-[560px] mt-10">
+            <ul class="grid grid-cols-3 gap-4 mt-10">
                 <li
                     v-for="(item, index) in datas"
                     :key="index"
                 >
-                    <div class="flex justify-center items-center h-[200px]">
+                    <NuxtLink :to="item.url" target="_blank">
                         <NuxtImg
-                            class="max-w-[200px] w-full"
+                            class="w-full aspect-[16/9] object-contain"
                             :src="item.imgSrc"
                         />
-                    </div>
+                    </NuxtLink>
                 </li>
             </ul>
         </template>
@@ -124,6 +124,7 @@ async function getList(params: { stronghold_category_id: any }) {
             datas.value.push({
                 title: item.name,
                 imgSrc: item.image,
+                url: item.external_url,
             });
         });
     } catch (err) {
