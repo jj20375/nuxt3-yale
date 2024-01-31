@@ -1,28 +1,14 @@
 <template>
     <div class="mt-[88px]">
-        <h5 class="bg-gray-50 py-[8px] pl-[16px] w-full mb-[30px]">付款方式</h5>
+        <h5 class="bg-gray-50 py-[8px] pl-[16px] w-full mb-[30px]">預約丈量時間</h5>
         <el-form>
-            <el-radio-group
-                v-model="formData.paymentType"
-                class="ml-4"
-            >
-                <el-radio
-                    v-for="(option, index) in options"
-                    :key="index"
-                    :label="option.value"
-                    size="large"
-                    >{{ option.label }}</el-radio
-                >
-            </el-radio-group>
-            <el-form-item
-                prop="store"
-                v-if="form.paymentType === 'type2'"
-            >
+            <el-form-item prop="measureSizeTime">
                 <div class="grid grid-cols-2 gap-[30px] w-full">
                     <div>
-                        <label class="block w-full text-gray-800 text-[15px]">選擇門市/百貨櫃位<span class="text-red-500">*</span></label>
+                        <label class="block w-full text-gray-800 text-[15px]">選擇丈量時間<span class="text-red-500">*</span></label>
                         <el-select
                             class="w-full"
+                            placeholder="請輸入..."
                             v-model="form.store"
                         >
                             <el-option
@@ -49,30 +35,14 @@ const props = defineProps({
         type: Object,
         default() {
             return {
-                // 配送方式
-                paymentType: "type1",
+                // 預約丈量時間
+                measureSizeTime: "type1",
             };
         },
     },
 });
 
 const formData = ref(props.form);
-
-// 付款方式
-const options = ref([
-    {
-        label: "信用卡",
-        value: "type1",
-    },
-]);
-
-// 只有訂製門才會出現選項
-if (route.query.tab === "type2") {
-    options.value.push({
-        label: "門市付款",
-        value: "type2",
-    });
-}
 
 watch(formData.value, (val) => {
     emit("update:form", val);

@@ -144,10 +144,10 @@ async function init() {
     await getList({ per_page: pagination.value.pageSize, page: 1, article_category_id: route.query.id });
 }
 
+await init();
 onMounted(async () => {
     nextTick(async () => {
         if (process.client) {
-            await init();
         }
     });
 });

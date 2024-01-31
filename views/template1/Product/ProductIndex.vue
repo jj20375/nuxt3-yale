@@ -328,10 +328,10 @@ async function init() {
     await getList({ per_page: pagination.value.pageSize, page: 1 });
 }
 
+await init();
 onMounted(async () => {
     nextTick(async () => {
         if (process.client) {
-            await init();
             console.log(sideBarRef.value.openSubMenu);
             sideBarRef.value.openSubMenu = Number(route.query.category);
         }
