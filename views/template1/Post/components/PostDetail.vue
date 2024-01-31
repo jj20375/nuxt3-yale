@@ -7,7 +7,7 @@
         </nav>
         <div class="border-t h-[1px] border-gray-300 w-full"></div>
         <div class="container mt-[60px]">
-            <div class="max-w-[795px] mx-auto">
+            <div class="max-w-[800px] mx-auto">
                 <h1 class="text-[32px] YaleSolisW-Bd font-medium text-black">{{ postData.title }}</h1>
                 <div class="flex mt-[20px] border-b border-gray-300 pb-[24px]">
                     <div class="text-center mr-[16px] w-[90px] border border-gray-300 py-[6px] px-[12px] text-gray-400 text-[12px]">

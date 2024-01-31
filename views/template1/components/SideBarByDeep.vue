@@ -29,7 +29,7 @@
                             </h5>
                         </NuxtLink>
                     </div>
-                    <span :class="openSubMenu === menu.categoryId ? 'transition duration-[400ms] rotate-90' : ''"><font-awesome-icon :icon="['fas', 'chevron-right']" /></span>
+                    <span :class="openSubMenu === menu.categoryId ? 'transition duration-[300ms] rotate-90' : ''"><font-awesome-icon :icon="['fas', 'chevron-right']" /></span>
                 </div>
                 <ul class="flex flex-col gap-2 pt-4 ml-[10px]" v-show="openSubMenu === menu.categoryId">
                     <li
