@@ -1,5 +1,5 @@
 <template>
-    <div class="pl-[122px] pr-[32px]">
+    <div class="pr-[32px]">
         <slot name="sidebar-deep-title"></slot>
         <slot name="sidebar-deep-sub-title"></slot>
         <nav
@@ -13,12 +13,11 @@
                 {{ menu.text }}
             </NuxtLink>
             <div
-                class="border-b border-gray-200 py-[16px]"
+                class="border-b border-gray-200 pb-[16px]"
             >
                 <div
                     @click="openSubMenu = menu.categoryId"
                     class="flex items-center text-[16px] cursor-pointer font-medium"
-                    :class="[index !== 0 ? 'pb-[16px]' : 'pb-[16px]']"
                 >
                     <!-- <h5 class="flex-1">
                         {{ menu.text }}
@@ -30,17 +29,17 @@
                             </h5>
                         </NuxtLink>
                     </div>
-                    <span :class="openSubMenu === menu.categoryId ? 'transition duration-500 rotate-90' : ''"><font-awesome-icon :icon="['fas', 'chevron-right']" /></span>
+                    <span :class="openSubMenu === menu.categoryId ? 'transition duration-[400ms] rotate-90' : ''"><font-awesome-icon :icon="['fas', 'chevron-right']" /></span>
                 </div>
-                <ul v-show="openSubMenu === menu.categoryId">
+                <ul class="flex flex-col gap-2 pt-4 ml-[10px]" v-show="openSubMenu === menu.categoryId">
                     <li
                         v-for="(subMenu, index2) in menu.options"
                         @click="
                             currentActiveTag = subMenu.categoryId;
                             currentActive = menu.categoryId;
                         "
-                        class="text-[15px] ml-[10px]"
-                        :class="[currentActiveTag == subMenu.categoryId && currentActive == menu.categoryId ? 'text-gray-800' : 'text-gray-400', index2 !== 0 ? 'pb-[10px]' : 'pb-[10px]']"
+                        class="text-[15px]"
+                        :class="[currentActiveTag == subMenu.categoryId && currentActive == menu.categoryId ? 'text-gray-800' : 'text-gray-400', index2 !== 0 ? '' : '']"
                     >
                         <NuxtLink
                             v-if="subMenu.url"

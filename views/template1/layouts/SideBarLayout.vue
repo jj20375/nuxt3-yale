@@ -3,11 +3,9 @@
         class="mt-[86px]"
         :class="customClass"
     >
-        <nav class="border-t border-b border-gray-300 py-[16px] bg-white">
-            <div class="grid grid-cols-7 gap-0">
-                <div class="col-span-7 ml-[122px]">
-                    <slot name="breadcrumbs"></slot>
-                </div>
+        <nav class="border-t border-b border-gray-300 py-[16px] bg-white min-h-[55px]">
+            <div class="container">
+                <slot name="breadcrumbs"></slot>
             </div>
         </nav>
         <div

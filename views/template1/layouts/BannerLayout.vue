@@ -1,12 +1,8 @@
 <template>
     <section class="min-h-screen mt-[86px] pb-[80px]">
         <nav class="border-t bg-white border-gray-300 py-[16px]">
-            <div>
-                <div class="grid grid-cols-7 gap-0">
-                    <div class="col-span-7 ml-[122px]">
-                        <slot name="breadcrumbs"></slot>
-                    </div>
-                </div>
+            <div class="container">
+                <slot name="breadcrumbs"></slot>
             </div>
         </nav>
         <div

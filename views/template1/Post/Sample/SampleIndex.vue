@@ -8,7 +8,6 @@
         </template>
         <template #sidebar>
             <SideBar
-                class="col-span-2"
                 :menus="sidebar"
             />
         </template>
