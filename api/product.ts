@@ -37,6 +37,7 @@ export default () => {
             return useMyFetch<ProductListAPIInterface>(`${apiUrl}/product`, {
                 method: "get",
                 query: { ...params },
+                lazy: true,
             });
         },
         /**

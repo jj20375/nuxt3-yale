@@ -22,9 +22,7 @@
                     v-html="postData.content"
                 ></div>
                 <div class="flex items-center justify-center pt-[24px] border-t border-gray-300">
-                    <div
-                        class="flex-1 mr-[40px]"
-                    >
+                    <div class="flex-1 mr-[40px]">
                         <template v-if="pagination.prev">
                             <button
                                 @click.prevent="jumpPage(pagination.prev)"
@@ -47,9 +45,7 @@
                             回列表
                         </button>
                     </div>
-                    <div
-                        class="flex-1 ml-[40px]"
-                    >
+                    <div class="flex-1 ml-[40px]">
                         <template v-if="pagination.next">
                             <button
                                 @click.prevent="jumpPage(pagination.next)"
@@ -78,7 +74,11 @@ const router = useRouter();
 
 const { $api, $utils } = useNuxtApp();
 
-const breadcrumbs = ref(JSON.parse(route.query.breadcrumbs));
+const breadcrumbs = ref([]);
+// 取得 storage 麵包屑參數值
+if (process.client) {
+    breadcrumbs.value = JSON.parse($utils().getBreadcrumbsData());
+}
 
 const postData = ref<any>({
     id: "",
@@ -160,7 +160,9 @@ async function getData(params: { articleId: any }, isChangePost: boolean) {
 }
 
 async function jumpPage(page: { id: any; url: any }) {
-    router.push(page.url);
+    // 將麵包屑存進 storage
+    $utils().saveBreadcrumbsData(page.url.query.breadcrumbs);
+    router.push({ name: page.url.name, params: page.url.params, query: { id: page.url.query.id } });
     await getData({ articleId: page.id }, true);
 }
 
@@ -179,10 +181,10 @@ async function init() {
     await getData({ articleId: route.query.id }, false);
 }
 
+await init();
 onMounted(async () => {
     nextTick(async () => {
         if (process.client) {
-            await init();
         }
     });
 });

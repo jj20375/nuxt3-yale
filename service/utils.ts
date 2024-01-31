@@ -1,6 +1,7 @@
 // 日期套件
 import moment from "moment";
 
+import { setStorage, getStorage, removeStorage } from "~/service/localstorage";
 //判斷是否為空值或空物件
 export const isEmpty = (value: any) => {
     return value === undefined || value === null || (typeof value === "object" && Object.keys(value).length === 0) || (typeof value === "string" && value.trim().length === 0) || value.length === 0;
@@ -241,4 +242,18 @@ export const isVideoType = (type: string) => {
         default:
             return false;
     }
+};
+
+/**
+ * 儲存麵包屑值
+ */
+export const saveBreadcrumbsData = (datas: any) => {
+    setStorage("breadcrumbs", datas);
+};
+
+/**
+ * 取得麵包屑值
+ */
+export const getBreadcrumbsData = () => {
+    return getStorage("breadcrumbs");
 };

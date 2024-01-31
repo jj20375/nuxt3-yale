@@ -4,7 +4,7 @@
         :key="index"
         class="flex items-center gap-[48px] list-card"
         :class="datas.length - 1 === index ? '' : 'mb-[48px]'"
-        @click="router.push(item.url)"
+        @click="goToDetail(item.url)"
     >
         <div class="image-wrap rounded-2xl overflow-hidden cursor-pointer w-full max-w-[360px] aspect-[16/9]">
             <NuxtImg
@@ -35,6 +35,9 @@
 </template>
 
 <script setup lang="ts">
+const { $utils } = useNuxtApp();
+const router = useRouter();
+
 interface Props {
     datas: { title: string; content: string; is_top: number; imgSrc: string; date: string; url: { name: string; params?: { slug?: string; query: { breadcrumbs: any } }; query: any } }[];
 }
@@ -42,17 +45,21 @@ const props = withDefaults(defineProps<Props>(), {
     datas: [{ title: "title", content: "is content", is_top: 0, imgSrc: "/img/logo-1.svg", url: { name: "index", params: { slug: "home" } } }],
 });
 
-const router = useRouter();
+function goToDetail(url: any) {
+    // 將麵包屑存進 storage
+    $utils().saveBreadcrumbsData(url.query.breadcrumbs);
+    router.push({ name: url.name, params: url.params, query: { id: url.query.id } });
+}
 </script>
 
 <style lang="scss" scoped>
-.list-card{
-    img{
+.list-card {
+    img {
         @apply scale-100 transition-all duration-500;
     }
-    &:hover{
-        .image-wrap{
-            img{
+    &:hover {
+        .image-wrap {
+            img {
                 @apply scale-110 transition-all duration-500;
             }
         }

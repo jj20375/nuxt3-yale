@@ -11,7 +11,7 @@
             <div class="pt-[60px] pb-[100px]">
                 <div class="flex items-end justify-between mb-6">
                     <h3 class="text-[32px] font-bold">常用聯繫人</h3>
-                    <div class="flex gap-2 items-center h-fit cursor-pointer">
+                    <div class="flex items-center gap-2 cursor-pointer h-fit">
                         <NuxtImg
                             class="w-[20px] aspect-square object-cover"
                             src="img/icons/auth/add.svg"
@@ -167,10 +167,10 @@ async function init() {
     await getList();
 }
 
+await init();
 onMounted(async () => {
     nextTick(async () => {
         if (process.client) {
-            await init();
         }
     });
 });

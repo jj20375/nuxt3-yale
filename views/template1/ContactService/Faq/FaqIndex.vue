@@ -130,10 +130,10 @@ async function init() {
     await getList({ fqa_category_id: route.query.id });
 }
 
+await init();
 onMounted(async () => {
     nextTick(async () => {
         if (process.client) {
-            await init();
         }
     });
 });
