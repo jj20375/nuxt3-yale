@@ -100,7 +100,7 @@ const cnaSelected = ref(false);
  * @param { type String or Number(字串或數字) } val 選中地區值
  */
 function selectProduct(val: { id: string | number; model: any; name: any; shape: any; price: any; market_price: any; main_image: any; attributes: any }) {
-    productCompareStore.compareStore = [];
+    productCompareStore.compareStoreReset()
     if (selectProducts.value.includes(val.id)) {
         // 將可選擇狀態改為 true
         cnaSelected.value = true;
@@ -123,8 +123,8 @@ function selectProduct(val: { id: string | number; model: any; name: any; shape:
         // 新增選中的地區值
         selectProducts.value.push(val.id);
     }
-    selectProducts.value.forEach((item: string | number) => {
-        productCompareStore.compareStore.push(datas.value.find((data) => data.id === item));
+    selectProducts.value.forEach((item: string | number, index: number) => {
+        productCompareStore.compareStore[index] = datas.value.find((data) => data.id === item)
     });
 }
 
@@ -136,7 +136,7 @@ const datas = ref<ProductCompareList[]>([]);
  */
 async function getList(params: { product_type_id: string }) {
     try {
-        productCompareStore.compareStore = [];
+        productCompareStore.compareStoreReset()
         const { data } = await $api().ProductLisAPI<ProductListAPIInterface>(params);
         datas.value = [];
 

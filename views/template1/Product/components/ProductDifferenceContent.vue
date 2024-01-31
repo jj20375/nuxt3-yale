@@ -1,153 +1,90 @@
 <template>
     <div class="mt-[40px] mb-[100px]">
-        <div class="grid grid-cols-4 place-content-center">
+        <div>
             <div class="flex flex-col">
                 <div
                     v-for="(column, key) in columns"
                     :key="key"
+                    class="flex grid grid-cols-4 place-content-center"
                 >
                     <div
-                        v-if="key === 'imgSrc'"
-                        class="h-[300px] w-[150px]"
-                    ></div>
-                    <div
-                        class="py-[12px] border-b border-gray-300 text-[16px] text-gray-800"
-                        v-else
+                        v-for="index in 4"
+                        :key="index"
                     >
-                        {{ column }}
-                    </div>
-                </div>
-            </div>
-            <div
-                v-for="(product, index) in products"
-                :key="index"
-                class="flex flex-col"
-            >
-                <div
-                    v-for="(productData, productKey) in product"
-                    :key="productKey"
-                >
-                    <div
-                        class="flex flex-col items-center h-[300px] justify-center"
-                        v-if="productKey === 'imgSrc'"
-                    >
-                        <NuxtImg
-                            v-if="productData"
-                            class="h-[200px]"
-                            :src="productData"
-                        />
-                        <div v-if="productData">
-                            <button class="py-[9px] px-[33px] bg-yellow-600 rounded-full text-gray-800 hover:bg-yellow-700 duration-500 transition-all">立即選購</button>
+                        <div class="h-full" v-if="index === 1">
+                            <div
+                                v-if="key === 'imgSrc'"
+                                class="h-[300px] w-[150px]"
+                            ></div>
+                            <div
+                                class="py-[12px] h-full border-b border-gray-300 text-[16px] text-gray-800"
+                                v-else
+                            >
+                                {{ column }}
+                            </div>
                         </div>
-                    </div>
-                    <div
-                        class="ml-[50px]"
-                        v-else-if="productKey === 'style'"
-                    >
-                        <el-select
-                            class="w-full"
-                            @change="categoryChange(index)"
-                            v-model="form.category[index]"
-                            placeholder="選擇分類"
-                            clearable
-                        >
-                            <el-option
-                                v-for="(item, key) in shapeArr"
-                                :key="key"
-                                :label="item"
-                                :value="item"
-                            ></el-option>
-                        </el-select>
-                    </div>
-                    <div
-                        class="ml-[50px]"
-                        v-else-if="productKey === 'category'"
-                    >
-                        <el-select
-                            class="w-full"
-                            @change="modelChange(index)"
-                            v-model="form.style[index]"
-                            placeholder="選擇型號"
-                            clearable
-                        >
-                            <el-option
-                                v-for="(item, key) in styleArr[index]"
-                                :key="key"
-                                :label="item"
-                                :value="item"
-                            ></el-option>
-                        </el-select>
-                    </div>
-                    <div
-                        v-else
-                        class="py-[12px] border-b border-gray-300 text-[16px] text-gray-800 flex justify-center"
-                    >
-                        <div
-                            :title="productData"
-                            class="line-clamp-1"
-                        >
-                            {{ productData ? productData : "-" }}
+                        <div class="h-full" v-else>
+                            <div
+                                class="flex flex-col items-center h-[300px] justify-center"
+                                v-if="key === 'imgSrc'"
+                            >
+                                <div v-if="products[index-2] && products[index-2][key]">
+                                    <NuxtImg
+                                        class="h-[200px]"
+                                        :src="products[index-2][key]"
+                                    />
+                                    <div class="text-center">
+                                        <button class="py-[9px] px-[33px] bg-yellow-600 rounded-full text-gray-800 hover:bg-yellow-700 duration-500 transition-all">立即選購</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div
+                                class="ml-[50px]"
+                                v-else-if="key === 'style'"
+                            >
+                                <el-select
+                                    class="w-full"
+                                    @change="categoryChange(index-2)"
+                                    v-model="form.category[index-2]"
+                                    placeholder="選擇分類"
+                                    clearable
+                                >
+                                    <el-option
+                                        v-for="(item, key) in shapeArr"
+                                        :key="key"
+                                        :label="item"
+                                        :value="item"
+                                    ></el-option>
+                                </el-select>
+                            </div>
+                            <div
+                                class="ml-[50px]"
+                                v-else-if="key === 'category'"
+                            >
+                                <el-select
+                                    class="w-full"
+                                    @change="modelChange(index-2)"
+                                    v-model="form.style[index-2]"
+                                    placeholder="選擇型號"
+                                    clearable
+                                >
+                                    <el-option
+                                        v-for="(item, key) in styleArr[index-2]"
+                                        :key="key"
+                                        :label="item"
+                                        :value="item"
+                                    ></el-option>
+                                </el-select>
+                            </div>
+                            <div
+                                v-else
+                                class="py-[12px] h-full border-b border-gray-300 text-[16px] text-gray-800 flex justify-center"
+                            >
+                                <div class="px-[12px]">
+                                    {{ (products[index-2] && products[index-2][key]) ? products[index-2][key] : "-" }}
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-            <div
-                v-show="products.length < 3"
-                v-for="(item, index) in 3 - products.length"
-                :key="index"
-                class="flex flex-col"
-            >
-                <div
-                    v-for="(column, key) in columns"
-                    :key="key"
-                >
-                    <div
-                        v-if="key === 'imgSrc'"
-                        class="h-[300px] w-[150px]"
-                    ></div>
-                    <div
-                        class="ml-[50px]"
-                        v-else-if="key === 'style'"
-                    >
-                        <el-select
-                            class="w-full"
-                            v-model="form.category[index + products.length]"
-                            @change="categoryChange(index + products.length)"
-                            placeholder="選擇分類"
-                            clearable
-                        >
-                            <el-option
-                                v-for="(item, key) in shapeArr"
-                                :key="key"
-                                :label="item"
-                                :value="item"
-                            ></el-option>
-                        </el-select>
-                    </div>
-                    <div
-                        class="ml-[50px]"
-                        v-else-if="key === 'category'"
-                    >
-                        <el-select
-                            class="w-full"
-                            v-model="form.style[index + products.length]"
-                            @change="modelChange(index + products.length)"
-                            placeholder="選擇型號"
-                            clearable
-                        >
-                            <el-option
-                                v-for="(item, key) in styleArr[index + products.length]"
-                                :key="key"
-                                :label="item"
-                                :value="item"
-                            ></el-option>
-                        </el-select>
-                    </div>
-                    <div
-                        class="py-[12px] border-b border-gray-300 text-[16px] text-gray-800 flex justify-center"
-                        v-else
-                    >
-                        -
                     </div>
                 </div>
             </div>
@@ -255,8 +192,12 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const form = ref<any>({
-    category: [],
-    style: [],
+    category: [
+        '', '', ''
+    ],
+    style: [
+        '', '', ''
+    ],
 });
 
 const styleArr = computed(() => {
@@ -297,9 +238,9 @@ function modelChange(index: string | number) {
     console.log(form.value.style[index]);
     if (form.value.style[index]) {
         form.value.category[index] = props.datas.find((data) => data.model === form.value.style[index]).shape;
-        productCompareStore.compareStore = [];
-        form.value.style.forEach((item: string) => {
-            productCompareStore.compareStore.push(props.datas.find((data) => data.model === item));
+        productCompareStore.compareStoreReset()
+        form.value.style.forEach((item: string, index: number) => {
+            productCompareStore.compareStore[index] = props.datas.find((data: { model: string; }) => data.model === item)
         });
     } else {
         form.value.category[index] = null;
@@ -314,8 +255,8 @@ function modelChange(index: string | number) {
 onMounted(() => {
     console.log("props.products => ", props.products);
     props.products.forEach((item, index) => {
-        form.value.category.push(item.category);
-        form.value.style.push(item.style);
+        form.value.category[index] = item.category;
+        form.value.style[index] = item.style;
     });
 });
 </script>
