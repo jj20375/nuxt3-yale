@@ -107,7 +107,7 @@ const { $api } = useNuxtApp();
 const route = useRoute();
 
 const loading = ref(false);
-const loadingWaitPagination = ref(false);
+const loadingWaitPagination = ref(true);
 
 const breadcrumbs = ref([
     {
@@ -329,7 +329,7 @@ async function getList(params: { per_page: number; page: number }) {
         loading.value = false;
         setTimeout(() => {
             loadingWaitPagination.value = false;
-        }, 1000);
+        }, 20);
     } catch (err) {
         console.log("HomeSampleAPI => ", err);
         loading.value = false;
