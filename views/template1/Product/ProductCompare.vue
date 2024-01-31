@@ -32,7 +32,7 @@
                     @click="selectProduct(item)"
                     v-for="(item, index) in datas"
                     :key="index"
-                    :class="[selectProducts.includes(item.id) ? 'border border-yellow-600' : '', selectProducts.length === 3 && !selectProducts.includes(item.id) ? 'opacity-50' : '']"
+                    :class="[selectProducts.includes(item.id) ? 'border-2 border-yellow-600' : '', selectProducts.length === 3 && !selectProducts.includes(item.id) ? 'opacity-50' : '']"
                     class="bg-white p-[30px] rounded-[16px] cursor-pointer"
                 >
                     <NuxtImg
