@@ -79,7 +79,7 @@
         </template>
         <template #custom-pagination>
             <Pagination
-                v-if="loadingWaitPagination"
+                v-if="!loadingWaitPagination"
                 :pagination="pagination"
                 @handlePageChange="handlePageChange"
                 class="flex justify-center mb-[95px] mt-[80px]"
