@@ -235,10 +235,12 @@
                 </div>
             </div>
         </div>
-        <AddToShoppingCarDialog
-            v-model:showDialog="showSoppingCarDialog"
-            :tab="'type2'"
-        />
+        <ClientOnly>
+            <AddToShoppingCarDialog
+                v-model:showDialog="showSoppingCarDialog"
+                :tab="'type2'"
+            />
+        </ClientOnly>
     </section>
 </template>
 

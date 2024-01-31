@@ -4,6 +4,7 @@
         <ShoppingCarStep2FormContactUser v-model:form="formContactUser" />
         <ShoppingCarStep2FormLogistics v-model:form="formLogistics" />
         <ShoppingCarStep2FormPayment v-model:form="formPayment" />
+        <ShoppingCarStep2FormMeasureTheSize v-model:form="formPayment" />
         <ShoppingCarStep2FormInvoice v-model:form="formInvoice" />
         <ShoppingCarStep2FormGift
             :gifts="gifts"
@@ -72,6 +73,8 @@ import ShoppingCarStep2FormInvoice from "~/views/template1/ShoppingCar/component
 import ShoppingCarStep2FormGift from "~/views/template1/ShoppingCar/components/Step2Form/ShoppingCarStep2FormGift.vue";
 // 定型化契約彈窗
 import ShoppingCarStep2FormCustomProductRule from "~/views/template1/ShoppingCar/components/Step2Form/ShoppingCarStep2FormCustomProductRule.vue";
+// 預約丈量時間
+import ShoppingCarStep2FormMeasureTheSize from "~/views/template1/ShoppingCar/components/Step2Form/ShoppingCarStep2FormMeasureTheSize.vue";
 
 const props = defineProps({
     currentTab: {
