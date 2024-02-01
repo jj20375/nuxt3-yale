@@ -13,7 +13,7 @@
                 <div class="flex">
                     <slot name="custom-sidebar"></slot>
                     <div class="flex-1 bg-gray-50 pl-[40px]">
-                        <main>
+                        <main class="min-h-screen">
                             <slot name="custom-content"></slot>
                             <slot name="custom-pagination"></slot>
                         </main>

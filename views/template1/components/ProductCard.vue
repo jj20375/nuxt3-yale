@@ -1,13 +1,13 @@
 <template>
     <div>
         <div
-            class="relative product-card bg-white rounded-2xl"
+            class="relative bg-white product-card rounded-2xl"
             @mouseover="mouseoverEvent(product.id)"
             @mouseleave="mouseleaveEvent(product.id)"
         >
-            <NuxtLink :to="{ name: 'product-detail-slug', params: { slug: product.name }, query: { id: product.id, breadcrumbs: JSON.stringify(breadcrumbs) } }">
+            <NuxtLink @click="goToDetail({ name: product.name, id: product.id })">
                 <NuxtImg
-                    class="object-cover h-full w-full rounded-2xl aspect-square"
+                    class="object-cover w-full h-full rounded-2xl aspect-square"
                     :src="product.main_image"
                 />
                 <div class="absolute bottom-[20px] left-[20px] flex gap-2">
@@ -17,9 +17,8 @@
             </NuxtLink>
             <div
                 :class="currentHover === product.id ? 'opacity-100' : 'opacity-0'"
-                class="absolute top-0 flex items-end w-full h-full transition-all duration-500 pointer-events-none z-0"
+                class="absolute top-0 z-0 flex items-end w-full h-full transition-all duration-500 pointer-events-none"
             >
-
                 <div class="absolute z-20 mb-[40px] w-full text-center pointer-events-auto">
                     <div>
                         <button
@@ -30,23 +29,33 @@
                         </button>
                     </div>
                     <div>
-                        <NuxtLink :to="{ name: 'product-detail-slug', params: { slug: product.name }, query: { id: product.id, breadcrumbs: JSON.stringify(breadcrumbs) } }">
+                        <NuxtLink @click="goToDetail({ name: product.name, id: product.id })">
                             <button class="z-10 mt-2 gray-btn btn-sm !py-2">了解更多</button>
                         </NuxtLink>
                     </div>
                 </div>
                 <div class="absolute top-0 left-0 z-10 w-full h-full bg-white opacity-80 rounded-2xl"></div>
             </div>
-            <div class="absolute favorite w-[30px] h-[30px] text-gray-300 top-[16px] right-[16px] cursor-pointer z-50 duration-300 transition-all" :class="isFavorite === true ? 'opacity-100': 'opacity-0' " @click="handleFavorite">
+            <div
+                class="absolute favorite w-[30px] h-[30px] text-gray-300 top-[16px] right-[16px] cursor-pointer z-50 duration-300 transition-all"
+                :class="isFavorite === true ? 'opacity-100' : 'opacity-0'"
+                @click="handleFavorite"
+            >
                 <template v-if="isFavorite">
-                    <NuxtImg class="absolute w-[30px] h-[30px] left-0 top-0 z-20" src="/img/icons/favorite-fill.svg"/>
+                    <NuxtImg
+                        class="absolute w-[30px] h-[30px] left-0 top-0 z-20"
+                        src="/img/icons/favorite-fill.svg"
+                    />
                 </template>
                 <template v-else>
-                    <NuxtImg class="absolute w-[30px] h-[30px] left-0 top-0 z-20" src="/img/icons/favorite-hollow.svg"/>
+                    <NuxtImg
+                        class="absolute w-[30px] h-[30px] left-0 top-0 z-20"
+                        src="/img/icons/favorite-hollow.svg"
+                    />
                 </template>
             </div>
         </div>
-        <NuxtLink :to="{ name: 'product-detail-slug', params: { slug: product.name }, query: { id: product.id, breadcrumbs: JSON.stringify(breadcrumbs) } }">
+        <NuxtLink @click="goToDetail({ name: product.name, id: product.id })">
             <h3 class="pt-[16px] text-[20px] font-medium YaleSolisW-Bd">{{ product.model }}</h3>
             <h3 class="text-[15px] font-[400] YaleSolisW-Lt mt-1.5 line-clamp-1">{{ product.name }}</h3>
             <div class="flex mt-1.5">
@@ -61,7 +70,10 @@
 <script lang="ts" setup>
 import AddToShoppingCarDialog from "~/views/template1/components/AddToShoppingCarDialog.vue";
 
+const router = useRouter();
+
 const { $utils, $shoppingCarService } = useNuxtApp();
+
 interface Props {
     product: { id: number; [key: string]: any };
     // 麵包屑
@@ -90,9 +102,8 @@ const isFavorite = ref(false);
 
 // TODO 待完成
 const handleFavorite = () => {
-    isFavorite.value =!isFavorite.value;
-}
-
+    isFavorite.value = !isFavorite.value;
+};
 
 // 判斷是否顯示彈窗
 const showDialog = ref(false);
@@ -116,12 +127,24 @@ function addToShoppingCar(data: any) {
         $shoppingCarService().addToShoppingCar({ ...data, mark: "YDM 4109A", name: "指紋密碼鑰匙三合一", color: "黑色", imgSrc: "/img/home/product/product1.jpg", count: 1, singlePrice: 1760 });
     }
 }
+
+/**
+ * 細節頁
+ */
+function goToDetail(product: { name: string; id: number }) {
+    $utils().saveBreadcrumbsData(JSON.stringify(props.breadcrumbs));
+    router.push({
+        name: "product-detail-slug",
+        params: { slug: product.name },
+        query: { id: product.id },
+    });
+}
 </script>
 
 <style>
-.product-card{
-    &:hover{
-        .favorite{
+.product-card {
+    &:hover {
+        .favorite {
             @apply opacity-100 duration-300 transition-all;
         }
     }
