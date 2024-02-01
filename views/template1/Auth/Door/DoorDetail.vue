@@ -1,6 +1,6 @@
 <template>
     <section class="mt-[86px] min-h-screen border-t border-gray-300">
-        <nav class="border-t border-b border-gray-300 py-[16px] bg-white">
+        <nav class="border-b border-gray-300 py-[16px] bg-white">
             <div class="container">
                 <Breadcrumb :menus="breadcrumbs" />
             </div>
