@@ -7,11 +7,11 @@
         <template #custom-sidebar>
             <SideBar
                 ref="sideBarRef"
-                class="col-span-2 bg-white"
+                class="bg-white w-[250px]"
                 :menus="sidebar"
             >
                 <template #sidebar-deep-title>
-                    <h1 class="text-[32px] text-gray-800 mb-[23px] mt-[26px] font-medium">產品資訊</h1>
+                    <h1 class="text-[32px] text-gray-800 mb-[24px] leading-none mt-[32px] font-medium">產品資訊</h1>
                 </template>
                 <template #sidebar-deep-sub-title>
                     <div class="border-b border-gray-200 py-[16px]">
@@ -41,12 +41,12 @@
                     <p class="mt-[16px] text-[16px]">{{ productTypeDetail.description }}</p>
                 </div>
             </div>
-            <div class="flex justify-end mr-10 mb-[24px]">
+            <div class="flex justify-end mb-[24px] gap-[30px]">
                 <NuxtLink
                     v-if="productTypeDetail.is_compare === 1"
                     :to="{ name: 'product-compare-slug', params: { slug: '主鎖比較' }, query: { compareId: productTypeDetail.compare_id } }"
                 >
-                    <button class="border mr-[30px] border-gray-600 w-[100px] text-center rounded-full h-[36px]">規格比較</button>
+                    <button class="transparent-btn btn-xs">規格比較</button>
                 </NuxtLink>
                 <div class="flex items-center">
                     <p class="text-[16px] text-gray-800">排序：</p>
@@ -55,6 +55,7 @@
                         v-model="sortBy"
                         @change="sortChange"
                         value-key="label"
+                        :suffix-icon="IconArrowDown"
                     >
                         <el-option
                             v-for="(item, key) in sortOptions"
@@ -65,7 +66,7 @@
                     </el-select>
                 </div>
             </div>
-            <div class="grid w-full grid-cols-3 gap-4 mr-10">
+            <div class="grid grid-cols-3 gap-x-[20px] gap-y-[40px]">
                 <div
                     v-for="(product, index) in datas"
                     :key="index"
@@ -89,6 +90,7 @@
 </template>
 
 <script lang="ts" setup>
+import IconArrowDown from "~/assets/img/icons/arrow-down.svg";
 import SideBarDeepLayout from "~/views/template1/layouts/SideBarDeepLayout.vue";
 import Breadcrumb from "~/views/template1/components/Breadcrumb.vue";
 import SideBar from "~/views/template1/components/SideBarByDeep.vue";
@@ -359,14 +361,23 @@ onMounted(async () => {
 </script>
 
 <style lang="scss" scoped>
-:deep .el-input__inner {
-    @apply border-none text-gray-800 #{!important};
-}
-:deep .el-input__wrapper {
-    @apply shadow-none bg-gray-50 text-gray-800 #{!important};
-}
+:deep .el-input {
+    @apply relative flex flex-col justify-stretch flex-wrap mb-0 bg-transparent text-base;
+    .el-input__wrapper {
+        @apply shadow-none rounded-none p-1.5 bg-transparent text-[16px] #{!important};
+        &.is-focus {
+            @apply shadow-none #{!important};
+        }
+        .el-input__inner {
+            @apply text-gray-800;
 
-:deep .el-select .el-input .el-select__caret.el-icon {
-    @apply text-[20px] font-bold text-gray-800 #{!important};
+            &::placeholder {
+                -webkit-text-fill-color: #ababac;
+            }
+        }
+    }
+    .el-select__caret.el-icon {
+        @apply text-[16px] text-gray-800 #{!important};
+    }
 }
 </style>

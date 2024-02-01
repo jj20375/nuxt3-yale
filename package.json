@@ -70,7 +70,6 @@
         "video.js": "^8.9.0",
         "vue-cropper": "^1.1.1",
         "vue-datepicker-next": "^1.0.3",
-        "vue-easy-lightbox": "^1.16.0",
         "vue-multiselect": "^3.0.0-beta.2",
         "vue-recaptcha": "^3.0.0-alpha.3",
         "vue-recaptcha-v3": "^2.0.1",

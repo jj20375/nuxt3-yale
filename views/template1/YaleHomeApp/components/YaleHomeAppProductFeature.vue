@@ -1,13 +1,13 @@
 <template>
     <section class="relative text-center text-gray-800">
-        <div class="container pb-[120px]">
+        <div class="max-w-[900px] mx-auto pb-[80px]">
             <div>
                 <h2 class="text-[32px] font-medium YaleSolisW-Bd">隨時掌握資訊，Yale Home 隨時反應門鎖狀態</h2>
                 <h5 class="text-[20px] mt-[12px] font-medium YaleSolisW-Bd">多元化開門方式，實現您的智慧家庭</h5>
             </div>
             <div class="mt-[40px] grid grid-cols-3 gap-[20px]">
                 <div
-                    class="w-[285px] h-[300px] bg-gray-50 flex items-center px-10"
+                    class="bg-gray-50 flex justify-center px-10 pt-[60px] pb-10"
                     v-for="(feature, index) in features"
                 >
                     <div>
@@ -21,7 +21,7 @@
                 </div>
             </div>
         </div>
-        <div class="absolute bottom-0 z-[-1] bg-gray-600 w-full h-[570px]"></div>
+        <div class="absolute bottom-0 z-[-1] bg-gray-600 w-full h-[520px]"></div>
     </section>
 </template>
 

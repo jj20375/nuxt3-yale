@@ -38,7 +38,7 @@
                 />
                 <article>
                     <h2 class="text-gray-100 YaleSolisW-Bd text-[66px] font-medium gradient-title">DOWNLOAD</h2>
-                    <h3 class="font-medium text-[45px] YaleSolisW-Bd leading-[56.25px]">Yale Home APP</h3>
+                    <h3 class="font-medium text-[45px] YaleSolisW-Bd leading-[56.25px]">Yale Home App</h3>
                 </article>
             </div>
         </div>

@@ -1,5 +1,5 @@
 <template>
-    <ul class="flex">
+    <ul class="flex min-h-[21px]">
         <li
             v-for="(menu, index) in menus"
             :key="menu.name"

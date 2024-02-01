@@ -8,9 +8,7 @@
         </template>
 
         <template #content>
-            <div class="container mt-[60px]">
-                <YaleHomeAppTop :datas="topDatas" />
-            </div>
+            <YaleHomeAppTop :datas="topDatas" />
             <YaleHomeAppCarousel :photos="carouselDatas" />
             <YaleHomeAppProduct />
             <YaleHomeAppProductFeature />
@@ -49,7 +47,7 @@ const breadcrumbs = ref([
     {
         name: "yale-home-app-slug",
         text: "Yale Home App",
-        params: { slug: "Yale Home APP" },
+        params: { slug: "Yale Home App" },
     },
 ]);
 
