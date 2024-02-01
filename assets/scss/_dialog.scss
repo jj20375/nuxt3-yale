@@ -11,7 +11,7 @@
     @apply absolute top-0 right-0 p-0;
   }
   .el-dialog__body{
-    @apply py-[40px] pl-[24px] pr-[32px] h-full overflow-y-auto pt-2 #{!important};
+    @apply py-[40px] pl-[24px] pr-[32px] h-full overflow-y-auto pt-0 #{!important};
   }
 
   // 客制scrollbar

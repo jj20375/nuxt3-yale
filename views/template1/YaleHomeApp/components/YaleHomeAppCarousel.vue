@@ -15,16 +15,10 @@
                         :key="index"
                         class="px-[3px]"
                     >
-                        <div class="carousel__item rounded-[20px]">
+                        <div class="cursor-pointer rounded-[20px]">
                             <Fancybox :options="{
                                 compact: false,
                                 contentClick: 'iterateZoom',
-                                Images: {
-                                    Panzoom: {
-                                        maxScale: 2,
-                                    },
-                                    protected: true,
-                                },
                                 Toolbar: {
                                 display: {
                                     left: [

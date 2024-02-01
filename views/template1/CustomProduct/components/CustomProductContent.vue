@@ -18,7 +18,7 @@
                 close-on-click-modal
                 lock-scroll
                 show-close
-                :width="600"
+                :width="760"
                 center
                 align-center
                 append-to-body

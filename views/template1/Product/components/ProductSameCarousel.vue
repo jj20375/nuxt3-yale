@@ -1,10 +1,10 @@
 <template>
     <div class="relative mt-[40px]">
-        <div class="px-[100px]">
+        <div>
             <Swiper
                 v-if="photos.length > 0"
                 :loop="true"
-                :spaceBetween="10"
+                :spaceBetween="20"
                 :slidesPerView="4"
                 :modules="modules"
                 @swiper="onSwiper"
@@ -18,17 +18,17 @@
                     <ProductCard :product="item" />
                 </SwiperSlide>
             </Swiper>
-            <div class="absolute top-0 left-0 z-50 flex items-center h-full">
+            <div class="absolute top-0 -left-[30px] -translate-x-full z-50 flex items-center h-full">
                 <button
-                    class="text-5xl"
+                    class="text-3xl"
                     @click.stop="mainSwiper.slidePrev()"
                 >
                     <el-icon><ArrowLeft /></el-icon>
                 </button>
             </div>
-            <div class="absolute top-0 right-0 z-50 flex items-center h-full">
+            <div class="absolute top-0 -right-[30px] translate-x-full z-50 flex items-center h-full">
                 <button
-                    class="text-5xl"
+                    class="text-3xl"
                     @click.stop="mainSwiper.slideNext()"
                 >
                     <el-icon><ArrowRight /></el-icon>

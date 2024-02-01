@@ -1,53 +1,50 @@
 <template>
-    <div class="w-full">
+    <div class="shrink-0 grow-0 basis-[430px] w-[430px]">
         <div class="relative">
-            <div class="px-[100px]">
-                <Swiper
-                    v-if="photos.length > 0"
-                    :loop="true"
-                    :spaceBetween="10"
-                    :thumbs="{ swiper: thumbsSwiper }"
-                    :modules="modules"
-                    @swiper="onSwiper"
+            <Swiper
+                v-if="photos.length > 0"
+                :loop="true"
+                :spaceBetween="10"
+                :thumbs="{ swiper: thumbsSwiper }"
+                :modules="modules"
+                @swiper="onSwiper"
+            >
+                <SwiperSlide
+                    v-for="(item, index) in photos"
+                    :key="index"
                 >
-                    <SwiperSlide
-                        v-for="(item, index) in photos"
-                        :key="index"
-                        class="px-[3px]"
-                    >
-                        <div class="carousel__item">
-                            <img
-                                class="w-full cursor-pointer md:p-1 aspect-square object-cover"
-                                :src="item.imgSrc"
-                                alt=""
-                            />
-                        </div>
-                    </SwiperSlide>
-                </Swiper>
-            </div>
-            <div class="absolute top-0 z-50 flex items-center h-full">
+                    <div class="carousel__item">
+                        <img
+                            class="w-full cursor-pointer aspect-square object-cover"
+                            :src="item.imgSrc"
+                            alt=""
+                        />
+                    </div>
+                </SwiperSlide>
+            </Swiper>
+            <div class="absolute top-0 -left-[30px] -translate-x-full z-50 flex items-center h-full">
                 <button
-                    class="text-5xl"
+                    class="text-3xl"
                     @click.stop="mainSwiper.slidePrev()"
                 >
                     <el-icon><ArrowLeft /></el-icon>
                 </button>
             </div>
-            <div class="absolute top-0 right-0 z-50 flex items-center h-full">
+            <div class="absolute top-0 -right-[30px] translate-x-full z-50 flex items-center h-full">
                 <button
-                    class="text-5xl"
+                    class="text-3xl"
                     @click.stop="mainSwiper.slideNext()"
                 >
                     <el-icon><ArrowRight /></el-icon>
                 </button>
             </div>
         </div>
-        <div class="px-[100px]">
+        <div class="pt-[42px] pb-4">
             <Swiper
                 id="thumbClass"
                 v-if="photos.length > 0"
                 @swiper="setThumbsSwiper"
-                :spaceBetween="10"
+                :spaceBetween="16"
                 :slidesPerView="5"
                 :freeMode="true"
                 :loop="true"
@@ -59,7 +56,7 @@
                     :key="index"
                 >
                     <img
-                        class="w-full p-1 aspect-square cursor-pointer"
+                        class="w-full aspect-square cursor-pointer"
                         :src="item.imgSrc"
                         alt=""
                     />
@@ -105,7 +102,7 @@ function onSwiper(swiper: any) {
 
 function slideTo (index: any)  {
     console.log(mainSwiper.value)
-    mainSwiper.value.slideTo(index - 1, 0);
+    mainSwiper.value.slideToLoop(index - 1, 200);
 };
 defineExpose({
     slideTo

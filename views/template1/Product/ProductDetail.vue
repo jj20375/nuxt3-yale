@@ -1,170 +1,189 @@
 <template>
-    <section class="min-h-screen mt-[86px] mb-[100px]">
+    <section class="min-h-screen mt-[86px] mb-[80px]">
         <nav class="border-t border-b border-gray-300 py-[16px] pl-[122px]">
             <Breadcrumb :menus="breadcrumbs" />
         </nav>
-        <div class="container mt-[60px]">
-            <div class="grid grid-cols-3">
-                <ProductDetailCarousel
-                    ref="productDetailCarouselRef"
-                    class="pr-[72px] col-span-2"
-                    :photos="photos"
-                />
-                <div class="col-span-1">
-                    <h1 class="text-[24px] font-medium text-gray-800 YaleSolisW-Bd">{{ detailData.model }}</h1>
-                    <h2 class="mt-[8px] text-[16px] font-medium text-gray-300">{{ detailData.name }}</h2>
-                    <div class="flex mt-[8px]">
-                        <p class="text-gray-800 text-[20px] font-medium mr-[12px] YaleSolisW-Bd">NT${{ $utils().formatCurrency(detailData.price) }}</p>
-                        <p class="text-gray-500 text-[20px] font-light line-through">NT${{ $utils().formatCurrency(detailData.market_price) }}</p>
+        <div class="mt-[60px]">
+            <div class="w-[950px] mx-auto">
+                <div class="flex gap-[120px]">
+                    <ProductDetailCarousel
+                        ref="productDetailCarouselRef"
+                        :photos="photos"
+                    />
+                    <div class="flex flex-col">
+                        <div class="flex gap-2 mb-4">
+                            <div class="bg-yellow-500 text-[12px] px-2 py-1 rounded-md">NEW</div>
+                            <div class="bg-pink-400 text-[12px] px-2 py-1 rounded-md">SALE</div>
+                        </div>
+                        <div class="flex justify-between gap-4">
+                            <div>
+                                <h1 class="text-[24px] font-medium text-gray-800 YaleSolisW-Bd">{{ detailData.model }}</h1>
+                                <h2 class="mt-[8px] text-[16px] font-medium text-gray-800">{{ detailData.name }}</h2>
+                            </div>
+                            <div class="whitespace-nowrap">
+                                <div class="flex items-center gap-6">
+                                    <NuxtLink :to="{ name: 'product-compare-slug', params: { slug: '主鎖比較' }, query: { compareId: detailData.product_type_id, productId: detailData.product_id } }">
+                                        <div class="cursor-pointer underline underline-offset-2 hover:no-underline">規格比較</div>
+                                    </NuxtLink>
+                                    <div
+                                        class="relative favorite w-[30px] h-[30px] text-gray-300 cursor-pointer z-50 duration-300 transition-all"
+                                        @click="handleFavorite"
+                                    >
+                                        <template v-if="isFavorite">
+                                            <NuxtImg
+                                                class="absolute w-[30px] h-[30px] left-0 top-0 z-20"
+                                                src="/img/icons/favorite-fill.svg"
+                                            />
+                                        </template>
+                                        <template v-else>
+                                            <NuxtImg
+                                                class="absolute w-[30px] h-[30px] left-0 top-0 z-20"
+                                                src="/img/icons/favorite-hollow.svg"
+                                            />
+                                        </template>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex mt-[8px]">
+                            <p class="text-gray-800 text-[20px] font-medium mr-[12px] YaleSolisW-Bd">NT${{ $utils().formatCurrency(detailData.price) }}</p>
+                            <p class="text-gray-500 text-[20px] font-light line-through">NT${{ $utils().formatCurrency(detailData.market_price) }}</p>
+                        </div>
+                        <div class="mt-[16px] text-gray-900 list-disc list-inside text-[16px] mb-1">
+                            {{ detailData.description }}
+                        </div>
+                        <div
+                            v-for="(item, index) in productOptions"
+                            :key="index"
+                            class="mt-[30px]"
+                        >
+                            <h5 class="text-[16px] font-medium text-gray-800 YaleSolisW-Bd">{{ item.name }}</h5>
+                            <ul class="flex gap-[20px] mt-[12px]">
+                                <li
+                                    v-for="opt in item.options"
+                                    :key="opt.id"
+                                    class="cursor-pointer group"
+                                    @click="optionChange(opt, index)"
+                                >
+                                    <div
+                                        class="p-2 border-2 border-transparent rounded-full duration-300 transition-all"
+                                        :class="currentColor[index] === opt.id ? 'border-yellow-600' : 'group-hover:border-gray-100'"
+                                    >
+                                        <NuxtImg
+                                            class="w-[32px]"
+                                            :src="opt.imgSrc"
+                                        />
+                                    </div>
+                                    <p
+                                        class="text-[14px] text-center text-gray-800 px-2 pt-[8px] opacity-0 group-hover:opacity-100 duration-300 transition-all"
+                                        :class="currentColor[index] === opt.id ? 'opacity-100': ''"
+                                    >
+                                        {{ opt.text }}
+                                    </p>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="mt-[30px]">
+                            <h5 class="text-[16px] font-medium text-gray-800 mb-[20px] YaleSolisW-Bd">數量</h5>
+                            <div class="flex justify-center items-stretch w-[180px] border border-gray-300 rounded-full">
+                                <button
+                                    class="flex-1 flex items-center justify-center cursor-pointer h-auto"
+                                    @click.prevent="countDelete()"
+                                >
+                                    <el-icon><Minus /></el-icon>
+                                </button>
+                                <div class="flex items-center justify-center w-[80px] py-3 h-full">{{ count }}</div>
+                                <button
+                                    class="flex-1 flex items-center justify-center cursor-pointer h-auto"
+                                    @click.prevent="countAdd()"
+                                >
+                                    <el-icon><Plus /></el-icon>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="my-[30px]">
+                            <button
+                                class="transparent-btn w-full"
+                                @click="addToShoppingCar(product)"
+                            >
+                                加入購物車
+                            </button>
+                            <div class="mt-[12px]">
+                                <button class="yellow-btn w-full">結帳</button>
+                            </div>
+                        </div>
+                        <div class="bg-gray-50 p-[30px] w-full rounded-xl mb-[20px]">
+                            <ul class="text-[16px]">
+                                <li
+                                    class="mb-[6px]"
+                                    v-for="(sale, index) in salesDetail"
+                                    :key="index"
+                                >
+                                    {{ sale }}
+                                </li>
+                            </ul>
+                        </div>
+                        <div>
+                            <ul class="flex gap-4">
+                                <li class="cursor-pointer p-1">
+                                    <IconFacebook class="!w-[20px] !h-[20px] transition-all duration-300 hover:text-gray-400 hover:transition-all hover:duration-300" />
+                                </li>
+                                <li class="cursor-pointer p-1">
+                                    <IconLine class="!w-[20px] !h-[20px] transition-all duration-300 hover:text-gray-400 hover:transition-all hover:duration-300" />
+                                </li>
+                            </ul>
+                        </div>
                     </div>
-                    <div class="mt-[16px] text-gray-900 list-disc list-inside text-[16px] mb-1">
-                        {{ detailData.description }}
-                    </div>
-                    <div class="py-[30px] flex items-center">
-                        <NuxtLink :to="{ name: 'product-compare-slug', params: { slug: '主鎖比較' }, query: { compareId: detailData.product_type_id, productId: detailData.product_id } }">
-                            <div class="mr-[20px] cursor-pointer">規格比較</div>
-                        </NuxtLink>
-                        <font-awesome-icon
-                            class="text-gray-300 text-[20px]"
-                            :icon="['far', 'heart']"
-                        />
+                </div>
+                <div class="mt-[80px]">
+                    <ul class="flex justify-center border-b border-gray-200">
+                        <li
+                            @click="currentTab = index"
+                            v-for="(tab, index) in tabs"
+                            :key="index"
+                            class="py-[8px] w-[200px] text-[20px] text-center cursor-pointer"
+                            :class="currentTab === index ? 'border-b-2 border-gray-800 text-gray-800' : 'text-gray-400'"
+                        >
+                            {{ tab }}
+                        </li>
+                    </ul>
+                    <div
+                        v-if="currentTab === 0"
+                        class="min-h-[500px] text-center flex items-center justify-center flex mt-[60px]"
+                    >
+                        <div v-html="detailData.content"></div>
                     </div>
                     <div
-                        v-for="(item, index) in productOptions"
-                        :key="index"
+                        v-if="currentTab === 1"
+                        class="min-h-[500px] flex mt-[60px]"
                     >
-                        <h5 class="text-[16px] font-medium text-gray-800 YaleSolisW-Bd">{{ item.name }}</h5>
-                        <ul class="flex mt-[20px]">
-                            <li
-                                v-for="opt in item.options"
-                                :key="opt.id"
-                                class="mr-[20px] cursor-pointer"
-                                @click="optionChange(opt, index)"
-                            >
-                                <div
-                                    class="p-2"
-                                    :class="currentColor[index] === opt.id ? 'border border-yellow-600  rounded-full' : ''"
-                                >
-                                    <NuxtImg
-                                        class="w-[32px]"
-                                        :src="opt.imgSrc"
-                                    />
-                                </div>
-                                <p
-                                    v-if="currentColor[index] === opt.id"
-                                    class="text-[14px] text-gray-800 px-2 pt-[8px]"
-                                >
-                                    {{ opt.text }}
-                                </p>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="mt-[30px]">
-                        <h5 class="text-[16px] font-medium text-gray-800 mb-[20px] YaleSolisW-Bd">數量</h5>
-                        <div class="flex justify-center items-center w-[188px] border border-gray-300 px-[2px] py-[10px] rounded-full">
+                        <div class="flex-1 mr-[80px]">
+                            <h5 class="text-[18px] font-medium YaleSolisW-Bd text-gray-800 mb-[20px]">產品規格內容</h5>
                             <div
-                                class="cursor-pointer"
-                                @click="countDelete()"
+                                v-for="(attr, key) in detailData.attributes"
+                                :key="key"
+                                class="flex border-b border-gray-100 text-[15px] py-[8px]"
                             >
-                                <el-icon><Minus /></el-icon>
-                            </div>
-                            <div class="w-[88px] h-[28px] text-center">{{ count }}</div>
-                            <div
-                                class="cursor-pointer"
-                                @click="countAdd()"
-                            >
-                                <el-icon><Plus /></el-icon>
+                                <div class="flex-1">{{ key }}</div>
+                                <div class="flex-1">{{ attr }}</div>
                             </div>
                         </div>
-                    </div>
-                    <div class="my-[30px]">
-                        <button
-                            class="max-w-[387px] w-full text-center py-[11px] border border-gray-600 transition-all duration-500 hover:text-white hover:bg-black rounded-full"
-                            @click="addToShoppingCar(product)"
-                        >
-                            加入購物車
-                        </button>
-                        <div class="mt-[12px]">
-                            <button class="max-w-[387px] w-full text-center py-[11px] bg-yellow-500 hover:bg-yellow-600 transition-all duration-500 rounded-full">結帳</button>
-                        </div>
-                    </div>
-                    <div class="bg-gray-50 p-[30px] max-w-[387px] rounded-xl mb-[20px]">
-                        <ul class="text-[16px]">
-                            <li
-                                class="mb-[6px]"
-                                v-for="(sale, index) in salesDetail"
+                        <div class="flex-1">
+                            <h5 class="text-[18px] font-medium YaleSolisW-Bd text-gray-800 mb-[20px]">檔案下載</h5>
+                            <div
+                                class="cursor-pointer"
+                                @click.prevent="downloadFile(item)"
+                                v-for="(item, index) in detailData.documents"
                                 :key="index"
                             >
-                                {{ sale }}
-                            </li>
-                        </ul>
-                    </div>
-                    <div>
-                        <ul class="flex">
-                            <li class="mr-[16px]">
-                                <NuxtImg
-                                    class="w-[20px]"
-                                    src="/img/icons/medias/icon-black-1.svg"
-                                />
-                            </li>
-                            <li>
-                                <NuxtImg
-                                    class="w-[20px]"
-                                    src="/img/icons/medias/icon-black-3.svg"
-                                />
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="mt-[80px]">
-                <ul class="flex justify-center border-b border-gray-200">
-                    <li
-                        @click="currentTab = index"
-                        v-for="(tab, index) in tabs"
-                        :key="index"
-                        class="py-[8px] w-[200px] text-[20px] text-center cursor-pointer"
-                        :class="currentTab === index ? 'border-b-2 border-gray-800 text-gray-800' : 'text-gray-400'"
-                    >
-                        {{ tab }}
-                    </li>
-                </ul>
-                <div
-                    v-if="currentTab === 0"
-                    class="min-h-[500px] text-center flex items-center justify-center flex mt-[60px]"
-                >
-                    <div v-html="detailData.content"></div>
-                </div>
-                <div
-                    v-if="currentTab === 1"
-                    class="min-h-[500px] flex mt-[60px]"
-                >
-                    <div class="flex-1 mr-[80px]">
-                        <h5 class="text-[18px] font-medium YaleSolisW-Bd text-gray-800 mb-[20px]">產品規格內容</h5>
-                        <div
-                            v-for="(attr, key) in detailData.attributes"
-                            :key="key"
-                            class="flex border-b border-gray-100 text-[15px] py-[8px]"
-                        >
-                            <div class="flex-1">{{ key }}</div>
-                            <div class="flex-1">{{ attr }}</div>
-                        </div>
-                    </div>
-                    <div class="flex-1">
-                        <h5 class="text-[18px] font-medium YaleSolisW-Bd text-gray-800 mb-[20px]">檔案下載</h5>
-                        <div
-                            class="cursor-pointer"
-                            @click.prevent="downloadFile(item)"
-                            v-for="(item, index) in detailData.documents"
-                            :key="index"
-                        >
-                            <el-icon><Document /></el-icon>
-                            {{ item.name }}
+                                <el-icon><Document /></el-icon>
+                                {{ item.name }}
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div>
+            <div class="container mt-[80px]">
                 <h3 class="text-[32px] YaleSolisW-Bd font-medium text-gray-800 text-center">相關產品</h3>
                 <ProductSameCarousel
                     :photos="sameProducts"
@@ -177,6 +196,8 @@
 </template>
 
 <script setup lang="ts">
+import IconFacebook from "~/assets/img/icons/medias/icon-black-1.svg";
+import IconLine from "~/assets/img/icons/medias/icon-black-3.svg";
 // 麵包屑組件
 import Breadcrumb from "~/views/template1/components/Breadcrumb.vue";
 // 產品描述 幻燈片
@@ -199,6 +220,14 @@ const breadcrumbs = ref([]);
 if (process.client) {
     breadcrumbs.value = JSON.parse($utils().getBreadcrumbsData());
 }
+
+// 判斷是否為喜愛項目
+const isFavorite = ref(false);
+
+// TODO 待完成
+const handleFavorite = () => {
+    isFavorite.value = !isFavorite.value;
+};
 
 const photos = ref<{ id: string | number; imgSrc: string }[]>([]);
 const detailData = ref<any>({});
@@ -397,3 +426,13 @@ onMounted(async () => {
     });
 });
 </script>
+
+<style>
+.product-card {
+    &:hover {
+        .favorite {
+            @apply opacity-100 duration-300 transition-all;
+        }
+    }
+}
+</style>
