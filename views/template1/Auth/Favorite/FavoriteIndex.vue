@@ -54,12 +54,12 @@ const datas = ref<ProductList[]>([]);
 /**
  * 取得商品列表
  */
-async function getList(params: { per_page: number; page: number }) {
+async function getList() {
     try {
-        const { data } = await $api().ProductListPaginateAPI<ProductListAPIInterface>(params);
+        const { data } = await $api().GetProductFavoritesAPI<ProductListAPIInterface>();
         datas.value = [];
 
-        const rows = (data.value as any).data.rows;
+        const rows = (data.value as any).data;
 
         rows.forEach((item: { id: any; model: any; name: any; shape: any; price: any; market_price: any; main_image: any; other_images: any }) => {
             datas.value.push({
@@ -77,5 +77,12 @@ async function getList(params: { per_page: number; page: number }) {
     }
 }
 
-await getList({ per_page: 10, page: 1 });
+
+onMounted(async () => {
+    nextTick(async () => {
+        if (process.client) {
+            await getList();
+        }
+    });
+});
 </script>

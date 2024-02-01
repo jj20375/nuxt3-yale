@@ -69,10 +69,16 @@
 
 <script lang="ts" setup>
 import AddToShoppingCarDialog from "~/views/template1/components/AddToShoppingCarDialog.vue";
+import { useUserStore } from "~/store/userStore";
+import { storeToRefs } from "pinia";
+const userStore = useUserStore();
+const { isAuth } = storeToRefs(userStore);
+
+import { ElMessage } from "element-plus";
 
 const router = useRouter();
 
-const { $utils, $shoppingCarService } = useNuxtApp();
+const { $api, $utils, $shoppingCarService } = useNuxtApp();
 
 interface Props {
     product: { id: number; [key: string]: any };
@@ -97,12 +103,41 @@ const props: Props = withDefaults(defineProps<Props>(), {
     ],
 });
 
-// 判斷是否為喜愛項目
-const isFavorite = ref(false);
+const emit = defineEmits(["handleFavorite"]);
 
-// TODO 待完成
-const handleFavorite = () => {
-    isFavorite.value = !isFavorite.value;
+// 判斷是否為喜愛項目
+const isFavorite = computed(() => {
+    return props.product.is_favorite
+})
+
+const handleFavorite = async () => {
+    if (isAuth.value) {
+        try {
+            const params = { productId: props.product.id };
+            const { data } = await $api().ProductFavoriteAPI(params);
+            const message = (data.value as any).message;
+            const handleMessge = isFavorite.value ? '取消收藏' : '加入收藏'
+            if (message === '請求成功') {
+                ElMessage({
+                    type: "success",
+                    message: handleMessge,
+                });
+                emit("handleFavorite", props.product.id);
+            } else {
+                ElMessage({
+                    type: "error",
+                    message: handleMessge + '失敗',
+                });
+            }
+        } catch (err) {
+            ElMessage({
+                type: "error",
+                message: "加入失敗",
+            });
+        }
+    } else {
+        alert("請先登入或註冊新帳號以便管理您的收藏！");
+    }
 };
 
 // 判斷是否顯示彈窗

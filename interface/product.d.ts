@@ -87,6 +87,8 @@ export interface ProductList {
     main_image: string;
     // 其他僕片
     other_images?: string[];
+    // 加入收藏
+    is_favorite: boolean;
 }
 
 // 比較產品列表內容
@@ -114,4 +116,5 @@ export interface ProductCarInterface {
     market_price: number;
     main_image: string;
     other_images: string[];
+    is_favorite: boolean
 }

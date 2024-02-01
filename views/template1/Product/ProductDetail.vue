@@ -25,8 +25,16 @@
                             <div class="mr-[20px] cursor-pointer">規格比較</div>
                         </NuxtLink>
                         <font-awesome-icon
-                            class="text-gray-300 text-[20px]"
+                            v-show="!detailData.is_favorite"
+                            @click="handleDetailFavorite"
+                            class="text-gray-300 text-[20px] cursor-pointer"
                             :icon="['far', 'heart']"
+                        />
+                        <font-awesome-icon
+                            v-show="detailData.is_favorite"
+                            @click="handleDetailFavorite"
+                            class="text-yellow-500 text-[20px] cursor-pointer"
+                            :icon="['fa', 'heart']"
                         />
                     </div>
                     <div
@@ -169,6 +177,7 @@
                 <ProductSameCarousel
                     :photos="sameProducts"
                     :breadcrumbs="breadcrumbs"
+                    @handleFavorite="handleFavorite"
                 />
             </div>
         </div>
@@ -190,6 +199,13 @@ import ProductSameCarousel from "~/views/template1/Product/components/ProductSam
  */
 import { ProductListAPIInterface, ProductList, ProductCarInterface } from "~/interface/product.d";
 import AddToShoppingCarDialog from "~/views/template1/components/AddToShoppingCarDialog.vue";
+
+import { useUserStore } from "~/store/userStore";
+import { storeToRefs } from "pinia";
+const userStore = useUserStore();
+const { isAuth } = storeToRefs(userStore);
+
+import { ElMessage } from "element-plus";
 
 const { $api, $utils, $shoppingCarService } = useNuxtApp();
 const route = useRoute();
@@ -292,6 +308,7 @@ async function getData() {
         detailData.value.attributes = rows.attributes;
         detailData.value.documents = rows.documents;
         detailData.value.product_type_id = rows.product_type_id;
+        detailData.value.is_favorite = rows.is_favorite;
 
         sameProducts.value = [];
 
@@ -305,6 +322,7 @@ async function getData() {
                 price: item.price,
                 market_price: item.market_price,
                 main_image: item.main_image,
+                is_favorite: item.is_favorite,
             });
         });
 
@@ -369,16 +387,53 @@ function addToShoppingCar(data: any) {
 }
 
 /**
+ * 加入收藏
+ */
+async function handleDetailFavorite () {
+    if (isAuth.value) {
+        try {
+            const params = { productId: detailData.value.product_id };
+            const { data } = await $api().ProductFavoriteAPI(params);
+            const message = (data.value as any).message;
+            const handleMessge = detailData.value.is_favorite ? '取消收藏' : '加入收藏'
+            if (message === '請求成功') {
+                ElMessage({
+                    type: "success",
+                    message: handleMessge,
+                });
+                detailData.value.is_favorite = !detailData.value.is_favorite
+            } else {
+                ElMessage({
+                    type: "error",
+                    message: handleMessge + '失敗',
+                });
+            }
+        } catch (err) {
+            ElMessage({
+                type: "error",
+                message: "加入失敗",
+            });
+        }
+    } else {
+        alert("請先登入或註冊新帳號以便管理您的收藏！");
+    }
+}
+
+async function handleFavorite (id: any) {
+    const is_favorite = sameProducts.value.find(item => item.id === id).is_favorite
+    sameProducts.value.find(item => item.id === id).is_favorite = !is_favorite
+}
+/**
  * 初始化
  */
 async function init() {
     await getData();
 }
 
-await init();
 onMounted(async () => {
     nextTick(async () => {
         if (process.client) {
+            await init();
         }
     });
 });
