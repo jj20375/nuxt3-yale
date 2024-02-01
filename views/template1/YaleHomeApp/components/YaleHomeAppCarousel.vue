@@ -16,11 +16,35 @@
                         class="px-[3px]"
                     >
                         <div class="carousel__item rounded-[20px]">
-                            <NuxtImg
-                                class="h-[350px] rounded-[20px]"
-                                :src="item.imgSrc"
-                                alt=""
-                            />
+                            <Fancybox :options="{
+                                compact: false,
+                                contentClick: 'iterateZoom',
+                                Images: {
+                                    Panzoom: {
+                                        maxScale: 2,
+                                    },
+                                    protected: true,
+                                },
+                                Toolbar: {
+                                display: {
+                                    left: [
+                                        'infobar',
+                                    ],
+                                    middle : [],
+                                    right: [
+                                        'iterateZoom',
+                                        'close',
+                                    ],
+                                    }
+                                }
+                            }">
+                                <NuxtImg
+                                    data-fancybox="gallery"
+                                    class="h-[350px] rounded-[20px]"
+                                    :src="item.imgSrc"
+                                    alt=""
+                                />
+                            </Fancybox>
                         </div>
                     </SwiperSlide>
                 </Swiper>
