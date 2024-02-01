@@ -164,7 +164,7 @@
                     </div>
                 </div>
             </div>
-            <div>
+            <div v-if="sameProducts.length > 0">
                 <h3 class="text-[32px] YaleSolisW-Bd font-medium text-gray-800 text-center">相關產品</h3>
                 <ProductSameCarousel
                     :photos="sameProducts"
@@ -293,6 +293,21 @@ async function getData() {
         detailData.value.documents = rows.documents;
         detailData.value.product_type_id = rows.product_type_id;
 
+        sameProducts.value = [];
+
+        console.log(detailData.value.productRelations);
+        rows.productRelations.forEach((item: ProductCarInterface) => {
+            sameProducts.value.push({
+                id: item.id,
+                model: item.model,
+                name: item.name,
+                shape: item.shape,
+                price: item.price,
+                market_price: item.market_price,
+                main_image: item.main_image,
+            });
+        });
+
         breadcrumbs.value.push({
             name: route.name,
             text: rows.model,
@@ -339,34 +354,6 @@ function downloadFile(file: { url: string | URL | undefined }) {
     window.open(file.url, "_blank");
 }
 
-/**
- * 取得相關商品列表
- * test-mock: 模擬相關商品 api
- */
-async function getList(params: { per_page: number; page: number }) {
-    try {
-        const { data } = await $api().ProductListPaginateAPI<ProductListAPIInterface>(params);
-        sameProducts.value = [];
-        console.log("home sample api => ", data.value);
-
-        const rows = (data.value as any).data.rows;
-
-        rows.forEach((item: ProductCarInterface) => {
-            sameProducts.value.push({
-                id: item.id,
-                model: item.model,
-                name: item.name,
-                shape: item.shape,
-                price: item.price,
-                market_price: item.market_price,
-                main_image: item.main_image,
-            });
-        });
-    } catch (err) {
-        console.log("HomeSampleAPI => ", err);
-    }
-}
-
 // 判斷是否顯示彈窗
 const showDialog = ref(false);
 
@@ -386,7 +373,6 @@ function addToShoppingCar(data: any) {
  */
 async function init() {
     await getData();
-    await getList({ per_page: 10, page: 1 });
 }
 
 await init();
