@@ -75,7 +75,7 @@ const addPriceBuyProducts = ref([
         count: 1,
     },
     {
-        id: "id1",
+        id: "id2",
         name: "質感托特包-2",
         colors: [
             {
