@@ -17,27 +17,24 @@
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100;300;400;500;700;900&family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300&family=Pattaya&display=swap");
 
 @font-face {
-    font-family: 'YaleSolisW-Lt';
+    font-family: "YaleSolisW-Lt";
     font-style: normal;
     font-weight: 400;
-    src: url("./yale-font/YaleSolisW-Lt/YaleSolisW-Lt.woff2") format("woff2"),
-    url("./yale-font/YaleSolisW-Lt/YaleSolisW-Lt.woff") format("woff");
+    src: url("./yale-font/YaleSolisW-Lt/YaleSolisW-Lt.woff2") format("woff2"), url("./yale-font/YaleSolisW-Lt/YaleSolisW-Lt.woff") format("woff");
 }
 
 @font-face {
-    font-family: 'YaleSolisW-Bd';
+    font-family: "YaleSolisW-Bd";
     font-style: normal;
     font-weight: 400;
-    src: url("./yale-font/YaleSolisW-Bd/YaleSolisW-Bd.woff2") format("woff2"),
-    url("./yale-font/YaleSolisW-Bd/YaleSolisW-Bd.woff") format("woff");
+    src: url("./yale-font/YaleSolisW-Bd/YaleSolisW-Bd.woff2") format("woff2"), url("./yale-font/YaleSolisW-Bd/YaleSolisW-Bd.woff") format("woff");
 }
 
 @font-face {
-    font-family: 'YaleSolisW-Rg';
+    font-family: "YaleSolisW-Rg";
     font-style: normal;
     font-weight: 400;
-    src: url("./yale-font/YaleSolisW-Rg/YaleSolisW-Rg.woff2") format("woff2"),
-    url("./yale-font/YaleSolisW-Rg/YaleSolisW-Rg.woff") format("woff");
+    src: url("./yale-font/YaleSolisW-Rg/YaleSolisW-Rg.woff2") format("woff2"), url("./yale-font/YaleSolisW-Rg/YaleSolisW-Rg.woff") format("woff");
 }
 
 html,
@@ -94,7 +91,6 @@ input[type="number"] {
     font-family: "YaleSolisW-Lt", "Noto Sans TC", Arial, Helvetica, sans-serif;
 }
 
-
 // 後台編輯區區塊
 .edit-section {
     h1,
@@ -134,7 +130,6 @@ input[type="number"] {
             // line-height: 2;
         }
     }
-
 
     thead,
     tbody,

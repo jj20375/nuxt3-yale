@@ -20,7 +20,16 @@
                 </template>
             </SideBar>
         </template>
+
         <template #custom-content>
+            <div v-if="loading">
+                <div class="flex items-center justify-center w-full h-screen">
+                    <font-awesome-icon
+                        class="animate-spin text-[100px]"
+                        :icon="['fas', 'spinner']"
+                    />
+                </div>
+            </div>
             <div class="flex items-center mb-[40px] mt-[32px] mr-10">
                 <NuxtImg
                     v-if="productTypeDetail.media"
@@ -56,7 +65,7 @@
                     </el-select>
                 </div>
             </div>
-            <div class="grid grid-cols-3 gap-4 mr-10">
+            <div class="grid w-full grid-cols-3 gap-4 mr-10">
                 <div
                     v-for="(product, index) in datas"
                     :key="index"
@@ -70,6 +79,7 @@
         </template>
         <template #custom-pagination>
             <Pagination
+                v-if="!loadingWaitPagination"
                 :pagination="pagination"
                 @handlePageChange="handlePageChange"
                 class="flex justify-center mb-[95px] mt-[80px]"
@@ -95,6 +105,9 @@ import { ProductListAPIInterface, ProductList } from "~/interface/product.d";
 const { $api } = useNuxtApp();
 
 const route = useRoute();
+
+const loading = ref(false);
+const loadingWaitPagination = ref(true);
 
 const breadcrumbs = ref([
     {
@@ -283,6 +296,8 @@ const sortBy = ref({
  * 取得商品列表
  */
 async function getList(params: { per_page: number; page: number }) {
+    loading.value = true;
+    loadingWaitPagination.value = true;
     try {
         params = { ...params };
         // 搜尋分類參數時 須帶上 搜尋模式 條件
@@ -311,8 +326,14 @@ async function getList(params: { per_page: number; page: number }) {
         });
 
         pagination.value.total = meta.total;
+        loading.value = false;
+        setTimeout(() => {
+            loadingWaitPagination.value = false;
+        }, 20);
     } catch (err) {
         console.log("HomeSampleAPI => ", err);
+        loading.value = false;
+        loadingWaitPagination.value = false;
     }
 }
 
@@ -326,10 +347,10 @@ async function init() {
     await getList({ per_page: pagination.value.pageSize, page: 1 });
 }
 
-await init();
 onMounted(async () => {
     nextTick(async () => {
         if (process.client) {
+            await init();
             console.log(sideBarRef.value.openSubMenu);
             sideBarRef.value.openSubMenu = Number(route.query.category);
         }

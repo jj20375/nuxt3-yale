@@ -1,6 +1,21 @@
 <template>
     <NuxtLayout name="template1">
-        <component :is="AsyncComp"></component>
+        <div v-if="pageLoading">
+            <div class="flex items-center justify-center w-full h-screen">
+                <font-awesome-icon
+                    class="animate-spin text-[100px]"
+                    :icon="['fas', 'spinner']"
+                />
+            </div>
+        </div>
+        <component
+            class="min-h-screen"
+            :is="AsyncComp"
+        ></component>
+        <component
+            class="min-h-screen"
+            :is="AsyncComp"
+        ></component>
     </NuxtLayout>
 </template>
 

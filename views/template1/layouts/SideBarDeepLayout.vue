@@ -15,7 +15,7 @@
             <div class="grid grid-cols-8 gap-0">
                 <slot name="custom-sidebar"></slot>
                 <div class="col-span-6 bg-gray-50 pl-[32px]">
-                    <main>
+                    <main class="min-h-screen">
                         <slot name="custom-content"></slot>
                         <slot name="custom-pagination"></slot>
                     </main>
