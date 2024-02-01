@@ -18,7 +18,6 @@
                         <div class="flex justify-between gap-4">
                             <div>
                                 <h1 class="text-[24px] font-medium text-gray-800 YaleSolisW-Bd">{{ detailData.model }}</h1>
-                                <h2 class="mt-[8px] text-[16px] font-medium text-gray-800">{{ detailData.name }}</h2>
                             </div>
                             <div class="whitespace-nowrap">
                                 <div class="flex items-center gap-6">
@@ -45,6 +44,7 @@
                                 </div>
                             </div>
                         </div>
+                        <h2 class="mt-[8px] text-[16px] font-medium text-gray-400">{{ detailData.name }}</h2>
                         <div class="flex mt-[8px]">
                             <p class="text-gray-800 text-[20px] font-medium mr-[12px] YaleSolisW-Bd">NT${{ $utils().formatCurrency(detailData.price) }}</p>
                             <p class="text-gray-500 text-[20px] font-light line-through">NT${{ $utils().formatCurrency(detailData.market_price) }}</p>
@@ -141,8 +141,8 @@
                             @click="currentTab = index"
                             v-for="(tab, index) in tabs"
                             :key="index"
-                            class="py-[8px] w-[200px] text-[20px] text-center cursor-pointer"
-                            :class="currentTab === index ? 'border-b-2 border-gray-800 text-gray-800' : 'text-gray-400'"
+                            class="py-[12px] w-[200px] text-[20px] text-center cursor-pointer"
+                            :class="currentTab === index ? 'border-b-[3px] border-gray-800 text-gray-800' : 'text-gray-400'"
                         >
                             {{ tab }}
                         </li>
