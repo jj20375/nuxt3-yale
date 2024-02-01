@@ -4,6 +4,7 @@
         <CustomProductPrewView
             v-model:currentAngle="currentAngle"
             v-model:previewWidth="previewWidth"
+            v-model:currentBgData="currentBgData"
             :productData="customPreviewData"
         />
         <div class="mx-[55px] min-w-[430px] overflow-y-auto">
@@ -271,6 +272,10 @@ import CustomProductPlan from "~/views/template1/CustomProduct/components/Custom
 import CustomProductOtherChoose from "~/views/template1/CustomProduct/components/CustomProductOtherChoose.vue";
 // 加入購物車彈窗
 import AddToShoppingCarDialog from "~/views/template1/components/AddToShoppingCarDialog.vue";
+/**
+ * 訂製門扇方法
+ */
+import { useCustomProdutHook } from "./hooks/CustomProductHook";
 
 const router = useRouter();
 
@@ -621,6 +626,23 @@ const customPreviewData = computed(() => {
 const total = computed(() => 650000);
 // 訂金
 const deposit = computed(() => total.value * 0.3);
+
+const customProductHook = useCustomProdutHook();
+
+const customProductList = ref<any>([]);
+
+async function init(id: number) {
+    await customProductHook.getCustomProductList(id);
+    customProductList.value = customProductHook.customProductList.value;
+    console.log("customProductList.value  =>", customProductList.value);
+}
+
+watch(
+    () => currentBgData.value,
+    async (val) => {
+        await init(val.id);
+    }
+);
 
 onMounted(() => {
     nextTick(() => {

@@ -12,10 +12,6 @@
             class="min-h-screen"
             :is="AsyncComp"
         ></component>
-        <component
-            class="min-h-screen"
-            :is="AsyncComp"
-        ></component>
     </NuxtLayout>
 </template>
 

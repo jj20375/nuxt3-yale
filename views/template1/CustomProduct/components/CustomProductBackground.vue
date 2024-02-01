@@ -41,40 +41,57 @@
 </template>
 
 <script lang="ts" setup>
+/**
+ * CustomProductGetSceneInterface 場景列表
+ */
+
+import { CustomProductGetSceneInterface } from "~/interface/customProduct";
+/**
+ * 訂製門扇方法
+ */
+import { useCustomProdutHook } from "../hooks/CustomProductHook";
+
+const customProdutHook = useCustomProdutHook();
+
 const emit = defineEmits(["update:currentBgId", "update:currentBgData"]);
 
 const props = defineProps({
     currentTab: {
         tyep: [String, Number],
-        default: "id1",
+        default: 1,
     },
 });
 
 const tabs = ref([
     {
-        id: "id1",
+        id: 1,
         text: " 玄關門",
         icon: "/img/custom-product/custom-product-background-icon-1.svg",
+        backgorundImg: "",
     },
     {
-        id: "id2",
+        id: 2,
         text: " 臥室門",
         icon: "/img/custom-product/custom-product-background-icon-2.svg",
+        backgorundImg: "",
     },
     {
-        id: "id3",
+        id: 3,
         text: "廚房門",
         icon: "/img/custom-product/custom-product-background-icon-3.svg",
+        backgorundImg: "",
     },
     {
-        id: "id4",
+        id: 4,
         text: "浴室門",
         icon: "/img/custom-product/custom-product-background-icon-4.svg",
+        backgorundImg: "",
     },
     {
-        id: "id5",
+        id: 5,
         text: "陽台門",
         icon: "/img/custom-product/custom-product-background-icon-5.svg",
+        backgorundImg: "",
     },
 ]);
 
@@ -90,6 +107,20 @@ watch(
         );
     }
 );
+
+async function init() {
+    tabs.value = [];
+    await customProdutHook.getCustomProductSceneList();
+    customProdutHook.scenes.value.forEach((item: CustomProductGetSceneInterface) => {
+        tabs.value.push({
+            id: item.id,
+            text: item.name,
+            icon: item.icon,
+            backgorundImg: item.background_image,
+        });
+    });
+}
+await init();
 
 onMounted(() => {
     emit("update:currentBgId", props.currentTab);

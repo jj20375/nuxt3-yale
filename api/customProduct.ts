@@ -1,7 +1,7 @@
 /**
- * CustomProductGetSceneListInterface 場景列表 api 格式
+ * CustomProductGetSceneListAPIInterface 場景列表 api 格式
  */
-import { CustomProductGetSceneListInterface } from "@/interface/customProduct";
+import { CustomProductGetSceneListAPIInterface } from "@/interface/customProduct";
 
 export default () => {
     const {
@@ -13,7 +13,13 @@ export default () => {
          * @returns
          */
         CustomProductGetSceneListAPI() {
-            return useMyFetch<CustomProductGetSceneListInterface>(`${apiUrl}/custom-scene`, { method: "get" });
+            return useMyFetch<CustomProductGetSceneListAPIInterface>(`${apiUrl}/custom-scene`, { method: "get" });
+        },
+        /**
+         * 取得訂製商品列表
+         */
+        CustomProductGetListAPI(params: { search_relations: string }) {
+            return useMyFetch(`${apiUrl}/custom-product`, { method: "get", params });
         },
     };
 };

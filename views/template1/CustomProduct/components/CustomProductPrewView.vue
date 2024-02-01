@@ -3,10 +3,13 @@
         class="flex-1"
         ref="customProductPreviewRefDom"
     >
-        <div class="relative flex items-center w-full">
+        <div
+            v-if="currentBgData.backgorundImg"
+            class="relative flex items-center w-full"
+        >
             <NuxtImg
                 class="w-full"
-                :src="'/img/custom-product/demo/background/custom-product-background-' + backgroundImg + '.jpg'"
+                :src="currentBgData.backgorundImg"
             />
             <div class="absolute z-10 w-full">
                 <NuxtImg
@@ -66,6 +69,18 @@ const props = defineProps({
     backgroundImg: {
         type: String,
         default: "type1",
+    },
+    // 選擇背景圖資料
+    currentBgData: {
+        type: Object,
+        default() {
+            return {
+                id: 1,
+                text: "",
+                icon: "",
+                backgroundImg: "",
+            };
+        },
     },
 });
 
