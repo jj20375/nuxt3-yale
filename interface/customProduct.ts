@@ -11,5 +11,7 @@ export interface CustomProductGetSceneInterface {
     id: number;
     name: string;
     icon: string;
-    background_image: string;
+    back_image: string;
+    front_image: string;
+    half_image: string;
 }

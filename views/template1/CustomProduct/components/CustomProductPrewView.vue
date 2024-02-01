@@ -4,12 +4,12 @@
         ref="customProductPreviewRefDom"
     >
         <div
-            v-if="currentBgData.backgorundImg"
+            v-if="currentBgData[currentViewAngleData]"
             class="relative flex items-center w-full"
         >
             <NuxtImg
                 class="w-full"
-                :src="currentBgData.backgorundImg"
+                :src="currentBgData[currentViewAngleData]"
             />
             <div class="absolute z-10 w-full">
                 <NuxtImg
@@ -97,6 +97,7 @@ const customProductPreviewRefDom = ref(null);
 
 onMounted(() => {
     nextTick(() => {
+        // 計算目前預覽圖範圍寬度 讓下方 fixed 的區塊 可以計算 定位點
         emit("update:previewWidth", customProductPreviewRefDom.value.offsetWidth);
     });
 });
