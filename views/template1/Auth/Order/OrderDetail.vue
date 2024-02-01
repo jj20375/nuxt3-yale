@@ -241,7 +241,7 @@ const orderData = ref({
             color: "黑色",
             quantity: 1,
             price: 3000,
-            imgSrc: "/img/shopping-car/shopping-gift-demo-1.jpg",
+            imgUrl: "/img/shopping-car/shopping-gift-demo-1.jpg",
             rule: {
                 needPrice: 3000, // 滿額贈
                 getFree: false, // 加價購
@@ -252,7 +252,7 @@ const orderData = ref({
             color: "紅色",
             quantity: 3,
             price: 7000,
-            imgSrc: "/img/shopping-car/shopping-gift-demo-1.jpg",
+            imgUrl: "/img/shopping-car/shopping-gift-demo-1.jpg",
             rule: {
                 needPrice: NaN, // 滿額贈
                 getFree: true, // 加價購

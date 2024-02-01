@@ -307,6 +307,7 @@ const formDatas = ref<any>([
         placeholder: "",
         style: "input",
         type: "password",
+        showPassword: true,
         space: 1,
     },
     {
@@ -315,6 +316,7 @@ const formDatas = ref<any>([
         placeholder: "",
         style: "input",
         type: "password",
+        showPassword: true,
         space: 1,
     },
 ]);

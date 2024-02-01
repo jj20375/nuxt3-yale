@@ -1,7 +1,7 @@
 // 修改element的表單樣式
 .custom-form {
   .el-form-item {
-    @apply relative flex flex-col justify-stretch flex-wrap mb-0 bg-white text-base;
+    @apply relative flex flex-col justify-stretch flex-wrap mb-0 bg-transparent text-base;
     .el-form-item__label{
       @apply justify-start text-[15px] text-gray-800;
     }
