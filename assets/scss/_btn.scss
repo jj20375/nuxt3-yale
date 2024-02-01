@@ -87,7 +87,7 @@
 
 // 主要按鈕(黃色)
 .yellow-btn {
-    @apply bg-yellow-500 hover:bg-yellow-600 transition-all duration-500 rounded-full py-3 px-4 text-[16px];
+    @apply bg-yellow-600 hover:bg-yellow-400 transition-all duration-500 rounded-full py-3 px-4 text-[16px];
     &.btn-lg {
         @apply w-[300px] py-4;
     }
@@ -104,7 +104,7 @@
 
 // 次要按鈕(灰色)
 .gray-btn {
-    @apply bg-gray-200 rounded-full py-3 px-4 hover:bg-black hover:text-white transition-all duration-500 text-[16px];
+    @apply bg-gray-100 rounded-full py-3 px-4 hover:bg-black hover:text-white transition-all duration-500 text-[16px];
     &.btn-lg {
         @apply w-[300px] py-4;
     }

@@ -1,17 +1,16 @@
 <template>
-    <section class="mt-[80px] container">
+    <section class="mt-[80px] max-w-[900px] mx-auto">
         <h2 class="text-[32px] text-gray-800 font-medium YaleSolisW-Bd mb-[20px]">Yale Home 設定教學影片</h2>
 
-        <div class="flex items-center">
+        <div class="grid grid-cols-2 gap-4">
             <div
-                class="relative flex-1"
-                :class="index === 0 ? 'mr-[14px]' : ''"
+                class="relative group"
                 v-for="(video, index) in videos"
                 :key="index"
             >
                 <NuxtImg
                     :src="video.posterUrl"
-                    class="w-full h-[320px]"
+                    class="w-full object-cover aspect-[16/9]"
                 ></NuxtImg>
                 <div
                     @click.prevent="openDialog(video.videoUrl)"
@@ -23,7 +22,7 @@
                         </button>
                     </div>
                 </div>
-                <div class="absolute top-0 left-0 w-full h-full bg-black bg-opacity-50"></div>
+                <div class="absolute top-0 left-0 w-full h-full bg-black bg-opacity-50 duration-300 group-hover:bg-opacity-30 group-hover:duration-300"></div>
             </div>
         </div>
         <div class="border-b pt-[40px] border-gray-300 w-full h-[1px]"></div>

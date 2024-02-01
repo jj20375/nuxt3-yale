@@ -194,7 +194,11 @@ import AddToShoppingCarDialog from "~/views/template1/components/AddToShoppingCa
 const { $api, $utils, $shoppingCarService } = useNuxtApp();
 const route = useRoute();
 
-const breadcrumbs = ref(JSON.parse(route.query.breadcrumbs));
+const breadcrumbs = ref([]);
+// 取得 storage 麵包屑參數值
+if (process.client) {
+    breadcrumbs.value = JSON.parse($utils().getBreadcrumbsData());
+}
 
 const photos = ref<{ id: string | number; imgSrc: string }[]>([]);
 const detailData = ref<any>({});

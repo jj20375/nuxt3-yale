@@ -211,7 +211,7 @@ const footerDatas = ref({
                 },
             },
             {
-                text: "Yale Home APP",
+                text: "Yale Home App",
                 url: "",
             },
         ],

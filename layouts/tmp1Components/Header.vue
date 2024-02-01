@@ -302,10 +302,10 @@ const menus = ref<any>({
         ],
     },
     menu8: {
-        title: "Yale Home APP",
+        title: "Yale Home App",
         url: {
             name: "yale-home-app-slug",
-            params: { slug: "Yale Home APP下載" },
+            params: { slug: "Yale-Home-App下載" },
             query: { id: "1" },
         },
         submenus: [],

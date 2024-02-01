@@ -26,7 +26,7 @@
                     </p>
                 </div>
                 <div class="mt-[40px] flex gap-[24px] justify-center text-[20px] font-medium YaleSolisW-Bd">
-                    <div class="flex-1 flex flex-col items-center gap-[20px] py-[40px] bg-gray-100 rounded-[20px]">
+                    <div class="flex-1 flex flex-col items-center gap-[20px] py-[40px] bg-gray-50 rounded-[20px]">
                         <div class="flex items-center gap-3">
                             <NuxtImg
                                 class="w-[36px]"
@@ -38,7 +38,7 @@
                             <button class="yellow-btn btn-md">前往申請</button>
                         </NuxtLink>
                     </div>
-                    <div class="flex-1 flex flex-col items-center gap-[20px] py-[40px] bg-gray-100 rounded-[20px]">
+                    <div class="flex-1 flex flex-col items-center gap-[20px] py-[40px] bg-gray-50 rounded-[20px]">
                         <div class="flex items-center gap-3">
                             <NuxtImg
                                 class="w-[36px]"

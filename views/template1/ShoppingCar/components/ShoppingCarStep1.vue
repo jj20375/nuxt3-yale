@@ -19,7 +19,7 @@
         <div class="mb-[100px]">
             <NuxtLink
                 class="YaleSolisW-Rg text-[16px] flex items-center"
-                :to="{ name: 'product-slug', params: { slug: '耶魯產品資訊-電子鎖-主鎖' }, query: { category: 'id1', tag: 'id1' } }"
+                :to="{ name: 'product-slug', params: { slug: '耶魯產品資訊-電子鎖-主鎖' }, query: { category: 1, tag: 1 } }"
             >
                 <NuxtImg
                     class="w-[20px]"

@@ -1,32 +1,31 @@
 <template>
-    <section class="container text-gray-800">
-        <div class="flex">
+    <section class="max-w-[900px] mx-auto text-gray-800">
+        <div class="flex mt-[40px]">
             <div class="flex-1">
-                <h2 class="text-[24px] font-medium YaleSolisW-Bd mb-[20px] mt-[60px]">規格</h2>
+                <h2 class="text-[24px] font-medium YaleSolisW-Bd mb-[20px]">規格</h2>
                 <div
                     class="flex mb-1 text-gray-800"
                     v-for="(item, index) in specs"
                 >
-                    <p class="text-[16px]">{{ item.column }}</p>
-                    <p class="text-[16px]">{{ item.value }}</p>
+                    <p class="text-[16px] w-[130px]">{{ item.column }}</p>
+                    <p class="text-[16px] flex-1">{{ item.value }}</p>
                 </div>
             </div>
             <div class="flex-1">
-                <h2 class="text-[24px] font-medium YaleSolisW-Bd mb-[20px] mt-[60px]">檔按下載</h2>
-                <button class="text-blue-500 text-[15px]">Yale Home 產品DM</button>
+                <h2 class="text-[24px] font-medium YaleSolisW-Bd mb-[20px]">檔案下載</h2>
+                <button class="text-blue-500 underline cursor-pointer underline-offset-2 hover:no-underline">Yale Home 產品DM</button>
             </div>
         </div>
         <div>
             <h2 class="text-[24px] font-medium YaleSolisW-Bd mb-[20px] mt-[60px]">APP下載</h2>
-            <div class="flex">
+            <div class="flex gap-[20px]">
                 <a
                     href=""
-                    class="mr-[20px]"
                 >
-                    <NuxtImg src="/img/yale-home-app/yale-home-app-ios-download.png" />
+                    <NuxtImg class="w-[160px]" src="/img/yale-home-app/yale-home-app-ios-download.png" />
                 </a>
                 <a href="">
-                    <NuxtImg src="/img/yale-home-app/yale-home-app-android-download.png" />
+                    <NuxtImg class="w-[160px]" src="/img/yale-home-app/yale-home-app-android-download.png" />
                 </a>
             </div>
             <div class="border-b pt-[40px] border-gray-300 w-full h-[1px]"></div>
