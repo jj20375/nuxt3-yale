@@ -1,5 +1,5 @@
 <template>
-    <section class="min-h-screen mt-[86px] py-[60px] bg-gray-50 border-t border-gray-300">
+    <section class="mt-[86px] py-[60px] bg-gray-50 border-t border-gray-300">
         <div class="container">
             <div class="w-3/4 p-[60px] bg-white mx-auto rounded-[24px] border-[1px] border-gray-200">
                 <h3 class="text-[24px] font-bold mb-6">加入會員</h3>

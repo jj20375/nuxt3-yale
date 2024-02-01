@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="min-h-screen">
+        <div class="min-h-screen flex flex-col" :class="customClass">
             <Header />
             <!-- test layout2
         <el-button
@@ -42,6 +42,13 @@ const { isMobile } = useDevice();
 const $config = useRuntimeConfig();
 
 import { onBeforeRouteUpdate, onBeforeRouteLeave } from "vue-router";
+
+const props = defineProps({
+  customClass: {
+    type: String,
+    default: "",
+  },
+});
 
 // 判斷是否登入
 const isAuth = computed(() => userStore.isAuth);

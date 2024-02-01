@@ -1,5 +1,5 @@
 <template>
-    <section class="max-w-[900px] mx-auto text-gray-800">
+    <section class="max-w-[950px] mx-auto text-gray-800">
         <div class="flex mt-[40px]">
             <div class="flex-1">
                 <h2 class="text-[24px] font-medium YaleSolisW-Bd mb-[20px]">規格</h2>

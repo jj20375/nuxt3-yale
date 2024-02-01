@@ -1,10 +1,10 @@
 <template>
-    <section class="min-h-screen mt-[86px] mb-[80px]">
+    <section class="mt-[86px] mb-[80px]">
         <nav class="border-t border-b border-gray-300 py-[16px] pl-[122px]">
             <Breadcrumb :menus="breadcrumbs" />
         </nav>
         <div class="mt-[60px]">
-            <div class="w-[950px] mx-auto">
+            <div class="max-w-[950px] mx-auto">
                 <div class="flex gap-[120px]">
                     <ProductDetailCarousel
                         ref="productDetailCarouselRef"

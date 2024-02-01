@@ -9,7 +9,6 @@
             </div>
         </div>
         <component
-            class="min-h-screen"
             :is="AsyncComp"
         ></component>
     </NuxtLayout>

@@ -1,5 +1,5 @@
 <template>
-    <section class="min-h-screen mt-[86px] pb-[60px] bg-gray-50">
+    <section class="mt-[86px] pb-[60px]">
         <nav class="border-b border-gray-300 py-[16px] bg-white">
             <div class="container">
                 <Breadcrumb :menus="breadcrumbs" />

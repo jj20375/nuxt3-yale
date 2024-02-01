@@ -1,6 +1,6 @@
 <template>
     <section class="relative text-center text-gray-800">
-        <div class="max-w-[900px] mx-auto pb-[80px]">
+        <div class="max-w-[950px] mx-auto pb-[80px]">
             <div>
                 <h2 class="text-[32px] font-medium YaleSolisW-Bd">隨時掌握資訊，Yale Home 隨時反應門鎖狀態</h2>
                 <h5 class="text-[20px] mt-[12px] font-medium YaleSolisW-Bd">多元化開門方式，實現您的智慧家庭</h5>

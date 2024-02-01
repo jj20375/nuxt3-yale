@@ -1,5 +1,5 @@
 <template>
-    <section class="min-h-screen mt-[86px] py-[140px] border-t border-gray-300">
+    <section class="mt-[86px] py-[140px] border-t border-gray-300">
         <div class="container flex justify-center">
             <div class="max-w-[500px]">
                 <Vue3Lottie

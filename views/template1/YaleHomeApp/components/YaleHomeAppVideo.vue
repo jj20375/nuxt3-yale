@@ -1,5 +1,5 @@
 <template>
-    <section class="mt-[80px] max-w-[900px] mx-auto">
+    <section class="mt-[80px] max-w-[950px] mx-auto">
         <h2 class="text-[32px] text-gray-800 font-medium YaleSolisW-Bd mb-[20px]">Yale Home 設定教學影片</h2>
 
         <div class="grid grid-cols-2 gap-4">

@@ -1,5 +1,5 @@
 <template>
-    <div class="z-[300] relative">
+    <div class="z-[300] relative mt-auto">
         <footer class="flex justify-center w-full text-white bg-gray-800">
             <section class="w-full pl-[158px] pr-[160px] mt-[98px]">
                 <ul class="flex justify-between w-full">

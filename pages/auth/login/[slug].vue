@@ -1,6 +1,6 @@
 <template>
-    <NuxtLayout name="template1">
-        <div v-if="pageLoading">
+    <NuxtLayout name="template1" customClass="bg-gray-50">
+        <div v-if="pageLoading" class="bg-white">
             <div class="flex items-center justify-center w-full h-screen">
                 <font-awesome-icon
                     class="animate-spin text-[100px]"
@@ -9,7 +9,6 @@
             </div>
         </div>
         <component
-            class="min-h-screen"
             :is="AsyncComp"
         ></component>
     </NuxtLayout>

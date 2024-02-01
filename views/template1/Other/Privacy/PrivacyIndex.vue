@@ -8,7 +8,7 @@
         </template>
 
         <template #content>
-            <section class="container mt-[80px] text-gray-800">
+            <section class="max-w-[950px] mx-auto mt-[80px] text-gray-800">
                 <h1 class="text-[28px] font-medium YaleSolisW-Bd text-center mb-[30px]">耶魯的承諾</h1>
                 <div v-html="content"></div>
             </section>

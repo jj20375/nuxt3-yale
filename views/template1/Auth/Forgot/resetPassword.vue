@@ -1,5 +1,5 @@
 <template>
-    <section class="min-h-screen mt-[86px] pb-[60px] bg-gray-50">
+    <section class="mt-[86px] pb-[60px] bg-gray-50">
         <div class="container overflow-auto">
             <div class="w-[620px] mt-[60px] py-[60px] px-[60px] bg-white mx-auto rounded-[24px] border-[1px] border-gray-200">
                 <h3 class="font-medium text-[28px] mb-8">重設密碼</h3>

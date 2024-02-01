@@ -1,6 +1,6 @@
 <template>
     <section>
-        <div class="max-w-[900px] mx-auto my-[60px]">
+        <div class="max-w-[950px] mx-auto my-[60px]">
             <div class="flex items-center gap-[80px]">
                 <NuxtImg
                     class="w-[390px] object-contain"

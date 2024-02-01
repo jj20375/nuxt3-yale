@@ -1,5 +1,5 @@
 <template>
-    <section class="mt-[86px] min-h-screen border-t border-gray-300 bg-gray-50 py-[60px]">
+    <section class="mt-[86px] border-t border-gray-300 py-[60px]">
         <div class="w-[504px] py-[60px] px-[72px] bg-white mx-auto rounded-[24px] border-[1px] border-gray-200">
             <h3 class="font-medium text-[28px] text-center mb-8">會員登入</h3>
             <el-form

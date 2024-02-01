@@ -1,5 +1,5 @@
 <template>
-    <section class="max-w-[900px] mx-auto mt-[40px]">
+    <section class="max-w-[950px] mx-auto mt-[40px]">
         <h2 class="text-[32px] mb-[20px] YaleSolisW-Bd font-medium">Yale Home 安裝注意事項</h2>
         <!--    編輯器區塊   -->
         <div class="edit-section" v-html="datas">
