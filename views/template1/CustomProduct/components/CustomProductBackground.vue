@@ -116,7 +116,9 @@ async function init() {
             id: item.id,
             text: item.name,
             icon: item.icon,
-            backgorundImg: item.background_image,
+            front: item.front_image,
+            backend: item.back_image,
+            half: item.half_image,
         });
     });
 }
