@@ -14,7 +14,14 @@
                             :disabled="selectProducts.length === 0"
                             class="py-[11px] px-[31px] disabled:bg-gray-100 disabled:border-gray-300 disabled:text-gray-400 disabled:cursor-not-allowed bg-yellow-600 rounded-full text-gray-800 text-[16px]"
                         >
-                            <span v-if="selectProducts.length > 0">查看規格</span>
+                            <span
+                                v-if="selectProducts.length === 1"
+                                >查看規格</span
+                            >
+                            <span
+                                v-else-if="selectProducts.length > 1"
+                                >規格比較</span
+                            >
                             <span v-else>選擇一個產品</span>
                         </button>
                     </div>
@@ -25,7 +32,7 @@
                     @click="selectProduct(item)"
                     v-for="(item, index) in datas"
                     :key="index"
-                    :class="[selectProducts.includes(item.id) ? 'border border-yellow-600' : '', selectProducts.length === 3 && !selectProducts.includes(item) ? 'opacity-50' : '']"
+                    :class="[selectProducts.includes(item.id) ? 'border-2 border-yellow-600' : '', selectProducts.length === 3 && !selectProducts.includes(item.id) ? 'opacity-50' : '']"
                     class="bg-white p-[30px] rounded-[16px] cursor-pointer"
                 >
                     <NuxtImg
@@ -93,7 +100,7 @@ const cnaSelected = ref(false);
  * @param { type String or Number(字串或數字) } val 選中地區值
  */
 function selectProduct(val: { id: string | number; model: any; name: any; shape: any; price: any; market_price: any; main_image: any; attributes: any }) {
-    productCompareStore.compareStore = [];
+    productCompareStore.compareStoreReset()
     if (selectProducts.value.includes(val.id)) {
         // 將可選擇狀態改為 true
         cnaSelected.value = true;
@@ -116,8 +123,8 @@ function selectProduct(val: { id: string | number; model: any; name: any; shape:
         // 新增選中的地區值
         selectProducts.value.push(val.id);
     }
-    selectProducts.value.forEach((item: string | number) => {
-        productCompareStore.compareStore.push(datas.value.find((data) => data.id === item));
+    selectProducts.value.forEach((item: string | number, index: number) => {
+        productCompareStore.compareStore[index] = datas.value.find((data) => data.id === item)
     });
 }
 
@@ -129,7 +136,7 @@ const datas = ref<ProductCompareList[]>([]);
  */
 async function getList(params: { product_type_id: string }) {
     try {
-        productCompareStore.compareStore = [];
+        productCompareStore.compareStoreReset()
         const { data } = await $api().ProductLisAPI<ProductListAPIInterface>(params);
         datas.value = [];
 
