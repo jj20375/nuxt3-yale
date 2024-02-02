@@ -15,7 +15,7 @@
                     class="px-[3px]"
                 >
                     <!-- {{ item }} -->
-                    <ProductCard :product="item" />
+                    <ProductCard :product="item" @handleFavorite="handleFavorite" />
                 </SwiperSlide>
             </Swiper>
             <div class="absolute top-0 left-0 z-50 flex items-center h-full">
@@ -75,6 +75,12 @@ const props = withDefaults(defineProps<Props>(), {
         },
     ],
 });
+
+const emit = defineEmits(["handleFavorite"]);
+
+async function handleFavorite (id: any) {
+    emit("handleFavorite", id);
+}
 
 // swiper slider 模組
 const modules = [FreeMode, Thumbs, Navigation];

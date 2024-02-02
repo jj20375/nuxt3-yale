@@ -60,5 +60,13 @@ export default () => {
         method: "delete",
       });
     },
+    /**
+     * 取得收藏商品
+     */
+    GetProductFavoritesAPI() {
+      return useMyFetch(`${apiUrl}/member/product-favorites`, {
+        method: "get",
+      });
+    },
   };
 };
