@@ -425,13 +425,13 @@ function addToShoppingCar() {
     };
     let price = currentDoorData.value.price + currentDoorOutData.value.price + currentTool1Data.value.price + currentTool2Data.value.price;
 
-    // 判斷是否有選擇 選擇基本五金 掛門資料
+    // 判斷是否有選擇 選擇基本五金 下將壓條
     if (!$utils().isEmpty(currentOther1Datas.value)) {
         console.log("currentOther1Datas.value >", currentOther1Datas.value);
         data["currentOther1"] = { label: "下降壓條", datas: currentOther1Datas.value };
         price = price + _SumBy(currentOther1Datas.value, "price");
     }
-    // 判斷是否有選擇 選擇基本五金 氣密條
+    // 判斷是否有選擇 選擇基本五金 門弓器
     if (!$utils().isEmpty(currentOther2Datas.value)) {
         data["currentOther2"] = { label: "門弓器", datas: currentOther2Datas.value };
         price = price + _SumBy(currentOther2Datas.value, "price");
