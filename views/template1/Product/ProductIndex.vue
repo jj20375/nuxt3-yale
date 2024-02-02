@@ -105,6 +105,8 @@ import ProductCard from "~/views/template1/components/ProductCard.vue";
  */
 import { ProductListAPIInterface, ProductList } from "~/interface/product.d";
 
+import { ElMessage } from "element-plus";
+
 const { $api } = useNuxtApp();
 
 const route = useRoute();
@@ -342,8 +344,24 @@ async function getList(params: { per_page: number; page: number }) {
 }
 
 async function handleFavorite (id: any) {
+    const params = { productId: id };
+    const { data } = await $api().ProductFavoriteAPI(params);
+    const message = (data.value as any).message;
     const is_favorite = datas.value.find(item => item.id === id).is_favorite
-    datas.value.find(item => item.id === id).is_favorite = !is_favorite
+    const handleMessge = is_favorite ? '取消收藏' : '加入收藏'
+
+    if (message === '請求成功') {
+        ElMessage({
+            type: "success",
+            message: handleMessge,
+        });
+        datas.value.find(item => item.id === id).is_favorite = !is_favorite
+    } else {
+        ElMessage({
+            type: "error",
+            message: handleMessge + '失敗',
+        });
+    }
 }
 
 /**

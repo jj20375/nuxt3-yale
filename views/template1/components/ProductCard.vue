@@ -74,8 +74,6 @@ import { storeToRefs } from "pinia";
 const userStore = useUserStore();
 const { isAuth } = storeToRefs(userStore);
 
-import { ElMessage } from "element-plus";
-
 const router = useRouter();
 
 const { $api, $utils, $shoppingCarService } = useNuxtApp();
@@ -112,29 +110,7 @@ const isFavorite = computed(() => {
 
 const handleFavorite = async () => {
     if (isAuth.value) {
-        try {
-            const params = { productId: props.product.id };
-            const { data } = await $api().ProductFavoriteAPI(params);
-            const message = (data.value as any).message;
-            const handleMessge = isFavorite.value ? '取消收藏' : '加入收藏'
-            if (message === '請求成功') {
-                ElMessage({
-                    type: "success",
-                    message: handleMessge,
-                });
-                emit("handleFavorite", props.product.id);
-            } else {
-                ElMessage({
-                    type: "error",
-                    message: handleMessge + '失敗',
-                });
-            }
-        } catch (err) {
-            ElMessage({
-                type: "error",
-                message: "加入失敗",
-            });
-        }
+        emit("handleFavorite", props.product.id);
     } else {
         alert("請先登入或註冊新帳號以便管理您的收藏！");
     }
