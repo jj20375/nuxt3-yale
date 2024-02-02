@@ -1,13 +1,20 @@
 <template>
-    <section class="mt-[86px] flex max-h-screen min-h-screen">
-        <!-- <pre>{{ customPreviewData }}</pre> -->
+    <section class="mt-[86px] flex max-h-screen min-h-screen overflow-y-auto">
+        <!-- <pre>{{ scenes }}</pre> -->
+        <!-- <pre>{{ doors }}</pre> -->
+        <!-- <pre>{{ doorSizes }}</pre> -->
+        <!-- {{ !$utils().isEmpty(customPreviewData) }} -->
+        <!-- {{ currentBgData }} -->
         <CustomProductPrewView
             v-model:currentAngle="currentAngle"
             v-model:previewWidth="previewWidth"
             v-model:currentBgData="currentBgData"
             :productData="customPreviewData"
         />
-        <div class="mx-[55px] min-w-[430px] overflow-y-auto">
+        <div
+            v-if="!$utils().isEmpty(customPreviewData)"
+            class="mx-[55px] min-w-[430px] overflow-y-auto"
+        >
             <CustomProductContent />
             <div class="border-b border-gray-300 py-[30px]">
                 <div
@@ -25,6 +32,7 @@
                     <CustomProductBackground
                         v-model:currentBgId="currentBgId"
                         v-model:currentBgData="currentBgData"
+                        :tabs="scenes"
                     />
                     <CustomProductPlan
                         class="mt-[20px]"
@@ -34,13 +42,15 @@
                         class="mt-[20px]"
                         v-model:currentProductId="currentDoorId"
                         v-model:currentProductData="currentDoorData"
+                        v-model:currentDoorColorId="currentDoorColorId"
+                        v-model:currentDoorSizeId="currentDoorSizeId"
                         :products="doors"
                     />
                     <CustomProductColor
                         class="mt-[20px]"
                         v-model:currentColorId="currentDoorColorId"
                         v-model:currentColorData="currentDoorColorData"
-                        :colors="doors[0].colors"
+                        :colors="doorColors"
                     />
                     <CustomProductSize
                         class="mt-[20px]"
@@ -73,7 +83,7 @@
                         class="mt-[20px]"
                         v-model:currentColorId="currentDoorOutColorId"
                         v-model:currentColorData="currentDoorOutColorData"
-                        :colors="doorsOut[0].colors"
+                        :colors="doorOutColors"
                     />
                 </div>
             </div>
@@ -337,13 +347,17 @@ const viewAngle = ref([
     },
 ]);
 // 預設選擇門扇 id
-const currentDoorId = ref("id1");
+const currentDoorId = ref("");
 // 預設選擇門扇資料
 const currentDoorData = ref<any>({});
 // 預設選擇門扇顏色 id
-const currentDoorColorId = ref("id1");
+const currentDoorColorId = ref("");
 // 預設選擇門扇顏色資料
 const currentDoorColorData = ref<any>({});
+// 預設選擇尺寸 id
+const currentDoorSizeId = ref("");
+// 預設選擇尺寸資料
+const currentDoorSizeData = ref<any>({});
 // 預設選擇門框 id
 const currentDoorOutId = ref("id1");
 // 預設選擇門框資料
@@ -368,10 +382,6 @@ const currentOther1Datas = ref<any>([]);
 const currentOther2Ids = ref(["id1"]);
 // 選擇選配區 門弓器資料
 const currentOther2Datas = ref<any>([]);
-// 預設選擇尺寸 id
-const currentDoorSizeId = ref("id1");
-// 預設選擇尺寸資料
-const currentDoorSizeData = ref<any>({});
 // 選擇得服務 ids
 const currentServiceIds = ref([]);
 // 選擇得服務資料
@@ -425,13 +435,13 @@ function addToShoppingCar() {
     };
     let price = currentDoorData.value.price + currentDoorOutData.value.price + currentTool1Data.value.price + currentTool2Data.value.price;
 
-    // 判斷是否有選擇 選擇基本五金 掛門資料
+    // 判斷是否有選擇 選擇基本五金 下將壓條
     if (!$utils().isEmpty(currentOther1Datas.value)) {
         console.log("currentOther1Datas.value >", currentOther1Datas.value);
         data["currentOther1"] = { label: "下降壓條", datas: currentOther1Datas.value };
         price = price + _SumBy(currentOther1Datas.value, "price");
     }
-    // 判斷是否有選擇 選擇基本五金 氣密條
+    // 判斷是否有選擇 選擇基本五金 門弓器
     if (!$utils().isEmpty(currentOther2Datas.value)) {
         data["currentOther2"] = { label: "門弓器", datas: currentOther2Datas.value };
         price = price + _SumBy(currentOther2Datas.value, "price");
@@ -460,50 +470,16 @@ function goToBill() {
 
 // 門扇資料
 const doors = ref<any>([]);
-// 門扇假資料
-for (let i = 1; i < 6; i++) {
-    doors.value.push({
-        imgSrc: "/img/custom-product/demo/custom-product-door-demo-1.jpg",
-        name: "品牌/ASSA ABLOY",
-        style: `YDM3109A-${i}`,
-        title: `門扇款式-${i}`,
-        price: 2000,
-        // 特殊功能
-        types: {
-            // 防火功能
-            category1: false,
-        },
-        id: `id${i}`,
-        colors: [
-            {
-                id: "id1",
-                text: "琥珀",
-                imgSrc: "/img/product/demo/color-1.png",
-                previewImgSrc: {
-                    front: "/img/custom-product/demo/door/custom-product-door-black-close.png",
-                    backend: "/img/custom-product/demo/door/custom-product-door-black-close.png",
-                    half: "/img/custom-product/demo/door/custom-product-door-black-open.png",
-                },
-            },
-            {
-                id: "id2",
-                text: "白色",
-                imgSrc: "/img/product/demo/color-2.png",
-                previewImgSrc: {
-                    front: "/img/custom-product/demo/door/custom-product-door-white-close.png",
-                    backend: "/img/custom-product/demo/door/custom-product-door-white-close.png",
-                    half: "/img/custom-product/demo/door/custom-product-door-white-open.png",
-                },
-            },
-            // {
-            //     id: "id3",
-            //     text: "黑色",
-            //     imgSrc: "/img/product/demo/color-3.png",
-            //     doors: doors.value,
-            // },
-        ],
-    });
-}
+
+// 門扇顏色
+const doorColors = computed(() => {
+    let currentDoor = doors.value.find((item) => item.id === currentDoorId.value);
+    if (currentDoor !== undefined) {
+        return currentDoor.colors;
+    }
+    return [];
+});
+
 // 門框資料
 const doorsOut = ref<any>([]);
 // 門框假資料
@@ -549,6 +525,15 @@ for (let i = 1; i < 6; i++) {
         ],
     });
 }
+
+// 門框顏色
+const doorOutColors = computed(() => {
+    let currentDoorOut = doorsOut.value.find((item) => item.id === currentDoorOutId.value);
+    if (currentDoorOut !== undefined) {
+        return currentDoorOut.colors;
+    }
+    return [];
+});
 
 // 鎖的種類
 const locks = ref<any>({
@@ -596,25 +581,22 @@ for (let i = 1; i < 20; i++) {
 }
 
 // 尺寸
-const doorSizes = ref<any>([]);
-
-for (let i = 1; i < 5; i++) {
-    doorSizes.value.push({
-        id: `id${i}`,
-        // 門高
-        height: "200cm-215cm",
-        // 門寬
-        width: "100cm",
-        // 門厚
-        bold: "7cm",
-    });
-}
+const doorSizes = computed(() => {
+    let currentDoor = doors.value.find((item) => item.id === currentDoorId.value);
+    if (currentDoor !== undefined) {
+        return currentDoor.sizes;
+    }
+    return [];
+});
 
 // 所有客製化需求預覽圖
 const customPreviewData = computed(() => {
+    if ($utils().isEmpty(currentDoorId.value)) {
+        return {};
+    }
     return {
         // 門扇
-        door: doors.value.find((item) => item.id === currentDoorId.value).colors.find((item) => item.id === currentDoorColorId.value).previewImgSrc,
+        door: doors.value.find((item) => item.id === currentDoorId.value).previewImgSrc[`option-${currentDoorColorId.value}-${currentDoorSizeId.value}`],
         // 門把
         doorOut: doorsOut.value.find((item) => item.id === currentDoorOutId.value).colors.find((item) => item.id === currentDoorOutColorId.value).previewImgSrc,
         // 鎖
@@ -627,20 +609,39 @@ const total = computed(() => 650000);
 // 訂金
 const deposit = computed(() => total.value * 0.3);
 
-const customProductHook = useCustomProdutHook();
-
-const customProductList = ref<any>([]);
+const { getCustomProductList, customProductList, getCustomProductSceneList, scenes } = useCustomProdutHook();
 
 async function init(id: number) {
-    await customProductHook.getCustomProductList(id);
-    customProductList.value = customProductHook.customProductList.value;
-    console.log("customProductList.value  =>", customProductList.value);
+    // 取得場景
+    await getCustomProductSceneList();
+    currentBgId.value = scenes.value[0].id;
+    // 取得訂製門扇商品
+    await getCustomProductList(id);
+    doors.value = customProductList.value.doors;
+    if (doors.value && doors.value[0]) {
+        currentDoorId.value = doors.value[0].id;
+        currentDoorColorId.value = doors.value[0].colors[0].id;
+        currentDoorSizeId.value = doors.value[0].sizes[0].id;
+        // doorSizes.value = doors.value[0].sizes;
+    }
 }
 
+// await init();
+
+await init(1);
+
 watch(
-    () => currentBgData.value,
+    () => currentBgId.value,
     async (val) => {
-        await init(val.id);
+        await init(val);
+    }
+);
+
+watch(
+    () => currentDoorId.value,
+    (val) => {
+        currentDoorColorId.value = doors.value.find((item: any) => item.id === val).colors[0].id;
+        currentDoorSizeId.value = doors.value.find((item: any) => item.id === val).sizes[0].id;
     }
 );
 
