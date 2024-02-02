@@ -9,7 +9,7 @@
                 class="py-[16px] px-[24px] text-[14px] rounded-[8px] text-gray-800 mb-[16px] cursor-pointer"
                 :class="currentSizeDataId === size.id ? 'border-2 border-yellow-600 font-medium YaleSolisW-Bd' : 'border-gray-300 border'"
             >
-                <div>門高:{{ size.height }} 門寬:{{ size.width }} 門厚:{{ size.bold }}</div>
+                <div>{{ size.name }}</div>
             </li>
         </ul>
     </div>
@@ -25,12 +25,9 @@ const props = defineProps({
             return [
                 {
                     id: "id1",
-                    // 門高
-                    height: "200cm-215cm",
-                    // 門寬
-                    width: "100cm",
-                    // 門厚
-                    bold: "7cm",
+                    // 門尺寸
+                    name: "200cm-215cm",
+                    icon: "",
                 },
             ];
         },

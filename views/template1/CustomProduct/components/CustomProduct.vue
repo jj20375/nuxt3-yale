@@ -2,7 +2,7 @@
     <div>
         <h3 class="text-[16px] font-medium YaleSolisW-Bd mb-[20px]">{{ title }}</h3>
         <el-radio-group
-            v-model="currentProductData"
+            v-model="currentProductIdData"
             @change="setProduct"
             class="ml-4"
         >
@@ -19,7 +19,12 @@
                         {{ product.title }}
                     </el-radio>
                     <div class="flex-1 text-right">
-                        <button @click.prevent="showDialog = true">
+                        <button
+                            @click.prevent="
+                                showDialog = true;
+                                currentDialogProduct = product;
+                            "
+                        >
                             <NuxtImg
                                 class="w-[24px]"
                                 src="/img/icons/info.svg"
@@ -30,14 +35,31 @@
                 <div class="flex ml-[25px] mt-[8px]">
                     <div class="mr-[12px]">
                         <NuxtImg
-                            class="w-[80px]"
+                            class="w-[150px]"
                             :src="product.imgSrc"
                         />
                     </div>
                     <div class="text-[14px]">
                         <p class="text-gray-500">{{ product.style }}</p>
                         <p class="text-gray-500">{{ product.name }}</p>
-                        <p class="text-gray-800">+NT$ {{ $utils().formatCurrency(product.price) }}</p>
+                        <p
+                            v-if="currentDoorColorId && currentDoorSizeId && currentProductId === product.id"
+                            class="text-gray-800"
+                        >
+                            +NT$ {{ $utils().formatCurrency(product.price["option-" + currentDoorColorId + "-" + currentDoorSizeId]) }}
+                        </p>
+                        <p
+                            v-else-if="currentDoorColorId && currentProductId === product.id"
+                            class="text-gray-800"
+                        >
+                            +NT$ {{ $utils().formatCurrency(product.price["option-" + currentDoorColorId]) }}
+                        </p>
+                        <p
+                            v-else-if="currentProductId !== product.id"
+                            class="text-gray-800"
+                        >
+                            +NT$ {{ $utils().formatCurrency(product.price[Object.keys(product.price)[0]]) }}
+                        </p>
                     </div>
                 </div>
             </div>
@@ -52,14 +74,19 @@
                     <el-icon :size="30"><Close /></el-icon>
                 </button>
             </div>
-            <h5 class="text-[20px] text-gray-800 YaleSolisW-Bd mb-[38px]">卡片密碼電子鎖-YDM 3109+</h5>
-            <CustomProductDailogCarousel :photos="photos" />
-            <p
+            <h5 class="text-[20px] text-gray-800 YaleSolisW-Bd mb-[38px]">{{ currentDialogProduct.name }}-{{ currentDialogProduct.style }}</h5>
+            <CustomProductDailogCarousel :photos="currentDialogProduct.detailData.carousel" />
+            <div
                 class="text-[16px] text-gray-800 mt-[28px]"
-                v-html="dialogDetailHtml"
-            ></p>
+                v-html="currentDialogProduct.detailData.content"
+            ></div>
             <div class="flex justify-center mt-[40px]">
-                <button class="bg-yellow-600 text-gray-800 rounded-full w-[140px] py-[11px] text-center hover:bg-yellow-700 text-[16px]">加入選擇</button>
+                <button
+                    @click.prevent="currentProductIdData = currentDialogProduct.id"
+                    class="bg-yellow-600 text-gray-800 rounded-full w-[140px] py-[11px] text-center hover:bg-yellow-700 text-[16px]"
+                >
+                    加入選擇
+                </button>
             </div>
         </el-dialog>
     </div>
@@ -67,6 +94,7 @@
 
 <script setup lang="ts">
 // 導入細節彈窗 幻燈片
+import product from "~/api/product";
 import CustomProductDailogCarousel from "~/views/template1/CustomProduct/components/CustomProductDailogCarousel.vue";
 
 const { $utils } = useNuxtApp();
@@ -74,7 +102,9 @@ const { $utils } = useNuxtApp();
 const emit = defineEmits(["update:currentProductId", "update:currentProductData"]);
 
 interface Props {
-    currentProductId: string | number;
+    currentProductId: string | number | null;
+    currentDoorColorId?: string | number | null;
+    currentDoorSizeId?: string | number | null;
     products: {
         imgSrc: string;
         title: string;
@@ -90,6 +120,10 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
     // 預設選擇產品
     currentProductId: "id1",
+    // 選擇顏色 id
+    currentDoorColorId: null,
+    // 選擇尺寸 id
+    currentDoorSizeId: null,
     // 可選擇產品
     products: [
         {
@@ -103,18 +137,18 @@ const props = withDefaults(defineProps<Props>(), {
     titl: "款式",
 });
 
-// 預設選擇產品資料
-const currentProductData = ref(props.currentProductId);
+// 預設選擇產品 id
+const currentProductIdData = ref(props.currentProductId);
 
 /**
  * 設定選擇產品資料
  */
 function setProduct(val) {
-    currentProductData.value = val;
+    currentProductIdData.value = val;
 }
 
 watch(
-    () => currentProductData.value,
+    () => currentProductIdData.value,
     (val) => {
         emit("update:currentProductId", val);
         emit(
@@ -124,13 +158,6 @@ watch(
     }
 );
 
-// 細節彈窗幻燈片圖
-const photos = ref<{ id: string | number; imgSrc: string }[]>([]);
-
-for (let i = 0; i < 10; i++) {
-    photos.value.push({ id: i, imgSrc: "/img/product/demo/product-carousel.jpg" });
-}
-
 const dialogDetailHtml = ref(`
 經典款式再升級！支援藍芽開門及遠端開門系統整合，手機也可以設定電子鎖。 <br /><br />
  熱感應輕觸式數位鍵盤，美觀便捷，且以手掌觸碰開啟有效避免指紋與密碼外洩。隱藏式機械鑰匙孔，緊急情況下，可以使用備用機械鑰匙。
@@ -138,6 +165,9 @@ const dialogDetailHtml = ref(`
 
 // 顯示彈窗
 const showDialog = ref(false);
+
+// 彈窗顯示資料
+const currentDialogProduct = ref<any>({});
 
 /**
  * 關閉彈窗
@@ -150,7 +180,7 @@ function closeDialog() {
 onMounted(() => {
     emit("update:currentProductId", props.currentProductId);
     emit(
-        "update:currentProductData",
+        "update:currentProductIdData",
         props.products.find((item) => item.id === props.currentProductId)
     );
 });

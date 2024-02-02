@@ -1,11 +1,12 @@
 /**
- * CustomProductGetSceneInterface 場景列表
+ * CustomProductGetSceneInterface: 場景列表
  */
 import { CustomProductGetSceneInterface } from "@/interface/customProduct";
 /**
- * 訂製門扇 id 對應分類
+ * CustomProductListIdEnum: 訂製門扇 id 對應分類
+ * CustomProductListOptionEnum: 訂製門扇 產品選項
  */
-import { CustomProductListIdEnum } from "@/enums/customProduct.enum";
+import { CustomProductListIdEnum, CustomProductListOptionEnum } from "@/enums/customProduct.enum";
 
 export function useCustomProdutHook() {
     const { $api } = useNuxtApp();
@@ -20,7 +21,18 @@ export function useCustomProdutHook() {
         try {
             const { data } = await $api().CustomProductGetSceneListAPI();
             if (data.value) {
-                scenes.value = data.value.data;
+                scenes.value = [];
+                // scenes.value = data.value.data;
+                for (let i = 0; i < data.value.data.length; i++) {
+                    scenes.value.push({
+                        id: data.value.data[i].id,
+                        text: data.value.data[i].name,
+                        icon: data.value.data[i].icon,
+                        front: data.value.data[i].front_image,
+                        backend: data.value.data[i].back_image,
+                        half: data.value.data[i].half_image,
+                    });
+                }
             }
         } catch (err) {
             console.log("CustomProductGetSceneListAPI => ", err);
@@ -38,9 +50,11 @@ export function useCustomProdutHook() {
             const { data }: any = await $api().CustomProductGetListAPI({ search_relations: "customScene.id:" + id });
             if (data.value) {
                 // 取得門扇資料
-                const doors = data.value.data.find((item: any) => item.id === CustomProductListIdEnum.door);
-                setDoorData(doors);
-                customProductList.value = data.value.data;
+                let doors = data.value.data.find((item: any) => item.id === CustomProductListIdEnum.door);
+                doors = setDoorData(doors);
+                customProductList.value = {
+                    doors,
+                };
             }
         } catch (err) {
             console.log("CustomProductGetListAPI => ", err);
@@ -50,7 +64,49 @@ export function useCustomProdutHook() {
     /**
      * 門扇整理資料
      */
-    function setDoorData(datas: any) {}
+    function setDoorData(datas: any) {
+        const result = [];
+        datas.customProducts.forEach((item: any) => {
+            // 預覽圖
+            const previewImgSrc = {};
+            // 庫存
+            const stock = {};
+            // 價格
+            const price = {};
+            for (const key of Object.keys(item.customProductVariations)) {
+                previewImgSrc[key] = {
+                    front: item.customProductVariations[key].front_image,
+                    backend: item.customProductVariations[key].back_image,
+                    half: item.customProductVariations[key].half_image,
+                };
+                stock[key] = item.customProductVariations[key].stock;
+                price[key] = Number(item.customProductVariations[key].price);
+            }
+            result.push({
+                id: item.id,
+                style: item.model,
+                title: item.name,
+                name: `${item.brand}`,
+                imgSrc: item.main_image,
+                colors: item.customProductOptions
+                    .find((option: any) => option.id === CustomProductListOptionEnum.color)
+                    .values.map((color: any) => ({
+                        id: color.id,
+                        text: color.name,
+                        imgSrc: color.icon,
+                    })),
+                sizes: item.customProductOptions.find((option: any) => option.id === CustomProductListOptionEnum.size).values,
+                previewImgSrc,
+                stock,
+                price,
+                detailData: {
+                    carousel: item.carousel_images.map((item: string, index: number) => ({ id: index + 1, imgSrc: item })),
+                    content: item.content,
+                },
+            });
+        });
+        return result;
+    }
 
     return {
         getCustomProductSceneList,

@@ -21,3 +21,13 @@ export enum CustomProductListIdEnum {
     // 施作服務
     service = 9,
 }
+
+/**
+ * 訂製門扇 產品選項
+ */
+export enum CustomProductListOptionEnum {
+    // 顏色
+    color = 1,
+    // 尺寸
+    size = 2,
+}
