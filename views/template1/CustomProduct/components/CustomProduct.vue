@@ -55,11 +55,12 @@
                             +NT$ {{ $utils().formatCurrency(product.price["option-" + currentDoorColorId]) }}
                         </p>
                         <p
-                            v-else-if="currentProductId !== product.id"
+                            v-else-if="currentProductId !== product.id && !isTool"
                             class="text-gray-800"
                         >
                             +NT$ {{ $utils().formatCurrency(product.price[Object.keys(product.price)[0]]) }}
                         </p>
+                        <p v-else-if="isTool">+NT$ {{ $utils().formatCurrency(product.price) }}</p>
                     </div>
                 </div>
             </div>
@@ -75,15 +76,22 @@
                 </button>
             </div>
             <h5 class="text-[20px] text-gray-800 YaleSolisW-Bd mb-[38px]">{{ currentDialogProduct.name }}-{{ currentDialogProduct.style }}</h5>
-            <CustomProductDailogCarousel :photos="currentDialogProduct.detailData.carousel" />
+            <CustomProductDailogCarousel
+                v-if="!$utils().isEmpty(currentDialogProduct.detailData.carousel)"
+                :photos="currentDialogProduct.detailData.carousel"
+            />
             <div
                 class="text-[16px] text-gray-800 mt-[28px]"
                 v-html="currentDialogProduct.detailData.content"
             ></div>
             <div class="flex justify-center mt-[40px]">
                 <button
-                    @click.prevent="currentProductIdData = currentDialogProduct.id"
-                    class="bg-yellow-600 text-gray-800 rounded-full w-[140px] py-[11px] text-center hover:bg-yellow-700 text-[16px]"
+                    @click.prevent="
+                        currentProductIdData = currentDialogProduct.id;
+                        closeDialog();
+                    "
+                    :disabled="currentProductIdData === currentDialogProduct.id"
+                    class="bg-yellow-600 text-gray-800 rounded-full w-[140px] py-[11px] text-center hover:bg-yellow-700 text-[16px] btnDisabled"
                 >
                     加入選擇
                 </button>
@@ -105,6 +113,8 @@ interface Props {
     currentProductId: string | number | null;
     currentDoorColorId?: string | number | null;
     currentDoorSizeId?: string | number | null;
+    // 判斷是否為基本五金 因為基本五金不會有 因為顏色或尺寸產生價差 因此特別判斷用來顯示價錢區塊
+    isTool: boolean;
     products: {
         imgSrc: string;
         title: string;
@@ -124,6 +134,8 @@ const props = withDefaults(defineProps<Props>(), {
     currentDoorColorId: null,
     // 選擇尺寸 id
     currentDoorSizeId: null,
+    // 基本五金判斷預設值
+    isTool: false,
     // 可選擇產品
     products: [
         {

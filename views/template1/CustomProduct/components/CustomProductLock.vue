@@ -105,6 +105,11 @@ const props = defineProps({
             };
         },
     },
+    // 預設選中的鎖 id
+    currentLockId: {
+        type: Number,
+        default: 1,
+    },
     // 鎖
     locks: {
         type: Array,

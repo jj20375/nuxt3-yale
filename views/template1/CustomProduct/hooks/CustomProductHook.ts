@@ -52,8 +52,41 @@ export function useCustomProdutHook() {
                 // 取得門扇資料
                 let doors = data.value.data.find((item: any) => item.id === CustomProductListIdEnum.door);
                 doors = setDoorData(doors);
+                // 取得門框資料
+                let doorsOut = data.value.data.find((item: any) => item.id === CustomProductListIdEnum.doorOut);
+                doorsOut = setDoorData(doorsOut);
+                // 取得電子鎖資料
+                let locks = data.value.data.find((item: any) => item.id === CustomProductListIdEnum.lock);
+                locks = setLocksData(locks);
+                // 取得水平把手資料
+                let handles = data.value.data.find((item: any) => item.id === CustomProductListIdEnum.handle);
+                handles = setLocksData(handles);
+                // 取得基本五金-掛門資料
+                let tool1Datas = data.value.data.find((item: any) => item.id === CustomProductListIdEnum.tool1);
+                tool1Datas = setToolData(tool1Datas);
+                // 取得基本五金-取得氣密條資料
+                let tool2Datas = data.value.data.find((item: any) => item.id === CustomProductListIdEnum.tool2);
+                tool2Datas = setToolData(tool2Datas);
+                // 取得選配五金-下將壓條取得
+                let other1Datas = data.value.data.find((item: any) => item.id === CustomProductListIdEnum.other1);
+                other1Datas = setToolData(other1Datas);
+                // 取得選配五金-門弓器取得
+                let other2Datas = data.value.data.find((item: any) => item.id === CustomProductListIdEnum.other2);
+                other2Datas = setToolData(other2Datas);
+                // 取得施作服務取得
+                let serviceDatas = data.value.data.find((item: any) => item.id === CustomProductListIdEnum.service);
+                serviceDatas = setServiceData(serviceDatas);
+
                 customProductList.value = {
                     doors,
+                    doorsOut,
+                    locks,
+                    handles,
+                    tool1Datas,
+                    tool2Datas,
+                    other1Datas,
+                    other2Datas,
+                    serviceDatas,
                 };
             }
         } catch (err) {
@@ -82,6 +115,10 @@ export function useCustomProdutHook() {
                 stock[key] = item.customProductVariations[key].stock;
                 price[key] = Number(item.customProductVariations[key].price);
             }
+            // 判斷是否有尺寸值
+            const haveSize = item.customProductOptions.find((option: any) => option.id === CustomProductListOptionEnum.size);
+            //  判斷是否有尺寸值 沒有值給空陣列
+            const sizes = haveSize !== undefined ? haveSize.values : [];
             result.push({
                 id: item.id,
                 style: item.model,
@@ -95,10 +132,78 @@ export function useCustomProdutHook() {
                         text: color.name,
                         imgSrc: color.icon,
                     })),
-                sizes: item.customProductOptions.find((option: any) => option.id === CustomProductListOptionEnum.size).values,
+                sizes,
                 previewImgSrc,
                 stock,
                 price,
+                detailData: {
+                    carousel: item.carousel_images.map((item: string, index: number) => ({ id: index + 1, imgSrc: item })),
+                    content: item.content,
+                },
+            });
+        });
+        return result;
+    }
+
+    /**
+     * 設定鎖資料
+     * @param datas
+     */
+    function setLocksData(datas: any) {
+        const result = [];
+        datas.customProducts.forEach((item: any) => {
+            result.push({
+                imgSrc: item.main_image,
+                style: `${item.model} ${item.name}`,
+                title: item.name,
+                name: `${item.brand}`,
+                price: Number(item.price),
+                id: item.id,
+                previewImgSrc: {
+                    front: item.front_image,
+                    backend: item.back_image,
+                    half: item.half_image,
+                },
+            });
+        });
+        return result;
+    }
+
+    /**
+     * 設定必選五金與選配資料
+     */
+    function setToolData(datas: any) {
+        const result = [];
+        datas.customProducts.forEach((item: any) => {
+            result.push({
+                id: item.id,
+                style: item.model,
+                title: item.name,
+                name: item.brand,
+                imgSrc: item.main_image,
+                stock: item.stock,
+                price: Number(item.price),
+                detailData: {
+                    carousel: item.carousel_images.map((item: string, index: number) => ({ id: index + 1, imgSrc: item })),
+                    content: item.content,
+                },
+            });
+        });
+        return result;
+    }
+
+    /**
+     * 設定施作服務資料
+     */
+    function setServiceData(datas: any) {
+        const result = [];
+        datas.customProducts.forEach((item: any) => {
+            result.push({
+                id: item.id,
+                name: item.name,
+                imgSrc: item.main_image,
+                stock: item.stock,
+                price: Number(item.price),
                 detailData: {
                     carousel: item.carousel_images.map((item: string, index: number) => ({ id: index + 1, imgSrc: item })),
                     content: item.content,

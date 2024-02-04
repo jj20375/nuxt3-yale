@@ -17,7 +17,12 @@
                     ></el-checkbox>
                     <h5 class="ml-[10px]">{{ product.title }}</h5>
                     <div class="flex-1 text-right">
-                        <button @click.prevent="showDialog = true">
+                        <button
+                            @click.prevent="
+                                showDialog = true;
+                                currentDialogProduct = product;
+                            "
+                        >
                             <NuxtImg
                                 class="w-[24px]"
                                 src="/img/icons/info.svg"
@@ -50,14 +55,26 @@
                     <el-icon :size="30"><Close /></el-icon>
                 </button>
             </div>
-            <h5 class="text-[20px] text-gray-800 YaleSolisW-Bd mb-[38px]">卡片密碼電子鎖-YDM 3109+</h5>
-            <CustomProductDailogCarousel :photos="photos" />
-            <p
+            <h5 class="text-[20px] text-gray-800 YaleSolisW-Bd mb-[38px]">{{ currentDialogProduct.name }}-{{ currentDialogProduct.style }}</h5>
+            <CustomProductDailogCarousel
+                v-if="!$utils().isEmpty(currentDialogProduct.detailData.carousel)"
+                :photos="currentDialogProduct.detailData.carousel"
+            />
+            <div
                 class="text-[16px] text-gray-800 mt-[28px]"
-                v-html="dialogDetailHtml"
-            ></p>
+                v-html="currentDialogProduct.detailData.content"
+            ></div>
             <div class="flex justify-center mt-[40px]">
-                <button class="bg-yellow-600 text-gray-800 rounded-full w-[140px] py-[11px] text-center hover:bg-yellow-700 text-[16px]">加入選擇</button>
+                <button
+                    @click.prevent="
+                        selectedProducts.push(currentDialogProduct.id);
+                        closeDialog();
+                    "
+                    :disabled="selectedProducts.includes(currentDialogProduct.id)"
+                    class="bg-yellow-600 text-gray-800 rounded-full w-[140px] py-[11px] text-center hover:bg-yellow-700 text-[16px] btnDisabled"
+                >
+                    加入選擇
+                </button>
             </div>
         </el-dialog>
     </div>
@@ -125,6 +142,9 @@ const dialogDetailHtml = ref(`
 
 // 顯示彈窗
 const showDialog = ref(false);
+
+// 彈窗顯示資料
+const currentDialogProduct = ref<any>({});
 
 /**
  * 關閉彈窗

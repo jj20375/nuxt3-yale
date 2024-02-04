@@ -77,6 +77,7 @@
                         class="mt-[20px]"
                         v-model:currentProductId="currentDoorOutId"
                         v-model:currentProductData="currentDoorOutData"
+                        v-model:currentDoorColorId="currentDoorOutColorId"
                         :products="doorsOut"
                     />
                     <CustomProductColor
@@ -103,6 +104,7 @@
                     v-show="stepMenuShow['step3'].show"
                     v-model:lockCategory="lockCategory"
                     v-model:currentLock="currentLock"
+                    v-model:currentLockId="currentLockId"
                     :locks="locks"
                 />
             </div>
@@ -124,14 +126,16 @@
                         title="掛門"
                         v-model:currentProductId="currentTool1Id"
                         v-model:currentProductData="currentTool1Data"
-                        :products="doors"
+                        :isTool="true"
+                        :products="tool1Datas"
                     />
                     <CustomProduct
                         class="mt-[20px]"
                         title="氣密條"
                         v-model:currentProductId="currentTool2Id"
                         v-model:currentProductData="currentTool2Data"
-                        :products="doors"
+                        :isTool="true"
+                        :products="tool2Datas"
                     />
                 </div>
             </div>
@@ -153,14 +157,14 @@
                         title="下將壓條"
                         v-model:selectedProductIds="currentOther1Ids"
                         v-model:selectedProducts="currentOther1Datas"
-                        :products="doors"
+                        :products="other1Datas"
                     />
                     <CustomProductOtherChoose
                         class="mt-[20px]"
                         title="門弓器"
                         v-model:selectedProductIds="currentOther2Ids"
                         v-model:selectedProducts="currentOther2Datas"
-                        :products="doors"
+                        :products="other2Datas"
                     />
                 </div>
             </div>
@@ -198,6 +202,7 @@
                     v-show="stepMenuShow['step7'].show"
                     v-model:selectedServiceIds="currentServiceIds"
                     v-model:selectedServiceDatas="currentServiceDatas"
+                    :services="serviceDatas"
                 />
             </div>
             <div class="my-[30px] flex pb-[300px]">
@@ -391,14 +396,83 @@ const lockCategory = ref("handle");
 // 訂購數量
 const count = ref(1);
 // 預設選擇鎖樣式
-const currentLock = ref({
-    imgSrc: "/img/custom-product/demo/custom-product-door-demo-1.jpg",
-    id: "id1",
-    style: "door R51 02 light",
-    price: 20000,
-});
+const currentLockId = ref({});
+// 預設選擇鎖樣式
+const currentLock = ref({});
 
 const showSoppingCarDialog = ref(false);
+
+/**
+ * 前往結賬
+ */
+function goToBill() {
+    addToShoppingCar();
+    router.push({ name: "shopping-car-slug", params: { slug: "耶魯電子鎖購物車" }, query: { tab: "type2" } });
+}
+
+// 門扇資料
+const doors = ref<any>([]);
+// 門框資料
+const doorsOut = ref<any>([]);
+
+// 基本五金-掛門資料
+const tool1Datas = ref<any>([]);
+// 基本五金-氣密條資料
+const tool2Datas = ref<any>([]);
+// 選配五金-下將壓條
+const other1Datas = ref<any>([]);
+// 選配五金-門弓器
+const other2Datas = ref<any>([]);
+// 施作服務資料
+const serviceDatas = ref<any>([]);
+
+// 門扇顏色
+const doorColors = computed(() => {
+    let currentDoor = doors.value.find((item) => item.id === currentDoorId.value);
+    if (currentDoor !== undefined) {
+        return currentDoor.colors;
+    }
+    return [];
+});
+
+// 尺寸
+const doorSizes = computed(() => {
+    let currentDoor = doors.value.find((item) => item.id === currentDoorId.value);
+    if (currentDoor !== undefined) {
+        return currentDoor.sizes;
+    }
+    return [];
+});
+
+// 門框顏色
+const doorOutColors = computed(() => {
+    let currentDoorOut = doorsOut.value.find((item) => item.id === currentDoorOutId.value);
+    if (currentDoorOut !== undefined) {
+        return currentDoorOut.colors;
+    }
+    return [];
+});
+
+// 鎖的種類
+const locks = ref<any>({
+    handle: [],
+    lock: [],
+});
+
+// 所有客製化需求預覽圖
+const customPreviewData = computed(() => {
+    if ($utils().isEmpty(currentDoorId.value)) {
+        return {};
+    }
+    return {
+        // 門扇
+        door: doors.value.find((item: any) => item.id === currentDoorId.value).previewImgSrc[`option-${currentDoorColorId.value}-${currentDoorSizeId.value}`],
+        // 門把
+        doorOut: doorsOut.value.find((item: any) => item.id === currentDoorOutId.value).previewImgSrc[`option-${currentDoorOutColorId.value}`],
+        // 鎖
+        lock: locks.value[lockCategory.value].find((item: any) => item.id === currentLock.value.id).previewImgSrc,
+    };
+});
 
 function openShoppingCarDialog() {
     showSoppingCarDialog.value = true;
@@ -460,150 +534,6 @@ function addToShoppingCar() {
     }
 }
 
-/**
- * 前往結賬
- */
-function goToBill() {
-    addToShoppingCar();
-    router.push({ name: "shopping-car-slug", params: { slug: "耶魯電子鎖購物車" }, query: { tab: "type2" } });
-}
-
-// 門扇資料
-const doors = ref<any>([]);
-
-// 門扇顏色
-const doorColors = computed(() => {
-    let currentDoor = doors.value.find((item) => item.id === currentDoorId.value);
-    if (currentDoor !== undefined) {
-        return currentDoor.colors;
-    }
-    return [];
-});
-
-// 門框資料
-const doorsOut = ref<any>([]);
-// 門框假資料
-for (let i = 1; i < 6; i++) {
-    doorsOut.value.push({
-        imgSrc: "/img/custom-product/demo/custom-product-door-out-demo-1.jpg",
-        name: "品牌/ASSA ABLOY",
-        style: `YDM3109A-${i}`,
-        title: `門框款式-${i}`,
-        price: 2000,
-        id: `id${i}`,
-        colors: [
-            {
-                id: "id1",
-                text: "琥珀",
-                imgSrc: "/img/product/demo/color-1.png",
-                previewImgSrc: {
-                    front: "/img/custom-product/demo/door-out/custom-product-door-out-black.png",
-                    backend: "/img/custom-product/demo/door-out/custom-product-door-out-black.png",
-                    half: "/img/custom-product/demo/door-out/custom-product-door-out-black.png",
-                },
-            },
-            {
-                id: "id2",
-                text: "白色",
-                imgSrc: "/img/product/demo/color-2.png",
-                previewImgSrc: {
-                    front: "/img/custom-product/demo/door-out/custom-product-door-out-white.png",
-                    backend: "/img/custom-product/demo/door-out/custom-product-door-out-white.png",
-                    half: "/img/custom-product/demo/door-out/custom-product-door-out-white.png",
-                },
-            },
-            // {
-            //     id: "id3",
-            //     text: "黑色",
-            //     imgSrc: "/img/product/demo/color-3.png",
-            //     previewImgSrc: {
-            //         front: "/img/custom-product/demo/door-out/custom-product-door-out-black.png",
-            //         backend: "/img/custom-product/demo/door-out/custom-product-door-out-black.png",
-            //         half: "/img/custom-product/demo/door-out/custom-product-door-out-black.png",
-            //     },
-            // },
-        ],
-    });
-}
-
-// 門框顏色
-const doorOutColors = computed(() => {
-    let currentDoorOut = doorsOut.value.find((item) => item.id === currentDoorOutId.value);
-    if (currentDoorOut !== undefined) {
-        return currentDoorOut.colors;
-    }
-    return [];
-});
-
-// 鎖的種類
-const locks = ref<any>({
-    handle: [],
-    lock: [],
-});
-
-for (let i = 1; i < 20; i++) {
-    if (i === 2) {
-        locks.value.handle.push({
-            imgSrc: "/img/custom-product/demo/custom-product-lock-demo-1.jpg",
-            previewImgSrc: {
-                front: "/img/custom-product/demo/handle/custom-product-handle-white-close.png",
-                backend: "/img/custom-product/demo/handle/custom-product-handle-white-close.png",
-                half: "/img/custom-product/demo/handle/custom-product-handle-white-open.png",
-            },
-            style: `default lock-${i}`,
-            price: 1000 + i,
-            id: `id${i}`,
-        });
-    } else {
-        locks.value.handle.push({
-            imgSrc: "/img/custom-product/demo/custom-product-lock-demo-1.jpg",
-            previewImgSrc: {
-                front: "/img/custom-product/demo/handle/custom-product-handle-black-close.png",
-                backend: "/img/custom-product/demo/handle/custom-product-handle-black-close.png",
-                half: "/img/custom-product/demo/handle/custom-product-handle-black-open.png",
-            },
-            style: `default lock-${i}`,
-            price: 1000 + i,
-            id: `id${i}`,
-        });
-    }
-    locks.value.lock.push({
-        imgSrc: "/img/custom-product/demo/custom-product-lock-demo-1.jpg",
-        previewImgSrc: {
-            front: "/img/custom-product/demo/lock/custom-product-lock-close.png",
-            backend: "/img/custom-product/demo/lock/custom-product-lock-close.png",
-            half: "/img/custom-product/demo/lock/custom-product-lock-open.png",
-        },
-        style: `smart lock-${i}`,
-        price: 2000 + i,
-        id: `id${i}`,
-    });
-}
-
-// 尺寸
-const doorSizes = computed(() => {
-    let currentDoor = doors.value.find((item) => item.id === currentDoorId.value);
-    if (currentDoor !== undefined) {
-        return currentDoor.sizes;
-    }
-    return [];
-});
-
-// 所有客製化需求預覽圖
-const customPreviewData = computed(() => {
-    if ($utils().isEmpty(currentDoorId.value)) {
-        return {};
-    }
-    return {
-        // 門扇
-        door: doors.value.find((item) => item.id === currentDoorId.value).previewImgSrc[`option-${currentDoorColorId.value}-${currentDoorSizeId.value}`],
-        // 門把
-        doorOut: doorsOut.value.find((item) => item.id === currentDoorOutId.value).colors.find((item) => item.id === currentDoorOutColorId.value).previewImgSrc,
-        // 鎖
-        lock: locks.value[lockCategory.value].find((item) => item.id === currentLock.value.id).previewImgSrc,
-    };
-});
-
 // 總價
 const total = computed(() => 650000);
 // 訂金
@@ -618,11 +548,28 @@ async function init(id: number) {
     // 取得訂製門扇商品
     await getCustomProductList(id);
     doors.value = customProductList.value.doors;
+    doorsOut.value = customProductList.value.doorsOut;
+    locks.value = {
+        handle: customProductList.value.handles,
+        lock: customProductList.value.locks,
+    };
+    tool1Datas.value = customProductList.value.tool1Datas;
+    tool2Datas.value = customProductList.value.tool2Datas;
+    other1Datas.value = customProductList.value.other1Datas;
+    other2Datas.value = customProductList.value.other2Datas;
+    serviceDatas.value = customProductList.value.serviceDatas;
     if (doors.value && doors.value[0]) {
         currentDoorId.value = doors.value[0].id;
         currentDoorColorId.value = doors.value[0].colors[0].id;
         currentDoorSizeId.value = doors.value[0].sizes[0].id;
-        // doorSizes.value = doors.value[0].sizes;
+        currentDoorOutId.value = doorsOut.value[0].id;
+        currentDoorOutColorId.value = doorsOut.value[0].colors[0].id;
+        currentLockId.value = locks.value.handle[0].id;
+        currentLock.value = { id: locks.value.handle[0].id, style: locks.value.handle[0].style, price: locks.value.handle[0].price };
+        currentTool1Id.value = tool1Datas.value[0].id;
+        currentTool2Id.value = tool2Datas.value[0].id;
+        currentOther1Ids.value = [other1Datas.value[0].id];
+        currentOther2Ids.value = [other2Datas.value[0].id];
     }
 }
 

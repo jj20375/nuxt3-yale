@@ -14,9 +14,9 @@ export enum CustomProductListIdEnum {
     tool1 = 5,
     // 五金基本配件-氣密條
     tool2 = 6,
-    // 五金基本配件-氣密條
+    // 選配五金-下將壓條
     other1 = 7,
-    // 五金基本配件-門弓器
+    // 選配五金-門弓器
     other2 = 8,
     // 施作服務
     service = 9,
