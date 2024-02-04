@@ -399,22 +399,10 @@ const count = ref(1);
 const currentLockId = ref({});
 // 預設選擇鎖樣式
 const currentLock = ref({});
-
-const showSoppingCarDialog = ref(false);
-
-/**
- * 前往結賬
- */
-function goToBill() {
-    addToShoppingCar();
-    router.push({ name: "shopping-car-slug", params: { slug: "耶魯電子鎖購物車" }, query: { tab: "type2" } });
-}
-
 // 門扇資料
 const doors = ref<any>([]);
 // 門框資料
 const doorsOut = ref<any>([]);
-
 // 基本五金-掛門資料
 const tool1Datas = ref<any>([]);
 // 基本五金-氣密條資料
@@ -425,6 +413,16 @@ const other1Datas = ref<any>([]);
 const other2Datas = ref<any>([]);
 // 施作服務資料
 const serviceDatas = ref<any>([]);
+
+const showSoppingCarDialog = ref(false);
+
+/**
+ * 前往結賬
+ */
+function goToBill() {
+    addToShoppingCar();
+    router.push({ name: "shopping-car-slug", params: { slug: "耶魯電子鎖購物車" }, query: { tab: "type2" } });
+}
 
 // 門扇顏色
 const doorColors = computed(() => {
@@ -559,6 +557,7 @@ async function init(id: number) {
     other2Datas.value = customProductList.value.other2Datas;
     serviceDatas.value = customProductList.value.serviceDatas;
     if (doors.value && doors.value[0]) {
+        lockCategory.value = "handle";
         currentDoorId.value = doors.value[0].id;
         currentDoorColorId.value = doors.value[0].colors[0].id;
         currentDoorSizeId.value = doors.value[0].sizes[0].id;
@@ -580,6 +579,7 @@ await init(1);
 watch(
     () => currentBgId.value,
     async (val) => {
+        console.log("val currentBgId =>", val);
         await init(val);
     }
 );

@@ -6,6 +6,7 @@
                 @click="
                     lockCategoryData = category.value;
                     currentLock = locks[lockCategoryData][0];
+                    currentLockIdData = locks[lockCategoryData][0];
                 "
                 v-for="(category, index) in lockCategories"
                 :key="index"
@@ -37,7 +38,10 @@
         >
             <ul class="flex justify-start">
                 <li
-                    @click="currentLockData = lock"
+                    @click="
+                        currentLockData = lock;
+                        currentLockId = lock.id;
+                    "
                     v-for="(lock, index2) in showLock"
                     :class="[currentLockData.id === lock.id ? 'border-2 border-yellow-600  rounded-[8px]' : 'border-2 border-white', showLock.length - 1 !== index2 ? 'mr-[16px]' : '']"
                     class="p-1 cursor-pointer"
@@ -143,6 +147,9 @@ const lockCategoryData = ref(props.lockCategory);
 // 預設選中的鎖
 const currentLockData = ref(props.currentLock);
 
+// 預設選中的鎖 id
+const currentLockIdData = ref(props.currentLockId);
+
 watch(
     () => lockCategoryData.value,
     (val) => {
@@ -151,11 +158,34 @@ watch(
         emit("update:currentLock", props.locks[val][0]);
     }
 );
-
 watch(
     () => currentLockData.value,
     (val) => {
         emit("update:currentLock", val);
+    }
+);
+watch(
+    () => currentLockIdData.value,
+    (val) => {
+        emit("update:currentLockId", val);
+    }
+);
+watch(
+    () => props.currentLockId,
+    (val) => {
+        currentLockIdData.value = val;
+    }
+);
+watch(
+    () => props.currentLock,
+    (val) => {
+        currentLockData.value = val;
+    }
+);
+watch(
+    () => props.lockCategory,
+    (val) => {
+        lockCategoryData.value = val;
     }
 );
 

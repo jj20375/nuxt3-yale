@@ -170,6 +170,13 @@ watch(
     }
 );
 
+watch(
+    () => props.currentProductId,
+    (val) => {
+        currentProductIdData.value = val;
+    }
+);
+
 const dialogDetailHtml = ref(`
 經典款式再升級！支援藍芽開門及遠端開門系統整合，手機也可以設定電子鎖。 <br /><br />
  熱感應輕觸式數位鍵盤，美觀便捷，且以手掌觸碰開啟有效避免指紋與密碼外洩。隱藏式機械鑰匙孔，緊急情況下，可以使用備用機械鑰匙。

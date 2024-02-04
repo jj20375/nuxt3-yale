@@ -73,6 +73,13 @@ function selectService(val: any) {
     );
 }
 
+watch(
+    () => props.services,
+    (val) => {
+        selectedServices.value = [];
+    }
+);
+
 /**
  * 需要預設選擇時才呼叫
  */

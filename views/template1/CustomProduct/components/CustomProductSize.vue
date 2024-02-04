@@ -53,6 +53,13 @@ watch(
     }
 );
 
+watch(
+    () => props.currentSizeId,
+    (val) => {
+        currentSizeDataId.value = val;
+    }
+);
+
 onMounted(() => {
     emit("update:currentSizeId", props.currentSizeId);
     emit(
