@@ -2,13 +2,13 @@
     <div class="custom-form">
         <h3 class="text-[16px] font-medium YaleSolisW-Bd">{{ title }}</h3>
         <el-radio-group
-            v-model="currentProductData"
+            v-model="currentProductIdData"
             @change="setProduct"
         >
             <div
                 v-for="(product, index) in products"
                 :key="index"
-                class="border-gray-300 pt-2 pb-4"
+                class="pt-2 pb-4 border-gray-300"
                 :class="{ 'border-b': index !== products.length - 1 }"
                 type="button"
             >
@@ -21,7 +21,12 @@
                         {{ product.title }}
                     </el-radio>
                     <div class="absolute right-0">
-                        <button @click.prevent="showDialog = true">
+                        <button
+                            @click.prevent="
+                                showDialog = true;
+                                currentDialogProduct = product;
+                            "
+                        >
                             <NuxtImg
                                 class="w-[24px]"
                                 src="/img/icons/info.svg"
@@ -37,7 +42,25 @@
                     <div class="flex flex-col gap-1 text-[14px]">
                         <p class="text-gray-500">{{ product.style }}</p>
                         <p class="text-gray-500">{{ product.name }}</p>
-                        <p class="text-gray-800">+NT$ {{ $utils().formatCurrency(product.price) }}</p>
+                        <p
+                            v-if="currentDoorColorId && currentDoorSizeId && currentProductId === product.id"
+                            class="text-gray-800"
+                        >
+                            +NT$ {{ $utils().formatCurrency(product.price["option-" + currentDoorColorId + "-" + currentDoorSizeId]) }}
+                        </p>
+                        <p
+                            v-else-if="currentDoorColorId && currentProductId === product.id"
+                            class="text-gray-800"
+                        >
+                            +NT$ {{ $utils().formatCurrency(product.price["option-" + currentDoorColorId]) }}
+                        </p>
+                        <p
+                            v-else-if="currentProductId !== product.id && !isTool"
+                            class="text-gray-800"
+                        >
+                            +NT$ {{ $utils().formatCurrency(product.price[Object.keys(product.price)[0]]) }}
+                        </p>
+                        <p v-else-if="isTool">+NT$ {{ $utils().formatCurrency(product.price) }}</p>
                     </div>
                 </div>
             </div>
@@ -54,16 +77,31 @@
             align-center
             append-to-body
         >
-            <div class="w-3/4 mx-auto">
-                <h5 class="text-[20px] text-gray-800 YaleSolisW-Bd mt-[20px] mb-[30px]">卡片密碼電子鎖-YDM 3109+</h5>
-                <CustomProductDailogCarousel :photos="photos" />
-                <p
-                    class="text-[16px] text-gray-800 mt-[28px]"
-                    v-html="dialogDetailHtml"
-                ></p>
-                <div class="flex justify-center mt-[40px]">
-                    <button class="yellow-btn btn-md">加入選擇</button>
-                </div>
+            <div class="text-right">
+                <button @click="closeDialog">
+                    <el-icon :size="30"><Close /></el-icon>
+                </button>
+            </div>
+            <h5 class="text-[20px] text-gray-800 YaleSolisW-Bd mt-[20px] mb-[30px]">{{ currentDialogProduct.name }}-{{ currentDialogProduct.style }}</h5>
+            <CustomProductDailogCarousel
+                v-if="!$utils().isEmpty(currentDialogProduct.detailData.carousel)"
+                :photos="currentDialogProduct.detailData.carousel"
+            />
+            <div
+                class="text-[16px] text-gray-800 mt-[28px]"
+                v-html="currentDialogProduct.detailData.content"
+            ></div>
+            <div class="flex justify-center mt-[40px]">
+                <button
+                    @click.prevent="
+                        currentProductIdData = currentDialogProduct.id;
+                        closeDialog();
+                    "
+                    :disabled="currentProductIdData === currentDialogProduct.id"
+                    class="yellow-btn btn-md btnDisabled"
+                >
+                    加入選擇
+                </button>
             </div>
         </el-dialog>
     </div>
@@ -71,6 +109,7 @@
 
 <script setup lang="ts">
 // 導入細節彈窗 幻燈片
+import product from "~/api/product";
 import CustomProductDailogCarousel from "~/views/template1/CustomProduct/components/CustomProductDailogCarousel.vue";
 
 const { $utils } = useNuxtApp();
@@ -78,7 +117,11 @@ const { $utils } = useNuxtApp();
 const emit = defineEmits(["update:currentProductId", "update:currentProductData"]);
 
 interface Props {
-    currentProductId: string | number;
+    currentProductId: string | number | null;
+    currentDoorColorId?: string | number | null;
+    currentDoorSizeId?: string | number | null;
+    // 判斷是否為基本五金 因為基本五金不會有 因為顏色或尺寸產生價差 因此特別判斷用來顯示價錢區塊
+    isTool: boolean;
     products: {
         imgSrc: string;
         title: string;
@@ -94,6 +137,12 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
     // 預設選擇產品
     currentProductId: "id1",
+    // 選擇顏色 id
+    currentDoorColorId: null,
+    // 選擇尺寸 id
+    currentDoorSizeId: null,
+    // 基本五金判斷預設值
+    isTool: false,
     // 可選擇產品
     products: [
         {
@@ -107,18 +156,18 @@ const props = withDefaults(defineProps<Props>(), {
     title: "款式",
 });
 
-// 預設選擇產品資料
-const currentProductData = ref(props.currentProductId);
+// 預設選擇產品 id
+const currentProductIdData = ref(props.currentProductId);
 
 /**
  * 設定選擇產品資料
  */
 function setProduct(val) {
-    currentProductData.value = val;
+    currentProductIdData.value = val;
 }
 
 watch(
-    () => currentProductData.value,
+    () => currentProductIdData.value,
     (val) => {
         emit("update:currentProductId", val);
         emit(
@@ -128,12 +177,12 @@ watch(
     }
 );
 
-// 細節彈窗幻燈片圖
-const photos = ref<{ id: string | number; imgSrc: string }[]>([]);
-
-for (let i = 0; i < 10; i++) {
-    photos.value.push({ id: i, imgSrc: "/img/product/demo/product-carousel.jpg" });
-}
+watch(
+    () => props.currentProductId,
+    (val) => {
+        currentProductIdData.value = val;
+    }
+);
 
 const dialogDetailHtml = ref(`
 經典款式再升級！支援藍芽開門及遠端開門系統整合，手機也可以設定電子鎖。 <br /><br />
@@ -142,6 +191,9 @@ const dialogDetailHtml = ref(`
 
 // 顯示彈窗
 const showDialog = ref(false);
+
+// 彈窗顯示資料
+const currentDialogProduct = ref<any>({});
 
 /**
  * 關閉彈窗
@@ -154,7 +206,7 @@ function closeDialog() {
 onMounted(() => {
     emit("update:currentProductId", props.currentProductId);
     emit(
-        "update:currentProductData",
+        "update:currentProductIdData",
         props.products.find((item) => item.id === props.currentProductId)
     );
 });
@@ -173,13 +225,13 @@ onMounted(() => {
         .el-radio__label {
             @apply font-normal leading-none;
         }
-        .el-radio__inner{
+        .el-radio__inner {
             @apply w-[18px] h-[18px];
-            &:hover{
+            &:hover {
                 @apply border-yellow-600;
             }
         }
-        &.is-checked{
+        &.is-checked {
             @apply font-normal #{!important};
             .el-radio__inner {
                 @apply border-yellow-600 bg-yellow-600;

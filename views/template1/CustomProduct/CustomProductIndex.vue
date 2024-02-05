@@ -1,184 +1,208 @@
 <template>
     <section class="relative mt-[86px] overflow-auto z-[10]" style="height: calc(var(--vh, 1vh) * 100 - 80px - 87px);">
-        <div class="custom-wrap">
-            <!-- <pre>{{ customPreviewData }}</pre> -->
-            <CustomProductPrewView
-                v-model:currentAngle="currentAngle"
-                v-model:previewWidth="previewWidth"
-                v-model:currentBgData="currentBgData"
-                :productData="customPreviewData"
-                class="left"
-            />
-            <div class="right">
-                <CustomProductContent />
-                <div class="border-b border-gray-300">
-                    <div
-                        @click="stepMenuShow['step1'].show = !stepMenuShow['step1'].show"
-                        class="flex items-center mb-[30px] mt-[40px] cursor-pointer"
-                        type="button"
-                    >
-                        <h3 class="flex-1 text-gray-800 text-[20px] font-medium YaleSolisW-Bd">{{ stepMenuShow["step1"].text }}</h3>
-                        <font-awesome-icon
-                            class="transition-all duration-300"
-                            :class="!stepMenuShow['step1'].show ? 'rotate-180' : ''"
-                            :icon="['fas', 'chevron-up']"
-                        />
-                    </div>
-                    <div v-show="stepMenuShow['step1'].show">
-                        <CustomProductBackground
-                            v-model:currentBgId="currentBgId"
-                            v-model:currentBgData="currentBgData"
-                        />
-                        <CustomProductPlan
-                            class="mt-[30px] mb-[30px]"
-                            v-model:currentPlan="currentPlan"
-                        />
-                        <CustomProduct
-                            class="mt-[30px] mb-[30px]"
-                            v-model:currentProductId="currentDoorId"
-                            v-model:currentProductData="currentDoorData"
-                            :products="doors"
-                        />
-                        <CustomProductColor
-                            class="mt-[30px] mb-[30px]"
-                            v-model:currentColorId="currentDoorColorId"
-                            v-model:currentColorData="currentDoorColorData"
-                            :colors="doors[0].colors"
-                        />
-                        <CustomProductSize
-                            class="mt-[30px] mb-[30px]"
-                            :sizes="doorSizes"
-                            v-model:currentSizeId="currentDoorSizeId"
-                            v-model:currentSizeData="currentDoorSizeData"
-                        />
-                    </div>
-                </div>
-                <div class="border-b border-gray-300">
-                    <div
-                        @click="stepMenuShow['step2'].show = !stepMenuShow['step2'].show"
-                        class="flex items-center mb-[30px] mt-[30px] cursor-pointer"
-                        type="button"
-                    >
-                        <h3 class="flex-1 text-gray-800 text-[20px] font-medium YaleSolisW-Bd">{{ stepMenuShow["step2"].text }}</h3>
-                        <font-awesome-icon
-                            class="transition-all duration-300"
-                            :class="!stepMenuShow['step2'].show ? 'rotate-180' : ''"
-                            :icon="['fas', 'chevron-up']"
-                        />
-                    </div>
-                    <div v-show="stepMenuShow['step2'].show">
-                        <CustomProduct
-                            class="mt-[30px] mb-[30px]"
-                            v-model:currentProductId="currentDoorOutId"
-                            v-model:currentProductData="currentDoorOutData"
-                            :products="doorsOut"
-                        />
-                        <CustomProductColor
-                            class="mt-[30px] mb-[30px]"
-                            v-model:currentColorId="currentDoorOutColorId"
-                            v-model:currentColorData="currentDoorOutColorData"
-                            :colors="doorsOut[0].colors"
-                        />
-                    </div>
-                </div>
-                <div class="border-b border-gray-300">
-                    <div
-                        @click="stepMenuShow['step3'].show = !stepMenuShow['step3'].show"
-                        class="flex items-center mb-[30px] mt-[30px] cursor-pointer"
-                        type="button"
-                    >
-                        <h3 class="flex-1 text-gray-800 text-[20px] font-medium YaleSolisW-Bd">{{ stepMenuShow["step3"].text }}</h3>
-                        <font-awesome-icon
-                            class="transition-all duration-300"
-                            :class="!stepMenuShow['step3'].show ? 'rotate-180' : ''"
-                            :icon="['fas', 'chevron-up']"
-                        />
-                    </div>
-                    <CustomProductLock
-                        class="mt-[30px] mb-[30px]"
-                        v-show="stepMenuShow['step3'].show"
-                        v-model:lockCategory="lockCategory"
-                        v-model:currentLock="currentLock"
-                        :locks="locks"
+        <!-- <pre>{{ scenes }}</pre> -->
+        <!-- <pre>{{ doors }}</pre> -->
+        <!-- <pre>{{ doorSizes }}</pre> -->
+        <!-- {{ !$utils().isEmpty(customPreviewData) }} -->
+        <!-- {{ currentBgData }} -->
+        <CustomProductPrewView
+            v-model:currentAngle="currentAngle"
+            v-model:previewWidth="previewWidth"
+            v-model:currentBgData="currentBgData"
+            :productData="customPreviewData"
+            class="left"
+        />
+        <div
+            v-if="!$utils().isEmpty(customPreviewData)"
+            class="right"
+        >
+            <CustomProductContent />
+            <div class="border-b border-gray-300">
+                <div
+                    @click="stepMenuShow['step1'].show = !stepMenuShow['step1'].show"
+                    class="flex items-center mb-[30px] mt-[40px] cursor-pointer"
+                    type="button"
+                >
+                    <h3 class="flex-1 text-gray-800 text-[20px] font-medium YaleSolisW-Bd">{{ stepMenuShow["step1"].text }}</h3>
+                    <font-awesome-icon
+                        class="transition-all duration-300"
+                        :class="!stepMenuShow['step1'].show ? 'rotate-180' : ''"
+                        :icon="['fas', 'chevron-up']"
                     />
                 </div>
-                <div class="border-b border-gray-300">
-                    <div
-                        @click="stepMenuShow['step4'].show = !stepMenuShow['step4'].show"
-                        class="flex items-center mb-[30px] mt-[30px] cursor-pointer"
-                        type="button"
-                    >
-                        <h3 class="flex-1 text-gray-800 text-[20px] font-medium YaleSolisW-Bd">{{ stepMenuShow["step4"].text }}</h3>
-                        <font-awesome-icon
-                            class="transition-all duration-300"
-                            :class="!stepMenuShow['step4'].show ? 'rotate-180' : ''"
-                            :icon="['fas', 'chevron-up']"
-                        />
-                    </div>
-                    <div v-show="stepMenuShow['step4'].show">
-                        <CustomProduct
-                            class="mt-[30px] mb-[30px]"
-                            title="掛門"
-                            v-model:currentProductId="currentTool1Id"
-                            v-model:currentProductData="currentTool1Data"
-                            :products="doors"
-                        />
-                        <CustomProduct
-                            class="mt-[30px] mb-[16px]"
-                            title="氣密條"
-                            v-model:currentProductId="currentTool2Id"
-                            v-model:currentProductData="currentTool2Data"
-                            :products="doors"
-                        />
-                    </div>
+                <div v-show="stepMenuShow['step1'].show">
+                    <CustomProductBackground
+                        v-model:currentBgId="currentBgId"
+                        v-model:currentBgData="currentBgData"
+                        :tabs="scenes"
+                    />
+                    <CustomProductPlan
+                        class="mt-[30px]"
+                        v-model:currentPlan="currentPlan"
+                    />
+                    <CustomProduct
+                        class="mt-[30px]"
+                        v-model:currentProductId="currentDoorId"
+                        v-model:currentProductData="currentDoorData"
+                        v-model:currentDoorColorId="currentDoorColorId"
+                        v-model:currentDoorSizeId="currentDoorSizeId"
+                        :products="doors"
+                    />
+                    <CustomProductColor
+                        class="mt-[30px]"
+                        v-model:currentColorId="currentDoorColorId"
+                        v-model:currentColorData="currentDoorColorData"
+                        :colors="doorColors"
+                    />
+                    <CustomProductSize
+                        class="mt-[30px]"
+                        :sizes="doorSizes"
+                        v-model:currentSizeId="currentDoorSizeId"
+                        v-model:currentSizeData="currentDoorSizeData"
+                    />
                 </div>
-                <div class="border-b border-gray-300">
-                    <div
-                        @click="stepMenuShow['step5'].show = !stepMenuShow['step5'].show"
-                        class="flex items-center mb-[30px] mt-[30px] cursor-pointer"
-                        type="button"
-                    >
-                        <h3 class="flex-1 text-gray-800 text-[20px] font-medium YaleSolisW-Bd">{{ stepMenuShow["step5"].text }}</h3>
-                        <font-awesome-icon
-                            class="transition-all duration-300"
-                            :class="!stepMenuShow['step5'].show ? 'rotate-180' : ''"
-                            :icon="['fas', 'chevron-up']"
-                        />
-                    </div>
-                    <div v-show="stepMenuShow['step5'].show">
-                        <CustomProductOtherChoose
-                            class="mt-[30px]"
-                            title="下降壓條"
-                            v-model:selectedProductIds="currentOther1Ids"
-                            v-model:selectedProducts="currentOther1Datas"
-                            :products="doors"
-                        />
-                        <CustomProductOtherChoose
-                            class="mt-[20px] mb-[16px]"
-                            title="門弓器"
-                            v-model:selectedProductIds="currentOther2Ids"
-                            v-model:selectedProducts="currentOther2Datas"
-                            :products="doors"
-                        />
-                    </div>
+            </div>
+            <div class="border-b border-gray-300">
+                <div
+                    @click="stepMenuShow['step2'].show = !stepMenuShow['step2'].show"
+                    class="flex items-center mb-[30px] mt-[30px] cursor-pointer"
+                    type="button"
+                >
+                    <h3 class="flex-1 text-gray-800 text-[20px] font-medium YaleSolisW-Bd">{{ stepMenuShow["step2"].text }}</h3>
+                    <font-awesome-icon
+                        class="transition-all duration-300"
+                        :class="!stepMenuShow['step2'].show ? 'rotate-180' : ''"
+                        :icon="['fas', 'chevron-up']"
+                    />
                 </div>
-                <div class="border-b border-gray-300">
-                    <div
-                        @click="stepMenuShow['step6'].show = !stepMenuShow['step6'].show"
-                        class="flex items-center mb-[30px] mt-[30px] cursor-pointer"
-                        type="button"
-                    >
-                        <h3 class="flex-1 text-gray-800 text-[20px] font-medium YaleSolisW-Bd">{{ stepMenuShow["step6"].text }}</h3>
-                        <font-awesome-icon
-                            class="transition-all duration-300"
-                            :class="!stepMenuShow['step6'].show ? 'rotate-180' : ''"
-                            :icon="['fas', 'chevron-up']"
-                        />
-                    </div>
-                    <CustomProductCount
-                        v-show="stepMenuShow['step6'].show"
-                        v-model:count="count"
-                        class="mb-[30px]"
+                <div v-show="stepMenuShow['step2'].show">
+                    <CustomProduct
+                        class="mt-[30px] mb-[30px]"
+                        v-model:currentProductId="currentDoorOutId"
+                        v-model:currentProductData="currentDoorOutData"
+                        v-model:currentDoorColorId="currentDoorOutColorId"
+                        :products="doorsOut"
+                    />
+                    <CustomProductColor
+                        class="mt-[30px] mb-[30px]"
+                        v-model:currentColorId="currentDoorOutColorId"
+                        v-model:currentColorData="currentDoorOutColorData"
+                        :colors="doorOutColors"
+                    />
+                </div>
+            </div>
+            <div class="border-b border-gray-300">
+                <div
+                    @click="stepMenuShow['step3'].show = !stepMenuShow['step3'].show"
+                    class="flex items-center mb-[30px] mt-[30px] cursor-pointer"
+                >
+                    <h3 class="flex-1 text-gray-800 text-[20px] font-medium YaleSolisW-Bd">{{ stepMenuShow["step3"].text }}</h3>
+                    <font-awesome-icon
+                        class="transition-all duration-300"
+                        :class="!stepMenuShow['step3'].show ? 'rotate-180' : ''"
+                        :icon="['fas', 'chevron-up']"
+                    />
+                </div>
+                <CustomProductLock
+                    v-show="stepMenuShow['step3'].show"
+                    v-model:lockCategory="lockCategory"
+                    v-model:currentLock="currentLock"
+                    v-model:currentLockId="currentLockId"
+                    :locks="locks"
+                />
+            </div>
+            <div class="border-b border-gray-300">
+                <div
+                    @click="stepMenuShow['step4'].show = !stepMenuShow['step4'].show"
+                    class="flex items-center mb-[30px] mt-[30px] cursor-pointer"
+                    type="button"
+                >
+                    <h3 class="flex-1 text-gray-800 text-[20px] font-medium YaleSolisW-Bd">{{ stepMenuShow["step4"].text }}</h3>
+                    <font-awesome-icon
+                        class="transition-all duration-500"
+                        :class="!stepMenuShow['step4'].show ? 'rotate-180' : ''"
+                        :icon="['fas', 'chevron-up']"
+                    />
+                </div>
+                <div v-show="stepMenuShow['step4'].show">
+                    <CustomProduct
+                    class="mt-[30px] mb-[30px]"
+                        title="掛門"
+                        v-model:currentProductId="currentTool1Id"
+                        v-model:currentProductData="currentTool1Data"
+                        :isTool="true"
+                        :products="tool1Datas"
+                    />
+                    <CustomProduct
+                    class="mt-[30px] mb-[30px]"
+                        title="氣密條"
+                        v-model:currentProductId="currentTool2Id"
+                        v-model:currentProductData="currentTool2Data"
+                        :isTool="true"
+                        :products="tool2Datas"
+                    />
+                </div>
+            </div>
+            <div class="border-b border-gray-300">
+                <div
+                    @click="stepMenuShow['step5'].show = !stepMenuShow['step5'].show"
+                    class="flex items-center mb-[30px] mt-[30px] cursor-pointer"
+                    type="button"
+                >
+                    <h3 class="flex-1 text-gray-800 text-[20px] font-medium YaleSolisW-Bd">{{ stepMenuShow["step5"].text }}</h3>
+                    <font-awesome-icon
+                        class="transition-all duration-300"
+                        :class="!stepMenuShow['step5'].show ? 'rotate-180' : ''"
+                        :icon="['fas', 'chevron-up']"
+                    />
+                </div>
+                <div v-show="stepMenuShow['step5'].show">
+                    <CustomProductOtherChoose
+                    class="mt-[30px]"
+                        title="下將壓條"
+                        v-model:selectedProductIds="currentOther1Ids"
+                        v-model:selectedProducts="currentOther1Datas"
+                        :products="other1Datas"
+                    />
+                    <CustomProductOtherChoose
+                    class="mt-[20px] mb-[16px]"
+                        title="門弓器"
+                        v-model:selectedProductIds="currentOther2Ids"
+                        v-model:selectedProducts="currentOther2Datas"
+                        :products="other2Datas"
+                    />
+                </div>
+            </div>
+            <div class="border-b border-gray-300 pb-[30px]">
+                <div
+                    @click="stepMenuShow['step6'].show = !stepMenuShow['step6'].show"
+                    class="flex items-center mb-[30px] mt-[30px] cursor-pointer"
+                    type="button"
+                >
+                    <h3 class="flex-1 text-gray-800 text-[20px] font-medium YaleSolisW-Bd">{{ stepMenuShow["step6"].text }}</h3>
+                    <font-awesome-icon
+                        class="transition-all duration-500"
+                        :class="!stepMenuShow['step6'].show ? 'rotate-180' : ''"
+                        :icon="['fas', 'chevron-up']"
+                    />
+                </div>
+                <CustomProductCount
+                    v-show="stepMenuShow['step6'].show"
+                    v-model:count="count"
+                    class="mb-[30px]"
+                />
+            </div>
+            <div class="border-b border-gray-300">
+                <div
+                    @click="stepMenuShow['step7'].show = !stepMenuShow['step7'].show"
+                    class="flex items-center mb-[30px] mt-[30px] cursor-pointer"
+                    type="button"
+                >
+                    <h3 class="flex-1 text-gray-800 text-[20px] font-medium YaleSolisW-Bd">{{ stepMenuShow["step7"].text }}</h3>
+                    <font-awesome-icon
+                        class="transition-all duration-300"
+                        :class="!stepMenuShow['step7'].show ? 'rotate-180' : ''"
+                        :icon="['fas', 'chevron-up']"
                     />
                 </div>
                 <div class="border-b border-gray-300">
@@ -195,14 +219,15 @@
                         />
                     </div>
 
-                    <CustomProductOtherService
-                        v-show="stepMenuShow['step7'].show"
-                        v-model:selectedServiceIds="currentServiceIds"
-                        v-model:selectedServiceDatas="currentServiceDatas"
-                        class="mb-[30px]"
-                    />
-                </div>
-                <div class="my-[30px] flex gap-4">
+                <CustomProductOtherService
+                    v-show="stepMenuShow['step7'].show"
+                    v-model:selectedServiceIds="currentServiceIds"
+                    v-model:selectedServiceDatas="currentServiceDatas"
+                    :services="serviceDatas"
+                    class="mb-[30px]"
+                />
+            </div>
+            <div class="my-[30px] flex gap-4">
                     <button
                         @click.prevent="openShoppingCarDialog"
                         class="flex-1 transparent-btn"
@@ -215,7 +240,6 @@
                     >
                         結帳
                     </button>
-                </div>
             </div>
             <div class="fixed bottom-0 w-full bg-white z-[10] h-[80px] shadow-footer sidebar-wrap">
                 <div class="flex items-center justify-center">
@@ -234,7 +258,7 @@
                         </li>
                     </ul>
                 </div>
-                <div class="flex gap-4 items-center justify-start">
+                <div class="flex items-center justify-start gap-4">
                     <div class="flex items-center">
                         <p class="text-gray-600 text-[14px]">預估金額</p>
                         <div class="text-[14px] text-gray-800 flex items-center ml-2">
@@ -349,13 +373,17 @@ const viewAngle = ref([
     },
 ]);
 // 預設選擇門扇 id
-const currentDoorId = ref("id1");
+const currentDoorId = ref("");
 // 預設選擇門扇資料
 const currentDoorData = ref<any>({});
 // 預設選擇門扇顏色 id
-const currentDoorColorId = ref("id1");
+const currentDoorColorId = ref("");
 // 預設選擇門扇顏色資料
 const currentDoorColorData = ref<any>({});
+// 預設選擇尺寸 id
+const currentDoorSizeId = ref("");
+// 預設選擇尺寸資料
+const currentDoorSizeData = ref<any>({});
 // 預設選擇門框 id
 const currentDoorOutId = ref("id1");
 // 預設選擇門框資料
@@ -380,10 +408,6 @@ const currentOther1Datas = ref<any>([]);
 const currentOther2Ids = ref(["id1"]);
 // 選擇選配區 門弓器資料
 const currentOther2Datas = ref<any>([]);
-// 預設選擇尺寸 id
-const currentDoorSizeId = ref("id1");
-// 預設選擇尺寸資料
-const currentDoorSizeData = ref<any>({});
 // 選擇得服務 ids
 const currentServiceIds = ref([]);
 // 選擇得服務資料
@@ -393,14 +417,81 @@ const lockCategory = ref("handle");
 // 訂購數量
 const count = ref(1);
 // 預設選擇鎖樣式
-const currentLock = ref({
-    imgSrc: "/img/custom-product/demo/custom-product-door-demo-1.jpg",
-    id: "id1",
-    style: "door R51 02 light",
-    price: 20000,
-});
+const currentLockId = ref({});
+// 預設選擇鎖樣式
+const currentLock = ref({});
+// 門扇資料
+const doors = ref<any>([]);
+// 門框資料
+const doorsOut = ref<any>([]);
+// 基本五金-掛門資料
+const tool1Datas = ref<any>([]);
+// 基本五金-氣密條資料
+const tool2Datas = ref<any>([]);
+// 選配五金-下將壓條
+const other1Datas = ref<any>([]);
+// 選配五金-門弓器
+const other2Datas = ref<any>([]);
+// 施作服務資料
+const serviceDatas = ref<any>([]);
 
 const showSoppingCarDialog = ref(false);
+
+/**
+ * 前往結賬
+ */
+function goToBill() {
+    addToShoppingCar();
+    router.push({ name: "shopping-car-slug", params: { slug: "耶魯電子鎖購物車" }, query: { tab: "type2" } });
+}
+
+// 門扇顏色
+const doorColors = computed(() => {
+    let currentDoor = doors.value.find((item) => item.id === currentDoorId.value);
+    if (currentDoor !== undefined) {
+        return currentDoor.colors;
+    }
+    return [];
+});
+
+// 尺寸
+const doorSizes = computed(() => {
+    let currentDoor = doors.value.find((item) => item.id === currentDoorId.value);
+    if (currentDoor !== undefined) {
+        return currentDoor.sizes;
+    }
+    return [];
+});
+
+// 門框顏色
+const doorOutColors = computed(() => {
+    let currentDoorOut = doorsOut.value.find((item) => item.id === currentDoorOutId.value);
+    if (currentDoorOut !== undefined) {
+        return currentDoorOut.colors;
+    }
+    return [];
+});
+
+// 鎖的種類
+const locks = ref<any>({
+    handle: [],
+    lock: [],
+});
+
+// 所有客製化需求預覽圖
+const customPreviewData = computed(() => {
+    if ($utils().isEmpty(currentDoorId.value)) {
+        return {};
+    }
+    return {
+        // 門扇
+        door: doors.value.find((item: any) => item.id === currentDoorId.value).previewImgSrc[`option-${currentDoorColorId.value}-${currentDoorSizeId.value}`],
+        // 門把
+        doorOut: doorsOut.value.find((item: any) => item.id === currentDoorOutId.value).previewImgSrc[`option-${currentDoorOutColorId.value}`],
+        // 鎖
+        lock: locks.value[lockCategory.value].find((item: any) => item.id === currentLock.value.id).previewImgSrc,
+    };
+});
 
 function openShoppingCarDialog() {
     showSoppingCarDialog.value = true;
@@ -437,13 +528,13 @@ function addToShoppingCar() {
     };
     let price = currentDoorData.value.price + currentDoorOutData.value.price + currentTool1Data.value.price + currentTool2Data.value.price;
 
-    // 判斷是否有選擇 選擇基本五金 掛門資料
+    // 判斷是否有選擇 選擇基本五金 下將壓條
     if (!$utils().isEmpty(currentOther1Datas.value)) {
         console.log("currentOther1Datas.value >", currentOther1Datas.value);
         data["currentOther1"] = { label: "下降壓條", datas: currentOther1Datas.value };
         price = price + _SumBy(currentOther1Datas.value, "price");
     }
-    // 判斷是否有選擇 選擇基本五金 氣密條
+    // 判斷是否有選擇 選擇基本五金 門弓器
     if (!$utils().isEmpty(currentOther2Datas.value)) {
         data["currentOther2"] = { label: "門弓器", datas: currentOther2Datas.value };
         price = price + _SumBy(currentOther2Datas.value, "price");
@@ -462,197 +553,63 @@ function addToShoppingCar() {
     }
 }
 
-/**
- * 前往結賬
- */
-function goToBill() {
-    addToShoppingCar();
-    router.push({ name: "shopping-car-slug", params: { slug: "耶魯電子鎖購物車" }, query: { tab: "type2" } });
-}
-
-// 門扇資料
-const doors = ref<any>([]);
-// 門扇假資料
-for (let i = 1; i < 6; i++) {
-    doors.value.push({
-        imgSrc: "/img/custom-product/demo/custom-product-door-demo-1.jpg",
-        name: "品牌/ASSA ABLOY",
-        style: `YDM3109A-${i}`,
-        title: `門扇款式-${i}`,
-        price: 2000,
-        // 特殊功能
-        types: {
-            // 防火功能
-            category1: false,
-        },
-        id: `id${i}`,
-        colors: [
-            {
-                id: "id1",
-                text: "琥珀",
-                imgSrc: "/img/product/demo/color-1.png",
-                previewImgSrc: {
-                    front: "/img/custom-product/demo/door/custom-product-door-black-close.png",
-                    backend: "/img/custom-product/demo/door/custom-product-door-black-close.png",
-                    half: "/img/custom-product/demo/door/custom-product-door-black-open.png",
-                },
-            },
-            {
-                id: "id2",
-                text: "白色",
-                imgSrc: "/img/product/demo/color-2.png",
-                previewImgSrc: {
-                    front: "/img/custom-product/demo/door/custom-product-door-white-close.png",
-                    backend: "/img/custom-product/demo/door/custom-product-door-white-close.png",
-                    half: "/img/custom-product/demo/door/custom-product-door-white-open.png",
-                },
-            },
-            // {
-            //     id: "id3",
-            //     text: "黑色",
-            //     imgSrc: "/img/product/demo/color-3.png",
-            //     doors: doors.value,
-            // },
-        ],
-    });
-}
-// 門框資料
-const doorsOut = ref<any>([]);
-// 門框假資料
-for (let i = 1; i < 6; i++) {
-    doorsOut.value.push({
-        imgSrc: "/img/custom-product/demo/custom-product-door-out-demo-1.jpg",
-        name: "品牌/ASSA ABLOY",
-        style: `YDM3109A-${i}`,
-        title: `門框款式-${i}`,
-        price: 2000,
-        id: `id${i}`,
-        colors: [
-            {
-                id: "id1",
-                text: "琥珀",
-                imgSrc: "/img/product/demo/color-1.png",
-                previewImgSrc: {
-                    front: "/img/custom-product/demo/door-out/custom-product-door-out-black.png",
-                    backend: "/img/custom-product/demo/door-out/custom-product-door-out-black.png",
-                    half: "/img/custom-product/demo/door-out/custom-product-door-out-black.png",
-                },
-            },
-            {
-                id: "id2",
-                text: "白色",
-                imgSrc: "/img/product/demo/color-2.png",
-                previewImgSrc: {
-                    front: "/img/custom-product/demo/door-out/custom-product-door-out-white.png",
-                    backend: "/img/custom-product/demo/door-out/custom-product-door-out-white.png",
-                    half: "/img/custom-product/demo/door-out/custom-product-door-out-white.png",
-                },
-            },
-            // {
-            //     id: "id3",
-            //     text: "黑色",
-            //     imgSrc: "/img/product/demo/color-3.png",
-            //     previewImgSrc: {
-            //         front: "/img/custom-product/demo/door-out/custom-product-door-out-black.png",
-            //         backend: "/img/custom-product/demo/door-out/custom-product-door-out-black.png",
-            //         half: "/img/custom-product/demo/door-out/custom-product-door-out-black.png",
-            //     },
-            // },
-        ],
-    });
-}
-
-// 鎖的種類
-const locks = ref<any>({
-    handle: [],
-    lock: [],
-});
-
-for (let i = 1; i < 20; i++) {
-    if (i === 2) {
-        locks.value.handle.push({
-            imgSrc: "/img/custom-product/demo/custom-product-lock-demo-1.jpg",
-            previewImgSrc: {
-                front: "/img/custom-product/demo/handle/custom-product-handle-white-close.png",
-                backend: "/img/custom-product/demo/handle/custom-product-handle-white-close.png",
-                half: "/img/custom-product/demo/handle/custom-product-handle-white-open.png",
-            },
-            style: `default lock-${i}`,
-            price: 1000 + i,
-            id: `id${i}`,
-        });
-    } else {
-        locks.value.handle.push({
-            imgSrc: "/img/custom-product/demo/custom-product-lock-demo-1.jpg",
-            previewImgSrc: {
-                front: "/img/custom-product/demo/handle/custom-product-handle-black-close.png",
-                backend: "/img/custom-product/demo/handle/custom-product-handle-black-close.png",
-                half: "/img/custom-product/demo/handle/custom-product-handle-black-open.png",
-            },
-            style: `default lock-${i}`,
-            price: 1000 + i,
-            id: `id${i}`,
-        });
-    }
-    locks.value.lock.push({
-        imgSrc: "/img/custom-product/demo/custom-product-lock-demo-1.jpg",
-        previewImgSrc: {
-            front: "/img/custom-product/demo/lock/custom-product-lock-close.png",
-            backend: "/img/custom-product/demo/lock/custom-product-lock-close.png",
-            half: "/img/custom-product/demo/lock/custom-product-lock-open.png",
-        },
-        style: `smart lock-${i}`,
-        price: 2000 + i,
-        id: `id${i}`,
-    });
-}
-
-// 尺寸
-const doorSizes = ref<any>([]);
-
-for (let i = 1; i < 5; i++) {
-    doorSizes.value.push({
-        id: `id${i}`,
-        // 門高
-        height: "200cm-215cm",
-        // 門寬
-        width: "100cm",
-        // 門厚
-        bold: "7cm",
-    });
-}
-
-// 所有客製化需求預覽圖
-const customPreviewData = computed(() => {
-    return {
-        // 門扇
-        door: doors.value.find((item) => item.id === currentDoorId.value).colors.find((item) => item.id === currentDoorColorId.value).previewImgSrc,
-        // 門把
-        doorOut: doorsOut.value.find((item) => item.id === currentDoorOutId.value).colors.find((item) => item.id === currentDoorOutColorId.value).previewImgSrc,
-        // 鎖
-        lock: locks.value[lockCategory.value].find((item) => item.id === currentLock.value.id).previewImgSrc,
-    };
-});
-
 // 總價
 const total = computed(() => 650000);
 // 訂金
 const deposit = computed(() => total.value * 0.3);
 
-const customProductHook = useCustomProdutHook();
-
-const customProductList = ref<any>([]);
+const { getCustomProductList, customProductList, getCustomProductSceneList, scenes } = useCustomProdutHook();
 
 async function init(id: number) {
-    await customProductHook.getCustomProductList(id);
-    customProductList.value = customProductHook.customProductList.value;
-    console.log("customProductList.value  =>", customProductList.value);
+    // 取得場景
+    await getCustomProductSceneList();
+    currentBgId.value = scenes.value[0].id;
+    // 取得訂製門扇商品
+    await getCustomProductList(id);
+    doors.value = customProductList.value.doors;
+    doorsOut.value = customProductList.value.doorsOut;
+    locks.value = {
+        handle: customProductList.value.handles,
+        lock: customProductList.value.locks,
+    };
+    tool1Datas.value = customProductList.value.tool1Datas;
+    tool2Datas.value = customProductList.value.tool2Datas;
+    other1Datas.value = customProductList.value.other1Datas;
+    other2Datas.value = customProductList.value.other2Datas;
+    serviceDatas.value = customProductList.value.serviceDatas;
+    if (doors.value && doors.value[0]) {
+        lockCategory.value = "handle";
+        currentDoorId.value = doors.value[0].id;
+        currentDoorColorId.value = doors.value[0].colors[0].id;
+        currentDoorSizeId.value = doors.value[0].sizes[0].id;
+        currentDoorOutId.value = doorsOut.value[0].id;
+        currentDoorOutColorId.value = doorsOut.value[0].colors[0].id;
+        currentLockId.value = locks.value.handle[0].id;
+        currentLock.value = { id: locks.value.handle[0].id, style: locks.value.handle[0].style, price: locks.value.handle[0].price, detailData: locks.value.handle[0].detailData, name: locks.value.handle[0].name, shape: locks.value.handle[0].shape };
+        currentTool1Id.value = tool1Datas.value[0].id;
+        currentTool2Id.value = tool2Datas.value[0].id;
+        currentOther1Ids.value = [other1Datas.value[0].id];
+        currentOther2Ids.value = [other2Datas.value[0].id];
+    }
 }
 
+// await init();
+
+await init(1);
+
 watch(
-    () => currentBgData.value,
+    () => currentBgId.value,
     async (val) => {
-        await init(val.id);
+        console.log("val currentBgId =>", val);
+        await init(val);
+    }
+);
+
+watch(
+    () => currentDoorId.value,
+    (val) => {
+        currentDoorColorId.value = doors.value.find((item: any) => item.id === val).colors[0].id;
+        currentDoorSizeId.value = doors.value.find((item: any) => item.id === val).sizes[0].id;
     }
 );
 

@@ -1,11 +1,12 @@
 <template>
-    <div>
+    <div v-if="currentLockData.detailData">
         <h3 class="text-[16px] font-medium YaleSolisW-Bd mb-[20px]">款式</h3>
         <ul class="grid grid-cols-2 gap-[12px]">
             <li
                 @click="
                     lockCategoryData = category.value;
-                    currentLock = locks[lockCategoryData][0];
+                    currentLockData = locks[lockCategoryData][0];
+                    currentLockIdData = locks[lockCategoryData][0];
                 "
                 v-for="(category, index) in lockCategories"
                 :key="index"
@@ -16,7 +17,10 @@
             </li>
         </ul>
         <div class="flex mt-[30px]">
-            <p class="text-[14px] font-medium YaleSolisW-Bd text-gray-800">水平把手不銹鋼白鐵水平門鎖 (搭配歐規鎖具)</p>
+            <p
+                class="text-[14px] font-medium YaleSolisW-Bd text-gray-800"
+                v-html="currentLockData.detailData.content"
+            ></p>
             <div class="flex-1 text-right">
                 <button @click.prevent="showDialog = true">
                     <NuxtImg
@@ -29,6 +33,7 @@
         <div class="flex mb-[20px]">
             <p class="text-[14px] flex-1 text-gray-800">{{ currentLockData.style }}</p>
 
+            <<<<<<< HEAD
             <p class="text-[14px] text-gray-800">+NT$ {{ $utils().formatCurrency(currentLockData.price) }}</p>
         </div>
         <div class="flex flex-col gap-[15px]">
@@ -59,6 +64,39 @@
                     </li>
                 </ul>
             </div>
+            =======
+            <p class="text-[14px] text-gray-800">NT$ {{ $utils().formatCurrency(currentLockData.price) }}</p>
+        </div>
+        <div
+            v-for="(showLock, index) in showLocks"
+            :key="index"
+        >
+            <ul class="flex justify-start">
+                <li
+                    @click="
+                        currentLockData = lock;
+                        currentLockIdData = lock.id;
+                    "
+                    v-for="(lock, index2) in showLock"
+                    :class="[currentLockData.id === lock.id ? 'border-2 border-yellow-600  rounded-[8px]' : 'border-2 border-white', showLock.length - 1 !== index2 ? 'mr-[16px]' : '']"
+                    class="p-1 cursor-pointer"
+                >
+                    <NuxtImg
+                        class="w-[84px]"
+                        :src="lock.imgSrc"
+                    />
+                </li>
+                <li
+                    v-show="showLock.length < 4"
+                    v-for="(lock, index2) in 4 - showLock.length"
+                    :key="index2"
+                >
+                    <div class="w-[84px] opacity-0">
+                        {{ lock }}
+                    </div>
+                </li>
+            </ul>
+            >>>>>>> develop
         </div>
         <el-dialog
             class="custom-dialog h-[600px]"
@@ -73,8 +111,16 @@
             append-to-body
         >
             <div class="w-3/4 mx-auto">
-                <h5 class="text-[20px] text-gray-800 YaleSolisW-Bd mb-[38px]">卡片密碼電子鎖-YDM 3109+</h5>
-                <CustomProductDailogCarousel :photos="photos" />
+                <div class="text-right">
+                    <button @click="closeDialog">
+                        <el-icon :size="30"><Close /></el-icon>
+                    </button>
+                </div>
+                <h5 class="text-[20px] text-gray-800 YaleSolisW-Bd mb-[38px]">{{ currentLockData.shape }}-{{ currentLockData.style }}</h5>
+                <CustomProductDailogCarousel
+                    v-if="!$utils().isEmpty(currentLockData.detailData.carousel)"
+                    :photos="currentLockData.detailData.carousel"
+                />
                 <p
                     class="text-[16px] text-gray-800 mt-[28px]"
                     v-html="dialogDetailHtml"
@@ -111,6 +157,11 @@ const props = defineProps({
             };
         },
     },
+    // 預設選中的鎖 id
+    currentLockId: {
+        type: Number,
+        default: 1,
+    },
     // 鎖
     locks: {
         type: Array,
@@ -144,6 +195,9 @@ const lockCategoryData = ref(props.lockCategory);
 // 預設選中的鎖
 const currentLockData = ref(props.currentLock);
 
+// 預設選中的鎖 id
+const currentLockIdData = ref(props.currentLockId);
+
 watch(
     () => lockCategoryData.value,
     (val) => {
@@ -152,11 +206,34 @@ watch(
         emit("update:currentLock", props.locks[val][0]);
     }
 );
-
 watch(
     () => currentLockData.value,
     (val) => {
         emit("update:currentLock", val);
+    }
+);
+watch(
+    () => currentLockIdData.value,
+    (val) => {
+        emit("update:currentLockId", val);
+    }
+);
+watch(
+    () => props.currentLockId,
+    (val) => {
+        currentLockIdData.value = val;
+    }
+);
+watch(
+    () => props.currentLock,
+    (val) => {
+        currentLockData.value = val;
+    }
+);
+watch(
+    () => props.lockCategory,
+    (val) => {
+        lockCategoryData.value = val;
     }
 );
 

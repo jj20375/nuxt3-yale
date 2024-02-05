@@ -97,6 +97,12 @@ watch(
         );
     }
 );
+watch(
+    () => props.currentColorId,
+    (val) => {
+        currentColorIdData.value = val;
+    }
+);
 
 onMounted(() => {
     emit("update:currentColorId", props.currentColorId);

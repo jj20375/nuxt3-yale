@@ -343,7 +343,7 @@ async function onSubmit() {
                     type: "success",
                     message: `送出成功`,
                 });
-                router.push({ name: "index" });
+                router.push({ name: "contact-success-slug", params: { slug: "聯絡我們表單已送出" } });
                 loading.close();
             } catch (err) {
                 loading.close();
@@ -368,4 +368,3 @@ onMounted(async () => {
     });
 });
 </script>
-

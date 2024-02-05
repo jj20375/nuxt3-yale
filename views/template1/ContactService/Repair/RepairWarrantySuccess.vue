@@ -10,7 +10,7 @@
                 <div class="font-bold text-[28px] text-center mt-5 mb-5">保固登記成功</div>
                 <div class="text-center">您已完成保固登記。</div>
                 <div class="flex justify-center mt-10">
-                    <NuxtLink :to="{ name: 'repair-slug', params: { slug: '維修與保固' } }">
+                    <NuxtLink :to="{ name: 'index' }">
                         <button class="yellow-btn">繼續</button>
                     </NuxtLink>
                 </div>

@@ -46,5 +46,11 @@ export default () => {
         ProductDetailAPI(params: { productId: any }) {
             return useMyFetch(`${apiUrl}/product/${params.productId}`, { method: "get" });
         },
+        /**
+         * 商品加入收藏
+         */
+        ProductFavoriteAPI(params: { productId: any }) {
+            return useMyFetch(`${apiUrl}/product/${params.productId}/favorite`, { method: "get" });
+        },
     };
 };
