@@ -35,6 +35,7 @@
 
             <<<<<<< HEAD
             <p class="text-[14px] text-gray-800">+NT$ {{ $utils().formatCurrency(currentLockData.price) }}</p>
+            <p class="text-[14px] text-gray-800">+NT${{ $utils().formatCurrency(currentLockData.price) }}</p>
         </div>
         <div class="flex flex-col gap-[15px]">
             <div

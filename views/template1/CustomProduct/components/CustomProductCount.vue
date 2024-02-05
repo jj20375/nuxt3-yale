@@ -6,7 +6,7 @@
         >
             <el-icon><Minus /></el-icon>
         </button>
-        <div class="flex-1 flex items-center justify-center py-3 h-full">{{ count }}</div>
+        <div class="flex-1 flex items-center justify-center py-[10px] h-full">{{ count }}</div>
         <button
             class="w-[60px] flex items-center justify-center cursor-pointer h-auto"
             @click.prevent="countAdd()"

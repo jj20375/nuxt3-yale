@@ -8,7 +8,7 @@
                 v-for="(product, index) in shoppingCar"
                 :key="index"
                 class="flex border-gray-300 gap-[48px] py-[40px]"
-                :class="shoppingCar.length - 1 === index ? '' : 'border-b'"
+                :class="shoppingCar.length - 1 === index ? '' : index === 0 ? 'pt-0' : 'border-b'"
             >
                 <div class="flex gap-2">
                     <el-checkbox :key="product.id" :label="product.id" />
@@ -22,25 +22,25 @@
                         <h3 class="YaleSolisW-Bd font-medium text-[18px] flex-1">{{ product.mark + product.name }}-{{ product.id }}</h3>
                         <p class="font-medium YaleSolisW-Bd text-[18px]">NT$ {{ $utils().formatCurrency(product.price) }}</p>
                     </div>
-                    <div class="flex gap-4 text-gray-800 mt-[12px]">
+                    <div class="flex gap-4 text-gray-800 items-center mt-[12px]">
                         <p class="w-[90px] text-[14px]">顏色</p>
                         <p class="text-[14px]">{{ product.color }}</p>
                     </div>
-                    <div class="flex justify-end">
-                        <div class="flex justify-center items-center w-[150px] border border-gray-300 px-[2px] py-[10px] rounded-full mr-[18px]">
-                            <div
-                                class="flex items-center cursor-pointer"
-                                @click="countDelete(index)"
+                    <div class="flex gap-[18px] justify-end">
+                        <div class="flex justify-center items-stretch w-[150px] border border-gray-300 rounded-full">
+                            <button
+                                class="flex-1 flex items-center justify-center cursor-pointer h-auto"
+                                @click.prevent="countDelete(index)"
                             >
                                 <el-icon><Minus /></el-icon>
-                            </div>
-                            <div class="w-[88px] h-[28px] text-center flex items-center justify-center">{{ product.count }}</div>
-                            <div
-                                class="flex items-center cursor-pointer"
-                                @click="countAdd(index)"
+                            </button>
+                            <div class="flex items-center justify-center w-[80px] py-[10px] h-full">{{ product.count }}</div>
+                            <button
+                                class="flex-1 flex items-center justify-center cursor-pointer h-auto"
+                                @click.prevent="countAdd(index)"
                             >
                                 <el-icon><Plus /></el-icon>
-                            </div>
+                            </button>
                         </div>
                         <button @click.prevent="removeShoppingCar(index)">
                             <NuxtImg

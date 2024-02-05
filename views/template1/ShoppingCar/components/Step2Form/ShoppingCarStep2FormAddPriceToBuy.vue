@@ -1,6 +1,6 @@
 <template>
-    <div class="mt-[88px]">
-        <h5 class="bg-gray-50 py-[8px] pl-[16px] w-full mb-[30px]">加價購</h5>
+    <div>
+        <h5 class="bg-gray-50 py-[8px] pl-[16px] w-full">加價購</h5>
         <el-checkbox-group
             v-model="checkList"
             @change="selectGift"
@@ -198,27 +198,47 @@ watch(formData.value, (val) => {
 
 <style lang="scss" scoped>
 :deep .el-input__wrapper {
-    @apply shadow-none border-b border-gray-200 mx-0 rounded-none #{!important};
+    @apply px-2;
 }
-:deep .el-select {
-    .el-input__wrapper {
-        @apply mx-0;
-    }
-}
-:deep {
-    .el-checkbox-group {
-        @apply text-base leading-normal #{!important};
-    }
-    .is-checked {
-        .el-checkbox__inner {
-            @apply bg-yellow-600 border-yellow-600 #{!important};
+// 輸入框
+:deep .el-select{
+    .el-input{
+        .el-input__wrapper {
+            @apply shadow-formDefault rounded-none py-1.5 px-0 bg-transparent text-[16px] #{!important};
+            &.is-focus{
+                @apply shadow-formFocus #{!important};
+            }
+            .el-input__inner {
+                @apply text-gray-800;
+
+                &::placeholder {
+                    -webkit-text-fill-color: #ABABAC;
+                }
+            }
         }
     }
-    .el-checkbox__label {
-        @apply hidden #{!important};
+}
+
+:deep {
+    .el-checkbox-group {
+        @apply text-base leading-normal block #{!important};
     }
     .el-checkbox {
-        @apply h-auto #{!important};
+        @apply w-[18px] h-[18px] #{!important};
+        .el-checkbox__label {
+            @apply hidden #{!important};
+        }
+        .el-checkbox__inner {
+            @apply w-[18px] h-[18px] #{!important};
+            &:hover{
+                @apply border-yellow-600;
+            }
+        }
+        .is-checked{
+            .el-checkbox__inner {
+                @apply bg-yellow-600 border-yellow-600 after:h-[9px] after:left-[6px] after:top-[2px] #{!important};
+            }
+        }
     }
 }
 </style>
