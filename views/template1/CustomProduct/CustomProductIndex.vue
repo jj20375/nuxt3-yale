@@ -208,20 +208,7 @@
                         :icon="['fas', 'chevron-up']"
                     />
                 </div>
-                <div class="border-b border-gray-300">
-                    <div
-                        @click="stepMenuShow['step7'].show = !stepMenuShow['step7'].show"
-                        class="flex items-center mb-[30px] mt-[30px] cursor-pointer"
-                        type="button"
-                    >
-                        <h3 class="flex-1 text-gray-800 text-[20px] font-medium YaleSolisW-Bd">{{ stepMenuShow["step7"].text }}</h3>
-                        <font-awesome-icon
-                            class="transition-all duration-300"
-                            :class="!stepMenuShow['step7'].show ? 'rotate-180' : ''"
-                            :icon="['fas', 'chevron-up']"
-                        />
-                    </div>
-                </div>
+
                 <CustomProductOtherService
                     v-show="stepMenuShow['step7'].show"
                     v-model:selectedServiceIds="currentServiceIds"
