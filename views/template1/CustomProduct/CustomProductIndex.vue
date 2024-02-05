@@ -564,7 +564,7 @@ async function init(id: number) {
         currentDoorOutId.value = doorsOut.value[0].id;
         currentDoorOutColorId.value = doorsOut.value[0].colors[0].id;
         currentLockId.value = locks.value.handle[0].id;
-        currentLock.value = { id: locks.value.handle[0].id, style: locks.value.handle[0].style, price: locks.value.handle[0].price };
+        currentLock.value = { id: locks.value.handle[0].id, style: locks.value.handle[0].style, price: locks.value.handle[0].price, detailData: locks.value.handle[0].detailData, name: locks.value.handle[0].name, shape: locks.value.handle[0].shape };
         currentTool1Id.value = tool1Datas.value[0].id;
         currentTool2Id.value = tool2Datas.value[0].id;
         currentOther1Ids.value = [other1Datas.value[0].id];

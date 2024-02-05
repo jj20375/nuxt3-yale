@@ -157,8 +157,13 @@ export function useCustomProdutHook() {
                 style: `${item.model} ${item.name}`,
                 title: item.name,
                 name: `${item.brand}`,
+                shape: item.shape,
                 price: Number(item.price),
                 id: item.id,
+                detailData: {
+                    carousel: item.carousel_images.map((item: string, index: number) => ({ id: index + 1, imgSrc: item })),
+                    content: item.content,
+                },
                 previewImgSrc: {
                     front: item.front_image,
                     backend: item.back_image,

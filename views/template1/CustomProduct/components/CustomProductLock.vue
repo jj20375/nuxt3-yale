@@ -1,11 +1,11 @@
 <template>
-    <div>
+    <div v-if="currentLockData.detailData">
         <h3 class="text-[16px] font-medium YaleSolisW-Bd mb-[20px]">款式</h3>
         <ul class="flex">
             <li
                 @click="
                     lockCategoryData = category.value;
-                    currentLock = locks[lockCategoryData][0];
+                    currentLockData = locks[lockCategoryData][0];
                     currentLockIdData = locks[lockCategoryData][0];
                 "
                 v-for="(category, index) in lockCategories"
@@ -17,7 +17,10 @@
             </li>
         </ul>
         <div class="flex mt-[30px]">
-            <p class="text-[14px] font-medium YaleSolisW-Bd text-gray-800">水平把手不銹鋼白鐵水平門鎖 (搭配歐規鎖具)</p>
+            <p
+                class="text-[14px] font-medium YaleSolisW-Bd text-gray-800"
+                v-html="currentLockData.detailData.content"
+            ></p>
             <div class="flex-1 text-right">
                 <button @click.prevent="showDialog = true">
                     <NuxtImg
@@ -30,7 +33,7 @@
         <div class="flex mb-[20px] mt-[8px]">
             <p class="text-[14px] flex-1 text-gray-800">{{ currentLockData.style }}</p>
 
-            <p class="text-[14px] text-gray-800">$NT {{ $utils().formatCurrency(currentLockData.price) }}</p>
+            <p class="text-[14px] text-gray-800">NT$ {{ $utils().formatCurrency(currentLockData.price) }}</p>
         </div>
         <div
             v-for="(showLock, index) in showLocks"
@@ -40,7 +43,7 @@
                 <li
                     @click="
                         currentLockData = lock;
-                        currentLockId = lock.id;
+                        currentLockIdData = lock.id;
                     "
                     v-for="(lock, index2) in showLock"
                     :class="[currentLockData.id === lock.id ? 'border-2 border-yellow-600  rounded-[8px]' : 'border-2 border-white', showLock.length - 1 !== index2 ? 'mr-[16px]' : '']"
@@ -72,8 +75,11 @@
                     <el-icon :size="30"><Close /></el-icon>
                 </button>
             </div>
-            <h5 class="text-[20px] text-gray-800 YaleSolisW-Bd mb-[38px]">卡片密碼電子鎖-YDM 3109+</h5>
-            <CustomProductDailogCarousel :photos="photos" />
+            <h5 class="text-[20px] text-gray-800 YaleSolisW-Bd mb-[38px]">{{ currentLockData.shape }}-{{ currentLockData.style }}</h5>
+            <CustomProductDailogCarousel
+                v-if="!$utils().isEmpty(currentLockData.detailData.carousel)"
+                :photos="currentLockData.detailData.carousel"
+            />
             <p
                 class="text-[16px] text-gray-800 mt-[28px]"
                 v-html="dialogDetailHtml"
