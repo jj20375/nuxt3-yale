@@ -244,34 +244,34 @@
                     結帳
                 </button>
             </div>
-            <div class="fixed bottom-0 w-full bg-white z-[100] h-[80px] shadow-footer sidebar-wrap">
-                <div class="flex items-center justify-center">
-                    <ul
-                        v-if="previewWidth > 0"
-                        class="h-fit flex gap-[12px] justify-center"
+        </div>
+        <div class="fixed bottom-0 w-full bg-white z-[100] h-[80px] shadow-footer sidebar-wrap">
+            <div class="flex items-center justify-center">
+                <ul
+                    v-if="previewWidth > 0"
+                    class="h-fit flex gap-[12px] justify-center"
+                >
+                    <li
+                        @click="currentAngle = angle.value"
+                        class="rounded-full px-[20px] py-[8px] text-white cursor-pointer"
+                        :class="[currentAngle === angle.value ? 'bg-gray-800' : 'bg-gray-350']"
+                        v-for="(angle, index) in viewAngle"
+                        :key="angle.value"
                     >
-                        <li
-                            @click="currentAngle = angle.value"
-                            class="rounded-full px-[20px] py-[8px] text-white cursor-pointer"
-                            :class="[currentAngle === angle.value ? 'bg-gray-800' : 'bg-gray-350']"
-                            v-for="(angle, index) in viewAngle"
-                            :key="angle.value"
-                        >
-                            {{ angle.text }}
-                        </li>
-                    </ul>
+                        {{ angle.text }}
+                    </li>
+                </ul>
+            </div>
+            <div class="flex items-center justify-start gap-4">
+                <div class="flex items-center">
+                    <p class="text-gray-600 text-[14px]">預估金額</p>
+                    <div class="text-[14px] text-gray-800 flex items-center ml-2">
+                        NT$ <strong class="ml-2 font-medium YaleSolisW-Bd text-[24px]">{{ $utils().formatCurrency(total) }}</strong>
+                    </div>
                 </div>
-                <div class="flex items-center justify-start gap-4">
-                    <div class="flex items-center">
-                        <p class="text-gray-600 text-[14px]">預估金額</p>
-                        <div class="text-[14px] text-gray-800 flex items-center ml-2">
-                            NT$ <strong class="ml-2 font-medium YaleSolisW-Bd text-[24px]">{{ $utils().formatCurrency(total) }}</strong>
-                        </div>
-                    </div>
-                    <div class="flex text-gray-600">
-                        <p class="text-[14px] mr-[4px]">訂金 (總價30%)</p>
-                        <div class="text-[14px]">NT$ {{ $utils().formatCurrency(deposit) }}</div>
-                    </div>
+                <div class="flex text-gray-600">
+                    <p class="text-[14px] mr-[4px]">訂金 (總價30%)</p>
+                    <div class="text-[14px]">NT$ {{ $utils().formatCurrency(deposit) }}</div>
                 </div>
             </div>
         </div>
