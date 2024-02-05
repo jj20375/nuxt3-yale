@@ -28,18 +28,20 @@
                                         class="relative favorite w-[30px] h-[30px] text-gray-300 cursor-pointer z-50 duration-300 transition-all"
                                         @click="handleFavorite"
                                     >
-                                        <template v-if="isFavorite">
+                                        <div v-show="detailData.is_favorite"
+                                                  @click="handleDetailFavorite">
                                             <NuxtImg
                                                 class="absolute w-[30px] h-[30px] left-0 top-0 z-20"
                                                 src="/img/icons/favorite-fill.svg"
                                             />
-                                        </template>
-                                        <template v-else>
+                                        </div>
+                                        <div v-show="!detailData.is_favorite"
+                                                   @click="handleDetailFavorite">
                                             <NuxtImg
                                                 class="absolute w-[30px] h-[30px] left-0 top-0 z-20"
                                                 src="/img/icons/favorite-hollow.svg"
                                             />
-                                        </template>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -134,26 +136,6 @@
                             </ul>
                         </div>
                     </div>
-                    <div class="mt-[16px] text-gray-900 list-disc list-inside text-[16px] mb-1">
-                        {{ detailData.description }}
-                    </div>
-                    <div class="py-[30px] flex items-center">
-                        <NuxtLink :to="{ name: 'product-compare-slug', params: { slug: '主鎖比較' }, query: { compareId: detailData.product_type_id, productId: detailData.product_id } }">
-                            <div class="mr-[20px] cursor-pointer">規格比較</div>
-                        </NuxtLink>
-                        <font-awesome-icon
-                            v-show="!detailData.is_favorite"
-                            @click="handleDetailFavorite"
-                            class="text-gray-300 text-[20px] cursor-pointer"
-                            :icon="['far', 'heart']"
-                        />
-                        <font-awesome-icon
-                            v-show="detailData.is_favorite"
-                            @click="handleDetailFavorite"
-                            class="text-yellow-500 text-[20px] cursor-pointer"
-                            :icon="['fa', 'heart']"
-                        />
-                    </div>
                     <div
                         v-if="currentTab === 1"
                         class="min-h-[500px] flex mt-[60px]"
@@ -232,14 +214,6 @@ const breadcrumbs = ref([]);
 if (process.client) {
     breadcrumbs.value = JSON.parse($utils().getBreadcrumbsData());
 }
-
-// 判斷是否為喜愛項目
-const isFavorite = ref(false);
-
-// TODO 待完成
-const handleFavorite = () => {
-    isFavorite.value = !isFavorite.value;
-};
 
 const photos = ref<{ id: string | number; imgSrc: string }[]>([]);
 const detailData = ref<any>({});
