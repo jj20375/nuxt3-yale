@@ -1,24 +1,22 @@
 <template>
-    <div class="mt-[88px]">
-        <h5 class="bg-gray-50 py-[8px] pl-[16px] w-full mb-[30px]">聯繫人</h5>
-        <div class="flex items-center mb-[30px]">
-            <div class="mr-[30px]">
-                <el-checkbox
-                    v-model="formData.chooseDefaultContactUser"
-                    @change="onChooseDefaultContactUser"
-                    :label="'預設聯繫人'"
-                    size="large"
-                />
-            </div>
+    <div class="mt-[60px]">
+        <h5 class="bg-gray-50 py-[8px] font-medium pl-[16px] w-full mb-[30px]">聯繫人</h5>
+        <div class="flex items-center gap-[30px] mb-[30px]">
+            <el-checkbox
+                v-model="formData.chooseDefaultContactUser"
+                @change="onChooseDefaultContactUser"
+                :label="'預設聯繫人'"
+                size="large"
+            />
             <div
                 @click="showDialog = true"
-                class="underline text-[15px] text-gray-800 cursor-pointer"
+                class="underline underline-offset-2 text-[15px] text-blue-500 cursor-pointer"
             >
                 選擇其他聯繫人
             </div>
         </div>
-        <el-form>
-            <div class="grid grid-cols-2 gap-[30px]">
+        <el-form class="custom-form">
+            <div class="grid grid-cols-2 gap-6">
                 <div
                     v-for="(column, key) in columns"
                     :key="key"
@@ -61,7 +59,7 @@
                     </el-form-item>
                 </div>
             </div>
-            <el-form-item prop="address">
+            <el-form-item class="mt-6" prop="address">
                 <label class="block w-full text-gray-800 text-[15px]">
                     地址
                     <span class="ml-1 text-red-500">*</span>
@@ -225,19 +223,20 @@ watch(
 </script>
 
 <style lang="scss" scoped>
-:deep .el-input__wrapper {
-    @apply shadow-none border-b border-gray-200 mx-0 rounded-none #{!important};
-}
-:deep .el-select {
-    .el-input__wrapper {
-        @apply mx-0;
+:deep .el-checkbox {
+    .el-checkbox__label {
+        @apply text-gray-800 text-[15px] leading-none font-normal #{!important};
     }
-}
-:deep .el-textarea__inner {
-    @apply rounded-none;
-}
-
-:deep .el-radio__label {
-    @apply hidden;
+    .el-checkbox__inner {
+        @apply w-[18px] h-[18px] #{!important};
+        &:hover {
+            @apply border-yellow-600;
+        }
+    }
+    .is-checked {
+        .el-checkbox__inner {
+            @apply bg-yellow-600 border-yellow-600 after:h-[9px] after:left-[6px] after:top-[2px] #{!important};
+        }
+    }
 }
 </style>

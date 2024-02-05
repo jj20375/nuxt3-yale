@@ -7,7 +7,7 @@
             <div
                 v-for="(product, index) in shoppingCar"
                 :key="index"
-                class="flex border-gray-300 gap-[48px] py-[40px]"
+                class="flex border-gray-300 gap-[48px] py-[30px]"
                 :class="shoppingCar.length - 1 === index ? '' : index === 0 ? 'pt-0' : 'border-b'"
             >
                 <div class="flex gap-2">

@@ -22,10 +22,10 @@
                 :to="{ name: 'product-slug', params: { slug: '耶魯產品資訊-電子鎖-主鎖' }, query: { category: 1, tag: 1 } }"
             >
                 <NuxtImg
-                    class="w-[20px]"
+                    class="w-[16px] h-[16px]"
                     src="/img/icons/post/arrow-prev.svg"
                 />
-                <span class="ml-[8px]">繼續購物</span>
+                <span class="ml-[8px] leading-none">繼續購物</span>
             </NuxtLink>
         </div>
     </div>

@@ -9,7 +9,8 @@
                 <div
                     v-for="(product, index) in products"
                     v-show="formData[index]"
-                    class="flex border-b border-gray-300 py-[30px]"
+                    class="flex border-gray-300 py-[30px]"
+                    :class="{ 'border-b': index !== products.length - 1 }"
                 >
                     <div
                         class="mr-5"
@@ -26,11 +27,11 @@
                         class="flex-1"
                         v-if="formData[index]"
                     >
-                        <div class="flex">
-                            <h5 class="flex-1 text-[18px] text-gray-800 font-medium mb-[12px]">{{ product.name }}</h5>
-                            <div class="flex">
+                        <div class="flex mb-[12px]">
+                            <h5 class="flex-1 text-[18px] text-gray-800 font-medium">{{ product.name }}</h5>
+                            <div class="flex gap-4">
                                 <p class="text-gray-400 line-through YaleSolisW-Lt mr-[4px]">NT${{ $utils().formatCurrency(product.price) }}</p>
-                                <p class="font-medium YaleSolisW-Bd">NT$ {{ $utils().formatCurrency(product.market_price * formData[index].count) }}</p>
+                                <p class="font-medium text-[18px] YaleSolisW-Bd">NT$ {{ $utils().formatCurrency(product.market_price * formData[index].count) }}</p>
                             </div>
                         </div>
                         <el-select
@@ -45,21 +46,21 @@
                                 :value="option.value"
                             ></el-option>
                         </el-select>
-                        <div class="flex justify-end mt-[20px]">
-                            <div class="flex justify-center items-center w-[150px] border border-gray-300 px-[2px] py-[10px] rounded-full mr-[18px]">
-                                <div
-                                    class="flex items-center cursor-pointer"
-                                    @click="countDelete(index)"
+                        <div class="flex gap-[18px] justify-end">
+                            <div class="flex justify-center items-stretch w-[150px] border border-gray-300 rounded-full">
+                                <button
+                                    class="flex-1 flex items-center justify-center cursor-pointer h-auto"
+                                    @click.prevent="countDelete(index)"
                                 >
                                     <el-icon><Minus /></el-icon>
-                                </div>
-                                <div class="w-[88px] h-[28px] text-center flex items-center justify-center">{{ formData[index].count }}</div>
-                                <div
-                                    class="flex items-center cursor-pointer"
-                                    @click="countAdd(index)"
+                                </button>
+                                <div class="flex items-center justify-center w-[80px] py-[10px] h-full">{{ product.count }}</div>
+                                <button
+                                    class="flex-1 flex items-center justify-center cursor-pointer h-auto"
+                                    @click.prevent="countAdd(index)"
                                 >
                                     <el-icon><Plus /></el-icon>
-                                </div>
+                                </button>
                             </div>
                             <button @click.prevent="removeShoppingCar(index)">
                                 <NuxtImg

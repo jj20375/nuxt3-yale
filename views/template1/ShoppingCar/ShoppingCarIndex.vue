@@ -30,14 +30,14 @@
                     <ShoppingCarSteps v-model:step="currentStep" />
                 </div>
             </div>
-            <div class="flex justify-center mt-[40px]">
+            <div class="flex justify-center mt-[40px] mb-[80px]">
                 <component
                     :is="showComponent"
                     v-model:currentTab="currentTab"
                     v-model:selectProductIds="selectProductIds"
                 ></component>
                 <div
-                    class="w-[387px]"
+                    class="w-[400px]"
                     v-if="currentStep !== 2"
                 >
                     <ShoppingCarInputCoupon v-if="currentStep == 0" />

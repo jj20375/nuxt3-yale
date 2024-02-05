@@ -1,53 +1,43 @@
 <template>
-    <div class="mt-[40px]">
-        <h5 class="bg-gray-50 py-[8px] pl-[16px] w-full mb-[30px]">訂購人</h5>
-        <el-form>
-            <div class="grid grid-cols-2 gap-[30px]">
-                <div
-                    v-for="(column, key) in columns"
-                    :key="key"
+    <div>
+        <h5 class="bg-gray-50 py-[8px] font-medium pl-[16px] w-full mb-[30px]">訂購人</h5>
+        <el-form
+            class="custom-form"
+            ref="formRefDom"
+            :model="form"
+            :rules="rules"
+            require-asterisk-position="right">
+            <div class="grid grid-cols-2 gap-6 mb-[30px]">
+                <template
+                    v-for="(item, index) in formDatas"
+                    :key="index"
                 >
-                    <el-form-item :prop="key">
-                        <label class="block w-full text-gray-800 text-[15px]"
-                            >{{ column.label
-                            }}<span
-                                v-if="column.required"
-                                class="ml-1 text-red-500"
-                                >*</span
-                            ></label
-                        >
-                        <div
-                            v-if="key !== 'phone'"
-                            class="bg-gray-50 p-[12px] w-full text-[16px]"
-                        >
-                            {{ formData[key] }}
-                        </div>
-                        <div
-                            v-else
-                            class="w-full"
-                        >
+                    <div :class="item.span ? `col-span-${item.span}` : ''">
+                        <el-form-item :prop="item.prop" :label="item.label">
+                            <el-input v-if="item.style === 'input'" :type="item?.type" :show-password="item.showPassword" :disabled="item.disabled"
+                                      :placeholder="item.placeholder" v-model="form[item.prop]"></el-input>
                             <el-input
-                                class="w-full"
-                                v-model="formData[key]"
+                                v-if="item.style === 'textarea'"
+                                type="textarea"
+                                rows="5"
+                                resize="none"
+                                :placeholder="item.placeholder"
+                                v-model="form[item.prop]"
                             ></el-input>
-                        </div>
-                    </el-form-item>
-                </div>
+                        </el-form-item>
+                    </div>
+                    <template v-if="item.space">
+                        <div v-for="index in item.space" :key="index"></div>
+                    </template>
+                </template>
             </div>
-            <el-form-item prop="note">
-                <label class="block w-full text-gray-800 text-[15px]">訂單備註</label>
-                <el-input
-                    v-model="formData.note"
-                    type="textarea"
-                    rows="5"
-                    placeholder="有什麼話想告訴賣家嗎?"
-                ></el-input>
-            </el-form-item>
         </el-form>
     </div>
 </template>
 
 <script setup lang="ts">
+import { validateTWMobileNumber } from "~/service/validator";
+
 const emit = defineEmits(["update:form"]);
 
 const props = defineProps({
@@ -64,35 +54,72 @@ const props = defineProps({
     },
 });
 
-const columns = ref({
-    name: {
-        label: "會員名稱",
-    },
-    email: {
-        label: "電子信箱",
-    },
-    phone: {
-        label: "聯絡電話",
-        required: true,
-    },
-});
+const form = ref(props.form);
 
-const formData = ref(props.form);
-
-watch(formData.value, (val) => {
+watch(form.value, (val) => {
     emit("update:form", val);
 });
+
+const formRefDom = ref<any>();
+
+const formDatas = ref<any>([
+    {
+        prop: "name",
+        label: "會員名稱",
+        placeholder: "",
+        style: "input",
+        disabled: true,
+    },
+    {
+        prop: "email",
+        label: "電子信箱",
+        placeholder: "",
+        style: "input",
+        disabled: true,
+    },
+    {
+        prop: "phone",
+        label: "聯絡電話",
+        placeholder: "",
+        style: "input",
+        space: 1,
+    },
+    {
+        prop: "note",
+        label: "訂單備註",
+        placeholder: "有什麼話想告訴賣家嗎?",
+        style: "textarea",
+        span: 2,
+    },
+]);
+
+const rules = ref<any>({
+    name: [
+        {
+            required: true,
+            message: "請輸入會員名稱",
+            trigger: ["change", "blur"],
+        }
+    ],
+    email: [
+        {
+            required: true,
+            message: "請輸入電子信箱",
+            trigger: ["change", "blur"],
+        }
+    ],
+    phone: [
+        {
+            required: true,
+            message: "請輸入聯絡電話",
+            trigger: ["change", "blur"],
+        }
+    ],
+});
+
 </script>
 
 <style lang="scss" scoped>
-:deep .el-input__wrapper {
-    @apply shadow-none border-b border-gray-200 mx-0 rounded-none #{!important};
-}
-:deep .el-select {
-    .el-input__wrapper {
-        @apply mx-0;
-    }
-}
 :deep .el-textarea__inner {
     @apply rounded-none;
 }
