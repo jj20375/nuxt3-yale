@@ -79,11 +79,6 @@
             append-to-body
         >
             <div class="w-3/4 mx-auto">
-                <div class="text-right">
-                    <button @click="closeDialog">
-                        <el-icon :size="30"><Close /></el-icon>
-                    </button>
-                </div>
                 <h5 class="text-[20px] text-gray-800 YaleSolisW-Bd mb-[38px]">{{ currentLockData.shape }}-{{ currentLockData.style }}</h5>
                 <CustomProductDailogCarousel
                     v-if="!$utils().isEmpty(currentLockData.detailData.carousel)"
