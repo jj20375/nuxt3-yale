@@ -77,11 +77,6 @@
             align-center
             append-to-body
         >
-            <div class="text-right">
-                <button @click="closeDialog">
-                    <el-icon :size="30"><Close /></el-icon>
-                </button>
-            </div>
             <h5 class="text-[20px] text-gray-800 YaleSolisW-Bd mt-[20px] mb-[30px]">{{ currentDialogProduct.name }}-{{ currentDialogProduct.style }}</h5>
             <CustomProductDailogCarousel
                 v-if="!$utils().isEmpty(currentDialogProduct.detailData.carousel)"
