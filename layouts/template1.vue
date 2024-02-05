@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="min-h-screen flex flex-col" :class="customClass">
+        <div class="min-h-screen flex flex-col" ref="layoutRef" :class="customClass">
             <Header />
             <!-- test layout2
         <el-button
@@ -10,7 +10,7 @@
         >
         <el-button type="primary">Primary</el-button> -->
             <slot />
-            <Footer />
+            <Footer v-if="showFooter" />
         </div>
     </div>
 </template>
@@ -44,16 +44,37 @@ const $config = useRuntimeConfig();
 import { onBeforeRouteUpdate, onBeforeRouteLeave } from "vue-router";
 
 const props = defineProps({
-  customClass: {
-    type: String,
-    default: "",
-  },
+    customClass: {
+        type: String,
+        default: "",
+    },
+    showFooter: {
+        type: Boolean,
+        default: true,
+    },
 });
 
 // 判斷是否登入
 const isAuth = computed(() => userStore.isAuth);
 
 const pageLoading = ref(useState("loading"));
+
+const layoutRef = ref(null);
+const calculateFullHeight = () => {
+    let windowsVH = window.innerHeight / 100;
+    if (layoutRef.value) {
+        layoutRef.value.style.setProperty("--vh", windowsVH + "px");
+    }
+};
+
+onMounted(() => {
+    calculateFullHeight();
+    window.addEventListener("resize", calculateFullHeight);
+});
+
+onBeforeUnmount(() => {
+    window.removeEventListener("resize", calculateFullHeight);
+});
 
 // 預先加載初始化資料
 const { data, pending, error, refresh } = await useAsyncData("bootstrap", () => getInitializationData());

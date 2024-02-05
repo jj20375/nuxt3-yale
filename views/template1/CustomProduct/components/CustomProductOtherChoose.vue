@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h3 class="text-[16px] font-medium YaleSolisW-Bd mb-[20px]">{{ title }}</h3>
+        <h3 class="text-[16px] font-medium YaleSolisW-Bd">{{ title }}</h3>
         <el-checkbox-group
             v-model="selectedProducts"
             @change="selectProduct"
@@ -8,15 +8,17 @@
             <div
                 v-for="(product, index) in products"
                 :key="index"
-                class="border-b border-gray-300 py-[16px]"
+                class="border-gray-300 py-[16px]"
+                :class="{ 'border-b': index !== products.length - 1 }"
+                type="button"
             >
-                <div class="flex items-center">
+                <div class="relative flex items-center">
                     <el-checkbox
                         :label="product.id"
                         size="large"
-                    ></el-checkbox>
-                    <h5 class="ml-[10px]">{{ product.title }}</h5>
-                    <div class="flex-1 text-right">
+                        class="flex-1"
+                    >{{ product.title }}</el-checkbox>
+                    <div class="absolute right-0">
                         <button @click.prevent="showDialog = true">
                             <NuxtImg
                                 class="w-[24px]"
@@ -25,14 +27,12 @@
                         </button>
                     </div>
                 </div>
-                <div class="flex ml-[25px] mt-[8px]">
-                    <div class="mr-[12px]">
-                        <NuxtImg
-                            class="w-[80px]"
-                            :src="product.imgSrc"
-                        />
-                    </div>
-                    <div class="text-[14px]">
+                <div class="flex ml-[26px] mt-1 gap-3">
+                    <NuxtImg
+                        class="w-[80px] aspect-square object-cover"
+                        :src="product.imgSrc"
+                    />
+                    <div class="flex flex-col gap-1 text-[14px]">
                         <p class="text-gray-500">{{ product.style }}</p>
                         <p class="text-gray-500">{{ product.name }}</p>
                         <p class="text-gray-800">+NT$ {{ $utils().formatCurrency(product.price) }}</p>
@@ -41,23 +41,27 @@
             </div>
         </el-checkbox-group>
         <el-dialog
+            class="custom-dialog h-[600px]"
             v-model="showDialog"
             :before-close="closeDialog"
-            :show-close="false"
+            close-on-click-modal
+            lock-scroll
+            show-close
+            :width="800"
+            center
+            align-center
+            append-to-body
         >
-            <div class="text-right">
-                <button @click="closeDialog">
-                    <el-icon :size="30"><Close /></el-icon>
-                </button>
-            </div>
-            <h5 class="text-[20px] text-gray-800 YaleSolisW-Bd mb-[38px]">卡片密碼電子鎖-YDM 3109+</h5>
-            <CustomProductDailogCarousel :photos="photos" />
-            <p
-                class="text-[16px] text-gray-800 mt-[28px]"
-                v-html="dialogDetailHtml"
-            ></p>
-            <div class="flex justify-center mt-[40px]">
-                <button class="bg-yellow-600 text-gray-800 rounded-full w-[140px] py-[11px] text-center hover:bg-yellow-700 text-[16px]">加入選擇</button>
+            <div class="w-3/4 mx-auto">
+                <h5 class="text-[20px] text-gray-800 YaleSolisW-Bd mb-[38px]">卡片密碼電子鎖-YDM 3109+</h5>
+                <CustomProductDailogCarousel :photos="photos" />
+                <p
+                    class="text-[16px] text-gray-800 mt-[28px]"
+                    v-html="dialogDetailHtml"
+                ></p>
+                <div class="flex justify-center mt-[40px]">
+                    <button class="bg-yellow-600 text-gray-800 rounded-full w-[140px] py-[11px] text-center hover:bg-yellow-700 text-[16px]">加入選擇</button>
+                </div>
             </div>
         </el-dialog>
     </div>
@@ -89,13 +93,13 @@ const props = withDefaults(defineProps<Props>(), {
     products: [
         {
             imgSrc: "/img/custom-product/demo/custom-product-door-demo-1.jpg",
-            name: "品牌/ASSA ABLOY",
+            title: "品牌/ASSA ABLOY",
             style: "YDM3109A",
             price: 2000,
         },
     ],
     // 標題
-    titl: "款式",
+    title: "款式",
 });
 
 const selectedProducts = ref([]);
@@ -140,28 +144,21 @@ function closeDialog() {
     .el-checkbox-group {
         @apply text-base leading-normal block #{!important};
     }
-    .is-checked {
-        .el-checkbox__inner {
-            @apply bg-yellow-600 border-yellow-600 #{!important};
-        }
-    }
-    .el-checkbox {
-        @apply block #{!important};
-    }
-    .el-checkbox__label {
-        @apply text-gray-800 hidden #{!important};
-    }
     .el-checkbox.el-checkbox--large {
-        @apply h-auto #{!important};
-    }
-}
-
-:deep {
-    .el-dialog__body {
-        @apply mx-10;
-    }
-    .el-dialog {
-        @apply rounded-[20px];
+        .el-checkbox__label {
+            @apply font-normal #{!important};
+        }
+        .el-checkbox__inner {
+            @apply w-[18px] h-[18px] #{!important};
+            &:hover{
+                @apply border-yellow-600;
+            }
+        }
+        .is-checked{
+            .el-checkbox__inner {
+                @apply bg-yellow-600 border-yellow-600 after:h-[9px] after:left-[6px] after:top-[2px] #{!important};
+            }
+        }
     }
 }
 </style>

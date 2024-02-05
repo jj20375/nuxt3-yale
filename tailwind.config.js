@@ -99,6 +99,7 @@ module.exports = {
                 100: "#ececea", // Yale Pale Grey-light
                 200: "#DEDEDC",
                 300: "#D9D9D9",
+                350: "#ABABAC",
                 400: "#808082",
                 500: "#575658",
                 600: "#4E4E51",
@@ -172,6 +173,7 @@ module.exports = {
             formDefault: "inset 0 -1px 0 0px #D9D9D9",
             formFocus: "inset 0 -2px 0 0px #FFCC00",
             header: "0 4px 6px rgba(0,0,0,.07)",
+            footer: "5px -1px 6px 0 rgba(2,43,30,.13)",
             none: "none",
         },
         container: {

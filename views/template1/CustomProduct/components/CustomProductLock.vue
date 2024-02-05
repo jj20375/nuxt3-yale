@@ -1,7 +1,7 @@
 <template>
     <div>
         <h3 class="text-[16px] font-medium YaleSolisW-Bd mb-[20px]">款式</h3>
-        <ul class="flex">
+        <ul class="grid grid-cols-2 gap-[12px]">
             <li
                 @click="
                     lockCategoryData = category.value;
@@ -9,8 +9,8 @@
                 "
                 v-for="(category, index) in lockCategories"
                 :key="index"
-                class="text-[14px] text-gray-800 rounded-[8px] py-[16px] px-[24px] w-[209px] cursor-pointer"
-                :class="[lockCategoryData === category.value ? 'font-medium YaleSolisW-Bd border-2 border-yellow-600' : 'border border-gray-300', index === 0 ? 'mr-[12px]' : '']"
+                class="rounded-[8px] text-[14px] py-[16px] px-[24px] border border-gray-300 cursor-pointer"
+                :class="[lockCategoryData === category.value ? 'outline outline-2 outline-yellow-600 -outline-offset-2 font-medium' : 'border border-gray-300']"
             >
                 {{ category.text }}
             </li>
@@ -26,56 +26,62 @@
                 </button>
             </div>
         </div>
-        <div class="flex mb-[20px] mt-[8px]">
+        <div class="flex mb-[20px]">
             <p class="text-[14px] flex-1 text-gray-800">{{ currentLockData.style }}</p>
 
-            <p class="text-[14px] text-gray-800">$NT {{ $utils().formatCurrency(currentLockData.price) }}</p>
+            <p class="text-[14px] text-gray-800">+NT$ {{ $utils().formatCurrency(currentLockData.price) }}</p>
         </div>
-        <div
-            v-for="(showLock, index) in showLocks"
-            :key="index"
-        >
-            <ul class="flex justify-start">
-                <li
-                    @click="currentLockData = lock"
-                    v-for="(lock, index2) in showLock"
-                    :class="[currentLockData.id === lock.id ? 'border-2 border-yellow-600  rounded-[8px]' : 'border-2 border-white', showLock.length - 1 !== index2 ? 'mr-[16px]' : '']"
-                    class="p-1 cursor-pointer"
-                >
-                    <NuxtImg
-                        class="w-[84px]"
-                        :src="lock.imgSrc"
-                    />
-                </li>
-                <li
-                    v-show="showLock.length < 4"
-                    v-for="(lock, index2) in 4 - showLock.length"
-                    :key="index2"
-                >
-                    <div class="w-[84px] opacity-0">
-                        {{ lock }}
-                    </div>
-                </li>
-            </ul>
+        <div class="flex flex-col gap-[15px]">
+            <div
+                v-for="(showLock, index) in showLocks"
+                :key="index"
+            >
+                <ul class="grid grid-cols-4 gap-x-[15px]">
+                    <li
+                        @click="currentLockData = lock"
+                        v-for="(lock, index2) in showLock"
+                        :class="[currentLockData.id === lock.id ? 'border-2 border-yellow-600  rounded-[8px]' : 'border-2 border-white']"
+                        class="p-1 cursor-pointer"
+                    >
+                        <NuxtImg
+                            class="w-full aspect-square rounded-[4px]"
+                            :src="lock.imgSrc"
+                        />
+                    </li>
+                    <li
+                        v-show="showLock.length < 4"
+                        v-for="(lock, index2) in 4 - showLock.length"
+                        :key="index2"
+                    >
+                        <div class="w-[84px] opacity-0">
+                            {{ lock }}
+                        </div>
+                    </li>
+                </ul>
+            </div>
         </div>
         <el-dialog
+            class="custom-dialog h-[600px]"
             v-model="showDialog"
             :before-close="closeDialog"
-            :show-close="false"
+            close-on-click-modal
+            lock-scroll
+            show-close
+            :width="800"
+            center
+            align-center
+            append-to-body
         >
-            <div class="text-right">
-                <button @click="closeDialog">
-                    <el-icon :size="30"><Close /></el-icon>
-                </button>
-            </div>
-            <h5 class="text-[20px] text-gray-800 YaleSolisW-Bd mb-[38px]">卡片密碼電子鎖-YDM 3109+</h5>
-            <CustomProductDailogCarousel :photos="photos" />
-            <p
-                class="text-[16px] text-gray-800 mt-[28px]"
-                v-html="dialogDetailHtml"
-            ></p>
-            <div class="flex justify-center mt-[40px]">
-                <button class="bg-yellow-600 text-gray-800 rounded-full w-[140px] py-[11px] text-center hover:bg-yellow-700 text-[16px]">加入選擇</button>
+            <div class="w-3/4 mx-auto">
+                <h5 class="text-[20px] text-gray-800 YaleSolisW-Bd mb-[38px]">卡片密碼電子鎖-YDM 3109+</h5>
+                <CustomProductDailogCarousel :photos="photos" />
+                <p
+                    class="text-[16px] text-gray-800 mt-[28px]"
+                    v-html="dialogDetailHtml"
+                ></p>
+                <div class="flex justify-center mt-[40px]">
+                    <button class="yellow-btn btn-md">加入選擇</button>
+                </div>
             </div>
         </el-dialog>
     </div>
@@ -199,14 +205,3 @@ function closeDialog() {
     showDialog.value = false;
 }
 </script>
-
-<style lang="scss" scoped>
-:deep {
-    .el-dialog__body {
-        @apply mx-10;
-    }
-    .el-dialog {
-        @apply rounded-[20px];
-    }
-}
-</style>

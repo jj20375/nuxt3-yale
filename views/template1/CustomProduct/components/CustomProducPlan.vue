@@ -1,15 +1,15 @@
 <template>
     <div>
         <h3 class="text-[16px] font-medium YaleSolisW-Bd mb-[20px]">方案</h3>
-        <ul class="flex">
+        <ul class="grid grid-cols-3 gap-[12px]">
             <li
                 @click="currentPlanData = tab.id"
-                v-for="(tab, index) in tabs.slice(0, 3)"
-                class="rounded-[8px] py-[16px] px-[24px] mr-[12px] cursor-pointer"
-                :class="currentPlanData == tab.id ? 'border-2 border-yellow-600' : 'border border-gray-300'"
+                v-for="(tab, index) in tabs"
+                class="rounded-[8px] py-[16px] px-[24px] border border-gray-300 cursor-pointer"
+                :class="currentPlanData == tab.id ? 'outline outline-2 outline-yellow-600 -outline-offset-2' : ''"
             >
-                <div class="flex items-center">
-                    <div class="text-[14px] YaleSolisW-Bd font-medium">{{ tab.text }}</div>
+                <div class="flex items-center justify-center">
+                    <div class="text-[14px]" :class="currentPlanData == tab.id ? 'YaleSolisW-Bd font-medium' : ''">{{ tab.text }}</div>
                 </div>
             </li>
         </ul>

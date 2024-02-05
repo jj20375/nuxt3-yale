@@ -2,18 +2,18 @@
     <div>
         <h3 class="text-[16px] font-medium YaleSolisW-Bd mb-[20px]">顏色</h3>
         <ul
-            class="flex mt-[20px]"
+            class="flex mt-[20px] gap-[20px]"
             v-for="(rowColor, index) in showColors"
         >
             <li
                 v-for="color in rowColor"
                 :key="color.id"
-                class="mr-[20px] cursor-pointer"
+                class="cursor-pointer group"
                 @click="currentColorIdData = color.id"
             >
                 <div
-                    class="p-2"
-                    :class="currentColorIdData === color.id ? 'border border-yellow-600  rounded-full' : ''"
+                    class="p-2 border-2 border-transparent rounded-full duration-300 transition-all"
+                    :class="currentColorIdData === color.id ? 'border-yellow-600' : 'group-hover:border-gray-100'"
                 >
                     <NuxtImg
                         class="w-[32px]"
@@ -21,8 +21,8 @@
                     />
                 </div>
                 <p
-                    v-if="currentColorIdData === color.id"
-                    class="text-[14px] text-gray-800 px-2 pt-[8px]"
+                    class="text-[14px] text-center text-gray-800 px-2 pt-[8px] opacity-0 group-hover:opacity-100 duration-300 transition-all"
+                    :class="currentColorIdData === color.id ? 'opacity-100': ''"
                 >
                     {{ color.text }}
                 </p>

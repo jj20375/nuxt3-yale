@@ -1,238 +1,250 @@
 <template>
-    <section class="mt-[86px] flex max-h-screen min-h-screen">
-        <!-- <pre>{{ customPreviewData }}</pre> -->
-        <CustomProductPrewView
-            v-model:currentAngle="currentAngle"
-            v-model:previewWidth="previewWidth"
-            v-model:currentBgData="currentBgData"
-            :productData="customPreviewData"
-        />
-        <div class="mx-[55px] min-w-[430px] overflow-y-auto">
-            <CustomProductContent />
-            <div class="border-b border-gray-300 py-[30px]">
-                <div
-                    @click="stepMenuShow['step1'].show = !stepMenuShow['step1'].show"
-                    class="flex items-center mb-[30px] mt-[40px] cursor-pointer"
-                >
-                    <h3 class="flex-1 text-gray-800 text-[20px] font-medium YaleSolisW-Bd">{{ stepMenuShow["step1"].text }}</h3>
-                    <font-awesome-icon
-                        class="transition-all duration-500"
-                        :class="!stepMenuShow['step1'].show ? 'rotate-180' : ''"
-                        :icon="['fas', 'chevron-up']"
+    <section class="relative mt-[86px] overflow-auto z-[10]" style="height: calc(var(--vh, 1vh) * 100 - 80px - 87px);">
+        <div class="custom-wrap">
+            <!-- <pre>{{ customPreviewData }}</pre> -->
+            <CustomProductPrewView
+                v-model:currentAngle="currentAngle"
+                v-model:previewWidth="previewWidth"
+                v-model:currentBgData="currentBgData"
+                :productData="customPreviewData"
+                class="left"
+            />
+            <div class="right">
+                <CustomProductContent />
+                <div class="border-b border-gray-300">
+                    <div
+                        @click="stepMenuShow['step1'].show = !stepMenuShow['step1'].show"
+                        class="flex items-center mb-[30px] mt-[40px] cursor-pointer"
+                        type="button"
+                    >
+                        <h3 class="flex-1 text-gray-800 text-[20px] font-medium YaleSolisW-Bd">{{ stepMenuShow["step1"].text }}</h3>
+                        <font-awesome-icon
+                            class="transition-all duration-300"
+                            :class="!stepMenuShow['step1'].show ? 'rotate-180' : ''"
+                            :icon="['fas', 'chevron-up']"
+                        />
+                    </div>
+                    <div v-show="stepMenuShow['step1'].show">
+                        <CustomProductBackground
+                            v-model:currentBgId="currentBgId"
+                            v-model:currentBgData="currentBgData"
+                        />
+                        <CustomProductPlan
+                            class="mt-[30px] mb-[30px]"
+                            v-model:currentPlan="currentPlan"
+                        />
+                        <CustomProduct
+                            class="mt-[30px] mb-[30px]"
+                            v-model:currentProductId="currentDoorId"
+                            v-model:currentProductData="currentDoorData"
+                            :products="doors"
+                        />
+                        <CustomProductColor
+                            class="mt-[30px] mb-[30px]"
+                            v-model:currentColorId="currentDoorColorId"
+                            v-model:currentColorData="currentDoorColorData"
+                            :colors="doors[0].colors"
+                        />
+                        <CustomProductSize
+                            class="mt-[30px] mb-[30px]"
+                            :sizes="doorSizes"
+                            v-model:currentSizeId="currentDoorSizeId"
+                            v-model:currentSizeData="currentDoorSizeData"
+                        />
+                    </div>
+                </div>
+                <div class="border-b border-gray-300">
+                    <div
+                        @click="stepMenuShow['step2'].show = !stepMenuShow['step2'].show"
+                        class="flex items-center mb-[30px] mt-[30px] cursor-pointer"
+                        type="button"
+                    >
+                        <h3 class="flex-1 text-gray-800 text-[20px] font-medium YaleSolisW-Bd">{{ stepMenuShow["step2"].text }}</h3>
+                        <font-awesome-icon
+                            class="transition-all duration-300"
+                            :class="!stepMenuShow['step2'].show ? 'rotate-180' : ''"
+                            :icon="['fas', 'chevron-up']"
+                        />
+                    </div>
+                    <div v-show="stepMenuShow['step2'].show">
+                        <CustomProduct
+                            class="mt-[30px] mb-[30px]"
+                            v-model:currentProductId="currentDoorOutId"
+                            v-model:currentProductData="currentDoorOutData"
+                            :products="doorsOut"
+                        />
+                        <CustomProductColor
+                            class="mt-[30px] mb-[30px]"
+                            v-model:currentColorId="currentDoorOutColorId"
+                            v-model:currentColorData="currentDoorOutColorData"
+                            :colors="doorsOut[0].colors"
+                        />
+                    </div>
+                </div>
+                <div class="border-b border-gray-300">
+                    <div
+                        @click="stepMenuShow['step3'].show = !stepMenuShow['step3'].show"
+                        class="flex items-center mb-[30px] mt-[30px] cursor-pointer"
+                        type="button"
+                    >
+                        <h3 class="flex-1 text-gray-800 text-[20px] font-medium YaleSolisW-Bd">{{ stepMenuShow["step3"].text }}</h3>
+                        <font-awesome-icon
+                            class="transition-all duration-300"
+                            :class="!stepMenuShow['step3'].show ? 'rotate-180' : ''"
+                            :icon="['fas', 'chevron-up']"
+                        />
+                    </div>
+                    <CustomProductLock
+                        class="mt-[30px] mb-[30px]"
+                        v-show="stepMenuShow['step3'].show"
+                        v-model:lockCategory="lockCategory"
+                        v-model:currentLock="currentLock"
+                        :locks="locks"
                     />
                 </div>
-                <div v-show="stepMenuShow['step1'].show">
-                    <CustomProductBackground
-                        v-model:currentBgId="currentBgId"
-                        v-model:currentBgData="currentBgData"
-                    />
-                    <CustomProductPlan
-                        class="mt-[20px]"
-                        v-model:currentPlan="currentPlan"
-                    />
-                    <CustomProduct
-                        class="mt-[20px]"
-                        v-model:currentProductId="currentDoorId"
-                        v-model:currentProductData="currentDoorData"
-                        :products="doors"
-                    />
-                    <CustomProductColor
-                        class="mt-[20px]"
-                        v-model:currentColorId="currentDoorColorId"
-                        v-model:currentColorData="currentDoorColorData"
-                        :colors="doors[0].colors"
-                    />
-                    <CustomProductSize
-                        class="mt-[20px]"
-                        :sizes="doorSizes"
-                        v-model:currentSizeId="currentDoorSizeId"
-                        v-model:currentSizeData="currentDoorSizeData"
+                <div class="border-b border-gray-300">
+                    <div
+                        @click="stepMenuShow['step4'].show = !stepMenuShow['step4'].show"
+                        class="flex items-center mb-[30px] mt-[30px] cursor-pointer"
+                        type="button"
+                    >
+                        <h3 class="flex-1 text-gray-800 text-[20px] font-medium YaleSolisW-Bd">{{ stepMenuShow["step4"].text }}</h3>
+                        <font-awesome-icon
+                            class="transition-all duration-300"
+                            :class="!stepMenuShow['step4'].show ? 'rotate-180' : ''"
+                            :icon="['fas', 'chevron-up']"
+                        />
+                    </div>
+                    <div v-show="stepMenuShow['step4'].show">
+                        <CustomProduct
+                            class="mt-[30px] mb-[30px]"
+                            title="掛門"
+                            v-model:currentProductId="currentTool1Id"
+                            v-model:currentProductData="currentTool1Data"
+                            :products="doors"
+                        />
+                        <CustomProduct
+                            class="mt-[30px] mb-[16px]"
+                            title="氣密條"
+                            v-model:currentProductId="currentTool2Id"
+                            v-model:currentProductData="currentTool2Data"
+                            :products="doors"
+                        />
+                    </div>
+                </div>
+                <div class="border-b border-gray-300">
+                    <div
+                        @click="stepMenuShow['step5'].show = !stepMenuShow['step5'].show"
+                        class="flex items-center mb-[30px] mt-[30px] cursor-pointer"
+                        type="button"
+                    >
+                        <h3 class="flex-1 text-gray-800 text-[20px] font-medium YaleSolisW-Bd">{{ stepMenuShow["step5"].text }}</h3>
+                        <font-awesome-icon
+                            class="transition-all duration-300"
+                            :class="!stepMenuShow['step5'].show ? 'rotate-180' : ''"
+                            :icon="['fas', 'chevron-up']"
+                        />
+                    </div>
+                    <div v-show="stepMenuShow['step5'].show">
+                        <CustomProductOtherChoose
+                            class="mt-[30px]"
+                            title="下降壓條"
+                            v-model:selectedProductIds="currentOther1Ids"
+                            v-model:selectedProducts="currentOther1Datas"
+                            :products="doors"
+                        />
+                        <CustomProductOtherChoose
+                            class="mt-[20px] mb-[16px]"
+                            title="門弓器"
+                            v-model:selectedProductIds="currentOther2Ids"
+                            v-model:selectedProducts="currentOther2Datas"
+                            :products="doors"
+                        />
+                    </div>
+                </div>
+                <div class="border-b border-gray-300">
+                    <div
+                        @click="stepMenuShow['step6'].show = !stepMenuShow['step6'].show"
+                        class="flex items-center mb-[30px] mt-[30px] cursor-pointer"
+                        type="button"
+                    >
+                        <h3 class="flex-1 text-gray-800 text-[20px] font-medium YaleSolisW-Bd">{{ stepMenuShow["step6"].text }}</h3>
+                        <font-awesome-icon
+                            class="transition-all duration-300"
+                            :class="!stepMenuShow['step6'].show ? 'rotate-180' : ''"
+                            :icon="['fas', 'chevron-up']"
+                        />
+                    </div>
+                    <CustomProductCount
+                        v-show="stepMenuShow['step6'].show"
+                        v-model:count="count"
+                        class="mb-[30px]"
                     />
                 </div>
-            </div>
-            <div class="border-b border-gray-300 pb-[30px]">
-                <div
-                    @click="stepMenuShow['step2'].show = !stepMenuShow['step2'].show"
-                    class="flex items-center mb-[30px] mt-[30px] cursor-pointer"
-                >
-                    <h3 class="flex-1 text-gray-800 text-[20px] font-medium YaleSolisW-Bd">{{ stepMenuShow["step2"].text }}</h3>
-                    <font-awesome-icon
-                        class="transition-all duration-500"
-                        :class="!stepMenuShow['step2'].show ? 'rotate-180' : ''"
-                        :icon="['fas', 'chevron-up']"
-                    />
-                </div>
-                <div v-show="stepMenuShow['step2'].show">
-                    <CustomProduct
-                        class="mt-[20px]"
-                        v-model:currentProductId="currentDoorOutId"
-                        v-model:currentProductData="currentDoorOutData"
-                        :products="doorsOut"
-                    />
-                    <CustomProductColor
-                        class="mt-[20px]"
-                        v-model:currentColorId="currentDoorOutColorId"
-                        v-model:currentColorData="currentDoorOutColorData"
-                        :colors="doorsOut[0].colors"
-                    />
-                </div>
-            </div>
-            <div class="border-b border-gray-300 pb-[30px]">
-                <div
-                    @click="stepMenuShow['step3'].show = !stepMenuShow['step3'].show"
-                    class="flex items-center mb-[30px] mt-[30px] cursor-pointer"
-                >
-                    <h3 class="flex-1 text-gray-800 text-[20px] font-medium YaleSolisW-Bd">{{ stepMenuShow["step3"].text }}</h3>
-                    <font-awesome-icon
-                        class="transition-all duration-500"
-                        :class="!stepMenuShow['step3'].show ? 'rotate-180' : ''"
-                        :icon="['fas', 'chevron-up']"
-                    />
-                </div>
-                <CustomProductLock
-                    v-show="stepMenuShow['step3'].show"
-                    v-model:lockCategory="lockCategory"
-                    v-model:currentLock="currentLock"
-                    :locks="locks"
-                />
-            </div>
-            <div class="border-b border-gray-300 pb-[30px]">
-                <div
-                    @click="stepMenuShow['step4'].show = !stepMenuShow['step4'].show"
-                    class="flex items-center mb-[30px] mt-[30px] cursor-pointer"
-                >
-                    <h3 class="flex-1 text-gray-800 text-[20px] font-medium YaleSolisW-Bd">{{ stepMenuShow["step4"].text }}</h3>
-                    <font-awesome-icon
-                        class="transition-all duration-500"
-                        :class="!stepMenuShow['step4'].show ? 'rotate-180' : ''"
-                        :icon="['fas', 'chevron-up']"
-                    />
-                </div>
-                <div v-show="stepMenuShow['step4'].show">
-                    <CustomProduct
-                        class="mt-[20px]"
-                        title="掛門"
-                        v-model:currentProductId="currentTool1Id"
-                        v-model:currentProductData="currentTool1Data"
-                        :products="doors"
-                    />
-                    <CustomProduct
-                        class="mt-[20px]"
-                        title="氣密條"
-                        v-model:currentProductId="currentTool2Id"
-                        v-model:currentProductData="currentTool2Data"
-                        :products="doors"
-                    />
-                </div>
-            </div>
-            <div class="border-b border-gray-300 pb-[30px]">
-                <div
-                    @click="stepMenuShow['step5'].show = !stepMenuShow['step5'].show"
-                    class="flex items-center mb-[30px] mt-[30px] cursor-pointer"
-                >
-                    <h3 class="flex-1 text-gray-800 text-[20px] font-medium YaleSolisW-Bd">{{ stepMenuShow["step5"].text }}</h3>
-                    <font-awesome-icon
-                        class="transition-all duration-500"
-                        :class="!stepMenuShow['step5'].show ? 'rotate-180' : ''"
-                        :icon="['fas', 'chevron-up']"
-                    />
-                </div>
-                <div v-show="stepMenuShow['step5'].show">
-                    <CustomProductOtherChoose
-                        class="mt-[20px]"
-                        title="下將壓條"
-                        v-model:selectedProductIds="currentOther1Ids"
-                        v-model:selectedProducts="currentOther1Datas"
-                        :products="doors"
-                    />
-                    <CustomProductOtherChoose
-                        class="mt-[20px]"
-                        title="門弓器"
-                        v-model:selectedProductIds="currentOther2Ids"
-                        v-model:selectedProducts="currentOther2Datas"
-                        :products="doors"
-                    />
-                </div>
-            </div>
-            <div class="border-b border-gray-300 pb-[30px]">
-                <div
-                    @click="stepMenuShow['step6'].show = !stepMenuShow['step6'].show"
-                    class="flex items-center mb-[30px] mt-[30px] cursor-pointer"
-                >
-                    <h3 class="flex-1 text-gray-800 text-[20px] font-medium YaleSolisW-Bd">{{ stepMenuShow["step6"].text }}</h3>
-                    <font-awesome-icon
-                        class="transition-all duration-500"
-                        :class="!stepMenuShow['step6'].show ? 'rotate-180' : ''"
-                        :icon="['fas', 'chevron-up']"
-                    />
-                </div>
-                <CustomProductCount
-                    v-show="stepMenuShow['step6'].show"
-                    v-model:count="count"
-                />
-            </div>
-            <div class="border-b border-gray-300 pb-[30px]">
-                <div
-                    @click="stepMenuShow['step7'].show = !stepMenuShow['step7'].show"
-                    class="flex items-center mb-[30px] mt-[30px] cursor-pointer"
-                >
-                    <h3 class="flex-1 text-gray-800 text-[20px] font-medium YaleSolisW-Bd">{{ stepMenuShow["step7"].text }}</h3>
-                    <font-awesome-icon
-                        class="transition-all duration-500"
-                        :class="!stepMenuShow['step7'].show ? 'rotate-180' : ''"
-                        :icon="['fas', 'chevron-up']"
-                    />
-                </div>
+                <div class="border-b border-gray-300">
+                    <div
+                        @click="stepMenuShow['step7'].show = !stepMenuShow['step7'].show"
+                        class="flex items-center mb-[30px] mt-[30px] cursor-pointer"
+                        type="button"
+                    >
+                        <h3 class="flex-1 text-gray-800 text-[20px] font-medium YaleSolisW-Bd">{{ stepMenuShow["step7"].text }}</h3>
+                        <font-awesome-icon
+                            class="transition-all duration-300"
+                            :class="!stepMenuShow['step7'].show ? 'rotate-180' : ''"
+                            :icon="['fas', 'chevron-up']"
+                        />
+                    </div>
 
-                <CustomProductOtherService
-                    v-show="stepMenuShow['step7'].show"
-                    v-model:selectedServiceIds="currentServiceIds"
-                    v-model:selectedServiceDatas="currentServiceDatas"
-                />
-            </div>
-            <div class="my-[30px] flex pb-[300px]">
-                <div class="mr-[16px] flex-1">
+                    <CustomProductOtherService
+                        v-show="stepMenuShow['step7'].show"
+                        v-model:selectedServiceIds="currentServiceIds"
+                        v-model:selectedServiceDatas="currentServiceDatas"
+                        class="mb-[30px]"
+                    />
+                </div>
+                <div class="my-[30px] flex gap-4">
                     <button
                         @click.prevent="openShoppingCarDialog"
-                        class="max-w-[207px] w-full text-center py-[11px] border border-gray-600 transition-all duration-500 hover:text-white hover:bg-black rounded-full"
+                        class="flex-1 transparent-btn"
                     >
                         加入購物車
                     </button>
+                    <button
+                        @click.prevent="goToBill"
+                        class="flex-1 yellow-btn"
+                    >
+                        結帳
+                    </button>
                 </div>
-                <button
-                    @click.prevent="goToBill"
-                    class="max-w-[207px] w-full text-center py-[11px] bg-yellow-500 hover:bg-yellow-600 transition-all duration-500 rounded-full"
-                >
-                    結帳
-                </button>
             </div>
-        </div>
-        <div class="fixed bottom-0 flex items-center justify-end w-full text-right pr-[55px] bg-white z-[500] h-[80px] bg-opacity-80 backdrop-blur-xl">
-            <ul
-                v-if="previewWidth > 0"
-                class="flex justify-center"
-                :style="{ width: previewWidth + 'px' }"
-            >
-                <li
-                    @click="currentAngle = angle.value"
-                    class="rounded-full px-[20px] py-[8px] text-white cursor-pointer"
-                    :class="[currentAngle === angle.value ? 'bg-gray-800' : 'bg-gray-300', index !== viewAngle.length - 1 ? 'mr-[12px]' : '']"
-                    v-for="(angle, index) in viewAngle"
-                    :key="angle.value"
-                >
-                    {{ angle.text }}
-                </li>
-            </ul>
-            <div class="flex items-center justify-end flex-1 text-right">
-                <div class="mr-[16px] flex items-center">
-                    <p class="text-gray-600 text-[14px]">預估金額</p>
-                    <div class="text-[14px] text-gray-800 flex items-center ml-2">
-                        NT$ <strong class="ml-2 font-medium YaleSolisW-Bd text-[24px]">{{ $utils().formatCurrency(total) }}</strong>
-                    </div>
+            <div class="fixed bottom-0 w-full bg-white z-[10] h-[80px] shadow-footer sidebar-wrap">
+                <div class="flex items-center justify-center">
+                    <ul
+                        v-if="previewWidth > 0"
+                        class="h-fit flex gap-[12px] justify-center"
+                    >
+                        <li
+                            @click="currentAngle = angle.value"
+                            class="rounded-full px-[20px] py-[8px] text-white cursor-pointer"
+                            :class="[currentAngle === angle.value ? 'bg-gray-800' : 'bg-gray-350']"
+                            v-for="(angle, index) in viewAngle"
+                            :key="angle.value"
+                        >
+                            {{ angle.text }}
+                        </li>
+                    </ul>
                 </div>
-                <div class="flex text-gray-600">
-                    <p class="text-[14px] mr-[4px]">訂金 (總價30%)</p>
-                    <div class="text-[14px]">NT$ {{ $utils().formatCurrency(deposit) }}</div>
+                <div class="flex gap-4 items-center justify-start">
+                    <div class="flex items-center">
+                        <p class="text-gray-600 text-[14px]">預估金額</p>
+                        <div class="text-[14px] text-gray-800 flex items-center ml-2">
+                            NT$ <strong class="ml-2 font-medium YaleSolisW-Bd text-[24px]">{{ $utils().formatCurrency(total) }}</strong>
+                        </div>
+                    </div>
+                    <div class="flex text-gray-600">
+                        <p class="text-[14px] mr-[4px]">訂金 (總價30%)</p>
+                        <div class="text-[14px]">NT$ {{ $utils().formatCurrency(deposit) }}</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -658,3 +670,26 @@ onBeforeUnmount(() => {
     enableBodyScroll(bodyDom);
 });
 </script>
+
+<style>
+.custom-wrap{
+    @apply relative grid min-h-screen;
+    grid-template: 1fr/4fr minmax(430px, 1fr);
+    grid-gap: 0 55px;
+    padding-inline-end: 55px;
+    .left{
+        @apply sticky top-0 overflow-hidden;
+        max-height: calc(var(--vh, 1vh) * 100 - 80px - 87px);
+    }
+    .right {
+        @apply relative overflow-visible py-12;
+    }
+}
+
+.sidebar-wrap{
+    @apply grid;
+    grid-template: 1fr/4fr minmax(430px, 1fr);
+    grid-gap: 0 55px;
+    padding-inline-end: 55px;
+}
+</style>

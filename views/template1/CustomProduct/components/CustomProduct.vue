@@ -1,24 +1,26 @@
 <template>
-    <div>
-        <h3 class="text-[16px] font-medium YaleSolisW-Bd mb-[20px]">{{ title }}</h3>
+    <div class="custom-form">
+        <h3 class="text-[16px] font-medium YaleSolisW-Bd">{{ title }}</h3>
         <el-radio-group
             v-model="currentProductData"
             @change="setProduct"
-            class="ml-4"
         >
             <div
                 v-for="(product, index) in products"
                 :key="index"
-                class="border-b border-gray-300 py-[16px]"
+                class="border-gray-300 pt-2 pb-4"
+                :class="{ 'border-b': index !== products.length - 1 }"
+                type="button"
             >
-                <div class="flex items-center">
+                <div class="relative flex items-center">
                     <el-radio
                         :label="product.id"
                         size="large"
+                        class="flex-1"
                     >
                         {{ product.title }}
                     </el-radio>
-                    <div class="flex-1 text-right">
+                    <div class="absolute right-0">
                         <button @click.prevent="showDialog = true">
                             <NuxtImg
                                 class="w-[24px]"
@@ -27,14 +29,12 @@
                         </button>
                     </div>
                 </div>
-                <div class="flex ml-[25px] mt-[8px]">
-                    <div class="mr-[12px]">
-                        <NuxtImg
-                            class="w-[80px]"
-                            :src="product.imgSrc"
-                        />
-                    </div>
-                    <div class="text-[14px]">
+                <div class="flex ml-[26px] mt-1 gap-3">
+                    <NuxtImg
+                        class="w-[80px] aspect-square object-cover"
+                        :src="product.imgSrc"
+                    />
+                    <div class="flex flex-col gap-1 text-[14px]">
                         <p class="text-gray-500">{{ product.style }}</p>
                         <p class="text-gray-500">{{ product.name }}</p>
                         <p class="text-gray-800">+NT$ {{ $utils().formatCurrency(product.price) }}</p>
@@ -43,23 +43,27 @@
             </div>
         </el-radio-group>
         <el-dialog
+            class="custom-dialog h-[600px]"
             v-model="showDialog"
             :before-close="closeDialog"
-            :show-close="false"
+            close-on-click-modal
+            lock-scroll
+            show-close
+            :width="800"
+            center
+            align-center
+            append-to-body
         >
-            <div class="text-right">
-                <button @click="closeDialog">
-                    <el-icon :size="30"><Close /></el-icon>
-                </button>
-            </div>
-            <h5 class="text-[20px] text-gray-800 YaleSolisW-Bd mb-[38px]">卡片密碼電子鎖-YDM 3109+</h5>
-            <CustomProductDailogCarousel :photos="photos" />
-            <p
-                class="text-[16px] text-gray-800 mt-[28px]"
-                v-html="dialogDetailHtml"
-            ></p>
-            <div class="flex justify-center mt-[40px]">
-                <button class="bg-yellow-600 text-gray-800 rounded-full w-[140px] py-[11px] text-center hover:bg-yellow-700 text-[16px]">加入選擇</button>
+            <div class="w-3/4 mx-auto">
+                <h5 class="text-[20px] text-gray-800 YaleSolisW-Bd mt-[20px] mb-[30px]">卡片密碼電子鎖-YDM 3109+</h5>
+                <CustomProductDailogCarousel :photos="photos" />
+                <p
+                    class="text-[16px] text-gray-800 mt-[28px]"
+                    v-html="dialogDetailHtml"
+                ></p>
+                <div class="flex justify-center mt-[40px]">
+                    <button class="yellow-btn btn-md">加入選擇</button>
+                </div>
             </div>
         </el-dialog>
     </div>
@@ -100,7 +104,7 @@ const props = withDefaults(defineProps<Props>(), {
         },
     ],
     // 標題
-    titl: "款式",
+    title: "款式",
 });
 
 // 預設選擇產品資料
@@ -163,14 +167,25 @@ onMounted(() => {
 
 :deep .el-radio-group {
     @apply block #{!important};
-}
+    .el-radio.el-radio--large {
+        @apply mr-[8px] #{!important};
 
-:deep .el-radio {
-    @apply mr-[8px] #{!important};
-}
-
-:deep .el-radio__label {
-    // @apply hidden #{!important};
+        .el-radio__label {
+            @apply font-normal leading-none;
+        }
+        .el-radio__inner{
+            @apply w-[18px] h-[18px];
+            &:hover{
+                @apply border-yellow-600;
+            }
+        }
+        &.is-checked{
+            @apply font-normal #{!important};
+            .el-radio__inner {
+                @apply border-yellow-600 bg-yellow-600;
+            }
+        }
+    }
 }
 
 :deep {

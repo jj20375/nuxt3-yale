@@ -428,8 +428,7 @@ onMounted(async () => {
 </script>
 
 <style>
-.product-card {
-    &:hover {
+.product-card:hover {
         .favorite {
             @apply opacity-100 duration-300 transition-all;
         }

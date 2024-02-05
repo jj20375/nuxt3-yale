@@ -1,5 +1,5 @@
 <template>
-    <NuxtLayout name="template1">
+    <NuxtLayout name="template1" :showFooter="false">
         <div v-if="pageLoading">
             <div class="flex items-center justify-center w-full h-screen">
                 <font-awesome-icon

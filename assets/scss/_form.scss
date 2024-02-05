@@ -66,10 +66,11 @@
       // 單選(radio)
       .el-radio{
         .el-radio__label{
-          @apply font-normal;
+          @apply font-normal text-[15px];
         }
         .el-radio__input{
           .el-radio__inner{
+            @apply w-[18px] h-[18px];
             &:hover{
               @apply border-yellow-600;
             }

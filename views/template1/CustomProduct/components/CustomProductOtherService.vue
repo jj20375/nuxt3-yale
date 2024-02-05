@@ -8,6 +8,7 @@
                 v-for="service in services"
                 :key="service.id"
                 :label="service.id"
+                size="large"
             >
                 <div class="flex">
                     <span class="flex-1 min-w-[100px] font-medium YaleSolisW-Bd"> {{ service.name }} </span>
@@ -15,7 +16,7 @@
                 </div>
             </el-checkbox>
         </el-checkbox-group>
-        <div class="text-[12px] text-gray-500 mt-[30px]">
+        <div class="text-[14px] text-gray-500 mt-[30px]">
             <p>【附註說明】</p>
             <ul>
                 <li v-for="text in descriptions">
@@ -78,16 +79,22 @@ function init() {
     .el-checkbox-group {
         @apply text-base leading-normal block #{!important};
     }
-    .is-checked {
-        .el-checkbox__inner {
-            @apply bg-yellow-600 border-yellow-600 #{!important};
+    .el-checkbox.el-checkbox--large {
+        @apply w-full mr-0;
+        .el-checkbox__label {
+            @apply font-normal #{!important};
         }
-    }
-    .el-checkbox {
-        @apply block #{!important};
-    }
-    .el-checkbox__label {
-        @apply text-gray-800 #{!important};
+        .el-checkbox__inner {
+            @apply w-[18px] h-[18px] #{!important};
+            &:hover{
+                @apply border-yellow-600;
+            }
+        }
+        .is-checked{
+            .el-checkbox__inner {
+                @apply bg-yellow-600 border-yellow-600 after:h-[9px] after:left-[6px] after:top-[2px] #{!important};
+            }
+        }
     }
 }
 </style>

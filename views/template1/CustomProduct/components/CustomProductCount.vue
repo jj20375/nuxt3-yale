@@ -1,18 +1,18 @@
 <template>
-    <div class="flex justify-center items-center w-full border border-gray-300 px-[2px] py-[10px] rounded-full">
-        <div
-            class="ml-5 cursor-pointer"
-            @click="countDelete()"
+    <div class="flex justify-center items-stretch w-full border border-gray-300 rounded-full">
+        <button
+            class="w-[60px] flex items-center justify-center cursor-pointer h-auto"
+            @click.prevent="countDelete()"
         >
             <el-icon><Minus /></el-icon>
-        </div>
-        <div class="flex-1 h-[28px] text-center">{{ count }}</div>
-        <div
-            class="mr-5 cursor-pointer"
-            @click="countAdd()"
+        </button>
+        <div class="flex-1 flex items-center justify-center py-3 h-full">{{ count }}</div>
+        <button
+            class="w-[60px] flex items-center justify-center cursor-pointer h-auto"
+            @click.prevent="countAdd()"
         >
             <el-icon><Plus /></el-icon>
-        </div>
+        </button>
     </div>
 </template>
 

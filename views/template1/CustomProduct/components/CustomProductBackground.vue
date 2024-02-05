@@ -1,39 +1,20 @@
 <template>
     <div>
         <h3 class="text-[16px] font-medium YaleSolisW-Bd mb-[20px]">場景</h3>
-        <ul class="flex">
+        <ul class="grid grid-cols-3 gap-[12px]">
             <li
                 @click="currentTabData = tab.id"
-                v-for="(tab, index) in tabs.slice(0, 3)"
-                class="rounded-[8px] py-[16px] px-[24px] mr-[12px] cursor-pointer"
-                :class="currentTabData == tab.id ? 'border-2 border-yellow-600' : 'border border-gray-300'"
+                v-for="(tab, index) in tabs"
+                class="rounded-[8px] py-[16px] px-[24px] border border-gray-300 cursor-pointer"
+                :class="currentTabData == tab.id ? 'outline outline-2 outline-yellow-600 -outline-offset-2' : ''"
             >
-                <div class="flex items-center">
-                    <div class="mr-[12px]">
+                <div class="flex items-center gap-[12px]">
+                    <div class="w-[24px] grow-0 shrink-0 basis-[24px]">
                         <NuxtImg
-                            class="w-[24px]"
                             :src="tab.icon"
                         />
                     </div>
-                    <div class="text-[14px] YaleSolisW-Bd font-medium">{{ tab.text }}</div>
-                </div>
-            </li>
-        </ul>
-        <ul class="flex mt-[12px]">
-            <li
-                @click="currentTabData = tab.id"
-                v-for="(tab, index) in tabs.slice(3, 5)"
-                class="rounded-[8px] py-[16px] px-[24px] mr-[12px] cursor-pointer"
-                :class="currentTabData == tab.id ? 'border-2 border-yellow-600' : 'border border-gray-300'"
-            >
-                <div class="flex items-center">
-                    <div class="mr-[12px]">
-                        <NuxtImg
-                            class="w-[24px]"
-                            :src="tab.icon"
-                        />
-                    </div>
-                    <div class="text-[14px] YaleSolisW-Bd font-medium">{{ tab.text }}</div>
+                    <div class="text-[14px] leading-none" :class="currentTabData == tab.id ? 'YaleSolisW-Bd font-medium' : ''">{{ tab.text }}</div>
                 </div>
             </li>
         </ul>

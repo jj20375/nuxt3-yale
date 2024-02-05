@@ -1,13 +1,13 @@
 <template>
     <div>
         <h3 class="text-[16px] font-medium YaleSolisW-Bd mb-[20px]">尺寸</h3>
-        <ul>
+        <ul class="flex flex-col gap-4">
             <li
                 @click="currentSizeDataId = size.id"
                 v-for="(size, index) in sizes"
                 :key="index"
-                class="py-[16px] px-[24px] text-[14px] rounded-[8px] text-gray-800 mb-[16px] cursor-pointer"
-                :class="currentSizeDataId === size.id ? 'border-2 border-yellow-600 font-medium YaleSolisW-Bd' : 'border-gray-300 border'"
+                class="py-[16px] px-[24px] text-[14px] rounded-[8px] text-gray-800 cursor-pointer border border-gray-300 cursor-pointer"
+                :class="currentSizeDataId === size.id ? 'outline outline-2 outline-yellow-600 -outline-offset-2 font-medium' : ''"
             >
                 <div>門高:{{ size.height }} 門寬:{{ size.width }} 門厚:{{ size.bold }}</div>
             </li>

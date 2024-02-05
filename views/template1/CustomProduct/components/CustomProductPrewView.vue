@@ -1,31 +1,30 @@
 <template>
     <div
-        class="flex-1"
         ref="customProductPreviewRefDom"
     >
         <div
             v-if="currentBgData[currentViewAngleData]"
-            class="relative flex items-center w-full"
+            class="absolute h-full w-full object-cover"
         >
             <NuxtImg
-                class="w-full"
+                class="absolute h-full w-full object-cover"
                 :src="currentBgData[currentViewAngleData]"
             />
-            <div class="absolute z-10 w-full">
+            <div class="absolute z-10 h-full w-full">
                 <NuxtImg
-                    class="w-full"
+                    class="relative h-full w-full object-cover"
                     :src="productData.door[currentViewAngleData]"
                 />
             </div>
-            <div class="absolute w-full">
+            <div class="absolute h-full w-full">
                 <NuxtImg
-                    class="w-full"
+                    class="w-full h-full object-cover"
                     :src="productData.doorOut[currentViewAngleData]"
                 />
             </div>
-            <div class="absolute z-20 w-full">
+            <div class="absolute z-20 h-full w-full">
                 <NuxtImg
-                    class="w-full"
+                    class="w-full h-full object-cover"
                     :src="productData.lock[currentViewAngleData]"
                 />
             </div>
