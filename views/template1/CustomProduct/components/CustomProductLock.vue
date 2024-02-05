@@ -33,7 +33,6 @@
         <div class="flex mb-[20px]">
             <p class="text-[14px] flex-1 text-gray-800">{{ currentLockData.style }}</p>
 
-            <<<<<<< HEAD
             <p class="text-[14px] text-gray-800">+NT$ {{ $utils().formatCurrency(currentLockData.price) }}</p>
             <p class="text-[14px] text-gray-800">+NT${{ $utils().formatCurrency(currentLockData.price) }}</p>
         </div>
@@ -65,39 +64,7 @@
                     </li>
                 </ul>
             </div>
-            =======
             <p class="text-[14px] text-gray-800">NT$ {{ $utils().formatCurrency(currentLockData.price) }}</p>
-        </div>
-        <div
-            v-for="(showLock, index) in showLocks"
-            :key="index"
-        >
-            <ul class="flex justify-start">
-                <li
-                    @click="
-                        currentLockData = lock;
-                        currentLockIdData = lock.id;
-                    "
-                    v-for="(lock, index2) in showLock"
-                    :class="[currentLockData.id === lock.id ? 'border-2 border-yellow-600  rounded-[8px]' : 'border-2 border-white', showLock.length - 1 !== index2 ? 'mr-[16px]' : '']"
-                    class="p-1 cursor-pointer"
-                >
-                    <NuxtImg
-                        class="w-[84px]"
-                        :src="lock.imgSrc"
-                    />
-                </li>
-                <li
-                    v-show="showLock.length < 4"
-                    v-for="(lock, index2) in 4 - showLock.length"
-                    :key="index2"
-                >
-                    <div class="w-[84px] opacity-0">
-                        {{ lock }}
-                    </div>
-                </li>
-            </ul>
-            >>>>>>> develop
         </div>
         <el-dialog
             class="custom-dialog h-[600px]"
