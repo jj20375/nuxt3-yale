@@ -1,5 +1,8 @@
 <template>
-    <section class="relative mt-[86px] overflow-auto z-[10]" style="height: calc(var(--vh, 1vh) * 100 - 80px - 87px);">
+    <section
+        class="relative mt-[86px] overflow-auto z-[10] custom-wrap"
+        style="height: calc(var(--vh, 1vh) * 100 - 80px - 87px)"
+    >
         <!-- <pre>{{ scenes }}</pre> -->
         <!-- <pre>{{ doors }}</pre> -->
         <!-- <pre>{{ doorSizes }}</pre> -->
@@ -126,7 +129,7 @@
                 </div>
                 <div v-show="stepMenuShow['step4'].show">
                     <CustomProduct
-                    class="mt-[30px] mb-[30px]"
+                        class="mt-[30px] mb-[30px]"
                         title="掛門"
                         v-model:currentProductId="currentTool1Id"
                         v-model:currentProductData="currentTool1Data"
@@ -134,7 +137,7 @@
                         :products="tool1Datas"
                     />
                     <CustomProduct
-                    class="mt-[30px] mb-[30px]"
+                        class="mt-[30px] mb-[30px]"
                         title="氣密條"
                         v-model:currentProductId="currentTool2Id"
                         v-model:currentProductData="currentTool2Data"
@@ -158,14 +161,14 @@
                 </div>
                 <div v-show="stepMenuShow['step5'].show">
                     <CustomProductOtherChoose
-                    class="mt-[30px]"
+                        class="mt-[30px]"
                         title="下將壓條"
                         v-model:selectedProductIds="currentOther1Ids"
                         v-model:selectedProducts="currentOther1Datas"
                         :products="other1Datas"
                     />
                     <CustomProductOtherChoose
-                    class="mt-[20px] mb-[16px]"
+                        class="mt-[20px] mb-[16px]"
                         title="門弓器"
                         v-model:selectedProductIds="currentOther2Ids"
                         v-model:selectedProducts="currentOther2Datas"
@@ -218,7 +221,7 @@
                             :icon="['fas', 'chevron-up']"
                         />
                     </div>
-
+                </div>
                 <CustomProductOtherService
                     v-show="stepMenuShow['step7'].show"
                     v-model:selectedServiceIds="currentServiceIds"
@@ -228,20 +231,20 @@
                 />
             </div>
             <div class="my-[30px] flex gap-4">
-                    <button
-                        @click.prevent="openShoppingCarDialog"
-                        class="flex-1 transparent-btn"
-                    >
-                        加入購物車
-                    </button>
-                    <button
-                        @click.prevent="goToBill"
-                        class="flex-1 yellow-btn"
-                    >
-                        結帳
-                    </button>
+                <button
+                    @click.prevent="openShoppingCarDialog"
+                    class="flex-1 transparent-btn"
+                >
+                    加入購物車
+                </button>
+                <button
+                    @click.prevent="goToBill"
+                    class="flex-1 yellow-btn"
+                >
+                    結帳
+                </button>
             </div>
-            <div class="fixed bottom-0 w-full bg-white z-[10] h-[80px] shadow-footer sidebar-wrap">
+            <div class="fixed bottom-0 w-full bg-white z-[100] h-[80px] shadow-footer sidebar-wrap">
                 <div class="flex items-center justify-center">
                     <ul
                         v-if="previewWidth > 0"
@@ -628,13 +631,13 @@ onBeforeUnmount(() => {
 });
 </script>
 
-<style>
-.custom-wrap{
+<style lang="scss" scoped>
+.custom-wrap {
     @apply relative grid min-h-screen;
     grid-template: 1fr/4fr minmax(430px, 1fr);
     grid-gap: 0 55px;
     padding-inline-end: 55px;
-    .left{
+    .left {
         @apply sticky top-0 overflow-hidden;
         max-height: calc(var(--vh, 1vh) * 100 - 80px - 87px);
     }
@@ -643,7 +646,7 @@ onBeforeUnmount(() => {
     }
 }
 
-.sidebar-wrap{
+.sidebar-wrap {
     @apply grid;
     grid-template: 1fr/4fr minmax(430px, 1fr);
     grid-gap: 0 55px;
