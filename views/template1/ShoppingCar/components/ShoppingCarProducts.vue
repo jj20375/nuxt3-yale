@@ -7,24 +7,24 @@
             <div
                 v-for="(product, index) in shoppingCar"
                 :key="index"
-                class="flex items-center border-gray-300 py-[40px]"
+                class="flex border-gray-300 gap-[48px] py-[40px]"
                 :class="shoppingCar.length - 1 === index ? '' : 'border-b'"
             >
-                <div class="flex">
-                    <el-checkbox :label="product.id" />
+                <div class="flex gap-2">
+                    <el-checkbox :key="product.id" :label="product.id" />
                     <NuxtImg
                         class="w-[180px]"
                         :src="product.imgSrc"
                     />
                 </div>
                 <div class="flex-1">
-                    <div class="flex w-full text-gray-800">
+                    <div class="flex gap-4 w-full text-gray-800">
                         <h3 class="YaleSolisW-Bd font-medium text-[18px] flex-1">{{ product.mark + product.name }}-{{ product.id }}</h3>
-                        <p class="font-medium YaleSolisW-Bd">NT$ {{ $utils().formatCurrency(product.price) }}</p>
+                        <p class="font-medium YaleSolisW-Bd text-[18px]">NT$ {{ $utils().formatCurrency(product.price) }}</p>
                     </div>
-                    <div class="flex text-gray-800 mt-[12px]">
+                    <div class="flex gap-4 text-gray-800 mt-[12px]">
                         <p class="w-[90px] text-[14px]">顏色</p>
-                        <p>{{ product.color }}</p>
+                        <p class="text-[14px]">{{ product.color }}</p>
                     </div>
                     <div class="flex justify-end">
                         <div class="flex justify-center items-center w-[150px] border border-gray-300 px-[2px] py-[10px] rounded-full mr-[18px]">
@@ -133,16 +133,25 @@ init();
 
 <style lang="scss" scoped>
 :deep {
-    .el-checkbox-group {
-        @apply text-base leading-normal #{!important};
-    }
-    .is-checked {
-        .el-checkbox__inner {
-            @apply bg-yellow-600 border-yellow-600 #{!important};
-        }
-    }
+  .el-checkbox-group {
+    @apply text-base leading-normal block #{!important};
+  }
+  .el-checkbox {
+    @apply w-[18px] h-[18px];
     .el-checkbox__label {
-        @apply hidden #{!important};
+      @apply hidden #{!important};
     }
+    .el-checkbox__inner {
+      @apply w-[18px] h-[18px] #{!important};
+      &:hover{
+        @apply border-yellow-600;
+      }
+    }
+    .is-checked{
+      .el-checkbox__inner {
+        @apply bg-yellow-600 border-yellow-600 after:h-[9px] after:left-[6px] after:top-[2px] #{!important};
+      }
+    }
+  }
 }
 </style>

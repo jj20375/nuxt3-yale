@@ -14,7 +14,7 @@
                 </div>
                 <div
                     class="mt-[12px]"
-                    :class="currentStep == key ? 'YaleSolisW-Bd font-medium' : 'text-gray-400'"
+                    :class="currentStep == key ? 'YaleSolisW-Bd font-medium' : 'text-gray-400 font-normal'"
                 >
                     {{ item.text }}
                 </div>

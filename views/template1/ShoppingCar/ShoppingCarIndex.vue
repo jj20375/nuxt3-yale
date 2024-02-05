@@ -3,24 +3,22 @@
         <div class="container">
             <ul
                 v-if="currentStep == 0"
-                class="flex justify-center pt-[64px]"
+                class="flex gap-[24px] justify-center pt-[64px]"
             >
                 <li
                     v-for="(tab, key) in tabs"
                     :key="key"
-                    class="relative flex py-[24px] px-[36px] rounded-[8px] cursor-pointer"
-                    :class="[currentTab === key ? 'border-2 border-yellow-600' : 'border border-gray-300 ', key === 'type1' ? 'mr-[24px]' : '']"
+                    class="flex gap-3 rounded-[8px] py-[20px] px-[32px] border border-gray-300 cursor-pointer"
+                    :class="[currentTab === key ? 'outline outline-2 outline-yellow-600 -outline-offset-2' : '']"
                     @click="
                         currentTab = key;
                         router.push({ name: route.name, query: { tab: key } });
                     "
                 >
-                    <div class="mr-[12px]">
-                        <NuxtImg
-                            class="w-[24px]"
-                            :src="tab.imgSrc"
-                        />
-                    </div>
+                    <NuxtImg
+                        class="w-[24px] aspect-square"
+                        :src="tab.imgSrc"
+                    />
                     <div class="text-[16px] text-gray-800 font-medium">{{ tab.text }}</div>
                     <template v-if="tab.quality > 0">
                       <div class="absolute bg-red-500 rounded-2xl text-white text-[12px] px-1 top-1.5 right-2">{{ tab.quality }}</div>
