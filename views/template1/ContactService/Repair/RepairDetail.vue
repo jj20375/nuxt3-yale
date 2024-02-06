@@ -576,10 +576,31 @@ function handlefile(tempPath: any, prop: string) {
 }
 
 // 序號位置彈窗資料
-const serialData = {
+const serialData = ref<any>({
     title: '序號位置範例',
-    content: '<div>範例如圖</div><ol><li>盒子底下</li><li>保固書</li></ol>'
+    content: ''
+})
+
+async function getPageData() {
+    try {
+        const params = { code: "serial_number_position_example_popup" };
+        const { data } = await $api().getPageAPI(params);
+        console.log("getPageData api => ", data.value);
+
+        const pageData = (data.value as any).data.schema;
+        serialData.value.content = pageData.content;
+    } catch (err) {
+        console.log("HomeSampleAPI => ", err);
+    }
 }
+
+onMounted(async () => {
+    nextTick(async () => {
+        if (process.client) {
+            await getPageData();
+        }
+    });
+});
 
 // async function onSubmit() {
 //   formRefDom.value.validate(async (valid: any) => {

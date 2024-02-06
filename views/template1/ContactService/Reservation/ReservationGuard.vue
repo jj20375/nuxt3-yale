@@ -650,10 +650,10 @@ const handleLocker = () => {
 };
 
 // 電子鎖彈窗資料
-const lockerData = {
+const lockerData = ref<any>({
     title: "電子鎖安裝照片範例說明",
-    content: "<div>範例如圖</div><ol><li>門室外(全)</li><li>門室內(全景)</li><li>門鎖正面(長度尺寸)</li><li>門鎖側面(量門厚)</li></ol>"
-}
+    content: ""
+})
 
 // 保險箱安裝照片彈窗
 const dialogCoffer = ref(false);
@@ -663,10 +663,44 @@ const handleCoffer = () => {
 };
 
 // 保險箱彈窗資料
-const cofferData = {
+const cofferData = ref<any>({
     title: "保險箱安裝照片範例說明",
-    content: "<div>範例如圖</div><ol><li>門室外(全)</li><li>門室內(全景)</li><li>門鎖正面(長度尺寸)</li><li>門鎖側面(量門厚)</li></ol>"
+    content: ""
+})
+
+async function getPageData() {
+    try {
+        // 電子鎖
+        const lockParams = { code: "electronic_lock_installation_photo_example_popup" };
+        const { data: lockerApiData } = await $api().getPageAPI(lockParams);
+        console.log("getPageData api => ", lockerApiData.value);
+
+        const lockPageData = (lockerApiData.value as any).data.schema;
+        console.log("pageData => ", lockPageData);
+
+        lockerData.value.content = lockPageData.content;
+
+        // 保險箱
+        const params = { code: "safe_installation_photo_example_popup" };
+        const { data: cofferApiData } = await $api().getPageAPI(params);
+        console.log("getPageData api => ", cofferApiData.value);
+
+        const cofferPageData = (cofferApiData.value as any).data.schema;
+        console.log("pageData => ", cofferPageData);
+
+        cofferData.value.content = cofferPageData.content;
+    } catch (err) {
+        console.log("HomeSampleAPI => ", err);
+    }
 }
+
+onMounted(async () => {
+    nextTick(async () => {
+        if (process.client) {
+            await getPageData();
+        }
+    });
+});
 
 // async function onSubmit() {
 //   formRefDom.value.validate(async (valid: any) => {

@@ -17,6 +17,8 @@
 <script setup lang="ts">
 import Breadcrumb from "~/views/template1/components/Breadcrumb.vue";
 
+const { $api } = useNuxtApp();
+
 const breadcrumbs = ref([
   {
     name: "index",
@@ -29,10 +31,30 @@ const breadcrumbs = ref([
   },
 ]);
 
-const pageData = {
+const pageData = ref<any>({
     title: "指定地區費用加收說明",
-    content: `<img class="w-full" src="/img/reservation/charge-table.jpg"/>`,
+    content: ``,
+})
+
+async function getPageData() {
+    try {
+        const params = { code: "area_surcharge" };
+        const { data } = await $api().getPageAPI(params);
+        console.log("getPageData api => ", data.value);
+
+        const schema = (data.value as any).data.schema;
+        
+        pageData.value.content = schema.content;
+    } catch (err) {
+        console.log("HomeSampleAPI => ", err);
+    }
 }
 
-
+onMounted(async () => {
+    nextTick(async () => {
+        if (process.client) {
+            await getPageData();
+        }
+    });
+});
 </script>

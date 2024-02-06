@@ -12,7 +12,10 @@
             <section class="bg-gray-50">
                 <div class="container py-[80px]">
                     <div class="flex gap-[80px]">
-                        <div class="flex-1">
+                        <div
+                            class="flex-1"
+                            v-if="aboutData.imgUrl"
+                        >
                             <NuxtImg
                                 class="w-full aspect-[16/9] object-cover"
                                 :src="aboutData.imgUrl"
@@ -38,12 +41,13 @@
                         class="!pt-4 !pb-8"
                     >
                         <SwiperSlide
-                            v-for="(item, index) in brandData"
+                            v-for="(item, index) in aboutData.brands"
                             :key="item.index"
                         >
                             <NuxtImg
-                                class="w-full aspect-[1/1] object-contain"
-                                :src="item.imgUrl"
+                                @click="brandLink(item.link)"
+                                class="w-full aspect-[1/1] object-contain cursor-pointer"
+                                :src="item.image"
                             />
                         </SwiperSlide>
                     </Swiper>
@@ -58,6 +62,8 @@ import { Scrollbar } from "swiper/modules";
 import BannerLayout from "~/views/template1/layouts/BannerLayout.vue";
 import Breadcrumb from "~/views/template1/components/Breadcrumb.vue";
 
+const { $api } = useNuxtApp();
+
 const breadcrumbs = ref([
     {
         name: "index",
@@ -70,64 +76,57 @@ const breadcrumbs = ref([
     },
 ]);
 
-// 關於我們資料
-const aboutData = {
-    title: "關於我們",
-    imgUrl: "img/about/about-1.jpg",
-    content: "我們是耶魯產品零售通路代理商，專職在百貨、電商及 Yale Smart Shop銷售耶魯電子鎖及保險箱。<br/><br/>現為滿足市場對門扇的需求，我們創建3D網站，提供客戶門扇「安全」、「便利」、「隔音」、「氣密」、「風格設計」一站式購足服務。使用者可以自由設計風格、材質、顏色、場景及選擇配件來製作屬於自己喜愛的門扇。"
-}
-
 // 銷售品牌資料
 const brandData = [
     {
         imgUrl: "img/about/about-logo-1.jpg",
-        url: ""
+        url: "",
     },
     {
         imgUrl: "img/about/about-logo-2.jpg",
-        url: ""
+        url: "",
     },
     {
         imgUrl: "img/about/about-logo-3.jpg",
-        url: ""
+        url: "",
     },
     {
         imgUrl: "img/about/about-logo-4.jpg",
-        url: ""
+        url: "",
     },
     {
         imgUrl: "img/about/about-logo-5.jpg",
-        url: ""
+        url: "",
     },
     {
         imgUrl: "img/about/about-logo-6.jpg",
-        url: ""
+        url: "",
     },
     {
         imgUrl: "img/about/about-logo-1.jpg",
-        url: ""
+        url: "",
     },
     {
         imgUrl: "img/about/about-logo-2.jpg",
-        url: ""
+        url: "",
     },
     {
         imgUrl: "img/about/about-logo-3.jpg",
-        url: ""
+        url: "",
     },
     {
         imgUrl: "img/about/about-logo-4.jpg",
-        url: ""
+        url: "",
     },
     {
         imgUrl: "img/about/about-logo-5.jpg",
-        url: ""
+        url: "",
     },
     {
         imgUrl: "img/about/about-logo-6.jpg",
-        url: ""
+        url: "",
     },
-]
+];
 
 // swiper slider 模組
 const modules = [Scrollbar];
@@ -139,6 +138,45 @@ function onSwiper(swiper: any) {
     mainSwiper.value = swiper;
 }
 
+function brandLink(link: any) {
+    if (link) {
+        window.location.href = link;
+    }
+}
+
+/**
+ * 取得頁面資料
+ */
+const aboutData = ref<any>({
+    title: "",
+    imgUrl: "",
+    content: "",
+    brands: [],
+});
+
+async function getPageData() {
+    try {
+        const params = { code: "about_us" };
+        const { data } = await $api().getPageAPI(params);
+        console.log("getPageData api => ", data.value);
+
+        const pageData = (data.value as any).data.schema;
+        aboutData.value.title = pageData.title;
+        aboutData.value.imgUrl = pageData.image;
+        aboutData.value.content = pageData.content;
+        aboutData.value.brands = pageData.brands;
+    } catch (err) {
+        console.log("HomeSampleAPI => ", err);
+    }
+}
+
+onMounted(async () => {
+    nextTick(async () => {
+        if (process.client) {
+            await getPageData();
+        }
+    });
+});
 </script>
 
 <style lang="scss" scoped>

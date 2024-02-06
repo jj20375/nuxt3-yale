@@ -9,19 +9,10 @@
         <template #content>
             <div class="max-w-[800px] mx-auto mt-[80px]">
                 <!--   編輯區內容   -->
-                <div class="edit-section">
-                    <NuxtImg
-                        class="w-full"
-                        src="/img/repair/repair-process.jpg"
-                    />
-                    <h3 class="mt-[36px] font-medium text-[18px] YaleSolisW-Bd mb-[12px]">服務保證範圍</h3>
-                    <p>
-                        特殊保固期限 於營業場所使用者則依原保固期限減半。 <br />
-                        非保固範圍 下列情形非屬保固範圍，檢修需酌收服務費，若需零件更換，則依循本公司服務零件檢修價目表收費。<br /><br />
-                        若超過保固期限或是保固期限內需維修，請聯絡客戶服務中心 0800-888-259 或E-mail 至客服信箱service.tw@electrolux.com ，將安排到府收送。建議您留下產品包裝外箱以利裝箱運送。<br /><br />
-                        保固起算日期將採以下任一方式認定： 1. 有效保證卡之留存聯（加蓋經銷店章及註明購買日期） 2. 購買憑證（發票、收據等）正本或影本 若無以上資料者，則依照產品主機上之機號(製造號碼，第一碼為製造年份，第二與第三碼為製造週別)往後推算三個月做為保固起算日期
-                    </p>
-                </div>
+                <div
+                    v-html="content"
+                    class="edit-section"
+                ></div>
                 <div class="mt-[40px] flex gap-[24px] justify-center text-[20px] font-medium YaleSolisW-Bd">
                     <div class="flex-1 flex flex-col items-center gap-[20px] py-[40px] bg-gray-50 rounded-[20px]">
                         <div class="flex items-center gap-3">
@@ -58,6 +49,7 @@ import BannerLayout from "~/views/template1/layouts/BannerLayout.vue";
 import Breadcrumb from "~/views/template1/components/Breadcrumb.vue";
 
 const route = useRoute();
+const { $api } = useNuxtApp();
 
 const breadcrumbs = ref([
     {
@@ -76,4 +68,22 @@ const breadcrumbs = ref([
         query: { id: route.query.id },
     },
 ]);
+
+const content = ref<any>(null);
+
+async function getPageData() {
+    try {
+        const params = { code: "maintenance_and_warranty" };
+        const { data } = await $api().getPageAPI(params);
+        console.log("getPageData api => ", data.value);
+
+        const pageData = (data.value as any).data.schema;
+
+        content.value = pageData.content;
+    } catch (err) {
+        console.log("HomeSampleAPI => ", err);
+    }
+}
+
+getPageData();
 </script>

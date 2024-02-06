@@ -10,17 +10,17 @@
             @slideChange="onSlideChange"
         >
             <SwiperSlide
-                v-for="item in 10"
-                :key="item"
+                v-for="(item, index) in carousel"
+                :key="index"
             >
                 <div
                     class="flex items-center h-screen bg-center bg-cover"
-                    style="background-image: url('/img/banner/banner1.jpg')"
+                    :style="{ 'background-image': `url(${item.desktop_image})` }"
                 >
                     <article class="container">
                         <div class="w-full lg:w-1/2">
-                            <div class="text-[48px] YaleSolisW-Bd font-medium">Yale Link 智能鎖{{ item }}<br />家居保護，安心無憂</div>
-                            <div class="text-[16px] mt-[20px]">我們不僅讓家保持安全，更讓人們感到安全。</div>
+                            <div class="text-[48px] YaleSolisW-Bd font-medium">{{ item.title }}</div>
+                            <div class="text-[16px] mt-[20px]">{{ item.subtitle }}</div>
                             <div class="mt-[40px]">
                                 <button class="animation-btn btn-lg">了解更多</button>
                             </div>
@@ -39,6 +39,18 @@
 <script setup lang="ts">
 // import required modules
 import { Navigation } from "swiper/modules";
+
+interface Props {
+    carousel: {
+        title: string;
+        subtitle: string;
+        desktop_image: string;
+    }[];
+}
+
+const props = withDefaults(defineProps<Props>(), {
+    carousel: [],
+});
 
 function onSwiper(swiper: any) {
     console.log("swiper => ", swiper);

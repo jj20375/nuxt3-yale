@@ -7,10 +7,13 @@
         <main class="container relative flex items-center justify-between gap-6 item xl:gap-10">
             <article>
                 <h3 class="text-white text-[56px] xl:text-[66px] font-medium YaleSolisW-Bd leading-[66px]">CUSTOMIZED</h3>
-                <h5 class="text-zinc-800 text-[40px] mt-[14px] font-medium font-['Yale Solis'] leading-[50px] tracking-wide">訂製您的專屬門扇</h5>
-                <p class="w-[329px] mt-[20px] text-zinc-800 text-base font-normal font-['Yale Solis'] leading-relaxed tracking-tight">最新智慧電子鎖，從卡片密碼鎖到最先進的指紋鎖，一應俱全。</p>
+                <h5 class="text-zinc-800 text-[40px] mt-[14px] font-medium font-['Yale Solis'] leading-[50px] tracking-wide">{{ custom_door.title }}</h5>
+                <p class="w-[329px] mt-[20px] text-zinc-800 text-base font-normal font-['Yale Solis'] leading-relaxed tracking-tight">{{ custom_door.subtitle }}</p>
                 <div class="mt-[40px]">
-                    <button class="gap-2 yellow-btn btn-lg flex items-center justify-center">
+                    <button
+                        @click="customLink(custom_door.link)"
+                        class="gap-2 yellow-btn btn-lg flex items-center justify-center"
+                    >
                         <img
                             class="w-[30px]"
                             src="/img/home/custom/button-icon.svg"
@@ -83,6 +86,18 @@
 </template>
 
 <script setup lang="ts">
+interface Props {
+    custom_door: {
+        title: string;
+        subtitle: string;
+        link: string;
+    };
+}
+
+const props = withDefaults(defineProps<Props>(), {
+    custom_door: {},
+});
+
 const isHover = ref({
     lock: false,
     doorOut: false,
@@ -157,6 +172,12 @@ function mouseleaveEvent(key: string) {
 function handleClick(key: string) {
     if (isHover[key] === false) {
         isHover[key] = !isHover[key];
+    }
+}
+
+function customLink(link: any) {
+    if (link) {
+        window.location.href = link;
     }
 }
 </script>

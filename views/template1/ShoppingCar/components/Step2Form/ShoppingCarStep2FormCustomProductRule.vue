@@ -8,15 +8,15 @@
         :before-close="closeDialog"
         style="border-radius: 24px"
         appen-to-body
+        center
     >
-        <div class="text-right">
-            <button @click="closeDialog">
-                <el-icon :size="30"><Close /></el-icon>
-            </button>
-        </div>
+        <template #header="{ close, titleId, titleClass }">
+            <div class="my-header">
+                <h3 :id="titleId" class="text-center text-[24px] YaleSolisW-Bd text-gray-800 font-medium">定型化契約</h3>
+            </div>
+        </template>
         <div class="flex justify-center px-10">
             <div>
-                <h3 class="text-center mb-[30px] text-[24px] YaleSolisW-Bd text-gray-800 font-medium">定型化契約</h3>
                 <div
                     class="max-w-[500px]"
                     v-html="customRuleData"

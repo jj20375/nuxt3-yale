@@ -1,9 +1,15 @@
 export default defineComponent({
-    props: {},
+    props: {
+        videoUrl: {
+            type: String,
+            required: true,
+            default: "/video/homeVideo.mp4"
+        }
+    },
     emits: [],
     setup(props, {emit}) {
         return () => (
-            <video class="w-full" src="/video/homeVideo.mp4" preload="auto" autoplay muted loop></video>
+            <video class="w-full" src={props.videoUrl} preload="auto" autoplay muted loop></video>
         )
     }
 })

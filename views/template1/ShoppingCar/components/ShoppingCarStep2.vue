@@ -4,7 +4,7 @@
         <ShoppingCarStep2FormContactUser v-model:form="formContactUser" />
         <ShoppingCarStep2FormLogistics v-if="currentTab === 'type1'" v-model:form="formLogistics" />
         <ShoppingCarStep2FormPayment v-model:form="formPayment" />
-        <ShoppingCarStep2FormMeasureTheSize v-model:form="formPayment" />
+        <!-- <ShoppingCarStep2FormMeasureTheSize v-model:form="formPayment" /> -->
         <ShoppingCarStep2FormInvoice v-model:form="formInvoice" />
         <ShoppingCarStep2FormGift
             :gifts="gifts"
@@ -76,6 +76,7 @@ import ShoppingCarStep2FormCustomProductRule from "~/views/template1/ShoppingCar
 // 預約丈量時間
 import ShoppingCarStep2FormMeasureTheSize from "~/views/template1/ShoppingCar/components/Step2Form/ShoppingCarStep2FormMeasureTheSize.vue";
 
+const { $api } = useNuxtApp();
 const props = defineProps({
     currentTab: {
         type: String,
@@ -87,12 +88,7 @@ const props = defineProps({
 const showDialogByCustomRule = ref(false);
 
 // 定型化契約資料
-const customRuleData = ref(`
-    <div class="text-gray-800">
-        <h5 class="text-[16px] YaleSolisW-Bd font-medium">訂購條款</h5>
-        <p class="text-[15px]">基於服務消費者之精神，本公司茲就Yale購物會員資料保護事宜，特提供使用保護聲明如下。凡欲申請加入Yale會員者，均應事先充分閱讀且瞭解本聲明書之內容，並在認同此一內容精神與同意遵守相關規定下申請加入成為Yale會員。本公司因應經營之需要得於任何時候可隨時修改本條款之 內容，將不再另行通知修改後的條款，會以公告之方式通知會員。若您於條款修改公告後仍繼續使用Yale網站，即表示您同意修改後的條款並遵守。</p>
-    </div>
-`);
+const customRuleData = ref<any>(``);
 
 // 訂單主表單
 const formMain = ref({
@@ -213,6 +209,27 @@ const gifts = ref([
 const selectGiftIds = ref<number | string[]>([]);
 
 const rules = ref([]);
+
+async function getPageData() {
+    try {
+        const params = { code: "standardized_contract_popup" };
+        const { data } = await $api().getPageAPI(params);
+        console.log("getPageData api => ", data.value);
+
+        const pageData = (data.value as any).data.schema;
+        customRuleData.value = pageData.content;
+    } catch (err) {
+        console.log("HomeSampleAPI => ", err);
+    }
+}
+
+onMounted(async () => {
+    nextTick(async () => {
+        if (process.client) {
+            await getPageData();
+        }
+    });
+});
 </script>
 
 <style lang="scss" scoped>
