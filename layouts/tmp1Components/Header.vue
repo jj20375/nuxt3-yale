@@ -193,7 +193,7 @@ const menus = ref<any>({
         title: "訂製您的專屬門扇",
         url: {
             name: "custom-product-slug",
-            params: { slug: "耶魯訂製門扇" },
+            params: { slug: "訂製門扇" },
         },
         submenus: [],
     },
@@ -218,7 +218,7 @@ const menus = ref<any>({
         title: "產品資訊",
         url: {
             name: "product-slug",
-            params: { slug: "耶魯產品資訊-電子鎖-主鎖" },
+            params: { slug: "產品資訊-電子鎖-主鎖" },
             query: { category: "id1", tag: "id1" },
         },
         marginSize: "gap-x-[40px] gap-y-[20px]",
@@ -238,7 +238,7 @@ const menus = ref<any>({
         title: "裝修實績",
         url: {
             name: "sample-slug",
-            params: { slug: "耶魯裝修實績" },
+            params: { slug: "裝修實績" },
             query: { id: "1" },
         },
         marginSize: "gap-x-[40px] gap-y-[20px]",
@@ -255,7 +255,7 @@ const menus = ref<any>({
                 imgSrc: "/img/menu/service/menu-service-icon-1.svg",
                 url: {
                     name: "faq-slug",
-                    params: { slug: "耶魯服務中心" },
+                    params: { slug: "服務中心" },
                     query: { id: "1" },
                 },
             },
@@ -265,7 +265,7 @@ const menus = ref<any>({
                 imgSrc: "/img/menu/service/menu-service-icon-2.svg",
                 url: {
                     name: "repair-slug",
-                    params: { slug: "耶魯維修與保固" },
+                    params: { slug: "維修與保固" },
                     query: { id: "1" },
                 },
             },
@@ -275,7 +275,7 @@ const menus = ref<any>({
                 imgSrc: "/img/menu/service/menu-service-icon-3.svg",
                 url: {
                     name: "file-download-slug",
-                    params: { slug: "耶魯檔案下載" },
+                    params: { slug: "檔案下載" },
                     query: { id: "1" },
                 },
             },
@@ -285,7 +285,7 @@ const menus = ref<any>({
                 imgSrc: "/img/menu/service/menu-service-icon-4.svg",
                 url: {
                     name: "reservation-slug",
-                    params: { slug: "耶魯預約安裝" },
+                    params: { slug: "預約安裝" },
                     query: { id: "1" },
                 },
             },
@@ -295,7 +295,7 @@ const menus = ref<any>({
                 imgSrc: "/img/menu/service/menu-service-icon-5.svg",
                 url: {
                     name: "contact-slug",
-                    params: { slug: "耶魯聯絡我們" },
+                    params: { slug: "聯絡我們" },
                     query: { id: "1" },
                 },
             },
@@ -338,7 +338,7 @@ const rightIcons = computed(() => {
             url: {
                 name: "shopping-car-slug",
                 params: {
-                    slug: "耶魯電子鎖購物車",
+                    slug: "電子鎖購物車",
                 },
                 query: {
                     tab: "type1",

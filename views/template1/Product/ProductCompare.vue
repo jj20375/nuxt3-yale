@@ -6,22 +6,16 @@
         <div class="bg-gray-50">
             <div class="flex justify-center">
                 <div class="container text-center">
-                    <h1 class="text-[32px] YaleSolisW-Bd mt-[58px]">主鎖比較</h1>
+                    <h1 class="text-[32px] YaleSolisW-Bd mt-[58px]">{{ route.params.slug }}</h1>
                     <p class="text-[16px] mt-[13px]">請選擇產品進行規格比較</p>
                     <div class="mt-[20px]">
                         <button
-                            @click.prevent="router.push({ name: 'product-compare-difference-slug', params: { slug: '耶魯電子鎖-主鎖規格比較' }, query: { compareId: route.query.compareId } })"
+                            @click.prevent="goToDifference()"
                             :disabled="selectProducts.length === 0"
                             class="py-[11px] px-[31px] disabled:bg-gray-100 disabled:border-gray-300 disabled:text-gray-400 disabled:cursor-not-allowed bg-yellow-600 rounded-full text-gray-800 text-[16px]"
                         >
-                            <span
-                                v-if="selectProducts.length === 1"
-                                >查看規格</span
-                            >
-                            <span
-                                v-else-if="selectProducts.length > 1"
-                                >規格比較</span
-                            >
+                            <span v-if="selectProducts.length === 1">查看規格</span>
+                            <span v-else-if="selectProducts.length > 1">規格比較</span>
                             <span v-else>選擇一個產品</span>
                         </button>
                     </div>
@@ -50,44 +44,19 @@
 <script setup lang="ts">
 // 麵包屑組件
 import Breadcrumb from "~/views/template1/components/Breadcrumb.vue";
-import { ProductCompareList } from "~/interface/product.d";
+import { ProductCompareList, ProductListAPIInterface } from "~/interface/product.d";
 import { useProductCompareStore } from "~/store/productCompareStore";
 
-const { $api } = useNuxtApp();
+const { $api, $utils } = useNuxtApp();
 const route = useRoute();
+const router = useRouter();
 const productCompareStore = useProductCompareStore();
 
-const router = useRouter();
-
-const breadcrumbs = ref([
-    {
-        name: "index",
-        text: "首頁",
-    },
-    {
-        name: "product-slug",
-        text: "產品資訊",
-        params: { slug: "耶魯產品資訊" },
-    },
-    {
-        name: "product-slug",
-        text: "電子鎖",
-        params: { slug: "耶魯產品資訊-電子鎖" },
-        query: { category: "id1" },
-    },
-    {
-        name: "product-slug",
-        text: "主鎖",
-        params: { slug: "耶魯產品資訊-電子鎖-主鎖" },
-        query: { category: "id1", tag: "id1" },
-    },
-    {
-        name: "product-compare-slug",
-        text: "主鎖比較",
-        params: { slug: "耶魯產品資訊-主鎖比較" },
-        query: { category: "id1", tag: "id1" },
-    },
-]);
+const breadcrumbs = ref([]);
+// 取得 storage 麵包屑參數值
+if (process.client) {
+    breadcrumbs.value = JSON.parse($utils().getBreadcrumbsData());
+}
 
 // 選中產品
 const selectProducts = ref<string | number[]>([]);
@@ -100,7 +69,7 @@ const cnaSelected = ref(false);
  * @param { type String or Number(字串或數字) } val 選中地區值
  */
 function selectProduct(val: { id: string | number; model: any; name: any; shape: any; price: any; market_price: any; main_image: any; attributes: any }) {
-    productCompareStore.compareStoreReset()
+    productCompareStore.compareStoreReset();
     if (selectProducts.value.includes(val.id)) {
         // 將可選擇狀態改為 true
         cnaSelected.value = true;
@@ -124,7 +93,7 @@ function selectProduct(val: { id: string | number; model: any; name: any; shape:
         selectProducts.value.push(val.id);
     }
     selectProducts.value.forEach((item: string | number, index: number) => {
-        productCompareStore.compareStore[index] = datas.value.find((data) => data.id === item)
+        productCompareStore.compareStore[index] = datas.value.find((data) => data.id === item);
     });
 }
 
@@ -136,7 +105,7 @@ const datas = ref<ProductCompareList[]>([]);
  */
 async function getList(params: { product_type_id: string }) {
     try {
-        productCompareStore.compareStoreReset()
+        productCompareStore.compareStoreReset();
         const { data } = await $api().ProductLisAPI<ProductListAPIInterface>(params);
         datas.value = [];
 
@@ -159,6 +128,21 @@ async function getList(params: { product_type_id: string }) {
     } catch (err) {
         console.log("HomeSampleAPI => ", err);
     }
+}
+
+/**
+ * 跳轉規格比較
+ */
+function goToDifference() {
+    const setBreadcrumbs = [...breadcrumbs.value.slice(0, 4)];
+    setBreadcrumbs.push({
+        name: "product-compare-slug",
+        text: `${breadcrumbs.value[3].text}規格比較`,
+        params: { slug: `${breadcrumbs.value[3].text}規格比較` },
+        query: { compareId: route.query.compareId },
+    });
+    $utils().saveBreadcrumbsData(JSON.stringify(setBreadcrumbs));
+    router.push({ name: "product-compare-difference-slug", params: { slug: `${breadcrumbs.value[breadcrumbs.value.length - 1].text}規格比較` }, query: { compareId: route.query.compareId } });
 }
 
 /**

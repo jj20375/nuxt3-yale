@@ -21,7 +21,7 @@
                     />
                     <div class="text-[16px] text-gray-800 font-medium">{{ tab.text }}</div>
                     <template v-if="tab.quality > 0">
-                      <div class="absolute bg-red-500 rounded-2xl text-white text-[12px] px-1 top-1.5 right-2">{{ tab.quality }}</div>
+                        <div class="absolute bg-red-500 rounded-2xl text-white text-[12px] px-1 top-1.5 right-2">{{ tab.quality }}</div>
                     </template>
                 </li>
             </ul>
@@ -108,7 +108,7 @@
                     "
                     class="bg-yellow-600 text-gray-800 text-center py-[17px] w-[339px] rounded-full text-[16px]"
                 >
-                    前往付訂
+                    前往付款
                 </button>
             </div>
         </div>
@@ -174,7 +174,7 @@ const salePrice = computed(() => 1000);
 watch(
     () => currentStep.value,
     (val) => {
-        window.scrollTo({top: 0, left: 0});
+        window.scrollTo({ top: 0, left: 0 });
         switch (val) {
             case 0:
                 console.log("step0 val =>", val);
