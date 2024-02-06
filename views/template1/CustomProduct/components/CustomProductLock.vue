@@ -49,7 +49,7 @@
                         class="p-1 cursor-pointer"
                     >
                         <NuxtImg
-                            class="w-full aspect-square rounded-[4px]"
+                            class="w-full aspect-square object-contain rounded-[4px]"
                             :src="lock.imgSrc"
                         />
                     </li>
