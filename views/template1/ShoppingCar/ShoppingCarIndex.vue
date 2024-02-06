@@ -57,7 +57,7 @@
                                         currentStep = 1;
                                         showComponent = ShoppingCarStep2;
                                     "
-                                    class="bg-yellow-600 w-[339px] py-[17px] rounded-full text-gray-800 text-[16px] text-center"
+                                    class="yellow-btn w-full"
                                 >
                                     下一步
                                 </button>

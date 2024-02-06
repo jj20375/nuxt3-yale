@@ -1,19 +1,18 @@
 <template>
-    <div class="mt-[88px]">
-        <h5 class="bg-gray-50 py-[8px] pl-[16px] w-full mb-[30px]">發票</h5>
-        <el-form>
-            <div
-                v-for="(column, key) in columns"
-                :key="key"
-            >
-                <div class="grid grid-cols-2 gap-[30px]">
+    <div class="mt-[60px]">
+        <h5 class="bg-gray-50 py-[8px] pl-[16px] w-full font-medium mb-[30px]">發票</h5>
+        <el-form class="custom-form">
+            <div class="grid grid-cols-2 gap-6">
+                <template
+                    v-for="(column, key) in columns"
+                    :key="key"
+                >
                     <el-form-item
                         :prop="key"
                         v-if="column.label !== null"
                     >
                         <label class="block w-full text-gray-800 text-[15px]"
-                            >{{ column.label
-                            }}<span
+                            >{{ column.label }}<span
                                 v-if="column.required"
                                 class="ml-1 text-red-500"
                                 >*</span
@@ -46,7 +45,8 @@
                             </el-select>
                         </div>
                     </el-form-item>
-                </div>
+                    <div></div>
+                </template>
             </div>
         </el-form>
     </div>
@@ -138,17 +138,3 @@ watch(formData.value, (val) => {
     emit("update:form", val);
 });
 </script>
-
-<style lang="scss" scoped>
-:deep .el-input__wrapper {
-    @apply shadow-none border-b border-gray-200 mx-0 rounded-none #{!important};
-}
-:deep .el-select {
-    .el-input__wrapper {
-        @apply mx-0;
-    }
-}
-:deep .el-textarea__inner {
-    @apply rounded-none;
-}
-</style>

@@ -1,10 +1,9 @@
 <template>
-    <div class="mt-[88px]">
-        <h5 class="bg-gray-50 py-[8px] pl-[16px] w-full mb-[30px]">付款方式</h5>
-        <el-form>
+    <div class="mt-[60px]">
+        <h5 class="bg-gray-50 py-[8px] pl-[16px] font-medium w-full mb-[20px]">付款方式</h5>
+        <el-form class="custom-form">
             <el-radio-group
                 v-model="formData.paymentType"
-                class="ml-4"
             >
                 <el-radio
                     v-for="(option, index) in options"
@@ -18,9 +17,9 @@
                 prop="store"
                 v-if="form.paymentType === 'type2'"
             >
-                <div class="grid grid-cols-2 gap-[30px] w-full">
+                <div class="grid grid-cols-2 gap-[30px] w-full mt-4">
                     <div>
-                        <label class="block w-full text-gray-800 text-[15px]">選擇門市/百貨櫃位<span class="text-red-500">*</span></label>
+                        <label class="block w-full text-gray-800 text-[15px]">選擇門市/百貨櫃位<span class="ml-1 text-red-500">*</span></label>
                         <el-select
                             class="w-full"
                             v-model="form.store"
@@ -86,22 +85,26 @@ watch(formData.value, (val) => {
     }
 }
 
-:deep {
-    .el-radio {
-        @apply block;
-    }
-}
+:deep .el-radio-group {
+    @apply flex flex-col items-start #{!important};
+    .el-radio.el-radio--large {
+        @apply mr-[8px] #{!important};
 
-:deep .el-radio__input.is-checked .el-radio__inner {
-    @apply bg-yellow-600 border-yellow-600 #{!important};
-}
-
-:deep .el-input__wrapper {
-    @apply shadow-none border-b border-gray-200 mx-0 rounded-none #{!important};
-}
-:deep .el-select {
-    .el-input__wrapper {
-        @apply mx-0;
+        .el-radio__label {
+            @apply font-normal leading-none;
+        }
+        .el-radio__inner {
+            @apply w-[18px] h-[18px];
+            &:hover {
+                @apply border-yellow-600;
+            }
+        }
+        &.is-checked {
+            @apply font-normal #{!important};
+            .el-radio__inner {
+                @apply border-yellow-600 bg-yellow-600;
+            }
+        }
     }
 }
 </style>

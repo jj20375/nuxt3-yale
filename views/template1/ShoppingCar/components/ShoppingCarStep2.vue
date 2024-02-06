@@ -2,7 +2,7 @@
     <div class="mr-[40px] flex-1">
         <ShoppingCarStep2FormUser v-model:form="formMain" />
         <ShoppingCarStep2FormContactUser v-model:form="formContactUser" />
-        <ShoppingCarStep2FormLogistics v-model:form="formLogistics" />
+        <ShoppingCarStep2FormLogistics v-if="currentTab === 'type1'" v-model:form="formLogistics" />
         <ShoppingCarStep2FormPayment v-model:form="formPayment" />
         <ShoppingCarStep2FormMeasureTheSize v-model:form="formPayment" />
         <ShoppingCarStep2FormInvoice v-model:form="formInvoice" />

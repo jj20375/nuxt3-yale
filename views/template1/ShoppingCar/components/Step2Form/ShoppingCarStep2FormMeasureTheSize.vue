@@ -1,7 +1,7 @@
 <template>
-    <div class="mt-[88px]">
-        <h5 class="bg-gray-50 py-[8px] pl-[16px] w-full mb-[30px]">預約丈量時間</h5>
-        <el-form>
+    <div class="mt-[60px]">
+        <h5 class="bg-gray-50 py-[8px] pl-[16px] w-full font-medium mb-[30px]">預約丈量時間</h5>
+        <el-form class="custom-form">
             <el-form-item prop="measureSizeTime">
                 <div class="grid grid-cols-2 gap-[30px] w-full">
                     <div>
@@ -48,30 +48,3 @@ watch(formData.value, (val) => {
     emit("update:form", val);
 });
 </script>
-
-<style lang="scss" scoped>
-:deep {
-    .el-radio-group {
-        @apply block;
-    }
-}
-
-:deep {
-    .el-radio {
-        @apply block;
-    }
-}
-
-:deep .el-radio__input.is-checked .el-radio__inner {
-    @apply bg-yellow-600 border-yellow-600 #{!important};
-}
-
-:deep .el-input__wrapper {
-    @apply shadow-none border-b border-gray-200 mx-0 rounded-none #{!important};
-}
-:deep .el-select {
-    .el-input__wrapper {
-        @apply mx-0;
-    }
-}
-</style>
