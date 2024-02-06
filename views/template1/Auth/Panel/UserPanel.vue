@@ -87,7 +87,7 @@ const panelDatas = ref([
         title: "變更密碼",
         url: {
             name: "auth-password-slug",
-            params: { slug: "slug" },
+            params: { slug: "變更密碼" },
         },
         imgSrc: "img/icons/auth/password.svg",
     },
@@ -95,7 +95,7 @@ const panelDatas = ref([
         title: "常用聯繫人",
         url: {
             name: "auth-contact-slug",
-            params: { slug: "slug" },
+            params: { slug: "常用聯繫人" },
         },
         imgSrc: "img/icons/auth/home.svg",
     },

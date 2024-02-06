@@ -6,9 +6,7 @@
             </div>
         </nav>
         <div class="container">
-            <div
-                class="w-[620px] mt-[60px] py-[60px] px-[60px] bg-white mx-auto rounded-[24px] border-[1px] border-gray-200">
-
+            <div class="w-[620px] mt-[60px] py-[60px] px-[60px] bg-white mx-auto rounded-[24px] border-[1px] border-gray-200">
                 <el-form
                     class="custom-form"
                     ref="formRefDom"
@@ -16,7 +14,7 @@
                     :rules="rules"
                     require-asterisk-position="right"
                 >
-                    <div class="flex justify-between items-end mb-8">
+                    <div class="flex items-end justify-between mb-8">
                         <h3 class="font-medium text-[28px] text-center">新增聯繫人</h3>
                         <el-form-item>
                             <el-switch
@@ -31,9 +29,18 @@
                             :key="index"
                         >
                             <div v-if="item?.type !== 'inline'">
-                                <el-form-item :prop="item.prop" :label="item.label">
-                                    <el-input v-if="item.style === 'input'" :type="item?.type" :show-password="item.showPassword" :disabled="item.disabled"
-                                              :placeholder="item.placeholder" v-model="form[item.prop]"></el-input>
+                                <el-form-item
+                                    :prop="item.prop"
+                                    :label="item.label"
+                                >
+                                    <el-input
+                                        v-if="item.style === 'input'"
+                                        :type="item?.type"
+                                        :show-password="item.showPassword"
+                                        :disabled="item.disabled"
+                                        :placeholder="item.placeholder"
+                                        v-model="form[item.prop]"
+                                    ></el-input>
                                     <el-select
                                         v-if="item.style === 'select'"
                                         class="w-full"
@@ -60,9 +67,18 @@
                                     :key="index2"
                                     :class="item.datas.length - 1 === index2 ? '' : 'mr-[30px]'"
                                 >
-                                    <el-form-item :prop="item2.prop" :label="item2.label">
-                                        <el-input v-if="item2.style === 'input'" :type="item2?.type" :show-password="item2.showPassword" :disabled="item2.disabled"
-                                                  :placeholder="item2.placeholder" v-model="form[item2.prop]"></el-input>
+                                    <el-form-item
+                                        :prop="item2.prop"
+                                        :label="item2.label"
+                                    >
+                                        <el-input
+                                            v-if="item2.style === 'input'"
+                                            :type="item2?.type"
+                                            :show-password="item2.showPassword"
+                                            :disabled="item2.disabled"
+                                            :placeholder="item2.placeholder"
+                                            v-model="form[item2.prop]"
+                                        ></el-input>
                                         <el-select
                                             v-if="item2.style === 'select'"
                                             class="w-full"
@@ -81,15 +97,9 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="flex mt-4 gap-4 justify-center">
-                            <NuxtLink
-                                :to="{ name: 'auth-contact-slug', params: { slug: '常用聯繫人' }}"
-                            >
-                                <button
-                                    class="transparent-btn btn-md"
-                                >
-                                    返回
-                                </button>
+                        <div class="flex justify-center gap-4 mt-4">
+                            <NuxtLink :to="{ name: 'auth-contact-slug', params: { slug: '常用聯繫人' } }">
+                                <button class="transparent-btn btn-md">返回</button>
                             </NuxtLink>
                             <button
                                 @click.prevent="onSubmit"
@@ -129,23 +139,23 @@ async function getCity() {
 const breadcrumbs = ref([
     {
         name: "index",
-        text: "首頁"
+        text: "首頁",
     },
     {
         name: "auth-panel-slug",
         text: "會員中心",
-        params: { slug: "會員中心" }
+        params: { slug: "會員中心" },
     },
     {
         name: "auth-contact-slug",
-        text: "常用聯絡人",
-        params: { slug: "常用聯絡人" }
+        text: "常用聯繫人",
+        params: { slug: "常用聯繫人" },
     },
     {
         name: "auth-contact-edit-slug",
-        text: "編輯聯絡人",
-        params: { slug: "編輯聯絡人" }
-    }
+        text: "新增聯繫人",
+        params: { slug: "新增聯繫人" },
+    },
 ]);
 
 const formRefDom = ref<any>();
@@ -157,7 +167,7 @@ const form = ref<any>({
     city: "",
     location: "",
     zip3: "",
-    address: ""
+    address: "",
 });
 
 const formDatas = ref<any>([
@@ -165,13 +175,13 @@ const formDatas = ref<any>([
         prop: "contactName",
         label: "聯繫人",
         placeholder: "",
-        style: "input"
+        style: "input",
     },
     {
         prop: "phone",
         label: "聯絡電話",
         placeholder: "",
-        style: "input"
+        style: "input",
     },
     {
         prop: "address",
@@ -190,15 +200,15 @@ const formDatas = ref<any>([
 
                     const cityDataFilter = initializationStore.cityAreaData.find((item: { name: any }) => item.name === e.city);
                     console.log("cityDataFilter.district", cityDataFilter);
-                    const addressProps = formDatas.value.find((item: { prop: string; }) => item.prop === 'address')
-                    addressProps.datas.find((item: { prop: string }) => item.prop === 'location').options = cityDataFilter.district.map((item: { name: any; zip3: any }) => {
+                    const addressProps = formDatas.value.find((item: { prop: string }) => item.prop === "address");
+                    addressProps.datas.find((item: { prop: string }) => item.prop === "location").options = cityDataFilter.district.map((item: { name: any; zip3: any }) => {
                         return {
                             label: item.name,
                             value: item.name,
                             zip3: item.zip3,
                         };
                     });
-                }
+                },
             },
             {
                 prop: "location",
@@ -208,8 +218,8 @@ const formDatas = ref<any>([
                 style: "select",
                 function: (e: any) => {
                     console.log(e);
-                    const addressProps = formDatas.value.find((item: { prop: string; }) => item.prop === 'address')
-                    e.zip3 = addressProps.datas.find((item: { prop: string }) => item.prop === 'location').options.find((item: { value: any }) => item.value === e.location).zip3;
+                    const addressProps = formDatas.value.find((item: { prop: string }) => item.prop === "address");
+                    e.zip3 = addressProps.datas.find((item: { prop: string }) => item.prop === "location").options.find((item: { value: any }) => item.value === e.location).zip3;
                 },
             },
             {
@@ -217,15 +227,15 @@ const formDatas = ref<any>([
                 label: "郵遞區號",
                 placeholder: "",
                 style: "input",
-                disabled: true
-            }
-        ]
+                disabled: true,
+            },
+        ],
     },
     {
         prop: "address",
         label: "詳細地址",
         placeholder: "",
-        style: "input"
+        style: "input",
     },
 ]);
 
@@ -235,7 +245,7 @@ const rules = ref<any>({
             required: true,
             message: "請輸入聯繫人姓名",
             trigger: ["change", "blur"],
-        }
+        },
     ],
     phone: [
         {
@@ -255,21 +265,21 @@ const rules = ref<any>({
             required: true,
             message: "請選擇縣市",
             trigger: ["change", "blur"],
-        }
+        },
     ],
     location: [
         {
             required: true,
             message: "請選擇稱地區",
             trigger: ["change", "blur"],
-        }
+        },
     ],
     address: [
         {
             required: true,
             message: "請輸入地址",
             trigger: ["change", "blur"],
-        }
+        },
     ],
 });
 
@@ -296,13 +306,12 @@ async function onSubmit() {
                     address: form.value.address,
                 };
                 const { data, status, error } = await $api().ADDChangeProfileAPI(params);
-                if (status.value === 'success') {
+                if (status.value === "success") {
                     ElMessage({
                         type: "success",
                         message: `新增成功`,
                     });
                     router.push({ name: "auth-contact-slug", params: { slug: "常用聯繫人" } });
-
                 } else {
                     ElMessage({
                         type: "error",

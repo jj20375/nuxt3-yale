@@ -48,12 +48,6 @@ const breadcrumbs = ref([
         params: { slug: "耶魯服務中心" },
         query: { id: "id1" },
     },
-    {
-        name: "faq-slug",
-        text: "電子鎖",
-        params: { slug: "耶魯服務中心-電子鎖" },
-        query: { id: "id1" },
-    },
 ]);
 
 const sidebar = ref<any>([]);
@@ -79,6 +73,15 @@ async function getType() {
                     name: "faq-slug",
                 },
             });
+        });
+        // 取得最後面的 麵包屑路徑
+        const lastBreadcrumbs = rows.find((item: any) => item.id == route.query.id);
+
+        breadcrumbs.value.push({
+            name: "faq-slug",
+            text: lastBreadcrumbs.name,
+            params: { slug: lastBreadcrumbs.name },
+            query: { id: lastBreadcrumbs.id },
         });
     } catch (err) {
         console.log("HomeSampleAPI => ", err);

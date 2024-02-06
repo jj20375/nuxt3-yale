@@ -21,22 +21,26 @@
                             </div>
                             <div class="whitespace-nowrap">
                                 <div class="flex items-center gap-6">
-                                    <NuxtLink :to="{ name: 'product-compare-slug', params: { slug: '主鎖比較' }, query: { compareId: detailData.product_type_id, productId: detailData.product_id } }">
+                                    <NuxtLink @click="goToCompare(detailData)">
                                         <div class="underline cursor-pointer underline-offset-2 hover:no-underline">規格比較</div>
                                     </NuxtLink>
                                     <div
                                         class="relative favorite w-[30px] h-[30px] text-gray-300 cursor-pointer z-50 duration-300 transition-all"
                                         @click="handleFavorite"
                                     >
-                                        <div v-show="detailData.is_favorite"
-                                                  @click="handleDetailFavorite">
+                                        <div
+                                            v-show="detailData.is_favorite"
+                                            @click="handleDetailFavorite"
+                                        >
                                             <NuxtImg
                                                 class="absolute w-[30px] h-[30px] left-0 top-0 z-20"
                                                 src="/img/icons/favorite-fill.svg"
                                             />
                                         </div>
-                                        <div v-show="!detailData.is_favorite"
-                                                   @click="handleDetailFavorite">
+                                        <div
+                                            v-show="!detailData.is_favorite"
+                                            @click="handleDetailFavorite"
+                                        >
                                             <NuxtImg
                                                 class="absolute w-[30px] h-[30px] left-0 top-0 z-20"
                                                 src="/img/icons/favorite-hollow.svg"
@@ -208,6 +212,7 @@ import { ElMessage } from "element-plus";
 
 const { $api, $utils, $shoppingCarService } = useNuxtApp();
 const route = useRoute();
+const router = useRouter();
 
 const breadcrumbs = ref([]);
 // 取得 storage 麵包屑參數值
@@ -325,12 +330,14 @@ async function getData() {
             });
         });
 
-        breadcrumbs.value.push({
-            name: route.name,
-            text: rows.model,
-            params: { slug: `${rows.model}-${rows.name}` },
-            query: { id: route.query.id },
-        });
+        if (!breadcrumbs.value.map((item: any) => item.text).includes(rows.model)) {
+            breadcrumbs.value.push({
+                name: route.name,
+                text: rows.model,
+                params: { slug: `${rows.model}-${rows.name}` },
+                query: { id: route.query.id },
+            });
+        }
 
         if (rows.is_single_variation === 0) {
             productOptions.value = [];
@@ -434,6 +441,24 @@ async function handleFavorite(id: any) {
         });
     }
 }
+
+/**
+ * 前往規格比較
+ */
+function goToCompare(data: any) {
+    console.log("detail data =>", data);
+    const setBreadcrumbs = [...breadcrumbs.value.slice(0, 4)];
+    setBreadcrumbs.push({
+        name: "product-compare-slug",
+        text: `${breadcrumbs.value[3].text}比較`,
+        params: { slug: `${breadcrumbs.value[3].text}比較` },
+        query: { compareId: data.product_type_id, productId: data.product_id },
+    });
+
+    $utils().saveBreadcrumbsData(JSON.stringify(setBreadcrumbs));
+    router.push({ name: "product-compare-slug", params: { slug: `${data.name}比較` }, query: { compareId: data.product_type_id, productId: data.product_id } });
+}
+
 /**
  * 初始化
  */

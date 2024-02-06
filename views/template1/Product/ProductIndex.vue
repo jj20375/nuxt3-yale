@@ -44,7 +44,7 @@
             <div class="flex justify-end mb-[24px] gap-[30px]">
                 <NuxtLink
                     v-if="productTypeDetail.is_compare === 1"
-                    :to="{ name: 'product-compare-slug', params: { slug: '主鎖比較' }, query: { compareId: productTypeDetail.compare_id } }"
+                    @click="goToCompare(productTypeDetail)"
                 >
                     <button class="transparent-btn btn-xs">規格比較</button>
                 </NuxtLink>
@@ -107,9 +107,10 @@ import { ProductListAPIInterface, ProductList } from "~/interface/product.d";
 
 import { ElMessage } from "element-plus";
 
-const { $api } = useNuxtApp();
+const { $api, $utils } = useNuxtApp();
 
 const route = useRoute();
+const router = useRouter();
 
 const loading = ref(false);
 const loadingWaitPagination = ref(true);
@@ -187,7 +188,6 @@ async function getType() {
     try {
         const { data } = await $api().ProductTypeAPI();
         sidebar.value = [];
-        console.log("home sampleType api => ", data.value);
 
         const rows = (data.value as any).data;
 
@@ -343,25 +343,42 @@ async function getList(params: { per_page: number; page: number }) {
     }
 }
 
-async function handleFavorite (id: any) {
+async function handleFavorite(id: any) {
     const params = { productId: id };
     const { data } = await $api().ProductFavoriteAPI(params);
     const message = (data.value as any).message;
-    const is_favorite = datas.value.find(item => item.id === id).is_favorite
-    const handleMessge = is_favorite ? '取消收藏' : '加入收藏'
+    const is_favorite = datas.value.find((item) => item.id === id).is_favorite;
+    const handleMessge = is_favorite ? "取消收藏" : "加入收藏";
 
-    if (message === '請求成功') {
+    if (message === "請求成功") {
         ElMessage({
             type: "success",
             message: handleMessge,
         });
-        datas.value.find(item => item.id === id).is_favorite = !is_favorite
+        datas.value.find((item) => item.id === id).is_favorite = !is_favorite;
     } else {
         ElMessage({
             type: "error",
-            message: handleMessge + '失敗',
+            message: handleMessge + "失敗",
         });
     }
+}
+
+/**
+ * 前往規格比較
+ */
+function goToCompare(data: any) {
+    const setBreadcrumbs = [
+        ...breadcrumbs.value,
+        {
+            name: "product-compare-slug",
+            text: `${data.name}比較`,
+            params: { slug: `${data.name}比較` },
+            query: { compareId: data.compare_id },
+        },
+    ];
+    $utils().saveBreadcrumbsData(JSON.stringify(setBreadcrumbs));
+    router.push({ name: "product-compare-slug", params: { slug: `${data.name}比較` }, query: { compareId: data.compare_id } });
 }
 
 /**

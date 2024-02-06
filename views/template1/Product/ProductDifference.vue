@@ -5,7 +5,7 @@
         </nav>
         <div class="text-center bg-gray-50">
             <div class="container min-h-[200px] flex items-center">
-                <h1 class="text-[32px] YaleSolisW-Bd flex-1">主鎖比較</h1>
+                <h1 class="text-[32px] YaleSolisW-Bd flex-1">{{ route.params.slug }}</h1>
                 <div class="flex items-center">
                     <div class="mr-[20px]">
                         <NuxtLink :to="{ name: 'product-compare-slug', params: { slug: '耶魯產品資訊-主鎖-主鎖比較' }, query: { compareId: route.query.compareId } }">
@@ -46,7 +46,7 @@ import ProductDifferenceContent from "~/views/template1/Product/components/Produ
 import { useProductCompareStore } from "~/store/productCompareStore";
 import type { ProductListAPIInterface, ProductCompareList, ProductInterface } from "~/interface/product";
 
-const { $api } = useNuxtApp();
+const { $api, $utils } = useNuxtApp();
 const route = useRoute();
 const productCompareStore = useProductCompareStore();
 
@@ -54,41 +54,11 @@ const compareStore = computed(() => {
     return JSON.stringify(productCompareStore.compareStore);
 });
 
-const breadcrumbs = ref([
-    {
-        name: "index",
-        text: "首頁",
-    },
-    {
-        name: "product-slug",
-        text: "產品資訊",
-        params: { slug: "耶魯產品資訊" },
-    },
-    {
-        name: "product-slug",
-        text: "電子鎖",
-        params: { slug: "耶魯產品資訊-電子鎖" },
-        query: { category: "id1" },
-    },
-    {
-        name: "product-slug",
-        text: "主鎖",
-        params: { slug: "耶魯產品資訊-電子鎖-主鎖" },
-        query: { category: "id1", tag: "id1" },
-    },
-    {
-        name: "product-compare-slug",
-        text: "主鎖比較",
-        params: { slug: "耶魯產品資訊-主鎖比較" },
-        query: { category: "id1", tag: "id1" },
-    },
-    {
-        name: "product-compare-difference-slug",
-        text: "主鎖規格比較",
-        params: { slug: "耶魯產品資訊-主鎖比較-主鎖規格比較" },
-        query: { category: "id1", tag: "id1" },
-    },
-]);
+const breadcrumbs = ref([]);
+// 取得 storage 麵包屑參數值
+if (process.client) {
+    breadcrumbs.value = JSON.parse($utils().getBreadcrumbsData());
+}
 
 const products = ref<any>([]);
 
