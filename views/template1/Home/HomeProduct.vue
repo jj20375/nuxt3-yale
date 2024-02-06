@@ -19,7 +19,7 @@
                             v-for="item in datas"
                             :key="item"
                         >
-                            <ProductCard :product="item" />
+                            <ProductCard :product="item" @handleFavorite="handleFavorite" />
                         </SwiperSlide>
                     </Swiper>
                 </div>
@@ -40,6 +40,7 @@ import ProductCard from "@/views/template1/components/ProductCard.vue";
  * ProductCarInterface: 產品卡片樣式參數
  */
 import { ProductListAPIInterface, ProductList, ProductCarInterface } from "~/interface/product.d";
+import { ElMessage } from "element-plus";
 
 const { $api } = useNuxtApp();
 
@@ -56,14 +57,17 @@ const datas = ref<ProductList[]>([]);
 /**
  * 取得商品列表
  */
-async function getList(params: { per_page: number; page: number }) {
+async function getList() {
     try {
-        const { data } = await $api().ProductListPaginateAPI<ProductListAPIInterface>(params);
-        datas.value = [];
-        console.log("home sample api => ", data.value);
+        const params = {};
+        params["search_fields"] = "tags:json_contains";
+        params["tags"] = "featured";
 
-        const rows = (data.value as any).data.rows;
-        const meta = (data.value as any).data.meta;
+        const { data } = await $api().ProductLisAPI<ProductListAPIInterface>(params);
+        datas.value = [];
+        console.log("ProductLisAPI api => ", data.value);
+
+        const rows = (data.value as any).data;
 
         rows.forEach((item: ProductCarInterface) => {
             datas.value.push({
@@ -74,6 +78,8 @@ async function getList(params: { per_page: number; page: number }) {
                 price: item.price,
                 market_price: item.market_price,
                 main_image: item.main_image,
+                is_favorite: item.is_favorite,
+                tags: item.tags,
             });
         });
     } catch (err) {
@@ -81,7 +87,28 @@ async function getList(params: { per_page: number; page: number }) {
     }
 }
 
-await getList({ per_page: 10, page: 1 });
+async function handleFavorite(id: any) {
+    const params = { productId: id };
+    const { data } = await $api().ProductFavoriteAPI(params);
+    const message = (data.value as any).message;
+    const is_favorite = datas.value.find((item) => item.id === id).is_favorite;
+    const handleMessge = is_favorite ? "取消收藏" : "加入收藏";
+
+    if (message === "請求成功") {
+        ElMessage({
+            type: "success",
+            message: handleMessge,
+        });
+        datas.value.find((item) => item.id === id).is_favorite = !is_favorite;
+    } else {
+        ElMessage({
+            type: "error",
+            message: handleMessge + "失敗",
+        });
+    }
+}
+
+await getList();
 </script>
 
 <style lang="scss" scoped>

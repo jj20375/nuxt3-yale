@@ -75,6 +75,7 @@ async function getList() {
                 market_price: item.market_price,
                 main_image: item.main_image,
                 is_favorite: item.is_favorite,
+                tags: item.tags
             });
         });
     } catch (err) {

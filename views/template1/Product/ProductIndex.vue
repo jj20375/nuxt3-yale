@@ -103,7 +103,7 @@ import ProductCard from "~/views/template1/components/ProductCard.vue";
  * ProductListAPIInterface: 產品分頁 api 回應值
  * ProductList: 產品分頁列表內容
  */
-import { ProductListAPIInterface, ProductList } from "~/interface/product.d";
+import { ProductListAPIInterface, ProductList, ProductCarInterface } from "~/interface/product.d";
 
 import { ElMessage } from "element-plus";
 
@@ -318,7 +318,7 @@ async function getList(params: { per_page: number; page: number }) {
         const rows = (data.value as any).data.rows;
         const meta = (data.value as any).data.meta;
 
-        rows.forEach((item: { id: any; model: any; name: any; shape: any; price: any; market_price: any; main_image: any; other_images: any; is_favorite: any }) => {
+        rows.forEach((item: ProductCarInterface) => {
             datas.value.push({
                 id: item.id,
                 model: item.model,
@@ -328,6 +328,7 @@ async function getList(params: { per_page: number; page: number }) {
                 market_price: item.market_price,
                 is_favorite: item.is_favorite,
                 main_image: item.main_image,
+                tags: item.tags,
             });
         });
 

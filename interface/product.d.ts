@@ -117,4 +117,5 @@ export interface ProductCarInterface {
     main_image: string;
     other_images: string[];
     is_favorite: boolean
+    tags: string[];
 }
