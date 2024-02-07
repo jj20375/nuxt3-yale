@@ -35,7 +35,6 @@
                         />
                     </div>
                     <div v-show="stepMenuShow['step1'].show">
-                        {{ doorLimit }}
                         <CustomProductBackground
                             v-model:currentBgId="currentBgId"
                             v-model:currentBgData="currentBgData"
