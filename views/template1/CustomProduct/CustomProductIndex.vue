@@ -377,31 +377,31 @@ const currentDoorSizeId = ref("");
 // 預設選擇尺寸資料
 const currentDoorSizeData = ref<any>({});
 // 預設選擇門框 id
-const currentDoorOutId = ref("id1");
+const currentDoorOutId = ref("");
 // 預設選擇門框資料
 const currentDoorOutData = ref<any>({});
 // 預設選擇門框顏色 id
-const currentDoorOutColorId = ref("id1");
+const currentDoorOutColorId = ref("");
 // 預設選擇門框顏色資料
 const currentDoorOutColorData = ref<any>({});
 // 選擇基本五金 掛門 id值
-const currentTool1Id = ref("id1");
+const currentTool1Id = ref("");
 // 選擇基本五金 掛門資料
 const currentTool1Data = ref<any>({});
 // 選擇基本五金 氣密條 id值
-const currentTool2Id = ref("id1");
+const currentTool2Id = ref("");
 // 選擇基本五金 氣密條資料
 const currentTool2Data = ref<any>({});
 // 選擇選配區 下將壓條 ids
-const currentOther1Ids = ref(["id1"]);
+const currentOther1Ids = ref([""]);
 // 選擇選配區 下將壓條資料
 const currentOther1Datas = ref<any>([]);
 // 選擇選配區 門弓器 ids
-const currentOther2Ids = ref(["id1"]);
+const currentOther2Ids = ref([""]);
 // 選擇選配區 門弓器資料
 const currentOther2Datas = ref<any>([]);
 // 選擇得服務 ids
-const currentServiceIds = ref([]);
+const currentServiceIds = ref<any>([]);
 // 選擇得服務資料
 const currentServiceDatas = ref<any>([]);
 // 預設選擇鎖種類 default = 水平把手; smartLock = 智慧電子鎖
@@ -546,7 +546,47 @@ function addToShoppingCar() {
 }
 
 // 總價
-const total = computed(() => 650000);
+const total = computed(() => {
+    let doorPrice = 0;
+    if (!$utils().isEmpty(currentDoorColorId.value) && !$utils().isEmpty(currentDoorSizeId.value)) {
+        doorPrice = currentDoorData.value.price[`option-${currentDoorColorId.value}-${currentDoorSizeId.value}`];
+    }
+    let doorOutPrice = 0;
+
+    if (!$utils().isEmpty(currentDoorOutColorId.value)) {
+        doorOutPrice = currentDoorOutData.value.price[`option-${currentDoorOutColorId.value}`];
+    }
+    const lockPrice = currentLock.value.price;
+    const tool1Price = currentTool1Data.value.price;
+    const tool2Price = currentTool2Data.value.price;
+
+    let other1Price = 0;
+    if (currentOther1Ids.value.length > 0) {
+        other1Price = _SumBy(other1Datas.value, (item: any) => {
+            if (currentOther1Ids.value.includes(item.id)) {
+                return item.price;
+            }
+        });
+    }
+    let other2Price = 0;
+    if (currentOther2Ids.value.length > 0) {
+        other2Price = _SumBy(other2Datas.value, (item: any) => {
+            if (currentOther2Ids.value.includes(item.id)) {
+                return item.price;
+            }
+        });
+    }
+    let servicePrice = 0;
+    if (currentServiceIds.value.length > 0) {
+        servicePrice = _SumBy(serviceDatas.value, (item: any) => {
+            if (currentServiceIds.value.includes(item.id)) {
+                return item.price;
+            }
+        });
+    }
+
+    return doorPrice + doorOutPrice + lockPrice + tool1Price + tool2Price + other1Price + other2Price + servicePrice;
+});
 // 訂金
 const deposit = computed(() => total.value * 0.3);
 
@@ -572,16 +612,21 @@ async function init(id: number) {
     if (doors.value && doors.value[0]) {
         lockCategory.value = "handle";
         currentDoorId.value = doors.value[0].id;
+        currentDoorData.value = doors.value[0];
         currentDoorColorId.value = doors.value[0].colors[0].id;
         currentDoorSizeId.value = doors.value[0].sizes[0].id;
         currentDoorOutId.value = doorsOut.value[0].id;
+        currentDoorOutData.value = doorsOut.value[0];
         currentDoorOutColorId.value = doorsOut.value[0].colors[0].id;
         currentLockId.value = locks.value.handle[0].id;
         currentLock.value = { id: locks.value.handle[0].id, style: locks.value.handle[0].style, price: locks.value.handle[0].price, detailData: locks.value.handle[0].detailData, name: locks.value.handle[0].name, shape: locks.value.handle[0].shape };
         currentTool1Id.value = tool1Datas.value[0].id;
+        currentTool1Data.value = tool1Datas.value[0];
         currentTool2Id.value = tool2Datas.value[0].id;
-        currentOther1Ids.value = [other1Datas.value[0].id];
-        currentOther2Ids.value = [other2Datas.value[0].id];
+        currentTool2Data.value = tool2Datas.value[0];
+        currentOther1Ids.value = [];
+        currentOther2Ids.value = [];
+        currentServiceIds.value = [];
     }
 }
 

@@ -176,6 +176,10 @@ watch(
     () => props.currentProductId,
     (val) => {
         currentProductIdData.value = val;
+        emit(
+            "update:currentProductData",
+            props.products.find((item) => item.id === val)
+        );
     }
 );
 
