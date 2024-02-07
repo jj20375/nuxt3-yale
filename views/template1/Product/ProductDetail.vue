@@ -12,8 +12,8 @@
                     />
                     <div class="flex flex-col">
                         <div class="flex gap-2 mb-4">
-                            <div class="bg-yellow-500 text-[12px] px-2 py-1 rounded-md">NEW</div>
-                            <div class="bg-pink-400 text-[12px] px-2 py-1 rounded-md">SALE</div>
+                            <div v-if="detailData.tags?.includes('new')" class="bg-yellow-500 text-[12px] px-2 py-1 rounded-md">NEW</div>
+                            <div v-if="detailData.tags?.includes('discount')" class="bg-pink-400 text-[12px] px-2 py-1 rounded-md">SALE</div>
                         </div>
                         <div class="flex justify-between gap-4">
                             <div>
@@ -313,6 +313,7 @@ async function getData() {
         detailData.value.documents = rows.documents;
         detailData.value.product_type_id = rows.product_type_id;
         detailData.value.is_favorite = rows.is_favorite;
+        detailData.value.tags = rows.tags;
 
         sameProducts.value = [];
 
@@ -327,6 +328,7 @@ async function getData() {
                 market_price: item.market_price,
                 main_image: item.main_image,
                 is_favorite: item.is_favorite,
+                tags: item.tags,
             });
         });
 

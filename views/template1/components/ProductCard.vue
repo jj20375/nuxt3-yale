@@ -11,8 +11,8 @@
                     :src="product.main_image"
                 />
                 <div class="absolute bottom-[20px] left-[20px] flex gap-2">
-                    <div class="bg-yellow-500 text-[12px] px-2 py-1 rounded-md">NEW</div>
-                    <div class="bg-pink-400 text-[12px] px-2 py-1 rounded-md">SALE</div>
+                    <div v-if="product.tags?.includes('new')" class="bg-yellow-500 text-[12px] px-2 py-1 rounded-md">NEW</div>
+                    <div v-if="product.tags?.includes('discount')" class="bg-pink-400 text-[12px] px-2 py-1 rounded-md">SALE</div>
                 </div>
             </NuxtLink>
             <div
