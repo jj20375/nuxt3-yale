@@ -158,6 +158,7 @@ export function useCustomProdutHook() {
                 title: item.name,
                 name: `${item.brand}`,
                 shape: item.shape,
+                stock: item.stock,
                 price: Number(item.price),
                 id: item.id,
                 detailData: {

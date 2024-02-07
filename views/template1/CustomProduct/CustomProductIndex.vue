@@ -35,6 +35,7 @@
                         />
                     </div>
                     <div v-show="stepMenuShow['step1'].show">
+                        {{ doorLimit }}
                         <CustomProductBackground
                             v-model:currentBgId="currentBgId"
                             v-model:currentBgData="currentBgData"
@@ -193,6 +194,7 @@
                     <CustomProductCount
                         v-show="stepMenuShow['step6'].show"
                         v-model:count="count"
+                        v-model:limit="doorLimit"
                         class="mb-[30px]"
                     />
                 </div>
@@ -585,10 +587,46 @@ const total = computed(() => {
         });
     }
 
-    return doorPrice + doorOutPrice + lockPrice + tool1Price + tool2Price + other1Price + other2Price + servicePrice;
+    return (doorPrice + doorOutPrice + lockPrice + tool1Price + tool2Price + other1Price + other2Price + servicePrice) * count.value;
 });
 // 訂金
 const deposit = computed(() => total.value * 0.3);
+
+// 選擇商品 庫存最少數量上限
+const doorLimit = computed(() => {
+    let doorStock = 0;
+    if (!$utils().isEmpty(currentDoorColorId.value) && !$utils().isEmpty(currentDoorSizeId.value)) {
+        doorStock = currentDoorData.value.stock[`option-${currentDoorColorId.value}-${currentDoorSizeId.value}`];
+    }
+
+    let doorOutStock = 0;
+    if (!$utils().isEmpty(currentDoorOutColorId.value)) {
+        doorOutStock = currentDoorOutData.value.stock[`option-${currentDoorOutColorId.value}`];
+    }
+    const lockStock = currentLock.value.stock;
+    const tool1Stock = currentTool1Data.value.stock;
+    const tool2Stock = currentTool2Data.value.stock;
+
+    let other1Stock = null;
+    if (currentOther1Ids.value.length > 0) {
+        other1Stock = _MinBy(other1Datas.value, (item: any) => {
+            if (currentOther1Ids.value.includes(item.id)) {
+                return item.stock;
+            }
+        }).stock;
+    }
+    let other2Stock = null;
+    if (currentOther2Ids.value.length > 0) {
+        other2Stock = _MinBy(other2Datas.value, (item: any) => {
+            if (currentOther2Ids.value.includes(item.id)) {
+                return item.stock;
+            }
+        }).stock;
+    }
+
+    const stocks = [doorStock, doorOutStock, lockStock, tool1Stock, tool2Stock, other1Stock, other2Stock];
+    return _Min(stocks);
+});
 
 const { getCustomProductList, customProductList, getCustomProductSceneList, scenes } = useCustomProdutHook();
 
@@ -619,7 +657,7 @@ async function init(id: number) {
         currentDoorOutData.value = doorsOut.value[0];
         currentDoorOutColorId.value = doorsOut.value[0].colors[0].id;
         currentLockId.value = locks.value.handle[0].id;
-        currentLock.value = { id: locks.value.handle[0].id, style: locks.value.handle[0].style, price: locks.value.handle[0].price, detailData: locks.value.handle[0].detailData, name: locks.value.handle[0].name, shape: locks.value.handle[0].shape };
+        currentLock.value = { id: locks.value.handle[0].id, style: locks.value.handle[0].style, price: locks.value.handle[0].price, detailData: locks.value.handle[0].detailData, name: locks.value.handle[0].name, shape: locks.value.handle[0].shape, stock: locks.value.handle[0].stock };
         currentTool1Id.value = tool1Datas.value[0].id;
         currentTool1Data.value = tool1Datas.value[0];
         currentTool2Id.value = tool2Datas.value[0].id;
@@ -627,6 +665,8 @@ async function init(id: number) {
         currentOther1Ids.value = [];
         currentOther2Ids.value = [];
         currentServiceIds.value = [];
+
+        console.log("init currentLock.value => ", currentLock.value);
     }
 }
 
