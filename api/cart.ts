@@ -22,7 +22,7 @@ export default () => {
          * 取得 會員購物車
          */
         GetCart() {
-            return useFetchData.get<ResGetCart>(`${apiUrl}/cart`);
+            return useFetchData.get<ResGetCart>(`${apiUrl}/cart`, {type: '1'});
         },
         /**
          * 加入購物車
@@ -34,7 +34,7 @@ export default () => {
          * 變更購物車
          */
         UpdateCart(data : ReqCart) {
-            return  useFetchData.post(`${apiUrl}/cart/update-product`, data);
+            return  useFetchData.put(`${apiUrl}/cart/update-product`, data);
         },
         /**
          * 購物車移除商品

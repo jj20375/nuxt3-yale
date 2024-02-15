@@ -79,7 +79,7 @@ const checkList: Ref<number[]> = ref([]);
  * 點擊更新數量按鈕
  */
 function countUpdate(productId: number, count: number) {
-    if (count <= 1) {
+    if (count < 1) {
         return;
     }
     const apiReq = {
