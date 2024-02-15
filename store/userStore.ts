@@ -22,6 +22,8 @@ export const useUserStore = defineStore({
             showLoginDialog: false,
             // 第三方登入使用者名稱
             socialMediaName: null,
+            // 第三方登入使用者名稱
+            ssoLogingData: null,
         };
     },
     getters: {},

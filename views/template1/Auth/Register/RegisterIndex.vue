@@ -454,6 +454,10 @@ async function onSubmit() {
                     sex: form.value.gender,
                     password: form.value.password,
                 };
+                if (userStore.ssoLogingData) {
+                    params.openid = userStore.ssoLogingData.user.openid
+                    params.provider = userStore.ssoLogingData.provider
+                }
                 const { data, status, error } = await $api().RegisterAPI(params);
                 if (status.value === "success") {
                     await login({ email: form.value.email, password: form.value.password });
@@ -503,4 +507,9 @@ async function login(form: { email: string; password: string }) {
         console.log("LoginAPI => ", err);
     }
 }
+
+onBeforeRouteLeave((to, from, next) => {
+    userStore.ssoLogingData = null;
+    next();
+});
 </script>
