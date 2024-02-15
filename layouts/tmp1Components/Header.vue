@@ -177,9 +177,6 @@
                         />
                     </NuxtLink>
                 </li>
-                {{
-                    isMobile
-                }}
             </ul>
         </nav>
     </header>
