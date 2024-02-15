@@ -1,20 +1,28 @@
 <template>
     <header
         class="fixed z-[500] items-center w-full duration-500 transition-all"
-        :class="[isHomeMenuFixed ? ' bg-white fixed top-0 border-b border-gray-300' : route.name === 'index' ? 'top-0 border-b border-transparent' : '', route.name !== 'index' ? 'fixed top-0 bg-white border-b border-gray-300' : '']"
+        :class="[isHomeMenuFixed || isMobile ? ' bg-white fixed top-0 border-b border-gray-300' : route.name === 'index' ? 'top-0 border-b border-transparent' : '', route.name !== 'index' ? 'fixed top-0 bg-white border-b border-gray-300' : '']"
     >
-        <nav class="mx-[32px] flex items-center">
-            <ul class="flex items-center flex-1 text-base leading-5">
-                <li class="mr-14 xl:mr-8 2xl:mr-10 3xl:mr-14 py-[10px]">
+        <nav class="md:mx-[32px] md:flex items-center md:text-left text-center">
+            <div
+                v-if="isMobile"
+                class="fixed flex cursor-pointer top-8 left-10"
+                @click="showMenu = !showMenu"
+            >
+                <font-awesome-icon :icon="['fas', 'bars']" />
+            </div>
+            <ul class="items-center flex-1 text-base leading-5 md:flex">
+                <li class="md:mr-14 xl:mr-8 2xl:mr-10 3xl:mr-14 py-[10px]">
                     <NuxtLink :to="{ name: 'index' }">
                         <NuxtImg
-                            class="h-[66px] w-[66px]"
+                            class="h-[66px] w-[66px] mx-auto"
                             :src="initializationData.site.site_logo"
                             :alt="$config.public.webSite"
                         />
                     </NuxtLink>
                 </li>
                 <li
+                    v-show="(showMenu && isMobile) || isDesktop"
                     v-for="(menu, key) in menus"
                     :key="key"
                 >
@@ -22,10 +30,25 @@
                         v-if="menu.submenus.length > 0"
                         @mouseover="changeMenu(key)"
                         @mouseleave="closeMenu"
-                        class="px-5 xl:px-3 2xl:px-4 3xl:px-5 py-[33px] text-gray-800 cursor-pointer hover:text-gray-500"
+                        class="md:px-5 xl:px-3 2xl:px-4 3xl:px-5 py-[33px] text-gray-800 cursor-pointer hover:text-gray-500"
                     >
-                        {{ menu.title }}
-                        <div class="absolute left-0 top-[86px] z-50 bg-white w-full">
+                        <div class="flex justify-center">
+                            {{ menu.title }}
+                            <div
+                                class="ml-3 transition-all duration-500"
+                                :class="currentMenu === key ? 'rotate-180' : 'rotate-0'"
+                            >
+                                <font-awesome-icon
+                                    v-if="isMobile"
+                                    class=""
+                                    :icon="['fas', 'chevron-down']"
+                                />
+                            </div>
+                        </div>
+                        <div
+                            v-if="!isMobile"
+                            class="absolute left-0 top-[86px] z-50 bg-white w-full"
+                        >
                             <div
                                 class="border-t border-gray-300 shadow-header"
                                 v-if="currentMenu === key && showSubMenu"
@@ -53,6 +76,28 @@
                                 </ul>
                             </div>
                         </div>
+                        <div v-else>
+                            <div
+                                class="bg-gray-100"
+                                v-if="currentMenu === key && showSubMenu"
+                            >
+                                <ul
+                                    class="container pt-[24px] text-center"
+                                    :class="menu.marginSize"
+                                >
+                                    <li
+                                        v-for="(submenu, index) in menu.submenus"
+                                        :key="index"
+                                        class="pb-[24px] submenu-item"
+                                        :class="[key === 'menu5' || key === 'menu7' ? 'hover-scale' : key === 'menu6' ? 'hover-shadow' : key === 'menu4' ? 'hover-fade' : '']"
+                                    >
+                                        <NuxtLink :to="submenu.url">
+                                            <div>{{ submenu.text }}</div>
+                                        </NuxtLink>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
 
                     <div v-else>
@@ -65,7 +110,7 @@
                                 @click="router.push(menu.url)"
                             >
                                 <template v-if="key === 'menu1'">
-                                    <div class="flex items-center">
+                                    <div class="flex items-center justify-center text-center md:justify-start">
                                         <div class="title">{{ menu.title }}</div>
                                         <div class="image-wrap">
                                             <NuxtImg src="/img/icons/door.svg" />
@@ -80,7 +125,10 @@
                     </div>
                 </li>
             </ul>
-            <ul class="flex border-r border-gray-400">
+            <ul
+                v-if="!isMobile"
+                class="flex border-r border-gray-400"
+            >
                 <li
                     v-for="(icon, index) in rightIcons"
                     :key="index"
@@ -94,7 +142,28 @@
                     </NuxtLink>
                 </li>
             </ul>
-            <ul class="flex ml-[20px] 2xl:ml-[26px]">
+            <ul
+                v-else
+                class="fixed flex top-8 right-2"
+            >
+                <li
+                    v-for="(icon, index) in rightIcons"
+                    :key="index"
+                    :class="index === 0 ? 'mr-[16px] 2xl:mr-[22px]' : 'mr-[20px] 2xl:mr-[26px]'"
+                >
+                    <NuxtLink :to="icon.url">
+                        <component
+                            class="!w-[20px] !h-[20px] transition-all duration-300 hover:text-gray-400 hover:transition-all hover:duration-300"
+                            :is="icon.name"
+                        />
+                    </NuxtLink>
+                </li>
+            </ul>
+
+            <ul
+                v-if="!isMobile"
+                class="flex ml-[20px] 2xl:ml-[26px]"
+            >
                 <li
                     v-for="(media, index) in socialMedia"
                     :key="index"
@@ -108,6 +177,9 @@
                         />
                     </NuxtLink>
                 </li>
+                {{
+                    isMobile
+                }}
             </ul>
         </nav>
     </header>
@@ -133,6 +205,11 @@ import IconFacebook from "~/assets/img/icons/medias/icon-black-1.svg";
 import IconInstagram from "~/assets/img/icons/medias/icon-black-2.svg";
 import IconLine from "~/assets/img/icons/medias/icon-black-3.svg";
 import IconYoutube from "~/assets/img/icons/medias/icon-black-4.svg";
+
+const { isMobile, isDesktop } = useWindowResize();
+
+// 手機版時判斷是否顯示選單
+const showMenu = ref(false);
 
 const isHomeMenuFixed = computed(() => templateStore.isHomeMenuFixed);
 
