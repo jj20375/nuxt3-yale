@@ -6,6 +6,12 @@ interface ResGetCart {
     cartItems: any[]
 }
 
+export interface ReqCart {
+    cart_item_id: number
+    quantity?: number
+}
+
+
 
 export default () => {
     const {
@@ -22,16 +28,19 @@ export default () => {
          * 加入購物車
          */
         AddToCart(data: CartItem) {
-            return useMyFetch(`${apiUrl}/cart/create-product`, {
-                method: "post",
-                body: data,
-            });
+            return useFetchData.post(`${apiUrl}/cart/create-product`, data);
         },
-        UpdateCart(data : {cart_item_id: number, quantity : number}) {
-            return useMyFetch(`${apiUrl}/cart/update-product`, {
-                method: "post",
-                body: data,
-            });
+         /**
+         * 變更購物車
+         */
+        UpdateCart(data : ReqCart) {
+            return  useFetchData.post(`${apiUrl}/cart/update-product`, data);
+        },
+        /**
+         * 購物車移除商品
+         */
+        DeleteCart(data: ReqCart) {
+            return useFetchData.delete(`${apiUrl}/cart/delete-product`, data);
         }
     };
 };

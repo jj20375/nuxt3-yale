@@ -1,10 +1,12 @@
 
 enum AsyncApiMethod {
-    get=  'GET',
-    post='POST'
+    get = 'GET',
+    post = 'POST',
+    delete = 'DELETE',
+    put = 'PUT'
 }
 
-export interface BaseApiResponse<TData = any > {
+export interface BaseApiResponse<TData = any> {
     data: TData | null
     message: string | null
 }
@@ -14,14 +16,14 @@ export interface BaseApiResponse<TData = any > {
 const fetchData = async<TData = any>(
     reqUrl: string,
     method: AsyncApiMethod,
-    data?:any
+    data?: any
 ) => {
     const token = useCookie('token').value
     const options = {
         method,
         server: false,
         headers: {
-            Authorization: token ?  `Bearer ${token}` : '', 
+            Authorization: token ? `Bearer ${token}` : '',
             'Accept': "application/json"
         }
     }
@@ -29,21 +31,29 @@ const fetchData = async<TData = any>(
     try {
         const res = await $fetch<BaseApiResponse<TData>>(reqUrl, {
             ...options,
-            ...(method === AsyncApiMethod.get ? {params: data} : {body: data})
+            ...(method === AsyncApiMethod.get ? { params: data } : { body: data })
         })
         return res
     } catch (error) {
-        throw(error)
+        throw (error)
     }
 }
 
 
-export const useFetchData = new(class getData {
-    get<TData = any> (url: string , params?: any) {
+export const useFetchData = new (class getData {
+    get<TData = any>(url: string, params?: any) {
         return fetchData<TData>(url, AsyncApiMethod.get, params)
     }
 
-    post<TData = any> (url: string , body?: any) {
+    post<TData = any>(url: string, body?: any) {
         return fetchData<TData>(url, AsyncApiMethod.post, body)
+    }
+
+    put<TData = any>(url: string, body?: any) {
+        return fetchData<TData>(url, AsyncApiMethod.put, body)
+    }
+
+    delete<TData = any>(url: string, body?: any) {
+        return fetchData<TData>(url, AsyncApiMethod.delete, body)
     }
 })

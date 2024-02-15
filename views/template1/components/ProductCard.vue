@@ -12,8 +12,18 @@
                     :src="product.main_image"
                 />
                 <div class="absolute bottom-[20px] left-[20px] flex gap-2">
-                    <div v-if="product.tags?.includes('new')" class="bg-yellow-500 text-[12px] px-2 py-1 rounded-md">NEW</div>
-                    <div v-if="product.tags?.includes('discount')" class="bg-pink-400 text-[12px] px-2 py-1 rounded-md">SALE</div>
+                    <div
+                        v-if="product.tags?.includes('new')"
+                        class="bg-yellow-500 text-[12px] px-2 py-1 rounded-md"
+                    >
+                        NEW
+                    </div>
+                    <div
+                        v-if="product.tags?.includes('discount')"
+                        class="bg-pink-400 text-[12px] px-2 py-1 rounded-md"
+                    >
+                        SALE
+                    </div>
                 </div>
             </NuxtLink>
             <div
@@ -77,6 +87,7 @@ import { useShoppingCarStore } from "~/store/shoppingCarStore";
 const shoppingCarStore = useShoppingCarStore();
 
 import { storeToRefs } from "pinia";
+import { ShoppingCarInterface } from "~/interface/shoppingCar";
 const { isAuth } = storeToRefs(userStore);
 
 const router = useRouter();
@@ -138,10 +149,10 @@ function mouseleaveEvent(index: number) {
  * 加入購物車
  */
 function addToShoppingCar(data: any) {
-    const input = {
-        id: data.id,
+    const input: ShoppingCarInterface = {
+        id: null,
+        productID: data.id,
         name: data.name,
-        mark: data.model,
         imgSrc: data.main_image,
         count: 1,
         price: data.price,

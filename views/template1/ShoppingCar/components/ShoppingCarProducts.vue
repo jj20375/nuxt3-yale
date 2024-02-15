@@ -4,7 +4,6 @@
             v-model="checkList"
             @change="selectProduct"
         >
-            {{ shoppingCar }}
             <div
                 v-for="(product, index) in shoppingCar"
                 :key="index"
@@ -23,7 +22,7 @@
                 </div>
                 <div class="flex-1">
                     <div class="flex gap-4 w-full text-gray-800">
-                        <h3 class="YaleSolisW-Bd font-medium text-[18px] flex-1">{{ product.mark + product.name }}-{{ product.id }}</h3>
+                        <h3 class="YaleSolisW-Bd font-medium text-[18px] flex-1">{{ product.name }}-{{ product.id }}</h3>
                         <p class="font-medium YaleSolisW-Bd text-[18px]">NT$ {{ $utils().formatCurrency(product.totalPrice) }}</p>
                     </div>
                     <div
@@ -37,19 +36,19 @@
                         <div class="flex justify-center items-stretch w-[150px] border border-gray-300 rounded-full">
                             <button
                                 class="flex-1 flex items-center justify-center cursor-pointer h-auto"
-                                @click.prevent="countDelete(index)"
+                                @click.prevent="countUpdate(product.productID, product.count - 1)"
                             >
                                 <el-icon><Minus /></el-icon>
                             </button>
                             <div class="flex items-center justify-center w-[80px] py-[10px] h-full">{{ product.count }}</div>
                             <button
                                 class="flex-1 flex items-center justify-center cursor-pointer h-auto"
-                                @click.prevent="countAdd(index)"
+                                @click.prevent="countUpdate(product.productID, product.count + 1)"
                             >
                                 <el-icon><Plus /></el-icon>
                             </button>
                         </div>
-                        <button @click.prevent="removeShoppingCar(index)">
+                        <button @click.prevent="removeShoppingCar(product.productID)">
                             <NuxtImg
                                 class="w-[24px]"
                                 src="/img/shopping-car/shopping-car-icon-delete.svg"
@@ -64,50 +63,40 @@
 
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
+import { ReqCart } from "~/api/cart";
 import { useShoppingCarStore } from "~/store/shoppingCarStore";
 
 const emit = defineEmits(["update:selectProductIds"]);
 
-const { $shoppingCarService, $utils } = useNuxtApp();
-
 const shoppingCarStore = useShoppingCarStore();
-const { setShoppingCar, getUserShopping } = shoppingCarStore;
+const { updateCart, getUserShopping, deleteCart } = shoppingCarStore;
 const { shoppingCar } = storeToRefs(shoppingCarStore);
 
 // 選中資料
 const checkList: Ref<number[]> = ref([]);
 
 /**
- * 點擊刪除數量按鈕
+ * 點擊更新數量按鈕
  */
-function countDelete(index: number) {
-    const item = shoppingCar.value[index];
-    if (item.count <= 1) {
-        item.count = 1;
+function countUpdate(productId: number, count: number) {
+    if (count <= 1) {
         return;
     }
-
-    // 總價除以數量得到 刪除一個數量後的金額
-    item.count--;
-    item.totalPrice = item.price * item.count;
-}
-
-/**
- * 點擊增加數量按鈕
- */
-function countAdd(index: number) {
-    const item = shoppingCar.value[index];
-    item.count++;
-    // 總價乘以數量得到 增加一個數量後的金額
-    item.totalPrice = item.price * item.count;
+    const apiReq = {
+        cart_item_id: productId,
+        quantity: count,
+    };
+    updateCart(apiReq);
 }
 
 /**
  * 刪除購物車
  */
-function removeShoppingCar(index: number) {
-    $shoppingCarService().removeSingleShoppingCarProduct(index);
-    init();
+function removeShoppingCar(productID: number) {
+    const req: ReqCart = {
+        cart_item_id: productID,
+    };
+    deleteCart(req);
 }
 
 /**'

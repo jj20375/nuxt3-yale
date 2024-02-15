@@ -1,11 +1,16 @@
 import { defineStore } from "pinia";
+import { ReqCart } from "~/api/cart";
 import type { CartItem, ShoppingCarInterface } from "~/interface/shoppingCar";
 import { getShoppingCar } from "~/service/shoppingCar";
+import { storeToRefs } from "pinia";
+import { useUserStore } from "~/store/userStore";
 
 export const useShoppingCarStore = defineStore(
   "shoppingCarStore",
     () => {
         const { $api, $shoppingCarService } = useNuxtApp();
+        const userStore = useUserStore();
+        const { isAuth } = storeToRefs(userStore);
 
         // 購物車
         const shoppingCar: Ref<ShoppingCarInterface[]> = ref([])
@@ -17,74 +22,89 @@ export const useShoppingCarStore = defineStore(
 
         // 取得購物車
         const getUserShopping = async() => {
-            const token = useCookie('token').value
-            if(token) {
+            // 登入狀態，打 api 取得購物車內容
+            if(isAuth.value) {
                 $api().GetCart().then((res)=>{
                     if(res.data) {
-                        // console.log('res.data.cartItems',res.data.cartItems)
                         shoppingCar.value =  res.data.cartItems.map(i=>{
                             return {
-                                id: i.original.id,
+                                id: i.id,
+                                productID: i.original.id,
                                 price: i.original.price,
                                 name: i.original.name,
-                                mark: i.original.mark,
                                 imgSrc: `https://yale_backed.mrjin.me/storage/${i.original.main_image}`,
                                 count: i.quantity,
                                 totalPrice: Number(i.original.price) * i.quantity
                             }
                         })
-                        console.log(' shoppingCar.value', shoppingCar.value)
                         $shoppingCarService().setShoppingCar(shoppingCar.value);
                     }
                 })
                 return
             } else {
+                // 非登入狀態，取localstorage
                 const temp =  getShoppingCar()
                 shoppingCar.value = temp ? temp : []
             }
-          
         }
 
         // 加入購物車
         const addToCart = (data: ShoppingCarInterface) => {
-            // localStorage setting
-            $shoppingCarService().addToShoppingCar(data);
             const apiReq : CartItem = {
-                product_id: data.id,
+                product_id: data.productID,
                 quantity: data.count,
             }
-            $api().AddToCart(apiReq).then((res)=>{
-                // console.log('res', res.data.data.cartItems)
-            })
+            // 登入需打api
+            const item =  shoppingCar.value.find(i=> i.productID ===  data.productID)
+            if(!item) {
+                shoppingCar.value.push(data)
+                if(isAuth.value) {
+                    $api().AddToCart(apiReq)
+                }
+            }
+            // localStorage setting
+            $shoppingCarService().setShoppingCar(shoppingCar.value);
         }
 
         // 更新購物車
-        const updateCart = (data:ShoppingCarInterface) => {
+        const updateCart = (data:ReqCart) => {
             const apiReq = {
-                cart_item_id: data.id,
-                quantity: data.count,
+                cart_item_id: data.cart_item_id,
+                quantity: data.quantity,
             }
-            $api().UpdateCart(apiReq).then((res)=>{
-                // console.log('res', res.data.data.cartItems)
-            })
+             // 登入需打api
+             const item =  shoppingCar.value.find(i=> i.productID === data.cart_item_id)
+             if(item) {
+                item.count = data.quantity ? data.quantity : 1
+                item.totalPrice = item.count * Number(item.price)
+                if(isAuth.value) {
+                    $api().UpdateCart(apiReq)
+                }
+             }
+             // localStorage setting
+             $shoppingCarService().setShoppingCar(shoppingCar.value)
         }
 
-        // 更新 localStorage
-        // watch(shoppingCar, (val) => {
-        //         console.log('val,', val)
-        //         if(val.length > 0) {
-        //             $shoppingCarService().setShoppingCar(val);
-        //         }
-        //     },
-        //     { deep: true }
-        // )
+        // 刪除購物車商品
+        const deleteCart = (data: ReqCart) => {
+            // 登入需打api
+            if(isAuth.value) {
+                $api().DeleteCart(data)
+            } 
+            // 尚需改成 product_id
+            shoppingCar.value = shoppingCar.value.filter(i=> i.productID !== data.cart_item_id)
+            $shoppingCarService().setShoppingCar(shoppingCar.value);
+        }
+
+
 
         return {
             shoppingCar,
             setShoppingCar,
+            getUserShopping,
             addToCart,
             updateCart,
-            getUserShopping
+            deleteCart,
         }
     }
 );
