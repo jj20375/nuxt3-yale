@@ -1,5 +1,6 @@
 <template>
     <div>
+        {{ product }}
         <div
             class="relative bg-white product-card rounded-2xl"
             @mouseover="mouseoverEvent(product.id)"
@@ -70,8 +71,12 @@
 <script lang="ts" setup>
 import AddToShoppingCarDialog from "~/views/template1/components/AddToShoppingCarDialog.vue";
 import { useUserStore } from "~/store/userStore";
-import { storeToRefs } from "pinia";
 const userStore = useUserStore();
+
+import { useShoppingCarStore } from "~/store/shoppingCarStore";
+const shoppingCarStore = useShoppingCarStore();
+
+import { storeToRefs } from "pinia";
 const { isAuth } = storeToRefs(userStore);
 
 const router = useRouter();
@@ -105,8 +110,8 @@ const emit = defineEmits(["handleFavorite"]);
 
 // 判斷是否為喜愛項目
 const isFavorite = computed(() => {
-    return props.product.is_favorite
-})
+    return props.product.is_favorite;
+});
 
 const handleFavorite = async () => {
     if (isAuth.value) {
@@ -128,15 +133,23 @@ function mouseoverEvent(index: number) {
 function mouseleaveEvent(index: number) {
     currentHover.value = null;
 }
+
 /**
  * 加入購物車
  */
 function addToShoppingCar(data: any) {
+    const input = {
+        id: data.id,
+        name: data.name,
+        mark: data.model,
+        imgSrc: data.main_image,
+        count: 1,
+        price: data.price,
+        totalPrice: data.price * 1,
+        color: "",
+    };
+    shoppingCarStore.addToCart(input);
     showDialog.value = true;
-    console.log("addToShoppingCar => ", data);
-    if (process.client) {
-        $shoppingCarService().addToShoppingCar({ ...data, mark: "YDM 4109A", name: "指紋密碼鑰匙三合一", color: "黑色", imgSrc: "/img/home/product/product1.jpg", count: 1, singlePrice: 1760 });
-    }
 }
 
 /**

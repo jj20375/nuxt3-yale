@@ -3,6 +3,8 @@ import { UserInterface } from "~/interface/user.d";
 import Cookies from "js-cookie";
 import { ElMessage } from "element-plus";
 import { useApiStore } from "./apiStore";
+import { useShoppingCarStore } from "~/store/shoppingCarStore";
+
 interface State {
     user: UserInterface;
 }

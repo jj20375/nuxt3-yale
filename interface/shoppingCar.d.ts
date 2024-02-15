@@ -1,6 +1,7 @@
 export interface ShoppingCarInterface {
+    id: number
     // 顏色
-    color: string;
+    color?: string;
     // 價格
     price: number;
     // 名稱
@@ -11,4 +12,16 @@ export interface ShoppingCarInterface {
     imgSrc: string;
     // 數量
     count: number;
+    // 總價
+    totalPrice: number
+}
+
+
+export interface CartItem {
+    // id
+    product_id: number;
+    // ?
+    product_variation_id?: number;
+    // 數量
+    quantity: number;
 }

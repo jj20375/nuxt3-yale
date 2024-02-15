@@ -118,6 +118,8 @@
 </template>
 
 <script setup lang="ts">
+import Cookies from "js-cookie";
+
 // 訂單狀態
 import ShoppingCarSteps from "~/views/template1/ShoppingCar/components/ShoppingCarSteps.vue";
 import ShoppingCarStep1 from "~/views/template1/ShoppingCar/components/ShoppingCarStep1.vue";
@@ -128,12 +130,15 @@ import ShoppingCarInputCoupon from "~/views/template1/ShoppingCar/components/Sho
 // 訂單金額
 import ShoppingCarBilling from "~/views/template1/ShoppingCar/components/ShoppingCarBilling.vue";
 import { useShoppingCarStore } from "~/store/shoppingCarStore";
+import { storeToRefs } from "pinia";
 const { $utils } = useNuxtApp();
 
 const route = useRoute();
 const router = useRouter();
+const { $api } = useNuxtApp();
 
 const shoppingCarStore = useShoppingCarStore();
+const { shoppingCar } = storeToRefs(shoppingCarStore);
 
 // 購物種類
 const tabs = ref({
@@ -160,9 +165,6 @@ const selectProductIds = ref<number[]>([]);
 
 const showComponent = shallowRef<any>(ShoppingCarStep1);
 
-// 購物車資料
-const shoppingCar = computed(() => shoppingCarStore.shoppingCar);
-
 // 總價
 const total = computed(() =>
     _SumBy(
@@ -181,7 +183,6 @@ watch(
             case 0:
                 console.log("step0 val =>", val);
                 showComponent.value = ShoppingCarStep1;
-
                 return;
             case 1:
                 console.log("step1 val =>", val);
@@ -195,7 +196,7 @@ watch(
     }
 );
 
-onMounted(() => {
+onMounted(async () => {
     currentTab.value = route.query.tab as string;
 });
 </script>

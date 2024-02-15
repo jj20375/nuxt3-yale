@@ -8,6 +8,7 @@ import member from "~/api/member";
 import product from "~/api/product";
 import customProduct from "~/api/customProduct";
 import ragic from "~/api/ragic";
+import cart from "~/api/cart";
 
 export default defineNuxtPlugin((nuxtApp) => {
     return {
@@ -22,7 +23,8 @@ export default defineNuxtPlugin((nuxtApp) => {
                 ...member(),
                 ...product(),
                 ...customProduct(),
-                ...ragic()
+                ...ragic(),
+                ...cart()
             }),
         },
     };

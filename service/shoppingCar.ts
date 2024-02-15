@@ -4,7 +4,7 @@ import type { ShoppingCarInterface } from "~/interface/shoppingCar";
  * 取得購物車商品
  * @param  { type Object(物件) } data 商品資料
  */
-export function getShoppingCar(data: any) {
+export function getShoppingCar() {
     const shoppingCarDatas = getStorage("shoppingCarDatas");
     return shoppingCarDatas;
 }
