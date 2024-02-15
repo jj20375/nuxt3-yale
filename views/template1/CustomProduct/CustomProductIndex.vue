@@ -519,23 +519,52 @@ function addToShoppingCar() {
         currentTool1: { label: "掛門", ...currentTool1Data.value },
         currentTool2: { label: "氣密條", ...currentTool2Data.value },
     };
-    let price = currentDoorData.value.price + currentDoorOutData.value.price + currentTool1Data.value.price + currentTool2Data.value.price;
+
+    let doorPrice = 0;
+    if (!$utils().isEmpty(currentDoorColorId.value) && !$utils().isEmpty(currentDoorSizeId.value)) {
+        doorPrice = currentDoorData.value.price[`option-${currentDoorColorId.value}-${currentDoorSizeId.value}`];
+    }
+
+    let doorOutPrice = 0;
+
+    if (!$utils().isEmpty(currentDoorOutColorId.value)) {
+        doorOutPrice = currentDoorOutData.value.price[`option-${currentDoorOutColorId.value}`];
+    }
+
+    let price = doorPrice + doorOutPrice + currentTool1Data.value.price + currentTool2Data.value.price;
 
     // 判斷是否有選擇 選擇基本五金 下將壓條
     if (!$utils().isEmpty(currentOther1Datas.value)) {
-        console.log("currentOther1Datas.value >", currentOther1Datas.value);
         data["currentOther1"] = { label: "下降壓條", datas: currentOther1Datas.value };
-        price = price + _SumBy(currentOther1Datas.value, "price");
+        let other1Price = 0;
+        other1Price = _SumBy(other1Datas.value, (item: any) => {
+            if (currentOther1Ids.value.includes(item.id)) {
+                return item.price;
+            }
+        });
+        price = price + other1Price;
     }
     // 判斷是否有選擇 選擇基本五金 門弓器
     if (!$utils().isEmpty(currentOther2Datas.value)) {
         data["currentOther2"] = { label: "門弓器", datas: currentOther2Datas.value };
-        price = price + _SumBy(currentOther2Datas.value, "price");
+        let other2Price = 0;
+        other2Price = _SumBy(other2Datas.value, (item: any) => {
+            if (currentOther2Ids.value.includes(item.id)) {
+                return item.price;
+            }
+        });
+        price = price + other2Price;
     }
     // 判斷是否有選擇 施作服務
     if (!$utils().isEmpty(currentServiceDatas.value)) {
         data["otherServices"] = { label: "額外施作服務", datas: currentServiceDatas.value };
-        price = price + _SumBy(currentServiceDatas.value, "price");
+        let servicePrice = 0;
+        servicePrice = _SumBy(serviceDatas.value, (item: any) => {
+            if (currentServiceIds.value.includes(item.id)) {
+                return item.price;
+            }
+        });
+        price = price + servicePrice;
     }
     data["price"] = price * count.value;
     data["singlePrice"] = price;
