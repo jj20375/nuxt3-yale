@@ -23,6 +23,9 @@
                             </el-radio>
                             <div class="px-[48px] py-5 w-3/4 flex flex-col gap-6">
                                 <div class="flex gap-3 items-center">
+                                    <div class="text-[15px] text-gray-700 mr-3">
+                                        連結帳號
+                                    </div>
                                     <NuxtImg
                                         class="relative w-6 h-fit aspect-square object-cover"
                                         :src="socialIconPath"
@@ -50,6 +53,9 @@
                             </el-radio>
                             <div class="px-[48px] py-5 w-3/4 flex flex-col gap-6">
                                 <div class="flex gap-3 items-center">
+                                    <div class="text-[15px] text-gray-700 mr-3">
+                                        連結帳號
+                                    </div>
                                     <NuxtImg
                                         class="relative w-6 h-fit aspect-square object-cover"
                                         :src="socialIconPath"
@@ -139,7 +145,7 @@ const socialIconPath = computed(() => {
         .el-radio{
             @apply w-full font-normal mr-0 border-0 bg-gray-50 rounded-[8px];
             &.el-radio--large{
-                @apply p-4;
+                @apply px-4 py-6;
             }
         }
     }

@@ -31,7 +31,7 @@
                     <h4 class="font-bold mb-3">安裝資訊</h4>
                     <div class="border-b-[1px] border-gray-200 pb-5">
                         <div
-                            class="grid grid-cols-2 gap-4 w-[100%] 2xl:w-[85%] 3xl:w-[70%]">
+                            class="grid grid-cols-2 gap-1 w-[100%] 2xl:w-[85%] 3xl:w-[70%]">
                             <div v-if="orderData?.info?.contactName" class="text-gray-700">
                                 聯繫人：{{ orderData?.info?.contactName }}
                             </div>
@@ -49,7 +49,7 @@
                     <h4 class="font-bold mb-3 mt-5">付款明細</h4>
                     <div class="border-b-[1px] border-gray-200 pb-5">
                         <div
-                            class="grid grid-cols-2 gap-4 w-[100%] 2xl:w-[85%] 3xl:w-[70%]">
+                            class="grid grid-cols-2 gap-1 w-[100%] 2xl:w-[85%] 3xl:w-[70%]">
                             <div v-if="orderData?.payment?.method" class="text-gray-700">
                                 付款方式：{{ orderData?.payment?.method }}
                             </div>
@@ -59,7 +59,7 @@
                         </div>
                     </div>
                     <h4 class="font-bold mb-3 mt-5">發票資訊</h4>
-                    <div class="grid grid-cols-2 gap-4 w-[100%] 2xl:w-[85%] 3xl:w-[70%]">
+                    <div class="grid grid-cols-2 gap-1 w-[100%] 2xl:w-[85%] 3xl:w-[70%]">
                         <div v-if="orderData?.receipt?.status" class="text-gray-700">
                             發票狀態：{{ orderData?.receipt?.status }}
                         </div>

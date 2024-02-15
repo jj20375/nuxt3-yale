@@ -38,13 +38,12 @@
                             </el-form-item>
                             <el-form-item v-else-if="item.style === 'datepicker'" :prop="item.prop">
                                 <div class="el-form-item w-full">
-                                    <div class="el-form-item__label">{{ item.label }}<span class="ml-[2px] text-red-500"
-                                                                                           v-if="item.required">*</span>
-                                    </div>
+                                    <div class="el-form-item__label">{{ item.label }}<span class="ml-[2px] text-red-500" v-if="item.required">*</span></div>
                                     <el-date-picker
                                         v-model="form[item.prop]"
                                         type="date"
                                         valueFormat="YYYY-MM-DD"
+                                        :disabled="item.disabled"
                                         :placeholder="item.placeholder"
                                         popper-class="date-box"
                                     />
@@ -155,7 +154,8 @@ const formDatas = ref<any>([
         prop: "birthday",
         label: "生日",
         style: "datepicker",
-        required: true
+        required: true,
+        disabled: true
     }
 ]);
 

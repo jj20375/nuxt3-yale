@@ -33,7 +33,7 @@
                 <div class="mt-12">
                     <h4 class="mb-3 font-bold">配送資訊</h4>
                     <div class="border-b-[1px] border-gray-200 pb-5">
-                        <div class="grid grid-cols-2 gap-4 w-[100%] 2xl:w-[85%] 3xl:w-[70%]">
+                        <div class="grid grid-cols-2 gap-1 w-[100%] 2xl:w-[85%] 3xl:w-[70%]">
                             <div
                                 v-if="orderData?.info?.contactName"
                                 class="text-gray-700"
@@ -62,7 +62,7 @@
                     </div>
                     <h4 class="mt-5 mb-3 font-bold">付款明細</h4>
                     <div class="border-b-[1px] border-gray-200 pb-5">
-                        <div class="grid grid-cols-2 gap-4 w-[100%] 2xl:w-[85%] 3xl:w-[70%]">
+                        <div class="grid grid-cols-2 gap-1 w-[100%] 2xl:w-[85%] 3xl:w-[70%]">
                             <div
                                 v-if="orderData?.payment?.method"
                                 class="text-gray-700"
@@ -78,7 +78,7 @@
                         </div>
                     </div>
                     <h4 class="mt-5 mb-3 font-bold">發票資訊</h4>
-                    <div class="grid grid-cols-2 gap-4 w-[100%] 2xl:w-[85%] 3xl:w-[70%]">
+                    <div class="grid grid-cols-2 gap-1 w-[100%] 2xl:w-[85%] 3xl:w-[70%]">
                         <div
                             v-if="orderData?.receipt?.status"
                             class="text-gray-700"

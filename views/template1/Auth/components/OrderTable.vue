@@ -7,7 +7,7 @@
         </thead>
         <tbody>
         <tr v-for="item in tableBodyData" :key="item.index"
-            class="cursor-pointer hover:bg-gray-50 transition-all duration-300 hover:transition-all hover:duration-300">
+            class="cursor-pointer hover:bg-gray-50">
             <td>
                 <NuxtLink :to="item.url">
                     <div class="title">{{ item.number }}</div>

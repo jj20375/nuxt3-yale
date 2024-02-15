@@ -29,7 +29,7 @@
                 </div>
             </section>
             <section>
-                <div class="container font-bold py-[80px]">
+                <div class="container font-bold pt-[120px] pb-[40px]">
                     <h3 class="text-center text-[32px]">銷售品牌</h3>
                     <Swiper
                         :slidesPerView="6"
