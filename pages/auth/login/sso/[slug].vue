@@ -17,7 +17,7 @@
 <script setup lang="ts">
 const AsyncComp = defineAsyncComponent(() => import("~/views/template1/Auth/Login/SingleSignOn.vue"));
 definePageMeta({
-    middleware: [],
+    middleware: ["sso-middleware"],
 });
 const pageLoading = ref(useState("loading"));
 onMounted(() => {

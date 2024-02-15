@@ -55,24 +55,33 @@
                     <span class="relative px-3 text-gray-400 text-[15px] bg-white z-[2]">使用其他帳號登入</span>
                 </div>
                 <div class="flex gap-[30px] justify-center mt-4">
-                    <NuxtLink :to="{ name: 'auth-login-sso-slug', params: { slug: '快速登入' } }">
+                    <div
+                        v-if="ssoLogingSite.google"
+                        @click="ssoLogin('google')"
+                    >
                         <NuxtImg
                             class="object-cover w-10 transition-all cursor-pointer aspect-1/1 duration-400 hover:opacity-80 hover:transition-all hover:duration-400"
                             src="/img/icons/medias/google.svg"
                         />
-                    </NuxtLink>
-                    <NuxtLink :to="{ name: 'auth-login-sso-slug', params: { slug: '快速登入' } }">
+                    </div>
+                    <div
+                        v-if="ssoLogingSite.line"
+                        @click="ssoLogin('line')"
+                    >
                         <NuxtImg
                             class="object-cover w-10 transition-all cursor-pointer aspect-1/1 duration-400 hover:opacity-80 hover:transition-all hover:duration-400"
                             src="/img/icons/medias/line.svg"
                         />
-                    </NuxtLink>
-                    <NuxtLink :to="{ name: 'auth-login-sso-slug', params: { slug: '快速登入' } }">
+                    </div>
+                    <div
+                        v-if="ssoLogingSite.facebook"
+                        @click="ssoLogin('facebook')"
+                    >
                         <NuxtImg
                             class="object-cover w-10 transition-all cursor-pointer aspect-1/1 duration-400 hover:opacity-80 hover:transition-all hover:duration-400"
                             src="/img/icons/medias/facebook.svg"
                         />
-                    </NuxtLink>
+                    </div>
                 </div>
                 <div class="flex justify-center gap-3 mt-[30px]">
                     <div class="text-gray-400 text-[15px]">還不是會員?</div>
@@ -88,17 +97,23 @@
 import { validateEmail } from "~/service/validator";
 import { ElMessage, ElLoading } from "element-plus";
 import { useUserStore } from "~/store/userStore";
+import { useInitializationStore } from "~/store/initializationStore";
 import Cookies from "js-cookie";
 
 const { $api } = useNuxtApp();
 const userStore = useUserStore();
 const router = useRouter();
 const formRefDom = ref<any>();
+const initializationStore = useInitializationStore();
 
 const form = ref<any>({
     email: "",
     password: "",
     saveInfo: false,
+});
+
+const ssoLogingSite = computed(() => {
+    return JSON.parse(JSON.stringify(initializationStore.initializationData.site.socialite_providers));
 });
 
 const formDatas = ref<any>([
@@ -185,4 +200,44 @@ async function onSubmit() {
         }
     });
 }
+
+async function ssoLogin(site: string) {
+    let ssoSite = "";
+    if (site === "google") {
+        ssoSite = ssoLogingSite.value.google;
+    } else if (site === "line") {
+        ssoSite = ssoLogingSite.value.line;
+    } else if (site === "facebook") {
+        ssoSite = ssoLogingSite.value.facebook;
+    }
+    console.log(ssoSite);
+    window.open(ssoSite);
+}
+
+// window.addEventListener("message", getMessage, false);
+
+function getMessage(e: any) {
+    if (e.origin === 'https://yale-third-party.mrjin.me') {
+        console.log(e, 'getMessage', e.data);
+        const SSOLoginData = e.data
+        if (!SSOLoginData.registered) {
+            userStore.ssoLogingData = SSOLoginData
+            router.push({ name: 'auth-login-sso-slug', params: { slug: '快速登入' } });
+        } else {
+            const token = SSOLoginData.token;
+            Cookies.set("token", token);
+            userStore.getUserProfile();
+            router.push({ name: "auth-panel-slug", params: { slug: "會員中心" } });
+        }
+        // router.push({ name: 'auth-login-sso-slug', params: { slug: '快速登入' } });
+    }
+}
+
+onMounted(async () => {
+    nextTick(async () => {
+        if (process.client) {
+            window.addEventListener("message", getMessage, false);
+        }
+    });
+});
 </script>
