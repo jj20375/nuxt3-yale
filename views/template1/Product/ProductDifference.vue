@@ -1,7 +1,9 @@
 <template>
     <section class="mt-[86px]">
-        <nav class="border-t border-b border-gray-300 py-[16px] pl-[122px] bg-white">
-            <Breadcrumb :menus="breadcrumbs" />
+        <nav class="border-t border-b border-gray-300 py-[16px] bg-white min-h-[55px]">
+            <div class="container">
+                <Breadcrumb :menus="breadcrumbs" />
+            </div>
         </nav>
         <div class="text-center bg-gray-50">
             <div class="container min-h-[200px] flex items-center">
