@@ -16,22 +16,19 @@
                         class="px-[3px]"
                     >
                         <div class="cursor-pointer rounded-[20px]">
-                            <Fancybox :options="{
-                                compact: false,
-                                contentClick: 'iterateZoom',
-                                Toolbar: {
-                                display: {
-                                    left: [
-                                        'infobar',
-                                    ],
-                                    middle : [],
-                                    right: [
-                                        'iterateZoom',
-                                        'close',
-                                    ],
-                                    }
-                                }
-                            }">
+                            <Fancybox
+                                :options="{
+                                    compact: false,
+                                    contentClick: 'iterateZoom',
+                                    Toolbar: {
+                                        display: {
+                                            left: ['infobar'],
+                                            middle: [],
+                                            right: ['iterateZoom', 'close'],
+                                        },
+                                    },
+                                }"
+                            >
                                 <NuxtImg
                                     data-fancybox="gallery"
                                     class="h-[350px] rounded-[20px]"
@@ -105,7 +102,7 @@ const isSliderInnerEnd = computed(() => {
 </script>
 
 <style scoped lang="scss">
-.swiper-slide{
+.swiper-slide {
     width: auto;
 }
 </style>

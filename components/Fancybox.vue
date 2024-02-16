@@ -8,8 +8,9 @@
 
 <script setup lang="ts">
 // fancybox 套件 https://fancyapps.com/resources/integration/#vue
-import { Fancybox } from "@fancyapps/ui";
+import * as FancyBoxUi from "@fancyapps/ui";
 import "@fancyapps/ui/dist/fancybox/fancybox.css";
+const { Fancybox } = FancyBoxUi;
 const props = defineProps({
     options: {
         type: Object,
