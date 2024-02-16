@@ -132,7 +132,7 @@ initializationData.value.site.product_categories.forEach((item: { id: any; menu_
 const footerDatas = ref({
     footer1: {
         title: "PRODUCTS",
-        menus: product_categories
+        menus: product_categories,
     },
     footer2: {
         title: "STORE",
@@ -212,7 +212,11 @@ const footerDatas = ref({
             },
             {
                 text: "Yale Home App",
-                url: "",
+                url: {
+                    name: "yale-home-app-slug",
+                    params: { slug: "Yale-Home-App下載" },
+                    query: { id: "1" },
+                },
             },
         ],
     },
