@@ -21,7 +21,7 @@
                     />
                 </div>
                 <div class="flex-1">
-                    <div class="flex gap-4 w-full text-gray-800">
+                    <div class="flex w-full gap-4 text-gray-800">
                         <h3 class="YaleSolisW-Bd font-medium text-[18px] flex-1">{{ product.name }}-{{ product.id }}</h3>
                         <p class="font-medium YaleSolisW-Bd text-[18px]">NT$ {{ $utils().formatCurrency(product.totalPrice) }}</p>
                     </div>
@@ -35,14 +35,14 @@
                     <div class="flex gap-[18px] justify-end">
                         <div class="flex justify-center items-stretch w-[150px] border border-gray-300 rounded-full">
                             <button
-                                class="flex-1 flex items-center justify-center cursor-pointer h-auto"
+                                class="flex items-center justify-center flex-1 h-auto cursor-pointer"
                                 @click.prevent="countUpdate(product.productID, product.count - 1)"
                             >
                                 <el-icon><Minus /></el-icon>
                             </button>
                             <div class="flex items-center justify-center w-[80px] py-[10px] h-full">{{ product.count }}</div>
                             <button
-                                class="flex-1 flex items-center justify-center cursor-pointer h-auto"
+                                class="flex items-center justify-center flex-1 h-auto cursor-pointer"
                                 @click.prevent="countUpdate(product.productID, product.count + 1)"
                             >
                                 <el-icon><Plus /></el-icon>
@@ -106,8 +106,8 @@ function selectProduct(id: number) {
     emit("update:selectProductIds", id);
 }
 
-const init = () => {
-    getUserShopping();
+const init = async () => {
+    await getUserShopping();
     // const storageShoppingCart = $shoppingCarService().getShoppingCar();
     // // 當購物車不為空時執行
     // if (storageShoppingCart !== null) {
@@ -121,10 +121,7 @@ const init = () => {
     //     shoppingCarStore.setShoppingCar([]);
     // }
 };
-
-onMounted(() => {
-    init();
-});
+await init();
 </script>
 
 <style lang="scss" scoped>

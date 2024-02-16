@@ -5,16 +5,14 @@
                 <font-awesome-icon class="animate-spin text-[40px] text-yellow-500"  :icon="['fas', 'circle-notch']"/>
             </div>
         </div>
-        <component
-            :is="AsyncComp"
-        ></component>
+        <component :is="AsyncComp"></component>
     </NuxtLayout>
 </template>
 
 <script setup lang="ts">
 const AsyncComp = defineAsyncComponent(() => import("~/views/template1/ShoppingCar/ShoppingCarIndex.vue"));
 definePageMeta({
-    middleware: [],
+    middleware: ["user-middleware", "auth-middleware"],
 });
 const pageLoading = ref(useState("loading"));
 onMounted(() => {

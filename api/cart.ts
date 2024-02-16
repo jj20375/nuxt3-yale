@@ -1,17 +1,14 @@
 import { CartItem } from "~/interface/shoppingCar";
 import { useFetchData } from "~/composables/fetch";
 
-
 interface ResGetCart {
-    cartItems: any[]
+    cartItems: any[];
 }
 
 export interface ReqCart {
-    cart_item_id: number
-    quantity?: number
+    cart_item_id: number;
+    quantity?: number;
 }
-
-
 
 export default () => {
     const {
@@ -21,26 +18,26 @@ export default () => {
         /**
          * 取得 會員購物車
          */
-        GetCart() {
-            return useFetchData.get<ResGetCart>(`${apiUrl}/cart`, {type: '1'});
+        GetCartAPI() {
+            return useMyFetch<ResGetCart>(`${apiUrl}/cart`, { method: "get", query: { type: "1" }, server: false });
         },
         /**
          * 加入購物車
          */
-        AddToCart(data: CartItem) {
-            return useFetchData.post(`${apiUrl}/cart/create-product`, data);
+        AddToCartAPI(data: CartItem) {
+            return useMyFetch(`${apiUrl}/cart/create-product`, { method: "post", body: data, server: false });
         },
-         /**
+        /**
          * 變更購物車
          */
-        UpdateCart(data : ReqCart) {
-            return  useFetchData.put(`${apiUrl}/cart/update-product`, data);
+        UpdateCartAPI(data: ReqCart) {
+            return useMyFetch(`${apiUrl}/cart/update-product`, { method: "put", body: data, server: false });
         },
         /**
          * 購物車移除商品
          */
-        DeleteCart(data: ReqCart) {
-            return useFetchData.delete(`${apiUrl}/cart/delete-product`, data);
-        }
+        DeleteCartAPI(data: ReqCart) {
+            return useMyFetch(`${apiUrl}/cart/delete-product`, { method: "delete", body: data });
+        },
     };
 };
