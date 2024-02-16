@@ -22,7 +22,7 @@
                     </NuxtLink>
                 </li>
                 <li
-                    v-show="(showMenu && isMobile) || isDesktop"
+                    v-show="(showMenu && isMobile) || isDesktop || isLargeDesktop"
                     v-for="(menu, key) in menus"
                     :key="key"
                 >
@@ -203,7 +203,7 @@ import IconInstagram from "~/assets/img/icons/medias/icon-black-2.svg";
 import IconLine from "~/assets/img/icons/medias/icon-black-3.svg";
 import IconYoutube from "~/assets/img/icons/medias/icon-black-4.svg";
 
-const { isMobile, isDesktop } = useWindowResize();
+const { isMobile, isDesktop, isLargeDesktop } = useWindowResize();
 
 // 手機版時判斷是否顯示選單
 const showMenu = ref(false);
