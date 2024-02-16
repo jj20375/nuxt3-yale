@@ -6,13 +6,13 @@
         <div class="bg-gray-50">
             <div class="flex justify-center">
                 <div class="container text-center">
-                    <h1 class="text-[32px] YaleSolisW-Bd mt-[58px]">{{ route.params.slug }}</h1>
+                    <h1 class="text-[32px] font-medium YaleSolisW-Bd mt-[58px]">{{ route.params.slug }}</h1>
                     <p class="text-[16px] mt-[13px]">請選擇產品進行規格比較</p>
                     <div class="mt-[20px]">
                         <button
                             @click.prevent="goToDifference()"
-                            :disabled="selectProducts.length === 0"
-                            class="py-[11px] px-[31px] disabled:bg-gray-100 disabled:border-gray-300 disabled:text-gray-400 disabled:cursor-not-allowed bg-yellow-600 rounded-full text-gray-800 text-[16px]"
+                            class="btn-md"
+                            :class="selectProducts.length === 0 ? 'gray-btn pointer-events-none cursor-not-allowed' : 'yellow-btn'"
                         >
                             <span v-if="selectProducts.length === 1">查看規格</span>
                             <span v-else-if="selectProducts.length > 1">規格比較</span>
@@ -21,13 +21,13 @@
                     </div>
                 </div>
             </div>
-            <div class="container grid grid-cols-4 gap-4 mt-[30px] pb-[104px]">
+            <div class="container grid grid-cols-4 gap-x-[20px] gap-y-[40px] mt-[30px] pb-[100px]">
                 <div
                     @click="selectProduct(item)"
                     v-for="(item, index) in datas"
                     :key="index"
-                    :class="[selectProducts.includes(item.id) ? 'border-2 border-yellow-600' : '', selectProducts.length === 3 && !selectProducts.includes(item.id) ? 'opacity-50' : '']"
-                    class="bg-white p-[30px] rounded-[16px] cursor-pointer"
+                    class="bg-white p-[30px] rounded-[16px] cursor-pointer outline -outline-offset-2 outline-2 duration-200 transition-all"
+                    :class="[selectProducts.includes(item.id) ? 'outline-yellow-600' : 'outline-transparent', selectProducts.length === 3 && !selectProducts.includes(item.id) ? 'opacity-50' : '']"
                 >
                     <NuxtImg
                         class="object-cover w-full rounded-2xl aspect-square"
@@ -135,14 +135,16 @@ async function getList(params: { product_type_id: string }) {
  */
 function goToDifference() {
     const setBreadcrumbs = [...breadcrumbs.value.slice(0, 4)];
+    const comparisonText = breadcrumbs.value[3].text;
+    const productName = comparisonText.replace("比較", "");
     setBreadcrumbs.push({
         name: "product-compare-slug",
-        text: `${breadcrumbs.value[3].text}規格比較`,
-        params: { slug: `${breadcrumbs.value[3].text}規格比較` },
+        text: `${productName}規格比較`,
+        params: { slug: `${productName}規格比較` },
         query: { compareId: route.query.compareId },
     });
     $utils().saveBreadcrumbsData(JSON.stringify(setBreadcrumbs));
-    router.push({ name: "product-compare-difference-slug", params: { slug: `${breadcrumbs.value[breadcrumbs.value.length - 1].text}規格比較` }, query: { compareId: route.query.compareId } });
+    router.push({ name: "product-compare-difference-slug", params: { slug: `${productName}規格比較` }, query: { compareId: route.query.compareId } });
 }
 
 /**

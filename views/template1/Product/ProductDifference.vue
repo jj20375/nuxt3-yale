@@ -5,25 +5,22 @@
         </nav>
         <div class="text-center bg-gray-50">
             <div class="container min-h-[200px] flex items-center">
-                <h1 class="text-[32px] YaleSolisW-Bd flex-1">{{ route.params.slug }}</h1>
+                <div class="w-[164px]"></div>
+                <h1 class="text-[32px] font-medium YaleSolisW-Bd flex-1">{{ route.params.slug }}</h1>
                 <div class="flex items-center">
                     <div class="mr-[20px]">
                         <NuxtLink :to="{ name: 'product-compare-slug', params: { slug: '耶魯產品資訊-主鎖-主鎖比較' }, query: { compareId: route.query.compareId } }">
                             <button class="text-blue-500 underline underline-offset-2 hover:no-underline">重新選擇</button>
                         </NuxtLink>
                     </div>
-                    <div class="mr-[16px]">
-                        <NuxtImg
-                            class="w-[28px]"
-                            src="/img/icons/medias/icon-black-1.svg"
-                        />
-                    </div>
-                    <div class="mr-[16px]">
-                        <NuxtImg
-                            class="w-[28px]"
-                            src="/img/icons/medias/icon-black-2.svg"
-                        />
-                    </div>
+                    <ul class="flex gap-4">
+                        <li class="p-1 cursor-pointer">
+                            <IconFacebook class="!w-[24px] !h-[24px] transition-all duration-300 hover:text-gray-400 hover:transition-all hover:duration-300" />
+                        </li>
+                        <li class="p-1 cursor-pointer">
+                            <IconLine class="!w-[24px] !h-[24px] transition-all duration-300 hover:text-gray-400 hover:transition-all hover:duration-300" />
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
@@ -45,6 +42,8 @@ import Breadcrumb from "~/views/template1/components/Breadcrumb.vue";
 import ProductDifferenceContent from "~/views/template1/Product/components/ProductDifferenceContent.vue";
 import { useProductCompareStore } from "~/store/productCompareStore";
 import type { ProductListAPIInterface, ProductCompareList, ProductInterface } from "~/interface/product";
+import IconLine from "assets/img/icons/medias/icon-black-3.svg";
+import IconFacebook from "assets/img/icons/medias/icon-black-1.svg";
 
 const { $api, $utils } = useNuxtApp();
 const route = useRoute();
