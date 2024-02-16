@@ -4,7 +4,7 @@
         <ShoppingCarStep2FormContactUser v-model:form="formContactUser" />
         <ShoppingCarStep2FormLogistics v-if="currentTab === 'type1'" v-model:form="formLogistics" />
         <ShoppingCarStep2FormPayment v-model:form="formPayment" />
-        <ShoppingCarStep2FormMeasureTheSize v-if="currentTab === 'type2'" v-model:form="formPayment" />
+        <ShoppingCarStep2FormMeasureTheSize v-if="currentTab === 'type2'" v-model:form="formMeasureTheSize" />
         <ShoppingCarStep2FormInvoice v-model:form="formInvoice" />
         <ShoppingCarStep2FormGift
             :gifts="gifts"
@@ -126,6 +126,11 @@ const formLogistics = ref({
 const formPayment = ref({
     // 付款方式
     paymentType: "type1",
+});
+
+//
+const formMeasureTheSize = ref({
+    measureSizeTime: "2024-01-01",
 });
 
 // 發票表單

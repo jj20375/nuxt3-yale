@@ -11,7 +11,7 @@
                             type="date"
                             valueFormat="YYYY-MM-DD"
                             placeholder="請選擇日期"
-                            v-model="form.store"
+                            v-model="form.date"
                         >
                         </el-date-picker>
                     </div>
@@ -31,7 +31,7 @@ const props = defineProps({
         default() {
             return {
                 // 預約丈量時間
-                measureSizeTime: "type1",
+                measureSizeTime: "2024-01-01",
             };
         },
     },
