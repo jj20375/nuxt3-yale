@@ -9,20 +9,19 @@
                 <div
                     v-for="(product, index) in products"
                     v-show="formData[index]"
-                    class="flex border-gray-300 py-[30px]"
+                    class="flex gap-[48px] border-gray-300 py-[30px]"
                     :class="{ 'border-b': index !== products.length - 1 }"
                 >
-                    <div
-                        class="mr-5"
+                    <div class="flex gap-[36px]"
                         v-if="formData[index]"
                     >
                         <el-checkbox :label="product.id" />
+                        <NuxtImg
+                            class="w-[180px] aspect-square object-cover"
+                            src="/img/shopping-car/shopping-gift-demo-1.jpg"
+                        />
                     </div>
-                    <NuxtImg
-                        v-if="formData[index]"
-                        class="w-[195px] mr-[37px]"
-                        src="/img/shopping-car/shopping-gift-demo-1.jpg"
-                    />
+
                     <div
                         class="flex-1"
                         v-if="formData[index]"

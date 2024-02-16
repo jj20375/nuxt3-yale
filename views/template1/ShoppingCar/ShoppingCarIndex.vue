@@ -1,5 +1,5 @@
 <template>
-    <section class="mt-[86px] border-t border-gray-300">
+    <section class="mt-[86px] mb-[120px] border-t border-gray-300">
         <div class="container">
             <ul
                 v-if="currentStep == 0"
@@ -30,7 +30,7 @@
                     <ShoppingCarSteps v-model:step="currentStep" />
                 </div>
             </div>
-            <div class="flex justify-center mt-[40px] mb-[80px]">
+            <div class="flex justify-center mt-[40px]">
                 <component
                     :is="showComponent"
                     v-model:currentTab="currentTab"
@@ -64,7 +64,7 @@
                             </div>
                         </template>
                         <template #total>
-                            <span class="text-[24px]">
+                            <span>
                                 {{ $utils().formatCurrency(total - salePrice - salePrice) }}
                             </span>
                         </template>
@@ -98,7 +98,7 @@
                 </div>
             </div>
             <div
-                class="flex justify-center mb-[100px] mt-[41px]"
+                class="flex justify-center mt-[40px]"
                 v-if="currentStep == 1"
             >
                 <button
@@ -106,7 +106,7 @@
                         currentStep = 2;
                         showComponent = ShoppingCarStep3;
                     "
-                    class="bg-yellow-600 text-gray-800 text-center py-[17px] w-[339px] rounded-full text-[16px]"
+                    class="yellow-btn btn-lg"
                 >
                     前往付款
                 </button>

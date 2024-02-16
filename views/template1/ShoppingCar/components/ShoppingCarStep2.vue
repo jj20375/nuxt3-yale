@@ -16,7 +16,7 @@
             :customRuleData="customRuleData"
         />
 
-        <div class="mt-[60px]">
+        <div class="mt-[30px]">
             <div
                 v-if="currentTab === 'type2'"
                 class="flex items-center"
@@ -41,7 +41,7 @@
                 >
                     <div class="text-[14px] text-gray-800"></div>
                     <span class="font-normal">我已閱讀並同意</span
-                    ><span class="mx-2 font-medium underline YaleSolisW-Bd">
+                    ><span class="mx-2 font-medium underline underline-offset-2 cursor-pointer hover:no-underline YaleSolisW-Bd">
                         <NuxtLink
                             :to="{
                                 name: 'other-terms-slug',
@@ -51,7 +51,7 @@
                         ></span
                     >
                     <span class="font-normal">與</span>
-                    <span class="mx-2 font-medium underline YaleSolisW-Bd"> <NuxtLink :to="{ name: 'other-privacy-slug', params: { slug: '耶魯隱私權政權' } }"> 隱私權政策 </NuxtLink></span>
+                    <span class="mx-2 font-medium underline underline-offset-2 cursor-pointer hover:no-underline YaleSolisW-Bd"> <NuxtLink :to="{ name: 'other-privacy-slug', params: { slug: '耶魯隱私權政權' } }"> 隱私權政策 </NuxtLink></span>
                 </el-checkbox>
             </div>
         </div>
@@ -235,16 +235,21 @@ onMounted(async () => {
 <style lang="scss" scoped>
 :deep {
     .el-checkbox-group {
-        @apply text-base leading-normal #{!important};
+        @apply text-base leading-normal block #{!important};
     }
-    .is-checked {
-        .el-checkbox__inner {
-            @apply bg-yellow-600 border-yellow-600 #{!important};
-        }
-    }
-
     .el-checkbox {
-        @apply h-auto #{!important};
+        @apply w-[18px] h-[18px] #{!important};
+        .el-checkbox__inner {
+            @apply w-[18px] h-[18px] #{!important};
+            &:hover{
+                @apply border-yellow-600;
+            }
+        }
+        .is-checked{
+            .el-checkbox__inner {
+                @apply bg-yellow-600 border-yellow-600 after:h-[9px] after:left-[6px] after:top-[2px] #{!important};
+            }
+        }
     }
 }
 </style>

@@ -1,41 +1,35 @@
 <template>
     <el-dialog
+        class="custom-dialog h-[600px]"
+        close-on-click-modal
+        lock-scroll
+        show-close
+        center
+        align-center
+        append-to-body
         v-model="showDialog"
         :before-close="closeDialog"
         :show-close="false"
     >
-        <div class="text-right">
-            <button @click="closeDialog">
-                <el-icon :size="30"><Close /></el-icon>
-            </button>
-        </div>
-        <h2 class="text-[24px] text-gray-800 font-medium YaleSolisW-Bd">商品詳情</h2>
-        <div class="p-[20px] text-gray-800 border border-gray-300 rounded-[8px]">
-            <h5 class="text-[18px] font-medium YaleSolisW-Bd mb-[8px]">門扇</h5>
-            <div class="flex">
+        <h2 class="text-gray-800 font-bold text-[24px] mb-4">商品詳情</h2>
+        <div class="product-card p-5 border-gray-200 border-[1px] rounded-[8px]">
+            <h5 class="text-[18px] font-bold text-gray-800 mb-4">門扇</h5>
+            <div class="flex gap-5">
                 <div class="flex-1">
-                    <div class="flex mb-[4px]">
-                        <div class="w-[80px]">{{ products.doorGloup.types.category1.label }}:</div>
+                    <div class="grid gap-2 text-gray-700">
+                        <div class="w-[80px]">{{ products.doorGloup.types.category1.label }}</div>
                         <div>{{ products.doorGloup.types.category1.value ? "是" : "否" }}</div>
-                    </div>
-                    <div class="flex mb-[4px]">
-                        <div class="w-[80px]">場景:</div>
+                        <div class="w-[80px]">場景</div>
                         <div>{{ products.name }}</div>
-                    </div>
-                    <div class="flex mb-[4px]">
-                        <div class="w-[80px]">款式:</div>
-                        <div>
+                        <div class="w-[80px]">款式</div>
+                        <div class="flex flex-col gap-1">
                             <div>{{ products.doorGloup.door.title }}</div>
                             <div>{{ products.doorGloup.door.style }}</div>
                         </div>
-                    </div>
-                    <div class="flex mb-[4px]">
-                        <div class="w-[80px]">顏色:</div>
+                        <div class="w-[80px]">顏色</div>
                         <div>{{ products.doorGloup.door.color.text }}</div>
-                    </div>
-                    <div class="flex mb-[4px]">
-                        <div class="w-[80px]">尺寸:</div>
-                        <div>
+                        <div class="w-[80px]">尺寸</div>
+                        <div class="flex flex-col gap-1">
                             <div>門高: {{ products.doorGloup.size["height"] }}</div>
                             <div>門寬: {{ products.doorGloup.size["width"] }}</div>
                             <div>門厚: {{ products.doorGloup.size["bold"] }}</div>
@@ -44,7 +38,7 @@
                 </div>
                 <div>
                     <NuxtImg
-                        class="w-[200px]"
+                        class="w-[200px] aspect-square object-cover h-fit"
                         :src="products.imgSrc"
                     />
                 </div>
@@ -77,3 +71,11 @@ function closeDialog() {
     showDialog.value = false;
 }
 </script>
+
+<style lang="scss" scoped>
+.product-card {
+    .grid {
+        grid-template-columns: 100px 1fr;
+    }
+}
+</style>

@@ -10,10 +10,10 @@
                 class="flex border-gray-300 gap-[48px] py-[30px]"
                 :class="shoppingCar.length - 1 === index ? '' : index === 0 ? 'pt-0' : 'border-b'"
             >
-                <div class="flex gap-2">
+                <div class="flex gap-[36px]">
                     <el-checkbox :key="product.id" :label="product.id" />
                     <NuxtImg
-                        class="w-[180px]"
+                        class="w-[180px] aspect-square object-cover"
                         :src="product.imgSrc"
                     />
                 </div>

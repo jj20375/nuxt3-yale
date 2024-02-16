@@ -37,7 +37,7 @@
                             <div class="text-[14px] text-gray-800 mr-[4px]">
                                 <span>原價</span><span class="line-through">NT$ {{ $utils().formatCurrency(gift.price) }}</span>
                             </div>
-                            <div class="text-red-500 text-[14px]">
+                            <div class="text-pink-900 text-[14px]">
                                 <span>滿額贈</span>
                                 <span>NT$ {{ $utils().formatCurrency(gift.rule.pay) }}</span>
                             </div>
