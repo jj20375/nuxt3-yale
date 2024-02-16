@@ -137,7 +137,7 @@ init();
     @apply text-base leading-normal block #{!important};
   }
   .el-checkbox {
-    @apply w-[18px] h-[18px];
+    @apply h-[18px];
     .el-checkbox__label {
       @apply hidden #{!important};
     }

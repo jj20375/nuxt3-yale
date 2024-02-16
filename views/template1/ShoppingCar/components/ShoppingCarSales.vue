@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-gray-50 p-[30px] rounded-[8px] mt-[10px] mb-[24px]">
+    <div class="bg-gray-50 p-[30px] rounded-[8px] mb-[24px]">
         <div class="leading-8" v-html="saleData"></div>
     </div>
 </template>

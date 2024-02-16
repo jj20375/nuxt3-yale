@@ -4,7 +4,7 @@
         <ShoppingCarStep2FormContactUser v-model:form="formContactUser" />
         <ShoppingCarStep2FormLogistics v-if="currentTab === 'type1'" v-model:form="formLogistics" />
         <ShoppingCarStep2FormPayment v-model:form="formPayment" />
-        <!-- <ShoppingCarStep2FormMeasureTheSize v-model:form="formPayment" /> -->
+        <ShoppingCarStep2FormMeasureTheSize v-if="currentTab === 'type2'" v-model:form="formPayment" />
         <ShoppingCarStep2FormInvoice v-model:form="formInvoice" />
         <ShoppingCarStep2FormGift
             :gifts="gifts"
@@ -16,7 +16,7 @@
             :customRuleData="customRuleData"
         />
 
-        <div class="mt-[30px]">
+        <div class="flex flex-col gap-2 mt-[30px]">
             <div
                 v-if="currentTab === 'type2'"
                 class="flex items-center"
@@ -24,13 +24,13 @@
                 <el-checkbox
                     v-model="formConfirm.confirmCustomRule"
                     size="large"
+                    class="text-gray-800"
                 >
-                    <div class="text-[14px] text-gray-800"></div>
                     <span class="font-normal">我已閱讀並同意</span>
                 </el-checkbox>
                 <span
                     @click="showDialogByCustomRule = true"
-                    class="mx-2 font-medium underline cursor-pointer YaleSolisW-Bd text-[14px]"
+                    class="mx-2 text-gray-800 font-medium underline underline-offset-2 cursor-pointer hover:no-underline YaleSolisW-Bd text-[14px]"
                     >定型化契約</span
                 >
             </div>
@@ -38,11 +38,12 @@
                 <el-checkbox
                     v-model="formConfirm.confirmRule"
                     size="large"
+                    class="text-gray-800"
                 >
-                    <div class="text-[14px] text-gray-800"></div>
                     <span class="font-normal">我已閱讀並同意</span
                     ><span class="mx-2 font-medium underline underline-offset-2 cursor-pointer hover:no-underline YaleSolisW-Bd">
                         <NuxtLink
+                            class="text-gray-800" target="_blank"
                             :to="{
                                 name: 'other-terms-slug',
                                 params: { slug: '耶魯網站服務條款' },
@@ -51,7 +52,8 @@
                         ></span
                     >
                     <span class="font-normal">與</span>
-                    <span class="mx-2 font-medium underline underline-offset-2 cursor-pointer hover:no-underline YaleSolisW-Bd"> <NuxtLink :to="{ name: 'other-privacy-slug', params: { slug: '耶魯隱私權政權' } }"> 隱私權政策 </NuxtLink></span>
+                    <span class="mx-2 font-medium underline underline-offset-2 cursor-pointer hover:no-underline YaleSolisW-Bd"> <NuxtLink
+                        class="text-gray-800" target="_blank" :to="{ name: 'other-privacy-slug', params: { slug: '耶魯隱私權政權' } }"> 隱私權政策 </NuxtLink></span>
                 </el-checkbox>
             </div>
         </div>
@@ -238,7 +240,7 @@ onMounted(async () => {
         @apply text-base leading-normal block #{!important};
     }
     .el-checkbox {
-        @apply w-[18px] h-[18px] #{!important};
+        @apply h-[18px] #{!important};
         .el-checkbox__inner {
             @apply w-[18px] h-[18px] #{!important};
             &:hover{

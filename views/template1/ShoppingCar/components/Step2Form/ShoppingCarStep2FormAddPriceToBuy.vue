@@ -224,7 +224,7 @@ watch(formData.value, (val) => {
         @apply text-base leading-normal block #{!important};
     }
     .el-checkbox {
-        @apply w-[18px] h-[18px] #{!important};
+        @apply h-[18px] #{!important};
         .el-checkbox__label {
             @apply hidden #{!important};
         }

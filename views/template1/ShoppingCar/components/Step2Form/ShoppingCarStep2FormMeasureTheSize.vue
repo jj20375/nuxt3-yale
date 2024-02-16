@@ -5,20 +5,15 @@
             <el-form-item prop="measureSizeTime">
                 <div class="grid grid-cols-2 gap-[30px] w-full">
                     <div>
-                        <label class="block w-full text-gray-800 text-[15px]">選擇丈量時間<span class="text-red-500">*</span></label>
-                        <el-select
+                        <label class="block w-full text-gray-800 text-[15px]">選擇丈量時間<span class="ml-1 text-red-500">*</span></label>
+                        <el-date-picker
                             class="w-full"
-                            placeholder="請輸入..."
+                            type="date"
+                            valueFormat="YYYY-MM-DD"
+                            placeholder="請選擇日期"
                             v-model="form.store"
                         >
-                            <el-option
-                                v-for="option in 10"
-                                :key="option"
-                                :label="'門市-' + option"
-                                :value="option"
-                            >
-                            </el-option>
-                        </el-select>
+                        </el-date-picker>
                     </div>
                 </div>
             </el-form-item>

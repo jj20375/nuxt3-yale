@@ -79,12 +79,6 @@ watch(formData.value, (val) => {
 </script>
 
 <style lang="scss" scoped>
-:deep {
-    .el-radio-group {
-        @apply block;
-    }
-}
-
 :deep .el-radio-group {
     @apply flex flex-col items-start #{!important};
     .el-radio.el-radio--large {

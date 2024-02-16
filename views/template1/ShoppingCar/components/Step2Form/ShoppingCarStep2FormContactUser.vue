@@ -3,6 +3,7 @@
         <h5 class="bg-gray-50 py-[8px] font-medium pl-[16px] w-full mb-[30px]">聯繫人</h5>
         <div class="flex items-center gap-[30px] mb-[30px]">
             <el-checkbox
+                class="relative"
                 v-model="formData.chooseDefaultContactUser"
                 @change="onChooseDefaultContactUser"
                 :label="'預設聯繫人'"
@@ -10,7 +11,7 @@
             />
             <div
                 @click="showDialog = true"
-                class="underline underline-offset-2 text-[15px] text-blue-500 cursor-pointer"
+                class="relative underline underline-offset-2 text-[15px] text-blue-500 cursor-pointer"
             >
                 選擇其他聯繫人
             </div>
@@ -228,7 +229,7 @@ watch(
         @apply text-gray-800 text-[15px] leading-none font-normal #{!important};
     }
     .el-checkbox__inner {
-        @apply w-[18px] h-[18px] #{!important};
+        @apply h-[18px] #{!important};
         &:hover {
             @apply border-yellow-600;
         }

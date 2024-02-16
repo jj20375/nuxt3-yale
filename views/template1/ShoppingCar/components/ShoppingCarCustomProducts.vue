@@ -48,14 +48,14 @@
                                                 <template
                                                     v-for="(item4, index4) in item3"
                                                 >
-                                                    <div>{{ item4.label }}:</div>
+                                                    <div>{{ item4.label }}</div>
                                                     <div>{{ item4.value ? "是" : "否" }}</div>
                                                 </template>
                                             </template>
                                             <template
                                                 v-if="index3 === 'size'"
                                             >
-                                                <div>{{ item3.label }}:</div>
+                                                <div>{{ item3.label }}</div>
                                                 <div class="flex flex-col gap-1">
                                                     <div>門高: {{ item3["height"] }}</div>
                                                     <div>門寬: {{ item3["width"] }}</div>
@@ -65,7 +65,7 @@
                                             <template
                                                 v-if="index3 === 'door'"
                                             >
-                                                <div>門扇:</div>
+                                                <div>門扇</div>
                                                 <div class="flex flex-col gap-1">
                                                     <div>{{ item3.title }}</div>
                                                     <div>{{ item3.style }}</div>
@@ -258,7 +258,7 @@ init();
         @apply text-base leading-normal block #{!important};
     }
     .el-checkbox {
-        @apply w-[18px] h-[18px];
+        @apply h-[18px];
         .el-checkbox__label {
             @apply hidden #{!important};
         }

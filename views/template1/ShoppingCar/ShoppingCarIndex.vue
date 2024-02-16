@@ -40,60 +40,62 @@
                     class="w-[400px]"
                     v-if="currentStep !== 2"
                 >
-                    <ShoppingCarInputCoupon v-if="currentStep == 0" />
-                    <ShoppingCarBilling
-                        :class="currentStep == 0 ? 'mt-[20px]' : ''"
-                        :selectProductIds="selectProductIds"
-                        :currentTab="currentTab"
-                        :currentStep="currentStep"
-                    >
-                        <template
-                            v-if="currentStep == 0"
-                            #button
+                    <div class="sticky top-[111px]">
+                        <ShoppingCarInputCoupon v-if="currentStep == 0" />
+                        <ShoppingCarBilling
+                            :class="currentStep == 0 ? 'mt-[20px]' : ''"
+                            :selectProductIds="selectProductIds"
+                            :currentTab="currentTab"
+                            :currentStep="currentStep"
                         >
-                            <div class="mt-[40px]">
-                                <button
-                                    @click="
+                            <template
+                                v-if="currentStep == 0"
+                                #button
+                            >
+                                <div class="mt-[40px]">
+                                    <button
+                                        @click="
                                         currentStep = 1;
                                         showComponent = ShoppingCarStep2;
                                     "
-                                    class="yellow-btn w-full"
-                                >
-                                    下一步
-                                </button>
-                            </div>
-                        </template>
-                        <template #total>
+                                        class="yellow-btn w-full"
+                                    >
+                                        下一步
+                                    </button>
+                                </div>
+                            </template>
+                            <template #total>
                             <span>
                                 {{ $utils().formatCurrency(total - salePrice - salePrice) }}
                             </span>
-                        </template>
-                        <template
-                            v-if="currentStep == 0"
-                            #deposit
-                        >
-                            {{ $utils().formatCurrency(total * 0.3) }}
-                        </template>
-                        <template
+                            </template>
+                            <template
+                                v-if="currentStep == 0"
+                                #deposit
+                            >
+                                {{ $utils().formatCurrency(total * 0.3) }}
+                            </template>
+                            <template
+                                v-if="currentStep == 1"
+                                #depositBig
+                            >
+                                {{ $utils().formatCurrency(total * 0.3) }}
+                            </template>
+                        </ShoppingCarBilling>
+                        <div
                             v-if="currentStep == 1"
-                            #depositBig
-                        >
-                            {{ $utils().formatCurrency(total * 0.3) }}
-                        </template>
-                    </ShoppingCarBilling>
-                    <div
-                        v-if="currentStep == 1"
-                        class="cursor-pointer mt-[24px] flex"
-                        @click="
+                            class="cursor-pointer mt-[24px] flex"
+                            @click="
                             currentStep = 0;
                             showComponent = ShoppingCarStep1;
                         "
-                    >
-                        <NuxtImg
-                            class="w-[20px]"
-                            src="/img/icons/post/arrow-prev.svg"
-                        />
-                        <span class="ml-[8px]">返回購物車</span>
+                        >
+                            <NuxtImg
+                                class="w-[20px]"
+                                src="/img/icons/post/arrow-prev.svg"
+                            />
+                            <span class="ml-[8px]">返回購物車</span>
+                        </div>
                     </div>
                 </div>
             </div>
