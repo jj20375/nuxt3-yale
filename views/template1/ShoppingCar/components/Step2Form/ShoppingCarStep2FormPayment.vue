@@ -23,6 +23,7 @@
                         <el-select
                             class="w-full"
                             v-model="form.store"
+                            placeholder="請選擇"
                         >
                             <el-option
                                 v-for="option in 10"
