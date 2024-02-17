@@ -2,6 +2,7 @@
     <el-dialog
         id="addToCarDialog"
         v-model="showDialog2"
+        :before-close="closeDialog"
         class="custom-dialog h-[500px]"
         close-on-click-modal
         lock-scroll
