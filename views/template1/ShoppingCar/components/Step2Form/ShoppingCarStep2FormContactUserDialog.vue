@@ -2,80 +2,75 @@
     <el-dialog
         id="addToCarDialog"
         v-model="showDialog2"
-        width="auto"
-        :show-close="true"
-        :align-center="true"
-        :before-close="closeDialog"
-        style="border-radius: 24px"
-        appen-to-body
+        class="custom-dialog h-[500px]"
+        close-on-click-modal
+        lock-scroll
+        show-close
+        center
+        align-center
+        append-to-body
     >
-        <div class="flex justify-center px-10">
-            <div>
-                <h3 class="text-center mb-[30px] text-[24px] YaleSolisW-Bd text-gray-800 font-medium">常用聯絡人</h3>
-                <el-radio-group
-                    v-model="defaultContactUserIdData"
-                    @change="setDefaultContactUser"
-                    class="ml-4"
-                >
-                    <table>
-                        <thead class="bg-gray-100">
-                            <tr class="px-5">
-                                <th
-                                    class="text-[14px] font-medium YaleSolisW-Bd h-[30px] py-[4px] text-left text-gray-800"
-                                    v-for="(column, key) in columns"
-                                    :key="key"
-                                >
-                                    {{ column }}
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr
-                                v-for="(contact, index) in contactUsers"
-                                :key="index"
-                                class="px-5 border-b border-gray-200"
+        <div class="w-full">
+            <h3 class="text-center mb-[30px] text-[24px] YaleSolisW-Bd text-gray-800 font-medium">常用聯繫人</h3>
+            <el-radio-group
+                v-model="defaultContactUserIdData"
+                @change="setDefaultContactUser"
+                class="w-full"
+            >
+                <table class="min-w-full">
+                    <thead class="bg-gray-100">
+                        <tr class="px-5">
+                            <th
+                                class="text-[14px] font-medium YaleSolisW-Bd px-[10px] py-[10px] text-left text-gray-800"
+                                v-for="(column, key) in columns"
+                                :key="key"
                             >
-                                <td
-                                    class="YaleSolisW-Bd text-[16px] pr-[20px] font-bold text-gray-800 pl-5 py-[24px]"
-                                    v-if="contact.default"
-                                >
-                                    預設
-                                </td>
-                                <td
-                                    v-else
-                                    class="pr-[20px] text-gray-800 py-[24px]"
-                                ></td>
-                                <td class="text-[16px] pr-[20px] text-gray-800">{{ contact.name }}</td>
-                                <td class="text-[16px] pr-[20px] text-gray-800">{{ contact.phone }}</td>
-                                <td class="text-[16px] whitespace-nowrap pr-[20px] text-gray-800 min-w-[300px]">{{ contact.address }}</td>
-                                <td class="pr-5">
-                                    <el-radio
-                                        :label="contact.id"
-                                        size="large"
-                                    ></el-radio>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </el-radio-group>
-                <div class="mt-[40px] mb-[60px] flex justify-center">
-                    <div class="mr-[12px]">
-                        <button
-                            @click="closeDialog"
-                            class="border border-gray-800 text-gray-800 rounded-full w-[140px] py-[11px] hover:bg-black hover:text-white duration-500 transition-all"
+                                {{ column }}
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr
+                            v-for="(contact, index) in contactUsers"
+                            :key="index"
+                            class="border-b border-gray-200"
                         >
-                            返回
-                        </button>
-                    </div>
-                    <div>
-                        <button
-                            @click="closeDialogByConfirm"
-                            class="border border-yellow-600 bg-yellow-600 text-gray-800 rounded-full w-[140px] py-[11px] hover:bg-yellow-700 duration-500 transition-all"
-                        >
-                            確認
-                        </button>
-                    </div>
-                </div>
+                            <td
+                                class="YaleSolisW-Bd text-[16px] font-bold text-gray-800 px-[10px] py-[10px]"
+                                v-if="contact.default"
+                            >
+                                預設
+                            </td>
+                            <td
+                                v-else
+                                class="text-gray-800 px-[10px] py-[10px]"
+                            ></td>
+                            <td class="text-[16px] px-[10px] py-[10px] text-gray-800">{{ contact.name }}</td>
+                            <td class="text-[16px] px-[10px] py-[10px] text-gray-800">{{ contact.phone }}</td>
+                            <td class="text-[16px] px-[10px] py-[10px] text-gray-800 w-[300px]">{{ contact.address }}</td>
+                            <td class="px-[10px] py-[10px]">
+                                <el-radio
+                                    :label="contact.id"
+                                    size="large"
+                                ></el-radio>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </el-radio-group>
+            <div class="mt-[40px] flex justify-center gap-4 mt-6">
+                <button
+                    @click="closeDialog"
+                    class="transparent-btn btn-md"
+                >
+                    返回
+                </button>
+                <button
+                    @click="closeDialogByConfirm"
+                    class="yellow-btn btn-md"
+                >
+                    確認
+                </button>
             </div>
         </div>
     </el-dialog>
@@ -153,7 +148,24 @@ function init() {}
 </script>
 
 <style lang="scss" scoped>
-:deep .el-radio__input.is-checked .el-radio__inner {
-    @apply bg-yellow-600 border-yellow-600 #{!important};
+:deep .el-radio-group {
+    @apply flex flex-col items-start #{!important};
+    .el-radio.el-radio--large {
+        .el-radio__label {
+            @apply hidden font-normal leading-none;
+        }
+        .el-radio__inner {
+            @apply w-[18px] h-[18px];
+            &:hover {
+                @apply border-yellow-600;
+            }
+        }
+        &.is-checked {
+            @apply font-normal #{!important};
+            .el-radio__inner {
+                @apply border-yellow-600 bg-yellow-600;
+            }
+        }
+    }
 }
 </style>

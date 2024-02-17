@@ -23,6 +23,7 @@
                         <el-select
                             class="w-full"
                             v-model="form.store"
+                            placeholder="請選擇"
                         >
                             <el-option
                                 v-for="option in 10"
@@ -79,12 +80,6 @@ watch(formData.value, (val) => {
 </script>
 
 <style lang="scss" scoped>
-:deep {
-    .el-radio-group {
-        @apply block;
-    }
-}
-
 :deep .el-radio-group {
     @apply flex flex-col items-start #{!important};
     .el-radio.el-radio--large {

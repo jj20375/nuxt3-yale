@@ -3,7 +3,7 @@
         <div>
             <div class="flex flex-col">
                 <div
-                    v-for="(column, key) in columns"
+                    v-for="(column, key, columnIndex) in columns"
                     :key="key"
                     class="flex grid grid-cols-4 place-content-center"
                 >
@@ -17,7 +17,8 @@
                                 class="h-[300px] w-[150px]"
                             ></div>
                             <div
-                                class="py-[12px] h-full border-b border-gray-300 text-[16px] text-gray-800"
+                                class="py-[16px] h-full border-b border-gray-300 YaleSolisW-Bd font-medium text-[16px] text-gray-800"
+                                :class="columnIndex < 2 ? 'mr-[10px]': ''"
                                 v-else
                             >
                                 {{ column }}
@@ -30,16 +31,16 @@
                             >
                                 <div v-if="products[index-2] && products[index-2][key]">
                                     <NuxtImg
-                                        class="h-[200px]"
+                                        class="h-[200px] aspect-square object-cover"
                                         :src="products[index-2][key]"
                                     />
-                                    <div class="text-center">
-                                        <button class="py-[9px] px-[33px] bg-yellow-600 rounded-full text-gray-800 hover:bg-yellow-700 duration-500 transition-all">立即選購</button>
+                                    <div class="text-center mt-4">
+                                        <button class="yellow-btn btn-md">立即選購</button>
                                     </div>
                                 </div>
                             </div>
                             <div
-                                class="ml-[50px]"
+                                class="mx-[10px]"
                                 v-else-if="key === 'style'"
                             >
                                 <el-select
@@ -58,7 +59,7 @@
                                 </el-select>
                             </div>
                             <div
-                                class="ml-[50px]"
+                                class="mx-[10px]"
                                 v-else-if="key === 'category'"
                             >
                                 <el-select
@@ -78,7 +79,7 @@
                             </div>
                             <div
                                 v-else
-                                class="py-[12px] h-full border-b border-gray-300 text-[16px] text-gray-800 flex justify-center"
+                                class="py-[16px] h-full border-b border-gray-300 text-[16px] text-gray-800 flex justify-center"
                             >
                                 <div class="px-[12px]">
                                     {{ (products[index-2] && products[index-2][key]) ? products[index-2][key] : "-" }}
@@ -262,12 +263,24 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
-:deep .el-input__wrapper {
-    font-family: "YaleSolisW-Bd";
-    @apply bg-none border-b shadow-none w-[300px] rounded-none h-[49px] font-bold;
-}
-
-:deep .el-select .el-input .el-select__caret {
-    @apply font-bold text-gray-800;
+// 下拉選單
+:deep{
+    .el-select{
+        .el-input{
+            .el-input__wrapper {
+                @apply shadow-formDefault rounded-none py-[14px] px-0 bg-transparent text-[16px] #{!important};
+                &.is-focus{
+                    @apply shadow-formFocus #{!important};
+                }
+                .el-input__inner {
+                    @apply text-gray-800 font-medium;
+                    font-family: YaleSolisW-Bd;
+                    &::placeholder {
+                        -webkit-text-fill-color: #ABABAC;
+                    }
+                }
+            }
+        }
+    }
 }
 </style>

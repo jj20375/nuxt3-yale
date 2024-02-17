@@ -16,7 +16,7 @@
         />
 
         <ShoppingCarSales />
-        <div class="mb-[100px]">
+        <div class="flex">
             <NuxtLink
                 class="YaleSolisW-Rg text-[16px] flex items-center"
                 :to="{ name: 'product-slug', params: { slug: '耶魯產品資訊-電子鎖-主鎖' }, query: { category: 1, tag: 1 } }"

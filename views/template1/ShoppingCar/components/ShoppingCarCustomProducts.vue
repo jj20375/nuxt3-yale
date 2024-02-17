@@ -7,108 +7,107 @@
             <div
                 v-for="(product, index) in shoppingCar"
                 :key="index"
-                class="flex border-gray-300 py-[40px]"
-                :class="shoppingCar.length - 1 === index ? '' : 'border-b'"
+                class="flex border-gray-300 gap-[48px] py-[30px] product-card"
+                :class="shoppingCar.length - 1 === index ? '' : index === 0 ? 'pt-0 border-b' : 'border-b'"
             >
-                <div class="relative w-[200px]">
+                <div class="flex gap-[30px]">
                     <el-checkbox
-                        class="absolute top-0"
                         :label="product.id"
                     />
                     <NuxtImg
-                        class="ml-[36px] w-[180px] absolute top-0 h-auto inline-block"
+                        class="w-[180px] h-fit aspect-square object-cover"
                         :src="product.imgSrc"
                     />
                 </div>
-                <div class="flex-1 ml-[48px]">
-                    <div class="flex w-full text-gray-800 mb-[13px]">
+                <div class="flex-1">
+                    <div class="flex w-full text-gray-800 mb-[12px] gap-4">
                         <h3 class="YaleSolisW-Bd font-medium text-[18px] flex-1">訂製-{{ product.name }}</h3>
-                        <div>
+                        <div class="flex flex-col items-end gap-2 cursor-pointer h-fit">
                             <p class="font-medium YaleSolisW-Bd">NT$ {{ $utils().formatCurrency(product.price) }}</p>
-                            <button
-                                @click.prevent="setCustomProductOrderData(product)"
-                                class="text-[14px] flex items-center underline"
-                            >
-                                <NuxtImg
-                                    class="w-[16px] mr-1"
-                                    src="img/shopping-car/shopping-car-icon-detail.svg"
-                                />查看商品詳情
-                            </button>
                         </div>
                     </div>
-                    <div
-                        class="flex text-gray-800 text-[14px] mb-[12px]"
-                        v-for="(item, key) in shoppingCarDetail[index]"
-                        :key="key"
-                    >
-                        <div
-                            v-if="item.label"
-                            class="w-[90px] mr-[8px]"
-                        >
-                            {{ item.label }}
-                        </div>
-                        <div v-if="key === 'doorGloup'">
-                            <div
-                                v-for="(item3, index3) in item"
-                                class="mb-[12px]"
-                            >
-                                <div
-                                    v-if="index3 === 'types'"
-                                    class="flex"
+                    <div class="flex gap-4 justify-between items-start mb-4">
+                        <div class="flex-1 flex flex-col">
+                            <div class="grid grid-cols-2 gap-4 text-gray-700 text-[14px]">
+                                <template
+                                    v-for="(item, key) in shoppingCarDetail[index]"
+                                    :key="key"
                                 >
                                     <div
-                                        v-for="(item4, index4) in item3"
-                                        class="flex"
+                                        v-if="item.label"
                                     >
-                                        <div class="w-[90px] mr-[8px]">{{ item4.label }}:</div>
-                                        <div class="w-[90px] mr-[8px]">{{ item4.value ? "是" : "否" }}</div>
+                                        {{ item.label }}
                                     </div>
-                                </div>
-                                <div
-                                    v-if="index3 === 'size'"
-                                    class="flex"
-                                >
-                                    <div class="w-[90px] mr-[8px]">{{ item3.label }}:</div>
-                                    <div>
-                                        <div>門高: {{ item3["height"] }}</div>
-                                        <div>門寬: {{ item3["width"] }}</div>
-                                        <div>門厚: {{ item3["bold"] }}</div>
-                                    </div>
-                                </div>
-                                <div
-                                    v-if="index3 === 'door'"
-                                    class="flex"
-                                >
-                                    <div class="w-[90px] mr-[8px]">門扇:</div>
-                                    <div>
-                                        <div>{{ item3.title }}</div>
-                                        <div>{{ item3.style }}</div>
-                                        <div>{{ item3.color.text }}</div>
-                                    </div>
-                                </div>
+                                    <template v-if="key === 'doorGloup'">
+                                        <template
+                                            v-for="(item3, index3) in item"
+                                        >
+                                            <template
+                                                v-if="index3 === 'types'"
+                                            >
+                                                <template
+                                                    v-for="(item4, index4) in item3"
+                                                >
+                                                    <div>{{ item4.label }}</div>
+                                                    <div>{{ item4.value ? "是" : "否" }}</div>
+                                                </template>
+                                            </template>
+                                            <template
+                                                v-if="index3 === 'size'"
+                                            >
+                                                <div>{{ item3.label }}</div>
+                                                <div class="flex flex-col gap-1">
+                                                    <div>門高: {{ item3["height"] }}</div>
+                                                    <div>門寬: {{ item3["width"] }}</div>
+                                                    <div>門厚: {{ item3["bold"] }}</div>
+                                                </div>
+                                            </template>
+                                            <template
+                                                v-if="index3 === 'door'"
+                                            >
+                                                <div>門扇</div>
+                                                <div class="flex flex-col gap-1">
+                                                    <div>{{ item3.title }}</div>
+                                                    <div>{{ item3.style }}</div>
+                                                    <div>{{ item3.color.text }}</div>
+                                                </div>
+                                            </template>
+                                        </template>
+                                    </template>
+                                    <template v-if="key === 'doorOut'">
+                                        <div class="flex flex-col gap-1">
+                                            <div>{{ item.title }}</div>
+                                            <div>{{ item.style }}</div>
+                                            <div>{{ item.color.text }}</div>
+                                        </div>
+                                    </template>
+                                    <div v-if="['currentTool1', 'currentTool2'].includes(key)">{{ item.title }}</div>
+                                    <template v-if="['currentOther1', 'currentOther2', 'otherServices'].includes(key)">
+                                        <ul
+                                            v-if="item"
+                                            class="ml-2"
+                                        >
+                                            <li
+                                                v-for="(item2, index2) in item.datas"
+                                                class="list-disc list-inside"
+                                            >
+                                                {{ item2.name }}
+                                            </li>
+                                        </ul>
+                                    </template>
+                                </template>
                             </div>
                         </div>
-                        <div v-if="key === 'doorOut'">
-                            <div>
-                                <div>{{ item.title }}</div>
-                                <div>{{ item.style }}</div>
-                                <div>{{ item.color.text }}</div>
-                            </div>
-                        </div>
-                        <div v-if="['currentTool1', 'currentTool2'].includes(key)">{{ item.title }}</div>
-                        <div v-show="['currentOther1', 'currentOther2', 'otherServices'].includes(key)">
-                            <ul
-                                v-if="item"
-                                class="ml-2"
-                            >
-                                <li
-                                    v-for="(item2, index2) in item.datas"
-                                    class="list-disc list-inside"
-                                >
-                                    {{ item2.name }}
-                                </li>
-                            </ul>
-                        </div>
+                        <button
+                            @click.prevent="setCustomProductOrderData(product)"
+                            class="flex items-center"
+                        >
+                            <NuxtImg
+                                class="w-[16px] mr-1"
+                                src="img/shopping-car/shopping-car-icon-detail.svg"
+                            />
+                            <div class="text-[14px] underline underline-offset-2">查看商品詳情</div>
+                        </button>
                     </div>
                     <div class="flex gap-[18px] justify-end">
                         <div class="flex justify-center items-stretch w-[150px] border border-gray-300 rounded-full">
@@ -256,15 +255,30 @@ init();
 <style lang="scss" scoped>
 :deep {
     .el-checkbox-group {
-        @apply text-base leading-normal #{!important};
+        @apply text-base leading-normal block #{!important};
     }
-    .is-checked {
+    .el-checkbox {
+        @apply h-[18px];
+        .el-checkbox__label {
+            @apply hidden #{!important};
+        }
         .el-checkbox__inner {
-            @apply bg-yellow-600 border-yellow-600 #{!important};
+            @apply w-[18px] h-[18px] #{!important};
+            &:hover{
+                @apply border-yellow-600;
+            }
+        }
+        .is-checked{
+            .el-checkbox__inner {
+                @apply bg-yellow-600 border-yellow-600 after:h-[9px] after:left-[6px] after:top-[2px] #{!important};
+            }
         }
     }
-    .el-checkbox__label {
-        @apply hidden #{!important};
+
+    .product-card {
+        .grid {
+            grid-template-columns: 120px 1fr;
+        }
     }
 }
 </style>
