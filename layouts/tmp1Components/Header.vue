@@ -1,52 +1,54 @@
 <template>
     <header
         class="fixed z-[500] items-center w-full duration-500 transition-all"
-        :class="[isHomeMenuFixed || isMobile ? ' bg-white fixed top-0 border-b border-gray-300' : route.name === 'index' ? 'top-0 border-b border-transparent' : '', route.name !== 'index' ? 'fixed top-0 bg-white border-b border-gray-300' : '']"
+        :class="[isHomeMenuFixed || isPad ? ' bg-white fixed top-0 border-b border-gray-300' : route.name === 'index' ? 'top-0 border-b border-transparent' : '', route.name !== 'index' ? 'fixed top-0 bg-white border-b border-gray-300' : '']"
     >
-        <nav class="md:mx-[32px] md:flex items-center md:text-left text-center">
+        <nav class="xl:mx-[32px] xl:flex items-center xl:text-left text-center">
             <div
-                v-if="isMobile"
-                class="fixed flex cursor-pointer top-8 left-10"
+                class="absolute flex justify-center items-center !w-[40px] !h-[40px] top-8 left-4 -translate-y-1/2 flex xl:hidden cursor-pointer z-[2]"
                 @click="showMenu = !showMenu"
+                type="button"
             >
-                <font-awesome-icon :icon="['fas', 'bars']" />
+                <IconMenu class="!w-[20px] !h-[20px] transition-all duration-300 hover:text-gray-400 hover:transition-all hover:duration-300" />
             </div>
-            <ul class="items-center flex-1 text-base leading-5 md:flex">
-                <li class="md:mr-14 xl:mr-8 2xl:mr-10 3xl:mr-14 py-[10px]">
-                    <NuxtLink :to="{ name: 'index' }">
+            <ul class="items-center flex-1 text-base leading-5 xl:flex top-[64px] xl:top-0 xl:mb-0" :class="isDesktop ? '' :  showMenu ? 'py-4 nav-bar-mb' : 'nav-bar-mb' ">
+                <li class="fixed xl:relative xl:mr-4 2xl:mr-6 3xl:mr-14 w-full xl:w-fit top-0 left-0 z-[1] bg-white xl:bg-transparent py-[8px] xl:py-[10px]">
+                    <NuxtLink class="block mx-auto w-fit" :to="{ name: 'index' }">
                         <NuxtImg
-                            class="h-[66px] w-[66px] mx-auto"
+                            class="h-[48px] w-[48px] xl:h-[66px] xl:w-[66px] mx-auto"
                             :src="initializationData.site.site_logo"
                             :alt="$config.public.webSite"
                         />
                     </NuxtLink>
                 </li>
                 <li
-                    v-show="(showMenu && isMobile) || isDesktop || isLargeDesktop"
-                    v-for="(menu, key) in menus"
+                    :class="isDesktop ? 'opacity-100' : showMenu ? 'opacity-100 h-auto' : 'opacity-0 overflow-hidden h-0' "
+                    class="duration-500 transition-all xl:duration-0 xl:transition-none"
+                    v-for="(menu, key, index) in menus"
                     :key="key"
                 >
                     <div
                         v-if="menu.submenus.length > 0"
-                        @mouseover="changeMenu(key)"
+                        @mouseover="isPad ? null : changeMenu(key)"
                         @mouseleave="closeMenu"
-                        class="md:px-5 xl:px-3 2xl:px-4 3xl:px-5 py-[33px] text-gray-800 cursor-pointer hover:text-gray-500"
+                        @click="isPad ? openMenu(index) : null"
+                        class="xl:px-3 2xl:px-4 3xl:px-5 xl:py-[33px] text-gray-800 cursor-pointer hover:text-gray-500"
                     >
-                        <div class="flex justify-center">
+                        <div class="flex justify-center py-5 xl:py-0">
                             {{ menu.title }}
                             <div
-                                class="ml-3 transition-all duration-500"
-                                :class="currentMenu === key ? 'rotate-180' : 'rotate-0'"
+                                class="ml-3 xl:ml-0 transition-all duration-300"
+                                :class="mobileCurrentMenu && mobileCurrentMenu.includes(index) ? 'rotate-180' : 'rotate-0'"
                             >
                                 <font-awesome-icon
-                                    v-if="isMobile"
+                                    v-if="isPad"
                                     class=""
                                     :icon="['fas', 'chevron-down']"
                                 />
                             </div>
                         </div>
                         <div
-                            v-if="!isMobile"
+                            v-if="!isPad"
                             class="absolute left-0 top-[86px] z-50 bg-white w-full"
                         >
                             <div
@@ -58,8 +60,8 @@
                                     :class="menu.marginSize"
                                 >
                                     <li
-                                        v-for="(submenu, index) in menu.submenus"
-                                        :key="index"
+                                        v-for="(submenu, subIndex) in menu.submenus"
+                                        :key="subIndex"
                                         class="submenu-item"
                                         :class="[key === 'menu5' || key === 'menu7' ? 'hover-scale' : key === 'menu6' ? 'hover-shadow' : key === 'menu4' ? 'hover-fade' : '']"
                                     >
@@ -78,18 +80,17 @@
                         </div>
                         <div v-else>
                             <div
-                                class="bg-gray-100"
-                                v-if="currentMenu === key && showSubMenu"
+                                class="bg-gray-100 submenu-list"
+                                :class="mobileCurrentMenu && mobileCurrentMenu.includes(index) ? 'max-h-[400px]':'overflow-hidden max-h-0'"
                             >
                                 <ul
-                                    class="container pt-[24px] text-center"
-                                    :class="menu.marginSize"
+                                    class="py-[12px] text-center duration-300 delay-150 transition-all"
+                                    :class="mobileCurrentMenu && mobileCurrentMenu.includes(index) ? 'opacity-100': 'opacity-0'"
                                 >
                                     <li
-                                        v-for="(submenu, index) in menu.submenus"
-                                        :key="index"
-                                        class="pb-[24px] submenu-item"
-                                        :class="[key === 'menu5' || key === 'menu7' ? 'hover-scale' : key === 'menu6' ? 'hover-shadow' : key === 'menu4' ? 'hover-fade' : '']"
+                                        v-for="(submenu, subIndex) in menu.submenus"
+                                        :key="subIndex"
+                                        class="py-[12px] submenu-item"
                                     >
                                         <NuxtLink :to="submenu.url">
                                             <div>{{ submenu.text }}</div>
@@ -99,80 +100,52 @@
                             </div>
                         </div>
                     </div>
-
                     <div v-else>
                         <div
-                            class="relative px-5 xl:px-3 2xl:px-5 py-[33px] text-gray-800 hover:text-gray-500 cursor-pointer transition-all duration-300"
+                            class="relative xl:px-3 2xl:px-5 py-5 xl:py-[33px] text-gray-800 hover:text-gray-500 cursor-pointer transition-all duration-300 cursor-pointer"
                             :class="key === 'menu1' ? 'has-door' : ''"
+                            @click="router.push(menu.url)"
                         >
-                            <div
-                                class="cursor-pointer"
-                                @click="router.push(menu.url)"
-                            >
-                                <template v-if="key === 'menu1'">
-                                    <div class="flex items-center justify-center text-center md:justify-start">
-                                        <div class="title">{{ menu.title }}</div>
-                                        <div class="image-wrap">
-                                            <NuxtImg src="/img/icons/door.svg" />
-                                        </div>
+                            <template v-if="key === 'menu1'">
+                                <div class="flex items-center justify-center text-center xl:justify-start">
+                                    <div class="title">{{ menu.title }}</div>
+                                    <div class="image-wrap">
+                                        <NuxtImg src="/img/icons/door.svg" />
                                     </div>
-                                </template>
-                                <template v-else>
-                                    {{ menu.title }}
-                                </template>
-                            </div>
+                                </div>
+                            </template>
+                            <template v-else>
+                                {{ menu.title }}
+                            </template>
                         </div>
                     </div>
                 </li>
             </ul>
             <ul
-                v-if="!isMobile"
-                class="flex border-r border-gray-400"
+                class="absolute xl:relative flex gap-[2px] xl:pr-[16px] 3xl:pr-[20px] top-8 xl:top-0 right-4 xl:right-0 -translate-y-1/2 xl:translate-y-0 xl:before:absolute xl:before:top-1/2 xl:before:-translate-y-1/2 xl:before:right-0 xl:before:bg-gray-400 xl:before:w-[1px] xl:before:h-4 z-[2]"
             >
                 <li
                     v-for="(icon, index) in rightIcons"
                     :key="index"
-                    :class="index === 0 ? 'mr-[16px] 2xl:mr-[22px]' : 'mr-[20px] 2xl:mr-[26px]'"
                 >
-                    <NuxtLink :to="icon.url">
+                    <NuxtLink class="flex justify-center items-center !w-[40px] !h-[40px] group" :to="icon.url">
                         <component
-                            class="!w-[20px] !h-[20px] transition-all duration-300 hover:text-gray-400 hover:transition-all hover:duration-300"
+                            class="!w-[20px] !h-[20px] transition-all duration-300 group-hover:text-gray-400 group-hover:transition-all group-hover:duration-300"
                             :is="icon.name"
                         />
                     </NuxtLink>
                 </li>
             </ul>
             <ul
-                v-else
-                class="fixed flex top-8 right-2"
-            >
-                <li
-                    v-for="(icon, index) in rightIcons"
-                    :key="index"
-                    :class="index === 0 ? 'mr-[16px] 2xl:mr-[22px]' : 'mr-[20px] 2xl:mr-[26px]'"
-                >
-                    <NuxtLink :to="icon.url">
-                        <component
-                            class="!w-[20px] !h-[20px] transition-all duration-300 hover:text-gray-400 hover:transition-all hover:duration-300"
-                            :is="icon.name"
-                        />
-                    </NuxtLink>
-                </li>
-            </ul>
-
-            <ul
-                v-if="!isMobile"
-                class="flex ml-[20px] 2xl:ml-[26px]"
+                class="hidden xl:flex xl:ml-[16px] 3xl:ml-[20px] gap-[2px]"
             >
                 <li
                     v-for="(media, index) in socialMedia"
                     :key="index"
-                    class="mr-[16px] 2xl:mr-[22px]"
-                    :class="media !== 1 ? '' : ''"
                 >
-                    <NuxtLink :to="media.url">
+                    <NuxtLink class="flex justify-center items-center !w-[40px] !h-[40px] group" :to="media.url">
                         <component
-                            class="!w-[20px] !h-[20px] transition-all duration-300 hover:text-gray-400 hover:transition-all hover:duration-300"
+                            class="!w-[20px] !h-[20px] transition-all duration-300 group-hover:text-gray-400 group-hover:transition-all group-hover:duration-300"
                             :is="media.name"
                         />
                     </NuxtLink>
@@ -202,8 +175,9 @@ import IconFacebook from "~/assets/img/icons/medias/icon-black-1.svg";
 import IconInstagram from "~/assets/img/icons/medias/icon-black-2.svg";
 import IconLine from "~/assets/img/icons/medias/icon-black-3.svg";
 import IconYoutube from "~/assets/img/icons/medias/icon-black-4.svg";
+import IconMenu from "~/assets/img/icons/menu.svg";
 
-const { isMobile, isDesktop, isLargeDesktop } = useWindowResize();
+const { isPad, isDesktop } = useWindowResize();
 
 // 手機版時判斷是否顯示選單
 const showMenu = ref(false);
@@ -212,6 +186,18 @@ const isHomeMenuFixed = computed(() => templateStore.isHomeMenuFixed);
 
 const initializationData = computed(() => {
     return JSON.parse(JSON.stringify(initializationStore.initializationData));
+});
+
+// 手機版時展開選單固定畫面
+watch(showMenu, (newVal) => {
+    // sidebar展開時
+    if (newVal) {
+        // body設定為 overflow: hidden
+        document.body.style.overflow = "hidden";
+    } else {
+        // 清空設定
+        document.body.style.overflow = "";
+    }
 });
 
 // 裝修實績
@@ -444,6 +430,7 @@ const socialMedia = [
 
 // 預設選擇的 menu 判斷是否呈現 submenu
 const currentMenu = ref<null | string>(null);
+const mobileCurrentMenu = ref<null | string[]>([]);
 const showSubMenu = ref<boolean>(false);
 
 function changeMenu(key: string) {
@@ -455,6 +442,17 @@ function closeMenu() {
     currentMenu.value = null;
     showSubMenu.value = false;
 }
+
+function openMenu(navIndex: number) {
+    const index = mobileCurrentMenu.value.indexOf(navIndex);
+    console.log('index',  mobileCurrentMenu.value)
+    if (index === -1) {
+        mobileCurrentMenu.value.push(navIndex);
+    } else {
+        mobileCurrentMenu.value.splice(index, 1);
+    }
+}
+
 </script>
 
 <style lang="scss" scoped>
@@ -536,10 +534,22 @@ function closeMenu() {
     }
 }
 
-.submenu-item {
-    @apply text-gray-800;
-    &:hover {
-        @apply text-gray-600;
+// 副標題列表
+.submenu-list{
+    transition: max-height 0.5s ease-in-out;
+    // 副標題類別
+    .submenu-item {
+        @apply text-gray-800;
+        &:hover {
+            @apply text-gray-600;
+        }
     }
+}
+
+
+// 手機版的下拉選單
+.nav-bar-mb{
+    @apply relative overflow-auto bg-white border-t shadow-header;
+    max-height: calc(100vh - #{$navbar-height-mb});
 }
 </style>

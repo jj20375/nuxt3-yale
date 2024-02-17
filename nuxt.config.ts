@@ -52,15 +52,13 @@ export default defineNuxtConfig({
     //     viewer: true,
     // },
     vite: {
-        // css: {
-        //     preprocessorOptions: {
-        //         scss: {
-        //             additionalData: `
-        //           @import "assets/scss/element-plus.scss";
-        //           `,
-        //         },
-        //     },
-        // },
+        css: {
+            preprocessorOptions: {
+                scss: {
+                    additionalData: '@use "assets/scss/_variable.scss" as *;',
+                },
+            },
+        },
     },
 
     // lodash 套件
