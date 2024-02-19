@@ -14,8 +14,18 @@
                     />
                     <div class="flex flex-col">
                         <div class="flex gap-2 mb-4">
-                            <div v-if="detailData.tags?.includes('new')" class="bg-yellow-500 text-[12px] px-2 py-1 rounded-md">NEW</div>
-                            <div v-if="detailData.tags?.includes('discount')" class="bg-pink-400 text-[12px] px-2 py-1 rounded-md">SALE</div>
+                            <div
+                                v-if="detailData.tags?.includes('new')"
+                                class="bg-yellow-500 text-[12px] px-2 py-1 rounded-md"
+                            >
+                                NEW
+                            </div>
+                            <div
+                                v-if="detailData.tags?.includes('discount')"
+                                class="bg-pink-400 text-[12px] px-2 py-1 rounded-md"
+                            >
+                                SALE
+                            </div>
                         </div>
                         <div class="flex justify-between gap-4">
                             <div>
@@ -216,7 +226,7 @@ const { $api, $utils, $shoppingCarService } = useNuxtApp();
 const route = useRoute();
 const router = useRouter();
 
-const breadcrumbs = ref([]);
+const breadcrumbs = ref<any>([]);
 // 取得 storage 麵包屑參數值
 if (process.client) {
     breadcrumbs.value = JSON.parse($utils().getBreadcrumbsData());
@@ -450,17 +460,16 @@ async function handleFavorite(id: any) {
  * 前往規格比較
  */
 function goToCompare(data: any) {
-    console.log("detail data =>", data);
-    const setBreadcrumbs = [...breadcrumbs.value.slice(0, 4)];
+    const setBreadcrumbs: any = [...breadcrumbs.value.slice(0, 3)];
     setBreadcrumbs.push({
         name: "product-compare-slug",
-        text: `${breadcrumbs.value[3].text}比較`,
-        params: { slug: `${breadcrumbs.value[3].text}比較` },
+        text: `${breadcrumbs.value[2].text}比較`,
+        params: { slug: `${breadcrumbs.value[2].text}比較` },
         query: { compareId: data.product_type_id, productId: data.product_id },
     });
 
     $utils().saveBreadcrumbsData(JSON.stringify(setBreadcrumbs));
-    router.push({ name: "product-compare-slug", params: { slug: `${data.name}比較` }, query: { compareId: data.product_type_id, productId: data.product_id } });
+    router.push({ name: "product-compare-slug", params: { slug: `${breadcrumbs.value[2].text}比較` }, query: { compareId: data.product_type_id, productId: data.product_id } });
 }
 
 /**

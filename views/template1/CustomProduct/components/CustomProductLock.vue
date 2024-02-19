@@ -17,11 +17,8 @@
             </li>
         </ul>
         <div class="flex mt-[30px]">
-            <p
-                class="text-[14px] font-medium YaleSolisW-Bd text-gray-800"
-                v-html="currentLockData.detailData.content"
-            ></p>
-            <div class="flex-1 text-right">
+            <p class="flex-1 text-[14px] font-medium YaleSolisW-Bd text-gray-800">{{ currentLockData.name }}</p>
+            <div class="text-right">
                 <button @click.prevent="showDialog = true">
                     <NuxtImg
                         class="w-[24px]"
@@ -63,7 +60,6 @@
                     </li>
                 </ul>
             </div>
-            <p class="text-[14px] text-gray-800">NT$ {{ $utils().formatCurrency(currentLockData.price) }}</p>
         </div>
         <el-dialog
             class="custom-dialog h-[600px]"
