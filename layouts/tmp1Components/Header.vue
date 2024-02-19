@@ -1,9 +1,9 @@
 <template>
     <header
         class="fixed z-[500] items-center w-full duration-500 transition-all"
-        :class="[isHomeMenuFixed || isPad ? ' bg-white fixed top-0 border-b border-gray-300' : route.name === 'index' ? 'top-0 border-b border-transparent' : '', route.name !== 'index' ? 'fixed top-0 bg-white border-b border-gray-300' : '']"
+        :class="[isHomeMenuFixed || isPad ? 'bg-white fixed top-0 border-b border-gray-300' : route.name === 'index' ? 'top-0 border-b border-transparent' : '', route.name !== 'index' ? 'fixed top-0 bg-white border-b border-gray-300' : '']"
     >
-        <nav class="xl:mx-[32px] xl:flex items-center xl:text-left text-center">
+        <nav class="xl:mx-[32px] xl:flex items-center xl:text-left text-center" :class="isPad ? 'header-h-mb' : ''">
             <div
                 class="absolute flex justify-center items-center !w-[40px] !h-[40px] top-8 left-4 -translate-y-1/2 flex xl:hidden cursor-pointer z-[2]"
                 @click="showMenu = !showMenu"
@@ -11,7 +11,7 @@
             >
                 <IconMenu class="!w-[20px] !h-[20px] transition-all duration-300 hover:text-gray-400 hover:transition-all hover:duration-300" />
             </div>
-            <ul class="items-center flex-1 text-base leading-5 xl:flex top-[64px] xl:top-0 xl:mb-0" :class="isDesktop ? '' :  showMenu ? 'py-4 nav-bar-mb' : 'nav-bar-mb' ">
+            <ul class="items-center flex-1 text-base leading-5 xl:flex top-[64px] xl:top-0 xl:mb-0" :class="isDesktop ? '' : showMenu ? 'py-4 nav-bar-mb' : '' ">
                 <li class="fixed xl:relative xl:mr-4 2xl:mr-6 3xl:mr-14 w-full xl:w-fit top-0 left-0 z-[1] bg-white xl:bg-transparent py-[8px] xl:py-[10px]">
                     <NuxtLink class="block mx-auto w-fit" :to="{ name: 'index' }">
                         <NuxtImg
@@ -31,14 +31,14 @@
                         v-if="menu.submenus.length > 0"
                         @mouseover="isPad ? null : changeMenu(key)"
                         @mouseleave="closeMenu"
-                        @click="isPad ? openMenu(index) : null"
+                        @click="isPad ? openMenu(key) : null"
                         class="xl:px-3 2xl:px-4 3xl:px-5 xl:py-[33px] text-gray-800 cursor-pointer hover:text-gray-500"
                     >
                         <div class="flex justify-center py-5 xl:py-0">
                             {{ menu.title }}
                             <div
                                 class="ml-3 xl:ml-0 transition-all duration-300"
-                                :class="mobileCurrentMenu && mobileCurrentMenu.includes(index) ? 'rotate-180' : 'rotate-0'"
+                                :class="menuStatus[key] ? 'rotate-180' : 'rotate-0'"
                             >
                                 <font-awesome-icon
                                     v-if="isPad"
@@ -79,25 +79,25 @@
                             </div>
                         </div>
                         <div v-else>
-                            <div
-                                class="bg-gray-100 submenu-list"
-                                :class="mobileCurrentMenu && mobileCurrentMenu.includes(index) ? 'max-h-[400px]':'overflow-hidden max-h-0'"
-                            >
-                                <ul
-                                    class="py-[12px] text-center duration-300 delay-150 transition-all"
-                                    :class="mobileCurrentMenu && mobileCurrentMenu.includes(index) ? 'opacity-100': 'opacity-0'"
+                            <Vue3SlideUpDown v-model="menuStatus[key]" :duration="300">
+                                <div
+                                    class="bg-gray-100 submenu-list"
                                 >
-                                    <li
-                                        v-for="(submenu, subIndex) in menu.submenus"
-                                        :key="subIndex"
-                                        class="py-[12px] submenu-item"
+                                    <ul
+                                        class="py-[12px] text-center duration-300 delay-150 transition-all"
                                     >
-                                        <NuxtLink :to="submenu.url">
-                                            <div>{{ submenu.text }}</div>
-                                        </NuxtLink>
-                                    </li>
-                                </ul>
-                            </div>
+                                        <li
+                                            v-for="(submenu, subIndex) in menu.submenus"
+                                            :key="subIndex"
+                                            class="py-[12px] submenu-item"
+                                        >
+                                            <NuxtLink :to="submenu.url">
+                                                <div>{{ submenu.text }}</div>
+                                            </NuxtLink>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </Vue3SlideUpDown>
                         </div>
                     </div>
                     <div v-else>
@@ -431,7 +431,9 @@ const socialMedia = [
 // 預設選擇的 menu 判斷是否呈現 submenu
 const currentMenu = ref<null | string>(null);
 const mobileCurrentMenu = ref<null | string[]>([]);
+const menuStatus = ref<{ [index: string]: boolean }>({});
 const showSubMenu = ref<boolean>(false);
+const active = ref(false);
 
 function changeMenu(key: string) {
     currentMenu.value = key;
@@ -443,14 +445,13 @@ function closeMenu() {
     showSubMenu.value = false;
 }
 
-function openMenu(navIndex: number) {
-    const index = mobileCurrentMenu.value.indexOf(navIndex);
-    console.log('index',  mobileCurrentMenu.value)
-    if (index === -1) {
-        mobileCurrentMenu.value.push(navIndex);
-    } else {
-        mobileCurrentMenu.value.splice(index, 1);
-    }
+Object.keys(menus.value).forEach((key) => {
+    menuStatus.value[key] = false;
+});
+
+function openMenu(key: string) {
+    const menuKey = key;
+    menuStatus.value[menuKey] = !menuStatus.value[menuKey];
 }
 
 </script>
@@ -546,6 +547,10 @@ function openMenu(navIndex: number) {
     }
 }
 
+// 手機版的header
+.header-h-mb{
+    height: #{$navbar-height-mb};
+}
 
 // 手機版的下拉選單
 .nav-bar-mb{
