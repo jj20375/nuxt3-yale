@@ -66,6 +66,10 @@ const props = defineProps({
         type: String,
         default: "",
     },
+    scene: {
+        type: String,
+        default: "work-order",
+    },
 });
 
 const fileList = ref<any>(null);
@@ -87,6 +91,7 @@ async function handleChange(file: any, fcFileList: any) {
             type: "error",
             message: `圖片尺寸不得超過 10MB`,
         });
+        fileList.value.pop();
         return;
     }
     // 判斷是否符合圖片類型
@@ -95,18 +100,27 @@ async function handleChange(file: any, fcFileList: any) {
             type: "error",
             message: "不符合圖片類型(jpg,jpeg,png,gif)",
         });
+        fileList.value.pop();
         return;
     }
     const formData = new FormData();
     formData.append("file", file.raw);
-    formData.append("scene", "work-order");
+    formData.append("scene", props.scene);
     try {
-        const { data } = await $api().UploadAPI(formData);
+        const { data, status, error } = await $api().UploadAPI(formData);
         console.log("UploadAPI api => ", data.value);
-        const file = (data.value as any).data;
-        fileDataList.value.push(file.path);
-        fileList.value[fileList.value.length - 1].url = file.preview_url;
-        emit("tempPath", fileDataList.value, props.prop);
+        if (status.value === "success") {
+            const file = (data.value as any).data;
+            fileDataList.value.push(file.path);
+            fileList.value[fileList.value.length - 1].url = file.preview_url;
+            emit("tempPath", fileDataList.value, props.prop);
+        } else {
+            ElMessage({
+                type: "error",
+                message: (error.value as any).data.message,
+            });
+            fileList.value.pop();
+        }
     } catch (err) {
         console.log("HomeSampleAPI => ", err);
     }
@@ -141,20 +155,20 @@ function imageOverLimit(files: any, fileList: any) {
 </script>
 
 <style lang="scss" scoped>
-:deep .el-upload.is-drag{
+:deep .el-upload.is-drag {
     @apply border-none;
 }
 
 :deep .el-upload-dragger {
     @apply h-full border-gray-300 rounded-none flex items-center justify-center #{!important};
-    &:hover{
+    &:hover {
         @apply border-yellow-600 #{!important};
     }
 }
 
 :deep .el-upload-list__item {
     @apply rounded-none border-gray-300;
-    > *{
+    > * {
         @apply w-full;
     }
 }
