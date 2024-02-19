@@ -126,6 +126,8 @@ function productsCompareData() {
             obj[key] = item?.attributes[key];
         });
         products.value.push({
+            id: item.id,
+            name: item.name,
             style: item?.model,
             category: item?.shape,
             imgSrc: item?.main_image,

@@ -11,31 +11,42 @@
                         v-for="index in 4"
                         :key="index"
                     >
-                        <div class="h-full" v-if="index === 1">
+                        <div
+                            class="h-full"
+                            v-if="index === 1"
+                        >
                             <div
                                 v-if="key === 'imgSrc'"
                                 class="h-[300px] w-[150px]"
                             ></div>
                             <div
                                 class="py-[16px] h-full border-b border-gray-300 YaleSolisW-Bd font-medium text-[16px] text-gray-800"
-                                :class="columnIndex < 2 ? 'mr-[10px]': ''"
+                                :class="columnIndex < 2 ? 'mr-[10px]' : ''"
                                 v-else
                             >
                                 {{ column }}
                             </div>
                         </div>
-                        <div class="h-full" v-else>
+                        <div
+                            class="h-full"
+                            v-else
+                        >
                             <div
                                 class="flex flex-col items-center h-[300px] justify-center"
                                 v-if="key === 'imgSrc'"
                             >
-                                <div v-if="products[index-2] && products[index-2][key]">
+                                <div v-if="products[index - 2] && products[index - 2][key]">
                                     <NuxtImg
                                         class="h-[200px] aspect-square object-cover"
-                                        :src="products[index-2][key]"
+                                        :src="products[index - 2][key]"
                                     />
-                                    <div class="text-center mt-4">
-                                        <button class="yellow-btn btn-md">立即選購</button>
+                                    <div class="mt-4 text-center">
+                                        <button
+                                            @click.prevent="goToDetail(products[index - 2])"
+                                            class="yellow-btn btn-md"
+                                        >
+                                            立即選購
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -45,8 +56,8 @@
                             >
                                 <el-select
                                     class="w-full"
-                                    @change="categoryChange(index-2)"
-                                    v-model="form.category[index-2]"
+                                    @change="categoryChange(index - 2)"
+                                    v-model="form.category[index - 2]"
                                     placeholder="選擇分類"
                                     clearable
                                 >
@@ -64,13 +75,13 @@
                             >
                                 <el-select
                                     class="w-full"
-                                    @change="modelChange(index-2)"
-                                    v-model="form.style[index-2]"
+                                    @change="modelChange(index - 2)"
+                                    v-model="form.style[index - 2]"
                                     placeholder="選擇型號"
                                     clearable
                                 >
                                     <el-option
-                                        v-for="(item, key) in styleArr[index-2]"
+                                        v-for="(item, key) in styleArr[index - 2]"
                                         :key="key"
                                         :label="item"
                                         :value="item"
@@ -82,7 +93,7 @@
                                 class="py-[16px] h-full border-b border-gray-300 text-[16px] text-gray-800 flex justify-center"
                             >
                                 <div class="px-[12px]">
-                                    {{ (products[index-2] && products[index-2][key]) ? products[index-2][key] : "-" }}
+                                    {{ products[index - 2] && products[index - 2][key] ? products[index - 2][key] : "-" }}
                                 </div>
                             </div>
                         </div>
@@ -97,8 +108,10 @@
 import type { ProductListAPIInterface, ProductCompareList, ProductInterface } from "~/interface/product";
 import { useProductCompareStore } from "~/store/productCompareStore";
 
-const { $api } = useNuxtApp();
+const { $api, $utils } = useNuxtApp();
 const route = useRoute();
+const router = useRouter();
+
 const productCompareStore = useProductCompareStore();
 
 interface Props {
@@ -109,6 +122,12 @@ interface Props {
     // 產品列表
     datas: ProductCompareList;
     shapeArr: string | number[];
+}
+
+const breadcrumbs = ref<any>([]);
+// 取得 storage 麵包屑參數值
+if (process.client) {
+    breadcrumbs.value = JSON.parse($utils().getBreadcrumbsData()).slice(0, 3);
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -193,12 +212,8 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const form = ref<any>({
-    category: [
-        '', '', ''
-    ],
-    style: [
-        '', '', ''
-    ],
+    category: ["", "", ""],
+    style: ["", "", ""],
 });
 
 const styleArr = computed(() => {
@@ -239,14 +254,27 @@ function modelChange(index: string | number) {
     console.log(form.value.style[index]);
     if (form.value.style[index]) {
         form.value.category[index] = props.datas.find((data) => data.model === form.value.style[index]).shape;
-        productCompareStore.compareStoreReset()
+        productCompareStore.compareStoreReset();
         form.value.style.forEach((item: string, index: number) => {
-            productCompareStore.compareStore[index] = props.datas.find((data: { model: string; }) => data.model === item)
+            productCompareStore.compareStore[index] = props.datas.find((data: { model: string }) => data.model === item);
         });
     } else {
         form.value.category[index] = null;
         deleteCompareProduct(index);
     }
+}
+
+function goToDetail(product: any) {
+    const routeName = "product-detail-slug";
+
+    // 將麵包屑存進 storage
+    $utils().saveBreadcrumbsData(JSON.stringify(breadcrumbs.value));
+
+    router.push({
+        name: routeName,
+        params: { slug: product.name },
+        query: { id: product.id },
+    });
 }
 
 /**
@@ -264,19 +292,19 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 // 下拉選單
-:deep{
-    .el-select{
-        .el-input{
+:deep {
+    .el-select {
+        .el-input {
             .el-input__wrapper {
                 @apply shadow-formDefault rounded-none py-[14px] px-0 bg-transparent text-[16px] #{!important};
-                &.is-focus{
+                &.is-focus {
                     @apply shadow-formFocus #{!important};
                 }
                 .el-input__inner {
                     @apply text-gray-800 font-medium;
                     font-family: YaleSolisW-Bd;
                     &::placeholder {
-                        -webkit-text-fill-color: #ABABAC;
+                        -webkit-text-fill-color: #ababac;
                     }
                 }
             }

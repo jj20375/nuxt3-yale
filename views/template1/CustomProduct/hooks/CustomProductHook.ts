@@ -156,7 +156,7 @@ export function useCustomProdutHook() {
                 imgSrc: item.main_image,
                 style: `${item.model} ${item.name}`,
                 title: item.name,
-                name: `${item.brand}`,
+                name: `${item.name}`,
                 shape: item.shape,
                 stock: item.stock,
                 price: Number(item.price),
