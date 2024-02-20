@@ -2,6 +2,7 @@
     <BannerLayout
         :title="'Yale Home App'"
         :banner="'/img/yale-home-app/yale-home-app-banner.jpg'"
+        :banner-mobile="'/img/yale-home-app/yale-home-app-banner-m.jpg'"
     >
         <template #breadcrumbs>
             <Breadcrumb :menus="breadcrumbs" />
@@ -13,7 +14,11 @@
             <YaleHomeAppProduct :products="products" />
             <YaleHomeAppProductFeature :features="features" />
             <YaleHomeAppVideo :tutorial_video="tutorial_video" />
-            <YaleHomeAppSpec :specifications="specifications" :files="files" :appData="appData" />
+            <YaleHomeAppSpec
+                :specifications="specifications"
+                :files="files"
+                :appData="appData"
+            />
             <YaleHomeAppInfo :installation_notes="installation_notes" />
         </template>
     </BannerLayout>
@@ -61,28 +66,28 @@ const carouselDatas = ref<any>([]);
 
 // 商品區塊
 const products = ref<any>({
-    content: '',
-    image: '',
-    title: ''
+    content: "",
+    image: "",
+    title: "",
 });
 
 // 商品資訊區塊
 const features = ref<any>({
-    title: '',
-    subtitle: '',
-    items: []
+    title: "",
+    subtitle: "",
+    items: [],
 });
 
 // 影片教學區塊
 const tutorial_video = ref<any>({
-    title: '',
-    video: []
+    title: "",
+    video: [],
 });
 
 // APP資料
 const appData = ref<any>({
-    android_link: '',
-    ios_link: ''
+    android_link: "",
+    ios_link: "",
 });
 
 // 型號.檔案下載
@@ -92,8 +97,8 @@ const files = ref<any>([]);
 
 // 安裝注意事項
 const installation_notes = ref<any>({
-    content: '',
-    title: ''
+    content: "",
+    title: "",
 });
 
 /**
@@ -114,8 +119,8 @@ async function getPageData() {
         console.log("getPageData api => ", data.value);
 
         const pageData = (data.value as any).data.schema;
-        topDatas.value = []
-        carouselDatas.value = []
+        topDatas.value = [];
+        carouselDatas.value = [];
 
         console.log(pageData);
 
@@ -128,20 +133,20 @@ async function getPageData() {
         });
         pageData.carousel.forEach((item: any) => {
             carouselDatas.value.push({
-                imgSrc: item
-            })
-        })
-        products.value = pageData.features
+                imgSrc: item,
+            });
+        });
+        products.value = pageData.features;
 
-        features.value = pageData.info_cards
+        features.value = pageData.info_cards;
 
-        specifications.value = pageData.specifications
+        specifications.value = pageData.specifications;
 
-        installation_notes.value = pageData.installation_notes
+        installation_notes.value = pageData.installation_notes;
 
-        tutorial_video.value = pageData.tutorial_video
+        tutorial_video.value = pageData.tutorial_video;
 
-        files.value = pageData.downloads
+        files.value = pageData.downloads;
     } catch (err) {
         console.log("HomeSampleAPI => ", err);
     }
@@ -154,7 +159,7 @@ async function getAppData() {
         console.log("getPageData api => ", data.value);
 
         const pageData = (data.value as any).data.schema;
-        
+
         appData.value = pageData.yale_home_app;
     } catch (err) {
         console.log("HomeSampleAPI => ", err);

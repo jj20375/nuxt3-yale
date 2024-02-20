@@ -11,7 +11,7 @@
             @slideChange="onSlideChange"
         >
             <SwiperSlide
-                v-for="(item, index) in carousel"
+                v-for="(item, index) in props.carousel"
                 :key="index"
             >
                 <div
@@ -23,7 +23,12 @@
                             <div class="text-[28px] md:text-[36px] xl:text-[48px] text-center xl:text-start YaleSolisW-Bd font-medium">{{ item.title }}</div>
                             <div class="text-[14px] md:text-[16px] text-center xl:text-start mt-[8px] md:mt-[20px]">{{ item.subtitle }}</div>
                             <div class="mt-[24px] md:mt-[40px]">
-                                <button class="animation-btn" :class="isMobile ? 'm-auto btn-xs' : isPad ? 'm-auto' : 'btn-lg'">了解更多</button>
+                                <button
+                                    class="animation-btn"
+                                    :class="isMobile ? 'm-auto btn-xs' : isPad ? 'm-auto' : 'btn-lg'"
+                                >
+                                    了解更多
+                                </button>
                             </div>
                         </div>
                     </article>
@@ -47,7 +52,7 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-    carousel: [],
+    carousel: () => [],
 });
 
 function onSwiper(swiper: any) {
@@ -98,9 +103,9 @@ const modules = ref([Navigation, Pagination]);
     .swiper-button-next {
         @apply right-[44px];
     }
-    .swiper-pagination{
+    .swiper-pagination {
         @apply flex xl:hidden p-2 w-fit bg-white rounded-full top-auto left-1/2 -translate-x-1/2 bottom-4;
-        .swiper-pagination-bullet-active{
+        .swiper-pagination-bullet-active {
             @apply bg-gray-800;
         }
     }

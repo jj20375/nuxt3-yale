@@ -1,21 +1,35 @@
 <template>
-    <div class="relative py-[80px] bg-gray-300">
+    <div class="relative py-[40px] sm:py-[80px] bg-gray-300">
         <div class="container">
             <div class="relative">
                 <Swiper
-                    v-if="photos.length > 0"
+                    v-if="props.photos.length > 0"
                     :spaceBetween="24"
                     slidesPerView="auto"
                     :slidesPerGroup="1"
                     :modules="modules"
+                    :breakpoints="{
+                        320: {
+                            slidesPerView: 1,
+                            spaceBetween: 20,
+                        },
+                        768: {
+                            slidesPerView: 2,
+                            spaceBetween: 20,
+                        },
+                        1024: {
+                            slidesPerView: 3,
+                            spaceBetween: 40,
+                        },
+                    }"
                     @swiper="onSwiper"
                 >
                     <SwiperSlide
-                        v-for="(item, index) in photos"
+                        v-for="(item, index) in props.photos"
                         :key="index"
                         class="px-[3px]"
                     >
-                        <div class="cursor-pointer rounded-[20px]">
+                        <div class="cursor-pointer rounded-[20px] flex justify-center">
                             <Fancybox
                                 :options="{
                                     compact: false,
@@ -31,7 +45,7 @@
                             >
                                 <NuxtImg
                                     data-fancybox="gallery"
-                                    class="h-[350px] rounded-[20px]"
+                                    class="h-[250px] sm:h-[350px] rounded-[20px]"
                                     :src="item.imgSrc"
                                     alt=""
                                 />
@@ -39,18 +53,18 @@
                         </div>
                     </SwiperSlide>
                 </Swiper>
-                <div class="absolute top-0 z-50 flex items-center h-full -left-[30px] -translate-x-full">
+                <div class="absolute top-0 z-50 flex items-center h-full left-[25px] sm:-left-[20px] -translate-x-full">
                     <button
-                        class="text-5xl"
+                        class="text-[32px]"
                         :class="{ disabled: isSliderInnerBeginning }"
                         @click.stop="mainSwiper.slidePrev()"
                     >
                         <el-icon><ArrowLeft /></el-icon>
                     </button>
                 </div>
-                <div class="absolute top-0 z-50 flex items-center h-full -right-[30px] translate-x-full">
+                <div class="absolute top-0 z-50 flex items-center h-full right-[25px] sm:-right-[20px] translate-x-full">
                     <button
-                        class="text-5xl"
+                        class="text-[32px]"
                         :class="{ disabled: isSliderInnerEnd }"
                         @click.stop="mainSwiper.slideNext()"
                     >
@@ -71,11 +85,7 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-    photos: [
-        {
-            imgSrc: "",
-        },
-    ],
+    photos: () => [],
 });
 
 // swiper slider 模組
