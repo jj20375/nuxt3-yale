@@ -24,14 +24,14 @@
                 <li
                     :class="isDesktop ? 'opacity-100' : showMenu ? 'opacity-100 h-auto' : 'opacity-0 overflow-hidden h-0' "
                     class="duration-500 transition-all xl:duration-0 xl:transition-none"
-                    v-for="(menu, key, index) in menus"
+                    v-for="(menu, key) in menus"
                     :key="key"
                 >
                     <div
                         v-if="menu.submenus.length > 0"
                         @mouseover="isPad ? null : changeMenu(key)"
                         @mouseleave="closeMenu"
-                        @click="isPad ? openMenu(key) : null"
+                        @click="isPad ? toggleMenu(key) : null"
                         class="xl:px-3 2xl:px-4 3xl:px-5 xl:py-[33px] text-gray-800 cursor-pointer hover:text-gray-500"
                     >
                         <div class="flex justify-center py-5 xl:py-0">
@@ -415,11 +415,11 @@ const socialMedia = [
         url: {},
     },
     {
-        name: IconInstagram,
+        name: IconLine,
         url: {},
     },
     {
-        name: IconLine,
+        name: IconInstagram,
         url: {},
     },
     {
@@ -430,8 +430,7 @@ const socialMedia = [
 
 // 預設選擇的 menu 判斷是否呈現 submenu
 const currentMenu = ref<null | string>(null);
-const mobileCurrentMenu = ref<null | string[]>([]);
-const menuStatus = ref<{ [index: string]: boolean }>({});
+const menuStatus = ref<{ [key: string]: boolean }>({});
 const showSubMenu = ref<boolean>(false);
 const active = ref(false);
 
@@ -445,11 +444,13 @@ function closeMenu() {
     showSubMenu.value = false;
 }
 
+// 預設下拉選單為關閉狀態
 Object.keys(menus.value).forEach((key) => {
     menuStatus.value[key] = false;
 });
 
-function openMenu(key: string) {
+// 手機版下拉選單
+function toggleMenu(key: string) {
     const menuKey = key;
     menuStatus.value[menuKey] = !menuStatus.value[menuKey];
 }
@@ -457,7 +458,7 @@ function openMenu(key: string) {
 </script>
 
 <style lang="scss" scoped>
-::v-deep {
+:deep {
     .el-dropdown {
         @apply text-gray-800 text-base leading-5;
     }

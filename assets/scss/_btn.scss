@@ -149,6 +149,10 @@
         @apply w-[160px];
     }
 
+    &.btn-xs {
+        @apply w-[128px];
+    }
+
     // 適應性尺寸
     &.btn-fit {
         @apply w-auto;

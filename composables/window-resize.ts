@@ -57,6 +57,7 @@ export function useWindowResize() {
         isMobile,
         isPad,
         isDesktop,
-        isLargeDesktop
+        isLargeDesktop,
+        nowWindowSize
     };
 }
