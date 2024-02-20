@@ -81,7 +81,7 @@
                 />
                 <p
                     class="text-[16px] text-gray-800 mt-[28px]"
-                    v-html="dialogDetailHtml"
+                    v-html="currentLockData.detailData.content"
                 ></p>
                 <div class="flex justify-center mt-[40px]">
                     <button class="yellow-btn btn-md">加入選擇</button>
