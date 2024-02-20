@@ -1,7 +1,7 @@
 <template>
     <section class="relative text-center text-gray-800">
         <div class="max-w-[950px] mx-auto sm:pb-[80px]">
-            <div>
+            <div class="px-[24px]">
                 <h2 class="sm:text-[32px] text-[24px] font-medium YaleSolisW-Bd">{{ features.title }}</h2>
                 <h5 class="sm:text-[20px] text-[18px] mt-[12px] font-medium YaleSolisW-Bd">{{ features.subtitle }}</h5>
             </div>
