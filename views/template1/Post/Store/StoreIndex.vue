@@ -1,15 +1,13 @@
 <template>
     <SideBarLayout
         :title="'展售門市'"
-        :banner="'/img/store/store-banner.jpg'"
+        :banner="banner"
     >
         <template #breadcrumbs>
             <Breadcrumb :menus="breadcrumbs" />
         </template>
         <template #sidebar>
-            <SideBar
-                :menus="sidebar"
-            />
+            <SideBar :menus="sidebar" />
         </template>
         <template #list>
             <ListItem :datas="datas" />
@@ -35,6 +33,22 @@ import Pagination from "~/views/template1/components/Pagination.vue";
 const route = useRoute();
 
 const { $api } = useNuxtApp();
+
+const banner = computed(() => {
+    // 判斷直營門市顯示 banner
+    if (route.query.id == 1) {
+        return "/img/store/store-banner-1.jpg";
+    }
+    // 判斷授權展售門市顯示 banner
+    if (route.query.id == 3) {
+        return "/img/store/store-banner-2.jpg";
+    }
+    // 判斷全國電子顯示 banner
+    if (route.query.id == 4) {
+        return "/img/store/store-banner-3.jpg";
+    }
+    return "/img/store/store-banner-1.jpg";
+});
 
 const breadcrumbs = ref<any>([
     {
