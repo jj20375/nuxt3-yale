@@ -15,7 +15,7 @@
             <template #file="{ file }">
                 <div>
                     <iframe
-                        class="w-full aspect-video"
+                        class="w-full h-full aspect-video"
                         :src="file.url"
                         title="YouTube video player"
                         frameborder="0"
@@ -75,7 +75,7 @@
 </template>
 
 <script setup lang="ts">
-import { ElMessage } from "element-plus";
+import { ElMessage, ElLoading } from "element-plus";
 import type { UploadProps, UploadFile } from "element-plus";
 const { $api, $utils } = useNuxtApp();
 
@@ -98,9 +98,6 @@ const fileDataList = ref<any>([]);
 const dialogImageUrl = ref("");
 // 顯示預覽彈窗
 const showDialog = ref(false);
-const videoFlag = ref<any>(false);
-const videoUploadPercent = ref<any>(0);
-const showVideoPath = ref<any>("");
 /**
  * 圖片變更
  * @param file
@@ -108,6 +105,11 @@ const showVideoPath = ref<any>("");
  */
 async function handleChange(file: any, fcFileList: any) {
     console.log("fcFileList =>", file, fcFileList);
+    const loading = ElLoading.service({
+        lock: true,
+        text: '影片上傳中',
+        background: 'rgba(0, 0, 0, 0.7)',
+    })
     fileList.value = fcFileList;
     if (file.size > 50 * 1024 * 1024) {
         ElMessage({
@@ -142,10 +144,12 @@ async function handleChange(file: any, fcFileList: any) {
                 type: "error",
                 message: (error.value as any).data.message,
             });
-            // fileList.value.pop();
+            fileList.value.pop();
         }
+        loading.close()
     } catch (err) {
         console.log("HomeSampleAPI => ", err);
+        loading.close()
     }
 }
 
