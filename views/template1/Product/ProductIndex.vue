@@ -24,10 +24,7 @@
         <template #custom-content>
             <div v-if="loading">
                 <div class="flex items-center justify-center w-full h-screen">
-                    <font-awesome-icon
-                        class="animate-spin text-[100px]"
-                        :icon="['fas', 'spinner']"
-                    />
+                    <font-awesome-icon class="animate-spin text-[40px] text-yellow-500"  :icon="['fas', 'circle-notch']"/>
                 </div>
             </div>
             <div class="flex items-center mb-[40px] mt-[32px] mr-10">

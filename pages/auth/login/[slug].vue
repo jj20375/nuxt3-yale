@@ -2,10 +2,7 @@
     <NuxtLayout name="template1" customClass="bg-gray-50">
         <div v-if="pageLoading" class="bg-white">
             <div class="flex items-center justify-center w-full h-screen">
-                <font-awesome-icon
-                    class="animate-spin text-[100px]"
-                    :icon="['fas', 'spinner']"
-                />
+                <font-awesome-icon class="animate-spin text-[40px] text-yellow-500"  :icon="['fas', 'circle-notch']"/>
             </div>
         </div>
         <component
