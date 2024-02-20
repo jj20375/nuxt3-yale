@@ -2,7 +2,7 @@
     <section>
         <div class="max-w-[950px] mx-auto my-[30px] sm:my-[60px] px-[24px]">
             <div class="flex flex-col gap-[30px]">
-                <div v-for="(data, index) in datas">
+                <div v-for="(data, index) in props.datas">
                     <NuxtImg
                         class="w-full"
                         :src="data.imgSrc"
@@ -28,6 +28,8 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-    datas: [{ imgSrc: "", title: "", content: "" }],
+    datas: () => {
+        return [{ imgSrc: "", title: "", content: "" }];
+    },
 });
 </script>
