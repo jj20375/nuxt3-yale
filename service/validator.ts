@@ -58,3 +58,16 @@ export const validateTWMobileNumber = (
     callback();
   }
 };
+
+// 陣列數量(3到5個)
+export const validatePhotoArrayLength = (
+  rule: InternalRuleItem,
+  value: string,
+  callback: (error?: string | Error) => void
+) => {
+  if (Array.isArray(value) && value.length >= 3 && value.length <= 5) {
+    callback();
+  } else {
+    callback(new Error('照片數量需3~5張'));
+  }
+};

@@ -5,15 +5,15 @@
         <div class="grid grid-cols-2 gap-4">
             <div
                 class="relative group"
-                v-for="(video, index) in videos"
+                v-for="(video, index) in tutorial_video.video"
                 :key="index"
             >
                 <NuxtImg
-                    :src="video.posterUrl"
+                    :src="'video/poster/poster-1.jpg'"
                     class="w-full object-cover aspect-[16/9]"
                 ></NuxtImg>
                 <div
-                    @click.prevent="openDialog(video.videoUrl)"
+                    @click.prevent="openDialog(video)"
                     class="absolute top-0 left-0 z-10 flex items-center justify-center w-full h-full cursor-pointer"
                 >
                     <div class="text-[80px] text-white">
@@ -53,10 +53,24 @@
 </template>
 
 <script setup lang="ts">
+interface Props {
+    tutorial_video: {
+        title: string;
+        video: string[];
+    };
+}
+
+const props = withDefaults(defineProps<Props>(), {
+    tutorial_video: {
+        title: "",
+        video: [],
+    },
+});
+
 const videos = ref([
     {
         posterUrl: "video/poster/poster-1.jpg",
-        videoUrl: "https://www.youtube.com/embed/REaIV5ZClxQ?si=BNodONl1-bA4KrZy",
+        videoUrl: "https://yale_backed.mrjin.me/storage/pages/01HPREG47Q0D5EKP9AF7GKNDMX.mp4",
     },
     {
         posterUrl: "video/poster/poster-2.jpg",
