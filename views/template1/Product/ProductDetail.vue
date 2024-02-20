@@ -152,32 +152,51 @@
                             </ul>
                         </div>
                     </div>
-                    <div
-                        v-if="currentTab === 1"
-                        class="min-h-[500px] flex mt-[60px]"
+                </div>
+            </div>
+            <div class="mt-[80px] container">
+                <ul class="flex justify-center border-b border-gray-200">
+                    <li
+                        @click="currentTab = index"
+                        v-for="(tab, index) in tabs"
+                        :key="index"
+                        class="py-[12px] w-[200px] text-[20px] text-center cursor-pointer"
+                        :class="currentTab === index ? 'border-b-[3px] border-gray-800 text-gray-800' : 'text-gray-400'"
                     >
-                        <div class="flex-1 mr-[80px]">
-                            <h5 class="text-[18px] font-medium YaleSolisW-Bd text-gray-800 mb-[20px]">產品規格內容</h5>
-                            <div
-                                v-for="(attr, key) in detailData.attributes"
-                                :key="key"
-                                class="flex border-b border-gray-100 text-[15px] py-[8px]"
-                            >
-                                <div class="flex-1">{{ key }}</div>
-                                <div class="flex-1">{{ attr }}</div>
-                            </div>
+                        {{ tab }}
+                    </li>
+                </ul>
+                <div
+                    v-if="currentTab === 0"
+                    class="min-h-[500px] text-center flex items-center justify-center flex mt-[60px]"
+                >
+                    <div v-html="detailData.content"></div>
+                </div>
+                <div
+                    v-if="currentTab === 1"
+                    class="min-h-[500px] flex mt-[60px]"
+                >
+                    <div class="flex-1 mr-[80px]">
+                        <h5 class="text-[18px] font-medium YaleSolisW-Bd text-gray-800 mb-[20px]">產品規格內容</h5>
+                        <div
+                            v-for="(attr, key) in detailData.attributes"
+                            :key="key"
+                            class="flex border-b border-gray-100 text-[15px] py-[8px]"
+                        >
+                            <div class="flex-1">{{ key }}</div>
+                            <div class="flex-1">{{ attr }}</div>
                         </div>
-                        <div class="flex-1">
-                            <h5 class="text-[18px] font-medium YaleSolisW-Bd text-gray-800 mb-[20px]">檔案下載</h5>
-                            <div
-                                class="cursor-pointer"
-                                @click.prevent="downloadFile(item)"
-                                v-for="(item, index) in detailData.documents"
-                                :key="index"
-                            >
-                                <el-icon><Document /></el-icon>
-                                {{ item.name }}
-                            </div>
+                    </div>
+                    <div class="flex-1">
+                        <h5 class="text-[18px] font-medium YaleSolisW-Bd text-gray-800 mb-[20px]">檔案下載</h5>
+                        <div
+                            class="cursor-pointer"
+                            @click.prevent="downloadFile(item)"
+                            v-for="(item, index) in detailData.documents"
+                            :key="index"
+                        >
+                            <el-icon><Document /></el-icon>
+                            {{ item.name }}
                         </div>
                     </div>
                 </div>

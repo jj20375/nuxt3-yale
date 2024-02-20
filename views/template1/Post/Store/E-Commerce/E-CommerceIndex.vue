@@ -18,7 +18,10 @@
                     v-for="(item, index) in datas"
                     :key="index"
                 >
-                    <NuxtLink :to="item.url" target="_blank">
+                    <NuxtLink
+                        :to="item.url"
+                        target="_blank"
+                    >
                         <NuxtImg
                             class="w-full aspect-[16/9] object-contain"
                             :src="item.imgSrc"
@@ -44,17 +47,6 @@ const breadcrumbs = ref([
         name: "index",
         text: "首頁",
     },
-    {
-        name: "news-slug",
-        text: "展售門市",
-        params: { slug: "耶魯展售門市" },
-    },
-    {
-        name: "news-slug",
-        text: "電商通路  ",
-        params: { slug: "耶魯直營門市" },
-        query: { id: "id1" },
-    },
 ]);
 
 const sidebar = ref<any>([]);
@@ -71,7 +63,7 @@ async function getType() {
         const rows = (data.value as any).data;
 
         rows.forEach((item: { name: any; id: any }) => {
-            if (item.name === "電商通路") {
+            if (item.id === 2) {
                 sidebar.value.push({
                     text: item.name,
                     id: item.id,
@@ -93,6 +85,25 @@ async function getType() {
                 });
             }
         });
+        // 取得最後面的 麵包屑路徑
+        const lastBreadcrumbs = rows.find((item: any) => item.id == route.query.id);
+        // 判斷是否有匹配的 id 來新增 後續的麵包屑 路徑
+        if (lastBreadcrumbs !== undefined) {
+            breadcrumbs.value.push({
+                name: "store-slug",
+                text: "展售門市",
+                params: { slug: lastBreadcrumbs.name },
+                query: { id: lastBreadcrumbs.id },
+            });
+
+            breadcrumbs.value.push({
+                // id 2 等於電商通路樣板
+                name: lastBreadcrumbs.id == 2 ? "store-e-commerce-slug" : "store-slug",
+                text: lastBreadcrumbs.name,
+                params: { slug: lastBreadcrumbs.name },
+                query: { id: lastBreadcrumbs.id },
+            });
+        }
     } catch (err) {
         console.log("HomeSampleAPI => ", err);
     }
