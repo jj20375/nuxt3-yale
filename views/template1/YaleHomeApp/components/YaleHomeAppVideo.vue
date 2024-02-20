@@ -1,17 +1,17 @@
 <template>
-    <section class="mt-[80px] max-w-[950px] mx-auto">
-        <h2 class="text-[32px] text-gray-800 font-medium YaleSolisW-Bd mb-[20px]">Yale Home 設定教學影片</h2>
+    <section class="mt-[30px] sm:mt-[80px] max-w-[950px] mx-auto px-[24px]">
+        <h2 class="sm:text-[32px] text-[24px] text-gray-800 font-medium YaleSolisW-Bd mb-[18px]">Yale Home 設定教學影片</h2>
 
-        <div class="grid grid-cols-2 gap-4">
+        <div class="grid sm:grid-cols-2 gap-4">
             <div
                 class="relative group"
-                v-for="(video, index) in tutorial_video.video"
+                v-for="(video, index) in props.tutorial_video.video"
                 :key="index"
             >
                 <NuxtImg
                     :src="'video/poster/poster-1.jpg'"
                     class="w-full object-cover aspect-[16/9]"
-                ></NuxtImg>
+                />
                 <div
                     @click.prevent="openDialog(video)"
                     class="absolute top-0 left-0 z-10 flex items-center justify-center w-full h-full cursor-pointer"
@@ -25,7 +25,7 @@
                 <div class="absolute top-0 left-0 w-full h-full bg-black bg-opacity-50 duration-300 group-hover:bg-opacity-30 group-hover:duration-300"></div>
             </div>
         </div>
-        <div class="border-b pt-[40px] border-gray-300 w-full h-[1px]"></div>
+        <div class="border-b pt-[20px] sm:pt-[40px] border-gray-300 w-full h-[1px]"></div>
         <ClientOnly>
             <el-dialog
                 class="custom-dialog"
@@ -61,9 +61,11 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-    tutorial_video: {
-        title: "",
-        video: [],
+    tutorial_video: () => {
+        return {
+            title: "",
+            video: [],
+        };
     },
 });
 

@@ -1,15 +1,18 @@
 <template>
     <section>
-        <div class="max-w-[950px] mx-auto my-[60px]">
-            <div class="flex items-center gap-[80px]">
+        <div class="max-w-[950px] mx-auto my-[30px] sm:my-[60px] px-[24px]">
+            <div class="flex flex-col-reverse sm:flex-row items-center sm:gap-[80px]">
                 <NuxtImg
-                    v-if="products.image"
-                    class="w-[390px] object-contain"
-                    :src="products.image"
+                    v-if="props.products.image"
+                    class="w-[291px] sm:w-[390px] object-contain"
+                    :src="props.products.image"
                 />
                 <div class="flex-1 text-gray-800">
-                    <h2 class="text-[32px] font-medium YaleSolisW-Bd mb-[20px]">{{products.title}}</h2>
-                    <p class="text-[16px]" v-html="products.content"></p>
+                    <h2 class="sm:text-[32px] text-[24px] font-medium YaleSolisW-Bd mb-[12px] sm:mb-[20px]">{{ props.products.title }}</h2>
+                    <p
+                        class="text-[16px]"
+                        v-html="props.products.content"
+                    ></p>
                 </div>
             </div>
         </div>
@@ -21,10 +24,8 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-    products: {
-        content: "",
-        image: "",
-        title: "",
+    products: () => {
+        return { content: "", image: "", title: "" };
     },
 });
 </script>

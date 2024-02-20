@@ -1,9 +1,11 @@
 <template>
-    <section class="max-w-[950px] mx-auto mt-[40px]">
-        <h2 class="text-[32px] mb-[20px] YaleSolisW-Bd font-medium">{{installation_notes.title}}</h2>
+    <section class="max-w-[950px] mx-auto sm:mt-[40px] mt-[20px] px-[24px]">
+        <h2 class="sm:text-[32px] text-[24px] mb-[12px] sm:mb-[20px] YaleSolisW-Bd font-medium">{{ props.installation_notes.title }}</h2>
         <!--    編輯器區塊   -->
-        <div class="edit-section" v-html="installation_notes.content">
-        </div>
+        <div
+            class="edit-section"
+            v-html="props.installation_notes.content"
+        />
     </section>
 </template>
 
@@ -16,9 +18,11 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-    installation_notes: {
-        content: "",
-        title: "",
+    installation_notes: () => {
+        return {
+            content: "",
+            title: "",
+        };
     },
 });
 </script>

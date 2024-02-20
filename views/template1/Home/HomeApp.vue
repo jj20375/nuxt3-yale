@@ -6,27 +6,27 @@
         <div class="container">
             <div class="flex flex-col md:flex-row items-center justify-between w-full mx-auto xl:w-5/6">
                 <article class="order-3 md:order-1">
-                    <p class="text-[16px] text-center YaleSolisW-Rg font-light mt-6 xl:mt-0">{{ yale_home_app.title }} is available on</p>
+                    <p class="text-[16px] text-center YaleSolisW-Rg font-light mt-6 xl:mt-0">{{ props.yale_home_app.title }} is available on</p>
                     <div class="flex justify-center items-center gap-4 md:gap-5 mt-6 xl:mt-[41px]">
                         <qrcode-vue
-                            :value="yale_home_app.ios_link"
-                            :size="isMobile? 33 : 44"
+                            :value="props.yale_home_app.ios_link"
+                            :size="isMobile ? 33 : 44"
                             level="H"
                         />
                         <NuxtImg
-                            @click="downloadApp(yale_home_app.ios_link)"
+                            @click="downloadApp(props.yale_home_app.ios_link)"
                             class="w-[122px] xl:w-[164px] cursor-pointer"
                             src="/img/home/app/app-store.png"
                         />
                     </div>
                     <div class="flex justify-center items-center gap-4 md:gap-5 mt-5 xl:mt-6">
                         <qrcode-vue
-                            :value="yale_home_app.android_link"
-                            :size="isMobile? 33 : 44"
+                            :value="props.yale_home_app.android_link"
+                            :size="isMobile ? 33 : 44"
                             level="H"
                         />
                         <NuxtImg
-                            @click="downloadApp(yale_home_app.android_link)"
+                            @click="downloadApp(props.yale_home_app.android_link)"
                             class="w-[122px] xl:w-[164px] cursor-pointer"
                             src="/img/home/app/google-play.png"
                         />
@@ -62,7 +62,14 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-    yale_home_app: {},
+    yale_home_app: () => {
+        return {
+            title: "",
+            image: "",
+            ios_link: "",
+            android_link: "",
+        };
+    },
 });
 
 const downloadApp = (link: string) => {
