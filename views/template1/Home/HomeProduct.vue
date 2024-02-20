@@ -2,20 +2,21 @@
     <section>
         <article class="overflow-hidden bg-gray-100">
             <div class="container">
-                <div class="relative pt-[140px] pb-[140px]">
-                    <h2 class="font-medium text-white text-[66px] leading-none YaleSolisW-Bd">BEST SELLER</h2>
-                    <h3 class="font-medium text-[40px] YaleSolisW-Bd mt-[14px] mb-8">精選商品</h3>
+                <div class="relative pt-[48px] md:pt-[90px] md:pt-[140px] pb-[48px] md:pb-[72px] xl:pb-[140px]">
+                    <h2 class="font-medium text-white text-center xl:text-start text-[32px] sm:text-[48px] xl:text-[66px] leading-none YaleSolisW-Bd">BEST SELLER</h2>
+                    <h3 class="font-medium leading-[50px] text-[28px] sm:text-[32px] xl:text-[40px] text-center xl:text-start YaleSolisW-Bd md:mt-[14px] mb-6 md:mb-8">精選商品</h3>
                     <Swiper
-                        :slidesPerView="3.5"
-                        :spaceBetween="30"
+                        :slidesPerView="isMobile ? 2 : isPad ? 3 : 3.5"
+                        :spaceBetween="isMobile ? 16 : 30"
                         :freeMode="true"
+                        :scrollbar="{ draggable: true, dragSize: 100, horizontalClass: 'horizontalClass', dragClass: 'dragClass' }"
                         :modules="modules"
                         @swiper="onSwiper"
                         @slideChange="onSlideChange"
                         class="products-swiper"
                     >
                         <SwiperSlide
-                            class="min-h-[150px] min-w-[250px] w-full"
+                            class="aspect-square w-full mb-9 xl:mb-0"
                             v-for="item in datas"
                             :key="item"
                         >
@@ -30,6 +31,7 @@
 
 <script lang="ts" setup>
 // import required modules
+const { isMobile, isPad } = useWindowResize();
 import { Scrollbar } from "swiper/modules";
 import { current } from "tailwindcss/colors";
 // 產品卡片樣板
@@ -113,6 +115,19 @@ await getList();
 
 <style lang="scss" scoped>
 .products-swiper {
+    @apply overflow-visible;
+}
+
+:deep {
+    .dragClass {
+        @apply xl:hidden h-[4px] md:w-[100px] bg-black rounded-lg;
+    }
+    .horizontalClass {
+        @apply xl:hidden h-[4px] md:w-[450px];
+    }
+}
+
+.store-swiper {
     @apply overflow-visible;
 }
 </style>

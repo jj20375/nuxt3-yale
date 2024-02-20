@@ -1,64 +1,68 @@
 <template>
     <div class="z-[300] relative mt-auto">
         <footer class="flex justify-center w-full text-white bg-gray-800">
-            <section class="w-full pl-[158px] pr-[160px] mt-[98px]">
-                <ul class="flex justify-between w-full">
-                    <li class="mr-[128px]">
-                        <NuxtImg
-                            class="min-w-[136px] max-w-[136px] w-full"
-                            :src="initializationData.site.site_logo"
-                            alt=""
-                        />
-                    </li>
-                    <li
-                        class="flex-1 mr-[40px]"
-                        v-for="(data, key) in footerDatas"
-                        :key="key"
-                    >
-                        <h6 class="font-medium text-[14px] YaleSolisW-Bd">{{ data.title }}</h6>
-                        <ul>
-                            <li
-                                class="my-[17px] text-[14px] hover:text-yellow-400 duration-500 transition-all"
-                                v-for="(menu, index) in data.menus"
-                                :key="index"
-                            >
-                                <NuxtLink :to="menu.url">{{ menu.text }}</NuxtLink>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="flex-1">
-                        <ul class="flex gap-6">
-                            <li
-                                v-for="(icon, index) in contact.icons"
-                                class="text-[24px]"
-                                :key="index"
-                            >
-                                <a
-                                    :href="icon.url"
-                                    class="transition-all hover:text-yellow-400"
-                                    ><font-awesome-icon :icon="['fab', icon.iconName]" />
-                                </a>
-                            </li>
-                        </ul>
-                        <div class="mt-[30px]">{{ contact.name }}</div>
-                        <div class="mt-[8px]">{{ contact.phone }}</div>
-                    </li>
-                </ul>
-                <aside class="flex justify-between mt-20 text-sm font-light mb-[23px]">
-                    <div>{{ copyright.text }}</div>
-                    <ul class="flex">
+            <div class="container">
+                <section class="mt-[56px] xl:mt-[100px]">
+                    <ul class="grid grid-cols-2 xl:flex justify-between w-full gap-x-[24px] gap-y-[40px] xl:gap-[40px]">
+                        <li class="col-span-2 mr-[24px] xl:mr-[24px] 2xl:mr-[88px]">
+                            <NuxtImg
+                                class="w-[80px] xl:w-[136px] aspect-square object-contain"
+                                :src="initializationData.site.site_logo"
+                                alt=""
+                            />
+                        </li>
                         <li
-                            v-for="(caluse, index) in copyright['caluses']"
-                            :key="index"
-                            class="mr-5"
+                            class="flex-1"
+                            v-for="(data, key) in footerDatas"
+                            :key="key"
                         >
-                            <NuxtLink :to="caluse.url">
-                                {{ caluse.text }}
-                            </NuxtLink>
+                            <h6 class="font-medium text-[14px] YaleSolisW-Bd">{{ data.title }}</h6>
+                            <ul>
+                                <li
+                                    class="my-[17px] text-[14px] hover:text-yellow-400 duration-500 transition-all"
+                                    v-for="(menu, index) in data.menus"
+                                    :key="index"
+                                >
+                                    <NuxtLink :to="menu.url">{{ menu.text }}</NuxtLink>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="flex-1 col-span-2">
+                            <ul class="flex gap-4">
+                                <li
+                                    v-for="(icon, index) in contact.icons"
+                                    :key="index"
+                                >
+                                    <NuxtLink class="flex justify-center items-center !w-[32px] !h-[32px] cursor-pointer group" :to="icon.url">
+                                        <component
+                                            class="!w-[24px] !h-[24px] transition-all duration-300 group-hover:text-yellow-500 group-hover:transition-all group-hover:duration-300"
+                                            :is="icon.iconName"
+                                        />
+                                    </NuxtLink>
+                                </li>
+                            </ul>
+                            <div class="flex xl:flex-col gap-2 mt-[30px]">
+                                <div>{{ contact.name }}</div>
+                                <div>{{ contact.phone }}</div>
+                            </div>
                         </li>
                     </ul>
-                </aside>
-            </section>
+                    <aside class="flex flex-col xl:flex-row justify-between mt-2 xl:mt-20 text-sm font-light mb-10 xl:mb-6">
+                        <div class="order-2 xl:order-1 mt-2 xl:mt-0">{{ copyright.text }}</div>
+                        <ul class="flex order-1 xl:order-2">
+                            <li
+                                v-for="(caluse, index) in copyright['caluses']"
+                                :key="index"
+                                class="mr-5"
+                            >
+                                <NuxtLink :to="caluse.url">
+                                    {{ caluse.text }}
+                                </NuxtLink>
+                            </li>
+                        </ul>
+                    </aside>
+                </section>
+            </div>
         </footer>
         <div class="w-full h-[10px] bg-yellow-500"></div>
     </div>
@@ -66,6 +70,12 @@
 
 <script setup lang="ts">
 import { useInitializationStore } from "~/store/initializationStore";
+
+// icon 路徑
+import IconFacebook from "~/assets/img/icons/medias/icon-black-1.svg";
+import IconInstagram from "~/assets/img/icons/medias/icon-black-2.svg";
+import IconLine from "~/assets/img/icons/medias/icon-black-3.svg";
+import IconYoutube from "~/assets/img/icons/medias/icon-black-4.svg";
 
 const initializationStore = useInitializationStore();
 
@@ -225,22 +235,22 @@ const footerDatas = ref({
 const contact = ref({
     icons: [
         {
-            iconName: "facebook",
+            iconName: IconFacebook,
             alt: "耶魯電子鎖粉絲專頁",
             url: "",
         },
         {
-            iconName: "line",
+            iconName: IconLine,
             alt: "耶魯電子鎖LINE",
             url: "",
         },
         {
-            iconName: "instagram",
+            iconName: IconInstagram,
             alt: "耶魯電子鎖IG",
             url: "",
         },
         {
-            iconName: "youtube",
+            iconName: IconYoutube,
             alt: "耶魯電子鎖Youtube",
             url: "",
         },

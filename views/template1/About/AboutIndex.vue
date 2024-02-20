@@ -180,7 +180,7 @@ onMounted(async () => {
 </script>
 
 <style lang="scss" scoped>
-::v-deep {
+:deep {
     .dragClass {
         @apply h-[4px] w-[100px] bg-black rounded-lg;
     }

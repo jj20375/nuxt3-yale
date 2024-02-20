@@ -9,13 +9,14 @@ export function useWindowResize() {
     const isLargeDesktop = ref(false);
 
     // 監控目前視窗大小
+    // isMobile(<767px) isPad(<1280px) isDesktop(>=1280px) isLargeDesktop(>1600px)
     function handleResize() {
         nowWindowSize.value.width = window.innerWidth;
         nowWindowSize.value.height = window.innerHeight;
         if (nowWindowSize.value.width < 767) {
             isMobile.value = true;
             isDesktop.value = false;
-            isPad.value = false;
+            isPad.value = true;
             isLargeDesktop.value = false;
         }
         else if (nowWindowSize.value.width >= 767 && nowWindowSize.value.width < 1280) {
@@ -34,7 +35,7 @@ export function useWindowResize() {
             isLargeDesktop.value = true;
             isMobile.value = false;
             isPad.value = false;
-            isDesktop.value = false;
+            isDesktop.value = true;
         }
         console.log("nowWindowSize => ", nowWindowSize.value);
     }
@@ -56,6 +57,7 @@ export function useWindowResize() {
         isMobile,
         isPad,
         isDesktop,
-        isLargeDesktop
+        isLargeDesktop,
+        nowWindowSize
     };
 }
