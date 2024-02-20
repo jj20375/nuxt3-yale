@@ -32,8 +32,8 @@ interface Props {
         subtitle: string;
         items: {
             image: string;
-            subtitle: string;
-            content: string;
+            title: string;
+            description: string;
         }[];
     };
 }
@@ -46,7 +46,7 @@ const props = withDefaults(defineProps<Props>(), {
             {
                 image: "",
                 title: "",
-                content: "",
+                description: "",
             },
         ],
     },
