@@ -9,7 +9,7 @@
 
         <template #content>
             <section class="container mt-[80px] custom-form">
-                <div class="flex gap-[150px]">
+                <div class="mx-auto 2xl:w-[88%] flex gap-[120px]">
                     <ContactWeForm class="flex-[1.5]" />
                     <div class="text-gray-800 text-center flex-1">
                         <NuxtImg
