@@ -5,7 +5,7 @@
         class="bg-gray-50"
     >
         <template #breadcrumbs>
-            <Breadcrumb :menus="breadcrumbs"/>
+            <Breadcrumb :menus="breadcrumbs" />
         </template>
         <template #content>
             <div class="container">
@@ -24,26 +24,37 @@
                                 :key="index"
                                 :class="`col-span-${item.span}`"
                             >
-                                <el-form-item :prop="item.prop" :label="item.label">
-                                    <el-input v-if="item.style === 'input'" :type="item.type"
-                                              :show-password="item.showPassword" :disabled="item.disabled"
-                                              :placeholder="item.placeholder" v-model="form[item.prop]"></el-input>
-                                    <el-radio-group v-else-if="item.style === 'radio'" v-model="form[item.prop]">
+                                <el-form-item
+                                    :prop="item.prop"
+                                    :label="item.label"
+                                >
+                                    <el-input
+                                        v-if="item.style === 'input'"
+                                        :type="item.type"
+                                        :show-password="item.showPassword"
+                                        :disabled="item.disabled"
+                                        :placeholder="item.placeholder"
+                                        v-model="form[item.prop]"
+                                    ></el-input>
+                                    <el-radio-group
+                                        v-else-if="item.style === 'radio'"
+                                        v-model="form[item.prop]"
+                                    >
                                         <el-radio
                                             v-for="(option, radio_index) in item.radioData"
                                             :key="radio_index"
                                             :label="option.value"
                                             size="large"
-                                        >{{ option.label }}
-                                        </el-radio
-                                        >
+                                            >{{ option.label }}
+                                        </el-radio>
                                     </el-radio-group>
-                                    <el-date-picker v-else-if="item.style === 'datepicker'"
-                                                    v-model="form[item.prop]"
-                                                    type="date"
-                                                    valueFormat="YYYY-MM-DD"
-                                                    :placeholder="item.placeholder"
-                                                    popper-class="date-box"
+                                    <el-date-picker
+                                        v-else-if="item.style === 'datepicker'"
+                                        v-model="form[item.prop]"
+                                        type="date"
+                                        valueFormat="YYYY-MM-DD"
+                                        :placeholder="item.placeholder"
+                                        popper-class="date-box"
                                     />
                                     <el-select
                                         v-else-if="item.style === 'select'"
@@ -71,26 +82,37 @@
                                 :key="index"
                                 :class="`col-span-${item.span}`"
                             >
-                                <el-form-item :prop="item.prop" :label="item.label">
-                                    <el-input v-if="item.style === 'input'" :type="item.type"
-                                              :show-password="item.showPassword" :disabled="item.disabled"
-                                              :placeholder="item.placeholder" v-model="form[item.prop]"></el-input>
-                                    <el-radio-group v-else-if="item.style === 'radio'" v-model="form[item.prop]">
+                                <el-form-item
+                                    :prop="item.prop"
+                                    :label="item.label"
+                                >
+                                    <el-input
+                                        v-if="item.style === 'input'"
+                                        :type="item.type"
+                                        :show-password="item.showPassword"
+                                        :disabled="item.disabled"
+                                        :placeholder="item.placeholder"
+                                        v-model="form[item.prop]"
+                                    ></el-input>
+                                    <el-radio-group
+                                        v-else-if="item.style === 'radio'"
+                                        v-model="form[item.prop]"
+                                    >
                                         <el-radio
                                             v-for="(option, radio_index) in item.radioData"
                                             :key="radio_index"
                                             :label="option.value"
                                             size="large"
-                                        >{{ option.label }}
-                                        </el-radio
-                                        >
+                                            >{{ option.label }}
+                                        </el-radio>
                                     </el-radio-group>
-                                    <el-date-picker v-else-if="item.style === 'datepicker'"
-                                                    v-model="form[item.prop]"
-                                                    type="date"
-                                                    valueFormat="YYYY-MM-DD"
-                                                    :placeholder="item.placeholder"
-                                                    popper-class="date-box"
+                                    <el-date-picker
+                                        v-else-if="item.style === 'datepicker'"
+                                        v-model="form[item.prop]"
+                                        type="date"
+                                        valueFormat="YYYY-MM-DD"
+                                        :placeholder="item.placeholder"
+                                        popper-class="date-box"
                                     />
                                     <el-select
                                         v-else-if="item.style === 'select'"
@@ -118,12 +140,28 @@
                                 :key="index"
                                 :class="`col-span-${item.span}`"
                             >
-                                <el-form-item :prop="item.prop" :label="item.label">
-                                    <el-input v-if="item.style === 'input'" :type="item.type"
-                                              :show-password="item.showPassword" :disabled="item.disabled"
-                                              :placeholder="item.placeholder" v-model="form[item.prop]"></el-input>
+                                <el-form-item
+                                    :prop="item.prop"
+                                    :label="item.label"
+                                >
+                                    <el-input
+                                        v-if="item.style === 'input'"
+                                        :type="item.type"
+                                        :show-password="item.showPassword"
+                                        :disabled="item.disabled"
+                                        :placeholder="item.placeholder"
+                                        v-model="form[item.prop]"
+                                    ></el-input>
                                 </el-form-item>
                             </div>
+                        </div>
+                        <div class="text-center mt-5">
+                            <button
+                                @click.prevent="addSerial"
+                                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
+                            >
+                                新增一筆序號
+                            </button>
                         </div>
                     </div>
                     <div class="flex justify-center mt-[40px]">
@@ -153,19 +191,19 @@ const { $api } = useNuxtApp();
 const breadcrumbs = ref([
     {
         name: "index",
-        text: "首頁"
+        text: "首頁",
     },
     {
         name: "repair-slug",
         text: "維修與保固",
-        params: { slug: "維修與保固" }
+        params: { slug: "維修與保固" },
     },
     {
         name: "repair-detail-slug",
         text: "保固登記",
         params: { slug: "保固登記" },
-        query: { id: "1" }
-    }
+        query: { id: "1" },
+    },
 ]);
 
 const formRefDom = ref<any>();
@@ -192,13 +230,13 @@ const formDatas = ref<any>({
             prop: "companyName",
             label: "廠商/公司名稱",
             placeholder: "請輸入",
-            style: "input"
+            style: "input",
         },
         {
             prop: "date",
             label: "安裝或出貨日期",
             style: "datepicker",
-            placeholder: "請選擇日期"
+            placeholder: "請選擇日期",
         },
         {
             prop: "purpose",
@@ -208,13 +246,13 @@ const formDatas = ref<any>({
             options: [
                 {
                     label: "零售",
-                    value: "零售"
+                    value: "零售",
                 },
                 {
                     label: "建案",
-                    value: "建案"
+                    value: "建案",
                 },
-            ]
+            ],
         },
         {
             prop: "model",
@@ -232,7 +270,7 @@ const formDatas = ref<any>({
             prop: "quantity",
             label: "數量",
             placeholder: "請輸入",
-            style: "input"
+            style: "input",
         },
         {
             prop: "name",
@@ -245,9 +283,9 @@ const formDatas = ref<any>({
             label: "填單人聯絡電話",
             style: "input",
             placeholder: "請輸入",
-        }
+        },
     ],
-    customerDatas:[
+    customerDatas: [
         {
             prop: "customerName",
             label: "客戶名稱",
@@ -291,76 +329,93 @@ const formDatas = ref<any>({
     })),
 });
 
+function addSerial() {
+    if (formDatas.value.serialDatas.length === 100) {
+        ElMessage({
+            type: "error",
+            message: `序號最多100筆`,
+        });
+    } else {
+        formDatas.value.serialDatas.push({
+            prop: `serial${formDatas.value.serialDatas.length}`,
+            label: "序號",
+            placeholder: "請輸入",
+            style: "input",
+            span: 1,
+        });
+    }
+}
+
 const rules = ref<any>({
     companyName: [
         {
             required: true,
             message: "請輸入廠商/公司名稱",
-            trigger: "blur"
-        }
+            trigger: "blur",
+        },
     ],
     date: [
         {
             required: true,
             message: "請輸入安裝或出貨日期",
-            trigger: "blur"
-        }
+            trigger: "blur",
+        },
     ],
     model: [
         {
             required: true,
             message: "請選擇型號",
-            trigger: "blur"
-        }
+            trigger: "blur",
+        },
     ],
     quantity: [
         {
             required: true,
             message: "請輸入數量",
-            trigger: "blur"
-        }
+            trigger: "blur",
+        },
     ],
     name: [
         {
             required: true,
             message: "請輸入填單人姓名",
-            trigger: "blur"
-        }
+            trigger: "blur",
+        },
     ],
     phone: [
         {
             required: true,
             message: "請輸入填單人聯絡電話",
-            trigger: "blur"
-        }
+            trigger: "blur",
+        },
     ],
     customerName: [
         {
             required: true,
             message: "請輸入客戶名稱",
-            trigger: "blur"
-        }
+            trigger: "blur",
+        },
     ],
     customerPhone: [
         {
             required: true,
             message: "請輸入聯絡電話",
-            trigger: "blur"
-        }
+            trigger: "blur",
+        },
     ],
     customerAddress: [
         {
             required: true,
             message: "請輸入安裝或出貨地址",
-            trigger: "blur"
-        }
+            trigger: "blur",
+        },
     ],
     serial0: [
         {
             required: true,
             message: "請輸入序號",
-            trigger: "blur"
-        }
+            trigger: "blur",
+        },
     ],
 });
 
@@ -372,10 +427,10 @@ async function onSubmit() {
                 message: `尚有欄位未填`,
             });
         } else {
-            const serial_number = []
-            for(let i = 0; i < 16; i++) {
+            const serial_number = [];
+            for (let i = 0; i < 16; i++) {
                 if (form.value[`serial${i}`]) {
-                    serial_number.push(form.value[`serial${i}`])
+                    serial_number.push(form.value[`serial${i}`]);
                 }
             }
             const formData = {
@@ -398,7 +453,7 @@ async function onSubmit() {
             try {
                 const { data, status, error } = await $api().WarrantyRegistrationAPI(formData);
                 if (status.value === "success") {
-                    router.push({ name: 'repair-warranty-success-slug', params: { slug: '保固登記成功' } });
+                    router.push({ name: "repair-warranty-success-slug", params: { slug: "保固登記成功" } });
                 } else {
                     ElMessage({
                         type: "error",
@@ -419,22 +474,23 @@ async function onSubmit() {
 /**
  * 取得商品列表
  */
- async function getList() {
+async function getList() {
     try {
-        const params = {}
+        const params = {};
         const { data } = await $api().ProductLisAPI<ProductListAPIInterface>(params);
 
         const rows = (data.value as any).data;
         console.log("rows => ", rows);
 
-        formDatas.value.registerDatas.find((item: {prop: string}) => item.prop === 'model').options = []
-        rows.forEach((item: {model: string}) => {
-            formDatas.value.registerDatas.find((item: {prop: string}) => item.prop === 'model').options.push({
-                value: item.model,
-                label: item.model,
-            })
-        })
-
+        formDatas.value.registerDatas.find((item: { prop: string }) => item.prop === "model").options = [];
+        rows.forEach((item: { model: string }) => {
+            formDatas.value.registerDatas
+                .find((item: { prop: string }) => item.prop === "model")
+                .options.push({
+                    value: item.model,
+                    label: item.model,
+                });
+        });
     } catch (err) {
         console.log("HomeSampleAPI => ", err);
     }
