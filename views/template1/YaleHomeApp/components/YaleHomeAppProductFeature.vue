@@ -16,7 +16,7 @@
                             :src="feature.image"
                         />
                         <h5 class="text-[20px] YaleSolisW-Bd font-medium mt-[24px]">{{ feature.title }}</h5>
-                        <p class="text-[16px] mt-[12px]">{{ feature.content }}</p>
+                        <p class="text-[16px] mt-[12px]">{{ feature.description }}</p>
                     </div>
                 </div>
             </div>
@@ -32,8 +32,8 @@ interface Props {
         subtitle: string;
         items: {
             image: string;
-            subtitle: string;
-            content: string;
+            title: string;
+            description: string;
         }[];
     };
 }
@@ -46,7 +46,7 @@ const props = withDefaults(defineProps<Props>(), {
             {
                 image: "",
                 title: "",
-                content: "",
+                description: "",
             },
         ],
     },
