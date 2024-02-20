@@ -211,10 +211,21 @@ async function ssoLogin(site: string) {
         ssoSite = ssoLogingSite.value.facebook;
     }
     console.log(ssoSite);
-    window.open(ssoSite);
-}
+    const pageWidth = 500 // 彈出視窗的寬度
+    const pageHeight = 500 // 彈出視窗的高度
 
-// window.addEventListener("message", getMessage, false);
+    const dualScreenLeft = window.screenLeft !== undefined ? window.screenLeft : window.screenX;
+    const dualScreenTop = window.screenTop !== undefined ? window.screenTop : window.screenY;
+
+    const screenWidth = window.screen.width;
+    const screenHeight = window.screen.height;
+
+    // 計算居中所需的左上角座標
+    const left = (screenWidth - pageWidth) / 2 + dualScreenLeft;
+    const top = (screenHeight - pageHeight) / 2 + dualScreenTop;
+
+    window.open(ssoSite, 'newwindow', `height=${pageHeight}, width=${pageWidth}, left=${left}, top=${top}`);
+}
 
 function getMessage(e: any) {
     if (e.origin === 'https://yale-third-party.mrjin.me') {

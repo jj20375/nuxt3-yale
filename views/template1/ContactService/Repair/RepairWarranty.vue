@@ -127,9 +127,12 @@
                         </div>
                     </div>
                     <div class="flex justify-center mt-[40px]">
-                        <NuxtLink :to="{ name: 'repair-warranty-success-slug', params: { slug: '保固登記成功' } }">
-                            <button class="yellow-btn btn-lg">確認送出</button>
-                        </NuxtLink>
+                        <button
+                            @click.prevent="onSubmit"
+                            class="yellow-btn btn-lg"
+                        >
+                            確認送出
+                        </button>
                     </div>
                 </el-form>
             </div>
@@ -141,6 +144,11 @@
 import BannerLayout from "~/views/template1/layouts/BannerLayout.vue";
 import Breadcrumb from "~/views/template1/components/Breadcrumb.vue";
 import { validateTWMobileNumber } from "~/service/validator";
+import { ElMessage, ElLoading } from "element-plus";
+import { ProductListAPIInterface } from "~/interface/product.d";
+const router = useRouter();
+
+const { $api } = useNuxtApp();
 
 const breadcrumbs = ref([
     {
@@ -163,11 +171,10 @@ const breadcrumbs = ref([
 const formRefDom = ref<any>();
 
 const form = ref<any>({
-    order: "202401-096",
     companyName: "",
     date: "",
     purpose: "",
-    serial: "",
+    model: "",
     quantity: "",
     name: "",
     phone: "",
@@ -176,21 +183,15 @@ const form = ref<any>({
     customerAddress: "",
     memo: "",
     building: "",
+    serial0: "",
 });
 
 const formDatas = ref<any>({
     registerDatas: [
         {
-            prop: "order",
-            label: "項次",
-            placeholder: "",
-            style: "input",
-            disabled: true
-        },
-        {
             prop: "companyName",
             label: "廠商/公司名稱",
-            placeholder: "",
+            placeholder: "請輸入",
             style: "input"
         },
         {
@@ -204,84 +205,93 @@ const formDatas = ref<any>({
             label: "銷售用途",
             placeholder: "請選擇",
             style: "select",
-            options: "" // 選項放在這裡
+            options: [
+                {
+                    label: "零售",
+                    value: "零售"
+                },
+                {
+                    label: "建案",
+                    value: "建案"
+                },
+            ]
         },
         {
-            prop: "serial",
+            prop: "model",
             label: "型號",
             style: "select",
             placeholder: "請選擇",
-            options: "" // 選項放在這裡
+            options: [
+                {
+                    label: "model1",
+                    value: "model1",
+                },
+            ],
         },
         {
             prop: "quantity",
             label: "數量",
-            placeholder: "",
+            placeholder: "請輸入",
             style: "input"
         },
         {
             prop: "name",
             label: "填單人姓名",
-            style: "input"
+            style: "input",
+            placeholder: "請輸入",
         },
         {
             prop: "phone",
             label: "填單人聯絡電話",
-            style: "input"
+            style: "input",
+            placeholder: "請輸入",
         }
     ],
     customerDatas:[
         {
             prop: "customerName",
             label: "客戶名稱",
-            placeholder: "",
+            placeholder: "請輸入",
             style: "input",
         },
         {
             prop: "customerPhone",
             label: "聯絡電話",
-            placeholder: "",
+            placeholder: "請輸入",
             style: "input",
         },
         {
             prop: "customerAddress",
             label: "安裝或出貨地址",
-            placeholder: "",
+            placeholder: "請輸入",
             style: "input",
             span: 2,
         },
         {
             prop: "memo",
             label: "備註",
-            placeholder: "",
+            placeholder: "請輸入",
             style: "input",
             span: 2,
         },
         {
             prop: "building",
             label: "建案名稱",
-            placeholder: "",
+            placeholder: "請輸入",
             style: "input",
             span: 2,
         },
     ],
     serialDatas: Array.from({ length: 16 }, (v, i) => ({
-        prop: `serial${i + 1}`,
+        prop: `serial${i}`,
         label: "序號",
-        placeholder: "",
+        placeholder: "請輸入",
         style: "input",
         span: 1,
     })),
 });
 
 const rules = ref<any>({
-    order: [
-        {
-            required: true,
-            message: "請輸入項次",
-            trigger: "blur"
-        }
-    ],
     companyName: [
         {
             required: true,
@@ -296,7 +306,7 @@ const rules = ref<any>({
             trigger: "blur"
         }
     ],
-    serial: [
+    model: [
         {
             required: true,
             message: "請選擇型號",
@@ -345,12 +355,96 @@ const rules = ref<any>({
             trigger: "blur"
         }
     ],
-    serial1: [
+    serial0: [
         {
             required: true,
             message: "請輸入序號",
             trigger: "blur"
         }
     ],
+});
+
+async function onSubmit() {
+    formRefDom.value.validate(async (valid: any) => {
+        if (!valid) {
+            ElMessage({
+                type: "error",
+                message: `尚有欄位未填`,
+            });
+        } else {
+            const serial_number = []
+            for(let i = 0; i < 16; i++) {
+                if (form.value[`serial${i}`]) {
+                    serial_number.push(form.value[`serial${i}`])
+                }
+            }
+            const formData = {
+                company_name: form.value.companyName,
+                installation_or_delivery_date: form.value.date,
+                sales_purpose: form.value.purpose,
+                model: form.value.model,
+                quantity: form.value.quantity,
+                contact_name: form.value.name,
+                contact_phone: form.value.phone,
+                customer_name: form.value.customerName,
+                customer_phone: form.value.customerPhone,
+                installation_or_delivery_address: form.value.customerAddress,
+                remarks: form.value.memo,
+                project_name: form.value.building,
+                serial_number: serial_number,
+            };
+            console.log(formData);
+
+            try {
+                const { data, status, error } = await $api().WarrantyRegistrationAPI(formData);
+                if (status.value === "success") {
+                    router.push({ name: 'repair-warranty-success-slug', params: { slug: '保固登記成功' } });
+                } else {
+                    ElMessage({
+                        type: "error",
+                        message: (error.value as any).data.message,
+                    });
+                }
+            } catch (err) {
+                console.log(err);
+                ElMessage({
+                    type: "error",
+                    message: `表單送出失敗`,
+                });
+            }
+        }
+    });
+}
+
+/**
+ * 取得商品列表
+ */
+ async function getList() {
+    try {
+        const params = {}
+        const { data } = await $api().ProductLisAPI<ProductListAPIInterface>(params);
+
+        const rows = (data.value as any).data;
+        console.log("rows => ", rows);
+
+        formDatas.value.registerDatas.find((item: {prop: string}) => item.prop === 'model').options = []
+        rows.forEach((item: {model: string}) => {
+            formDatas.value.registerDatas.find((item: {prop: string}) => item.prop === 'model').options.push({
+                value: item.model,
+                label: item.model,
+            })
+        })
+
+    } catch (err) {
+        console.log("HomeSampleAPI => ", err);
+    }
+}
+
+onMounted(async () => {
+    nextTick(async () => {
+        if (process.client) {
+            await getList();
+        }
+    });
 });
 </script>

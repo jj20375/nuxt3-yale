@@ -10,7 +10,7 @@
                         :src="data.imgSrc"
                     />
                     <h3 class="text-[32px] font-medium YaleSolisW-Bd mt-[30px] text-gray-800">{{ data.title }}</h3>
-                    <p class="text-[16px] text-gray-800 mt-[20px]">{{ data.content }}</p>
+                    <p class="text-[16px] text-gray-800 mt-[20px]" v-html="data.content"></p>
                 </div>
             </div>
         </div>
