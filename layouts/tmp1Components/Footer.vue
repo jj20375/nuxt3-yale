@@ -49,13 +49,12 @@
                     </ul>
                     <aside class="flex flex-col xl:flex-row justify-between mt-2 xl:mt-20 text-sm font-light mb-10 xl:mb-6">
                         <div class="order-2 xl:order-1 mt-2 xl:mt-0">{{ copyright.text }}</div>
-                        <ul class="flex order-1 xl:order-2">
+                        <ul class="flex gap-5 order-1 xl:order-2">
                             <li
                                 v-for="(caluse, index) in copyright['caluses']"
                                 :key="index"
-                                class="mr-5"
                             >
-                                <NuxtLink :to="caluse.url">
+                                <NuxtLink class="hover:text-yellow-500" :to="caluse.url">
                                     {{ caluse.text }}
                                 </NuxtLink>
                             </li>
@@ -153,7 +152,7 @@ const footerDatas = ref({
         title: "SUPPORT",
         menus: [
             {
-                text: "常見問答",
+                text: "服務中心",
                 url: {
                     name: "faq-slug",
                     params: { slug: "耶魯服務中心" },

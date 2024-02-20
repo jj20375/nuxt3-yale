@@ -161,6 +161,8 @@ module.exports = {
             "80%": "80%",
             "85%": "85%",
             "90%": "90%",
+            header: "86px",
+            headerMb: "64px",
         },
         boxShadow: {
             sm: "0 1px 2px 0 rgba(0, 0, 0, 0.05)",

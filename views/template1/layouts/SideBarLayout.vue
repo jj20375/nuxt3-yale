@@ -1,16 +1,16 @@
 <template>
     <section
-        class="mt-[86px]"
+        class="mt-headerMb xl:mt-header overflow-x-hidden"
         :class="customClass"
     >
-        <nav class="border-t border-b border-gray-300 py-[16px] bg-white min-h-[55px]">
+        <nav class="border-t border-b border-gray-300 py-2.5 xl:py-4 bg-white min-h-[43px] xl:min-h-[55px]">
             <div class="container">
                 <slot name="breadcrumbs"></slot>
             </div>
         </nav>
         <div
             :style="`background-image: url(${banner})`"
-            class="relative min-h-[320px] w-full bg-cover flex items-center justify-center"
+            class="relative h-[240px] xl:h-[320px] w-full bg-cover bg-center flex items-center justify-center"
         >
             <!-- <NuxtImg :src="banner" /> -->
             <div class="absolute top-0 w-full h-full bg-black bg-opacity-40"></div>
@@ -18,9 +18,9 @@
         </div>
 
         <div class="container">
-            <div class="mt-[60px] flex">
+            <div class="mt-[20px] xl:mt-[60px] flex flex-col xl:flex-row gap-4 xl:gap-0">
                 <slot name="sidebar"></slot>
-                <main class="flex-1 pl-[40px]">
+                <main class="flex-1 xl:pl-[40px]">
                     <slot name="list"></slot>
                     <slot name="content"></slot>
                     <div class="flex justify-center">

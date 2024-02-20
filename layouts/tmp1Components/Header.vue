@@ -3,9 +3,9 @@
         class="fixed z-[500] items-center w-full duration-500 transition-all"
         :class="[isHomeMenuFixed || isPad ? 'bg-white fixed top-0 border-b border-gray-300' : route.name === 'index' ? 'top-0 border-b border-transparent' : '', route.name !== 'index' ? 'fixed top-0 bg-white border-b border-gray-300' : '']"
     >
-        <nav class="xl:mx-[32px] xl:flex items-center xl:text-left text-center" :class="isPad ? 'header-h-mb' : ''">
+        <nav class="xl:mx-[32px] xl:flex items-center xl:text-left text-center h-headerMb xl:h-header">
             <div
-                class="absolute flex justify-center items-center !w-[40px] !h-[40px] top-8 left-4 -translate-y-1/2 flex xl:hidden cursor-pointer z-[2]"
+                class="absolute flex justify-center items-center !w-[40px] !h-[40px] top-8 left-3 -translate-y-1/2 flex xl:hidden cursor-pointer z-[2]"
                 @click="showMenu = !showMenu"
                 type="button"
             >
@@ -122,7 +122,7 @@
                 </li>
             </ul>
             <ul
-                class="absolute xl:relative flex gap-[2px] xl:pr-[16px] 3xl:pr-[20px] top-8 xl:top-0 right-4 xl:right-0 -translate-y-1/2 xl:translate-y-0 xl:before:absolute xl:before:top-1/2 xl:before:-translate-y-1/2 xl:before:right-0 xl:before:bg-gray-400 xl:before:w-[1px] xl:before:h-4 z-[2]"
+                class="absolute xl:relative flex gap-[2px] xl:pr-[16px] 3xl:pr-[20px] top-8 xl:top-0 right-3 xl:right-0 -translate-y-1/2 xl:translate-y-0 xl:before:absolute xl:before:top-1/2 xl:before:-translate-y-1/2 xl:before:right-0 xl:before:bg-gray-400 xl:before:w-[1px] xl:before:h-4 z-[2]"
             >
                 <li
                     v-for="(icon, index) in rightIcons"
@@ -546,11 +546,6 @@ function toggleMenu(key: string) {
             @apply text-gray-600;
         }
     }
-}
-
-// 手機版的header
-.header-h-mb{
-    height: #{$navbar-height-mb};
 }
 
 // 手機版的下拉選單
