@@ -29,9 +29,9 @@ export default defineComponent({
         const { isPad } = useWindowResize();
 
         return () => (
-            <div class="sticky xl:relative top-[64px] xl:top-0 z-[1] before:absolute xl:before:content-none before:bottom-0 before:left-0 before:h-[1px] before:bg-gray-200 before:w-[calc(100%)]">
+            <div class="sticky xl:relative top-[64px] xl:top-0 z-[1] before:absolute xl:before:content-none xl:border-r before:bottom-0 before:left-0 before:h-[1px] before:bg-gray-200 before:w-[calc(100%)]">
                 <div class={[isPad.value ? 'container' : '']}>
-                    <ul class="-mx-4 xl:mx-0 px-[14px] xl:px-0 bg-white flex xl:block xl:pr-[40px] xl:border-r border-gray-200 xl:w-[250px] z-[10]">
+                    <ul class="-mx-4 xl:mx-0 px-[14px] xl:px-0 bg-white flex xl:block xl:pr-[40px] border-gray-200 xl:w-[250px] z-[10]">
                         {menus.value.map((menu, index):any =>
                             (
                                 <li onClick={()=>router.push(menu.url)} class={["cursor-pointer xl:p-0 xl:border-b border-gray-200","flex text-[16px] z-[1]", index !== 0 ? 'py-3 px-[14px] xl:py-4':'py-3 pr-[14px] xl:pb-4']}>
