@@ -79,11 +79,11 @@
                                         <div class="flex-1 max-w-[600px] cursor-pointer" @click="router.push(slide.url)">
                                             <div class="flex items-center">
                                                 <h5
-                                                    class="flex-1 text-[18px] md:text-[24px] YaleSolisW-Bd font-medium line-clamp-2"
+                                                    class="flex-1 text-[18px] md:text-[24px] YaleSolisW-Bd font-medium line-clamp-1"
                                                 >
                                                     {{ slide.title }}
                                                 </h5>
-                                                <h6 class="hidden block text-[14px] font-medium YaleSolisW-Bd">{{ slide.published_at }}</h6>
+                                                <h6 class="hidden xl:block text-[14px] font-medium YaleSolisW-Bd">{{ slide.published_at }}</h6>
                                             </div>
                                             <p class="md:mt-[6px] mt-[12px] YaleSolisW-Lt font-[400] text-[16px] line-clamp-2" v-if="slide.description">{{ slide.description }}</p>
                                             <!-- {{ index }} -->

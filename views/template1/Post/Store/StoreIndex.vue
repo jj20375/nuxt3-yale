@@ -71,7 +71,7 @@ async function getType() {
         const rows = (data.value as any).data;
 
         rows.forEach((item: { name: any; id: any }) => {
-            if (item.name === "電商平台") {
+            if (item.name === "電商通路") {
                 sidebar.value.push({
                     text: item.name,
                     id: item.id,
@@ -106,7 +106,7 @@ async function getType() {
             });
 
             breadcrumbs.value.push({
-                name: lastBreadcrumbs.name === "電商平台" ? "store-e-commerce-slug" : "store-slug",
+                name: lastBreadcrumbs.name === "電商通路" ? "store-e-commerce-slug" : "store-slug",
                 text: lastBreadcrumbs.name,
                 params: { slug: lastBreadcrumbs.name },
                 query: { id: lastBreadcrumbs.id },
