@@ -1,6 +1,10 @@
 <template>
     <div>
-        <div class="min-h-screen flex flex-col" ref="layoutRef" :class="customClass">
+        <div
+            class="flex flex-col min-h-screen"
+            ref="layoutRef"
+            :class="customClass"
+        >
             <Header />
             <!-- test layout2
         <el-button
@@ -135,4 +139,11 @@ onMounted(async () => {
 });
 
 onBeforeUnmount(() => {});
+
+onBeforeRouteLeave(() => {
+    // 移除手機版選單關閉時 overflow 未消失問題 導致 畫面不能滾動
+    if (process.client) {
+        document.body.style.overflow = "auto";
+    }
+});
 </script>
