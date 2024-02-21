@@ -141,6 +141,7 @@ onMounted(async () => {
 onBeforeUnmount(() => {});
 
 onBeforeRouteLeave(() => {
+    // 移除手機版選單關閉時 overflow 未消失問題 導致 畫面不能滾動
     if (process.client) {
         document.body.style.overflow = "auto";
     }
