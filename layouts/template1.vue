@@ -1,6 +1,10 @@
 <template>
     <div>
-        <div class="min-h-screen flex flex-col" ref="layoutRef" :class="customClass">
+        <div
+            class="flex flex-col min-h-screen"
+            ref="layoutRef"
+            :class="customClass"
+        >
             <Header />
             <!-- test layout2
         <el-button
@@ -135,4 +139,10 @@ onMounted(async () => {
 });
 
 onBeforeUnmount(() => {});
+
+onBeforeRouteLeave(() => {
+    if (process.client) {
+        document.body.style.overflow = "auto";
+    }
+});
 </script>
