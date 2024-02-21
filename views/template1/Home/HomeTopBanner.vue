@@ -16,7 +16,7 @@
             >
                 <div
                     class="flex xl:items-center h-screen bg-center bg-cover"
-                    :style="{ 'background-image': `url(${item.desktop_image})` }"
+                    :style="{ 'background-image': `url(${isMobile ? item.mobile_image : item.desktop_image})` }"
                 >
                     <article class="container">
                         <div class="relative w-full top-[120px] xl:w-1/2">
@@ -41,13 +41,14 @@
 <script setup lang="ts">
 // import required modules
 import { Navigation, Pagination } from "swiper/modules";
-const { isMobile, isPad } = useWindowResize();
+const { isDesktop, isMobile, isPad } = useWindowResize();
 
 interface Props {
     carousel: {
         title: string;
         subtitle: string;
         desktop_image: string;
+        mobile_image: string;
     }[];
 }
 
