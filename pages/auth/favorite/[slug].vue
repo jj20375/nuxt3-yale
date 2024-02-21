@@ -9,7 +9,7 @@
         >
             <div class="flex items-center justify-center w-full h-screen">
                 <font-awesome-icon
-                    class="animate-spin text-[40px] text-yellow-500"
+                    class="animate-spin text-[40px] text-gray-300"
                     :icon="['fas', 'circle-notch']"
                 />
             </div>

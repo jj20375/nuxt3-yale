@@ -19,7 +19,7 @@
                     :style="{ 'background-image': `url(${isMobile ? item.mobile_image : item.desktop_image})` }"
                 >
                     <article class="container">
-                        <div class="relative w-full top-[120px] xl:w-1/2">
+                        <div class="relative w-full top-[120px] xl:top-[0] xl:w-1/2">
                             <div class="text-[28px] md:text-[36px] xl:text-[48px] text-center xl:text-start YaleSolisW-Bd font-medium">{{ item.title }}</div>
                             <div class="text-[14px] md:text-[16px] text-center xl:text-start mt-[8px] md:mt-[20px]">{{ item.subtitle }}</div>
                             <div class="mt-[24px] md:mt-[40px]">
