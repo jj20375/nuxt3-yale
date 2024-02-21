@@ -366,7 +366,7 @@
                     </div>
                     <div class="flex justify-center mt-[40px]">
                         <button
-                            native-type='submit'
+                            native-type="submit"
                             @click.prevent="onSubmit"
                             class="yellow-btn btn-lg"
                         >
@@ -413,19 +413,19 @@ const { $api } = useNuxtApp();
 
 const breadcrumbs = ref([
     {
-        name: "index",
-        text: "首頁",
+        name: "faq-slug",
+        text: "服務支援",
+        params: { slug: "服務支援" },
     },
     {
-        name: "repair-slug",
-        text: "維修與保固",
-        params: { slug: "維修與保固" },
+        name: "reservation-slug",
+        params: { slug: "預約安裝" },
+        text: "預約安裝",
     },
     {
-        name: "repair-detail-slug",
-        text: "保固登記",
-        params: { slug: "保固登記" },
-        query: { id: "1" },
+        name: "reservation-guard-slug",
+        text: "新光保全安裝",
+        params: { slug: "新光保全安裝" },
     },
 ]);
 
@@ -465,20 +465,20 @@ const form = ref<any>({
 });
 
 const contractOptions = ref<any>([
-    { value: '租賃契約', label: "租賃契約" },
-    { value: '賣斷', label: "賣斷" },
+    { value: "租賃契約", label: "租賃契約" },
+    { value: "賣斷", label: "賣斷" },
 ]);
 
 const seriesRadios = ref<any>([
-    { value: '電子門鎖', label: "電子門鎖" },
-    { value: '電子保險箱', label: "電子保險箱" },
+    { value: "電子門鎖", label: "電子門鎖" },
+    { value: "電子保險箱", label: "電子保險箱" },
 ]);
 
 const timeOptions = ref<any>([
-    { value: '平日時段 (週一~週五) 早上', label: "平日時段 (週一~週五) 早上" },
-    { value: '平日時段 (週一~週五) 下午', label: "平日時段 (週一~週五) 下午" },
-    { value: '假日時段 (六、日) 早上', label: "假日時段 (六、日) 早上" },
-    { value: '假日時段 (六、日) 下午', label: "假日時段 (六、日) 下午" },
+    { value: "平日時段 (週一~週五) 早上", label: "平日時段 (週一~週五) 早上" },
+    { value: "平日時段 (週一~週五) 下午", label: "平日時段 (週一~週五) 下午" },
+    { value: "假日時段 (六、日) 早上", label: "假日時段 (六、日) 早上" },
+    { value: "假日時段 (六、日) 下午", label: "假日時段 (六、日) 下午" },
 ]);
 
 const formDatas = ref<any>({
@@ -757,12 +757,12 @@ const dialogData = ref<any>({
     content: "",
 });
 const dialogVisible = ref(false);
-const handleDialog = (item:string) => {
+const handleDialog = (item: string) => {
     dialogVisible.value = true;
-    if (item === 'locker') {
-        dialogData.value = lockerData.value
-    } else if (item === 'coffer') {
-        dialogData.value = cofferData.value
+    if (item === "locker") {
+        dialogData.value = lockerData.value;
+    } else if (item === "coffer") {
+        dialogData.value = cofferData.value;
     }
 };
 
@@ -807,22 +807,23 @@ async function getPageData() {
 /**
  * 取得商品列表
  */
- async function getList() {
+async function getList() {
     try {
-        const params = {}
+        const params = {};
         const { data } = await $api().ProductLisAPI<ProductListAPIInterface>(params);
 
         const rows = (data.value as any).data;
         console.log("rows => ", rows);
 
-        formDatas.value.productDatas.find((item: {prop: string}) => item.prop === 'model').options = []
-        rows.forEach((item: {model: string}) => {
-            formDatas.value.productDatas.find((item: {prop: string}) => item.prop === 'model').options.push({
-                value: item.model,
-                label: item.model,
-            })
-        })
-
+        formDatas.value.productDatas.find((item: { prop: string }) => item.prop === "model").options = [];
+        rows.forEach((item: { model: string }) => {
+            formDatas.value.productDatas
+                .find((item: { prop: string }) => item.prop === "model")
+                .options.push({
+                    value: item.model,
+                    label: item.model,
+                });
+        });
     } catch (err) {
         console.log("HomeSampleAPI => ", err);
     }

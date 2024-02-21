@@ -365,19 +365,19 @@ const { $api } = useNuxtApp();
 
 const breadcrumbs = ref([
     {
-        name: "index",
-        text: "首頁",
+        name: "faq-slug",
+        text: "服務支援",
+        params: { slug: "服務支援" },
     },
     {
-        name: "repair-slug",
-        text: "維修與保固",
-        params: { slug: "維修與保固" },
+        name: "reservation-slug",
+        params: { slug: "預約安裝" },
+        text: "預約安裝",
     },
     {
-        name: "repair-detail-slug",
-        text: "保固登記",
-        params: { slug: "保固登記" },
-        query: { id: "1" },
+        name: "reservation-general-slug",
+        text: "一般安裝",
+        params: { slug: "一般安裝" },
     },
 ]);
 
@@ -531,7 +531,7 @@ const formDatas = ref<any>({
             radioData: seriesRadios,
             change: (e: any) => {
                 getList(e);
-            }
+            },
         },
         {
             prop: "model",
@@ -737,7 +737,7 @@ async function getPageData() {
     }
 }
 
-const product_category = ref([])
+const product_category = ref([]);
 /**
  * 取得商品分類
  */
@@ -748,8 +748,8 @@ async function getType() {
         const rows = (data.value as any).data;
         console.log("product_category_id", rows);
 
-        product_category.value = rows
-        getList('電子門鎖')
+        product_category.value = rows;
+        getList("電子門鎖");
     } catch (err) {
         console.log("HomeSampleAPI => ", err);
     }
@@ -758,38 +758,44 @@ async function getType() {
 /**
  * 取得商品列表
  */
- async function getList(type = '電子門鎖') {
- console.log("type => ", type);
+async function getList(type = "電子門鎖") {
+    console.log("type => ", type);
     try {
-        let product_category_id
-        if (type === '電子門鎖') {
-            product_category_id = product_category.value.find((item:{id: Number}) => item.id === 1).children.map((child:{id: Number}) => {
-                return child.id
-            })
-        } else if (type === '電子保險箱') {
-            product_category_id = product_category.value.find((item:{id: Number}) => item.id === 3).children.map((child:{id: Number}) => {
-                return child.id
-            })
+        let product_category_id;
+        if (type === "電子門鎖") {
+            product_category_id = product_category.value
+                .find((item: { id: Number }) => item.id === 1)
+                .children.map((child: { id: Number }) => {
+                    return child.id;
+                });
+        } else if (type === "電子保險箱") {
+            product_category_id = product_category.value
+                .find((item: { id: Number }) => item.id === 3)
+                .children.map((child: { id: Number }) => {
+                    return child.id;
+                });
         }
         const params = {};
         // 搜尋分類參數時 須帶上 搜尋模式 條件
         params["search_fields"] = "productCategories.product_category_id:in";
         // 搜尋分類參數 ("主鎖｜輔助鎖" 等等...)
         params["search_relations"] = "productCategories.product_category_id:" + product_category_id.join();
-        
+
         const { data } = await $api().ProductLisAPI<ProductListAPIInterface>(params);
 
         const rows = (data.value as any).data;
         console.log("home sample api => ", rows);
 
-        formDatas.value.installDatas.find((item: {prop: string}) => item.prop === 'model').options = []
-        rows.forEach((item: {model: string}) => {
-            formDatas.value.installDatas.find((item: {prop: string}) => item.prop === 'model').options.push({
-                value: item.model,
-                label: item.model,
-            })
-        })
-        form.value.model = ""
+        formDatas.value.installDatas.find((item: { prop: string }) => item.prop === "model").options = [];
+        rows.forEach((item: { model: string }) => {
+            formDatas.value.installDatas
+                .find((item: { prop: string }) => item.prop === "model")
+                .options.push({
+                    value: item.model,
+                    label: item.model,
+                });
+        });
+        form.value.model = "";
     } catch (err) {
         console.log("HomeSampleAPI => ", err);
     }
