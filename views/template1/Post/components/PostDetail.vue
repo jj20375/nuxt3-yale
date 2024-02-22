@@ -1,6 +1,6 @@
 <template>
-    <section class="mt-headerMb md:mt-header mb-[40px] md:mb-[100px]">
-        <nav class="border-t border-gray-300 py-[16px] min-h-[55px]">
+    <section class="mt-headerMb xl:mt-header mb-[40px] md:mb-[100px]">
+        <nav class="border-t border-gray-300 py-[16px] min-h-[43px] xl:min-h-[55px]">
             <div class="container">
                 <Breadcrumb :menus="breadcrumbs" />
             </div>

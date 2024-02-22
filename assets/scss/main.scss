@@ -152,4 +152,10 @@ input[type="number"] {
         margin-bottom: 40px;
         opacity: 1;
     }
+
+    iframe{
+        aspect-ratio: 16/9;
+        width: 100%;
+        height: auto;
+    }
 }

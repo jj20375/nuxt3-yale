@@ -1,5 +1,5 @@
 <template>
-    <div class="shrink-0 grow-0 basis-[430px] w-[430px]">
+    <div class="shrink-0 grow-0 md:basis-[50%] xl:basis-[430px] md:w-[50%] xl:w-[430px]">
         <div class="relative">
             <Swiper
                 v-if="photos.length > 0"
@@ -22,7 +22,7 @@
                     </div>
                 </SwiperSlide>
             </Swiper>
-            <div class="absolute top-0 -left-[30px] -translate-x-full z-50 flex items-center h-full">
+            <div class="absolute top-0 hidden md:flex md:-left-2 -left-[30px] -translate-x-full z-50  items-center h-full">
                 <button
                     class="text-3xl"
                     @click.stop="mainSwiper.slidePrev()"
@@ -30,7 +30,7 @@
                     <el-icon><ArrowLeft /></el-icon>
                 </button>
             </div>
-            <div class="absolute top-0 -right-[30px] translate-x-full z-50 flex items-center h-full">
+            <div class="absolute top-0 hidden md:flex md:right-0 md:-right-2 xl:-right-[30px] translate-x-full z-50 items-center h-full">
                 <button
                     class="text-3xl"
                     @click.stop="mainSwiper.slideNext()"
@@ -39,7 +39,7 @@
                 </button>
             </div>
         </div>
-        <div class="pt-[42px] pb-4">
+        <div class="pt-[12px] pb-4 md:pt-[42px] px-6 md:px-0">
             <Swiper
                 id="thumbClass"
                 v-if="photos.length > 0"

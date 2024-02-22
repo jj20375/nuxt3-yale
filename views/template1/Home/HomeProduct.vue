@@ -120,10 +120,10 @@ await getList();
 
 :deep {
     .dragClass {
-        @apply xl:hidden h-[4px] md:w-[100px] bg-black rounded-lg;
+        @apply xl:hidden h-[4px] bg-black rounded-lg;
     }
     .horizontalClass {
-        @apply xl:hidden h-[4px] md:w-[450px];
+        @apply xl:hidden h-[4px];
     }
 }
 
