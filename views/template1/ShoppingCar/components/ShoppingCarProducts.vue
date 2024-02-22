@@ -33,7 +33,7 @@
                         <p class="text-[14px]">{{ product.color }}</p>
                     </div>
                     <div class="flex gap-[36px] sm:gap-[18px] justify-end mt-[16px]">
-                        <div class="flex flex-1 justify-center items-stretch w-[140px] sm:w-[150px] border border-gray-300 rounded-full">
+                        <div class="flex flex-1 justify-center items-stretch sm:flex-initial w-[150px] sm:w-[150px] border border-gray-300 rounded-full">
                             <button
                                 class="flex items-center text-[16px] justify-center flex-1 h-auto cursor-pointer"
                                 @click.prevent="countUpdate(product.id, product.count - 1)"

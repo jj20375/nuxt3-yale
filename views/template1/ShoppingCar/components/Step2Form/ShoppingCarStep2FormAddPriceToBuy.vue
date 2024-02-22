@@ -47,7 +47,7 @@
                             />
                         </el-select>
                         <div class="flex gap-[36px] sm:gap-[18px] justify-end mt-[16px]">
-                            <div class="flex flex-1 justify-center items-stretch w-[150px] border border-gray-300 rounded-full">
+                            <div class="flex flex-1 sm:flex-initial justify-center items-stretch w-[150px] border border-gray-300 rounded-full">
                                 <button
                                     class="flex items-center text-[16px] justify-center flex-1 h-auto cursor-pointer"
                                     @click.prevent="countDelete(index)"
