@@ -20,7 +20,7 @@ export interface ShoppingCarInterface {
 
 export interface CartItem {
     // id
-    product_id: number;
+    productable_id: number;
     // ?
     product_variation_id?: number;
     // 數量

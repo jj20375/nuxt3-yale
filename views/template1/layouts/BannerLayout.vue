@@ -6,7 +6,7 @@
             </div>
         </nav>
         <div
-            :style="!isMobile ? `background-image: url(${banner})` : `background-image: url(${bannerMobile})`"
+            :style="isMobile && bannerMobile ? `background-image: url(${bannerMobile})` : `background-image: url(${banner})`"
             class="relative min-h-[195px] sm:min-h-[320px] w-full bg-cover flex items-center justify-center"
         >
             <!-- <NuxtImg :src="banner" /> -->
@@ -27,7 +27,7 @@ const props = defineProps({
     },
     bannerMobile: {
         type: String,
-        required: true,
+        required: false,
     },
     title: {
         type: String,

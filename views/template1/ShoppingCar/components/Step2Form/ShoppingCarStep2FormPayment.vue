@@ -1,18 +1,25 @@
 <template>
     <div class="mt-[60px]">
         <h5 class="bg-gray-50 py-[8px] pl-[16px] font-medium w-full mb-[20px]">付款方式</h5>
-        <el-form class="custom-form">
-            <el-radio-group
-                v-model="formData.paymentType"
-            >
-                <el-radio
-                    v-for="(option, index) in options"
-                    :key="index"
-                    :label="option.value"
-                    size="large"
-                    >{{ option.label }}</el-radio
-                >
-            </el-radio-group>
+        <el-form
+            ref="formRefDom"
+            class="custom-form"
+            :model="formData"
+            :rules="rules"
+            require-asterisk-position="right"
+        >
+            <el-form-item :prop="'paymentType'">
+                <el-radio-group v-model="formData.paymentType">
+                    <el-radio
+                        v-for="(option, index) in options"
+                        :key="index"
+                        :label="option.value"
+                        size="large"
+                    >
+                        {{ option.label }}
+                    </el-radio>
+                </el-radio-group>
+            </el-form-item>
             <el-form-item
                 prop="store"
                 v-if="form.paymentType === 'type2'"
@@ -41,28 +48,40 @@
 </template>
 
 <script setup lang="ts">
+import { FormInstance } from "element-plus";
+
 const route = useRoute();
 const emit = defineEmits(["update:form"]);
+const formRefDom = ref<FormInstance>();
 
 const props = defineProps({
     form: {
         type: Object,
         default() {
             return {
-                // 配送方式
-                paymentType: "type1",
+                // 付款方式
+                paymentType: "",
             };
         },
     },
 });
 
 const formData = ref(props.form);
+const rules = ref<any>({
+    paymentType: [
+        {
+            required: true,
+            message: "請選擇付款方式",
+            trigger: ["change", "blur"],
+        },
+    ],
+});
 
 // 付款方式
 const options = ref([
     {
         label: "信用卡",
-        value: "type1",
+        value: "ecpay",
     },
 ]);
 
@@ -76,6 +95,22 @@ if (route.query.tab === "type2") {
 
 watch(formData.value, (val) => {
     emit("update:form", val);
+});
+
+const validForm = async () => {
+    if (!formRefDom.value) return false;
+    const result = await formRefDom.value.validate((valid) => {
+        if (valid) {
+            return true;
+        } else {
+            return false;
+        }
+    });
+    return result;
+};
+
+defineExpose({
+    validForm,
 });
 </script>
 

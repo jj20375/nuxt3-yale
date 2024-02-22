@@ -14,7 +14,10 @@
         </div>
         <slot name="other"></slot>
         <div class="my-[20px] border-gray-300 border-b h-[1px] w-full"></div>
-        <div class="flex text-gray-800" :class="currentStep === 0 ? 'text-[24px]' : currentTab === 'type1' ? 'text-[20px]' : 'text-[16px]'">
+        <div
+            class="flex text-gray-800"
+            :class="currentStep === 0 ? 'text-[24px]' : currentTab === 'type1' ? 'text-[20px]' : 'text-[16px]'"
+        >
             <span class="font-medium YaleSolisW-Bd flex-1">總計</span>
             <div class="flex items-center font-medium YaleSolisW-Bd">
                 <span class="mr-[4px]">NT$ </span>
@@ -44,6 +47,7 @@
 </template>
 
 <script setup lang="ts">
+import { ShoppingCarInterface } from "~/interface/shoppingCar";
 import { useShoppingCarStore } from "~/store/shoppingCarStore";
 
 interface Props {
@@ -55,7 +59,7 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-    selectProductIds: [],
+    selectProductIds: () => [],
     currentTab: "type1",
     currentStep: 0,
 });
@@ -70,8 +74,8 @@ const shoppingCar = computed(() => shoppingCarStore.shoppingCar);
 // 總價
 const total = computed(() =>
     _SumBy(
-        _Filter(shoppingCar.value, (item) => props.selectProductIds.includes(item.id)),
-        "price"
+        _Filter(shoppingCar.value, (item: ShoppingCarInterface) => (item.id ? props.selectProductIds.includes(item.id) : false)),
+        "totalPrice"
     )
 );
 

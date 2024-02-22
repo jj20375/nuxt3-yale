@@ -36,19 +36,19 @@
                         <div class="flex justify-center items-stretch w-[150px] border border-gray-300 rounded-full">
                             <button
                                 class="flex items-center justify-center flex-1 h-auto cursor-pointer"
-                                @click.prevent="countUpdate(product.productID, product.count - 1)"
+                                @click.prevent="countUpdate(product.id, product.count - 1)"
                             >
                                 <el-icon><Minus /></el-icon>
                             </button>
                             <div class="flex items-center justify-center w-[80px] py-[10px] h-full">{{ product.count }}</div>
                             <button
                                 class="flex items-center justify-center flex-1 h-auto cursor-pointer"
-                                @click.prevent="countUpdate(product.productID, product.count + 1)"
+                                @click.prevent="countUpdate(product.id, product.count + 1)"
                             >
                                 <el-icon><Plus /></el-icon>
                             </button>
                         </div>
-                        <button @click.prevent="removeShoppingCar(product.productID)">
+                        <button @click.prevent="removeShoppingCar(product.id)">
                             <NuxtImg
                                 class="w-[24px]"
                                 src="/img/shopping-car/shopping-car-icon-delete.svg"
@@ -78,12 +78,12 @@ const checkList: Ref<number[]> = ref([]);
 /**
  * 點擊更新數量按鈕
  */
-function countUpdate(productId: number, count: number) {
+function countUpdate(cartId: number | null, count: number) {
     if (count < 1) {
         return;
     }
     const apiReq = {
-        cart_item_id: productId,
+        cart_item_id: cartId ? cartId : 0,
         quantity: count,
     };
     updateCart(apiReq);
@@ -92,9 +92,9 @@ function countUpdate(productId: number, count: number) {
 /**
  * 刪除購物車
  */
-function removeShoppingCar(productID: number) {
+function removeShoppingCar(id: number | null) {
     const req: ReqCart = {
-        cart_item_id: productID,
+        cart_item_id: id ? id : 0,
     };
     deleteCart(req);
 }
@@ -121,7 +121,10 @@ const init = async () => {
     //     shoppingCarStore.setShoppingCar([]);
     // }
 };
-await init();
+
+onMounted(() => {
+    init();
+});
 </script>
 
 <style lang="scss" scoped>

@@ -1,6 +1,7 @@
 <template>
     <section class="mt-[86px] mb-[120px] border-t border-gray-300">
         <div class="container">
+            {{ selectProductIds }}
             <ul
                 v-if="currentStep == 0"
                 class="flex gap-[24px] justify-center pt-[64px]"
@@ -55,9 +56,9 @@
                                 <div class="mt-[40px]">
                                     <button
                                         @click="
-                                        currentStep = 1;
-                                        showComponent = ShoppingCarStep2;
-                                    "
+                                            currentStep = 1;
+                                            showComponent = ShoppingCarStep2;
+                                        "
                                         class="yellow-btn w-full"
                                     >
                                         下一步
@@ -65,9 +66,9 @@
                                 </div>
                             </template>
                             <template #total>
-                            <span>
-                                {{ $utils().formatCurrency(total - salePrice - salePrice) }}
-                            </span>
+                                <span>
+                                    {{ $utils().formatCurrency(total - salePrice - salePrice) }}
+                                </span>
                             </template>
                             <template
                                 v-if="currentStep == 0"
@@ -86,9 +87,9 @@
                             v-if="currentStep == 1"
                             class="cursor-pointer mt-[24px] flex"
                             @click="
-                            currentStep = 0;
-                            showComponent = ShoppingCarStep1;
-                        "
+                                currentStep = 0;
+                                showComponent = ShoppingCarStep1;
+                            "
                         >
                             <NuxtImg
                                 class="w-[20px]"
@@ -118,8 +119,6 @@
 </template>
 
 <script setup lang="ts">
-import Cookies from "js-cookie";
-
 // 訂單狀態
 import ShoppingCarSteps from "~/views/template1/ShoppingCar/components/ShoppingCarSteps.vue";
 import ShoppingCarStep1 from "~/views/template1/ShoppingCar/components/ShoppingCarStep1.vue";
@@ -131,6 +130,7 @@ import ShoppingCarInputCoupon from "~/views/template1/ShoppingCar/components/Sho
 import ShoppingCarBilling from "~/views/template1/ShoppingCar/components/ShoppingCarBilling.vue";
 import { useShoppingCarStore } from "~/store/shoppingCarStore";
 import { storeToRefs } from "pinia";
+import { ShoppingCarInterface } from "~/interface/shoppingCar";
 const { $utils } = useNuxtApp();
 
 const route = useRoute();
@@ -168,8 +168,8 @@ const showComponent = shallowRef<any>(ShoppingCarStep1);
 // 總價
 const total = computed(() =>
     _SumBy(
-        _Filter(shoppingCar.value, (item) => selectProductIds.value.includes(item.id)),
-        "price"
+        _Filter(shoppingCar.value, (item: ShoppingCarInterface) => (item.id ? selectProductIds.value.includes(item.id) : false)),
+        "totalPrice"
     )
 );
 // 折扣

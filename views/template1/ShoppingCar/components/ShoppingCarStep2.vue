@@ -1,11 +1,32 @@
 <template>
     <div class="mr-[40px] flex-1">
-        <ShoppingCarStep2FormUser v-model:form="formMain" />
-        <ShoppingCarStep2FormContactUser v-model:form="formContactUser" />
-        <ShoppingCarStep2FormLogistics v-if="currentTab === 'type1'" v-model:form="formLogistics" />
-        <ShoppingCarStep2FormPayment v-model:form="formPayment" />
-        <ShoppingCarStep2FormMeasureTheSize v-if="currentTab === 'type2'" v-model:form="formMeasureTheSize" />
-        <ShoppingCarStep2FormInvoice v-model:form="formInvoice" />
+        <button @click="validTest">validTes {{ selectProductIds }}t</button>
+        <ShoppingCarStep2FormUser
+            v-if="formMain.email"
+            ref="formUserRef"
+            v-model:form="formMain"
+        />
+        <ShoppingCarStep2FormContactUser
+            ref="formContactUserRef"
+            v-model:form="formContactUser"
+        />
+        <ShoppingCarStep2FormLogistics
+            v-if="props.currentTab === 'type1'"
+            ref="formLogisticsRef"
+            v-model:form="formLogistics"
+        />
+        <ShoppingCarStep2FormPayment
+            v-model:form="formPayment"
+            ref="formPaymentRef"
+        />
+        <ShoppingCarStep2FormMeasureTheSize
+            v-if="props.currentTab === 'type2'"
+            v-model:form="formMeasureTheSize"
+        />
+        <ShoppingCarStep2FormInvoice
+            ref="formInvoiceRef"
+            v-model:form="formInvoice"
+        />
         <ShoppingCarStep2FormGift
             :gifts="gifts"
             v-model:form="formGift"
@@ -18,7 +39,7 @@
 
         <div class="flex flex-col gap-2 mt-[30px]">
             <div
-                v-if="currentTab === 'type2'"
+                v-if="props.currentTab === 'type2'"
                 class="flex items-center"
             >
                 <el-checkbox
@@ -43,7 +64,8 @@
                     <span class="font-normal">我已閱讀並同意</span
                     ><span class="mx-2 font-medium underline underline-offset-2 cursor-pointer hover:no-underline YaleSolisW-Bd">
                         <NuxtLink
-                            class="text-gray-800" target="_blank"
+                            class="text-gray-800"
+                            target="_blank"
                             :to="{
                                 name: 'other-terms-slug',
                                 params: { slug: '耶魯網站服務條款' },
@@ -52,8 +74,15 @@
                         ></span
                     >
                     <span class="font-normal">與</span>
-                    <span class="mx-2 font-medium underline underline-offset-2 cursor-pointer hover:no-underline YaleSolisW-Bd"> <NuxtLink
-                        class="text-gray-800" target="_blank" :to="{ name: 'other-privacy-slug', params: { slug: '耶魯隱私權政權' } }"> 隱私權政策 </NuxtLink></span>
+                    <span class="mx-2 font-medium underline underline-offset-2 cursor-pointer hover:no-underline YaleSolisW-Bd">
+                        <NuxtLink
+                            class="text-gray-800"
+                            target="_blank"
+                            :to="{ name: 'other-privacy-slug', params: { slug: '耶魯隱私權政權' } }"
+                        >
+                            隱私權政策
+                        </NuxtLink></span
+                    >
                 </el-checkbox>
             </div>
         </div>
@@ -61,6 +90,8 @@
 </template>
 
 <script setup lang="ts">
+import { storeToRefs } from "pinia";
+
 // 訂購人表單
 import ShoppingCarStep2FormUser from "~/views/template1/ShoppingCar/components/Step2Form/ShoppingCarStep2FormUser.vue";
 // 聯繫人表單
@@ -78,11 +109,28 @@ import ShoppingCarStep2FormCustomProductRule from "~/views/template1/ShoppingCar
 // 預約丈量時間
 import ShoppingCarStep2FormMeasureTheSize from "~/views/template1/ShoppingCar/components/Step2Form/ShoppingCarStep2FormMeasureTheSize.vue";
 
+import { useUserStore } from "~/store/userStore";
+import { ReqCheckout } from "~/api/cart";
+
+const formUserRef = ref<any>(null);
+const formContactUserRef = ref<any>(null);
+const formLogisticsRef = ref<any>(null);
+const formPaymentRef = ref<any>(null);
+const formInvoiceRef = ref<any>(null);
+
+const userStore = useUserStore();
+
+const { user } = storeToRefs(userStore);
+
 const { $api } = useNuxtApp();
 const props = defineProps({
     currentTab: {
         type: String,
         default: "type1",
+    },
+    selectProductIds: {
+        type: Array,
+        default: () => [],
     },
 });
 
@@ -94,16 +142,16 @@ const customRuleData = ref<any>(``);
 
 // 訂單主表單
 const formMain = ref({
-    name: "王小明",
-    email: "123@gmail.cpm",
-    phone: "0911123123",
-    note: null,
+    name: "",
+    email: "",
+    phone: "",
+    note: "",
 });
 
 // 聯絡人表單
 const formContactUser = ref({
-    name: "王小明",
-    phone: "0911123123",
+    name: "",
+    phone: "",
     // 縣市
     city: null,
     // 地區
@@ -119,13 +167,13 @@ const formContactUser = ref({
 // 配送方式
 const formLogistics = ref({
     // 配送方式
-    logistics: "type1",
+    logistics: "",
 });
 
 // 付款方式
 const formPayment = ref({
     // 付款方式
-    paymentType: "type1",
+    paymentType: "ecpay",
 });
 
 //
@@ -136,9 +184,9 @@ const formMeasureTheSize = ref({
 // 發票表單
 const formInvoice = ref({
     // 發票類型
-    invoiceType: "type1",
+    invoiceType: "mobile_carrier",
     // 載具編碼 ｜ 統編 ｜ 捐贈單位編碼 等等
-    invoiceCode: null,
+    carrierCode: null,
 });
 
 // 贈品表單
@@ -215,9 +263,7 @@ const gifts = ref([
 // 贈品選中商品 id
 const selectGiftIds = ref<number | string[]>([]);
 
-const rules = ref([]);
-
-async function getPageData() {
+const getPageData = async () => {
     try {
         const params = { code: "standardized_contract_popup" };
         const { data } = await $api().getPageAPI(params);
@@ -228,12 +274,60 @@ async function getPageData() {
     } catch (err) {
         console.log("HomeSampleAPI => ", err);
     }
-}
+};
+
+const initialVal = () => {
+    formMain.value = {
+        name: user.value.name,
+        email: user.value.email,
+        phone: user.value.phone,
+        note: "",
+    };
+};
+
+// 結帳
+const checkout = async () => {
+    const req: ReqCheckout = {
+        type: "normal", // normal
+        member_phone: "",
+        contact_name: "",
+        contact_email: "",
+        contact_phone: "",
+        contact_zip3: "",
+        contact_city: "",
+        contact_district: "",
+        contact_address: "",
+        remark: "",
+        payment_gateway: "ecpay",
+        shipping_method: "",
+        invoice_type: "",
+        carrier_code: "",
+        cart_item_id: [],
+    };
+
+    const { data } = await $api().CheckOutApi(req);
+};
+
+// 驗證表單
+const validTest = async () => {
+    if (props.currentTab === "type1") {
+        const validUserForm = await formUserRef.value.$.exposed.validForm();
+        const validContactUserForm = await formContactUserRef.value.$.exposed.validForm();
+        const validLogisticsForm = await formLogisticsRef.value.$.exposed.validForm();
+        const validPaymentForm = await formPaymentRef.value.$.exposed.validForm();
+        const validInvoiceForm = await formInvoiceRef.value.$.exposed.validForm();
+        // 表單驗證無問題，去結帳
+        if (validUserForm && validContactUserForm && validLogisticsForm && validPaymentForm && validInvoiceForm && formConfirm.value.confirmRule) {
+            checkout();
+        }
+    }
+};
 
 onMounted(async () => {
     nextTick(async () => {
         if (process.client) {
-            await getPageData();
+            initialVal();
+            getPageData();
         }
     });
 });
@@ -248,11 +342,11 @@ onMounted(async () => {
         @apply h-[18px] #{!important};
         .el-checkbox__inner {
             @apply w-[18px] h-[18px] #{!important};
-            &:hover{
+            &:hover {
                 @apply border-yellow-600;
             }
         }
-        .is-checked{
+        .is-checked {
             .el-checkbox__inner {
                 @apply bg-yellow-600 border-yellow-600 after:h-[9px] after:left-[6px] after:top-[2px] #{!important};
             }

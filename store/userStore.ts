@@ -4,7 +4,6 @@ import Cookies from "js-cookie";
 import { ElMessage } from "element-plus";
 import { useApiStore } from "./apiStore";
 import { useShoppingCarStore } from "~/store/shoppingCarStore";
-
 interface State {
     user: UserInterface;
 }
@@ -59,6 +58,8 @@ export const useUserStore = defineStore({
         // 取得使用者資料
         async getUserProfile() {
             const { $api }: any = useNuxtApp();
+            const shoppingCarStore = useShoppingCarStore();
+            
             if (Cookies.get("token")) {
                 try {
                     const { data, error }: { data: any; error: any } = await $api().GetUserProfileAPI();
@@ -78,7 +79,9 @@ export const useUserStore = defineStore({
                     }
                     this.setUser(data.value.data);
                     this.setIsAuth(true);
+                    shoppingCarStore.getUserShopping()
                 } catch (err) {
+                    this.removeLoginData();
                     console.log("GetUserProfileAPI => ", err);
                 }
             }
