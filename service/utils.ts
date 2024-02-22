@@ -257,3 +257,20 @@ export const saveBreadcrumbsData = (datas: any) => {
 export const getBreadcrumbsData = () => {
     return getStorage("breadcrumbs");
 };
+
+/**
+ * 開啟新視窗
+ */
+export const openNewWindow = (url: string | URL | undefined, pageWidth = 500, pageHeight = 500) => {
+    const dualScreenLeft = window.screenLeft !== undefined ? window.screenLeft : window.screenX;
+    const dualScreenTop = window.screenTop !== undefined ? window.screenTop : window.screenY;
+
+    const screenWidth = window.screen.width;
+    const screenHeight = window.screen.height;
+
+    // 計算居中所需的左上角座標
+    const left = (screenWidth - pageWidth) / 2 + dualScreenLeft;
+    const top = (screenHeight - pageHeight) / 2 + dualScreenTop;
+
+    window.open(url, 'newwindow', `height=${pageHeight}, width=${pageWidth}, left=${left}, top=${top}`);
+};
