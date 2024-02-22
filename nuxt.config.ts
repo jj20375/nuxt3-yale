@@ -127,4 +127,6 @@ export default defineNuxtConfig({
             // });
         },
     },
+
+    serverMiddleware: ["~/api/payment.get.ts"],
 });

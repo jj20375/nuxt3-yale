@@ -33,12 +33,12 @@
                                     v-for="(icon, index) in contact.icons"
                                     :key="index"
                                 >
-                                    <NuxtLink class="flex justify-center items-center !w-[32px] !h-[32px] cursor-pointer group" :to="icon.url">
+                                    <div @click="toSocialMedia(icon)" class="flex justify-center items-center !w-[32px] !h-[32px] cursor-pointer group cursor-pointer">
                                         <component
                                             class="!w-[24px] !h-[24px] transition-all duration-300 group-hover:text-yellow-500 group-hover:transition-all group-hover:duration-300"
                                             :is="icon.iconName"
                                         />
-                                    </NuxtLink>
+                                    </div>
                                 </li>
                             </ul>
                             <div class="flex xl:flex-col gap-2 mt-[30px]">
@@ -236,27 +236,33 @@ const contact = ref({
         {
             iconName: IconFacebook,
             alt: "耶魯電子鎖粉絲專頁",
-            url: "",
+            url: initializationData.value.site.social_facebook,
         },
         {
             iconName: IconLine,
             alt: "耶魯電子鎖LINE",
-            url: "",
+            url: initializationData.value.site.social_line,
         },
         {
             iconName: IconInstagram,
             alt: "耶魯電子鎖IG",
-            url: "",
+            url: initializationData.value.site.social_instagram,
         },
         {
             iconName: IconYoutube,
             alt: "耶魯電子鎖Youtube",
-            url: "",
+            url: initializationData.value.site.social_youtube,
         },
     ],
     name: initializationData.value.site.site_name,
     phone: initializationData.value.site.contact_phone,
 });
+
+function toSocialMedia (socialMedia: { url: string|URL|undefined; }) {
+    if (socialMedia.url) {
+        open(socialMedia.url, "_blank");
+    }
+};
 
 const copyright = {
     text: `${initializationData.value.site.site_name} © Copyright All Rights Reserved. Powerd by 可思科技-網站架設`,

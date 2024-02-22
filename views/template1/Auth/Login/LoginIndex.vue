@@ -100,7 +100,7 @@ import { useUserStore } from "~/store/userStore";
 import { useInitializationStore } from "~/store/initializationStore";
 import Cookies from "js-cookie";
 
-const { $api } = useNuxtApp();
+const { $api, $utils } = useNuxtApp();
 const userStore = useUserStore();
 const router = useRouter();
 const formRefDom = ref<any>();
@@ -210,21 +210,7 @@ async function ssoLogin(site: string) {
     } else if (site === "facebook") {
         ssoSite = ssoLogingSite.value.facebook;
     }
-    console.log(ssoSite);
-    const pageWidth = 500 // 彈出視窗的寬度
-    const pageHeight = 500 // 彈出視窗的高度
-
-    const dualScreenLeft = window.screenLeft !== undefined ? window.screenLeft : window.screenX;
-    const dualScreenTop = window.screenTop !== undefined ? window.screenTop : window.screenY;
-
-    const screenWidth = window.screen.width;
-    const screenHeight = window.screen.height;
-
-    // 計算居中所需的左上角座標
-    const left = (screenWidth - pageWidth) / 2 + dualScreenLeft;
-    const top = (screenHeight - pageHeight) / 2 + dualScreenTop;
-
-    window.open(ssoSite, 'newwindow', `height=${pageHeight}, width=${pageWidth}, left=${left}, top=${top}`);
+    $utils().openNewWindow(ssoSite)
 }
 
 function getMessage(e: any) {
