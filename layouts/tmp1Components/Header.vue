@@ -143,12 +143,12 @@
                     v-for="(media, index) in socialMedia"
                     :key="index"
                 >
-                    <NuxtLink class="flex justify-center items-center !w-[40px] !h-[40px] group" :to="media.url">
+                    <div @click="toSocialMedia(media)" class="flex justify-center items-center !w-[40px] !h-[40px] group cursor-pointer">
                         <component
                             class="!w-[20px] !h-[20px] transition-all duration-300 group-hover:text-gray-400 group-hover:transition-all group-hover:duration-300"
                             :is="media.name"
                         />
-                    </NuxtLink>
+                    </div>
                 </li>
             </ul>
         </nav>
@@ -409,24 +409,30 @@ const rightIcons = computed(() => {
 });
 
 // 社群資料
-const socialMedia = [
+const socialMedia = ref([
     {
         name: IconFacebook,
-        url: {},
+        url: initializationData.value.site.social_facebook,
     },
     {
         name: IconLine,
-        url: {},
+        url: initializationData.value.site.social_line,
     },
     {
         name: IconInstagram,
-        url: {},
+        url: initializationData.value.site.social_instagram,
     },
     {
         name: IconYoutube,
-        url: {},
+        url: initializationData.value.site.social_youtube,
     },
-];
+])
+
+function toSocialMedia (socialMedia: { url: string|URL|undefined; }) {
+    if (socialMedia.url) {
+        open(socialMedia.url, "_blank");
+    }
+};
 
 // 預設選擇的 menu 判斷是否呈現 submenu
 const currentMenu = ref<null | string>(null);
