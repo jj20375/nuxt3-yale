@@ -1,5 +1,5 @@
 <template>
-    <div class="mr-[40px] flex-1">
+    <div class="sm:mr-[40px] flex-1">
         <ShoppingCarProducts
             v-if="currentTab === 'type1'"
             v-model:selectProductIds="selectProductIds"

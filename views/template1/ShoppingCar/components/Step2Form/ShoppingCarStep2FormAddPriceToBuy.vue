@@ -9,15 +9,16 @@
                 <div
                     v-for="(product, index) in products"
                     v-show="formData[index]"
-                    class="flex gap-[48px] border-gray-300 py-[30px]"
+                    class="flex gap-[12px] sm:gap-[48px] border-gray-300 py-[30px]"
                     :class="{ 'border-b': index !== products.length - 1 }"
                 >
-                    <div class="flex gap-[36px]"
+                    <div
+                        class="flex gap-[8px] sm:gap-2"
                         v-if="formData[index]"
                     >
                         <el-checkbox :label="product.id" />
                         <NuxtImg
-                            class="w-[180px] aspect-square object-cover"
+                            class="w-[100px] h-[100px] sm:w-[180px] sm:h-[180px] aspect-square object-cover"
                             src="/img/shopping-car/shopping-gift-demo-1.jpg"
                         />
                     </div>
@@ -27,8 +28,8 @@
                         v-if="formData[index]"
                     >
                         <div class="flex mb-[12px]">
-                            <h5 class="flex-1 text-[18px] text-gray-800 font-medium">{{ product.name }}</h5>
-                            <div class="flex gap-4">
+                            <h5 class="flex-1 text-[16px] sm:text-[18px] text-gray-800 font-medium">{{ product.name }}</h5>
+                            <div class="hidden sm:flex gap-4">
                                 <p class="text-gray-400 line-through YaleSolisW-Lt mr-[4px]">NT${{ $utils().formatCurrency(product.price) }}</p>
                                 <p class="font-medium text-[18px] YaleSolisW-Bd">NT$ {{ $utils().formatCurrency(product.market_price * formData[index].count) }}</p>
                             </div>
@@ -43,19 +44,21 @@
                                 :key="option"
                                 :label="option.label"
                                 :value="option.value"
-                            ></el-option>
+                            />
                         </el-select>
-                        <div class="flex gap-[18px] justify-end">
-                            <div class="flex justify-center items-stretch w-[150px] border border-gray-300 rounded-full">
+                        <div class="flex gap-[36px] sm:gap-[18px] justify-end mt-[16px]">
+                            <div class="flex flex-1 justify-center items-stretch w-[150px] border border-gray-300 rounded-full">
                                 <button
-                                    class="flex-1 flex items-center justify-center cursor-pointer h-auto"
+                                    class="flex items-center text-[16px] justify-center flex-1 h-auto cursor-pointer"
                                     @click.prevent="countDelete(index)"
                                 >
-                                    <el-icon><Minus /></el-icon>
+                                    <el-icon>
+                                        <Minus />
+                                    </el-icon>
                                 </button>
-                                <div class="flex items-center justify-center w-[80px] py-[10px] h-full">{{ product.count }}</div>
+                                <div class="flex items-center justify-center w-[80px] py-[4px] sm:py-[10px] h-full">{{ product.count }}</div>
                                 <button
-                                    class="flex-1 flex items-center justify-center cursor-pointer h-auto"
+                                    class="flex items-center text-[16px] justify-center flex-1 h-auto cursor-pointer"
                                     @click.prevent="countAdd(index)"
                                 >
                                     <el-icon><Plus /></el-icon>
@@ -63,10 +66,14 @@
                             </div>
                             <button @click.prevent="removeShoppingCar(index)">
                                 <NuxtImg
-                                    class="w-[24px]"
+                                    class="w-[22px] sm:w-[24px]"
                                     src="/img/shopping-car/shopping-car-icon-delete.svg"
                                 />
                             </button>
+                        </div>
+                        <div class="sm:hidden mt-[16px]">
+                            <p class="text-gray-400 text-[16px] line-through YaleSolisW-Lt mr-[4px]">NT${{ $utils().formatCurrency(product.price) }}</p>
+                            <p class="font-medium text-[16px] YaleSolisW-Bd">NT$ {{ $utils().formatCurrency(product.market_price * formData[index].count) }}</p>
                         </div>
                     </div>
                 </div>
@@ -201,18 +208,18 @@ watch(formData.value, (val) => {
     @apply px-2;
 }
 // 輸入框
-:deep .el-select{
-    .el-input{
+:deep .el-select {
+    .el-input {
         .el-input__wrapper {
             @apply shadow-formDefault rounded-none py-1.5 px-0 bg-transparent text-[16px] #{!important};
-            &.is-focus{
+            &.is-focus {
                 @apply shadow-formFocus #{!important};
             }
             .el-input__inner {
                 @apply text-gray-800;
 
                 &::placeholder {
-                    -webkit-text-fill-color: #ABABAC;
+                    -webkit-text-fill-color: #ababac;
                 }
             }
         }
@@ -230,11 +237,11 @@ watch(formData.value, (val) => {
         }
         .el-checkbox__inner {
             @apply w-[18px] h-[18px] #{!important};
-            &:hover{
+            &:hover {
                 @apply border-yellow-600;
             }
         }
-        .is-checked{
+        .is-checked {
             .el-checkbox__inner {
                 @apply bg-yellow-600 border-yellow-600 after:h-[9px] after:left-[6px] after:top-[2px] #{!important};
             }

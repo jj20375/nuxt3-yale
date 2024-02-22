@@ -1,9 +1,9 @@
 <template>
-    <section class="mt-[86px] mb-[120px] border-t border-gray-300">
+    <section class="mt-[64px] sm:mt-[86px] mb-[120px] border-t border-gray-300">
         <div class="container">
             <ul
                 v-if="currentStep == 0"
-                class="flex gap-[24px] justify-center pt-[64px]"
+                class="flex gap-[24px] justify-center pt-[48px] sm:pt-[64px]"
             >
                 <li
                     v-for="(tab, key) in tabs"
@@ -26,20 +26,21 @@
                 </li>
             </ul>
             <div class="flex justify-center">
-                <div class="w-[420px]">
+                <div class="w-full sm:w-[420px]">
                     <ShoppingCarSteps v-model:step="currentStep" />
                 </div>
             </div>
-            <div class="flex justify-center mt-[40px]">
+            <div class="sm:flex justify-center mt-[40px]">
                 <keep-alive>
                     <component
                         :is="showComponent"
                         v-model:currentTab="currentTab"
                         v-model:selectProductIds="selectProductIds"
+                        :goCheckoutStep3="goCheckoutStep3"
                     />
                 </keep-alive>
                 <div
-                    class="w-[400px]"
+                    class="w-full sm:w-[400px]"
                     v-if="currentStep !== 2"
                 >
                     <div class="sticky top-[111px]">
@@ -51,15 +52,23 @@
                             :currentStep="currentStep"
                         >
                             <template
-                                v-if="currentStep == 0"
+                                v-if="currentStep == 0 || currentStep == 1"
                                 #button
                             >
-                                <div class="mt-[40px]">
+                                <div class="mt-[28px] sm:mt-[40px]">
                                     <button
+                                        v-if="currentStep == 0"
                                         @click="goStepCheckout"
                                         class="yellow-btn w-full"
                                     >
                                         下一步
+                                    </button>
+                                    <button
+                                        v-else
+                                        @click="goCheckoutStep3 = !goCheckoutStep3"
+                                        class="yellow-btn w-full"
+                                    >
+                                        前往付款
                                     </button>
                                 </div>
                             </template>
@@ -125,7 +134,7 @@ const { $api } = useNuxtApp();
 
 const shoppingCarStore = useShoppingCarStore();
 const { shoppingCar } = storeToRefs(shoppingCarStore);
-
+const goCheckoutStep3 = ref(false);
 const userStore = useUserStore();
 
 // 購物種類

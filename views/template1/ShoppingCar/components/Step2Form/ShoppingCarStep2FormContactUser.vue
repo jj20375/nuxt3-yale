@@ -1,7 +1,7 @@
 <template>
-    <div class="mt-[60px]">
-        <h5 class="bg-gray-50 py-[8px] font-medium pl-[16px] w-full mb-[30px]">聯繫人</h5>
-        <div class="flex items-center gap-[30px] mb-[30px]">
+    <div class="sm:mt-[60px]">
+        <h5 class="bg-gray-50 py-[8px] font-medium pl-[16px] w-full mb-[24px] sm:mb-[30px]">聯繫人</h5>
+        <div class="flex items-center gap-[30px] mb-[24px] sm:mb-[30px]">
             <el-checkbox
                 class="relative"
                 v-model="formData.chooseDefaultContactUser"
@@ -23,7 +23,7 @@
             :rules="rules"
             require-asterisk-position="right"
         >
-            <div class="grid grid-cols-2 gap-6">
+            <div class="grid sm:grid-cols-2 gap-[16px] sm:gap-6">
                 <div
                     v-for="(column, key) in columns"
                     :key="key"

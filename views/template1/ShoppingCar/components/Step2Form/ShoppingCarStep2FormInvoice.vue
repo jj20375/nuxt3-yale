@@ -1,6 +1,6 @@
 <template>
     <div class="mt-[60px]">
-        <h5 class="bg-gray-50 py-[8px] pl-[16px] w-full font-medium mb-[30px]">發票</h5>
+        <h5 class="bg-gray-50 py-[8px] pl-[16px] w-full font-medium mb-[16px] sm:mb-[30px]">發票</h5>
         <el-form
             ref="formRefDom"
             class="custom-form"
@@ -8,7 +8,7 @@
             :rules="rules"
             require-asterisk-position="right"
         >
-            <div class="grid grid-cols-2 gap-6">
+            <div class="grid sm:grid-cols-2 gap-6">
                 <template
                     v-for="(column, key) in columns"
                     :key="key"

@@ -3,11 +3,12 @@
         id="addToCarDialog"
         v-model="showDialog"
         :before-close="closeDialog"
-        class="custom-dialog h-[500px]"
+        class="custom-dialog"
         close-on-click-modal
         lock-scroll
         show-close
         center
+        :width="isMobile ? '95%' : '600px'"
         align-center
         append-to-body
     >
@@ -22,7 +23,7 @@
                     <thead class="bg-gray-100">
                         <tr class="px-5">
                             <th
-                                class="text-[14px] font-medium YaleSolisW-Bd px-[10px] py-[10px] text-left text-gray-800"
+                                class="text-[14px] font-medium YaleSolisW-Bd px-[4px] sm:px-[10px] py-[4px] sm:py-[10px] text-left text-gray-800"
                                 v-for="(column, key) in columns"
                                 :key="key"
                             >
@@ -37,7 +38,7 @@
                             class="border-b border-gray-200"
                         >
                             <td
-                                class="YaleSolisW-Bd text-[16px] font-bold text-gray-800 px-[10px] py-[10px]"
+                                class="YaleSolisW-Bd sm:text-[16px] text-[12px] font-bold text-gray-800 px-[4px] sm:px-[10px] py-[4px] sm:py-[10px]"
                                 v-if="contact.is_default"
                             >
                                 預設
@@ -45,10 +46,10 @@
                             <td
                                 v-else
                                 class="text-gray-800 px-[10px] py-[10px]"
-                            ></td>
-                            <td class="text-[16px] px-[10px] py-[10px] text-gray-800">{{ contact.name }}</td>
-                            <td class="text-[16px] px-[10px] py-[10px] text-gray-800">{{ contact.phone }}</td>
-                            <td class="text-[16px] px-[10px] py-[10px] text-gray-800 w-[300px]">{{ contact.full_address }}</td>
+                            />
+                            <td class="sm:text-[16px] text-[12px] px-[10px] py-[10px] text-gray-800">{{ contact.name }}</td>
+                            <td class="sm:text-[16px] text-[12px] px-[10px] py-[10px] text-gray-800">{{ contact.phone }}</td>
+                            <td class="sm:text-[16px] text-[12px] px-[10px] py-[10px] text-gray-800 w-[300px]">{{ contact.full_address }}</td>
                             <td class="px-[10px] py-[10px]">
                                 <el-radio
                                     :label="contact.id"
@@ -59,7 +60,7 @@
                     </tbody>
                 </table>
             </el-radio-group>
-            <div class="mt-[40px] flex justify-center gap-4]">
+            <div class="mt-[40px] flex justify-center gap-4">
                 <button
                     @click="closeDialog"
                     class="transparent-btn btn-md"
@@ -79,6 +80,7 @@
 
 <script setup lang="ts">
 import { ContactUser } from "~/interface/user";
+const { isMobile } = useWindowResize();
 
 const props = defineProps<{
     showDialog: boolean;

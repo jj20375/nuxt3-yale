@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-gray-50 p-[24px] rounded-[20px] w-full">
+    <div class="bg-gray-50 p-[24px] rounded-[20px] w-full mt-[40px] sm:mt-0">
         <p class="text-gray-800 text-[15px] mb-[5px]">輸入優惠序號</p>
         <div class="flex">
             <input

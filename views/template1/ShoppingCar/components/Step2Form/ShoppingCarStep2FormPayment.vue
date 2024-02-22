@@ -1,5 +1,5 @@
 <template>
-    <div class="mt-[60px]">
+    <div class="mt-[30px] sm:mt-[60px]">
         <h5 class="bg-gray-50 py-[8px] pl-[16px] font-medium w-full mb-[20px]">付款方式</h5>
         <el-form
             ref="formRefDom"

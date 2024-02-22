@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h5 class="bg-gray-50 py-[8px] font-medium pl-[16px] w-full mb-[30px]">訂購人</h5>
+        <h5 class="bg-gray-50 py-[8px] font-medium pl-[16px] w-full mb-[16px] sm:mb-[30px]">訂購人</h5>
         <el-form
             ref="formRefDom"
             class="custom-form"
@@ -8,12 +8,12 @@
             :rules="rules"
             require-asterisk-position="right"
         >
-            <div class="grid grid-cols-2 gap-6 mb-[30px]">
+            <div class="grid sm:grid-cols-2 gap-[16px] sm:gap-6 mb-[30px]">
                 <template
                     v-for="(item, index) in formDatas"
                     :key="index"
                 >
-                    <div :class="item.span ? `col-span-${item.span}` : ''">
+                    <div :class="item.span ? `col-span-1 sm:col-span-2` : ''">
                         <el-form-item
                             :prop="item.prop"
                             :label="item.label"

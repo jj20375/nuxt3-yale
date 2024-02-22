@@ -1,5 +1,5 @@
 <template>
-    <div class="mr-[40px] flex-1">
+    <div class="sm:mr-[40px] flex-1">
         <ShoppingCarStep2FormUser
             v-if="formMain.email"
             ref="formUserRef"
@@ -36,7 +36,7 @@
             :customRuleData="customRuleData"
         />
 
-        <div class="flex flex-col gap-2 mt-[30px]">
+        <div class="flex flex-col gap-2 mt-[30px] mb-[20px]">
             <div
                 v-if="props.currentTab === 'type2'"
                 class="flex items-center"
@@ -84,7 +84,13 @@
                     </span>
                 </el-checkbox>
             </div>
-            <div class="flex justify-center mt-[40px]">
+            <div
+                v-if="showCheckWarning"
+                class="text-pink-900 text-[12px] mt-[-5px]"
+            >
+                請勾選
+            </div>
+            <div class="hidden sm:flex justify-center mt-[40px]">
                 <button
                     @click.prevent="validTest"
                     class="yellow-btn btn-lg"
@@ -125,6 +131,8 @@ const formLogisticsRef = ref<any>(null);
 const formPaymentRef = ref<any>(null);
 const formInvoiceRef = ref<any>(null);
 
+const showCheckWarning = ref(false);
+
 const userStore = useUserStore();
 
 const { user } = storeToRefs(userStore);
@@ -134,11 +142,13 @@ const { $api } = useNuxtApp();
 interface Props {
     currentTab: string;
     selectProductIds: number[];
+    goCheckoutStep3: boolean;
 }
 
 const props: Props = withDefaults(defineProps<Props>(), {
     currentTab: "",
     selectProductIds: () => [],
+    goCheckoutStep3: false,
 });
 
 // 顯示定型化契約彈窗
@@ -323,12 +333,24 @@ const validTest = async () => {
         const validLogisticsForm = await formLogisticsRef.value.$.exposed.validForm();
         const validPaymentForm = await formPaymentRef.value.$.exposed.validForm();
         const validInvoiceForm = await formInvoiceRef.value.$.exposed.validForm();
+        if (!formConfirm.value.confirmRule) {
+            showCheckWarning.value = true;
+        } else {
+            showCheckWarning.value = false;
+        }
         // 表單驗證無問題，去結帳
         if (validUserForm && validContactUserForm && validLogisticsForm && validPaymentForm && validInvoiceForm && formConfirm.value.confirmRule) {
             checkout();
         }
     }
 };
+
+watch(
+    () => props.goCheckoutStep3,
+    () => {
+        validTest();
+    }
+);
 
 onMounted(async () => {
     nextTick(async () => {

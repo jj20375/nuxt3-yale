@@ -1,5 +1,5 @@
 <template>
-    <div class="mt-[60px]">
+    <div class="mt-[40px] sm:mt-[60px]">
         <h5 class="bg-gray-50 py-[8px] pl-[16px] font-medium w-full mb-[30px]">滿額贈品</h5>
         <el-checkbox-group
             v-model="checkList"
@@ -15,7 +15,7 @@
                         <el-checkbox :label="gift.id" />
                     </div>
                     <NuxtImg
-                        class="w-[195px] mr-[37px]"
+                        class="w-[100px] h-[100px] sm:w-[195px] sm:h-[195px] mr-[16px] sm:mr-[37px]"
                         src="/img/shopping-car/shopping-gift-demo-1.jpg"
                     />
                     <div class="flex-1">
