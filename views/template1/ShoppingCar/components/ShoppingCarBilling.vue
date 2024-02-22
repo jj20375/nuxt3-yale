@@ -4,14 +4,14 @@
             <span class="flex-1">小計</span>
             <span>NT$ {{ $utils().formatCurrency(total) }}</span>
         </div>
-        <!-- <div class="flex text-gray-800 text-[14px] mb-[4px]">
+        <div class="flex text-gray-800 text-[14px] mb-[4px]">
             <span class="flex-1">活動折扣</span>
             <span>-NT$ {{ $utils().formatCurrency(salePrice) }}</span>
-        </div> -->
-        <!-- <div class="flex text-gray-800 text-[14px]">
+        </div>
+        <div class="flex text-gray-800 text-[14px]">
             <span class="flex-1">優惠券折扣</span>
             <span>-NT$ {{ $utils().formatCurrency(salePrice) }}</span>
-        </div> -->
+        </div>
         <slot name="other"></slot>
         <div class="my-[20px] border-gray-300 border-b h-[1px] w-full"></div>
         <div

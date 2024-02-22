@@ -26,11 +26,11 @@
             ref="formInvoiceRef"
             v-model:form="formInvoice"
         />
-        <!-- <ShoppingCarStep2FormGift
+        <ShoppingCarStep2FormGift
             :gifts="gifts"
             v-model:form="formGift"
             v-model:selectGiftIds="selectGiftIds"
-        /> -->
+        />
         <ShoppingCarStep2FormCustomProductRule
             v-model:showDialog="showDialogByCustomRule"
             :customRuleData="customRuleData"

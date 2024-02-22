@@ -1,7 +1,6 @@
 <template>
     <section class="mt-[86px] mb-[120px] border-t border-gray-300">
         <div class="container">
-            {{ selectProductIds }}
             <ul
                 v-if="currentStep == 0"
                 class="flex gap-[24px] justify-center pt-[64px]"
@@ -162,7 +161,7 @@ const total = computed(() =>
     )
 );
 // 折扣
-const salePrice = computed(() => 0);
+const salePrice = computed(() => 1000);
 // go step2
 const goStepCheckout = () => {
     if (userStore.isAuth) {
