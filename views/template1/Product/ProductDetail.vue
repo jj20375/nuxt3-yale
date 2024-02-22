@@ -1,18 +1,18 @@
 <template>
-    <section class="mt-[86px] mb-[80px]">
-        <nav class="border-t border-b border-gray-300 py-[16px] bg-white min-h-[55px]">
+    <section class="mt-headerMb xl:mt-header mb-[80px]">
+        <nav class="border-t border-b border-gray-300 py-[16px] bg-white min-h-[43px] xl:min-h-[55px]">
             <div class="container">
                 <Breadcrumb :menus="breadcrumbs" />
             </div>
         </nav>
-        <div class="mt-[60px]">
-            <div class="max-w-[950px] mx-auto">
-                <div class="flex gap-[120px]">
+        <div class="md:mt-[60px]" :class="isPad && !isMobile ? 'container' : ''">
+            <div class="w-full xl:w-[950px] mx-auto">
+                <div class="flex flex-col md:flex-row gap-[28px] md:gap-[60px] xl:gap-[120px]">
                     <ProductDetailCarousel
                         ref="productDetailCarouselRef"
                         :photos="photos"
                     />
-                    <div class="flex flex-col">
+                    <div class="flex flex-col" :class="isMobile ? 'container' : ''">
                         <div class="flex gap-2 mb-4">
                             <div
                                 v-if="detailData.tags?.includes('new')"
@@ -103,14 +103,14 @@
                         </div>
                         <div class="mt-[30px]">
                             <h5 class="text-[16px] font-medium text-gray-800 mb-[20px] YaleSolisW-Bd">數量</h5>
-                            <div class="flex justify-center items-stretch w-[180px] border border-gray-300 rounded-full">
+                            <div class="flex justify-center items-stretch w-full lg:w-[180px] border border-gray-300 rounded-full">
                                 <button
                                     class="flex items-center justify-center flex-1 h-auto cursor-pointer"
                                     @click.prevent="countDelete()"
                                 >
                                     <el-icon><Minus /></el-icon>
                                 </button>
-                                <div class="flex items-center justify-center w-[80px] py-[10px] h-full">{{ count }}</div>
+                                <div class="flex items-center justify-center w-[calc(100%-8rem)] lg:w-[80px] py-[10px] h-full">{{ count }}</div>
                                 <button
                                     class="flex items-center justify-center flex-1 h-auto cursor-pointer"
                                     @click.prevent="countAdd()"
@@ -119,16 +119,14 @@
                                 </button>
                             </div>
                         </div>
-                        <div class="my-[30px]">
+                        <div class="flex flex-row xl:flex-col gap-[12px] my-[30px]">
                             <button
                                 class="w-full transparent-btn"
                                 @click="addToShoppingCar(product)"
                             >
                                 加入購物車
                             </button>
-                            <div class="mt-[12px]">
-                                <button class="w-full yellow-btn">結帳</button>
-                            </div>
+                            <button class="w-full yellow-btn">結帳</button>
                         </div>
                         <div class="bg-gray-50 p-[30px] w-full rounded-xl mb-[20px]">
                             <ul class="text-[16px]">
@@ -154,13 +152,13 @@
                     </div>
                 </div>
             </div>
-            <div class="mt-[80px] container">
+            <div class="mt-[40px] md:mt-[80px]" :class="isMobile ? 'container' : isPad ? '' : 'container'">
                 <ul class="flex justify-center border-b border-gray-200">
                     <li
                         @click="currentTab = index"
                         v-for="(tab, index) in tabs"
                         :key="index"
-                        class="py-[12px] w-[200px] text-[20px] text-center cursor-pointer"
+                        class="py-[12px] px-4 md:px-14 text-[16px] md:text-[20px] text-center cursor-pointer w-[50%] md:w-fit"
                         :class="currentTab === index ? 'border-b-[3px] border-gray-800 text-gray-800' : 'text-gray-400'"
                     >
                         {{ tab }}
@@ -168,15 +166,15 @@
                 </ul>
                 <div
                     v-if="currentTab === 0"
-                    class="min-h-[500px] text-center flex items-center justify-center flex mt-[60px]"
+                    class="min-h-[500px] text-center flex items-center justify-center flex mt-[24px] md:mt-[60px]"
                 >
-                    <div v-html="detailData.content"></div>
+                    <div class="edit-section" v-html="detailData.content"></div>
                 </div>
                 <div
                     v-if="currentTab === 1"
-                    class="min-h-[500px] flex mt-[60px]"
+                    class="min-h-[500px] flex flex-col xl:flex-row gap-12 xl:gap-[80px] mt-[24px] md:mt-[60px]"
                 >
-                    <div class="flex-1 mr-[80px]">
+                    <div class="flex-1">
                         <h5 class="text-[18px] font-medium YaleSolisW-Bd text-gray-800 mb-[20px]">產品規格內容</h5>
                         <div
                             v-for="(attr, key) in detailData.attributes"
@@ -190,19 +188,21 @@
                     <div class="flex-1">
                         <h5 class="text-[18px] font-medium YaleSolisW-Bd text-gray-800 mb-[20px]">檔案下載</h5>
                         <div
-                            class="cursor-pointer"
+                            class="block mb-2 w-fit cursor-pointer group"
                             @click.prevent="downloadFile(item)"
                             v-for="(item, index) in detailData.documents"
                             :key="index"
                         >
-                            <el-icon><Document /></el-icon>
-                            {{ item.name }}
+                            <div class="flex items-center gap-2 underline  underline-offset-2 group-hover:no-underline">
+                                <el-icon><Document /></el-icon>
+                                {{ item.name }}
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
             <div
-                class="container mt-[80px]"
+                class="container mt-[40px] md:mt-[80px]"
                 v-if="sameProducts.length > 0"
             >
                 <h3 class="text-[32px] YaleSolisW-Bd font-medium text-gray-800 text-center">相關產品</h3>
@@ -238,6 +238,7 @@ import { useUserStore } from "~/store/userStore";
 import { storeToRefs } from "pinia";
 const userStore = useUserStore();
 const { isAuth } = storeToRefs(userStore);
+const { isPad, isMobile } = useWindowResize();
 
 import { ElMessage } from "element-plus";
 
@@ -527,6 +528,7 @@ onMounted(async () => {
         }
     });
 });
+
 </script>
 
 <style>

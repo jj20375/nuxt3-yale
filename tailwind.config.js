@@ -11,7 +11,7 @@ module.exports = {
         textOpacity: (theme) => theme("opacity"),
         screens: {
             sm: "640px",
-            md: "768px",
+            md: "769px",
             lg: "992px",
             xl: "1280px",
             "2xl": "1400px",
