@@ -1,3 +1,4 @@
+import { useUserStore } from "~/store/userStore";
 
 enum AsyncApiMethod {
     get = 'GET',
@@ -19,6 +20,8 @@ const fetchData = async<TData = any>(
     data?: any
 ) => {
     const token = useCookie('token').value
+    const userStore = useUserStore();
+
     const options = {
         method,
         server: false,
@@ -34,7 +37,12 @@ const fetchData = async<TData = any>(
             ...(method === AsyncApiMethod.get ? { params: data } : { body: data })
         })
         return res
-    } catch (error) {
+    } catch (error: any) {
+        if (error.response) {
+            if (error.response.status === 401) {
+                userStore.logOutUser();
+            }
+        }
         throw (error)
     }
 }

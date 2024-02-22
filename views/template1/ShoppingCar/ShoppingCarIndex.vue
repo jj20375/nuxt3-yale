@@ -32,11 +32,13 @@
                 </div>
             </div>
             <div class="flex justify-center mt-[40px]">
-                <component
-                    :is="showComponent"
-                    v-model:currentTab="currentTab"
-                    v-model:selectProductIds="selectProductIds"
-                ></component>
+                <keep-alive>
+                    <component
+                        :is="showComponent"
+                        v-model:currentTab="currentTab"
+                        v-model:selectProductIds="selectProductIds"
+                    />
+                </keep-alive>
                 <div
                     class="w-[400px]"
                     v-if="currentStep !== 2"
@@ -55,10 +57,7 @@
                             >
                                 <div class="mt-[40px]">
                                     <button
-                                        @click="
-                                            currentStep = 1;
-                                            showComponent = ShoppingCarStep2;
-                                        "
+                                        @click="goStepCheckout"
                                         class="yellow-btn w-full"
                                     >
                                         下一步
@@ -100,20 +99,6 @@
                     </div>
                 </div>
             </div>
-            <div
-                class="flex justify-center mt-[40px]"
-                v-if="currentStep == 1"
-            >
-                <button
-                    @click.prevent="
-                        currentStep = 2;
-                        showComponent = ShoppingCarStep3;
-                    "
-                    class="yellow-btn btn-lg"
-                >
-                    前往付款
-                </button>
-            </div>
         </div>
     </section>
 </template>
@@ -129,6 +114,8 @@ import ShoppingCarInputCoupon from "~/views/template1/ShoppingCar/components/Sho
 // 訂單金額
 import ShoppingCarBilling from "~/views/template1/ShoppingCar/components/ShoppingCarBilling.vue";
 import { useShoppingCarStore } from "~/store/shoppingCarStore";
+import { useUserStore } from "~/store/userStore";
+
 import { storeToRefs } from "pinia";
 import { ShoppingCarInterface } from "~/interface/shoppingCar";
 const { $utils } = useNuxtApp();
@@ -139,6 +126,8 @@ const { $api } = useNuxtApp();
 
 const shoppingCarStore = useShoppingCarStore();
 const { shoppingCar } = storeToRefs(shoppingCarStore);
+
+const userStore = useUserStore();
 
 // 購物種類
 const tabs = ref({
@@ -173,7 +162,16 @@ const total = computed(() =>
     )
 );
 // 折扣
-const salePrice = computed(() => 1000);
+const salePrice = computed(() => 0);
+// go step2
+const goStepCheckout = () => {
+    if (userStore.isAuth) {
+        currentStep.value = 1;
+        showComponent.value = ShoppingCarStep2;
+    } else {
+        alert("請先登入");
+    }
+};
 
 watch(
     () => currentStep.value,

@@ -22,7 +22,7 @@ export interface ReqCheckout {
     contact_district: string;
     contact_address: string;
     remark: string;
-    payment_gateway: 'ecpay'; 
+    payment_gateway: string; 
     shipping_method: string;
     invoice_type: string;
     carrier_code: string;

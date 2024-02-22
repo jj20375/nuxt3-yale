@@ -111,6 +111,7 @@ export const useUserStore = defineStore({
             this.setIsAuth(false);
             this.setUser({});
             Cookies.remove("token");
+            console.log('logout')
             if (process.client) {
                 window.location.href = $config.public.hostURL;
             }

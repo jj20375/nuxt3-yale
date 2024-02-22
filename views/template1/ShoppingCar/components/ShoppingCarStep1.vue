@@ -8,12 +8,12 @@
             v-else
             v-model:selectProductIds="selectProductIds"
         />
-        <ShoppingCarStep2FormAddPriceToBuy
+        <!-- <ShoppingCarStep2FormAddPriceToBuy
             v-if="currentTab === 'type1'"
             :products="addPriceBuyProducts"
             v-model:form="formAddPriceBuyProducts"
             v-model:selectProudctIds="selectAddPriceProductIds"
-        />
+        /> -->
 
         <ShoppingCarSales />
         <div class="flex">

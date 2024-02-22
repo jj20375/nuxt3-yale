@@ -1,6 +1,5 @@
 <template>
     <div>
-        {{ product }}
         <div
             class="relative bg-white product-card rounded-2xl"
             @mouseover="mouseoverEvent(product.id)"
@@ -100,11 +99,13 @@ interface Props {
     breadcrumbs: { name: string; text: string; params?: { slug: string } }[];
 }
 const props: Props = withDefaults(defineProps<Props>(), {
-    product: {
-        id: 1,
+    product: () => {
+        return {
+            id: 1,
+        };
     },
     // 麵包屑
-    breadcrumbs: [
+    breadcrumbs: () => [
         {
             name: "index",
             text: "首頁",
@@ -177,7 +178,7 @@ function goToDetail(product: { name: string; id: number }) {
 </script>
 
 <style>
-.product-card:hover{
+.product-card:hover {
     .favorite {
         @apply opacity-100 duration-300 transition-all;
     }

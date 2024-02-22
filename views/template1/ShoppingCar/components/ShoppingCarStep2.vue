@@ -1,6 +1,5 @@
 <template>
     <div class="mr-[40px] flex-1">
-        <button @click="validTest">validTes {{ selectProductIds }}t</button>
         <ShoppingCarStep2FormUser
             v-if="formMain.email"
             ref="formUserRef"
@@ -27,11 +26,11 @@
             ref="formInvoiceRef"
             v-model:form="formInvoice"
         />
-        <ShoppingCarStep2FormGift
+        <!-- <ShoppingCarStep2FormGift
             :gifts="gifts"
             v-model:form="formGift"
             v-model:selectGiftIds="selectGiftIds"
-        />
+        /> -->
         <ShoppingCarStep2FormCustomProductRule
             v-model:showDialog="showDialogByCustomRule"
             :customRuleData="customRuleData"
@@ -61,8 +60,8 @@
                     size="large"
                     class="text-gray-800"
                 >
-                    <span class="font-normal">我已閱讀並同意</span
-                    ><span class="mx-2 font-medium underline underline-offset-2 cursor-pointer hover:no-underline YaleSolisW-Bd">
+                    <span class="font-normal">我已閱讀並同意</span>
+                    <span class="mx-2 font-medium underline underline-offset-2 cursor-pointer hover:no-underline YaleSolisW-Bd">
                         <NuxtLink
                             class="text-gray-800"
                             target="_blank"
@@ -81,9 +80,17 @@
                             :to="{ name: 'other-privacy-slug', params: { slug: '耶魯隱私權政權' } }"
                         >
                             隱私權政策
-                        </NuxtLink></span
-                    >
+                        </NuxtLink>
+                    </span>
                 </el-checkbox>
+            </div>
+            <div class="flex justify-center mt-[40px]">
+                <button
+                    @click.prevent="validTest"
+                    class="yellow-btn btn-lg"
+                >
+                    前往付款
+                </button>
             </div>
         </div>
     </div>
@@ -123,15 +130,15 @@ const userStore = useUserStore();
 const { user } = storeToRefs(userStore);
 
 const { $api } = useNuxtApp();
-const props = defineProps({
-    currentTab: {
-        type: String,
-        default: "type1",
-    },
-    selectProductIds: {
-        type: Array,
-        default: () => [],
-    },
+
+interface Props {
+    currentTab: string;
+    selectProductIds: number[];
+}
+
+const props: Props = withDefaults(defineProps<Props>(), {
+    currentTab: "",
+    selectProductIds: () => [],
 });
 
 // 顯示定型化契約彈窗
@@ -153,11 +160,11 @@ const formContactUser = ref({
     name: "",
     phone: "",
     // 縣市
-    city: null,
+    city: "",
     // 地區
-    area: null,
+    area: "",
     // 地址
-    address: null,
+    address: "",
     // 加入常用聯絡人
     saveContctUser: false,
     // 選擇預設聯繫人
@@ -186,7 +193,7 @@ const formInvoice = ref({
     // 發票類型
     invoiceType: "mobile_carrier",
     // 載具編碼 ｜ 統編 ｜ 捐贈單位編碼 等等
-    carrierCode: null,
+    carrierCode: "",
 });
 
 // 贈品表單
@@ -289,20 +296,20 @@ const initialVal = () => {
 const checkout = async () => {
     const req: ReqCheckout = {
         type: "normal", // normal
-        member_phone: "",
-        contact_name: "",
+        member_phone: formMain.value.phone,
+        contact_name: formContactUser.value.name,
         contact_email: "",
-        contact_phone: "",
+        contact_phone: formContactUser.value.phone,
         contact_zip3: "",
-        contact_city: "",
-        contact_district: "",
-        contact_address: "",
+        contact_city: formContactUser.value.city,
+        contact_district: formContactUser.value.area,
+        contact_address: formContactUser.value.address,
         remark: "",
-        payment_gateway: "ecpay",
-        shipping_method: "",
-        invoice_type: "",
-        carrier_code: "",
-        cart_item_id: [],
+        payment_gateway: formPayment.value.paymentType,
+        shipping_method: formLogistics.value.logistics,
+        invoice_type: formInvoice.value.invoiceType,
+        carrier_code: formInvoice.value.carrierCode,
+        cart_item_id: props.selectProductIds,
     };
 
     const { data } = await $api().CheckOutApi(req);
