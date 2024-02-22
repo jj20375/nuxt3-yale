@@ -258,35 +258,6 @@ const contact = ref({
     phone: initializationData.value.site.contact_phone,
 });
 
-// const contact = computed(() => {
-//     return {
-//         icons: [
-//             {
-//                 iconName: IconFacebook,
-//                 alt: "耶魯電子鎖粉絲專頁",
-//                 url: initializationData.value.site.social_facebook,
-//             },
-//             {
-//                 iconName: IconLine,
-//                 alt: "耶魯電子鎖LINE",
-//                 url: initializationData.value.site.social_line,
-//             },
-//             {
-//                 iconName: IconInstagram,
-//                 alt: "耶魯電子鎖IG",
-//                 url: initializationData.value.site.social_instagram,
-//             },
-//             {
-//                 iconName: IconYoutube,
-//                 alt: "耶魯電子鎖Youtube",
-//                 url: initializationData.value.site.social_youtube,
-//             },
-//         ],
-//         name: initializationData.value.site.site_name,
-//         phone: initializationData.value.site.contact_phone,
-//     }
-// });
-
 function toSocialMedia (socialMedia: { url: string|URL|undefined; }) {
     if (socialMedia.url) {
         open(socialMedia.url, "_blank");

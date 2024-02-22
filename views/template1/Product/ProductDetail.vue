@@ -143,10 +143,10 @@
                         </div>
                         <div>
                             <ul class="flex gap-4">
-                                <li class="p-1 cursor-pointer">
+                                <li @click="socialShare('fb')" class="p-1 cursor-pointer">
                                     <IconFacebook class="!w-[20px] !h-[20px] transition-all duration-300 hover:text-gray-400 hover:transition-all hover:duration-300" />
                                 </li>
-                                <li class="p-1 cursor-pointer">
+                                <li @click="socialShare('line')" class="p-1 cursor-pointer">
                                     <IconLine class="!w-[20px] !h-[20px] transition-all duration-300 hover:text-gray-400 hover:transition-all hover:duration-300" />
                                 </li>
                             </ul>
@@ -489,6 +489,28 @@ function goToCompare(data: any) {
 
     $utils().saveBreadcrumbsData(JSON.stringify(setBreadcrumbs));
     router.push({ name: "product-compare-slug", params: { slug: `${breadcrumbs.value[2].text}比較` }, query: { compareId: data.product_type_id, productId: data.product_id } });
+}
+
+// 分享
+function socialShare (type:string) {
+    if (type === 'line') {
+        let path =  window.location.origin + encodeURIComponent(route.path) + '?'
+        Object.keys(route.query).forEach(key => {
+            path  = path + `${key}=${route.query[key]}`
+        })
+        const url = 'https://social-plugins.line.me/lineit/share?url=' + path
+
+        $utils().openNewWindow(url)
+    }
+    if (type === 'fb') {
+        let path =  window.location.origin + encodeURIComponent(route.path) + '?'
+        Object.keys(route.query).forEach(key => {
+            path  = path + `${key}=${route.query[key]}`
+        })
+        const url = 'https://www.facebook.com/sharer/sharer.php?u=' + path
+
+        $utils().openNewWindow(url)
+    }
 }
 
 /**
