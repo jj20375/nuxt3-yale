@@ -116,6 +116,6 @@ defineExpose({
 
 #thumbClass .swiper-slide-thumb-active {
     opacity: 1;
-    @apply border-2 border-yellow-500;
+    @apply outline outline-2 -outline-offset-2 outline-yellow-500;
 }
 </style>

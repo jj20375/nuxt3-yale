@@ -5,16 +5,24 @@
         </template>
 
         <template #custom-sidebar>
+            <div v-if="isPad" class="bg-white">
+                <div class="container">
+                    <h1 class="text-[32px] text-gray-800 pb-2 xl:pb-[24px] leading-none pt-[20px] md:pt-[32px] font-medium">產品資訊</h1>
+                    <div class="hidden xl:block border-b border-gray-200 py-[16px]">
+                        <h5 class="text-[16px] font-medium">商品分類</h5>
+                    </div>
+                </div>
+            </div>
             <SideBar
                 ref="sideBarRef"
-                class="bg-white w-[250px]"
+                class="bg-white xl:w-[250px]"
                 :menus="sidebar"
             >
                 <template #sidebar-deep-title>
-                    <h1 class="text-[32px] text-gray-800 mb-[24px] leading-none mt-[32px] font-medium">產品資訊</h1>
+                    <h1 class="text-[32px] text-gray-800 pb-2 xl:pb-[24px] leading-none pt-[20px] md:pt-[32px] font-medium">產品資訊</h1>
                 </template>
                 <template #sidebar-deep-sub-title>
-                    <div class="border-b border-gray-200 py-[16px]">
+                    <div class="hidden xl:block border-b border-gray-200 py-[16px]">
                         <h5 class="text-[16px] font-medium">商品分類</h5>
                     </div>
                 </template>
@@ -27,25 +35,25 @@
                     <font-awesome-icon class="animate-spin text-[40px] text-gray-300"  :icon="['fas', 'circle-notch']"/>
                 </div>
             </div>
-            <div class="flex items-center mb-[40px] mt-[32px] mr-10">
+            <div class="-mx-6 sm:mx-0 flex flex-col xl:flex-row items-center mb-[40px] md:mt-[32px] gap-4 md:gap-[40px]">
                 <NuxtImg
                     v-if="productTypeDetail.media"
-                    class="max-w-[387px] w-full aspect-[16/9] object-cover"
+                    class="w-full sm:w-[400px] shrink-0 h-fit aspect-[16/9] object-cover"
                     :src="productTypeDetail.media"
                 />
-                <div class="ml-[40px]">
+                <div class="px-6 sm:px-0">
                     <h2 class="text-[24px] font-medium">{{ productTypeDetail.name }}</h2>
-                    <p class="mt-[16px] text-[16px]">{{ productTypeDetail.description }}</p>
+                    <p class="md:mt-[16px] text-[16px]">{{ productTypeDetail.description }}</p>
                 </div>
             </div>
-            <div class="flex justify-end mb-[24px] gap-[30px]">
+            <div class="flex flex-col md:flex-row justify-end mb-[24px] gap-[30px]">
                 <NuxtLink
                     v-if="productTypeDetail.is_compare === 1"
                     @click="goToCompare(productTypeDetail)"
                 >
                     <button class="transparent-btn btn-xs">規格比較</button>
                 </NuxtLink>
-                <div class="flex items-center">
+                <div class="flex items-center self-end md:self-start">
                     <p class="text-[16px] text-gray-800">排序：</p>
                     <el-select
                         class="w-[180px]"
@@ -63,7 +71,7 @@
                     </el-select>
                 </div>
             </div>
-            <div class="grid grid-cols-3 gap-x-[20px] gap-y-[40px]">
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-x-[20px] gap-y-[40px]">
                 <div
                     v-for="(product, index) in datas"
                     :key="index"
@@ -103,7 +111,7 @@ import ProductCard from "~/views/template1/components/ProductCard.vue";
 import { ProductListAPIInterface, ProductList, ProductCarInterface } from "~/interface/product.d";
 
 import { ElMessage } from "element-plus";
-
+const { isPad } = useWindowResize();
 const { $api, $utils } = useNuxtApp();
 
 const route = useRoute();

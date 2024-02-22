@@ -275,7 +275,7 @@
     </BannerLayout>
     <client-only>
         <el-dialog
-            class="custom-dialog"
+            class="custom-dialog h-[600px]"
             close-on-click-modal
             lock-scroll
             show-close

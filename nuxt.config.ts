@@ -28,7 +28,7 @@ export default defineNuxtConfig({
         // pageTransition: { name: "page", mode: "out-in" },
     },
 
-    modules: ["@pinia/nuxt", "@pinia-plugin-persistedstate/nuxt", "@vueuse/nuxt", "@nuxt/image-edge", "nuxt-viewport", "@nuxtjs/device", "nuxt-lodash", "vue3-carousel-nuxt", "@nuxtjs/tailwindcss", "nuxt-svgo"],
+    modules: ["@pinia/nuxt", "@pinia-plugin-persistedstate/nuxt", "@vueuse/nuxt", "@nuxt/image-edge", "nuxt-viewport", "@nuxtjs/device", "nuxt-lodash", "vue3-carousel-nuxt", "@nuxtjs/tailwindcss", "nuxt-svgo", "@vueuse/nuxt"],
     css: ["@/assets/scss/main.scss", "@fortawesome/fontawesome-svg-core/styles.css", "@/assets/scss/element-plus.scss"],
 
     // vu3-carousel 套件 component

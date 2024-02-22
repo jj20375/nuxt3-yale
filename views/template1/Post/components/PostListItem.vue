@@ -2,21 +2,21 @@
     <article
         v-for="(item, index) in datas"
         :key="index"
-        class="flex items-center gap-[48px] list-card"
+        class="flex flex-col md:flex-row items-center gap-5 md:gap-[48px] list-card"
         :class="datas.length - 1 === index ? '' : 'mb-[48px]'"
         @click="goToDetail(item.url)"
     >
-        <div class="image-wrap rounded-2xl overflow-hidden cursor-pointer w-full max-w-[360px] aspect-[16/9]">
+        <div class="image-wrap rounded-2xl overflow-hidden cursor-pointer w-full md:max-w-[360px] aspect-[16/9]">
             <NuxtImg
                 :src="item.imgSrc"
                 class="object-cover w-full aspect-[16/9]"
             />
         </div>
-        <div class="flex-1 cursor-pointer">
-            <h2 class="text-[24px] font-medium YaleSolisW-Bd line-clamp-2">
+        <div class="flex-1 w-full cursor-pointer">
+            <h2 class="text-[18px] md:text-[24px] font-medium YaleSolisW-Bd line-clamp-2">
                 {{ item.title }}
             </h2>
-            <p class="leading-relaxed text-[16px] pt-[12px] line-clamp-2">
+            <p class="leading-relaxed text-[14px] md:text-[16px] pt-[12px] line-clamp-1 md:line-clamp-2">
                 {{ item.content }}
             </p>
 

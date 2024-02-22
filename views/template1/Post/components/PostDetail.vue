@@ -1,15 +1,15 @@
 <template>
-    <section class="mt-[86px] mb-[100px]">
+    <section class="mt-headerMb md:mt-header mb-[40px] md:mb-[100px]">
         <nav class="border-t border-gray-300 py-[16px] min-h-[55px]">
             <div class="container">
                 <Breadcrumb :menus="breadcrumbs" />
             </div>
         </nav>
         <div class="border-t h-[1px] border-gray-300 w-full"></div>
-        <div class="container mt-[60px]">
-            <div class="max-w-[800px] mx-auto">
+        <div class="container mt-[24px] md:mt-[60px]">
+            <div class="w-full xl:w-[800px] mx-auto">
                 <h1 class="text-[32px] YaleSolisW-Bd font-medium text-black">{{ postData.title }}</h1>
-                <div class="flex mt-[20px] border-b border-gray-300 pb-[24px]">
+                <div class="flex mt-[20px] border-b border-gray-300 pb-4 md:pb-[24px]">
                     <div class="text-center mr-[16px] w-[90px] border border-gray-300 py-[6px] px-[12px] text-gray-400 text-[12px]">
                         <span>{{ postData.published_at }}</span>
                     </div>
@@ -20,7 +20,7 @@
                     /></span>
                 </div>
                 <div
-                    class="my-10 text-gray-500 YaleSolisW-Rg text-[16px] edit-section"
+                    class="my-4 md:my-10 text-gray-500 YaleSolisW-Rg text-[16px] edit-section"
                     v-html="postData.content"
                 ></div>
                 <div class="flex items-center justify-center pt-[24px] border-t border-gray-300">
@@ -35,7 +35,7 @@
                                     src="/img/icons/post/arrow-prev.svg"
                                 />
                                 <span class="ml-[8px] whitespace-nowrap">上一篇</span>
-                                <span class="text-start ml-[20px] text-gray-400 line-clamp-1">{{ pagination.prev.title }}</span>
+                                <span class="hidden md:block text-start ml-[20px] text-gray-400 md:!line-clamp-1">{{ pagination.prev.title }}</span>
                             </button>
                         </template>
                     </div>
@@ -53,7 +53,7 @@
                                 @click.prevent="jumpPage(pagination.next)"
                                 class="w-full YaleSolisW-Rg text-[16px] flex items-center justify-end"
                             >
-                                <span class="mr-[20px] text-gray-400 line-clamp-1">{{ pagination.next.title }}</span>
+                                <span class="hidden md:block mr-[20px] text-gray-400 md:!line-clamp-1">{{ pagination.next.title }}</span>
                                 <span class="mr-[8px] whitespace-nowrap">下一篇</span>
                                 <NuxtImg
                                     class="w-[12px] basis-[12px] shrink-0"
