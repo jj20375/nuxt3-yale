@@ -10,3 +10,9 @@
 .fancybox__backdrop {
     @apply opacity-50 #{!important};
 }
+
+// 不想要scrollbar
+.no-scrollbar {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}

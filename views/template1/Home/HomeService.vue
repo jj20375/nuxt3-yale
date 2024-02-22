@@ -14,7 +14,7 @@
                     >
                         <div>
                             <NuxtImg
-                                class="min-w-[56px] mx-auto"
+                                class="w-[40px] md:w-[56px] mx-auto"
                                 :src="item.image"
                             />
                             <p class="mt-3 lg:mt-5 text-center text-[14px] md:text-[16px]">{{ item.title }}</p>

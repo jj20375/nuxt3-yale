@@ -14,11 +14,11 @@
         </div>
         <ClientOnly>
             <el-dialog
-                class="custom-dialog h-[600px]"
+                class="custom-dialog" :class="isPad ? '' : 'h-[95%]'"
                 close-on-click-modal
                 lock-scroll
                 show-close
-                :width="760"
+                :width="isPad ? '100%' : 1200"
                 center
                 align-center
                 append-to-body
@@ -44,7 +44,9 @@ const handleProcess = () => {
 
 // 電子鎖彈窗資料
 const processData = {
-    title: "訂製門扇流程",
-    content: "<img src='/img/custom-product/custom-process.jpg'/>",
+    title: "訂製流程圖及時程表",
+    content: "<img class='w-full' src='/img/custom-product/custom-process.jpg'/>",
 };
+
+const { isPad } = useWindowResize();
 </script>
