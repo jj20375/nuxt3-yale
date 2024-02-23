@@ -234,22 +234,22 @@ const footerDatas = ref({
 const contact = ref({
     icons: [
         {
-            iconName: IconFacebook,
+            iconName: shallowRef(IconFacebook),
             alt: "耶魯電子鎖粉絲專頁",
             url: initializationData.value.site.social_facebook,
         },
         {
-            iconName: IconLine,
+            iconName: shallowRef(IconLine),
             alt: "耶魯電子鎖LINE",
             url: initializationData.value.site.social_line,
         },
         {
-            iconName: IconInstagram,
+            iconName: shallowRef(IconInstagram),
             alt: "耶魯電子鎖IG",
             url: initializationData.value.site.social_instagram,
         },
         {
-            iconName: IconYoutube,
+            iconName: shallowRef(IconYoutube),
             alt: "耶魯電子鎖Youtube",
             url: initializationData.value.site.social_youtube,
         },
