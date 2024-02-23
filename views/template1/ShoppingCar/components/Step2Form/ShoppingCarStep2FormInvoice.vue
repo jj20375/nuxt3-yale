@@ -15,7 +15,7 @@
                 >
                     <el-form-item
                         :prop="key"
-                        :label="key === 'carrierCode' ? codeLabel : column.label"
+                        :label="column.label"
                     >
                         <div
                             v-if="column.type === 'input'"
@@ -33,6 +33,7 @@
                             <el-select
                                 v-if="column.label"
                                 class="w-full"
+                                placeholder="請選擇"
                                 v-model="formData[key]"
                             >
                                 <el-option
@@ -52,11 +53,12 @@
 
 <script setup lang="ts">
 import { FormInstance } from "element-plus";
+import { validateDonationCode, validateMobileCarrier, validateNaturalPerson } from "~/service/validator";
 
 const emit = defineEmits(["update:form"]);
 const formRefDom = ref<FormInstance>();
 
-interface Columns {
+interface Column {
     label: string;
     required: boolean;
     type: string;
@@ -76,73 +78,114 @@ const props = defineProps({
     },
 });
 
-const columns: Ref<Record<string, Columns>> = ref({
-    invoiceType: {
-        label: "發票類型",
-        required: true,
-        type: "select",
-    },
-    carrierCode: {
-        label: "",
-        required: true,
-        type: "input",
-    },
+const formData = ref(props.form);
+
+const columns: ComputedRef<Record<string, Column>> = computed(() => {
+    const result = {
+        invoiceType: {
+            label: "發票類型",
+            required: true,
+            type: "select",
+        },
+    };
+
+    if (formData.value.invoiceType === "mobile_carrier" || formData.value.invoiceType === "natural_person_certificate") {
+        result["carrierCode"] = {
+            label: formData.value.invoiceType === "mobile_carrier" ? "手機載具條碼" : "自然人憑證載具",
+            required: true,
+            type: "input",
+        };
+    } else if (formData.value.invoiceType === "donation") {
+        result["donationCode"] = {
+            label: "愛心碼",
+            required: true,
+            type: "input",
+        };
+    } else if (formData.value.invoiceType === "company") {
+        result["taxNumber"] = {
+            label: "公司統編",
+            required: true,
+            type: "input",
+        };
+    }
+
+    return result;
 });
 
-const rules = ref<any>({
-    invoiceType: [
-        {
-            required: true,
-            message: "請選擇",
-            trigger: ["change", "blur"],
-        },
-    ],
-    carrierCode: [
-        {
-            required: true,
-            message: "請輸入",
-            trigger: ["change", "blur"],
-        },
-    ],
+const rules = computed(() => {
+    return {
+        invoiceType: [
+            {
+                required: true,
+                message: "請選擇",
+                trigger: ["change", "blur"],
+            },
+        ],
+
+        carrierCode: [
+            {
+                required: true,
+                message: "請輸入",
+                trigger: ["change", "blur"],
+            },
+            {
+                required: true,
+                validator: formData.value.invoiceType === "mobile_carrier" ? validateMobileCarrier : validateNaturalPerson,
+                trigger: ["change", "blur"],
+                message: "格式不正確",
+            },
+        ],
+
+        donationCode: [
+            {
+                required: true,
+                message: "請輸入",
+                trigger: ["change", "blur"],
+            },
+            {
+                required: true,
+                validator: validateDonationCode,
+                trigger: ["change", "blur"],
+                message: "格式不正確",
+            },
+        ],
+
+        taxNumber: [
+            {
+                required: true,
+                message: "請輸入",
+                trigger: ["change", "blur"],
+            },
+        ],
+    };
 });
 
 /**
  * 發票類型
  */
 const options = ref([
-    // {
-    //     label: "會員載具",
-    //     value: "type1",
-    // },
-    // {
-    //     label: "公司用戶發票",
-    //     value: "type2",
-    // },
-    // {
-    //     label: "捐贈發票",
-    //     value: "type3",
-    // },
+    {
+        label: "雲端發票(中獎寄送紙本)",
+        value: "cloud",
+    },
+    {
+        label: "公司用戶發票",
+        value: "company",
+    },
+    {
+        label: "捐贈發票",
+        value: "donation",
+    },
     {
         label: "手機條碼載具",
         value: "mobile_carrier",
     },
-    // {
-    //     label: "自然人憑證載具",
-    //     value: "type5",
-    // },
+    {
+        label: "自然人憑證載具",
+        value: "natural_person_certificate",
+    },
 ]);
 
-/**
- * 選擇發票類型
- */
-const codeLabel = computed(() => {
-    switch (props.form.invoiceType) {
-        case "mobile_carrier":
-            return "公司統編";
-    }
-});
-
-const formData = ref(props.form);
 const validForm = async () => {
     if (!formRefDom.value) return false;
     const result = await formRefDom.value.validate((valid) => {

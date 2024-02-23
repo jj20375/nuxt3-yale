@@ -173,6 +173,10 @@ const total = computed(() =>
 const salePrice = computed(() => 1000);
 // go step2
 const goStepCheckout = () => {
+    if (selectProductIds.value.length === 0) {
+        alert("請先選擇商品");
+        return;
+    }
     if (userStore.isAuth) {
         currentStep.value = 1;
         showComponent.value = ShoppingCarStep2;

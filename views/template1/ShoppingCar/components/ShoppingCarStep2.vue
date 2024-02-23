@@ -202,10 +202,12 @@ const formMeasureTheSize = ref({
 
 // 發票表單
 const formInvoice = ref({
-    // 發票類型
-    invoiceType: "mobile_carrier",
+    // 發票類型 cloud ,company ,donation ,mobile_carrier ,natural_person_certificate
+    invoiceType: "",
     // 載具編碼 ｜ 統編 ｜ 捐贈單位編碼 等等
-    carrierCode: "",
+    carrierCode: "", // 當 invoice_type 為 mobile_carrier,natural_person_certificate 必填
+    donationCode: "", // 當 invoice_type 為 donation 必填
+    taxNumber: "", // 當 invoice_type 為 company 必填
 });
 
 // 贈品表單
@@ -225,9 +227,9 @@ const formGift = ref([
 // 確認閱讀合約
 const formConfirm = ref({
     // 網站服務條款｜隱私權政策
-    confirmRule: true,
+    confirmRule: false,
     // 確認閱讀定型化契約
-    confirmCustomRule: true,
+    confirmCustomRule: false,
 });
 //
 
@@ -316,15 +318,21 @@ const checkout = async () => {
         contact_city: formContactUser.value.city,
         contact_district: formContactUser.value.area,
         contact_address: formContactUser.value.address,
-        remark: "",
+        remark: formMain.value.note, // 備註
         payment_gateway: formPayment.value.paymentType,
         shipping_method: formLogistics.value.logistics,
-        invoice_type: formInvoice.value.invoiceType,
-        carrier_code: formInvoice.value.carrierCode,
         cart_item_id: props.selectProductIds,
+        invoice_type: formInvoice.value.invoiceType,
+        carrier_code: formInvoice.value.invoiceType === "mobile_carrier" || formInvoice.value.invoiceType === "natural_person_certificate" ? formInvoice.value.carrierCode : undefined,
+        donation_code: formInvoice.value.invoiceType === "donation" ? formInvoice.value.donationCode : undefined,
+        tax_number: formInvoice.value.invoiceType === "company" ? formInvoice.value.taxNumber : undefined,
     };
 
     const { data } = await $api().CheckOutApi(req);
+    const resData = (data.value as any).data;
+    if (resData.redirect) {
+        window.open(resData.redirect_url, "self");
+    }
 };
 
 // 驗證表單

@@ -25,7 +25,9 @@ export interface ReqCheckout {
     payment_gateway: string; 
     shipping_method: string;
     invoice_type: string;
-    carrier_code: string;
+    carrier_code?: string;
+    donation_code?: string;
+    tax_number?: string;
     cart_item_id: number[];
 }
 

@@ -23,7 +23,7 @@
                         <el-form-item>
                             <el-select
                                 v-model="formData[index].color"
-                                class="w-[248px]"
+                                class="w-full max-w-[248px]"
                             >
                                 <el-option
                                     v-for="option in gift.colors"

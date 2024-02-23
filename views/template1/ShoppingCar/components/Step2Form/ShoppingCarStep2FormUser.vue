@@ -62,7 +62,6 @@ interface Props {
         phone: string;
         note: string;
     };
-    formRef: FormInstance | null;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -74,12 +73,12 @@ const props = withDefaults(defineProps<Props>(), {
             note: "",
         };
     },
-    formRef: null,
 });
 
 const formInput = ref(props.form);
 
 watch(formInput.value, (val) => {
+    console.log("val", val);
     emit("update:form", val);
 });
 
@@ -158,10 +157,6 @@ const validForm = async () => {
 
 defineExpose({
     validForm,
-});
-
-onMounted(() => {
-    formInput.value = { ...props.form };
 });
 </script>
 
