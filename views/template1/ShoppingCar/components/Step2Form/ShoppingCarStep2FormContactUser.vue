@@ -244,6 +244,7 @@ const rules = ref<any>({
 const formData = ref(props.form);
 
 watch(formData.value, (val) => {
+    console.log("areaOptions =>", val);
     emit("update:form", val);
 });
 
@@ -295,6 +296,16 @@ watch(
         const idx = areaOptions.value.findIndex((i) => formData.value.area === i.val);
         if (idx === -1) {
             formData.value.area = "";
+        }
+    }
+);
+
+watch(
+    () => formData.value.area,
+    (val) => {
+        const area = areaOptions.value.find((i) => formData.value.area === i.val);
+        if (area !== undefined) {
+            formData.value.contact_zip3 = area.zip;
         }
     }
 );

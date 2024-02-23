@@ -61,7 +61,7 @@
                     class="text-gray-800"
                 >
                     <span class="font-normal">我已閱讀並同意</span>
-                    <span class="mx-2 font-medium underline underline-offset-2 cursor-pointer hover:no-underline YaleSolisW-Bd">
+                    <span class="mx-2 font-medium underline cursor-pointer underline-offset-2 hover:no-underline YaleSolisW-Bd">
                         <NuxtLink
                             class="text-gray-800"
                             target="_blank"
@@ -73,7 +73,7 @@
                         ></span
                     >
                     <span class="font-normal">與</span>
-                    <span class="mx-2 font-medium underline underline-offset-2 cursor-pointer hover:no-underline YaleSolisW-Bd">
+                    <span class="mx-2 font-medium underline cursor-pointer underline-offset-2 hover:no-underline YaleSolisW-Bd">
                         <NuxtLink
                             class="text-gray-800"
                             target="_blank"
@@ -179,6 +179,8 @@ const formContactUser = ref({
     saveContctUser: false,
     // 選擇預設聯繫人
     chooseDefaultContactUser: false,
+    // 郵遞區號
+    contact_zip3: "",
 });
 
 // 配送方式
@@ -308,9 +310,9 @@ const checkout = async () => {
         type: "normal", // normal
         member_phone: formMain.value.phone,
         contact_name: formContactUser.value.name,
-        contact_email: "",
+        contact_email: formMain.value.email,
         contact_phone: formContactUser.value.phone,
-        contact_zip3: "",
+        contact_zip3: formContactUser.value.contact_zip3,
         contact_city: formContactUser.value.city,
         contact_district: formContactUser.value.area,
         contact_address: formContactUser.value.address,
