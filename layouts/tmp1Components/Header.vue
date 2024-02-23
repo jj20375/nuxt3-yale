@@ -411,19 +411,19 @@ const rightIcons = computed(() => {
 // 社群資料
 const socialMedia = ref([
     {
-        name: IconFacebook,
+        name: shallowRef(IconFacebook),
         url: initializationData.value.site.social_facebook,
     },
     {
-        name: IconLine,
+        name: shallowRef(IconLine),
         url: initializationData.value.site.social_line,
     },
     {
-        name: IconInstagram,
+        name: shallowRef(IconInstagram),
         url: initializationData.value.site.social_instagram,
     },
     {
-        name: IconYoutube,
+        name: shallowRef(IconYoutube),
         url: initializationData.value.site.social_youtube,
     },
 ])

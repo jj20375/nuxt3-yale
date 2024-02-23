@@ -10,7 +10,7 @@
                 class="w-[16px] mr-[9px]"
                 src="/img/custom-product/custom-product-learn-more-icon.svg"
             />
-            <p class="text-gray-800 text-[15px] underline underline-offset-2 group-hover:no-underline">了解訂製流程</p>
+            <p class="text-gray-800 text-[15px] underline underline-offset-2 group-hover:no-underline">訂製流程圖及時程表</p>
         </div>
         <ClientOnly>
             <el-dialog
