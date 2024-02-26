@@ -6,17 +6,17 @@
             </div>
         </nav>
         <div class="container">
-            <div class="my-[80px] w-4/5 mx-auto">
+            <div class="my-[24px] sm:my-[80px] w-4/5 mx-auto">
                 <div class="flex items-end justify-between">
-                    <div class="flex items-end gap-7">
-                        <h3 class="text-[32px] font-bold">會員中心</h3>
-                        <div class="mb-1.5">您好，{{ user.name }}</div>
+                    <div class="flex justify-center items-end gap-7">
+                        <h3 class="text-[20px] sm:text-[32px] font-bold">會員中心</h3>
+                        <div class="text-[16px] mb-[4px] sm:mb-1.5">您好，{{ user.name }}</div>
                     </div>
                     <NuxtLink
                         :to="{ name: 'auth-panel-logout-slug', params: { slug: '登出成功' } }"
                         @click="logout"
                     >
-                        <div class="flex gap-2 mb-1.5 cursor-pointer transition-all duration-400 hover:text-gray-500 hover:transition-all hover:duration-400">
+                        <div class="flex gap-2 mb-[4px] sm:mb-1.5 cursor-pointer transition-all duration-400 hover:text-gray-500 hover:transition-all hover:duration-400">
                             <NuxtImg
                                 class="w-[20px] aspect-square object-cover"
                                 src="img/icons/auth/logout.svg"
@@ -26,20 +26,20 @@
                         </div>
                     </NuxtLink>
                 </div>
-                <div class="grid grid-cols-3 gap-5 mt-10">
+                <div class="grid grid-cols-3 gap-2 sm:gap-5 mt-[32px] sm:mt-10">
                     <div
                         v-for="(item, index) in panelDatas"
                         :key="index"
                     >
                         <NuxtLink :to="item.url">
                             <div
-                                class="relative flex flex-col gap-3 items-center bg-gray-100 transition-all duration-300 hover:bg-transparent hover:transition-all hover:duration-300 rounded-[8px] py-12 after:absolute after:w-full after:h-full after:top-0 after:left-0 after:from-yellow-100 after:to-yellow-500 after:rounded-[8px] after:bg-gradient-[296deg] after:bg-gradient-to-br after:opacity-0 after:-z-[1] after:transition-all after:duration-300 hover:after:opacity-100"
+                                class="h-[120px] sm:h-[150px] relative flex flex-col gap-3 justify-center items-center bg-gray-100 transition-all duration-300 hover:bg-transparent hover:transition-all hover:duration-300 rounded-[8px] py-[32px] sm:py-12 after:absolute after:w-full after:h-full after:top-0 after:left-0 after:from-yellow-100 after:to-yellow-500 after:rounded-[8px] after:bg-gradient-[296deg] after:bg-gradient-to-br after:opacity-0 after:-z-[1] after:transition-all after:duration-300 hover:after:opacity-100"
                             >
                                 <NuxtImg
-                                    class="w-[32px] aspect-square object-cover"
+                                    class="w-[24px] sm:w-[32px] aspect-square object-cover"
                                     :src="item.imgSrc"
                                 />
-                                <h4>
+                                <h4 class="text-[12px] sm:text-[20px] px-[6px]">
                                     {{ item.title }}
                                 </h4>
                             </div>

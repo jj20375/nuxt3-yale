@@ -105,5 +105,14 @@ export default () => {
                 body: data,
             });
         },
+        /**
+         * 同步購物車
+         */
+        SyncCartApi(data: { items: CartItem[] }) {
+            return useMyFetch(`${apiUrl}/cart/sync-product`, {
+                method: "post",
+                body: data,
+            });
+        },
     };
 };

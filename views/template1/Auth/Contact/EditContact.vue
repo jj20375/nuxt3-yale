@@ -1,12 +1,12 @@
 <template>
-    <section class="mt-[86px] pb-[60px] bg-gray-50">
+    <section class="mt-[64px] sm:mt-[86px] pb-[60px] bg-gray-50">
         <nav class="border-b border-gray-300 py-[16px] bg-white">
             <div class="container">
                 <Breadcrumb :menus="breadcrumbs" />
             </div>
         </nav>
         <div class="container">
-            <div class="w-[620px] mt-[60px] py-[60px] px-[60px] bg-white mx-auto rounded-[24px] border-[1px] border-gray-200">
+            <div class="w-full sm:w-[620px] mt-[24px] sm:mt-[60px] py-[24px] sm:py-[60px] px-[24px] sm:px-[60px] bg-white mx-auto rounded-[24px] border-[1px] border-gray-200">
                 <el-form
                     class="custom-form"
                     ref="formRefDom"
@@ -14,8 +14,8 @@
                     :rules="rules"
                     require-asterisk-position="right"
                 >
-                    <div class="flex items-end justify-between mb-8">
-                        <h3 class="font-medium text-[28px] text-center">編輯聯繫人</h3>
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="font-medium text-[20px] sm:text-[32px] text-center sm:mb-8">編輯聯繫人</h3>
                         <el-form-item>
                             <el-switch
                                 v-model="form.default"
@@ -23,7 +23,7 @@
                             />
                         </el-form-item>
                     </div>
-                    <div class="grid gap-6">
+                    <div class="w-full flex flex-col sm:gap-6 gap-4">
                         <div
                             v-for="(item, index) in formDatas"
                             :key="index"
@@ -40,7 +40,7 @@
                                         :disabled="item.disabled"
                                         :placeholder="item.placeholder"
                                         v-model="form[item.prop]"
-                                    ></el-input>
+                                    />
                                     <el-select
                                         v-if="item.style === 'select'"
                                         class="w-full"
@@ -78,7 +78,7 @@
                                             :disabled="item2.disabled"
                                             :placeholder="item2.placeholder"
                                             v-model="form[item2.prop]"
-                                        ></el-input>
+                                        />
                                         <el-select
                                             v-if="item2.style === 'select'"
                                             class="w-full"
@@ -91,19 +91,19 @@
                                                 :key="optionIndex"
                                                 :label="option.label"
                                                 :value="option.value"
-                                            ></el-option>
+                                            />
                                         </el-select>
                                     </el-form-item>
                                 </div>
                             </div>
                         </div>
-                        <div class="flex justify-center gap-4 mt-4">
+                        <div class="flex mt-4 gap-2 sm:gap-4 justify-center">
                             <NuxtLink :to="{ name: 'auth-contact-slug', params: { slug: '常用聯繫人' } }">
-                                <button class="transparent-btn btn-md">返回</button>
+                                <button class="transparent-btn btn-md flex-1">返回</button>
                             </NuxtLink>
                             <button
                                 @click.prevent="onSubmit"
-                                class="yellow-btn btn-md"
+                                class="yellow-btn btn-md flex-1 sm:flex-initial"
                             >
                                 儲存
                             </button>

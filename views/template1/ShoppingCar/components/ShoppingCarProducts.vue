@@ -5,57 +5,57 @@
             @change="selectProduct"
         >
             <div
-                v-for="(product, index) in shoppingCar"
+                v-for="(cart, index) in shoppingCar"
                 :key="index"
                 class="flex border-gray-300 gap-[12px] sm:gap-[48px] py-[16px] sm:py-[30px]"
                 :class="shoppingCar.length - 1 === index ? '' : index === 0 ? 'pt-0 border-b' : 'border-b'"
             >
                 <div class="flex gap-[8px] sm:gap-2">
                     <el-checkbox
-                        :key="product.id"
-                        :label="product.id"
+                        :key="cart.id"
+                        :label="cart.id"
                     />
                     <NuxtImg
                         class="w-[100px] h-[100px] sm:w-[180px] sm:h-[180px] aspect-square object-cover"
-                        :src="product.imgSrc"
+                        :src="cart.imgSrc"
                     />
                 </div>
                 <div class="flex-1">
                     <div class="flex w-full gap-4 text-gray-800">
-                        <h3 class="YaleSolisW-Bd font-medium text-[16px] sm:text-[18px] flex-1">{{ product.name }}-{{ product.id }}</h3>
-                        <p class="hidden sm:block font-medium YaleSolisW-Bd text-[18px]">NT$ {{ $utils().formatCurrency(product.totalPrice) }}</p>
+                        <h3 class="YaleSolisW-Bd font-medium text-[16px] sm:text-[18px] flex-1">{{ cart.name }}-{{ cart.id }}</h3>
+                        <p class="hidden sm:block font-medium YaleSolisW-Bd text-[18px]">NT$ {{ $utils().formatCurrency(cart.totalPrice) }}</p>
                     </div>
                     <div
-                        v-if="product.color"
+                        v-if="cart.color"
                         class="flex gap-4 text-gray-800 items-center mt-[12px]"
                     >
                         <p class="w-[90px] text-[14px]">顏色</p>
-                        <p class="text-[14px]">{{ product.color }}</p>
+                        <p class="text-[14px]">{{ cart.color }}</p>
                     </div>
                     <div class="flex gap-[36px] sm:gap-[18px] justify-end mt-[16px]">
                         <div class="flex flex-1 justify-center items-stretch sm:flex-initial w-[150px] sm:w-[150px] border border-gray-300 rounded-full">
                             <button
                                 class="flex items-center text-[16px] justify-center flex-1 h-auto cursor-pointer"
-                                @click.prevent="countUpdate(product.id, product.count - 1)"
+                                @click.prevent="countUpdate(cart.id, cart.productID, cart.count - 1)"
                             >
                                 <el-icon><Minus /></el-icon>
                             </button>
-                            <div class="flex items-center justify-center w-[80px] py-[4px] sm:py-[10px] h-full">{{ product.count }}</div>
+                            <div class="flex items-center justify-center w-[80px] py-[4px] sm:py-[10px] h-full">{{ cart.count }}</div>
                             <button
                                 class="flex items-center text-[16px] justify-center flex-1 h-auto cursor-pointer"
-                                @click.prevent="countUpdate(product.id, product.count + 1)"
+                                @click.prevent="countUpdate(cart.id, cart.productID, cart.count + 1)"
                             >
                                 <el-icon><Plus /></el-icon>
                             </button>
                         </div>
-                        <button @click.prevent="removeShoppingCar(product.id)">
+                        <button @click.prevent="removeShoppingCar(cart.id, cart.productID)">
                             <NuxtImg
                                 class="w-[22px] sm:w-[24px]"
                                 src="/img/shopping-car/shopping-car-icon-delete.svg"
                             />
                         </button>
                     </div>
-                    <div class="sm:hidden mt-[16px] font-medium YaleSolisW-Bd text-[16px]">NT$ {{ $utils().formatCurrency(product.totalPrice) }}</div>
+                    <div class="sm:hidden mt-[16px] font-medium YaleSolisW-Bd text-[16px]">NT$ {{ $utils().formatCurrency(cart.totalPrice) }}</div>
                 </div>
             </div>
         </el-checkbox-group>
@@ -64,7 +64,6 @@
 
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
-import { ReqCart } from "~/api/cart";
 import { useShoppingCarStore } from "~/store/shoppingCarStore";
 
 const emit = defineEmits(["update:selectProductIds"]);
@@ -79,12 +78,13 @@ const checkList: Ref<number[]> = ref([]);
 /**
  * 點擊更新數量按鈕
  */
-function countUpdate(cartId: number | null, count: number) {
+function countUpdate(cartId: number | null, productID: number, count: number) {
     if (count < 1) {
         return;
     }
     const apiReq = {
         cart_item_id: cartId ? cartId : 0,
+        productID,
         quantity: count,
     };
     updateCart(apiReq);
@@ -93,9 +93,10 @@ function countUpdate(cartId: number | null, count: number) {
 /**
  * 刪除購物車
  */
-function removeShoppingCar(id: number | null) {
-    const req: ReqCart = {
+function removeShoppingCar(id: number | null, productID: number) {
+    const req = {
         cart_item_id: id ? id : 0,
+        productID,
     };
     deleteCart(req);
 }
