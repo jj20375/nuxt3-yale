@@ -26,14 +26,18 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
             const { data } = await $api().GetCartAPI();
             if (data) {
                 shoppingCar.value = data.cartItems.map((i) => {
+                    const price =  i.productVariationable ? i.productVariationable.price : i.productable.price
+                    const imgSrc =  i.productVariationable ? 
+                    `https://yale_backed.mrjin.me/storage/${i.productVariationable.image}` : i.productable.main_image
                     return {
                         id: i.id,
                         productID: i.productable.id,
-                        price: i.productable.price,
+                        price,
                         name: i.productable.name,
-                        imgSrc: i.productable.main_image,
+                        imgSrc,
                         count: i.quantity,
-                        totalPrice: Number(i.productable.price) * i.quantity,
+                        totalPrice: Number(price) * i.quantity,
+                        product_variationable_id: i.productVariationable ? i.productVariationable.id : undefined,
                     };
                 });
                 $shoppingCarService().setShoppingCar(shoppingCar.value);
@@ -47,30 +51,42 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
 
     // 加入購物車
     const addToCart = (data: ShoppingCarInterface) => {
-        const item = shoppingCar.value.find((i) => i.productID === data.productID);
-        if (!item) {
-            shoppingCar.value.push(data);
-            if(!isAuth.value) {
-                // 未登入時
-                $shoppingCarService().setShoppingCar(shoppingCar.value);
-            } else {
-                // 登入需打api
-                const apiReq: CartItem = {
-                    productable_id: data.productID,
-                    quantity: data.count,
-                };
-                $api().AddToCartAPI(apiReq);
-            }
-        }
+          return new Promise(async(resolve, reject) => {
+            console.log('data',data)
+            const item = shoppingCar.value.find((i) => i.productID === data.productID && i.product_variationable_id === data.product_variationable_id);
+            console.log('item',item)
+
+            if (!item) {
+                if (!isAuth.value) {
+                    // 未登入時
+                    shoppingCar.value.push(data);
+                    $shoppingCarService().setShoppingCar(shoppingCar.value);
+                    resolve(true);
+
+                } else {
+                    // 登入需打api
+                    const apiReq: CartItem = {
+                        productable_id: data.productID,
+                        quantity: data.count,
+                        product_variationable_id: data.product_variationable_id,
+                    };
+                    const { error } = await  $api().AddToCartAPI(apiReq);
+                    if(error.value) {
+                        reject(error.value.data.message)
+                    } else {
+                        shoppingCar.value.push(data);
+                        resolve(true);
+                    }                    
+                }
+            } 
+            reject('已重複加入購物車');
+        });
+
     };
 
     // 更新購物車
-    const updateCart = (data: {
-        cart_item_id: number | null,
-        productID: number,
-        quantity: number,
-    }) => {
-        if(!isAuth.value) {
+    const updateCart = (data: { cart_item_id: number | null; productID: number; quantity: number }) => {
+        if (!isAuth.value) {
             // 未登入狀態
             const item = shoppingCar.value.find((i) => i.productID === data.productID);
             if (item) {
@@ -79,7 +95,7 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
             }
             // localStorage setting
             $shoppingCarService().setShoppingCar(shoppingCar.value);
-        } else if(data.cart_item_id && isAuth.value) {
+        } else if (data.cart_item_id && isAuth.value) {
             //登入狀態時
             const apiReq = {
                 cart_item_id: data.cart_item_id,
@@ -91,23 +107,20 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
                 item.totalPrice = item.count * Number(item.price);
                 $api().UpdateCartAPI(apiReq);
             }
-        }      
+        }
     };
 
     // 刪除購物車商品
-    const deleteCart = async (data: {
-        cart_item_id: number | null,
-        productID: number
-    }) => {
+    const deleteCart = async (data: { cart_item_id: number | null; productID: number }) => {
         if (!isAuth.value) {
             // 未登入
             shoppingCar.value = shoppingCar.value.filter((i) => i.productID !== data.productID);
             $shoppingCarService().setShoppingCar(shoppingCar.value);
-        } else if(isAuth.value && data.cart_item_id) {
+        } else if (isAuth.value && data.cart_item_id) {
             // 登入需打api
             const req = {
-                cart_item_id:  data.cart_item_id,
-            }
+                cart_item_id: data.cart_item_id,
+            };
             await $api().DeleteCartAPI(req);
         }
         getUserShopping();
@@ -119,9 +132,11 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
         const data = temp
             ? temp.map((i: any) => {
                   return {
+
                       productable_id: i.productID,
                       // 數量
                       quantity: i.count,
+                      product_variationable_id: i.product_variationable_id
                   };
               })
             : [];

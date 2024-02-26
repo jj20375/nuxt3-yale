@@ -158,10 +158,19 @@ function addToShoppingCar(data: any) {
         count: 1,
         price: data.price,
         totalPrice: data.price * 1,
-        color: "",
     };
-    shoppingCarStore.addToCart(input);
-    showDialog.value = true;
+    shoppingCarStore
+        .addToCart(input)
+        .then(() => {
+            showDialog.value = true;
+        })
+        .catch((err) => {
+            console.log("err", err);
+            if (err) {
+                alert(err);
+                return;
+            }
+        });
 }
 
 /**

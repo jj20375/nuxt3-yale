@@ -4,7 +4,7 @@ export interface ShoppingCarInterface {
     // 產品ID
     productID: number
     // 顏色
-    color?: string;
+    product_variationable_id?: number;
     // 價格
     price: number;
     // 名稱
