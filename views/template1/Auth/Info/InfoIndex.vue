@@ -1,13 +1,13 @@
 <template>
-    <section class="mt-[86px] pb-[60px] bg-gray-50">
+    <section class="mt-[64px] sm:mt-[86px] pb-[60px] bg-gray-50">
         <nav class="border-t border-b border-gray-300 py-[16px] bg-white">
             <div class="container">
                 <Breadcrumb :menus="breadcrumbs" />
             </div>
         </nav>
         <div class="container">
-            <div class="w-[620px] mt-[60px] py-[60px] px-[60px] bg-white mx-auto rounded-[24px] border-[1px] border-gray-200">
-                <h3 class="font-medium text-[28px] text-center mb-8">會員資料</h3>
+            <div class="w-full sm:w-[620px] mt-[24px] sm:mt-[60px] py-[24px] sm:py-[60px] px-[24px] sm:px-[60px] bg-white mx-auto rounded-[24px] border-[1px] border-gray-200">
+                <h3 class="font-medium text-[20px] sm:text-[32px] text-center mb-4 sm:mb-8">會員資料</h3>
                 <el-form
                     class="custom-form"
                     ref="formRefDom"
@@ -15,30 +15,52 @@
                     :rules="rules"
                     require-asterisk-position="right"
                 >
-                    <div class="grid gap-6">
+                    <div class="w-full flex flex-col sm:gap-6 gap-4">
                         <div
                             v-for="(item, index) in formDatas"
                             :key="index"
                         >
-                            <el-form-item v-if="item.style === 'input'" :prop="item.prop" :label="item.label">
-                                <el-input :type="item.type" :show-password="item.showPassword" :disabled="item.disabled"
-                                          :placeholder="item.placeholder" v-model="form[item.prop]"></el-input>
+                            <el-form-item
+                                v-if="item.style === 'input'"
+                                :prop="item.prop"
+                                :label="item.label"
+                            >
+                                <el-input
+                                    :type="item.type"
+                                    :show-password="item.showPassword"
+                                    :disabled="item.disabled"
+                                    :placeholder="item.placeholder"
+                                    v-model="form[item.prop]"
+                                ></el-input>
                             </el-form-item>
-                            <el-form-item v-else-if="item.style === 'radio'" :prop="item.prop" :label="item.label">
+                            <el-form-item
+                                v-else-if="item.style === 'radio'"
+                                :prop="item.prop"
+                                :label="item.label"
+                            >
                                 <el-radio-group v-model="form[item.prop]">
                                     <el-radio
                                         v-for="(option, radio_index) in item.radioData"
                                         :key="radio_index"
                                         :label="option.value"
                                         size="large"
-                                    >{{ option.label }}
-                                    </el-radio
-                                    >
+                                        >{{ option.label }}
+                                    </el-radio>
                                 </el-radio-group>
                             </el-form-item>
-                            <el-form-item v-else-if="item.style === 'datepicker'" :prop="item.prop">
+                            <el-form-item
+                                v-else-if="item.style === 'datepicker'"
+                                :prop="item.prop"
+                            >
                                 <div class="el-form-item w-full">
-                                    <div class="el-form-item__label">{{ item.label }}<span class="ml-[2px] text-red-500" v-if="item.required">*</span></div>
+                                    <div class="el-form-item__label">
+                                        {{ item.label
+                                        }}<span
+                                            class="ml-[2px] text-red-500"
+                                            v-if="item.required"
+                                            >*</span
+                                        >
+                                    </div>
                                     <el-date-picker
                                         v-model="form[item.prop]"
                                         type="date"
@@ -50,19 +72,13 @@
                                 </div>
                             </el-form-item>
                         </div>
-                        <div class="flex mt-4 gap-4 justify-center">
-                            <NuxtLink
-                                :to="{ name: 'auth-panel-slug', params: { slug: '會員中心' }}"
-                            >
-                                <button
-                                    class="transparent-btn btn-md"
-                                >
-                                    返回
-                                </button>
+                        <div class="flex mt-4 gap-2 sm:gap-4 justify-center">
+                            <NuxtLink :to="{ name: 'auth-panel-slug', params: { slug: '會員中心' } }">
+                                <button class="transparent-btn btn-md flex-1">返回</button>
                             </NuxtLink>
                             <button
                                 @click.prevent="onSubmit"
-                                class="yellow-btn btn-md"
+                                class="yellow-btn btn-md flex-1 sm:flex-initial"
                             >
                                 儲存
                             </button>
@@ -87,23 +103,23 @@ const { user } = storeToRefs(userStore);
 const breadcrumbs = ref([
     {
         name: "index",
-        text: "首頁"
+        text: "首頁",
     },
     {
         name: "auth-panel-slug",
         text: "會員中心",
-        params: { slug: "會員中心" }
+        params: { slug: "會員中心" },
     },
     {
         name: "auth-info-slug",
         text: "會員資料",
-        params: { slug: "會員資料" }
-    }
+        params: { slug: "會員資料" },
+    },
 ]);
 
 const formRefDom = ref<any>();
 
-console.log(user)
+console.log(user);
 const form = ref<any>({
     email: user.value.email,
     name: user.value.name,
@@ -124,39 +140,39 @@ const formDatas = ref<any>([
         label: "帳號",
         placeholder: "",
         style: "input",
-        disabled: true
+        disabled: true,
     },
     {
         prop: "name",
         label: "會員姓名",
         placeholder: "",
-        style: "input"
+        style: "input",
     },
     {
         prop: "cellphone",
         label: "聯絡電話",
         placeholder: "例：0911-222-222",
-        style: "input"
+        style: "input",
     },
     {
         prop: "telephone",
         label: "市話",
         placeholder: "例：02-1222-2222",
-        style: "input"
+        style: "input",
     },
     {
         prop: "gender",
         label: "稱謂",
         style: "radio",
-        radioData: genderRadios
+        radioData: genderRadios,
     },
     {
         prop: "birthday",
         label: "生日",
         style: "datepicker",
         required: true,
-        disabled: true
-    }
+        disabled: true,
+    },
 ]);
 
 const rules = ref<any>({
@@ -164,22 +180,22 @@ const rules = ref<any>({
         {
             required: true,
             message: "請輸入帳號",
-            trigger: "blur"
-        }
+            trigger: "blur",
+        },
     ],
     name: [
         {
             required: true,
             message: "請輸入會員姓名",
-            trigger: "blur"
-        }
+            trigger: "blur",
+        },
     ],
     birthday: [
         {
             required: true,
             message: "請輸入生日",
-            trigger: "blur"
-        }
+            trigger: "blur",
+        },
     ],
     cellphone: [
         {
@@ -226,7 +242,7 @@ async function onSubmit() {
                     sex: form.value.gender,
                 };
                 const { data, status, error } = await $api().ChangeProfileAPI(params);
-                if (status.value === 'success') {
+                if (status.value === "success") {
                     ElMessage({
                         type: "success",
                         message: `修改成功`,

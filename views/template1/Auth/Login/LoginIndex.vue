@@ -1,6 +1,6 @@
 <template>
-    <section class="mt-[86px] border-t border-gray-300 py-[60px]">
-        <div class="w-[504px] py-[60px] px-[72px] bg-white mx-auto rounded-[24px] border-[1px] border-gray-200">
+    <section class="mt-[24px] sm:mt-[86px] border-t border-gray-300 py-[60px]">
+        <div class="w-full sm:w-[504px] py-[32px] sm:py-[60px] px-[16px] sm:px-[72px] bg-white mx-auto rounded-[24px] border-[1px] border-gray-200">
             <h3 class="font-medium text-[28px] text-center mb-8">會員登入</h3>
             <el-form
                 class="custom-form"
@@ -50,17 +50,17 @@
                     </button>
                 </div>
             </el-form>
-            <div class="relative px-5 mt-[30px]">
+            <div class="relative px-[16px] sm:px-5 mt-[30px]">
                 <div class="relative text-center divide-text before:absolute before:top-1/2 before:left-0 before:h-px before:w-full before:bg-gray-400 before:z-0">
                     <span class="relative px-3 text-gray-400 text-[15px] bg-white z-[2]">使用其他帳號登入</span>
                 </div>
-                <div class="flex gap-[30px] justify-center mt-4">
+                <div class="flex gap-[20px] sm:gap-[30px] justify-center mt-4">
                     <div
                         v-if="ssoLogingSite.google"
                         @click="ssoLogin('google')"
                     >
                         <NuxtImg
-                            class="object-cover w-10 transition-all cursor-pointer aspect-1/1 duration-400 hover:opacity-80 hover:transition-all hover:duration-400"
+                            class="object-cover w-[32px] sm:w-10 transition-all cursor-pointer aspect-1/1 duration-400 hover:opacity-80 hover:transition-all hover:duration-400"
                             src="/img/icons/medias/google.svg"
                         />
                     </div>
@@ -69,7 +69,7 @@
                         @click="ssoLogin('line')"
                     >
                         <NuxtImg
-                            class="object-cover w-10 transition-all cursor-pointer aspect-1/1 duration-400 hover:opacity-80 hover:transition-all hover:duration-400"
+                            class="object-cover w-[32px] sm:w-10 transition-all cursor-pointer aspect-1/1 duration-400 hover:opacity-80 hover:transition-all hover:duration-400"
                             src="/img/icons/medias/line.svg"
                         />
                     </div>
@@ -78,7 +78,7 @@
                         @click="ssoLogin('facebook')"
                     >
                         <NuxtImg
-                            class="object-cover w-10 transition-all cursor-pointer aspect-1/1 duration-400 hover:opacity-80 hover:transition-all hover:duration-400"
+                            class="object-cover w-[32px] sm:w-10 transition-all cursor-pointer aspect-1/1 duration-400 hover:opacity-80 hover:transition-all hover:duration-400"
                             src="/img/icons/medias/facebook.svg"
                         />
                     </div>
@@ -210,16 +210,16 @@ async function ssoLogin(site: string) {
     } else if (site === "facebook") {
         ssoSite = ssoLogingSite.value.facebook;
     }
-    $utils().openNewWindow(ssoSite)
+    $utils().openNewWindow(ssoSite);
 }
 
 function getMessage(e: any) {
-    if (e.origin === 'https://yale-third-party.mrjin.me') {
-        console.log(e, 'getMessage', e.data);
-        const SSOLoginData = e.data
+    if (e.origin === "https://yale-third-party.mrjin.me") {
+        console.log(e, "getMessage", e.data);
+        const SSOLoginData = e.data;
         if (!SSOLoginData.registered) {
-            userStore.ssoLogingData = SSOLoginData
-            router.push({ name: 'auth-login-sso-slug', params: { slug: '快速登入' } });
+            userStore.ssoLogingData = SSOLoginData;
+            router.push({ name: "auth-login-sso-slug", params: { slug: "快速登入" } });
         } else {
             const token = SSOLoginData.token;
             Cookies.set("token", token);
