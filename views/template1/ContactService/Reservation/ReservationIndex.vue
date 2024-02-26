@@ -7,36 +7,38 @@
             <Breadcrumb :menus="breadcrumbs" />
         </template>
         <template #content>
-            <div class="max-w-[800px] mx-auto mt-[80px]">
+            <div class="max-w-[800px] mx-auto xl:mt-[80px]">
                 <!--   編輯區內容   -->
-                <div
-                    v-html="content"
-                    class="edit-section"
-                ></div>
-                <div class="mt-[40px] flex gap-[24px] justify-center text-[20px] font-medium YaleSolisW-Bd">
-                    <div class="flex-1 flex flex-col items-center gap-[20px] py-[40px] bg-gray-50 rounded-[20px]">
-                        <div class="flex items-center gap-3">
-                            <NuxtImg
-                                class="w-[36px]"
-                                src="/img/reservation/reservation-yale-icon.png"
-                            />
-                            <div>一般安裝</div>
+                <div class="container mt-[24px] md:mt-[60px]">
+                    <div
+                        v-html="content"
+                        class="edit-section"
+                    ></div>
+                    <div class="mt-[40px] flex sm:flex-row flex-col gap-[24px] justify-center text-[20px] font-medium YaleSolisW-Bd">
+                        <div class="flex-1 flex flex-col items-center gap-[20px] py-[40px] bg-gray-50 rounded-[20px]">
+                            <div class="flex items-center gap-3">
+                                <NuxtImg
+                                    class="w-[36px]"
+                                    src="/img/reservation/reservation-yale-icon.png"
+                                />
+                                <div>一般安裝</div>
+                            </div>
+                            <NuxtLink :to="{ name: 'reservation-general-slug', params: { slug: '一般安裝' } }">
+                                <button class="yellow-btn btn-md">前往申請</button>
+                            </NuxtLink>
                         </div>
-                        <NuxtLink :to="{ name: 'reservation-general-slug', params: { slug: '一般安裝' } }">
-                            <button class="yellow-btn btn-md">前往申請</button>
-                        </NuxtLink>
-                    </div>
-                    <div class="flex-1 flex flex-col items-center gap-[20px] py-[40px] bg-gray-50 rounded-[20px]">
-                        <div class="flex items-center gap-3">
-                            <NuxtImg
-                                class="w-[36px]"
-                                src="/img/reservation/reservation-security-guard-icon.png"
-                            />
-                            <div>新光保全安裝</div>
+                        <div class="flex-1 flex flex-col items-center gap-[20px] py-[40px] bg-gray-50 rounded-[20px]">
+                            <div class="flex items-center gap-3">
+                                <NuxtImg
+                                    class="w-[36px]"
+                                    src="/img/reservation/reservation-security-guard-icon.png"
+                                />
+                                <div>新光保全安裝</div>
+                            </div>
+                            <NuxtLink :to="{ name: 'reservation-guard-slug', params: { slug: '新光保全安裝' } }">
+                                <button class="yellow-btn btn-md">前往申請</button>
+                            </NuxtLink>
                         </div>
-                        <NuxtLink :to="{ name: 'reservation-guard-slug', params: { slug: '新光保全安裝' } }">
-                            <button class="yellow-btn btn-md">前往申請</button>
-                        </NuxtLink>
                     </div>
                 </div>
             </div>
