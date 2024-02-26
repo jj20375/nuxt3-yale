@@ -15,7 +15,7 @@
 <script setup lang="ts">
 const AsyncComp = defineAsyncComponent(() => import("~/views/template1/Auth/Info/InfoIndex.vue"));
 definePageMeta({
-    middleware: ["user-middleware", "auth-middleware"],
+    middleware: ["auth-middleware"],
 });
 const pageLoading = ref(useState("loading"));
 onMounted(() => {

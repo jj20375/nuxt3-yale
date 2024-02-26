@@ -11,8 +11,18 @@
                     :src="product.main_image"
                 />
                 <div class="absolute bottom-[20px] left-[20px] flex gap-2">
-                    <div v-if="product.tags?.includes('new')" class="bg-yellow-500 text-[12px] px-2 py-1 rounded-md">NEW</div>
-                    <div v-if="product.tags?.includes('discount')" class="bg-pink-400 text-[12px] px-2 py-1 rounded-md">SALE</div>
+                    <div
+                        v-if="product.tags?.includes('new')"
+                        class="bg-yellow-500 text-[12px] px-2 py-1 rounded-md"
+                    >
+                        NEW
+                    </div>
+                    <div
+                        v-if="product.tags?.includes('discount')"
+                        class="bg-pink-400 text-[12px] px-2 py-1 rounded-md"
+                    >
+                        SALE
+                    </div>
                 </div>
             </NuxtLink>
             <div
@@ -70,8 +80,13 @@
 <script lang="ts" setup>
 import AddToShoppingCarDialog from "~/views/template1/components/AddToShoppingCarDialog.vue";
 import { useUserStore } from "~/store/userStore";
-import { storeToRefs } from "pinia";
 const userStore = useUserStore();
+
+import { useShoppingCarStore } from "~/store/shoppingCarStore";
+const shoppingCarStore = useShoppingCarStore();
+
+import { storeToRefs } from "pinia";
+import { ShoppingCarInterface } from "~/interface/shoppingCar";
 const { isAuth } = storeToRefs(userStore);
 
 const router = useRouter();
@@ -84,11 +99,13 @@ interface Props {
     breadcrumbs: { name: string; text: string; params?: { slug: string } }[];
 }
 const props: Props = withDefaults(defineProps<Props>(), {
-    product: {
-        id: 1,
+    product: () => {
+        return {
+            id: 1,
+        };
     },
     // 麵包屑
-    breadcrumbs: [
+    breadcrumbs: () => [
         {
             name: "index",
             text: "首頁",
@@ -105,8 +122,8 @@ const emit = defineEmits(["handleFavorite"]);
 
 // 判斷是否為喜愛項目
 const isFavorite = computed(() => {
-    return props.product.is_favorite
-})
+    return props.product.is_favorite;
+});
 
 const handleFavorite = async () => {
     if (isAuth.value) {
@@ -128,15 +145,23 @@ function mouseoverEvent(index: number) {
 function mouseleaveEvent(index: number) {
     currentHover.value = null;
 }
+
 /**
  * 加入購物車
  */
 function addToShoppingCar(data: any) {
+    const input: ShoppingCarInterface = {
+        id: null,
+        productID: data.id,
+        name: data.name,
+        imgSrc: data.main_image,
+        count: 1,
+        price: data.price,
+        totalPrice: data.price * 1,
+        color: "",
+    };
+    shoppingCarStore.addToCart(input);
     showDialog.value = true;
-    console.log("addToShoppingCar => ", data);
-    if (process.client) {
-        $shoppingCarService().addToShoppingCar({ ...data, mark: "YDM 4109A", name: "指紋密碼鑰匙三合一", color: "黑色", imgSrc: "/img/home/product/product1.jpg", count: 1, singlePrice: 1760 });
-    }
 }
 
 /**
@@ -153,7 +178,7 @@ function goToDetail(product: { name: string; id: number }) {
 </script>
 
 <style>
-.product-card:hover{
+.product-card:hover {
     .favorite {
         @apply opacity-100 duration-300 transition-all;
     }

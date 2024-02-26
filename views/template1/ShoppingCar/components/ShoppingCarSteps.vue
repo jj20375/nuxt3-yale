@@ -1,6 +1,6 @@
 <template>
     <div class="relative">
-        <ul class="flex justify-center text-center mt-[60px]">
+        <ul class="flex justify-center text-center mt-[48px] sm:mt-[60px]">
             <li
                 v-for="(item, key) in steps"
                 :key="key"
@@ -20,8 +20,8 @@
                 </div>
             </li>
         </ul>
-        <div class="absolute w-[420px] z-[-1] top-[18px] flex justify-center h-[72px]">
-            <div class="w-[300px] bg-gray-300 h-[1px] mx-auto"></div>
+        <div class="absolute w-full sm:w-[420px] z-[-1] top-[18px] flex justify-center h-[72px]">
+            <div class="w-[60%] sm:w-[300px] bg-gray-300 h-[1px] mx-auto"></div>
         </div>
     </div>
 </template>

@@ -32,10 +32,6 @@ import Header from "~/layouts/tmp1Components/Header.vue";
 import Footer from "~/layouts/tmp1Components/Footer.vue";
 import Cookies from "js-cookie";
 
-definePageMeta({
-    middleware: ["user-middleware"],
-});
-
 const { $api, $firebaseAuth, $firebaseMessaging, $utils } = useNuxtApp();
 const route = useRoute();
 const { redirectRightHome, getLineUserProfile, getLineToken, checkUrlQuery } = useLineLogin();

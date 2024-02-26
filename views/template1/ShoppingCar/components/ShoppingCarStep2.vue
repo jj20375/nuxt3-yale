@@ -1,11 +1,31 @@
 <template>
-    <div class="mr-[40px] flex-1">
-        <ShoppingCarStep2FormUser v-model:form="formMain" />
-        <ShoppingCarStep2FormContactUser v-model:form="formContactUser" />
-        <ShoppingCarStep2FormLogistics v-if="currentTab === 'type1'" v-model:form="formLogistics" />
-        <ShoppingCarStep2FormPayment v-model:form="formPayment" />
-        <ShoppingCarStep2FormMeasureTheSize v-if="currentTab === 'type2'" v-model:form="formMeasureTheSize" />
-        <ShoppingCarStep2FormInvoice v-model:form="formInvoice" />
+    <div class="sm:mr-[40px] flex-1">
+        <ShoppingCarStep2FormUser
+            v-if="formMain.email"
+            ref="formUserRef"
+            v-model:form="formMain"
+        />
+        <ShoppingCarStep2FormContactUser
+            ref="formContactUserRef"
+            v-model:form="formContactUser"
+        />
+        <ShoppingCarStep2FormLogistics
+            v-if="props.currentTab === 'type1'"
+            ref="formLogisticsRef"
+            v-model:form="formLogistics"
+        />
+        <ShoppingCarStep2FormPayment
+            v-model:form="formPayment"
+            ref="formPaymentRef"
+        />
+        <ShoppingCarStep2FormMeasureTheSize
+            v-if="props.currentTab === 'type2'"
+            v-model:form="formMeasureTheSize"
+        />
+        <ShoppingCarStep2FormInvoice
+            ref="formInvoiceRef"
+            v-model:form="formInvoice"
+        />
         <ShoppingCarStep2FormGift
             :gifts="gifts"
             v-model:form="formGift"
@@ -16,9 +36,9 @@
             :customRuleData="customRuleData"
         />
 
-        <div class="flex flex-col gap-2 mt-[30px]">
+        <div class="flex flex-col gap-2 mt-[30px] mb-[20px]">
             <div
-                v-if="currentTab === 'type2'"
+                v-if="props.currentTab === 'type2'"
                 class="flex items-center"
             >
                 <el-checkbox
@@ -40,10 +60,11 @@
                     size="large"
                     class="text-gray-800"
                 >
-                    <span class="font-normal">我已閱讀並同意</span
-                    ><span class="mx-2 font-medium underline underline-offset-2 cursor-pointer hover:no-underline YaleSolisW-Bd">
+                    <span class="font-normal">我已閱讀並同意</span>
+                    <span class="mx-2 font-medium underline cursor-pointer underline-offset-2 hover:no-underline YaleSolisW-Bd">
                         <NuxtLink
-                            class="text-gray-800" target="_blank"
+                            class="text-gray-800"
+                            target="_blank"
                             :to="{
                                 name: 'other-terms-slug',
                                 params: { slug: '耶魯網站服務條款' },
@@ -52,15 +73,38 @@
                         ></span
                     >
                     <span class="font-normal">與</span>
-                    <span class="mx-2 font-medium underline underline-offset-2 cursor-pointer hover:no-underline YaleSolisW-Bd"> <NuxtLink
-                        class="text-gray-800" target="_blank" :to="{ name: 'other-privacy-slug', params: { slug: '耶魯隱私權政權' } }"> 隱私權政策 </NuxtLink></span>
+                    <span class="mx-2 font-medium underline cursor-pointer underline-offset-2 hover:no-underline YaleSolisW-Bd">
+                        <NuxtLink
+                            class="text-gray-800"
+                            target="_blank"
+                            :to="{ name: 'other-privacy-slug', params: { slug: '耶魯隱私權政權' } }"
+                        >
+                            隱私權政策
+                        </NuxtLink>
+                    </span>
                 </el-checkbox>
+            </div>
+            <div
+                v-if="showCheckWarning"
+                class="text-pink-900 text-[12px] mt-[-5px]"
+            >
+                請勾選
+            </div>
+            <div class="hidden sm:flex justify-center mt-[40px]">
+                <button
+                    @click.prevent="validTest"
+                    class="yellow-btn btn-lg"
+                >
+                    前往付款
+                </button>
             </div>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
+import { storeToRefs } from "pinia";
+
 // 訂購人表單
 import ShoppingCarStep2FormUser from "~/views/template1/ShoppingCar/components/Step2Form/ShoppingCarStep2FormUser.vue";
 // 聯繫人表單
@@ -78,12 +122,33 @@ import ShoppingCarStep2FormCustomProductRule from "~/views/template1/ShoppingCar
 // 預約丈量時間
 import ShoppingCarStep2FormMeasureTheSize from "~/views/template1/ShoppingCar/components/Step2Form/ShoppingCarStep2FormMeasureTheSize.vue";
 
+import { useUserStore } from "~/store/userStore";
+import { ReqCheckout } from "~/api/cart";
+
+const formUserRef = ref<any>(null);
+const formContactUserRef = ref<any>(null);
+const formLogisticsRef = ref<any>(null);
+const formPaymentRef = ref<any>(null);
+const formInvoiceRef = ref<any>(null);
+
+const showCheckWarning = ref(false);
+
+const userStore = useUserStore();
+
+const { user } = storeToRefs(userStore);
+
 const { $api } = useNuxtApp();
-const props = defineProps({
-    currentTab: {
-        type: String,
-        default: "type1",
-    },
+
+interface Props {
+    currentTab: string;
+    selectProductIds: number[];
+    goCheckoutStep3: boolean;
+}
+
+const props: Props = withDefaults(defineProps<Props>(), {
+    currentTab: "",
+    selectProductIds: () => [],
+    goCheckoutStep3: false,
 });
 
 // 顯示定型化契約彈窗
@@ -94,38 +159,40 @@ const customRuleData = ref<any>(``);
 
 // 訂單主表單
 const formMain = ref({
-    name: "王小明",
-    email: "123@gmail.cpm",
-    phone: "0911123123",
-    note: null,
+    name: "",
+    email: "",
+    phone: "",
+    note: "",
 });
 
 // 聯絡人表單
 const formContactUser = ref({
-    name: "王小明",
-    phone: "0911123123",
+    name: "",
+    phone: "",
     // 縣市
-    city: null,
+    city: "",
     // 地區
-    area: null,
+    area: "",
     // 地址
-    address: null,
+    address: "",
     // 加入常用聯絡人
     saveContctUser: false,
     // 選擇預設聯繫人
     chooseDefaultContactUser: false,
+    // 郵遞區號
+    contact_zip3: "",
 });
 
 // 配送方式
 const formLogistics = ref({
     // 配送方式
-    logistics: "type1",
+    logistics: "",
 });
 
 // 付款方式
 const formPayment = ref({
     // 付款方式
-    paymentType: "type1",
+    paymentType: "ecpay",
 });
 
 //
@@ -135,10 +202,12 @@ const formMeasureTheSize = ref({
 
 // 發票表單
 const formInvoice = ref({
-    // 發票類型
-    invoiceType: "type1",
+    // 發票類型 cloud ,company ,donation ,mobile_carrier ,natural_person_certificate
+    invoiceType: "",
     // 載具編碼 ｜ 統編 ｜ 捐贈單位編碼 等等
-    invoiceCode: null,
+    carrierCode: "", // 當 invoice_type 為 mobile_carrier,natural_person_certificate 必填
+    donationCode: "", // 當 invoice_type 為 donation 必填
+    taxNumber: "", // 當 invoice_type 為 company 必填
 });
 
 // 贈品表單
@@ -158,9 +227,9 @@ const formGift = ref([
 // 確認閱讀合約
 const formConfirm = ref({
     // 網站服務條款｜隱私權政策
-    confirmRule: true,
+    confirmRule: false,
     // 確認閱讀定型化契約
-    confirmCustomRule: true,
+    confirmCustomRule: false,
 });
 //
 
@@ -215,9 +284,7 @@ const gifts = ref([
 // 贈品選中商品 id
 const selectGiftIds = ref<number | string[]>([]);
 
-const rules = ref([]);
-
-async function getPageData() {
+const getPageData = async () => {
     try {
         const params = { code: "standardized_contract_popup" };
         const { data } = await $api().getPageAPI(params);
@@ -228,12 +295,78 @@ async function getPageData() {
     } catch (err) {
         console.log("HomeSampleAPI => ", err);
     }
-}
+};
+
+const initialVal = () => {
+    formMain.value = {
+        name: user.value.name,
+        email: user.value.email,
+        phone: user.value.phone,
+        note: "",
+    };
+};
+
+// 結帳
+const checkout = async () => {
+    const req: ReqCheckout = {
+        type: "normal", // normal
+        member_phone: formMain.value.phone,
+        contact_name: formContactUser.value.name,
+        contact_email: formMain.value.email,
+        contact_phone: formContactUser.value.phone,
+        contact_zip3: formContactUser.value.contact_zip3,
+        contact_city: formContactUser.value.city,
+        contact_district: formContactUser.value.area,
+        contact_address: formContactUser.value.address,
+        remark: formMain.value.note, // 備註
+        payment_gateway: formPayment.value.paymentType,
+        shipping_method: formLogistics.value.logistics,
+        cart_item_id: props.selectProductIds,
+        invoice_type: formInvoice.value.invoiceType,
+        carrier_code: formInvoice.value.invoiceType === "mobile_carrier" || formInvoice.value.invoiceType === "natural_person_certificate" ? formInvoice.value.carrierCode : undefined,
+        donation_code: formInvoice.value.invoiceType === "donation" ? formInvoice.value.donationCode : undefined,
+        tax_number: formInvoice.value.invoiceType === "company" ? formInvoice.value.taxNumber : undefined,
+    };
+
+    const { data } = await $api().CheckOutApi(req);
+    const resData = (data.value as any).data;
+    if (resData.redirect) {
+        window.open(resData.redirect_url, "self");
+    }
+};
+
+// 驗證表單
+const validTest = async () => {
+    if (props.currentTab === "type1") {
+        const validUserForm = await formUserRef.value.$.exposed.validForm();
+        const validContactUserForm = await formContactUserRef.value.$.exposed.validForm();
+        const validLogisticsForm = await formLogisticsRef.value.$.exposed.validForm();
+        const validPaymentForm = await formPaymentRef.value.$.exposed.validForm();
+        const validInvoiceForm = await formInvoiceRef.value.$.exposed.validForm();
+        if (!formConfirm.value.confirmRule) {
+            showCheckWarning.value = true;
+        } else {
+            showCheckWarning.value = false;
+        }
+        // 表單驗證無問題，去結帳
+        if (validUserForm && validContactUserForm && validLogisticsForm && validPaymentForm && validInvoiceForm && formConfirm.value.confirmRule) {
+            checkout();
+        }
+    }
+};
+
+watch(
+    () => props.goCheckoutStep3,
+    () => {
+        validTest();
+    }
+);
 
 onMounted(async () => {
     nextTick(async () => {
         if (process.client) {
-            await getPageData();
+            initialVal();
+            getPageData();
         }
     });
 });
@@ -248,11 +381,11 @@ onMounted(async () => {
         @apply h-[18px] #{!important};
         .el-checkbox__inner {
             @apply w-[18px] h-[18px] #{!important};
-            &:hover{
+            &:hover {
                 @apply border-yellow-600;
             }
         }
-        .is-checked{
+        .is-checked {
             .el-checkbox__inner {
                 @apply bg-yellow-600 border-yellow-600 after:h-[9px] after:left-[6px] after:top-[2px] #{!important};
             }

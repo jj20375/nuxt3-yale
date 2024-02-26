@@ -1,28 +1,29 @@
 <template>
     <el-dialog
         id="addToCarDialog"
-        v-model="showDialog2"
+        v-model="showDialog"
         :before-close="closeDialog"
-        class="custom-dialog h-[500px]"
+        class="custom-dialog"
         close-on-click-modal
         lock-scroll
         show-close
         center
+        :width="isMobile ? '95%' : '600px'"
         align-center
         append-to-body
     >
         <div class="w-full">
             <h3 class="text-center mb-[30px] text-[24px] YaleSolisW-Bd text-gray-800 font-medium">常用聯繫人</h3>
             <el-radio-group
-                v-model="defaultContactUserIdData"
-                @change="setDefaultContactUser"
+                v-model="selectID"
+                @change="setSelectContactUser"
                 class="w-full"
             >
                 <table class="min-w-full">
                     <thead class="bg-gray-100">
                         <tr class="px-5">
                             <th
-                                class="text-[14px] font-medium YaleSolisW-Bd px-[10px] py-[10px] text-left text-gray-800"
+                                class="text-[14px] font-medium YaleSolisW-Bd px-[4px] sm:px-[10px] py-[4px] sm:py-[10px] text-left text-gray-800"
                                 v-for="(column, key) in columns"
                                 :key="key"
                             >
@@ -37,29 +38,29 @@
                             class="border-b border-gray-200"
                         >
                             <td
-                                class="YaleSolisW-Bd text-[16px] font-bold text-gray-800 px-[10px] py-[10px]"
-                                v-if="contact.default"
+                                class="YaleSolisW-Bd sm:text-[16px] text-[12px] font-bold text-gray-800 px-[4px] sm:px-[10px] py-[4px] sm:py-[10px]"
+                                v-if="contact.is_default"
                             >
                                 預設
                             </td>
                             <td
                                 v-else
                                 class="text-gray-800 px-[10px] py-[10px]"
-                            ></td>
-                            <td class="text-[16px] px-[10px] py-[10px] text-gray-800">{{ contact.name }}</td>
-                            <td class="text-[16px] px-[10px] py-[10px] text-gray-800">{{ contact.phone }}</td>
-                            <td class="text-[16px] px-[10px] py-[10px] text-gray-800 w-[300px]">{{ contact.address }}</td>
+                            />
+                            <td class="sm:text-[16px] text-[12px] px-[10px] py-[10px] text-gray-800">{{ contact.name }}</td>
+                            <td class="sm:text-[16px] text-[12px] px-[10px] py-[10px] text-gray-800">{{ contact.phone }}</td>
+                            <td class="sm:text-[16px] text-[12px] px-[10px] py-[10px] text-gray-800 w-[300px]">{{ contact.full_address }}</td>
                             <td class="px-[10px] py-[10px]">
                                 <el-radio
                                     :label="contact.id"
                                     size="large"
-                                ></el-radio>
+                                />
                             </td>
                         </tr>
                     </tbody>
                 </table>
             </el-radio-group>
-            <div class="mt-[40px] flex justify-center gap-4 mt-6">
+            <div class="mt-[40px] flex justify-center gap-4">
                 <button
                     @click="closeDialog"
                     class="transparent-btn btn-md"
@@ -78,36 +79,25 @@
 </template>
 
 <script setup lang="ts">
-const emit = defineEmits(["update:showDialog", "update:defaultContactUserId"]);
-const props = defineProps({
-    // 顯示彈窗
-    showDialog: {
-        type: Boolean,
-        default: false,
-    },
-    // 預設聯絡人
-    defaultContactUserId: {
-        type: Number,
-        default: null,
-    },
-    // 聯絡人
-    contactUsers: {
-        type: Array,
-        default() {
-            return [{}];
-        },
+import { ContactUser } from "~/interface/user";
+const { isMobile } = useWindowResize();
+
+const props = defineProps<{
+    showDialog: boolean;
+    selectID: number;
+    contactUsers: ContactUser[];
+}>();
+
+const emits = defineEmits(["update:showDialog", "updateSelectId"]);
+
+const showDialog = computed({
+    get: () => props.showDialog,
+    set: (val: boolean) => {
+        emits("update:showDialog", val);
     },
 });
 
-// 判斷是否顯示彈窗
-const showDialog2 = ref(props.showDialog);
-
-watch(
-    () => props.showDialog,
-    (val) => {
-        showDialog2.value = val;
-    }
-);
+const selectID = ref(0);
 
 const columns = {
     index: null,
@@ -117,35 +107,38 @@ const columns = {
     radio: null,
 };
 
-// 預設聯絡人 id
-const defaultContactUserIdData = ref<number>(props.defaultContactUserId);
-
 /**
  * 當預設聯絡人 id 變更時
  * @param id
  */
-function setDefaultContactUser(id) {
-    defaultContactUserIdData.value = id;
-}
+const setSelectContactUser = (id: number) => {
+    selectID.value = id;
+};
 
 /**
  * 關閉彈窗事件
  */
-function closeDialog() {
-    showDialog2.value = false;
-    emit("update:showDialog", false);
-}
+const closeDialog = () => {
+    showDialog.value = false;
+};
 
 /**
  * 確認關閉彈窗事件
  */
-function closeDialogByConfirm() {
-    showDialog2.value = false;
-    emit("update:showDialog", false);
-    emit("update:defaultContactUserId", defaultContactUserIdData.value);
-}
+const closeDialogByConfirm = () => {
+    showDialog.value = false;
+    emits("update:showDialog", false);
+    emits("updateSelectId", selectID.value);
+};
 
-function init() {}
+watch(
+    () => props.showDialog,
+    (val) => {
+        if (val) {
+            selectID.value = props.selectID;
+        }
+    }
+);
 </script>
 
 <style lang="scss" scoped>
