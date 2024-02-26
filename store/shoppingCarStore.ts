@@ -18,12 +18,18 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
         shoppingCar.value = [...val];
     };
 
+    // 清空購物車
+    const clearShoppingCar = () => {
+        shoppingCar.value = [];
+    };
+
     // 取得購物車
     const getUserShopping = async () => {
         // 登入狀態，打 api 取得購物車內容
         if (isAuth.value) {
             const { data } = await $api().GetNormalCartAPI();
             if (data) {
+                console.log("data.cartItems =>", data.cartItems);
                 shoppingCar.value = data.cartItems.map((i) => {
                     return {
                         id: i.id,
@@ -96,6 +102,7 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
     return {
         shoppingCar,
         setShoppingCar,
+        clearShoppingCar,
         getUserShopping,
         addToCart,
         updateCart,

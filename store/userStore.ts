@@ -59,7 +59,7 @@ export const useUserStore = defineStore({
         async getUserProfile() {
             const { $api }: any = useNuxtApp();
             const shoppingCarStore = useShoppingCarStore();
-            
+
             if (Cookies.get("token")) {
                 try {
                     const { data, error }: { data: any; error: any } = await $api().GetUserProfileAPI();
@@ -79,7 +79,7 @@ export const useUserStore = defineStore({
                     }
                     this.setUser(data.value.data);
                     this.setIsAuth(true);
-                    shoppingCarStore.getUserShopping()
+                    await shoppingCarStore.getUserShopping();
                 } catch (err) {
                     this.removeLoginData();
                     console.log("GetUserProfileAPI => ", err);
@@ -108,12 +108,19 @@ export const useUserStore = defineStore({
         removeLoginData(userId: string | null = null) {
             const $config = useRuntimeConfig();
             const router = useRouter();
+            const { $shoppingCarService } = useNuxtApp();
+            const shoppingCarStore = useShoppingCarStore();
             this.setIsAuth(false);
             this.setUser({});
             Cookies.remove("token");
-            console.log('logout')
+            console.log("logout");
             if (process.client) {
                 window.location.href = $config.public.hostURL;
+                shoppingCarStore.clearShoppingCar();
+                // 清空訂製門扇商品購物車
+                $shoppingCarService().removeCustomProductShoppingCar();
+                // 清空一般商品購物車
+                $shoppingCarService().removeShoppingCar();
             }
         },
     },
