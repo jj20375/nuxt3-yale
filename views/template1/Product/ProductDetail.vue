@@ -129,12 +129,32 @@
                         </div>
                         <div class="flex flex-row xl:flex-col gap-[12px] my-[30px]">
                             <button
+                                v-if="detailData.stock > 0"
                                 class="w-full transparent-btn"
                                 @click="addToShoppingCar"
                             >
                                 加入購物車
                             </button>
-                            <button class="w-full yellow-btn">結帳</button>
+                            <button
+                                v-else
+                                class="w-full transparent-btn"
+                                disabled
+                            >
+                                售完補貨中
+                            </button>
+                            <button
+                                @click="
+                                    router.push({
+                                        path: '/shopping-car/電子鎖購物車',
+                                        query: {
+                                            tab: 'type1',
+                                        },
+                                    })
+                                "
+                                class="w-full yellow-btn"
+                            >
+                                結帳
+                            </button>
                         </div>
                         <div class="bg-gray-50 p-[30px] w-full rounded-xl mb-[20px]">
                             <ul class="text-[16px]">

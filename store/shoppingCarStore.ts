@@ -103,7 +103,7 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
     const updateCart = ( 
         data: { cart_item_id: number | null; productID: number; quantity: number , product_variationable_id?:number }
     ) => {
-        console.log('data',data)
+       return  new Promise(async (resolve, reject) => {
         if (!isAuth.value) {
             // 未登入狀態
             const item = shoppingCar.value.find((i) => i.productID === data.productID && data.product_variationable_id === i.product_variationable_id);
@@ -113,6 +113,7 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
             }
             // localStorage setting
             $shoppingCarService().setShoppingCar(shoppingCar.value);
+            resolve(true);
         } else if (data.cart_item_id && isAuth.value) {
             //登入狀態時
             const apiReq = {
@@ -121,11 +122,18 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
             };
             const item = shoppingCar.value.find((i) => i.id === data.cart_item_id);
             if (item) {
-                item.count = data.quantity ? data.quantity : 1;
-                item.totalPrice = item.count * Number(item.price);
-                $api().UpdateCartAPI(apiReq);
+                const { error } = await $api().UpdateCartAPI(apiReq);
+                if (error.value) {
+                    reject(error.value.data.message);
+                } else {
+                    item.count = data.quantity ? data.quantity : 1;
+                    item.totalPrice = item.count * Number(item.price);
+                    resolve(true);
+                }
             }
+            reject('查無此商品')
         }
+    })
     };
 
     // 刪除購物車商品

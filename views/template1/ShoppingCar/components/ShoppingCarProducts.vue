@@ -21,8 +21,18 @@
                     />
                 </div>
                 <div class="flex-1">
-                    <div class="flex w-full gap-4 text-gray-800">
-                        <h3 class="YaleSolisW-Bd font-medium text-[16px] sm:text-[18px] flex-1">{{ cart.name }}-{{ cart.id }}</h3>
+                    <div
+                        class="flex w-full gap-4 text-gray-800 cursor-pointer"
+                        @click="
+                            router.push({
+                                path: `/product/detail/${cart.name}`,
+                                query: {
+                                    id: cart.productID,
+                                },
+                            })
+                        "
+                    >
+                        <h3 class="YaleSolisW-Bd font-medium text-[16px] sm:text-[18px] flex-1">{{ cart.name }}</h3>
                         <p class="hidden sm:block font-medium YaleSolisW-Bd text-[18px]">NT$ {{ $utils().formatCurrency(cart.totalPrice) }}</p>
                     </div>
                     <div
@@ -76,13 +86,15 @@ const { shoppingCar } = storeToRefs(shoppingCarStore);
 const userStore = useUserStore();
 const { isAuth } = storeToRefs(userStore);
 
+const router = useRouter();
+
 // 選中資料
 const checkList: Ref<number[]> = ref([]);
 
 /**
  * 點擊更新數量按鈕
  */
-function countUpdate(cartId: number | null, productID: number, product_variationable_id?: number, count: number) {
+function countUpdate(cartId: number | null, productID: number, product_variationable_id: number | null, count: number) {
     if (count < 1) {
         return;
     }
@@ -90,9 +102,15 @@ function countUpdate(cartId: number | null, productID: number, product_variation
         cart_item_id: cartId ? cartId : 0,
         productID,
         quantity: count,
-        product_variationable_id,
+        product_variationable_id: product_variationable_id ? product_variationable_id : undefined,
     };
-    updateCart(apiReq);
+    updateCart(apiReq).catch((err) => {
+        console.log("err", err);
+        if (err) {
+            alert(err);
+            return;
+        }
+    });
 }
 
 /**

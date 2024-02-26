@@ -170,7 +170,7 @@ const total = computed(() =>
     )
 );
 // 折扣
-const salePrice = computed(() => 1000);
+const salePrice = computed(() => 0);
 // go step2
 const goStepCheckout = () => {
     if (selectProductIds.value.length === 0) {
