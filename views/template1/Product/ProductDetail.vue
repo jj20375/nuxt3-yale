@@ -5,14 +5,20 @@
                 <Breadcrumb :menus="breadcrumbs" />
             </div>
         </nav>
-        <div class="md:mt-[60px]" :class="isPad && !isMobile ? 'container' : ''">
+        <div
+            class="md:mt-[60px]"
+            :class="isPad && !isMobile ? 'container' : ''"
+        >
             <div class="w-full xl:w-[950px] mx-auto">
                 <div class="flex flex-col md:flex-row gap-[28px] md:gap-[60px] xl:gap-[120px]">
                     <ProductDetailCarousel
                         ref="productDetailCarouselRef"
                         :photos="photos"
                     />
-                    <div class="flex flex-col" :class="isMobile ? 'container' : ''">
+                    <div
+                        class="flex flex-col"
+                        :class="isMobile ? 'container' : ''"
+                    >
                         <div class="flex gap-2 mb-4">
                             <div
                                 v-if="detailData.tags?.includes('new')"
@@ -141,10 +147,16 @@
                         </div>
                         <div>
                             <ul class="flex gap-4">
-                                <li @click="socialShare('fb')" class="p-1 cursor-pointer">
+                                <li
+                                    @click="socialShare('fb')"
+                                    class="p-1 cursor-pointer"
+                                >
                                     <IconFacebook class="!w-[20px] !h-[20px] transition-all duration-300 hover:text-gray-400 hover:transition-all hover:duration-300" />
                                 </li>
-                                <li @click="socialShare('line')" class="p-1 cursor-pointer">
+                                <li
+                                    @click="socialShare('line')"
+                                    class="p-1 cursor-pointer"
+                                >
                                     <IconLine class="!w-[20px] !h-[20px] transition-all duration-300 hover:text-gray-400 hover:transition-all hover:duration-300" />
                                 </li>
                             </ul>
@@ -152,7 +164,10 @@
                     </div>
                 </div>
             </div>
-            <div class="mt-[40px] md:mt-[80px]" :class="isMobile ? 'container' : isPad ? '' : 'container'">
+            <div
+                class="mt-[40px] md:mt-[80px]"
+                :class="isMobile ? 'container' : isPad ? '' : 'container'"
+            >
                 <ul class="flex justify-center border-b border-gray-200">
                     <li
                         @click="currentTab = index"
@@ -168,7 +183,10 @@
                     v-if="currentTab === 0"
                     class="min-h-[500px] text-center flex items-center justify-center flex mt-[24px] md:mt-[60px]"
                 >
-                    <div class="edit-section" v-html="detailData.content"></div>
+                    <div
+                        class="edit-section"
+                        v-html="detailData.content"
+                    ></div>
                 </div>
                 <div
                     v-if="currentTab === 1"
@@ -193,7 +211,7 @@
                             v-for="(item, index) in detailData.documents"
                             :key="index"
                         >
-                            <div class="flex items-center gap-2 underline  underline-offset-2 group-hover:no-underline">
+                            <div class="flex items-center gap-2 underline underline-offset-2 group-hover:no-underline">
                                 <el-icon><Document /></el-icon>
                                 {{ item.name }}
                             </div>
@@ -364,6 +382,13 @@ async function getData() {
             });
         });
 
+        useSeoMeta({
+            ogTitle: rows.seoSetting.title,
+            ogDescription: rows.seoSetting.description,
+            ogUrl: () => `${window.location.origin}/product/detail/${rows.seoSetting.custom_url}`,
+            keywords: rows.seoSetting.keywords.join(),
+        });
+
         if (!breadcrumbs.value.map((item: any) => item.text).includes(rows.model)) {
             breadcrumbs.value.push({
                 name: route.name,
@@ -493,24 +518,24 @@ function goToCompare(data: any) {
 }
 
 // 分享
-function socialShare (type:string) {
-    if (type === 'line') {
-        let path =  window.location.origin + encodeURIComponent(route.path) + '?'
-        Object.keys(route.query).forEach(key => {
-            path  = path + `${key}=${route.query[key]}`
-        })
-        const url = 'https://social-plugins.line.me/lineit/share?url=' + path
+function socialShare(type: string) {
+    if (type === "line") {
+        let path = window.location.origin + encodeURIComponent(route.path) + "?";
+        Object.keys(route.query).forEach((key) => {
+            path = path + `${key}=${route.query[key]}`;
+        });
+        const url = "https://social-plugins.line.me/lineit/share?url=" + path;
 
-        $utils().openNewWindow(url)
+        $utils().openNewWindow(url);
     }
-    if (type === 'fb') {
-        let path =  window.location.origin + encodeURIComponent(route.path) + '?'
-        Object.keys(route.query).forEach(key => {
-            path  = path + `${key}=${route.query[key]}`
-        })
-        const url = 'https://www.facebook.com/sharer/sharer.php?u=' + path
+    if (type === "fb") {
+        let path = window.location.origin + encodeURIComponent(route.path) + "?";
+        Object.keys(route.query).forEach((key) => {
+            path = path + `${key}=${route.query[key]}`;
+        });
+        const url = "https://www.facebook.com/sharer/sharer.php?u=" + path;
 
-        $utils().openNewWindow(url)
+        $utils().openNewWindow(url);
     }
 }
 
@@ -528,7 +553,6 @@ onMounted(async () => {
         }
     });
 });
-
 </script>
 
 <style>

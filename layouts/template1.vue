@@ -117,6 +117,12 @@ async function getInitializationData() {
         const initialData = (data.value as any).data;
 
         initializationStore.initializationData = initialData;
+
+        useSeoMeta({
+            ogTitle: initializationStore.initializationData.site.meta_title,
+            ogDescription: initializationStore.initializationData.site.meta_description,
+            keywords: initializationStore.initializationData.site.meta_keywords.join(),
+        });
     } catch (err) {
         console.log(err);
     }

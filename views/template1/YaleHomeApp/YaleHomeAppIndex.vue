@@ -147,6 +147,14 @@ async function getPageData() {
         tutorial_video.value = pageData.tutorial_video;
 
         files.value = pageData.downloads;
+
+        const seoSetting = (data.value as any).data.seoSetting;
+        useSeoMeta({
+            ogTitle: seoSetting.title,
+            ogDescription: seoSetting.description,
+            ogUrl: () => `${window.location.origin}/${seoSetting.custom_url}`,
+            keywords: seoSetting.keywords.join(),
+        });
     } catch (err) {
         console.log("HomeSampleAPI => ", err);
     }
