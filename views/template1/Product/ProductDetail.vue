@@ -5,7 +5,6 @@
                 <ClientOnly> <Breadcrumb :menus="breadcrumbs" /> </ClientOnly>
             </div>
         </nav>
-        <<<<<<< HEAD ======= >>>>>>> feat/shopping-cart-api
         <div
             class="md:mt-[60px]"
             :class="isPad && !isMobile ? 'container' : ''"
@@ -302,14 +301,13 @@ const showDialog = ref(false);
 // 預設選中 tab
 const currentTab = ref(0);
 
-const { data: resProductDetail } = await $api().ProductDetailAPI({ productId: route.query.id });
+const { data: resProductDetail }: any = await $api().ProductDetailAPI({ productId: route.query.id });
 
 /**
  * 取得商品分類詳情
  */
 const getData = async () => {
     const product = detailData.value;
-    console.log("111", product);
 
     // 產品規格可多選，設定預設值
     if (product.is_single_variation === 0) {
@@ -321,11 +319,25 @@ const getData = async () => {
 
         optionChangePrice(true);
     }
-};
+    console.log("resProductDetail =>", resProductDetail.value.data);
+    useSeoMeta({
+        title: resProductDetail.value.data.seoSetting.title,
+        description: resProductDetail.value.data.seoSetting.description,
+        ogTitle: resProductDetail.value.data.seoSetting.title,
+        ogDescription: resProductDetail.value.data.seoSetting.description,
+        ogUrl: () => `${window.location.origin}/product/detail/${resProductDetail.value.data.seoSetting.custom_url}`,
+        keywords: resProductDetail.value.data.seoSetting.keywords.join(),
+    });
 
-onMounted(() => {
-    getData();
-});
+    if (!breadcrumbs.value.map((item: any) => item.text).includes(resProductDetail.value.data.model)) {
+        breadcrumbs.value.push({
+            name: route.name,
+            text: resProductDetail.value.data.model,
+            params: { slug: `${resProductDetail.value.data.model}-${resProductDetail.value.data.name}` },
+            query: { id: route.query.id },
+        });
+    }
+};
 
 // 詳細資訊 api 回傳
 const productDetail = computed(() => {
@@ -435,51 +447,6 @@ const sameProducts = computed(() => {
                 tags: item.tags,
             };
         });
-
-        useSeoMeta({
-            ogTitle: rows.seoSetting.title,
-            ogDescription: rows.seoSetting.description,
-            ogUrl: () => `${window.location.origin}/product/detail/${rows.seoSetting.custom_url}`,
-            keywords: rows.seoSetting.keywords.join(),
-        });
-
-        if (!breadcrumbs.value.map((item: any) => item.text).includes(rows.model)) {
-            breadcrumbs.value.push({
-                name: route.name,
-                text: rows.model,
-                params: { slug: `${rows.model}-${rows.name}` },
-                query: { id: route.query.id },
-            });
-        }
-
-        if (rows.is_single_variation === 0) {
-            productOptions.value = [];
-            detailData.value.productVariations = rows.productVariations;
-            rows.productOptions.forEach((item: { values: any[]; name: any }, index: number) => {
-                const option: {
-                    id: any;
-                    text: any;
-                    imgSrc: string;
-                }[] = [];
-                currentColor.value[index] = item.values[0].id;
-                item.values.forEach((opt: { id: any; name: any; icon: any }) => {
-                    option.push({
-                        id: opt.id,
-                        text: opt.name,
-                        imgSrc: opt.icon,
-                    });
-                });
-                productOptions.value.push({
-                    name: item.name,
-                    options: option,
-                });
-            });
-            optionChangePrice(true);
-        } else {
-            detailData.value.price = rows.price;
-            detailData.value.market_price = rows.market_price;
-            detailData.value.stock = rows.stock;
-        }
     }
 });
 // 切換商品選擇

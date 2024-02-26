@@ -77,38 +77,7 @@ onBeforeUnmount(() => {
 });
 
 // 預先加載初始化資料
-const { data, pending, error, refresh } = await useAsyncData("bootstrap", () => getInitializationData());
-
-useHead({
-    title: "耶魯電子鎖",
-    meta: [
-        {
-            hid: "description",
-            name: "description",
-            content: "耶魯電子鎖描述",
-        },
-        { name: "keywords", content: "citybanana" },
-        { hid: "og:url", property: "og:url", content: `${$config.public.hostURL}` },
-        { hid: "og:type", property: "og:type", content: "website" },
-        {
-            hid: "og:title",
-            property: "og:title",
-            content: "耶魯電子鎖",
-        },
-        {
-            hid: "og:description",
-            property: "og:description",
-            content: "耶魯電子鎖描述",
-        },
-        {
-            hid: "og:image",
-            property: "og:image",
-            content: "/img/ogCover/home.jpg",
-        },
-        { property: "al:ios:app_store_id", content: "284882215" },
-        { property: "al:ios:app_name", content: "Facebook" },
-    ],
-});
+await getInitializationData();
 
 async function getInitializationData() {
     try {
@@ -118,7 +87,37 @@ async function getInitializationData() {
 
         initializationStore.initializationData = initialData;
 
+        useHead({
+            title: initializationStore.initializationData.site.meta_title,
+            meta: [
+                {
+                    hid: "description",
+                    name: "description",
+                    content: initializationStore.initializationData.site.meta_description,
+                },
+                { name: "keywords", content: "citybanana" },
+                { hid: "og:url", property: "og:url", content: `${$config.public.hostURL}` },
+                { hid: "og:type", property: "og:type", content: "website" },
+                {
+                    hid: "og:title",
+                    property: "og:title",
+                    content: initializationStore.initializationData.site.meta_title,
+                },
+                {
+                    hid: "og:description",
+                    property: "og:description",
+                    content: initializationStore.initializationData.site.meta_description,
+                },
+                {
+                    hid: "og:image",
+                    property: "og:image",
+                    content: "/img/ogCover/home.jpg",
+                },
+            ],
+        });
         useSeoMeta({
+            title: initializationStore.initializationData.site.meta_title,
+            description: initializationStore.initializationData.site.meta_description,
             ogTitle: initializationStore.initializationData.site.meta_title,
             ogDescription: initializationStore.initializationData.site.meta_description,
             keywords: initializationStore.initializationData.site.meta_keywords.join(),

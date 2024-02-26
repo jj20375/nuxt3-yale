@@ -287,6 +287,8 @@ async function getTypeDetail() {
         };
 
         useSeoMeta({
+            title: rows.seoSetting.title,
+            description: rows.seoSetting.description,
             ogTitle: rows.seoSetting.title,
             ogDescription: rows.seoSetting.description,
             ogUrl: () => `${window.location.origin}/product/${rows.seoSetting.custom_url}`,

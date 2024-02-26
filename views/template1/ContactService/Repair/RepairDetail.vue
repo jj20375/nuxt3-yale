@@ -242,7 +242,7 @@
                                         <template v-if="item.memoFunctionText">
                                             <span
                                                 @click="item.memoFunction ? item.memoFunction() : null"
-                                                class="text-blue-500 ml-1 underline cursor-pointer underline-offset-2 hover:no-underline"
+                                                class="ml-1 text-blue-500 underline cursor-pointer underline-offset-2 hover:no-underline"
                                                 >{{ item.memoFunctionText }}</span
                                             >
                                         </template>
@@ -528,7 +528,7 @@ const formDatas = ref<any>({
             label: "維修時段",
             style: "checkbox",
             checkboxData: timeOptions,
-            listText: "<div class='grid-cols-2'><div class='bg-gray-50 px-4 py-3'><ul class='list-disc pl-4'><li class='text-[15px]'>請預填，後續將派專人與您聯繫</li></ul></div></div>",
+            listText: "<div class='grid-cols-2'><div class='px-4 py-3 bg-gray-50'><ul class='pl-4 list-disc'><li class='text-[15px]'>請預填，後續將派專人與您聯繫</li></ul></div></div>",
         },
         {
             prop: "description",
@@ -679,6 +679,8 @@ async function getPageData() {
 
         const seoSetting = (data.value as any).data.seoSetting;
         useSeoMeta({
+            title: seoSetting.title,
+            description: seoSetting.description,
             ogTitle: seoSetting.title,
             ogDescription: seoSetting.description,
             ogUrl: () => `${window.location.origin}/${seoSetting.custom_url}`,

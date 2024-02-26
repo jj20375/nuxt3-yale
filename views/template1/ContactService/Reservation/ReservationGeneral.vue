@@ -105,13 +105,13 @@
                                 </template>
                             </template>
                             <div class="col-span-2">
-                                <div class="bg-gray-50 px-4 py-3">
-                                    <ul class="list-disc pl-4">
+                                <div class="px-4 py-3 bg-gray-50">
+                                    <ul class="pl-4 list-disc">
                                         <li class="text-[15px]">
                                             指定區域將會額外收費1000~1500元，請參考<NuxtLink
                                                 target="_blank"
                                                 :to="{ name: 'other-charge-slug', params: { slug: '指定地區費用加收說明' } }"
-                                                ><span class="text-blue-500 ml-1 underline cursor-pointer underline-offset-2 hover:no-underline">收費標準</span></NuxtLink
+                                                ><span class="ml-1 text-blue-500 underline cursor-pointer underline-offset-2 hover:no-underline">收費標準</span></NuxtLink
                                             >
                                         </li>
                                     </ul>
@@ -204,15 +204,15 @@
                                         <span>{{ item.memoText }}</span>
                                         <template v-if="item.memoUrl">
                                             <NuxtLink :to="item.memoUrl">
-                                                <span class="text-blue-500 ml-1 underline cursor-pointer underline-offset-2 hover:no-underline">{{ item.memoUrlText }}</span>
+                                                <span class="ml-1 text-blue-500 underline cursor-pointer underline-offset-2 hover:no-underline">{{ item.memoUrlText }}</span>
                                             </NuxtLink>
                                         </template>
                                     </div>
                                 </template>
                             </template>
                             <div class="col-span-2">
-                                <div class="bg-gray-50 px-4 py-3 leading-7">
-                                    <ul class="list-disc pl-4">
+                                <div class="px-4 py-3 leading-7 bg-gray-50">
+                                    <ul class="pl-4 list-disc">
                                         <li class="text-[15px]">請預填，後續將派專人與您聯繫</li>
                                         <li class="text-[15px]">安裝過程中會有敲打、電鑽挖孔噪音，請先確認大樓社區能否假日施工，謝謝。</li>
                                     </ul>
@@ -253,7 +253,7 @@
                                         <span>{{ item.memoText }}</span>
                                         <template v-if="item.memoUrl">
                                             <NuxtLink :to="item.memoUrl">
-                                                <span class="text-blue-500 ml-1 underline cursor-pointer underline-offset-2 hover:no-underline">{{ item.memoUrlText }}</span>
+                                                <span class="ml-1 text-blue-500 underline cursor-pointer underline-offset-2 hover:no-underline">{{ item.memoUrlText }}</span>
                                             </NuxtLink>
                                         </template>
                                     </div>
@@ -271,23 +271,23 @@
                                 <div :class="item.span ? `col-span-${item.span}` : ''">
                                     <el-form-item :prop="item.prop">
                                         <label class="block w-full text-[15px] text-gray-800"> {{ item.label }} <span class="text-red-500">*</span> </label>
-                                        <div class="flex gap-4 w-full mt-2 mb-4">
+                                        <div class="flex w-full gap-4 mt-2 mb-4">
                                             <div
-                                                class="flex gap-1 items-center underline cursor-pointer underline-offset-2 hover:no-underline"
+                                                class="flex items-center gap-1 underline cursor-pointer underline-offset-2 hover:no-underline"
                                                 @click="handleDialog('locker')"
                                             >
                                                 <NuxtImg
-                                                    class="w-4 h-fit aspect-square object-cover"
+                                                    class="object-cover w-4 h-fit aspect-square"
                                                     src="/img/repair/repair-doc-icon.svg"
                                                 />
                                                 電子鎖安裝照片範例說明
                                             </div>
                                             <div
-                                                class="flex gap-1 items-center underline cursor-pointer underline-offset-2 hover:no-underline"
+                                                class="flex items-center gap-1 underline cursor-pointer underline-offset-2 hover:no-underline"
                                                 @click="handleDialog('coffer')"
                                             >
                                                 <NuxtImg
-                                                    class="w-4 h-fit aspect-square object-cover"
+                                                    class="object-cover w-4 h-fit aspect-square"
                                                     src="/img/repair/repair-doc-icon.svg"
                                                 />
                                                 保險箱安裝照片範例說明
@@ -303,8 +303,8 @@
                                 </div>
                             </template>
                             <div class="col-span-2">
-                                <div class="bg-gray-50 px-4 py-3 leading-7">
-                                    <ul class="list-disc pl-4">
+                                <div class="px-4 py-3 leading-7 bg-gray-50">
+                                    <ul class="pl-4 list-disc">
                                         <li class="text-[15px]">請注意：如因門扇特殊 或需要額外使用其他安裝配件、耗材，將由專人報價收費。</li>
                                     </ul>
                                 </div>
@@ -725,6 +725,8 @@ async function getPageData() {
 
         const lockSeoSetting = (data.value as any).data.seoSetting;
         useSeoMeta({
+            title: lockSeoSetting.title,
+            description: lockSeoSetting.description,
             ogTitle: lockSeoSetting.title,
             ogDescription: lockSeoSetting.description,
             ogUrl: () => `${window.location.origin}/${lockSeoSetting.custom_url}`,
@@ -738,6 +740,8 @@ async function getPageData() {
 
         const seoSetting = (data.value as any).data.seoSetting;
         useSeoMeta({
+            title: seoSetting.title,
+            description: seoSetting.description,
             ogTitle: seoSetting.title,
             ogDescription: seoSetting.description,
             ogUrl: () => `${window.location.origin}/${seoSetting.custom_url}`,

@@ -107,6 +107,8 @@ async function getTypeDetail() {
         const rows = (data.value as any).data;
 
         useSeoMeta({
+            title: rows.seoSetting.title,
+            description: rows.seoSetting.description,
             ogTitle: rows.seoSetting.title,
             ogDescription: rows.seoSetting.description,
             ogUrl: () => `${window.location.origin}/sample/${rows.seoSetting.custom_url}`,
