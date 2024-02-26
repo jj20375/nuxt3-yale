@@ -22,7 +22,7 @@ export interface CartItem {
     // id
     productable_id: number;
     // ?
-    product_variation_id?: number;
+    product_variationable_id?: number;
     // 數量
     quantity: number;
 }

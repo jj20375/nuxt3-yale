@@ -76,6 +76,15 @@ export default () => {
                 method: "post",
                 body: data
             });
+        },
+        /**
+         * 購物車結帳
+         */
+        SyncCartApi(data: {items:CartItem[]}) {
+            return useMyFetch(`${apiUrl}/cart/sync-product`, {
+                method: "post",
+                body: data
+            });
         }
     };
 };
