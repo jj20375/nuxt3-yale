@@ -8,8 +8,13 @@
         </template>
 
         <template #content>
-            <section class="max-w-[950px] mx-auto mt-[80px] text-gray-800">
-                <div v-html="content"></div>
+            <section class="max-w-[950px] mx-auto xl:mt-[80px] text-gray-800">
+                <div class="container mt-[24px] md:mt-[60px]">
+                    <div
+                        class="edit-section"
+                        v-html="content"
+                    ></div>
+                </div>
             </section>
         </template>
     </BannerLayout>
