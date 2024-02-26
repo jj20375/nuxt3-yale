@@ -127,7 +127,7 @@ interface Props {
 const breadcrumbs = ref<any>([]);
 // 取得 storage 麵包屑參數值
 if (process.client) {
-    breadcrumbs.value = JSON.parse($utils().getBreadcrumbsData()).slice(0, 3);
+    // breadcrumbs.value = JSON.parse($utils().getBreadcrumbsData()).slice(0, 3);
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -256,7 +256,10 @@ function modelChange(index: string | number) {
         form.value.category[index] = props.datas.find((data) => data.model === form.value.style[index]).shape;
         productCompareStore.compareStoreReset();
         form.value.style.forEach((item: string, index: number) => {
-            productCompareStore.compareStore[index] = props.datas.find((data: { model: string }) => data.model === item);
+            console.log(item,index)
+            if (item) {
+                productCompareStore.compareStore[index] = props.datas.find((data: { model: string }) => data.model === item);
+            }
         });
     } else {
         form.value.category[index] = null;
@@ -277,17 +280,26 @@ function goToDetail(product: any) {
     });
 }
 
+function getStyleModel() {
+    console.log("props.products => ", props.products);
+    props.products.forEach((item, index) => {
+        form.value.category[index] = item.category;
+        form.value.style[index] = item.style;
+    });
+}
+
 /**
  * 初始化
  */
 
 onMounted(() => {
     console.log("props.products => ", props.products);
-    props.products.forEach((item, index) => {
-        form.value.category[index] = item.category;
-        form.value.style[index] = item.style;
-    });
+    getStyleModel()
 });
+
+defineExpose({
+    getStyleModel
+})
 </script>
 
 <style lang="scss" scoped>

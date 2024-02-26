@@ -146,7 +146,11 @@ function goToDifference() {
         query: { compareId: route.query.compareId },
     });
     $utils().saveBreadcrumbsData(JSON.stringify(setBreadcrumbs));
-    router.push({ name: "product-compare-difference-slug", params: { slug: `${productName}規格比較` }, query: { compareId: route.query.compareId } });
+    router.push({ 
+        name: "product-compare-difference-slug",
+        params: { slug: `${productName}規格比較` },
+        query: { compareId: route.query.compareId }
+    });
 }
 
 /**
