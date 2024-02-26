@@ -11,9 +11,7 @@
                 :class="shoppingCar.length - 1 === index ? '' : index === 0 ? 'pt-0 border-b' : 'border-b'"
             >
                 <div class="flex gap-[30px]">
-                    <el-checkbox
-                        :label="product.id"
-                    />
+                    <el-checkbox :label="product.id" />
                     <NuxtImg
                         class="w-[180px] h-fit aspect-square object-cover"
                         :src="product.imgSrc"
@@ -26,45 +24,31 @@
                             <p class="font-medium YaleSolisW-Bd">NT$ {{ $utils().formatCurrency(product.price) }}</p>
                         </div>
                     </div>
-                    <div class="flex gap-4 justify-between items-start mb-4">
-                        <div class="flex-1 flex flex-col">
+                    <div class="flex items-start justify-between gap-4 mb-4">
+                        <div class="flex flex-col flex-1">
                             <div class="grid grid-cols-2 gap-4 text-gray-700 text-[14px]">
                                 <template
                                     v-for="(item, key) in shoppingCarDetail[index]"
                                     :key="key"
                                 >
-                                    <div
-                                        v-if="item.label"
-                                    >
+                                    <div v-if="item && item.label">
                                         {{ item.label }}
                                     </div>
-                                    <template v-if="key === 'doorGloup'">
-                                        <template
-                                            v-for="(item3, index3) in item"
-                                        >
-                                            <template
-                                                v-if="index3 === 'types'"
-                                            >
-                                                <template
-                                                    v-for="(item4, index4) in item3"
-                                                >
+                                    <template v-if="key === 'doorGroup'">
+                                        <template v-for="(item3, index3) in item">
+                                            <template v-if="index3 === 'types'">
+                                                <template v-for="(item4, index4) in item3">
                                                     <div>{{ item4.label }}</div>
                                                     <div>{{ item4.value ? "是" : "否" }}</div>
                                                 </template>
                                             </template>
-                                            <template
-                                                v-if="index3 === 'size'"
-                                            >
+                                            <template v-if="index3 === 'size'">
                                                 <div>{{ item3.label }}</div>
                                                 <div class="flex flex-col gap-1">
-                                                    <div>門高: {{ item3["height"] }}</div>
-                                                    <div>門寬: {{ item3["width"] }}</div>
-                                                    <div>門厚: {{ item3["bold"] }}</div>
+                                                    <div>{{ item3.name }}</div>
                                                 </div>
                                             </template>
-                                            <template
-                                                v-if="index3 === 'door'"
-                                            >
+                                            <template v-if="index3 === 'door'">
                                                 <div>門扇</div>
                                                 <div class="flex flex-col gap-1">
                                                     <div>{{ item3.title }}</div>
@@ -74,15 +58,21 @@
                                             </template>
                                         </template>
                                     </template>
-                                    <template v-if="key === 'doorOut'">
+                                    <template v-if="item && key === 'doorOut'">
                                         <div class="flex flex-col gap-1">
                                             <div>{{ item.title }}</div>
                                             <div>{{ item.style }}</div>
                                             <div>{{ item.color.text }}</div>
                                         </div>
                                     </template>
-                                    <div v-if="['currentTool1', 'currentTool2'].includes(key)">{{ item.title }}</div>
-                                    <template v-if="['currentOther1', 'currentOther2', 'otherServices'].includes(key)">
+                                    <template v-if="key === 'lock'">
+                                        <div class="flex flex-col gap-1">
+                                            <div>{{ item.name }}</div>
+                                            <div>{{ item.model }}</div>
+                                        </div>
+                                    </template>
+                                    <div v-if="item && ['currentTool1', 'currentTool2'].includes(key)">{{ item.title }}</div>
+                                    <template v-if="item && ['currentOther1', 'currentOther2', 'otherServices'].includes(key)">
                                         <ul
                                             v-if="item"
                                             class="ml-2"
@@ -112,14 +102,14 @@
                     <div class="flex gap-[18px] justify-end">
                         <div class="flex justify-center items-stretch w-[150px] border border-gray-300 rounded-full">
                             <button
-                                class="flex-1 flex items-center justify-center cursor-pointer h-auto"
+                                class="flex items-center justify-center flex-1 h-auto cursor-pointer"
                                 @click.prevent="countDelete(index)"
                             >
                                 <el-icon><Minus /></el-icon>
                             </button>
                             <div class="flex items-center justify-center w-[80px] py-[10px] h-full">{{ product.count }}</div>
                             <button
-                                class="flex-1 flex items-center justify-center cursor-pointer h-auto"
+                                class="flex items-center justify-center flex-1 h-auto cursor-pointer"
                                 @click.prevent="countAdd(index)"
                             >
                                 <el-icon><Plus /></el-icon>
@@ -160,7 +150,7 @@ const shoppingCar = computed(() => shoppingCarStore.shoppingCar);
 // 購物車資料連動造成效能問題 多一個變數儲存固定資料
 const shoppingCarDetail = computed(() =>
     shoppingCarStore.shoppingCar.map((item: any) => {
-        const obj: any = { doorGloup: item.doorGloup, doorOut: item.doorOut, currentTool1: item.currentTool1, currentTool2: item.currentTool2 };
+        const obj: any = { doorGroup: item.doorGroup, doorOut: item.doorOut, lock: item.lock, currentTool1: item.currentTool1, currentTool2: item.currentTool2 };
         if (item.currentOther1) {
             obj.currentOther1 = item.currentOther1;
         }
@@ -264,11 +254,11 @@ init();
         }
         .el-checkbox__inner {
             @apply w-[18px] h-[18px] #{!important};
-            &:hover{
+            &:hover {
                 @apply border-yellow-600;
             }
         }
-        .is-checked{
+        .is-checked {
             .el-checkbox__inner {
                 @apply bg-yellow-600 border-yellow-600 after:h-[9px] after:left-[6px] after:top-[2px] #{!important};
             }
