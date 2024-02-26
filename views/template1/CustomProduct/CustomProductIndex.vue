@@ -236,7 +236,7 @@
                 </div>
             </div>
         </div>
-        <div class="fixed bottom-0 w-full bg-white z-[100] h-[80px] shadow-footer sidebar-wrap">
+        <div class="fixed top-headerMb xl:bottom-0 w-full bg-white z-[100] h-[80px] shadow-footer sidebar-wrap">
             <div class="flex items-center justify-center">
                 <ul
                     v-if="previewWidth > 0"
@@ -831,10 +831,15 @@ onBeforeUnmount(() => {
 
 <style lang="scss" scoped>
 .custom-wrap {
-    @apply relative grid min-h-screen;
+    @apply relative block xl:grid min-h-screen;
     grid-template: 1fr/4fr minmax(430px, 1fr);
     grid-gap: 0 55px;
     padding-inline-end: 55px;
+    @media screen and (max-width: 1280px) {
+        grid-gap: 0;
+        padding-inline-start: 1.5rem;
+        padding-inline-end: 1.5rem;
+    }
     .left {
         @apply sticky top-0 overflow-hidden;
         max-height: calc(var(--vh, 1vh) * 100 - 80px - 87px);
