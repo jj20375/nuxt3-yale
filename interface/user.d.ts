@@ -7,3 +7,15 @@ export interface UserInterface {
         };
     };
 }
+
+export interface ContactUser {
+    full_address: string;
+    address: string;
+    city: string;
+    district: string;
+    id: number;
+    is_default: 0 | 1;
+    name: string;
+    phone: string;
+    zip3: string;
+}

@@ -21,6 +21,7 @@
                         <div>親愛的顧客您好：<br />完成預約後，專人將會在 3 個工作天內主動致電聯繫，詢問及確認需求，並且協助預約到府安裝。</div>
                         <div class="my-[30px] border-b-[1px] border-gray-200"></div>
                         <h3 class="text-[24px] font-bold mb-6">申請人</h3>
+                        {{ formDatas.applyDatas }}
                         <div class="grid grid-cols-2 gap-6">
                             <template
                                 v-for="(item, index) in formDatas.applyDatas"

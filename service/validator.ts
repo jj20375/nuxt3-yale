@@ -71,3 +71,61 @@ export const validatePhotoArrayLength = (
     callback(new Error('照片數量需3~5張'));
   }
 };
+
+
+// 愛心捐款碼驗證
+export const validateDonationCode = (
+  rule: InternalRuleItem,
+  value: string,
+  callback: (error?: string | Error) => void
+) => {
+  if (value) {
+    const reg = /^[0-9]{3,7}$/;
+    if (!reg.test(value)) {
+      callback(new Error());
+    } else {
+      callback();
+    }
+  } else {
+    callback();
+  }
+};
+
+
+// 手機載據驗證
+export const validateMobileCarrier = (
+  rule: InternalRuleItem,
+  value: string,
+  callback: (error?: string | Error) => void
+) => {
+  if (value) {
+    const reg = /^\/[A-Z0-9\.\-\+]{7}$/;
+    if (!reg.test(value)) {
+      callback(new Error());
+    } else {
+      callback();
+    }
+  } else {
+    callback();
+  }
+};
+
+
+
+// 自然人憑證驗證
+export const validateNaturalPerson = (
+  rule: InternalRuleItem,
+  value: string,
+  callback: (error?: string | Error) => void
+) => {
+  if (value) {
+    const reg = /^[A-Z]{2}[0-9]{14}$/;
+    if (!reg.test(value)) {
+      callback(new Error());
+    } else {
+      callback();
+    }
+  } else {
+    callback();
+  }
+};

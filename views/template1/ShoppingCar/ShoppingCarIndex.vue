@@ -1,9 +1,9 @@
 <template>
-    <section class="mt-[86px] mb-[120px] border-t border-gray-300">
+    <section class="mt-[64px] sm:mt-[86px] mb-[120px] border-t border-gray-300">
         <div class="container">
             <ul
                 v-if="currentStep == 0"
-                class="flex gap-[24px] justify-center pt-[64px]"
+                class="flex gap-[24px] justify-center pt-[48px] sm:pt-[64px]"
             >
                 <li
                     v-for="(tab, key) in tabs"
@@ -26,18 +26,21 @@
                 </li>
             </ul>
             <div class="flex justify-center">
-                <div class="w-[420px]">
+                <div class="w-full sm:w-[420px]">
                     <ShoppingCarSteps v-model:step="currentStep" />
                 </div>
             </div>
-            <div class="flex justify-center mt-[40px]">
-                <component
-                    :is="showComponent"
-                    v-model:currentTab="currentTab"
-                    v-model:selectProductIds="selectProductIds"
-                ></component>
+            <div class="sm:flex justify-center mt-[40px]">
+                <keep-alive>
+                    <component
+                        :is="showComponent"
+                        v-model:currentTab="currentTab"
+                        v-model:selectProductIds="selectProductIds"
+                        :goCheckoutStep3="goCheckoutStep3"
+                    />
+                </keep-alive>
                 <div
-                    class="w-[400px]"
+                    class="w-full sm:w-[400px]"
                     v-if="currentStep !== 2"
                 >
                     <div class="sticky top-[111px]">
@@ -49,25 +52,30 @@
                             :currentStep="currentStep"
                         >
                             <template
-                                v-if="currentStep == 0"
+                                v-if="currentStep == 0 || currentStep == 1"
                                 #button
                             >
-                                <div class="mt-[40px]">
+                                <div class="mt-[28px] sm:mt-[40px]">
                                     <button
-                                        @click="
-                                        currentStep = 1;
-                                        showComponent = ShoppingCarStep2;
-                                    "
+                                        v-if="currentStep == 0"
+                                        @click="goStepCheckout"
                                         class="yellow-btn w-full"
                                     >
                                         下一步
                                     </button>
+                                    <button
+                                        v-else
+                                        @click="goCheckoutStep3 = !goCheckoutStep3"
+                                        class="yellow-btn w-full"
+                                    >
+                                        前往付款
+                                    </button>
                                 </div>
                             </template>
                             <template #total>
-                            <span>
-                                {{ $utils().formatCurrency(total - salePrice - salePrice) }}
-                            </span>
+                                <span>
+                                    {{ $utils().formatCurrency(total - salePrice - salePrice) }}
+                                </span>
                             </template>
                             <template
                                 v-if="currentStep == 0"
@@ -86,9 +94,9 @@
                             v-if="currentStep == 1"
                             class="cursor-pointer mt-[24px] flex"
                             @click="
-                            currentStep = 0;
-                            showComponent = ShoppingCarStep1;
-                        "
+                                currentStep = 0;
+                                showComponent = ShoppingCarStep1;
+                            "
                         >
                             <NuxtImg
                                 class="w-[20px]"
@@ -98,20 +106,6 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <div
-                class="flex justify-center mt-[40px]"
-                v-if="currentStep == 1"
-            >
-                <button
-                    @click.prevent="
-                        currentStep = 2;
-                        showComponent = ShoppingCarStep3;
-                    "
-                    class="yellow-btn btn-lg"
-                >
-                    前往付款
-                </button>
             </div>
         </div>
     </section>
@@ -128,12 +122,20 @@ import ShoppingCarInputCoupon from "~/views/template1/ShoppingCar/components/Sho
 // 訂單金額
 import ShoppingCarBilling from "~/views/template1/ShoppingCar/components/ShoppingCarBilling.vue";
 import { useShoppingCarStore } from "~/store/shoppingCarStore";
+import { useUserStore } from "~/store/userStore";
+
+import { storeToRefs } from "pinia";
+import { ShoppingCarInterface } from "~/interface/shoppingCar";
 const { $utils } = useNuxtApp();
 
 const route = useRoute();
 const router = useRouter();
+const { $api } = useNuxtApp();
 
 const shoppingCarStore = useShoppingCarStore();
+const { shoppingCar } = storeToRefs(shoppingCarStore);
+const goCheckoutStep3 = ref(false);
+const userStore = useUserStore();
 
 // 購物種類
 const tabs = ref({
@@ -160,18 +162,28 @@ const selectProductIds = ref<number[]>([]);
 
 const showComponent = shallowRef<any>(ShoppingCarStep1);
 
-// 購物車資料
-const shoppingCar = computed(() => shoppingCarStore.shoppingCar);
-
 // 總價
 const total = computed(() =>
     _SumBy(
-        _Filter(shoppingCar.value, (item) => selectProductIds.value.includes(item.id)),
-        "price"
+        _Filter(shoppingCar.value, (item: ShoppingCarInterface) => (item.id ? selectProductIds.value.includes(item.id) : false)),
+        "totalPrice"
     )
 );
 // 折扣
 const salePrice = computed(() => 1000);
+// go step2
+const goStepCheckout = () => {
+    if (selectProductIds.value.length === 0) {
+        alert("請先選擇商品");
+        return;
+    }
+    if (userStore.isAuth) {
+        currentStep.value = 1;
+        showComponent.value = ShoppingCarStep2;
+    } else {
+        alert("請先登入");
+    }
+};
 
 watch(
     () => currentStep.value,
@@ -181,7 +193,6 @@ watch(
             case 0:
                 console.log("step0 val =>", val);
                 showComponent.value = ShoppingCarStep1;
-
                 return;
             case 1:
                 console.log("step1 val =>", val);
@@ -195,7 +206,7 @@ watch(
     }
 );
 
-onMounted(() => {
+onMounted(async () => {
     currentTab.value = route.query.tab as string;
 });
 </script>

@@ -11,9 +11,15 @@
             >
                 <IconMenu class="!w-[20px] !h-[20px] transition-all duration-300 hover:text-gray-400 hover:transition-all hover:duration-300" />
             </div>
-            <ul class="items-center flex-1 text-base leading-5 xl:flex top-[64px] xl:top-0 xl:mb-0" :class="isDesktop ? '' : showMenu ? 'py-4 nav-bar-mb' : '' ">
+            <ul
+                class="items-center flex-1 text-base leading-5 xl:flex top-[64px] xl:top-0 xl:mb-0"
+                :class="isDesktop ? '' : showMenu ? 'py-4 nav-bar-mb' : ''"
+            >
                 <li class="fixed xl:relative xl:mr-4 2xl:mr-6 3xl:mr-14 w-full xl:w-fit top-0 left-0 z-[1] bg-white xl:bg-transparent py-[8px] xl:py-[10px]">
-                    <NuxtLink class="block mx-auto w-fit" :to="{ name: 'index' }">
+                    <NuxtLink
+                        class="block mx-auto w-fit"
+                        :to="{ name: 'index' }"
+                    >
                         <NuxtImg
                             class="h-[48px] w-[48px] xl:h-[66px] xl:w-[66px] mx-auto"
                             :src="initializationData.site.site_logo"
@@ -22,7 +28,7 @@
                     </NuxtLink>
                 </li>
                 <li
-                    :class="isDesktop ? 'opacity-100' : showMenu ? 'opacity-100 h-auto' : 'opacity-0 overflow-hidden h-0' "
+                    :class="isDesktop ? 'opacity-100' : showMenu ? 'opacity-100 h-auto' : 'opacity-0 overflow-hidden h-0'"
                     class="duration-500 transition-all xl:duration-0 xl:transition-none"
                     v-for="(menu, key) in menus"
                     :key="key"
@@ -79,13 +85,12 @@
                             </div>
                         </div>
                         <div v-else>
-                            <Vue3SlideUpDown v-model="menuStatus[key]" :duration="300">
-                                <div
-                                    class="bg-gray-100 submenu-list"
-                                >
-                                    <ul
-                                        class="py-[12px] text-center duration-300 delay-150 transition-all"
-                                    >
+                            <Vue3SlideUpDown
+                                v-model="menuStatus[key]"
+                                :duration="300"
+                            >
+                                <div class="bg-gray-100 submenu-list">
+                                    <ul class="py-[12px] text-center duration-300 delay-150 transition-all">
                                         <li
                                             v-for="(submenu, subIndex) in menu.submenus"
                                             :key="subIndex"
@@ -121,29 +126,37 @@
                     </div>
                 </li>
             </ul>
-            <ul
-                class="absolute xl:relative flex gap-[2px] xl:pr-[16px] 3xl:pr-[20px] top-8 xl:top-0 right-3 xl:right-0 -translate-y-1/2 xl:translate-y-0 xl:before:absolute xl:before:top-1/2 xl:before:-translate-y-1/2 xl:before:right-0 xl:before:bg-gray-400 xl:before:w-[1px] xl:before:h-4 z-[2]"
-            >
+            <ul class="absolute xl:relative flex gap-[2px] xl:pr-[16px] 3xl:pr-[20px] top-8 xl:top-0 right-3 xl:right-0 -translate-y-1/2 xl:translate-y-0 xl:before:absolute xl:before:top-1/2 xl:before:-translate-y-1/2 xl:before:right-0 xl:before:bg-gray-400 xl:before:w-[1px] xl:before:h-4 z-[2]">
                 <li
                     v-for="(icon, index) in rightIcons"
                     :key="index"
                 >
-                    <NuxtLink class="flex justify-center items-center !w-[40px] !h-[40px] group" :to="icon.url">
-                        <component
-                            class="!w-[20px] !h-[20px] transition-all duration-300 group-hover:text-gray-400 group-hover:transition-all group-hover:duration-300"
-                            :is="icon.name"
-                        />
+                    <NuxtLink
+                        class="flex justify-center items-center !w-[40px] !h-[40px] group"
+                        :to="icon.url"
+                    >
+                        <el-badge
+                            :value="icon.badgeCount"
+                            class="item"
+                            :hidden="!icon.badgeCount"
+                        >
+                            <component
+                                class="!w-[20px] !h-[20px] transition-all duration-300 group-hover:text-gray-400 group-hover:transition-all group-hover:duration-300"
+                                :is="icon.name"
+                            />
+                        </el-badge>
                     </NuxtLink>
                 </li>
             </ul>
-            <ul
-                class="hidden xl:flex xl:ml-[16px] 3xl:ml-[20px] gap-[2px]"
-            >
+            <ul class="hidden xl:flex xl:ml-[16px] 3xl:ml-[20px] gap-[2px]">
                 <li
                     v-for="(media, index) in socialMedia"
                     :key="index"
                 >
-                    <div @click="toSocialMedia(media)" class="flex justify-center items-center !w-[40px] !h-[40px] group cursor-pointer">
+                    <div
+                        @click="toSocialMedia(media)"
+                        class="flex justify-center items-center !w-[40px] !h-[40px] group cursor-pointer"
+                    >
                         <component
                             class="!w-[20px] !h-[20px] transition-all duration-300 group-hover:text-gray-400 group-hover:transition-all group-hover:duration-300"
                             :is="media.name"
@@ -159,6 +172,7 @@
 import { useTemplateStore } from "~/store/templateStore";
 import { useInitializationStore } from "~/store/initializationStore";
 import { useUserStore } from "~/store/userStore";
+import { useShoppingCarStore } from "~/store/shoppingCarStore";
 import { storeToRefs } from "pinia";
 const $config = useRuntimeConfig();
 const router = useRouter();
@@ -166,8 +180,10 @@ const route = useRoute();
 const templateStore = useTemplateStore();
 const initializationStore = useInitializationStore();
 const userStore = useUserStore();
-const { isAuth } = storeToRefs(userStore);
+const shoppingCarStore = useShoppingCarStore();
 
+const { isAuth } = storeToRefs(userStore);
+const { shoppingCar } = storeToRefs(shoppingCarStore);
 // icon 路徑
 import IconUser from "~/assets/img/icons/user.svg";
 import IconCart from "~/assets/img/icons/shop-cart.svg";
@@ -404,6 +420,7 @@ const rightIcons = computed(() => {
                     tab: "type1",
                 },
             },
+            badgeCount: shoppingCar.value.length,
         },
     ];
 });
@@ -426,13 +443,13 @@ const socialMedia = ref([
         name: shallowRef(IconYoutube),
         url: initializationData.value.site.social_youtube,
     },
-])
+]);
 
-function toSocialMedia (socialMedia: { url: string|URL|undefined; }) {
+function toSocialMedia(socialMedia: { url: string | URL | undefined }) {
     if (socialMedia.url) {
         open(socialMedia.url, "_blank");
     }
-};
+}
 
 // 預設選擇的 menu 判斷是否呈現 submenu
 const currentMenu = ref<null | string>(null);
@@ -460,7 +477,6 @@ function toggleMenu(key: string) {
     const menuKey = key;
     menuStatus.value[menuKey] = !menuStatus.value[menuKey];
 }
-
 </script>
 
 <style lang="scss" scoped>
@@ -543,7 +559,7 @@ function toggleMenu(key: string) {
 }
 
 // 副標題列表
-.submenu-list{
+.submenu-list {
     transition: max-height 0.5s ease-in-out;
     // 副標題類別
     .submenu-item {
@@ -555,7 +571,7 @@ function toggleMenu(key: string) {
 }
 
 // 手機版的下拉選單
-.nav-bar-mb{
+.nav-bar-mb {
     @apply relative overflow-auto bg-white border-t shadow-header;
     max-height: calc(var(--vh, 1vh) * 100 - #{$navbar-height-mb});
 }
