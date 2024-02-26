@@ -557,6 +557,6 @@ function toggleMenu(key: string) {
 // 手機版的下拉選單
 .nav-bar-mb{
     @apply relative overflow-auto bg-white border-t shadow-header;
-    max-height: calc(100vh - #{$navbar-height-mb});
+    max-height: calc(var(--vh, 1vh) * 100 - #{$navbar-height-mb});
 }
 </style>
