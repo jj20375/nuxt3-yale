@@ -3,6 +3,8 @@ export interface ShoppingCarInterface {
     id: number | null
     // 產品ID
     productID: number
+    // 顏色名稱
+    colorName?: string
     // 顏色
     product_variationable_id?: number;
     // 價格

@@ -26,24 +26,24 @@
                         <p class="hidden sm:block font-medium YaleSolisW-Bd text-[18px]">NT$ {{ $utils().formatCurrency(cart.totalPrice) }}</p>
                     </div>
                     <div
-                        v-if="cart.color"
+                        v-if="cart.colorName"
                         class="flex gap-4 text-gray-800 items-center mt-[12px]"
                     >
                         <p class="w-[90px] text-[14px]">顏色</p>
-                        <p class="text-[14px]">{{ cart.color }}</p>
+                        <p class="text-[14px]">{{ cart.colorName }}</p>
                     </div>
                     <div class="flex gap-[36px] sm:gap-[18px] justify-end mt-[16px]">
                         <div class="flex flex-1 justify-center items-stretch sm:flex-initial w-[150px] sm:w-[150px] border border-gray-300 rounded-full">
                             <button
                                 class="flex items-center text-[16px] justify-center flex-1 h-auto cursor-pointer"
-                                @click.prevent="countUpdate(cart.id, cart.productID, cart.count - 1)"
+                                @click.prevent="countUpdate(cart.id, cart.productID, cart.product_variationable_id, cart.count - 1)"
                             >
                                 <el-icon><Minus /></el-icon>
                             </button>
                             <div class="flex items-center justify-center w-[80px] py-[4px] sm:py-[10px] h-full">{{ cart.count }}</div>
                             <button
                                 class="flex items-center text-[16px] justify-center flex-1 h-auto cursor-pointer"
-                                @click.prevent="countUpdate(cart.id, cart.productID, cart.count + 1)"
+                                @click.prevent="countUpdate(cart.id, cart.productID, cart.product_variationable_id, cart.count + 1)"
                             >
                                 <el-icon><Plus /></el-icon>
                             </button>
@@ -65,6 +65,7 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
 import { useShoppingCarStore } from "~/store/shoppingCarStore";
+import { useUserStore } from "~/store/userStore";
 
 const emit = defineEmits(["update:selectProductIds"]);
 
@@ -72,13 +73,16 @@ const shoppingCarStore = useShoppingCarStore();
 const { updateCart, getUserShopping, deleteCart } = shoppingCarStore;
 const { shoppingCar } = storeToRefs(shoppingCarStore);
 
+const userStore = useUserStore();
+const { isAuth } = storeToRefs(userStore);
+
 // 選中資料
 const checkList: Ref<number[]> = ref([]);
 
 /**
  * 點擊更新數量按鈕
  */
-function countUpdate(cartId: number | null, productID: number, count: number) {
+function countUpdate(cartId: number | null, productID: number, product_variationable_id?: number, count: number) {
     if (count < 1) {
         return;
     }
@@ -86,6 +90,7 @@ function countUpdate(cartId: number | null, productID: number, count: number) {
         cart_item_id: cartId ? cartId : 0,
         productID,
         quantity: count,
+        product_variationable_id,
     };
     updateCart(apiReq);
 }
@@ -104,24 +109,17 @@ function removeShoppingCar(id: number | null, productID: number) {
 /**'
  * 選擇商品事件
  */
-function selectProduct(id: number) {
+const selectProduct = (id: number) => {
+    if (!isAuth.value) {
+        checkList.value = [];
+        alert("請先登入");
+        return;
+    }
     emit("update:selectProductIds", id);
-}
+};
 
 const init = async () => {
     await getUserShopping();
-    // const storageShoppingCart = $shoppingCarService().getShoppingCar();
-    // // 當購物車不為空時執行
-    // if (storageShoppingCart !== null) {
-    //     // 購物車資料(過濾購物車重複資料)
-    //     setShoppingCar(storageShoppingCart);
-    //     // 設定購物車商品全選
-    //     checkList.value = shoppingCar.value.map((item) => item.id);
-    //     // 選中商品參數傳給母組件
-    //     emit("update:selectProductIds", checkList.value);
-    // } else {
-    //     shoppingCarStore.setShoppingCar([]);
-    // }
 };
 
 onMounted(() => {

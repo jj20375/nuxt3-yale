@@ -33,6 +33,20 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
                 shoppingCar.value = data.cartItems.map((i) => {
                     const price = i.productVariationable ? i.productVariationable.price : i.productable.price;
                     const imgSrc = i.productVariationable ? `https://yale_backed.mrjin.me/storage/${i.productVariationable.image}` : i.productable.main_image;
+                    // 設置顏色名稱
+                    let colorIndex = -1
+                    let colorName = undefined;
+                    if (i.productVariationable) {
+                        for (const [key, value] of Object.entries(i.productable.productVariations)) {
+                            const item: any = value
+                            if(item.id === i.productVariationable.id) {
+                                colorIndex = Number(key.replace('option-' , '')) - 1
+                                colorName = i.productable.productOptions[0]?.values[colorIndex]?.name
+                                break;
+                            }
+                          }                       
+                    }
+
                     return {
                         id: i.id,
                         productID: i.productable.id,
@@ -42,6 +56,7 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
                         count: i.quantity,
                         totalPrice: Number(price) * i.quantity,
                         product_variationable_id: i.productVariationable ? i.productVariationable.id : undefined,
+                        colorName
                     };
                 });
                 $shoppingCarService().setShoppingCar(shoppingCar.value);
@@ -56,9 +71,7 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
     // 加入購物車
     const addToCart = (data: ShoppingCarInterface) => {
         return new Promise(async (resolve, reject) => {
-            console.log("data", data);
             const item = shoppingCar.value.find((i) => i.productID === data.productID && i.product_variationable_id === data.product_variationable_id);
-            console.log("item", item);
 
             if (!item) {
                 if (!isAuth.value) {
@@ -87,10 +100,13 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
     };
 
     // 更新購物車
-    const updateCart = (data: { cart_item_id: number | null; productID: number; quantity: number }) => {
+    const updateCart = ( 
+        data: { cart_item_id: number | null; productID: number; quantity: number , product_variationable_id?:number }
+    ) => {
+        console.log('data',data)
         if (!isAuth.value) {
             // 未登入狀態
-            const item = shoppingCar.value.find((i) => i.productID === data.productID);
+            const item = shoppingCar.value.find((i) => i.productID === data.productID && data.product_variationable_id === i.product_variationable_id);
             if (item) {
                 item.count = data.quantity ? data.quantity : 1;
                 item.totalPrice = item.count * Number(item.price);
