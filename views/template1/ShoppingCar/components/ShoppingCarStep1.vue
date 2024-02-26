@@ -1,11 +1,11 @@
 <template>
     <div class="sm:mr-[40px] flex-1">
         <ShoppingCarProducts
-            v-if="currentTab === 'type1'"
+            v-if="currentTab === 'type1' && route.query.tab === 'type1'"
             v-model:selectProductIds="selectProductIds"
         />
         <ShoppingCarCustomProducts
-            v-else
+            v-if="currentTab === 'type2' && route.query.tab === 'type2'"
             v-model:selectProductIds="selectProductIds"
         />
         <ShoppingCarStep2FormAddPriceToBuy
@@ -41,6 +41,7 @@ import ShoppingCarSales from "~/views/template1/ShoppingCar/components/ShoppingC
 // 加價購產品
 import ShoppingCarStep2FormAddPriceToBuy from "~/views/template1/ShoppingCar/components/Step2Form/ShoppingCarStep2FormAddPriceToBuy.vue";
 
+const route = useRoute();
 const emit = defineEmits(["update:selectProductIds"]);
 
 const props = defineProps({

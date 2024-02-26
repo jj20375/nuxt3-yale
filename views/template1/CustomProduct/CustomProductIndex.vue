@@ -98,7 +98,8 @@
                 <div class="border-b border-gray-300">
                     <div
                         @click="stepMenuShow['step3'].show = !stepMenuShow['step3'].show"
-                        class="flex items-center mb-[30px] mt-[30px] cursor-pointer" type="button"
+                        class="flex items-center mb-[30px] mt-[30px] cursor-pointer"
+                        type="button"
                     >
                         <h3 class="flex-1 text-gray-800 text-[20px] font-medium YaleSolisW-Bd">{{ stepMenuShow["step3"].text }}</h3>
                         <font-awesome-icon
@@ -275,6 +276,7 @@
 </template>
 
 <script setup lang="ts">
+import { ElMessage } from "element-plus";
 import { v4 as uuidv4 } from "uuid";
 import { disableBodyScroll, enableBodyScroll, clearAllBodyScrollLocks } from "body-scroll-lock";
 // 預覽圖片
@@ -308,7 +310,8 @@ import { useCustomProdutHook } from "./hooks/CustomProductHook";
 
 const router = useRouter();
 
-const { $utils, $shoppingCarService } = useNuxtApp();
+const { $api, $utils, $shoppingCarService } = useNuxtApp();
+const loading = ref(false);
 
 const stepMenuShow = ref({
     step1: {
@@ -486,22 +489,22 @@ const customPreviewData = computed(() => {
     };
 });
 
-function openShoppingCarDialog() {
+async function openShoppingCarDialog() {
     showSoppingCarDialog.value = true;
-    addToShoppingCar();
+    await addToShoppingCar();
 }
 
 /**
  * 加入購物車
  */
-function addToShoppingCar() {
+async function addToShoppingCar() {
     const data = {
         id: uuidv4(),
         name: currentBgData.value.text,
         imgSrc: currentDoorData.value.imgSrc,
         count: count.value,
 
-        doorGloup: {
+        doorGroup: {
             size: { label: "尺寸", ...currentDoorSizeData.value },
             door: {
                 label: "門扇",
@@ -516,6 +519,7 @@ function addToShoppingCar() {
             },
         },
         doorOut: { label: "門框", ...currentDoorOutData.value, color: currentDoorOutColorData.value },
+        lock: { label: "門鎖", ...currentLock.value },
         currentTool1: { label: "掛門", ...currentTool1Data.value },
         currentTool2: { label: "氣密條", ...currentTool2Data.value },
     };
@@ -523,12 +527,14 @@ function addToShoppingCar() {
     let doorPrice = 0;
     if (!$utils().isEmpty(currentDoorColorId.value) && !$utils().isEmpty(currentDoorSizeId.value)) {
         doorPrice = currentDoorData.value.price[`option-${currentDoorColorId.value}-${currentDoorSizeId.value}`];
+        data.doorGroup["optionId"] = currentDoorData.value.optionId[`option-${currentDoorColorId.value}-${currentDoorSizeId.value}`];
     }
 
     let doorOutPrice = 0;
 
     if (!$utils().isEmpty(currentDoorOutColorId.value)) {
         doorOutPrice = currentDoorOutData.value.price[`option-${currentDoorOutColorId.value}`];
+        data.doorOut["optionId"] = currentDoorOutData.value.optionId[`option-${currentDoorOutColorId.value}`];
     }
 
     let price = doorPrice + doorOutPrice + currentTool1Data.value.price + currentTool2Data.value.price;
@@ -569,9 +575,90 @@ function addToShoppingCar() {
     data["price"] = price * count.value;
     data["singlePrice"] = price;
 
-    if (process.client) {
-        // 加入 訂製門扇購物車
-        $shoppingCarService().addCustomProductToShoppingCar(data);
+    try {
+        await addToCustomCarAPI(data);
+        if (process.client) {
+            // 加入 訂製門扇購物車
+            $shoppingCarService().addCustomProductToShoppingCar(data);
+        }
+    } catch (err) {
+        console.log("addToCustomCarAPI => ", err);
+    }
+    // await addToCustomCarAPI(data);
+    // if (process.client) {
+    //     // 加入 訂製門扇購物車
+    //     $shoppingCarService().addCustomProductToShoppingCar(data);
+    // }
+}
+
+/**
+ * 加入訂製門扇 api
+ */
+async function addToCustomCarAPI(data: any) {
+    loading.value = true;
+    const setCustomCarDatas: any = {
+        items: [],
+        quantity: count.value,
+    };
+    setCustomCarDatas.items.push({
+        productable_id: data.doorGroup.door.id,
+        product_variationable_id: data.doorGroup.optionId,
+        quantity: count.value,
+    });
+    setCustomCarDatas.items.push({
+        productable_id: data.doorOut.id,
+        product_variationable_id: data.doorOut.optionId,
+        quantity: count.value,
+    });
+    setCustomCarDatas.items.push({
+        productable_id: data.lock.id,
+        quantity: count.value,
+    });
+    setCustomCarDatas.items.push({
+        productable_id: data.currentTool1.id,
+        quantity: count.value,
+    });
+    setCustomCarDatas.items.push({
+        productable_id: data.currentTool2.id,
+        quantity: count.value,
+    });
+    if (!$utils().isEmpty(data["currentOther1"])) {
+        currentOther1Datas.value.forEach((item: any) => {
+            setCustomCarDatas.items.push({
+                productable_id: item.id,
+                quantity: count.value,
+            });
+        });
+    }
+    if (!$utils().isEmpty(data["currentOther2"])) {
+        currentOther2Datas.value.forEach((item: any) => {
+            setCustomCarDatas.items.push({
+                productable_id: item.id,
+                quantity: count.value,
+            });
+        });
+    }
+    if (!$utils().isEmpty(data["otherServices"])) {
+        currentServiceDatas.value.forEach((item: any) => {
+            setCustomCarDatas.items.push({
+                productable_id: item.id,
+                quantity: count.value,
+            });
+        });
+    }
+    console.log("setCustomCarDatas =>", setCustomCarDatas);
+    try {
+        await $api().AddToCustomCarAPI(setCustomCarDatas);
+        return true;
+    } catch (err) {
+        console.log("addToCustomCarAPI 2 err => ", err);
+        ElMessage({
+            type: "error",
+            message: "加入購物車失敗",
+        });
+        return false;
+    } finally {
+        loading.value = false;
     }
 }
 
@@ -685,7 +772,16 @@ async function init(id: number) {
         currentDoorOutData.value = doorsOut.value[0];
         currentDoorOutColorId.value = doorsOut.value[0].colors[0].id;
         currentLockId.value = locks.value.handle[0].id;
-        currentLock.value = { id: locks.value.handle[0].id, style: locks.value.handle[0].style, price: locks.value.handle[0].price, detailData: locks.value.handle[0].detailData, name: locks.value.handle[0].name, shape: locks.value.handle[0].shape, stock: locks.value.handle[0].stock };
+        currentLock.value = {
+            id: locks.value.handle[0].id,
+            style: locks.value.handle[0].style,
+            price: locks.value.handle[0].price,
+            detailData: locks.value.handle[0].detailData,
+            name: locks.value.handle[0].name,
+            shape: locks.value.handle[0].shape,
+            stock: locks.value.handle[0].stock,
+            model: locks.value.handle[0].model,
+        };
         currentTool1Id.value = tool1Datas.value[0].id;
         currentTool1Data.value = tool1Datas.value[0];
         currentTool2Id.value = tool2Datas.value[0].id;

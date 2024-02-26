@@ -17,22 +17,22 @@
             <div class="flex gap-5">
                 <div class="flex-1">
                     <div class="grid gap-2 text-gray-700">
-                        <div class="w-[80px]">{{ products.doorGloup.types.category1.label }}</div>
-                        <div>{{ products.doorGloup.types.category1.value ? "是" : "否" }}</div>
+                        <div class="w-[80px]">{{ products.doorGroup.types.category1.label }}</div>
+                        <div>{{ products.doorGroup.types.category1.value ? "是" : "否" }}</div>
                         <div class="w-[80px]">場景</div>
                         <div>{{ products.name }}</div>
                         <div class="w-[80px]">款式</div>
                         <div class="flex flex-col gap-1">
-                            <div>{{ products.doorGloup.door.title }}</div>
-                            <div>{{ products.doorGloup.door.style }}</div>
+                            <div>{{ products.doorGroup.door.title }}</div>
+                            <div>{{ products.doorGroup.door.style }}</div>
                         </div>
                         <div class="w-[80px]">顏色</div>
-                        <div>{{ products.doorGloup.door.color.text }}</div>
+                        <div>{{ products.doorGroup.door.color.text }}</div>
                         <div class="w-[80px]">尺寸</div>
                         <div class="flex flex-col gap-1">
-                            <div>門高: {{ products.doorGloup.size["height"] }}</div>
-                            <div>門寬: {{ products.doorGloup.size["width"] }}</div>
-                            <div>門厚: {{ products.doorGloup.size["bold"] }}</div>
+                            <div>門高: {{ products.doorGroup.size["height"] }}</div>
+                            <div>門寬: {{ products.doorGroup.size["width"] }}</div>
+                            <div>門厚: {{ products.doorGroup.size["bold"] }}</div>
                         </div>
                     </div>
                 </div>

@@ -59,14 +59,14 @@
                                     <button
                                         v-if="currentStep == 0"
                                         @click="goStepCheckout"
-                                        class="yellow-btn w-full"
+                                        class="w-full yellow-btn"
                                     >
                                         下一步
                                     </button>
                                     <button
                                         v-else
                                         @click="goCheckoutStep3 = !goCheckoutStep3"
-                                        class="yellow-btn w-full"
+                                        class="w-full yellow-btn"
                                     >
                                         前往付款
                                     </button>
@@ -207,6 +207,10 @@ watch(
 );
 
 onMounted(async () => {
+    currentTab.value = route.query.tab as string;
+});
+
+onActivated(() => {
     currentTab.value = route.query.tab as string;
 });
 </script>
