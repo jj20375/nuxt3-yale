@@ -35,7 +35,7 @@
                             <div class="w-full p-6 md:p-10 transition-all duration-500">
                                 <div :class="currentIndex === index ? 'bg-white p-2 drop-shadow-lg rounded-2xl  ' : ' opacity-30'">
                                     <NuxtImg
-                                        class="rounded-lg"
+                                        class="rounded-lg aspect-[16/9] object-cover"
                                         :src="slide.thumbnail"
                                     />
                                     <!-- {{ slide }} -->
