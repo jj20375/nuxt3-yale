@@ -2,6 +2,7 @@
     <SideBarLayout
         :title="'服務中心'"
         :banner="'/img/contact/contact-banner.jpg'"
+        :banner-mobile="'/img/contact/contact-banner-m.jpg'"
     >
         <template #breadcrumbs>
             <Breadcrumb :menus="breadcrumbs" />
@@ -15,7 +16,7 @@
         <template #content>
             <FaqTItle :title="title" />
             <FaqList :datas="datas" />
-            <FaqContact class="mt-[90px]" />
+            <FaqContact class="xl:mt-[90px] mt-[60px]" />
         </template>
     </SideBarLayout>
 </template>
