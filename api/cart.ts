@@ -83,7 +83,7 @@ export default () => {
             return useMyFetch<ResGetCart>(`${apiUrl}/cart`, { method: "get", params: { type: "combination" } });
         },
         /**
-         * 取得 訂製門扇購物車資料
+         * 新增 訂製門扇購物車資料
          */
         AddToCustomCarAPI(data: ReqCustomCar) {
             return useMyFetch(`${apiUrl}/cart/create-combination`, { method: "post", body: data });

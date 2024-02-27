@@ -1,7 +1,5 @@
 <template>
-    <section
-        class="relative custom-top overflow-auto z-[10]"
-    >
+    <section class="relative custom-top overflow-auto z-[10]">
         <!-- <pre>{{ scenes }}</pre> -->
         <!-- <pre>{{ doors }}</pre> -->
         <!-- <pre>{{ doorSizes }}</pre> -->
@@ -30,7 +28,10 @@
                     />
                 </div>
                 <!--  手機版門扇角度按鈕  -->
-                <div class="absolute top-0 left-0 w-full h-full items-center justify-center before:absolute before:h-full before:w-full before:bg-gray-800 before:opacity-80 before:-z-[1] z-[99]" :class="showOptions ? 'flex' : 'hidden'">
+                <div
+                    class="absolute top-0 left-0 w-full h-full items-center justify-center before:absolute before:h-full before:w-full before:bg-gray-800 before:opacity-80 before:-z-[1] z-[99]"
+                    :class="showOptions ? 'flex' : 'hidden'"
+                >
                     <ul
                         v-if="previewWidth > 0"
                         class="h-fit flex gap-[12px] justify-center"
@@ -271,7 +272,7 @@
         </div>
         <div class="fixed top-headerMb xl:top-auto xl:bottom-0 w-full bg-white z-[100] h-[67px] xl:h-[80px] shadow-footer sidebar-wrap">
             <!--  電腦版門扇角度按鈕  -->
-            <div class="hidden xl:flex items-center justify-center">
+            <div class="items-center justify-center hidden xl:flex">
                 <ul
                     v-if="previewWidth > 0"
                     class="h-fit flex gap-[12px] justify-center"
@@ -287,14 +288,14 @@
                     </li>
                 </ul>
             </div>
-            <div class="grid grid-cols-2 w-full xl:w-auto xl:flex items-center justify-start gap-4 px-6 xl:px-0">
+            <div class="grid items-center justify-start w-full grid-cols-2 gap-4 px-6 xl:w-auto xl:flex xl:px-0">
                 <div class="flex flex-col sm:flex-row sm:items-center">
                     <p class="text-gray-600 text-[14px]">預估金額</p>
                     <div class="text-[14px] text-gray-800 flex items-center xl:ml-2">
                         NT$ <strong class="ml-2 font-medium YaleSolisW-Bd text-[20px] xl:text-[24px] leading-none xl:leading-normal">{{ $utils().formatCurrency(total) }}</strong>
                     </div>
                 </div>
-                <div class="flex flex-col sm:flex-row text-gray-600">
+                <div class="flex flex-col text-gray-600 sm:flex-row">
                     <p class="text-[14px] mr-[4px]">訂金 (總價30%)</p>
                     <div class="text-[14px]">NT$ {{ $utils().formatCurrency(deposit) }}</div>
                 </div>
@@ -313,6 +314,7 @@
 import { ElMessage } from "element-plus";
 import { v4 as uuidv4 } from "uuid";
 import { disableBodyScroll, enableBodyScroll, clearAllBodyScrollLocks } from "body-scroll-lock";
+import type { ShoppingCarCustomInterface, CustomCarItem } from "~/interface/shoppingCar";
 // 預覽圖片
 import CustomProductPrewView from "~/views/template1/CustomProduct/components/CustomProductPrewView.vue";
 // 選擇場景
@@ -341,10 +343,18 @@ import AddToShoppingCarDialog from "~/views/template1/components/AddToShoppingCa
  * 訂製門扇方法
  */
 import { useCustomProdutHook } from "./hooks/CustomProductHook";
+// 購物車 store
+import { useShoppingCarStore } from "~/store/shoppingCarStore";
+// user store
+import { useUserStore } from "~/store/userStore";
 
 const router = useRouter();
 
 const { $api, $utils, $shoppingCarService } = useNuxtApp();
+const shoppingCarStore = useShoppingCarStore();
+const userStore = useUserStore();
+
+const isAuth = computed(() => userStore.isAuth);
 const loading = ref(false);
 
 const stepMenuShow = ref({
@@ -527,7 +537,7 @@ const customPreviewData = computed(() => {
 const showOptions = ref<boolean>(false);
 
 function toggleOptions() {
-    showOptions.value =!showOptions.value;
+    showOptions.value = !showOptions.value;
 }
 
 async function openShoppingCarDialog() {
@@ -539,7 +549,7 @@ async function openShoppingCarDialog() {
  * 加入購物車
  */
 async function addToShoppingCar() {
-    const data = {
+    const data: ShoppingCarCustomInterface = {
         id: uuidv4(),
         name: currentBgData.value.text,
         imgSrc: currentDoorData.value.imgSrc,
@@ -618,89 +628,21 @@ async function addToShoppingCar() {
     data["doorLimit"] = doorLimit.value;
 
     try {
-        await addToCustomCarAPI(data);
-        if (process.client) {
-            // 加入 訂製門扇購物車
-            $shoppingCarService().addCustomProductToShoppingCar(data);
+        if (isAuth.value) {
+            // 加入訂製門扇 api
+            const result = await shoppingCarStore.addToCustomCart(data, count.value);
+            if (process.client && result) {
+                // 加入 訂製門扇購物車
+                $shoppingCarService().addCustomProductToShoppingCar(data);
+            }
+        } else {
+            if (process.client) {
+                // 加入 訂製門扇購物車
+                $shoppingCarService().addCustomProductToShoppingCar(data);
+            }
         }
     } catch (err) {
         console.log("addToCustomCarAPI => ", err);
-    }
-    // await addToCustomCarAPI(data);
-    // if (process.client) {
-    //     // 加入 訂製門扇購物車
-    //     $shoppingCarService().addCustomProductToShoppingCar(data);
-    // }
-}
-
-/**
- * 加入訂製門扇 api
- */
-async function addToCustomCarAPI(data: any) {
-    loading.value = true;
-    const setCustomCarDatas: any = {
-        items: [],
-        quantity: count.value,
-    };
-    setCustomCarDatas.items.push({
-        productable_id: data.doorGroup.door.id,
-        product_variationable_id: data.doorGroup.optionId,
-        quantity: count.value,
-    });
-    setCustomCarDatas.items.push({
-        productable_id: data.doorOut.id,
-        product_variationable_id: data.doorOut.optionId,
-        quantity: count.value,
-    });
-    setCustomCarDatas.items.push({
-        productable_id: data.lock.id,
-        quantity: count.value,
-    });
-    setCustomCarDatas.items.push({
-        productable_id: data.currentTool1.id,
-        quantity: count.value,
-    });
-    setCustomCarDatas.items.push({
-        productable_id: data.currentTool2.id,
-        quantity: count.value,
-    });
-    if (!$utils().isEmpty(data["currentOther1"])) {
-        currentOther1Datas.value.forEach((item: any) => {
-            setCustomCarDatas.items.push({
-                productable_id: item.id,
-                quantity: count.value,
-            });
-        });
-    }
-    if (!$utils().isEmpty(data["currentOther2"])) {
-        currentOther2Datas.value.forEach((item: any) => {
-            setCustomCarDatas.items.push({
-                productable_id: item.id,
-                quantity: count.value,
-            });
-        });
-    }
-    if (!$utils().isEmpty(data["otherServices"])) {
-        currentServiceDatas.value.forEach((item: any) => {
-            setCustomCarDatas.items.push({
-                productable_id: item.id,
-                quantity: count.value,
-            });
-        });
-    }
-    console.log("setCustomCarDatas =>", setCustomCarDatas);
-    try {
-        await $api().AddToCustomCarAPI(setCustomCarDatas);
-        return true;
-    } catch (err) {
-        console.log("addToCustomCarAPI 2 err => ", err);
-        ElMessage({
-            type: "error",
-            message: "加入購物車失敗",
-        });
-        return false;
-    } finally {
-        loading.value = false;
     }
 }
 
@@ -872,7 +814,7 @@ onBeforeUnmount(() => {
 </script>
 
 <style lang="scss" scoped>
-.custom-top{
+.custom-top {
     @apply mt-[131px] xl:mt-header;
     height: calc(var(--vh, 1vh) * 100 - 80px - 87px);
     @media screen and (max-width: 1280px) {

@@ -1,13 +1,14 @@
 import { defineStore } from "pinia";
 import { ReqCart } from "~/api/cart";
-import type { CartItem, ShoppingCarInterface } from "~/interface/shoppingCar";
+import type { CartItem, ShoppingCarInterface, ShoppingCarCustomInterface, CustomCarItem } from "~/interface/shoppingCar";
 import { getShoppingCar } from "~/service/shoppingCar";
 import { storeToRefs } from "pinia";
 import { useUserStore } from "~/store/userStore";
 import { removeStorage } from "~/service/localstorage";
+import { ElMessage } from "element-plus";
 
 export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
-    const { $api, $shoppingCarService } = useNuxtApp();
+    const { $api, $shoppingCarService, $utils } = useNuxtApp();
     const userStore = useUserStore();
     const { isAuth } = storeToRefs(userStore);
 
@@ -99,6 +100,74 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
         });
     };
 
+    /**
+     * 新增 訂製門扇購物車
+     */
+    const addToCustomCart = (data: ShoppingCarCustomInterface, count: number) => {
+        return new Promise(async (resolve, reject) => {
+            const setCustomCarDatas: CustomCarItem = {
+                items: [],
+                quantity: count,
+            };
+            setCustomCarDatas.items.push({
+                productable_id: data.doorGroup.door.id,
+                product_variationable_id: data.doorGroup.optionId,
+                quantity: count,
+            });
+            setCustomCarDatas.items.push({
+                productable_id: data.doorOut.id,
+                product_variationable_id: data.doorOut.optionId,
+                quantity: count,
+            });
+            setCustomCarDatas.items.push({
+                productable_id: data.lock.id,
+                quantity: count,
+            });
+            setCustomCarDatas.items.push({
+                productable_id: data.currentTool1.id,
+                quantity: count,
+            });
+            setCustomCarDatas.items.push({
+                productable_id: data.currentTool2.id,
+                quantity: count,
+            });
+            if (!$utils().isEmpty(data["currentOther1"])) {
+                data["currentOther1"]?.datas.forEach((item: any) => {
+                    setCustomCarDatas.items.push({
+                        productable_id: item.id,
+                        quantity: count,
+                    });
+                });
+            }
+            if (!$utils().isEmpty(data["currentOther2"])) {
+                data["currentOther2"]?.datas.forEach((item: any) => {
+                    setCustomCarDatas.items.push({
+                        productable_id: item.id,
+                        quantity: count,
+                    });
+                });
+            }
+            if (!$utils().isEmpty(data["otherServices"])) {
+                data["otherServices"]?.datas.forEach((item: any) => {
+                    setCustomCarDatas.items.push({
+                        productable_id: item.id,
+                        quantity: count,
+                    });
+                });
+            }
+            try {
+                await $api().AddToCustomCarAPI(setCustomCarDatas);
+                resolve(true);
+            } catch (err) {
+                console.log("addToCustomCarAPI 2 err => ", err);
+                ElMessage({
+                    type: "error",
+                    message: "加入購物車失敗",
+                });
+                reject(false);
+            }
+        });
+    };
     // 更新購物車
     const updateCart = (data: { cart_item_id: number | null; productID: number; quantity: number; product_variationable_id: number | null }) => {
         return new Promise(async (resolve, reject) => {
@@ -183,6 +252,7 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
         clearShoppingCar,
         getUserShopping,
         addToCart,
+        addToCustomCart,
         updateCart,
         deleteCart,
         syncCart,
