@@ -2,6 +2,7 @@
     <SideBarLayout
         :title="'服務中心'"
         :banner="'/img/contact/contact-banner.jpg'"
+        :banner-mobile="'/img/contact/contact-banner-m.jpg'"
     >
         <template #breadcrumbs>
             <Breadcrumb :menus="breadcrumbs" />
