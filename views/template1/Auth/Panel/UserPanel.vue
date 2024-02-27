@@ -6,7 +6,7 @@
             </div>
         </nav>
         <div class="container">
-            <div class="my-[24px] sm:my-[80px] w-4/5 mx-auto">
+            <div class="my-[24px] mb-[80px] sm:my-[80px] w-4/5 mx-auto">
                 <div class="flex items-end justify-between">
                     <div class="flex justify-center items-end gap-7">
                         <h3 class="text-[20px] sm:text-[32px] font-bold">會員中心</h3>

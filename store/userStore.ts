@@ -125,13 +125,13 @@ export const useUserStore = defineStore({
             Cookies.remove("token");
             console.log("logout");
             if (process.client) {
-                window.location.href = $config.public.hostURL;
                 // 清除購物車
                 shoppingCarStore.clearShoppingCar();
                 // 清空訂製門扇商品購物車
                 $shoppingCarService().removeCustomProductShoppingCar();
                 // 清空一般商品購物車
                 $shoppingCarService().removeShoppingCar();
+                window.location.href = $config.public.hostURL;
             }
         },
     },

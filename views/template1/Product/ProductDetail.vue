@@ -2,7 +2,7 @@
     <section class="mt-headerMb xl:mt-header mb-[80px]">
         <nav class="border-t border-b border-gray-300 py-[16px] bg-white min-h-[43px] xl:min-h-[55px]">
             <div class="container">
-                <ClientOnly> <Breadcrumb :menus="breadcrumbs" /> </ClientOnly>
+                <ClientOnly> <Breadcrumb :menus="breadcrumbs" /></ClientOnly>
             </div>
         </nav>
         <div
@@ -129,12 +129,32 @@
                         </div>
                         <div class="flex flex-row xl:flex-col gap-[12px] my-[30px]">
                             <button
+                                v-if="detailData.stock > 0"
                                 class="w-full transparent-btn"
                                 @click="addToShoppingCar"
                             >
                                 加入購物車
                             </button>
-                            <button class="w-full yellow-btn">結帳</button>
+                            <button
+                                v-else
+                                class="w-full transparent-btn"
+                                disabled
+                            >
+                                售完補貨中
+                            </button>
+                            <button
+                                @click="
+                                    router.push({
+                                        path: '/shopping-car/電子鎖購物車',
+                                        query: {
+                                            tab: 'type1',
+                                        },
+                                    })
+                                "
+                                class="w-full yellow-btn"
+                            >
+                                結帳
+                            </button>
                         </div>
                         <div class="bg-gray-50 p-[30px] w-full rounded-xl mb-[20px]">
                             <ul class="text-[16px]">
@@ -255,7 +275,7 @@ import AddToShoppingCarDialog from "~/views/template1/components/AddToShoppingCa
  * ProductList: 產品分頁列表內容
  * ProductCarInterface: 產品卡片樣式參數
  */
-import { ProductList, ProductCarInterface } from "~/interface/product.d";
+import { ProductCarInterface } from "~/interface/product.d";
 
 import { useUserStore } from "~/store/userStore";
 import { useShoppingCarStore } from "~/store/shoppingCarStore";
@@ -290,6 +310,8 @@ const productDetailCarouselRef = ref<any>(null);
 
 // 預設選中顏色
 const currentColor = ref<any>([]);
+// 顏色名稱
+const colorName = ref("");
 // 詳細介紹 產品規格 tab
 const tabs = ["詳細介紹", "產品規格"];
 // 折扣文案
@@ -302,42 +324,6 @@ const showDialog = ref(false);
 const currentTab = ref(0);
 
 const { data: resProductDetail }: any = await $api().ProductDetailAPI({ productId: route.query.id });
-
-/**
- * 取得商品分類詳情
- */
-const getData = async () => {
-    const product = detailData.value;
-
-    // 產品規格可多選，設定預設值
-    if (product.is_single_variation === 0) {
-        console.log(" product.productOptions", product.productOptions);
-
-        product.productOptions.forEach((item: any, idx: number) => {
-            currentColor.value[idx] = item.values[0].id;
-        });
-
-        optionChangePrice(true);
-    }
-    console.log("resProductDetail =>", resProductDetail.value.data);
-    useSeoMeta({
-        title: resProductDetail.value.data.seoSetting.title,
-        description: resProductDetail.value.data.seoSetting.description,
-        ogTitle: resProductDetail.value.data.seoSetting.title,
-        ogDescription: resProductDetail.value.data.seoSetting.description,
-        ogUrl: () => `${window.location.origin}/product/detail/${resProductDetail.value.data.seoSetting.custom_url}`,
-        keywords: resProductDetail.value.data.seoSetting.keywords.join(),
-    });
-
-    if (!breadcrumbs.value.map((item: any) => item.text).includes(resProductDetail.value.data.model)) {
-        breadcrumbs.value.push({
-            name: route.name,
-            text: resProductDetail.value.data.model,
-            params: { slug: `${resProductDetail.value.data.model}-${resProductDetail.value.data.name}` },
-            query: { id: route.query.id },
-        });
-    }
-};
 
 // 詳細資訊 api 回傳
 const productDetail = computed(() => {
@@ -449,9 +435,40 @@ const sameProducts = computed(() => {
         });
     }
 });
+
+/**
+ * 取得商品分類詳情
+ */
+const getData = async () => {
+    const product = detailData.value;
+
+    // 產品規格可多選，設定預設值
+    if (product.is_single_variation === 0) {
+        product.productOptions.forEach((item: any, idx: number) => {
+            currentColor.value[idx] = item.values[0].id;
+        });
+        useSeoMeta({
+            title: resProductDetail.value.data.seoSetting.title,
+            description: resProductDetail.value.data.seoSetting.description,
+            ogTitle: resProductDetail.value.data.seoSetting.title,
+            ogDescription: resProductDetail.value.data.seoSetting.description,
+            ogUrl: () => `${window.location.origin}/product/detail/${resProductDetail.value.data.seoSetting.custom_url}`,
+            keywords: resProductDetail.value.data.seoSetting.keywords.join(),
+        });
+
+        optionChangePrice(true);
+        optionChange(productOptions.value[0].options[0], 0);
+    }
+};
+
+onMounted(() => {
+    getData();
+});
+
 // 切換商品選擇
-const optionChange = (opt: { id: any }, index: number) => {
+const optionChange = (opt: { id: any; text: string }, index: number) => {
     currentColor.value[index] = opt.id;
+    colorName.value = opt.text;
     optionChangePrice();
 };
 const currentImage = computed(() => {
@@ -523,6 +540,7 @@ const addToShoppingCar = () => {
         price: detailData.value.price,
         totalPrice: Number(detailData.value.price) * count.value,
         product_variationable_id: currentItem.value ? currentItem.value.id : undefined,
+        colorName: colorName.value ? colorName.value : undefined,
     };
 
     shoppingCarStore

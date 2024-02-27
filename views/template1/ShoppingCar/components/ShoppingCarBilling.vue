@@ -80,5 +80,5 @@ const total = computed(() =>
 );
 
 // 折扣
-const salePrice = computed(() => 1000);
+const salePrice = computed(() => 0);
 </script>
