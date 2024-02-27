@@ -2,6 +2,7 @@
     <BannerLayout
         :title="'保固登記'"
         :banner="'/img/repair/repair-warranty-banner.jpg'"
+        :banner-mobile="'/img/repair/repair-warranty-banner-m.jpg'"
         class="bg-gray-50"
     >
         <template #breadcrumbs>
@@ -16,9 +17,9 @@
                     :rules="rules"
                     require-asterisk-position="right"
                 >
-                    <div class="w-3/4 mt-[80px] p-[60px] bg-white mx-auto rounded-[24px] border-[1px] border-gray-200">
+                    <div class="w-full sm:w-3/4 mt-[24px] sm:mt-[80px] p-[24px] sm:p-[60px] bg-white mx-auto rounded-[12px] sm:rounded-[24px] border-[1px] border-gray-200">
                         <h3 class="text-[24px] font-bold mb-6">序號登錄</h3>
-                        <div class="grid grid-cols-2 gap-6">
+                        <div class="flex flex-col sm:grid grid-cols-2 gap-6">
                             <div
                                 v-for="(item, index) in formDatas?.registerDatas"
                                 :key="index"
@@ -35,7 +36,7 @@
                                         :disabled="item.disabled"
                                         :placeholder="item.placeholder"
                                         v-model="form[item.prop]"
-                                    ></el-input>
+                                    />
                                     <el-radio-group
                                         v-else-if="item.style === 'radio'"
                                         v-model="form[item.prop]"
@@ -68,15 +69,15 @@
                                             :key="index"
                                             :label="option.label"
                                             :value="option.value"
-                                        ></el-option>
+                                        />
                                     </el-select>
                                 </el-form-item>
                             </div>
                         </div>
                     </div>
-                    <div class="w-3/4 mt-[40px] p-[60px] bg-white mx-auto rounded-[24px] border-[1px] border-gray-200">
+                    <div class="w-full sm:w-3/4 mt-[24px] sm:mt-[80px] p-[24px] sm:p-[60px] bg-white mx-auto rounded-[12px] sm:rounded-[24px] border-[1px] border-gray-200">
                         <h3 class="text-[24px] font-bold mb-6">安裝客戶資料</h3>
-                        <div class="grid grid-cols-2 gap-6">
+                        <div class="flex flex-col sm:grid grid-cols-2 gap-6">
                             <div
                                 v-for="(item, index) in formDatas?.customerDatas"
                                 :key="index"
@@ -132,9 +133,9 @@
                             </div>
                         </div>
                     </div>
-                    <div class="w-3/4 mt-[40px] p-[60px] bg-white mx-auto rounded-[24px] border-[1px] border-gray-200">
+                    <div class="w-full sm:w-3/4 mt-[24px] sm:mt-[80px] p-[24px] sm:p-[60px] bg-white mx-auto rounded-[12px] sm:rounded-[24px] border-[1px] border-gray-200">
                         <h3 class="text-[24px] font-bold mb-6">序號</h3>
-                        <div class="grid grid-cols-2 gap-6">
+                        <div class="flex flex-col sm:grid grid-cols-2 gap-6">
                             <div
                                 v-for="(item, index) in formDatas?.serialDatas"
                                 :key="index"

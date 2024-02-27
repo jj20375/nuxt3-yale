@@ -1,5 +1,5 @@
 <template>
-    <div class="rounded-[24px] border border-gray-200 p-[60px]">
+    <div class="sm:rounded-[24px] rounded-[12px] border border-gray-200 p-[24px] sm:p-[60px]">
         <h2 class="text-[24px] mb-[30px] font-medium">填寫您的聯絡資訊</h2>
         <el-form
             ref="formRefDom"
@@ -44,7 +44,7 @@
                                     :key="index"
                                     :label="option.label"
                                     :value="option.value"
-                                ></el-option>
+                                />
                             </el-select>
                             <el-input
                                 v-if="item.style === 'textarea'"
@@ -53,7 +53,7 @@
                                 resize="none"
                                 :placeholder="item.placeholder"
                                 v-model="form[item.prop]"
-                            ></el-input>
+                            />
                             <FileUpload
                                 v-if="item.style === 'file' && !item.isHide"
                                 :prop="item.prop"
