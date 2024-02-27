@@ -1,9 +1,9 @@
 <template>
     <header
         class="fixed z-[500] items-center w-full duration-500 transition-all"
-        :class="[isHomeMenuFixed || isPad ? 'bg-white fixed top-0 border-b border-gray-300' : route.name === 'index' ? 'top-0 border-b border-transparent' : '', route.name !== 'index' ? 'fixed top-0 bg-white border-b border-gray-300' : '']"
+        :class="[isMenuFixed || isPad ? 'bg-white fixed top-0 border-b border-gray-300' : route.name === 'index' ? 'top-0 border-b border-transparent' : '', route.name !== 'index' ? 'fixed top-0 bg-white border-b border-gray-300' : '']"
     >
-        <nav class="xl:mx-[32px] xl:flex items-center xl:text-left text-center h-headerMb xl:h-header">
+        <nav class="xl:mx-[32px] xl:flex items-center xl:text-left text-center h-headerMb transition-all duration-300" :class="isMenuFixed? 'xl:h-auto':'xl:h-header'">
             <div
                 class="absolute flex justify-center items-center !w-[40px] !h-[40px] top-8 left-3 -translate-y-1/2 flex xl:hidden cursor-pointer z-[2]"
                 @click="showMenu = !showMenu"
@@ -15,13 +15,14 @@
                 class="items-center flex-1 text-base leading-5 xl:flex top-[64px] xl:top-0 xl:mb-0"
                 :class="isDesktop ? '' : showMenu ? 'py-4 nav-bar-mb' : ''"
             >
-                <li class="fixed xl:relative xl:mr-4 2xl:mr-6 3xl:mr-14 w-full xl:w-fit top-0 left-0 z-[1] bg-white xl:bg-transparent py-[8px] xl:py-[10px]">
+                <li class="fixed xl:relative xl:mr-4 2xl:mr-6 3xl:mr-14 w-full xl:w-fit top-0 left-0 z-[1] bg-white xl:bg-transparent py-[8px] transition-all duration-300" :class="isMenuFixed ? 'xl:py-[4px]':'xl:py-[10px]'">
                     <NuxtLink
                         class="block mx-auto w-fit"
                         :to="{ name: 'index' }"
                     >
                         <NuxtImg
-                            class="h-[48px] w-[48px] xl:h-[66px] xl:w-[66px] mx-auto"
+                            class="h-[48px] w-[48px] xl:w-[66px] mx-auto transition-all duration-300"
+                            :class="isMenuFixed ? 'xl:h-[56px]':'xl:h-[66px]'"
                             :src="initializationData.site.site_logo"
                             :alt="$config.public.webSite"
                         />
@@ -38,7 +39,8 @@
                         @mouseover="isPad ? null : changeMenu(key)"
                         @mouseleave="closeMenu"
                         @click="isPad ? toggleMenu(key) : null"
-                        class="xl:px-3 2xl:px-4 3xl:px-5 xl:py-[33px] text-gray-800 cursor-pointer hover:text-gray-500"
+                        class="xl:px-3 2xl:px-4 3xl:px-5 text-gray-800 cursor-pointer hover:text-gray-500"
+                        :class="isMenuFixed ? 'xl:py-[23px]':'xl:py-[33px]'"
                     >
                         <div class="flex justify-center py-5 xl:py-0">
                             {{ menu.title }}
@@ -107,8 +109,8 @@
                     </div>
                     <div v-else>
                         <div
-                            class="relative xl:px-3 2xl:px-5 py-5 xl:py-[33px] text-gray-800 hover:text-gray-500 cursor-pointer transition-all duration-300 cursor-pointer"
-                            :class="key === 'menu1' ? 'has-door' : ''"
+                            class="relative xl:px-3 2xl:px-5 py-5 text-gray-800 hover:text-gray-500 cursor-pointer transition-all duration-300 cursor-pointer"
+                            :class="[key === 'menu1' ? 'has-door' : '',isMenuFixed ? 'xl:py-[23px]':'xl:py-[33px]']"
                             @click="router.push(menu.url)"
                         >
                             <template v-if="key === 'menu1'">
@@ -198,7 +200,7 @@ const { isPad, isDesktop } = useWindowResize();
 // 手機版時判斷是否顯示選單
 const showMenu = ref(false);
 
-const isHomeMenuFixed = computed(() => templateStore.isHomeMenuFixed);
+const isMenuFixed = computed(() => templateStore.isMenuFixed);
 
 const initializationData = computed(() => {
     return JSON.parse(JSON.stringify(initializationStore.initializationData));

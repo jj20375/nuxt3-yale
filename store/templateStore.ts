@@ -19,7 +19,7 @@ export const useTemplateStore = defineStore({
             // 目前選軸滾動位置高度
             scrollY: 0,
             // 首頁選單判斷是否固定跟出現白底
-            isHomeMenuFixed: false,
+            isMenuFixed: false,
         };
     },
     getters: {
@@ -57,9 +57,9 @@ export const useTemplateStore = defineStore({
         setScrollY(val: 0) {
             this.scrollY = val;
         },
-        // 設定 首頁選單固定
-        setHomeMenuFixed(val: boolean) {
-            this.isHomeMenuFixed = val;
+        // 設定 選單固定且畫面為白
+        setMenuFixed(val: boolean) {
+            this.isMenuFixed = val;
         },
     },
 });

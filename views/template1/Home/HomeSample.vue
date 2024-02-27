@@ -111,13 +111,10 @@
 </template>
 
 <script lang="ts" setup>
-import { useTemplateStore } from "~/store/templateStore";
 
 const { $api } = useNuxtApp();
 const { isLargeDesktop, isMobile, isPad, nowWindowSize } = useWindowResize();
 const router = useRouter();
-
-const templateStore = useTemplateStore();
 
 const carousel3dRefDom = ref<any>(null);
 const carousel3d2RefDom = ref<any>(null);
@@ -150,15 +147,6 @@ function onSlideChange(val: any) {
     currentIndex.value = val;
     carousel3d2RefDom.value.goSlide(val);
     console.log("onSlideChange =>>", val);
-}
-
-function scrollInit() {
-    // 判斷滾動高度 大於50px時 固定選單在上方
-    if (window.scrollY > 50) {
-        templateStore.setHomeMenuFixed(true);
-    } else {
-        templateStore.setHomeMenuFixed(false);
-    }
 }
 
 /**
@@ -214,19 +202,6 @@ async function init() {
     await getList({ per_page: 10, page: 1 });
 }
 // await init();
-
-onMounted(async () => {
-    nextTick(async () => {
-        if (process.client) {
-            await init();
-            window.addEventListener("scroll", scrollInit);
-        }
-    });
-});
-
-onBeforeUnmount(() => {
-    window.removeEventListener("scroll", scrollInit);
-});
 </script>
 
 <style lang="scss" scoped>

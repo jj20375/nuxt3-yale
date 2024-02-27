@@ -31,7 +31,7 @@ import Header from "~/layouts/tmp1Components/Header.vue";
 // footer 區塊
 import Footer from "~/layouts/tmp1Components/Footer.vue";
 import Cookies from "js-cookie";
-
+import { useTemplateStore } from "~/store/templateStore";
 const { $api, $firebaseAuth, $firebaseMessaging, $utils } = useNuxtApp();
 const route = useRoute();
 const { redirectRightHome, getLineUserProfile, getLineToken, checkUrlQuery } = useLineLogin();
@@ -40,6 +40,8 @@ const userStore = useUserStore();
 const initializationStore = useInitializationStore();
 const { isMobile } = useDevice();
 const $config = useRuntimeConfig();
+
+const templateStore = useTemplateStore();
 
 import { onBeforeRouteUpdate, onBeforeRouteLeave } from "vue-router";
 
@@ -60,6 +62,8 @@ const isAuth = computed(() => userStore.isAuth);
 const pageLoading = ref(useState("loading"));
 
 const layoutRef = ref(null);
+
+// 計算螢幕高度
 const calculateFullHeight = () => {
     let windowsVH = window.innerHeight / 100;
     if (layoutRef.value) {
@@ -67,6 +71,7 @@ const calculateFullHeight = () => {
     }
 };
 
+//
 onMounted(() => {
     calculateFullHeight();
     window.addEventListener("resize", calculateFullHeight);
@@ -74,6 +79,27 @@ onMounted(() => {
 
 onBeforeUnmount(() => {
     window.removeEventListener("resize", calculateFullHeight);
+});
+
+function scrollInit() {
+    // 判斷滾動高度 大於50px時 固定選單在上方
+    if (window.scrollY > 50) {
+        templateStore.setMenuFixed(true);
+    } else {
+        templateStore.setMenuFixed(false);
+    }
+}
+
+onMounted(async () => {
+    nextTick(async () => {
+        if (process.client) {
+            window.addEventListener("scroll", scrollInit);
+        }
+    });
+});
+
+onBeforeUnmount(() => {
+    window.removeEventListener("scroll", scrollInit);
 });
 
 // 預先加載初始化資料

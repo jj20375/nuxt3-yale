@@ -1,7 +1,7 @@
 <template>
     <div>
         <div
-            class="relative bg-white product-card rounded-2xl"
+            class="relative bg-white product-card rounded-2xl cursor-pointer"
             @mouseover="mouseoverEvent(product.id)"
             @mouseleave="mouseleaveEvent(product.id)"
         >
@@ -29,7 +29,7 @@
                 :class="currentHover === product.id ? 'opacity-100' : 'opacity-0'"
                 class="hidden xl:flex absolute top-0 z-0 items-end w-full h-full transition-all duration-500 pointer-events-none"
             >
-                <div class="absolute z-20 mb-[40px] w-full text-center pointer-events-auto">
+                <div class="absolute z-20 bottom-[40px] w-full text-center pointer-events-auto">
                     <div>
                         <button
                             @click="addToShoppingCar(product)"
@@ -44,7 +44,7 @@
                         </NuxtLink>
                     </div>
                 </div>
-                <div class="absolute top-0 left-0 z-10 w-full h-full bg-white opacity-80 rounded-2xl"></div>
+                <div class="absolute top-0 left-0 z-10 w-full h-full bg-white opacity-80 rounded-2xl"  @click="goToDetail({ name: product.name, id: product.id })"></div>
             </div>
             <div
                 class="hidden xl:block absolute favorite w-[30px] h-[30px] text-gray-300 top-[16px] right-[16px] cursor-pointer z-50 duration-300 transition-all"
