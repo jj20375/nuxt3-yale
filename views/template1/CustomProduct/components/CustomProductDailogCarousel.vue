@@ -79,4 +79,9 @@ function onSlideChange() {
     isSliderEnd.value = mainSwiper.value.isEnd;
 }
 
+function resetSwiper(){
+    mainSwiper.value.slideTo(0)
+}
+
+defineExpose({ resetSwiper });
 </script>

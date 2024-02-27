@@ -1,21 +1,21 @@
 <template>
-    <section class="mt-[86px]">
+    <section class="mt-headerMb xl:mt-header">
         <nav class="border-t border-b border-gray-300 py-[16px] bg-white min-h-[43px] xl:min-h-[55px]">
             <div class="container">
                 <Breadcrumb :menus="breadcrumbs" />
             </div>
         </nav>
         <div class="text-center bg-gray-50">
-            <div class="container min-h-[200px] flex items-center">
-                <div class="w-[164px]"></div>
-                <h1 class="text-[32px] font-medium YaleSolisW-Bd flex-1">{{ route.params.slug }}</h1>
-                <div class="flex items-center">
-                    <div class="mr-[20px]">
+            <div class="container min-h-[200px] flex flex-col xl:flex-row justify-center xl:justify-start items-center gap-4 xl:gap-0">
+                <div class="hidden xl:block w-[164px]"></div>
+                <h1 class="text-[32px] font-medium YaleSolisW-Bd xl:flex-1">{{ route.params.slug }}</h1>
+                <div class="flex flex-col xl:flex-row items-center gap-4 xl:gap-0 w-full xl:w-auto">
+                    <div class="xl:mr-[20px]">
                         <NuxtLink :to="{ name: 'product-compare-slug', params: { slug: '耶魯產品資訊-主鎖-主鎖比較' }, query: { compareId: route.query.compareId } }">
                             <button class="text-blue-500 underline underline-offset-2 hover:no-underline">重新選擇</button>
                         </NuxtLink>
                     </div>
-                    <ul class="flex gap-4">
+                    <ul class="flex gap-4 self-end">
                         <li @click="socialShare('fb')" class="p-1 cursor-pointer">
                             <IconFacebook class="!w-[24px] !h-[24px] transition-all duration-300 hover:text-gray-400 hover:transition-all hover:duration-300" />
                         </li>

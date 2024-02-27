@@ -33,12 +33,12 @@
             <p class="text-[14px] text-gray-800">+NT$ {{ $utils().formatCurrency(currentLockData.price) }}</p>
         </div>
         <div class="flex flex-col gap-[15px]">
-            <ul class="grid grid-cols-4 sm:grid-cols-6 xl:grid-cols-4 gap-[15px]">
+            <ul class="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 xl:grid-cols-4 gap-[15px]">
                 <li
                     @click="currentLockData = lock"
                     v-for="(lock, index2) in locks[props.lockCategory]"
-                    :class="[currentLockData.id === lock.id ? 'border-2 border-yellow-600  rounded-[8px]' : 'border-2 border-white']"
-                    class="p-1 cursor-pointer"
+                    :class="[currentLockData.id === lock.id ? 'outline-2 outline-yellow-600' : 'outline-1 outline-offset-1 outline-gray-200']"
+                    class="p-1 cursor-pointer outline rounded-[8px]"
                 >
                     <NuxtImg
                         class="w-full aspect-square object-contain rounded-[4px]"

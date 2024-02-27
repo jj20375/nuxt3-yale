@@ -8,13 +8,46 @@
         <!-- {{ !$utils().isEmpty(customPreviewData) }} -->
         <!-- {{ currentBgData }} -->
         <div class="custom-wrap">
-            <CustomProductPrewView
-                v-model:currentAngle="currentAngle"
-                v-model:previewWidth="previewWidth"
-                v-model:currentBgData="currentBgData"
-                :productData="customPreviewData"
-                class="left"
-            />
+            <div class="left">
+                <CustomProductPrewView
+                    v-model:currentAngle="currentAngle"
+                    v-model:previewWidth="previewWidth"
+                    v-model:currentBgData="currentBgData"
+                    :productData="customPreviewData"
+                />
+                <div class="absolute cursor-pointer w-[30px] h-[30px] right-3 bottom-4 z-[100] block xl:hidden">
+                    <NuxtImg
+                        @click="toggleOptions"
+                        class="absolute w-full h-full"
+                        :class="showOptions ? 'hidden' : 'block'"
+                        src="/img/icons/more.svg"
+                    />
+                    <NuxtImg
+                        @click="toggleOptions"
+                        class="absolute w-full h-full"
+                        :class="showOptions ? 'block' : 'hidden'"
+                        src="/img/icons/cancel.svg"
+                    />
+                </div>
+                <!--  手機版門扇角度按鈕  -->
+                <div class="absolute top-0 left-0 w-full h-full items-center justify-center before:absolute before:h-full before:w-full before:bg-gray-800 before:opacity-80 before:-z-[1] z-[99]" :class="showOptions ? 'flex' : 'hidden'">
+                    <ul
+                        v-if="previewWidth > 0"
+                        class="h-fit flex gap-[12px] justify-center"
+                    >
+                        <li
+                            @click="currentAngle = angle.value"
+                            class="rounded-full px-[20px] py-[8px] text-white cursor-pointer"
+                            :class="[currentAngle === angle.value ? 'bg-gray-800' : 'bg-gray-350']"
+                            v-for="(angle, index) in viewAngle"
+                            :key="angle.value"
+                        >
+                            {{ angle.text }}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
             <div
                 v-if="!$utils().isEmpty(customPreviewData)"
                 class="right"
@@ -237,6 +270,7 @@
             </div>
         </div>
         <div class="fixed top-headerMb xl:top-auto xl:bottom-0 w-full bg-white z-[100] h-[67px] xl:h-[80px] shadow-footer sidebar-wrap">
+            <!--  電腦版門扇角度按鈕  -->
             <div class="hidden xl:flex items-center justify-center">
                 <ul
                     v-if="previewWidth > 0"
@@ -488,6 +522,13 @@ const customPreviewData = computed(() => {
         lock: locks.value[lockCategory.value].find((item: any) => item.id === currentLock.value.id).previewImgSrc,
     };
 });
+
+// 手機版是否顯示門扇角度選項
+const showOptions = ref<boolean>(false);
+
+function toggleOptions() {
+    showOptions.value =!showOptions.value;
+}
 
 async function openShoppingCarDialog() {
     showSoppingCarDialog.value = true;

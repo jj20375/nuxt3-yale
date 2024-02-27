@@ -72,14 +72,15 @@
             close-on-click-modal
             lock-scroll
             show-close
-            :width="800"
+            :width="isPad ? 600 : 800"
             center
             align-center
             append-to-body
         >
-            <div class="mx-auto w-full md:w-3/4">
+            <div class="mx-auto w-full xl:w-3/4">
                 <h5 class="text-[20px] text-gray-800 YaleSolisW-Bd mt-[20px] sm:mt-0 mb-[15px] sm:mb-[30px]">{{ currentDialogProduct.name }}-{{ currentDialogProduct.style }}</h5>
                 <CustomProductDailogCarousel
+                    ref="customProductDialogCarousel"
                     v-if="!$utils().isEmpty(currentDialogProduct.detailData.carousel)"
                     :photos="currentDialogProduct.detailData.carousel"
                 />
@@ -108,8 +109,10 @@
 // 導入細節彈窗 幻燈片
 import product from "~/api/product";
 import CustomProductDailogCarousel from "~/views/template1/CustomProduct/components/CustomProductDailogCarousel.vue";
+import { done } from "@liff/ready";
 
 const { $utils } = useNuxtApp();
+const { isPad } = useWindowResize();
 
 const emit = defineEmits(["update:currentProductId", "update:currentProductData"]);
 
@@ -196,12 +199,22 @@ const showDialog = ref(false);
 // 彈窗顯示資料
 const currentDialogProduct = ref<any>({});
 
+// 彈窗dom
+const customProductDialogCarousel = ref(null);
+
 /**
  * 關閉彈窗
  */
 
 function closeDialog() {
+    setTimeout(() => {
+        if (customProductDialogCarousel.value) {
+            customProductDialogCarousel.value.resetSwiper();
+        }
+    }, 1000)
     showDialog.value = false;
+
+    done()
 }
 
 onMounted(() => {
