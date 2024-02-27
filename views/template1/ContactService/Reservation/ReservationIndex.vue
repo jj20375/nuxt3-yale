@@ -2,6 +2,7 @@
     <BannerLayout
         :title="'預約安裝'"
         :banner="'/img/repair/repair-banner.jpg'"
+        :banner-mobile="'/img/repair/repair-banner-m.jpg'"
     >
         <template #breadcrumbs>
             <Breadcrumb :menus="breadcrumbs" />

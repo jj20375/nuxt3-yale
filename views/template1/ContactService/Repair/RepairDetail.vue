@@ -2,6 +2,7 @@
     <BannerLayout
         :title="'線上報修'"
         :banner="'/img/repair/repair-detail-banner.jpg'"
+        :banner-mobile="'/img/repair/repair-detail-banner-m.jpg'"
         class="bg-gray-50"
     >
         <template #breadcrumbs>
@@ -16,9 +17,9 @@
                     :rules="rules"
                     require-asterisk-position="right"
                 >
-                    <div class="w-3/4 mt-[80px] p-[60px] pt-[50px] bg-white mx-auto rounded-[24px] border-[1px] border-gray-200">
+                    <div class="w-full sm:w-3/4 mt-[24px] sm:mt-[80px] p-[24px] sm:p-[60px] bg-white mx-auto rounded-[12px] sm:rounded-[24px] border-[1px] border-gray-200">
                         <h3 class="text-[24px] font-bold mb-6">報修聯絡人</h3>
-                        <div class="grid grid-cols-2 gap-6">
+                        <div class="flex flex-col sm:grid grid-cols-2 gap-6">
                             <template
                                 v-for="(item, index) in formDatas.contactDatas"
                                 :key="index"
@@ -38,7 +39,7 @@
                                             :disabled="item.disabled"
                                             :placeholder="item.placeholder"
                                             v-model="form[item.prop]"
-                                        ></el-input>
+                                        />
                                         <el-select
                                             v-if="item.style === 'select'"
                                             class="w-full"
@@ -57,14 +58,13 @@
                                 </div>
                                 <div
                                     v-else
-                                    class="flex flex-1"
+                                    class="flex flex-col sm:flex-row flex-1 gap-6"
                                     :class="item.span ? `col-span-${item.span}` : ''"
                                 >
                                     <div
                                         v-for="(item2, index2) in item.datas"
                                         class="flex-1"
                                         :key="index2"
-                                        :class="item.datas.length - 1 === index2 ? '' : 'mr-[30px]'"
                                     >
                                         <el-form-item
                                             :prop="item2.prop"
@@ -77,7 +77,7 @@
                                                 :disabled="item2.disabled"
                                                 :placeholder="item2.placeholder"
                                                 v-model="form[item2.prop]"
-                                            ></el-input>
+                                            />
                                             <el-select
                                                 v-if="item2.style === 'select'"
                                                 class="w-full"
@@ -90,12 +90,12 @@
                                                     :key="optionIndex"
                                                     :label="option.label"
                                                     :value="option.value"
-                                                ></el-option>
+                                                />
                                             </el-select>
                                         </el-form-item>
                                     </div>
                                 </div>
-                                <template v-if="item.space">
+                                <template v-if="item.space && !isMobile">
                                     <div
                                         v-for="index in item.space"
                                         :key="index"
@@ -104,9 +104,9 @@
                             </template>
                         </div>
                     </div>
-                    <div class="w-3/4 mt-[40px] p-[60px] pt-[50px] bg-white mx-auto rounded-[24px] border-[1px] border-gray-200">
+                    <div class="w-full sm:w-3/4 mt-[24px] sm:mt-[80px] p-[24px] sm:p-[60px] bg-white mx-auto rounded-[12px] sm:rounded-[24px] border-[1px] border-gray-200">
                         <h3 class="text-[24px] font-bold mb-6">報修商品資訊</h3>
-                        <div class="grid grid-cols-2 gap-6">
+                        <div class="flex flex-col sm:grid grid-cols-2 gap-6">
                             <template
                                 v-for="(item, index) in formDatas.productDatas"
                                 :key="index"
@@ -308,6 +308,7 @@ import { ProductListAPIInterface } from "~/interface/product.d";
 const { $api, $utils } = useNuxtApp();
 const router = useRouter();
 const route = useRoute();
+const { isMobile } = useWindowResize();
 
 const {
     public: { googleRecaptcha2Key },
