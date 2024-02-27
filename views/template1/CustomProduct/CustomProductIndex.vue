@@ -1,274 +1,282 @@
 <template>
-    <section
-        class="relative custom-top overflow-auto z-[10]"
-    >
-        <!-- <pre>{{ scenes }}</pre> -->
-        <!-- <pre>{{ doors }}</pre> -->
-        <!-- <pre>{{ doorSizes }}</pre> -->
-        <!-- {{ !$utils().isEmpty(customPreviewData) }} -->
-        <!-- {{ currentBgData }} -->
-        <div class="custom-wrap">
-            <div class="left">
-                <CustomProductPrewView
-                    v-model:currentAngle="currentAngle"
-                    v-model:previewWidth="previewWidth"
-                    v-model:currentBgData="currentBgData"
-                    :productData="customPreviewData"
-                />
-                <div class="absolute cursor-pointer w-[30px] h-[30px] right-3 bottom-4 z-[100] block xl:hidden">
-                    <NuxtImg
-                        @click="toggleOptions"
-                        class="absolute w-full h-full"
-                        :class="showOptions ? 'hidden' : 'block'"
-                        src="/img/icons/more.svg"
+    <div>
+        <section
+            class="relative custom-top overflow-auto z-[10]"
+        >
+            <!-- <pre>{{ scenes }}</pre> -->
+            <!-- <pre>{{ doors }}</pre> -->
+            <!-- <pre>{{ doorSizes }}</pre> -->
+            <!-- {{ !$utils().isEmpty(customPreviewData) }} -->
+            <!-- {{ currentBgData }} -->
+            <div class="custom-wrap">
+                <div class="left">
+                    <CustomProductPrewView
+                        v-model:currentAngle="currentAngle"
+                        v-model:previewWidth="previewWidth"
+                        v-model:currentBgData="currentBgData"
+                        :productData="customPreviewData"
                     />
-                    <NuxtImg
-                        @click="toggleOptions"
-                        class="absolute w-full h-full"
-                        :class="showOptions ? 'block' : 'hidden'"
-                        src="/img/icons/cancel.svg"
-                    />
-                </div>
-                <!--  手機版門扇角度按鈕  -->
-                <div class="absolute top-0 left-0 w-full h-full items-center justify-center before:absolute before:h-full before:w-full before:bg-gray-800 before:opacity-80 before:-z-[1] z-[99]" :class="showOptions ? 'flex' : 'hidden'">
-                    <ul
-                        v-if="previewWidth > 0"
-                        class="h-fit flex gap-[12px] justify-center"
-                    >
-                        <li
-                            @click="currentAngle = angle.value"
-                            class="rounded-full px-[20px] py-[8px] text-white cursor-pointer"
-                            :class="[currentAngle === angle.value ? 'bg-gray-800' : 'bg-gray-350']"
-                            v-for="(angle, index) in viewAngle"
-                            :key="angle.value"
+                    <div class="absolute cursor-pointer w-[30px] h-[30px] right-3 bottom-4 z-[100] block xl:hidden">
+                        <NuxtImg
+                            @click="toggleOptions"
+                            class="absolute w-full h-full"
+                            :class="showOptions ? 'hidden' : 'block'"
+                            src="/img/icons/more.svg"
+                        />
+                        <NuxtImg
+                            @click="toggleOptions"
+                            class="absolute w-full h-full"
+                            :class="showOptions ? 'block' : 'hidden'"
+                            src="/img/icons/cancel.svg"
+                        />
+                    </div>
+                    <!--  手機版門扇角度按鈕  -->
+                    <div class="absolute top-0 left-0 w-full h-full items-center justify-center before:absolute before:h-full before:w-full before:bg-gray-800 before:opacity-80 before:-z-[1] z-[99]" :class="showOptions ? 'flex' : 'hidden'">
+                        <ul
+                            v-if="previewWidth > 0"
+                            class="h-fit flex gap-[12px] justify-center"
                         >
-                            {{ angle.text }}
-                        </li>
-                    </ul>
+                            <li
+                                @click="currentAngle = angle.value"
+                                class="rounded-full px-[20px] py-[8px] text-white cursor-pointer"
+                                :class="[currentAngle === angle.value ? 'bg-gray-800' : 'bg-gray-350']"
+                                v-for="(angle, index) in viewAngle"
+                                :key="angle.value"
+                            >
+                                {{ angle.text }}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div
+                    v-if="!$utils().isEmpty(customPreviewData)"
+                    class="right"
+                >
+                    <CustomProductContent />
+                    <div class="border-b border-gray-300">
+                        <div
+                            @click="stepMenuShow['step1'].show = !stepMenuShow['step1'].show"
+                            class="flex items-center mb-[30px] mt-[40px] cursor-pointer"
+                            type="button"
+                        >
+                            <h3 class="flex-1 text-gray-800 text-[20px] font-medium YaleSolisW-Bd">{{ stepMenuShow["step1"].text }}</h3>
+                            <font-awesome-icon
+                                class="transition-all duration-300"
+                                :class="!stepMenuShow['step1'].show ? 'rotate-180' : ''"
+                                :icon="['fas', 'chevron-up']"
+                            />
+                        </div>
+                        <div v-show="stepMenuShow['step1'].show">
+                            <CustomProductBackground
+                                v-model:currentBgId="currentBgId"
+                                v-model:currentBgData="currentBgData"
+                                :tabs="scenes"
+                            />
+                            <CustomProductPlan
+                                class="mt-[30px]"
+                                v-model:currentPlan="currentPlan"
+                            />
+                            <CustomProduct
+                                class="mt-[30px]"
+                                v-model:currentProductId="currentDoorId"
+                                v-model:currentProductData="currentDoorData"
+                                v-model:currentDoorColorId="currentDoorColorId"
+                                v-model:currentDoorSizeId="currentDoorSizeId"
+                                :products="doors"
+                            />
+                            <CustomProductColor
+                                class="mt-[30px]"
+                                v-model:currentColorId="currentDoorColorId"
+                                v-model:currentColorData="currentDoorColorData"
+                                :colors="doorColors"
+                            />
+                            <CustomProductSize
+                                class="mt-[30px] mb-[30px]"
+                                :sizes="doorSizes"
+                                v-model:currentSizeId="currentDoorSizeId"
+                                v-model:currentSizeData="currentDoorSizeData"
+                            />
+                        </div>
+                    </div>
+                    <div class="border-b border-gray-300">
+                        <div
+                            @click="stepMenuShow['step2'].show = !stepMenuShow['step2'].show"
+                            class="flex items-center mb-[30px] mt-[30px] cursor-pointer"
+                            type="button"
+                        >
+                            <h3 class="flex-1 text-gray-800 text-[20px] font-medium YaleSolisW-Bd">{{ stepMenuShow["step2"].text }}</h3>
+                            <font-awesome-icon
+                                class="transition-all duration-300"
+                                :class="!stepMenuShow['step2'].show ? 'rotate-180' : ''"
+                                :icon="['fas', 'chevron-up']"
+                            />
+                        </div>
+                        <div v-show="stepMenuShow['step2'].show">
+                            <CustomProduct
+                                class="mt-[30px] mb-[30px]"
+                                v-model:currentProductId="currentDoorOutId"
+                                v-model:currentProductData="currentDoorOutData"
+                                v-model:currentDoorColorId="currentDoorOutColorId"
+                                :products="doorsOut"
+                            />
+                            <CustomProductColor
+                                class="mt-[30px] mb-[30px]"
+                                v-model:currentColorId="currentDoorOutColorId"
+                                v-model:currentColorData="currentDoorOutColorData"
+                                :colors="doorOutColors"
+                            />
+                        </div>
+                    </div>
+                    <div class="border-b border-gray-300">
+                        <div
+                            @click="stepMenuShow['step3'].show = !stepMenuShow['step3'].show"
+                            class="flex items-center mb-[30px] mt-[30px] cursor-pointer"
+                            type="button"
+                        >
+                            <h3 class="flex-1 text-gray-800 text-[20px] font-medium YaleSolisW-Bd">{{ stepMenuShow["step3"].text }}</h3>
+                            <font-awesome-icon
+                                class="transition-all duration-300"
+                                :class="!stepMenuShow['step3'].show ? 'rotate-180' : ''"
+                                :icon="['fas', 'chevron-up']"
+                            />
+                        </div>
+                        <CustomProductLock
+                            class="mb-[30px]"
+                            v-show="stepMenuShow['step3'].show"
+                            v-model:lockCategory="lockCategory"
+                            v-model:currentLock="currentLock"
+                            v-model:currentLockId="currentLockId"
+                            :locks="locks"
+                        />
+                    </div>
+                    <div class="border-b border-gray-300">
+                        <div
+                            @click="stepMenuShow['step4'].show = !stepMenuShow['step4'].show"
+                            class="flex items-center mb-[30px] mt-[30px] cursor-pointer"
+                            type="button"
+                        >
+                            <h3 class="flex-1 text-gray-800 text-[20px] font-medium YaleSolisW-Bd">{{ stepMenuShow["step4"].text }}</h3>
+                            <font-awesome-icon
+                                class="transition-all duration-500"
+                                :class="!stepMenuShow['step4'].show ? 'rotate-180' : ''"
+                                :icon="['fas', 'chevron-up']"
+                            />
+                        </div>
+                        <div v-show="stepMenuShow['step4'].show">
+                            <CustomProduct
+                                class="mt-[30px] mb-[30px]"
+                                title="掛門"
+                                v-model:currentProductId="currentTool1Id"
+                                v-model:currentProductData="currentTool1Data"
+                                :isTool="true"
+                                :products="tool1Datas"
+                            />
+                            <CustomProduct
+                                class="mt-[30px] mb-[30px]"
+                                title="氣密條"
+                                v-model:currentProductId="currentTool2Id"
+                                v-model:currentProductData="currentTool2Data"
+                                :isTool="true"
+                                :products="tool2Datas"
+                            />
+                        </div>
+                    </div>
+                    <div class="border-b border-gray-300">
+                        <div
+                            @click="stepMenuShow['step5'].show = !stepMenuShow['step5'].show"
+                            class="flex items-center mb-[30px] mt-[30px] cursor-pointer"
+                            type="button"
+                        >
+                            <h3 class="flex-1 text-gray-800 text-[20px] font-medium YaleSolisW-Bd">{{ stepMenuShow["step5"].text }}</h3>
+                            <font-awesome-icon
+                                class="transition-all duration-300"
+                                :class="!stepMenuShow['step5'].show ? 'rotate-180' : ''"
+                                :icon="['fas', 'chevron-up']"
+                            />
+                        </div>
+                        <div v-show="stepMenuShow['step5'].show">
+                            <CustomProductOtherChoose
+                                class="mt-[30px]"
+                                title="下降壓條"
+                                v-model:selectedProductIds="currentOther1Ids"
+                                v-model:selectedProducts="currentOther1Datas"
+                                :products="other1Datas"
+                            />
+                            <CustomProductOtherChoose
+                                class="mt-[20px] mb-[16px]"
+                                title="門弓器"
+                                v-model:selectedProductIds="currentOther2Ids"
+                                v-model:selectedProducts="currentOther2Datas"
+                                :products="other2Datas"
+                            />
+                        </div>
+                    </div>
+                    <div class="border-b border-gray-300">
+                        <div
+                            @click="stepMenuShow['step6'].show = !stepMenuShow['step6'].show"
+                            class="flex items-center mb-[30px] mt-[30px] cursor-pointer"
+                            type="button"
+                        >
+                            <h3 class="flex-1 text-gray-800 text-[20px] font-medium YaleSolisW-Bd">{{ stepMenuShow["step6"].text }}</h3>
+                            <font-awesome-icon
+                                class="transition-all duration-500"
+                                :class="!stepMenuShow['step6'].show ? 'rotate-180' : ''"
+                                :icon="['fas', 'chevron-up']"
+                            />
+                        </div>
+                        <CustomProductCount
+                            v-show="stepMenuShow['step6'].show"
+                            v-model:count="count"
+                            v-model:limit="doorLimit"
+                            class="mb-[30px]"
+                        />
+                    </div>
+                    <div class="border-b border-gray-300">
+                        <div
+                            @click="stepMenuShow['step7'].show = !stepMenuShow['step7'].show"
+                            class="flex items-center mb-[30px] mt-[30px] cursor-pointer"
+                            type="button"
+                        >
+                            <h3 class="flex-1 text-gray-800 text-[20px] font-medium YaleSolisW-Bd">{{ stepMenuShow["step7"].text }}</h3>
+                            <font-awesome-icon
+                                class="transition-all duration-300"
+                                :class="!stepMenuShow['step7'].show ? 'rotate-180' : ''"
+                                :icon="['fas', 'chevron-up']"
+                            />
+                        </div>
+
+                        <CustomProductOtherService
+                            v-show="stepMenuShow['step7'].show"
+                            v-model:selectedServiceIds="currentServiceIds"
+                            v-model:selectedServiceDatas="currentServiceDatas"
+                            :services="serviceDatas"
+                            class="mb-[30px]"
+                        />
+                    </div>
+                    <div class="my-[30px] flex gap-4">
+                        <button
+                            @click.prevent="openShoppingCarDialog"
+                            class="flex-1 transparent-btn"
+                        >
+                            加入購物車
+                        </button>
+                        <button
+                            @click.prevent="goToBill"
+                            class="flex-1 yellow-btn"
+                        >
+                            結帳
+                        </button>
+                    </div>
                 </div>
             </div>
-
-            <div
-                v-if="!$utils().isEmpty(customPreviewData)"
-                class="right"
-            >
-                <CustomProductContent />
-                <div class="border-b border-gray-300">
-                    <div
-                        @click="stepMenuShow['step1'].show = !stepMenuShow['step1'].show"
-                        class="flex items-center mb-[30px] mt-[40px] cursor-pointer"
-                        type="button"
-                    >
-                        <h3 class="flex-1 text-gray-800 text-[20px] font-medium YaleSolisW-Bd">{{ stepMenuShow["step1"].text }}</h3>
-                        <font-awesome-icon
-                            class="transition-all duration-300"
-                            :class="!stepMenuShow['step1'].show ? 'rotate-180' : ''"
-                            :icon="['fas', 'chevron-up']"
-                        />
-                    </div>
-                    <div v-show="stepMenuShow['step1'].show">
-                        <CustomProductBackground
-                            v-model:currentBgId="currentBgId"
-                            v-model:currentBgData="currentBgData"
-                            :tabs="scenes"
-                        />
-                        <CustomProductPlan
-                            class="mt-[30px]"
-                            v-model:currentPlan="currentPlan"
-                        />
-                        <CustomProduct
-                            class="mt-[30px]"
-                            v-model:currentProductId="currentDoorId"
-                            v-model:currentProductData="currentDoorData"
-                            v-model:currentDoorColorId="currentDoorColorId"
-                            v-model:currentDoorSizeId="currentDoorSizeId"
-                            :products="doors"
-                        />
-                        <CustomProductColor
-                            class="mt-[30px]"
-                            v-model:currentColorId="currentDoorColorId"
-                            v-model:currentColorData="currentDoorColorData"
-                            :colors="doorColors"
-                        />
-                        <CustomProductSize
-                            class="mt-[30px] mb-[30px]"
-                            :sizes="doorSizes"
-                            v-model:currentSizeId="currentDoorSizeId"
-                            v-model:currentSizeData="currentDoorSizeData"
-                        />
-                    </div>
-                </div>
-                <div class="border-b border-gray-300">
-                    <div
-                        @click="stepMenuShow['step2'].show = !stepMenuShow['step2'].show"
-                        class="flex items-center mb-[30px] mt-[30px] cursor-pointer"
-                        type="button"
-                    >
-                        <h3 class="flex-1 text-gray-800 text-[20px] font-medium YaleSolisW-Bd">{{ stepMenuShow["step2"].text }}</h3>
-                        <font-awesome-icon
-                            class="transition-all duration-300"
-                            :class="!stepMenuShow['step2'].show ? 'rotate-180' : ''"
-                            :icon="['fas', 'chevron-up']"
-                        />
-                    </div>
-                    <div v-show="stepMenuShow['step2'].show">
-                        <CustomProduct
-                            class="mt-[30px] mb-[30px]"
-                            v-model:currentProductId="currentDoorOutId"
-                            v-model:currentProductData="currentDoorOutData"
-                            v-model:currentDoorColorId="currentDoorOutColorId"
-                            :products="doorsOut"
-                        />
-                        <CustomProductColor
-                            class="mt-[30px] mb-[30px]"
-                            v-model:currentColorId="currentDoorOutColorId"
-                            v-model:currentColorData="currentDoorOutColorData"
-                            :colors="doorOutColors"
-                        />
-                    </div>
-                </div>
-                <div class="border-b border-gray-300">
-                    <div
-                        @click="stepMenuShow['step3'].show = !stepMenuShow['step3'].show"
-                        class="flex items-center mb-[30px] mt-[30px] cursor-pointer"
-                        type="button"
-                    >
-                        <h3 class="flex-1 text-gray-800 text-[20px] font-medium YaleSolisW-Bd">{{ stepMenuShow["step3"].text }}</h3>
-                        <font-awesome-icon
-                            class="transition-all duration-300"
-                            :class="!stepMenuShow['step3'].show ? 'rotate-180' : ''"
-                            :icon="['fas', 'chevron-up']"
-                        />
-                    </div>
-                    <CustomProductLock
-                        class="mb-[30px]"
-                        v-show="stepMenuShow['step3'].show"
-                        v-model:lockCategory="lockCategory"
-                        v-model:currentLock="currentLock"
-                        v-model:currentLockId="currentLockId"
-                        :locks="locks"
-                    />
-                </div>
-                <div class="border-b border-gray-300">
-                    <div
-                        @click="stepMenuShow['step4'].show = !stepMenuShow['step4'].show"
-                        class="flex items-center mb-[30px] mt-[30px] cursor-pointer"
-                        type="button"
-                    >
-                        <h3 class="flex-1 text-gray-800 text-[20px] font-medium YaleSolisW-Bd">{{ stepMenuShow["step4"].text }}</h3>
-                        <font-awesome-icon
-                            class="transition-all duration-500"
-                            :class="!stepMenuShow['step4'].show ? 'rotate-180' : ''"
-                            :icon="['fas', 'chevron-up']"
-                        />
-                    </div>
-                    <div v-show="stepMenuShow['step4'].show">
-                        <CustomProduct
-                            class="mt-[30px] mb-[30px]"
-                            title="掛門"
-                            v-model:currentProductId="currentTool1Id"
-                            v-model:currentProductData="currentTool1Data"
-                            :isTool="true"
-                            :products="tool1Datas"
-                        />
-                        <CustomProduct
-                            class="mt-[30px] mb-[30px]"
-                            title="氣密條"
-                            v-model:currentProductId="currentTool2Id"
-                            v-model:currentProductData="currentTool2Data"
-                            :isTool="true"
-                            :products="tool2Datas"
-                        />
-                    </div>
-                </div>
-                <div class="border-b border-gray-300">
-                    <div
-                        @click="stepMenuShow['step5'].show = !stepMenuShow['step5'].show"
-                        class="flex items-center mb-[30px] mt-[30px] cursor-pointer"
-                        type="button"
-                    >
-                        <h3 class="flex-1 text-gray-800 text-[20px] font-medium YaleSolisW-Bd">{{ stepMenuShow["step5"].text }}</h3>
-                        <font-awesome-icon
-                            class="transition-all duration-300"
-                            :class="!stepMenuShow['step5'].show ? 'rotate-180' : ''"
-                            :icon="['fas', 'chevron-up']"
-                        />
-                    </div>
-                    <div v-show="stepMenuShow['step5'].show">
-                        <CustomProductOtherChoose
-                            class="mt-[30px]"
-                            title="下降壓條"
-                            v-model:selectedProductIds="currentOther1Ids"
-                            v-model:selectedProducts="currentOther1Datas"
-                            :products="other1Datas"
-                        />
-                        <CustomProductOtherChoose
-                            class="mt-[20px] mb-[16px]"
-                            title="門弓器"
-                            v-model:selectedProductIds="currentOther2Ids"
-                            v-model:selectedProducts="currentOther2Datas"
-                            :products="other2Datas"
-                        />
-                    </div>
-                </div>
-                <div class="border-b border-gray-300">
-                    <div
-                        @click="stepMenuShow['step6'].show = !stepMenuShow['step6'].show"
-                        class="flex items-center mb-[30px] mt-[30px] cursor-pointer"
-                        type="button"
-                    >
-                        <h3 class="flex-1 text-gray-800 text-[20px] font-medium YaleSolisW-Bd">{{ stepMenuShow["step6"].text }}</h3>
-                        <font-awesome-icon
-                            class="transition-all duration-500"
-                            :class="!stepMenuShow['step6'].show ? 'rotate-180' : ''"
-                            :icon="['fas', 'chevron-up']"
-                        />
-                    </div>
-                    <CustomProductCount
-                        v-show="stepMenuShow['step6'].show"
-                        v-model:count="count"
-                        v-model:limit="doorLimit"
-                        class="mb-[30px]"
-                    />
-                </div>
-                <div class="border-b border-gray-300">
-                    <div
-                        @click="stepMenuShow['step7'].show = !stepMenuShow['step7'].show"
-                        class="flex items-center mb-[30px] mt-[30px] cursor-pointer"
-                        type="button"
-                    >
-                        <h3 class="flex-1 text-gray-800 text-[20px] font-medium YaleSolisW-Bd">{{ stepMenuShow["step7"].text }}</h3>
-                        <font-awesome-icon
-                            class="transition-all duration-300"
-                            :class="!stepMenuShow['step7'].show ? 'rotate-180' : ''"
-                            :icon="['fas', 'chevron-up']"
-                        />
-                    </div>
-
-                    <CustomProductOtherService
-                        v-show="stepMenuShow['step7'].show"
-                        v-model:selectedServiceIds="currentServiceIds"
-                        v-model:selectedServiceDatas="currentServiceDatas"
-                        :services="serviceDatas"
-                        class="mb-[30px]"
-                    />
-                </div>
-                <div class="my-[30px] flex gap-4">
-                    <button
-                        @click.prevent="openShoppingCarDialog"
-                        class="flex-1 transparent-btn"
-                    >
-                        加入購物車
-                    </button>
-                    <button
-                        @click.prevent="goToBill"
-                        class="flex-1 yellow-btn"
-                    >
-                        結帳
-                    </button>
-                </div>
-            </div>
-        </div>
+            <ClientOnly>
+                <AddToShoppingCarDialog
+                    v-model:showDialog="showSoppingCarDialog"
+                    :tab="'type2'"
+                />
+            </ClientOnly>
+        </section>
         <div class="fixed top-headerMb xl:top-auto xl:bottom-0 w-full bg-white z-[100] h-[67px] xl:h-[80px] shadow-footer sidebar-wrap">
             <!--  電腦版門扇角度按鈕  -->
             <div class="hidden xl:flex items-center justify-center">
@@ -300,13 +308,7 @@
                 </div>
             </div>
         </div>
-        <ClientOnly>
-            <AddToShoppingCarDialog
-                v-model:showDialog="showSoppingCarDialog"
-                :tab="'type2'"
-            />
-        </ClientOnly>
-    </section>
+    </div>
 </template>
 
 <script setup lang="ts">
@@ -874,6 +876,7 @@ onBeforeUnmount(() => {
 <style lang="scss" scoped>
 .custom-top{
     @apply mt-[131px] xl:mt-header;
+    -webkit-overflow-scrolling: touch;
     height: calc(var(--vh, 1vh) * 100 - 80px - 87px);
     @media screen and (max-width: 1280px) {
         height: calc(var(--vh, 1vh) * 100 - 64px - 67px);

@@ -213,8 +213,6 @@ function closeDialog() {
         }
     }, 1000)
     showDialog.value = false;
-
-    done()
 }
 
 onMounted(() => {

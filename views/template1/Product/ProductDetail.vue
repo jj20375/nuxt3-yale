@@ -500,7 +500,9 @@ const optionChangePrice = (init: boolean = false) => {
 
     if (!init) {
         const index = photos.value.findIndex((item) => item.imgSrc === currentImage.value);
-        productDetailCarouselRef.value.slideTo(index + 1);
+        if(productDetailCarouselRef.value){
+            productDetailCarouselRef.value.slideTo(index + 1);
+        }
     }
 };
 

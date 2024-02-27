@@ -10,16 +10,16 @@
                     class="object-cover w-full h-full rounded-2xl aspect-square"
                     :src="product.main_image"
                 />
-                <div class="absolute bottom-[20px] left-[20px] flex gap-2">
+                <div class="absolute bottom-[15px] sm:bottom-[20px] left-[15px] sm:left-[20px] flex gap-2">
                     <div
                         v-if="product.tags?.includes('new')"
-                        class="bg-yellow-500 text-[12px] px-2 py-1 rounded-md"
+                        class="bg-yellow-500 text-[11px] sm:text-[12px] px-1 sm:px-2 py-0.5 sm:py-1 rounded-md"
                     >
                         NEW
                     </div>
                     <div
                         v-if="product.tags?.includes('discount')"
-                        class="bg-pink-400 text-[12px] px-2 py-1 rounded-md"
+                        class="bg-pink-400 text-[11px] sm:text-[12px] px-1 sm:px-2 py-0.5 sm:py-1 rounded-md"
                     >
                         SALE
                     </div>
@@ -27,7 +27,7 @@
             </NuxtLink>
             <div
                 :class="currentHover === product.id ? 'opacity-100' : 'opacity-0'"
-                class="absolute top-0 z-0 flex items-end w-full h-full transition-all duration-500 pointer-events-none"
+                class="hidden xl:flex absolute top-0 z-0 items-end w-full h-full transition-all duration-500 pointer-events-none"
             >
                 <div class="absolute z-20 mb-[40px] w-full text-center pointer-events-auto">
                     <div>
@@ -47,7 +47,7 @@
                 <div class="absolute top-0 left-0 z-10 w-full h-full bg-white opacity-80 rounded-2xl"></div>
             </div>
             <div
-                class="absolute favorite w-[30px] h-[30px] text-gray-300 top-[16px] right-[16px] cursor-pointer z-50 duration-300 transition-all"
+                class="hidden xl:block absolute favorite w-[30px] h-[30px] text-gray-300 top-[16px] right-[16px] cursor-pointer z-50 duration-300 transition-all"
                 :class="isFavorite === true ? 'opacity-100' : 'opacity-0'"
                 @click="handleFavorite"
             >

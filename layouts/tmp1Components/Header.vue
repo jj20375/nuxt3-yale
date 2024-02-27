@@ -542,18 +542,21 @@ function toggleMenu(key: string) {
         @apply mr-0 transition-all duration-300;
     }
     .image-wrap {
-        @apply max-w-0 h-[20px] overflow-hidden transition-all duration-300 opacity-0;
+        @apply xl:max-w-0 h-[20px] xl:overflow-hidden xl:transition-all xl:duration-300 xl:opacity-0;
         img {
-            @apply h-[20px] w-[20px] max-w-none;
+            @apply ml-2 xl:ml-0 h-[20px] w-[20px] max-w-none;
         }
     }
-    &:hover {
-        @apply px-1 xl:px-2 2xl:px-3 transition-all duration-300;
-        .image-wrap {
-            @apply max-w-[24px] transition-all duration-300 opacity-100;
-        }
-        .title {
-            @apply mr-2 transition-all duration-300;
+    @media screen and (min-width: 1280px) {
+        &:hover {
+            @apply px-1 xl:px-2 2xl:px-3 transition-all duration-300;
+            .image-wrap {
+                @apply max-w-[24px] transition-all duration-300 opacity-100;
+            }
+
+            .title {
+                @apply mr-2 transition-all duration-300;
+            }
         }
     }
 }
