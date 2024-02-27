@@ -15,7 +15,7 @@
         <template #content>
             <FaqTItle :title="title" />
             <FaqList :datas="datas" />
-            <FaqContact class="mt-[90px]" />
+            <FaqContact class="xl:mt-[90px] mt-[60px]" />
         </template>
     </SideBarLayout>
 </template>
