@@ -46,19 +46,19 @@
                         <div class="flex flex-1 justify-center items-stretch sm:flex-initial w-[150px] sm:w-[150px] border border-gray-300 rounded-full">
                             <button
                                 class="flex items-center text-[16px] justify-center flex-1 h-auto cursor-pointer"
-                                @click.prevent="countUpdate(cart.id, cart.productID, cart.product_variationable_id, cart.count - 1)"
+                                @click.prevent="countUpdate(cart.id, cart.productID, cart.count - 1, cart.product_variationable_id)"
                             >
                                 <el-icon><Minus /></el-icon>
                             </button>
                             <div class="flex items-center justify-center w-[80px] py-[4px] sm:py-[10px] h-full">{{ cart.count }}</div>
                             <button
                                 class="flex items-center text-[16px] justify-center flex-1 h-auto cursor-pointer"
-                                @click.prevent="countUpdate(cart.id, cart.productID, cart.product_variationable_id, cart.count + 1)"
+                                @click.prevent="countUpdate(cart.id, cart.productID, cart.count + 1, cart.product_variationable_id)"
                             >
                                 <el-icon><Plus /></el-icon>
                             </button>
                         </div>
-                        <button @click.prevent="removeShoppingCar(cart.id, cart.productID)">
+                        <button @click.prevent="removeShoppingCar(cart.id, cart.productID, cart.product_variationable_id)">
                             <NuxtImg
                                 class="w-[22px] sm:w-[24px]"
                                 src="/img/shopping-car/shopping-car-icon-delete.svg"
@@ -94,7 +94,7 @@ const checkList: Ref<number[]> = ref([]);
 /**
  * 點擊更新數量按鈕
  */
-function countUpdate(cartId: number | null, productID: number, product_variationable_id: number | null, count: number) {
+function countUpdate(cartId: number | null, productID: number, count: number, product_variationable_id?: number | null) {
     if (count < 1) {
         return;
     }
@@ -102,7 +102,7 @@ function countUpdate(cartId: number | null, productID: number, product_variation
         cart_item_id: cartId ? cartId : 0,
         productID,
         quantity: count,
-        product_variationable_id: product_variationable_id ? product_variationable_id : undefined,
+        product_variationable_id: product_variationable_id ? product_variationable_id : null,
     };
     updateCart(apiReq).catch((err) => {
         console.log("err", err);
@@ -116,10 +116,11 @@ function countUpdate(cartId: number | null, productID: number, product_variation
 /**
  * 刪除購物車
  */
-function removeShoppingCar(id: number | null, productID: number) {
+function removeShoppingCar(id: number | null, productID: number, product_variationable_id?: number | null) {
     const req = {
         cart_item_id: id ? id : 0,
         productID,
+        product_variationable_id: product_variationable_id ? product_variationable_id : null,
     };
     deleteCart(req);
 }
