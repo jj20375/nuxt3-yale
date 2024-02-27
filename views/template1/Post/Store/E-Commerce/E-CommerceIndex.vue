@@ -13,7 +13,7 @@
             />
         </template>
         <template #content>
-            <ul class="grid grid-cols-3 gap-4 mt-10">
+            <ul class="grid md:grid-cols-3 grid-cols-1 md:gap-4 md:mt-10">
                 <li
                     v-for="(item, index) in datas"
                     :key="index"
