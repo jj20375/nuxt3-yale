@@ -1,14 +1,14 @@
 <template>
-    <section class="mt-[86px]">
+    <section class="mt-[64px] sm:mt-[86px]">
         <nav class="border-t border-b border-gray-300 py-[16px] bg-white">
             <div class="container">
-                    <Breadcrumb :menus="breadcrumbs" />
+                <Breadcrumb :menus="breadcrumbs" />
             </div>
         </nav>
         <div class="container">
-            <div class="pt-[60px] pb-[100px]">
-                <div class="flex items-end justify-between mb-6">
-                    <h3 class="text-[32px] font-bold">常用聯繫人</h3>
+            <div class="pt-[24px] sm:pt-[60px] pb-[100px]">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="font-medium text-[20px] sm:text-[32px] text-center">常用聯繫人</h3>
                     <div class="flex items-center gap-2 cursor-pointer h-fit">
                         <NuxtImg
                             class="w-[20px] aspect-square object-cover"
@@ -36,21 +36,21 @@
                             :key="item.index"
                         >
                             <td>
-                                <div class="font-bold">{{ item.default ? "預設" : "" }}</div>
+                                <div class="font-bold text-[12px] sm:text-[16px]">{{ item.default ? "預設" : "" }}</div>
                             </td>
-                            <td>
+                            <td class="text-[12px] sm:text-[16px] px-[4px]">
                                 {{ item.contactName }}
                             </td>
-                            <td>
+                            <td class="text-[12px] sm:text-[16px] px-[4px]">
                                 {{ item.phone }}
                             </td>
-                            <td>
+                            <td class="text-[12px] sm:text-[16px] px-[4px]">
                                 {{ item.address }}
                             </td>
                             <td>
                                 <NuxtLink :to="item.url">
                                     <NuxtImg
-                                        class="w-[20px] aspect-square object-cover"
+                                        class="w-[16px] sm:w-[20px] aspect-square object-cover"
                                         src="img/icons/auth/edit.svg"
                                     />
                                 </NuxtLink>
@@ -58,7 +58,7 @@
                             <td>
                                 <NuxtImg
                                     @click.prevent="deleteData(item)"
-                                    class="w-[20px] aspect-square object-cover cursor-pointer"
+                                    class="w-[16px] sm:w-[20px] aspect-square object-cover cursor-pointer"
                                     src="img/icons/auth/delete.svg"
                                 />
                             </td>
@@ -188,10 +188,10 @@ table {
     td {
         @apply py-5 border-b border-gray-100;
         &:first-child {
-            @apply pl-4;
+            @apply pl-2 sm:pl-4;
         }
         &:last-child {
-            @apply pr-4;
+            @apply pl-2 sm:pr-4;
         }
     }
 }

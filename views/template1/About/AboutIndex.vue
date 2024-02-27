@@ -21,7 +21,7 @@
                                 :src="aboutData.imgUrl"
                             />
                         </div>
-                        <div class="flex-1 flex flex-col justify-center">
+                        <div class="flex flex-col justify-center flex-1">
                             <h3 class="text-[32px] font-bold mb-[20px]">{{ aboutData.title }}</h3>
                             <div v-html="aboutData.content"></div>
                         </div>
@@ -165,6 +165,16 @@ async function getPageData() {
         aboutData.value.imgUrl = pageData.image;
         aboutData.value.content = pageData.content;
         aboutData.value.brands = pageData.brands;
+
+        const seoSetting = (data.value as any).data.seoSetting;
+        useSeoMeta({
+            title: seoSetting.title,
+            description: seoSetting.description,
+            ogTitle: seoSetting.title,
+            ogDescription: seoSetting.description,
+            ogUrl: () => `${window.location.origin}/${seoSetting.custom_url}`,
+            keywords: seoSetting.keywords.join(),
+        });
     } catch (err) {
         console.log("HomeSampleAPI => ", err);
     }

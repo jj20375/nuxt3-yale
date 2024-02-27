@@ -48,6 +48,16 @@ async function getPageData() {
         const schema = (data.value as any).data.schema;
 
         pageData.value.content = schema.content;
+
+        const seoSetting = (data.value as any).data.seoSetting;
+        useSeoMeta({
+            title: seoSetting.title,
+            description: seoSetting.description,
+            ogTitle: seoSetting.title,
+            ogDescription: seoSetting.description,
+            ogUrl: () => `${window.location.origin}/${seoSetting.custom_url}`,
+            keywords: seoSetting.keywords.join(),
+        });
     } catch (err) {
         console.log("HomeSampleAPI => ", err);
     }

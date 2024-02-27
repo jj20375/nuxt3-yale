@@ -242,7 +242,7 @@
                                         <template v-if="item.memoFunctionText">
                                             <span
                                                 @click="item.memoFunction ? item.memoFunction() : null"
-                                                class="text-blue-500 ml-1 underline cursor-pointer underline-offset-2 hover:no-underline"
+                                                class="ml-1 text-blue-500 underline cursor-pointer underline-offset-2 hover:no-underline"
                                                 >{{ item.memoFunctionText }}</span
                                             >
                                         </template>
@@ -490,7 +490,7 @@ const formDatas = ref<any>({
             radioData: seriesRadios,
             change: (e: any) => {
                 getList(e);
-            }
+            },
         },
         {
             prop: "date",
@@ -528,7 +528,7 @@ const formDatas = ref<any>({
             label: "維修時段",
             style: "checkbox",
             checkboxData: timeOptions,
-            listText: "<div class='grid-cols-2'><div class='bg-gray-50 px-4 py-3'><ul class='list-disc pl-4'><li class='text-[15px]'>請預填，後續將派專人與您聯繫</li></ul></div></div>",
+            listText: "<div class='grid-cols-2'><div class='px-4 py-3 bg-gray-50'><ul class='pl-4 list-disc'><li class='text-[15px]'>請預填，後續將派專人與您聯繫</li></ul></div></div>",
         },
         {
             prop: "description",
@@ -676,12 +676,22 @@ async function getPageData() {
 
         const pageData = (data.value as any).data.schema;
         serialData.value.content = pageData.content;
+
+        const seoSetting = (data.value as any).data.seoSetting;
+        useSeoMeta({
+            title: seoSetting.title,
+            description: seoSetting.description,
+            ogTitle: seoSetting.title,
+            ogDescription: seoSetting.description,
+            ogUrl: () => `${window.location.origin}/${seoSetting.custom_url}`,
+            keywords: seoSetting.keywords.join(),
+        });
     } catch (err) {
         console.log("HomeSampleAPI => ", err);
     }
 }
 
-const product_category = ref([])
+const product_category = ref([]);
 /**
  * 取得商品分類
  */
@@ -692,8 +702,8 @@ async function getType() {
         const rows = (data.value as any).data;
         console.log("product_category_id", rows);
 
-        product_category.value = rows
-        getList('電子門鎖')
+        product_category.value = rows;
+        getList("電子門鎖");
     } catch (err) {
         console.log("HomeSampleAPI => ", err);
     }
@@ -702,38 +712,44 @@ async function getType() {
 /**
  * 取得商品列表
  */
- async function getList(type = '電子門鎖') {
- console.log("type => ", type);
+async function getList(type = "電子門鎖") {
+    console.log("type => ", type);
     try {
-        let product_category_id
-        if (type === '電子門鎖') {
-            product_category_id = product_category.value.find((item:{id: Number}) => item.id === 1).children.map((child:{id: Number}) => {
-                return child.id
-            })
-        } else if (type === '電子保險箱') {
-            product_category_id = product_category.value.find((item:{id: Number}) => item.id === 3).children.map((child:{id: Number}) => {
-                return child.id
-            })
+        let product_category_id;
+        if (type === "電子門鎖") {
+            product_category_id = product_category.value
+                .find((item: { id: Number }) => item.id === 1)
+                .children.map((child: { id: Number }) => {
+                    return child.id;
+                });
+        } else if (type === "電子保險箱") {
+            product_category_id = product_category.value
+                .find((item: { id: Number }) => item.id === 3)
+                .children.map((child: { id: Number }) => {
+                    return child.id;
+                });
         }
         const params = {};
         // 搜尋分類參數時 須帶上 搜尋模式 條件
         params["search_fields"] = "productCategories.product_category_id:in";
         // 搜尋分類參數 ("主鎖｜輔助鎖" 等等...)
         params["search_relations"] = "productCategories.product_category_id:" + product_category_id.join();
-        
+
         const { data } = await $api().ProductLisAPI<ProductListAPIInterface>(params);
 
         const rows = (data.value as any).data;
         console.log("home sample api => ", rows);
 
-        formDatas.value.productDatas.find((item: {prop: string}) => item.prop === 'model').options = []
-        rows.forEach((item: {model: string}) => {
-            formDatas.value.productDatas.find((item: {prop: string}) => item.prop === 'model').options.push({
-                value: item.model,
-                label: item.model,
-            })
-        })
-        form.value.model = ""
+        formDatas.value.productDatas.find((item: { prop: string }) => item.prop === "model").options = [];
+        rows.forEach((item: { model: string }) => {
+            formDatas.value.productDatas
+                .find((item: { prop: string }) => item.prop === "model")
+                .options.push({
+                    value: item.model,
+                    label: item.model,
+                });
+        });
+        form.value.model = "";
     } catch (err) {
         console.log("HomeSampleAPI => ", err);
     }
@@ -786,7 +802,7 @@ async function onSubmit() {
             try {
                 const { data, status, error } = await $api().OnlineRepairAPI(formData);
                 if (status.value === "success") {
-                    router.push({ name: 'repair-detail-success-slug', params: { slug: '線上報修成功' } });
+                    router.push({ name: "repair-detail-success-slug", params: { slug: "線上報修成功" } });
                 } else {
                     ElMessage({
                         type: "error",

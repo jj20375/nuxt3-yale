@@ -7,9 +7,7 @@
             <Breadcrumb :menus="breadcrumbs" />
         </template>
         <template #sidebar>
-            <SideBar
-                :menus="sidebar"
-            />
+            <SideBar :menus="sidebar" />
         </template>
         <template #list>
             <ListItem :datas="datas" />
@@ -98,6 +96,29 @@ async function getType() {
     }
 }
 
+/**
+ * 取得文章分類詳情
+ */
+async function getTypeDetail() {
+    try {
+        const params = { articleId: route.query.id };
+        const { data } = await $api().ArticalTypeDetailAPI(params);
+
+        const rows = (data.value as any).data;
+
+        useSeoMeta({
+            title: rows.seoSetting.title,
+            description: rows.seoSetting.description,
+            ogTitle: rows.seoSetting.title,
+            ogDescription: rows.seoSetting.description,
+            ogUrl: () => `${window.location.origin}/sample/${rows.seoSetting.custom_url}`,
+            keywords: rows.seoSetting.keywords.join(),
+        });
+    } catch (err) {
+        console.log("HomeSampleAPI => ", err);
+    }
+}
+
 const datas = ref<any>([]);
 
 /**
@@ -140,6 +161,7 @@ async function getList(params: { per_page: number; page: number; article_categor
  */
 async function init() {
     await getType();
+    await getTypeDetail();
     console.log("route.query.id", route);
     await getList({ per_page: pagination.value.pageSize, page: 1, article_category_id: route.query.id });
 }

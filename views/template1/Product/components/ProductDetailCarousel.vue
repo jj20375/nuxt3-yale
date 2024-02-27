@@ -1,29 +1,31 @@
 <template>
     <div class="shrink-0 grow-0 md:basis-[50%] xl:basis-[430px] md:w-[50%] xl:w-[430px]">
         <div class="relative">
-            <Swiper
-                v-if="photos.length > 0"
-                :loop="false"
-                :spaceBetween="10"
-                :thumbs="{ swiper: thumbsSwiper }"
-                :modules="modules"
-                @slideChange="onSlideChange"
-                @swiper="onSwiper"
-            >
-                <SwiperSlide
-                    v-for="(item, index) in photos"
-                    :key="index"
+            <ClientOnly>
+                <Swiper
+                    v-if="photos.length > 0"
+                    :loop="false"
+                    :spaceBetween="10"
+                    :thumbs="{ swiper: thumbsSwiper }"
+                    :modules="modules"
+                    @slideChange="onSlideChange"
+                    @swiper="onSwiper"
                 >
-                    <div class="carousel__item">
-                        <img
-                            class="w-full cursor-pointer aspect-square object-cover"
-                            :src="item.imgSrc"
-                            alt=""
-                        />
-                    </div>
-                </SwiperSlide>
-            </Swiper>
-            <div class="absolute top-0 hidden md:flex md:-left-2 -left-[30px] -translate-x-full z-50  items-center h-full">
+                    <SwiperSlide
+                        v-for="(item, index) in photos"
+                        :key="index"
+                    >
+                        <div class="carousel__item">
+                            <img
+                                class="w-full cursor-pointer aspect-square object-cover"
+                                :src="item.imgSrc"
+                                alt=""
+                            />
+                        </div>
+                    </SwiperSlide>
+                </Swiper>
+            </ClientOnly>
+            <div class="absolute top-0 hidden md:flex md:-left-2 -left-[30px] -translate-x-full z-50 items-center h-full">
                 <button
                     class="text-3xl text-3xl flex justify-center items-center"
                     :class="[ isSliderBeginning ? 'opacity-0' : 'opacity-1' ]"
@@ -43,29 +45,31 @@
             </div>
         </div>
         <div class="pt-[12px] pb-4 md:pt-[42px] px-6 md:px-0">
-            <Swiper
-                class="thumbClass"
-                v-if="photos.length > 0"
-                @swiper="setThumbsSwiper"
-                :spaceBetween="16"
-                :slidesPerView="isMobile? 3.5 : 5"
-                centeredSlides
-                centeredSlidesBounds
-                :loop="false"
-                :watchSlidesProgress="true"
-                :modules="modules"
-            >
-                <SwiperSlide
-                    v-for="(item, index) in photos"
-                    :key="index"
+            <ClientOnly>
+                <Swiper
+                    class="thumbClass"
+                    v-if="photos.length > 0"
+                    @swiper="setThumbsSwiper"
+                    :spaceBetween="16"
+                    :slidesPerView="isMobile ? 3.5 : 5"
+                    centeredSlides
+                    centeredSlidesBounds
+                    :loop="false"
+                    :watchSlidesProgress="true"
+                    :modules="modules"
                 >
-                    <img
-                        class="w-full aspect-square object-cover cursor-pointer"
-                        :src="item.imgSrc"
-                        alt=""
-                    />
-                </SwiperSlide>
-            </Swiper>
+                    <SwiperSlide
+                        v-for="(item, index) in photos"
+                        :key="index"
+                    >
+                        <img
+                            class="w-full aspect-square object-cover cursor-pointer"
+                            :src="item.imgSrc"
+                            alt=""
+                        />
+                    </SwiperSlide>
+                </Swiper>
+            </ClientOnly>
         </div>
     </div>
 </template>
@@ -109,9 +113,9 @@ function onSwiper(swiper: any) {
     isSliderEnd.value = mainSwiper.value.isEnd;
 }
 
-function slideTo (index: any)  {
+function slideTo(index: any) {
     mainSwiper.value.slideToLoop(index - 1, 200);
-};
+}
 
 // 切換主圖時略縮圖會置中 + 更新箭頭狀態
 function onSlideChange() {
@@ -121,8 +125,8 @@ function onSlideChange() {
 }
 
 defineExpose({
-    slideTo
-})
+    slideTo,
+});
 </script>
 
 <style scoped lang="scss">
@@ -135,8 +139,8 @@ defineExpose({
     @apply outline outline-2 -outline-offset-2 outline-yellow-500;
 }
 
-.mainClass{
-    button.disabled{
+.mainClass {
+    button.disabled {
         opacity: 0;
     }
 }

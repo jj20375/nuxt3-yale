@@ -4,7 +4,7 @@ export interface ShoppingCarInterface {
     // 產品ID
     productID: number
     // 顏色
-    color?: string;
+    product_variationable_id?: number;
     // 價格
     price: number;
     // 名稱
@@ -22,7 +22,7 @@ export interface CartItem {
     // id
     productable_id: number;
     // ?
-    product_variation_id?: number;
+    product_variationable_id?: number;
     // 數量
     quantity: number;
 }

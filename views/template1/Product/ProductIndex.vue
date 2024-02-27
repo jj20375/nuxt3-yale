@@ -5,7 +5,10 @@
         </template>
 
         <template #custom-sidebar>
-            <div v-if="isPad" class="bg-white">
+            <div
+                v-if="isPad"
+                class="bg-white"
+            >
                 <div class="container">
                     <h1 class="text-[32px] text-gray-800 pb-2 xl:pb-[24px] leading-none pt-[20px] md:pt-[32px] font-medium">產品資訊</h1>
                     <div class="hidden xl:block border-b border-gray-200 py-[16px]">
@@ -32,7 +35,10 @@
         <template #custom-content>
             <div v-if="loading">
                 <div class="flex items-center justify-center w-full h-screen">
-                    <font-awesome-icon class="animate-spin text-[40px] text-gray-300"  :icon="['fas', 'circle-notch']"/>
+                    <font-awesome-icon
+                        class="animate-spin text-[40px] text-gray-300"
+                        :icon="['fas', 'circle-notch']"
+                    />
                 </div>
             </div>
             <div class="-mx-6 sm:mx-0 flex flex-col xl:flex-row items-center mb-[40px] sm:mt-[32px] gap-4 md:gap-[40px]">
@@ -279,6 +285,15 @@ async function getTypeDetail() {
             is_compare: rows.is_compare,
             compare_id: rows.compare_id,
         };
+
+        useSeoMeta({
+            title: rows.seoSetting.title,
+            description: rows.seoSetting.description,
+            ogTitle: rows.seoSetting.title,
+            ogDescription: rows.seoSetting.description,
+            ogUrl: () => `${window.location.origin}/product/${rows.seoSetting.custom_url}`,
+            keywords: rows.seoSetting.keywords.join(),
+        });
     } catch (err) {
         console.log("HomeSampleAPI => ", err);
     }

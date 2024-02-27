@@ -122,8 +122,6 @@ async function getPageData() {
         topDatas.value = [];
         carouselDatas.value = [];
 
-        console.log(pageData);
-
         pageData.introduction.forEach((item: { banner: any; title: any; content: any }) => {
             topDatas.value.push({
                 imgSrc: item.banner,
@@ -147,6 +145,17 @@ async function getPageData() {
         tutorial_video.value = pageData.tutorial_video;
 
         files.value = pageData.downloads;
+
+        const seoSetting = (data.value as any).data.seoSetting;
+        console.log("seoSetting =>", seoSetting);
+        useSeoMeta({
+            title: seoSetting.title,
+            description: seoSetting.description,
+            ogTitle: seoSetting.title,
+            ogDescription: seoSetting.description,
+            ogUrl: () => `${window.location.origin}/${seoSetting.custom_url}`,
+            keywords: seoSetting.keywords.join(),
+        });
     } catch (err) {
         console.log("HomeSampleAPI => ", err);
     }
@@ -166,10 +175,10 @@ async function getAppData() {
     }
 }
 
+await getPageData();
 onMounted(async () => {
     nextTick(async () => {
         if (process.client) {
-            await getPageData();
             await getAppData();
         }
     });

@@ -156,6 +156,16 @@ async function getData(params: { articleId: any }, isChangePost: boolean) {
         } else {
             pagination.value.next = null;
         }
+
+        console.log("seoSetting", detail.seoSetting);
+        useSeoMeta({
+            title: detail.seoSetting.title,
+            description: detail.seoSetting.description,
+            ogTitle: detail.seoSetting.title,
+            ogDescription: detail.seoSetting.description,
+            ogUrl: () => `${window.location.origin}/news/details/${detail.seoSetting.custom_url}`,
+            keywords: detail.seoSetting.keywords.join(),
+        });
     } catch (err) {
         console.log("HomeSampleAPI => ", err);
     }

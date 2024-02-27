@@ -574,6 +574,7 @@ async function addToShoppingCar() {
     }
     data["price"] = price * count.value;
     data["singlePrice"] = price;
+    data["doorLimit"] = doorLimit.value;
 
     try {
         await addToCustomCarAPI(data);

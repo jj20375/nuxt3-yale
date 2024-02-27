@@ -46,6 +46,16 @@ async function getPageData() {
         schema.value.carousel = pageData.carousel;
         schema.value.custom_door = pageData.custom_door;
         schema.value.yale_home_app = pageData.yale_home_app;
+
+        const seoSetting = (data.value as any).data.seoSetting;
+        useSeoMeta({
+            title: seoSetting.title,
+            description: seoSetting.description,
+            ogTitle: seoSetting.title,
+            ogDescription: seoSetting.description,
+            ogUrl: () => `${window.location.origin}/${seoSetting.custom_url}`,
+            keywords: seoSetting.keywords.join(),
+        });
     } catch (err) {
         console.log("HomeSampleAPI => ", err);
     }

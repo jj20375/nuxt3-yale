@@ -102,14 +102,16 @@
                     <div class="flex gap-[18px] justify-end">
                         <div class="flex justify-center items-stretch w-[150px] border border-gray-300 rounded-full">
                             <button
-                                class="flex items-center justify-center flex-1 h-auto cursor-pointer"
+                                class="flex items-center justify-center flex-1 h-auto cursor-pointer disabled:cursor-not-allowed"
+                                :disabled="product.count <= 1"
                                 @click.prevent="countDelete(index)"
                             >
                                 <el-icon><Minus /></el-icon>
                             </button>
                             <div class="flex items-center justify-center w-[80px] py-[10px] h-full">{{ product.count }}</div>
                             <button
-                                class="flex items-center justify-center flex-1 h-auto cursor-pointer"
+                                class="flex items-center justify-center flex-1 h-auto cursor-pointer disabled:cursor-not-allowed"
+                                :disabled="product.count >= product.doorLimit"
                                 @click.prevent="countAdd(index)"
                             >
                                 <el-icon><Plus /></el-icon>
