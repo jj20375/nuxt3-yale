@@ -76,11 +76,11 @@
                             class="mt-[30px]"
                         >
                             <h5 class="text-[16px] font-medium text-gray-800 YaleSolisW-Bd">{{ item.name }}</h5>
-                            <ul class="flex gap-[20px] mt-[12px]">
+                            <ul class="flex flex-wrap gap-[20px] mt-[12px]">
                                 <li
                                     v-for="opt in item.options"
                                     :key="opt.id"
-                                    class="cursor-pointer group"
+                                    class="cursor-pointer group w-[48px]"
                                     @click="optionChange(opt, index)"
                                 >
                                     <div
@@ -88,7 +88,7 @@
                                         :class="currentColor[index] === opt.id ? 'border-yellow-600' : 'group-hover:border-gray-100'"
                                     >
                                         <NuxtImg
-                                            class="w-[32px]"
+                                            class="w-[32px] aspect-square"
                                             :src="opt.imgSrc"
                                         />
                                     </div>

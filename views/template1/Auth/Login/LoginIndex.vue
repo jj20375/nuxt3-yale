@@ -60,7 +60,7 @@
                         @click="ssoLogin('google')"
                     >
                         <NuxtImg
-                            class="object-cover w-10 transition-all cursor-pointer aspect-1/1 duration-400 hover:opacity-80 hover:transition-all hover:duration-400"
+                            class="object-cover w-10 transition-all cursor-pointer aspect-square duration-400 hover:opacity-80 hover:transition-all hover:duration-400"
                             src="/img/icons/medias/google.svg"
                         />
                     </div>
@@ -69,7 +69,7 @@
                         @click="ssoLogin('line')"
                     >
                         <NuxtImg
-                            class="object-cover w-10 transition-all cursor-pointer aspect-1/1 duration-400 hover:opacity-80 hover:transition-all hover:duration-400"
+                            class="object-cover w-10 transition-all cursor-pointer aspect-square duration-400 hover:opacity-80 hover:transition-all hover:duration-400"
                             src="/img/icons/medias/line.svg"
                         />
                     </div>
@@ -78,7 +78,7 @@
                         @click="ssoLogin('facebook')"
                     >
                         <NuxtImg
-                            class="object-cover w-10 transition-all cursor-pointer aspect-1/1 duration-400 hover:opacity-80 hover:transition-all hover:duration-400"
+                            class="object-cover w-10 transition-all cursor-pointer aspect-square duration-400 hover:opacity-80 hover:transition-all hover:duration-400"
                             src="/img/icons/medias/facebook.svg"
                         />
                     </div>

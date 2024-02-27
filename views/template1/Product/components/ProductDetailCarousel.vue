@@ -25,7 +25,7 @@
             </Swiper>
             <div class="absolute top-0 hidden md:flex md:-left-2 -left-[30px] -translate-x-full z-50  items-center h-full">
                 <button
-                    class="text-3xl"
+                    class="text-3xl text-3xl flex justify-center items-center"
                     :class="[ isSliderBeginning ? 'opacity-0' : 'opacity-1' ]"
                     @click.stop="mainSwiper.slidePrev()"
                 >
@@ -34,7 +34,7 @@
             </div>
             <div class="absolute top-0 hidden md:flex md:right-0 md:-right-2 xl:-right-[30px] translate-x-full z-50 items-center h-full">
                 <button
-                    class="text-3xl"
+                    class="text-3xl text-3xl flex justify-center items-center"
                     :class="[ isSliderEnd ? 'opacity-0' : 'opacity-1' ]"
                     @click.stop="mainSwiper.slideNext()"
                 >

@@ -101,3 +101,10 @@ onMounted(() => {
     });
 });
 </script>
+
+<style lang="scss" scoped>
+// 因為圖片本身上下距不一樣，所以用css調整距離
+.object-cover{
+    object-position: 50% 38%;
+}
+</style>

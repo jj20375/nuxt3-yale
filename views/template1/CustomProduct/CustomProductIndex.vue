@@ -1,7 +1,6 @@
 <template>
     <section
-        class="relative mt-[86px] overflow-auto z-[10]"
-        style="height: calc(var(--vh, 1vh) * 100 - 80px - 87px)"
+        class="relative custom-top overflow-auto z-[10]"
     >
         <!-- <pre>{{ scenes }}</pre> -->
         <!-- <pre>{{ doors }}</pre> -->
@@ -109,6 +108,7 @@
                         />
                     </div>
                     <CustomProductLock
+                        class="mb-[30px]"
                         v-show="stepMenuShow['step3'].show"
                         v-model:lockCategory="lockCategory"
                         v-model:currentLock="currentLock"
@@ -236,8 +236,8 @@
                 </div>
             </div>
         </div>
-        <div class="fixed top-headerMb xl:bottom-0 w-full bg-white z-[100] h-[80px] shadow-footer sidebar-wrap">
-            <div class="flex items-center justify-center">
+        <div class="fixed top-headerMb xl:top-auto xl:bottom-0 w-full bg-white z-[100] h-[67px] xl:h-[80px] shadow-footer sidebar-wrap">
+            <div class="hidden xl:flex items-center justify-center">
                 <ul
                     v-if="previewWidth > 0"
                     class="h-fit flex gap-[12px] justify-center"
@@ -253,14 +253,14 @@
                     </li>
                 </ul>
             </div>
-            <div class="flex items-center justify-start gap-4">
-                <div class="flex items-center">
+            <div class="grid grid-cols-2 w-full xl:w-auto xl:flex items-center justify-start gap-4 px-6 xl:px-0">
+                <div class="flex flex-col sm:flex-row sm:items-center">
                     <p class="text-gray-600 text-[14px]">預估金額</p>
-                    <div class="text-[14px] text-gray-800 flex items-center ml-2">
-                        NT$ <strong class="ml-2 font-medium YaleSolisW-Bd text-[24px]">{{ $utils().formatCurrency(total) }}</strong>
+                    <div class="text-[14px] text-gray-800 flex items-center xl:ml-2">
+                        NT$ <strong class="ml-2 font-medium YaleSolisW-Bd text-[20px] xl:text-[24px] leading-none xl:leading-normal">{{ $utils().formatCurrency(total) }}</strong>
                     </div>
                 </div>
-                <div class="flex text-gray-600">
+                <div class="flex flex-col sm:flex-row text-gray-600">
                     <p class="text-[14px] mr-[4px]">訂金 (總價30%)</p>
                     <div class="text-[14px]">NT$ {{ $utils().formatCurrency(deposit) }}</div>
                 </div>
@@ -830,6 +830,13 @@ onBeforeUnmount(() => {
 </script>
 
 <style lang="scss" scoped>
+.custom-top{
+    @apply mt-[131px] xl:mt-header;
+    height: calc(var(--vh, 1vh) * 100 - 80px - 87px);
+    @media screen and (max-width: 1280px) {
+        height: calc(var(--vh, 1vh) * 100 - 64px - 67px);
+    }
+}
 .custom-wrap {
     @apply relative block xl:grid min-h-screen;
     grid-template: 1fr/4fr minmax(430px, 1fr);
@@ -837,22 +844,25 @@ onBeforeUnmount(() => {
     padding-inline-end: 55px;
     @media screen and (max-width: 1280px) {
         grid-gap: 0;
-        padding-inline-start: 1.5rem;
-        padding-inline-end: 1.5rem;
+        padding-inline-end: 0;
     }
     .left {
-        @apply sticky top-0 overflow-hidden;
+        @apply sticky w-full aspect-[16/9] sm:aspect-[20/9] xl:aspect-auto top-0 xl:overflow-hidden z-10  before:absolute before:-bottom-6 before:h-6 before:w-full before:pointer-events-none before:bg-[linear-gradient(180deg,_rgba(255,255,255,1)_0%,_rgba(255,255,255,0)_100%)];
         max-height: calc(var(--vh, 1vh) * 100 - 80px - 87px);
     }
     .right {
-        @apply relative overflow-visible py-12;
+        @apply relative overflow-visible px-6 xl:px-0 pt-6 pb-12 xl:py-12;
     }
 }
 
 .sidebar-wrap {
-    @apply grid;
+    @apply flex xl:grid;
     grid-template: 1fr/4fr minmax(430px, 1fr);
     grid-gap: 0 55px;
     padding-inline-end: 55px;
+    @media screen and (max-width: 1280px) {
+        grid-gap: 0;
+        padding-inline-end: 0;
+    }
 }
 </style>

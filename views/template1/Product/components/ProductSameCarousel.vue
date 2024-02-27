@@ -21,7 +21,7 @@
             </Swiper>
             <div class="absolute hidden xl:flex top-0 -left-[30px] -translate-x-full z-50 flex items-center h-full">
                 <button
-                    class="text-3xl"
+                    class="text-3xl flex justify-center items-center"
                     @click.stop="mainSwiper.slidePrev()"
                 >
                     <el-icon><ArrowLeft /></el-icon>
@@ -29,7 +29,7 @@
             </div>
             <div class="absolute hidden xl:flex top-0 -right-[30px] translate-x-full z-50 flex items-center h-full">
                 <button
-                    class="text-3xl"
+                    class="text-3xl flex justify-center items-center"
                     @click.stop="mainSwiper.slideNext()"
                 >
                     <el-icon><ArrowRight /></el-icon>

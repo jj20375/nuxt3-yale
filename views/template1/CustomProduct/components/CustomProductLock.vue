@@ -10,8 +10,8 @@
                 "
                 v-for="(category, index) in lockCategories"
                 :key="index"
-                class="rounded-[8px] text-[14px] py-[16px] px-[24px] border border-gray-300 cursor-pointer"
-                :class="[lockCategoryData === category.value ? 'outline outline-2 outline-yellow-600 -outline-offset-2 font-medium' : 'border border-gray-300']"
+                class="rounded-[8px] text-[14px] py-[16px] px-[24px] border border-gray-300 text-center cursor-pointer"
+                :class="[lockCategoryData === category.value ? 'outline outline-2 outline-yellow-600 -outline-offset-2 font-medium YaleSolisW-Bd' : 'border border-gray-300']"
             >
                 {{ category.text }}
             </li>
@@ -33,33 +33,19 @@
             <p class="text-[14px] text-gray-800">+NT$ {{ $utils().formatCurrency(currentLockData.price) }}</p>
         </div>
         <div class="flex flex-col gap-[15px]">
-            <div
-                v-for="(showLock, index) in showLocks"
-                :key="index"
-            >
-                <ul class="grid grid-cols-4 gap-x-[15px]">
-                    <li
-                        @click="currentLockData = lock"
-                        v-for="(lock, index2) in showLock"
-                        :class="[currentLockData.id === lock.id ? 'border-2 border-yellow-600  rounded-[8px]' : 'border-2 border-white']"
-                        class="p-1 cursor-pointer"
-                    >
-                        <NuxtImg
-                            class="w-full aspect-square object-contain rounded-[4px]"
-                            :src="lock.imgSrc"
-                        />
-                    </li>
-                    <li
-                        v-show="showLock.length < 4"
-                        v-for="(lock, index2) in 4 - showLock.length"
-                        :key="index2"
-                    >
-                        <div class="w-[84px] opacity-0">
-                            {{ lock }}
-                        </div>
-                    </li>
-                </ul>
-            </div>
+            <ul class="grid grid-cols-4 sm:grid-cols-6 xl:grid-cols-4 gap-[15px]">
+                <li
+                    @click="currentLockData = lock"
+                    v-for="(lock, index2) in locks[props.lockCategory]"
+                    :class="[currentLockData.id === lock.id ? 'border-2 border-yellow-600  rounded-[8px]' : 'border-2 border-white']"
+                    class="p-1 cursor-pointer"
+                >
+                    <NuxtImg
+                        class="w-full aspect-square object-contain rounded-[4px]"
+                        :src="lock.imgSrc"
+                    />
+                </li>
+            </ul>
         </div>
         <el-dialog
             class="custom-dialog h-[600px]"
@@ -196,26 +182,26 @@ watch(
 );
 
 // 顯示 電子鎖 得規則 因為 4個顏色要換行 因此加上此演算法
-const showLocks = computed(() => {
-    // 一行顯示幾個
-    const rowShowTotal = 4;
-    var datas = props.locks[props.lockCategory];
-
-    // 可被整除的數字 (取出可被 4 整除的最大公倍數，當陣列數小於 4 時 給予預設值 1)
-    const divisble = datas.length / rowShowTotal < 0 ? 1 : datas.length / rowShowTotal;
-    // 需要更新的所有路徑 (將陣列資料 以 4 筆 為單位 拆成 二維陣列資料方式存入)
-    const datasTotal: any = [];
-    // 判斷最大公倍數有多少執行回圈多少次
-    for (let i = 0; i < divisble; i++) {
-        datasTotal[i] = datas.slice(i * rowShowTotal, (i + 1) * rowShowTotal);
-    }
-    // 陣列數 / 4 如果未整除時 將剩餘陣列資料塞入 datasToatal 中
-    if (datas.length / rowShowTotal > divisble) {
-        // 新增一筆陣列資料將最後剩餘的資料塞入
-        datasTotal[divisble] = datas.splice(divisble * rowShowTotal, datas.length);
-    }
-    return datasTotal;
-});
+// const showLocks = computed(() => {
+//     // 一行顯示幾個
+//     const rowShowTotal = 4;
+//     var datas = props.locks[props.lockCategory];
+//
+//     // 可被整除的數字 (取出可被 4 整除的最大公倍數，當陣列數小於 4 時 給予預設值 1)
+//     const divisble = datas.length / rowShowTotal < 0 ? 1 : datas.length / rowShowTotal;
+//     // 需要更新的所有路徑 (將陣列資料 以 4 筆 為單位 拆成 二維陣列資料方式存入)
+//     const datasTotal: any = [];
+//     // 判斷最大公倍數有多少執行回圈多少次
+//     for (let i = 0; i < divisble; i++) {
+//         datasTotal[i] = datas.slice(i * rowShowTotal, (i + 1) * rowShowTotal);
+//     }
+//     // 陣列數 / 4 如果未整除時 將剩餘陣列資料塞入 datasToatal 中
+//     if (datas.length / rowShowTotal > divisble) {
+//         // 新增一筆陣列資料將最後剩餘的資料塞入
+//         datasTotal[divisble] = datas.splice(divisble * rowShowTotal, datas.length);
+//     }
+//     return datasTotal;
+// });
 
 // 細節彈窗幻燈片圖
 const photos = ref<{ id: string | number; imgSrc: string }[]>([]);
