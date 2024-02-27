@@ -4,9 +4,12 @@
             v-for="(data, index) in datas"
             :key="index"
             class="list-disc list-inside"
-            :class="index !== 0 ? 'py-[9px]' : 'pb-[9px]'"
+            :class="index !== 0 ? 'xl:py-[9px] py-[7px]' : 'xl:pb-[9px] pb-[7px]'"
         >
-            <NuxtLink class="hover:underline hover:underline-offset-2 hover:transition-all hover:duration-300 hover:font-medium" :to="data.url">
+            <NuxtLink
+                class="hover:underline hover:underline-offset-2 hover:transition-all hover:duration-300 hover:font-medium"
+                :to="data.url"
+            >
                 {{ data.text }}
             </NuxtLink>
         </li>

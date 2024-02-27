@@ -2,6 +2,7 @@
     <BannerLayout
         :title="'維修與保固'"
         :banner="'/img/repair/repair-banner.jpg'"
+        :banner-mobile="'/img/repair/repair-banner-m.jpg'"
     >
         <template #breadcrumbs>
             <Breadcrumb :menus="breadcrumbs" />

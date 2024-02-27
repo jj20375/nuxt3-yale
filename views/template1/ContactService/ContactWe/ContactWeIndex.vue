@@ -2,21 +2,22 @@
     <BannerLayout
         :title="'聯絡我們'"
         :banner="'/img/contact/contact-banner.jpg'"
+        :banner-mobile="'/img/contact/contact-banner-m.jpg'"
     >
         <template #breadcrumbs>
             <Breadcrumb :menus="breadcrumbs" />
         </template>
 
         <template #content>
-            <section class="container mt-[80px] custom-form">
-                <div class="mx-auto 2xl:w-[88%] flex gap-[120px]">
+            <section class="container mt-[36px] sm:mt-[80px] custom-form">
+                <div class="mx-auto w-full flex-col sm:flex-row 2xl:w-[88%] flex gap-[56px] sm:gap-[120px]">
                     <ContactWeForm class="flex-[1.5]" />
-                    <div class="text-gray-800 text-center flex-1">
+                    <div class="text-gray-800 text-center flex-1 mb-[44px]">
                         <NuxtImg
-                            class="w-[120px] mx-auto"
+                            class="w-[100px] sm:w-[120px] mx-auto"
                             :src="initializationData?.site.site_logo"
                         />
-                        <p class="text-[20px] mt-[40px] YaleSolisW-Bd font-medium">{{ initializationData?.site.meta_title }}</p>
+                        <p class="text-[20px] mt-[24px] sm:mt-[40px] YaleSolisW-Bd font-medium">{{ initializationData?.site.meta_title }}</p>
                         <p class="text-[16px] mt-[12px]">{{ initializationData?.site.contact_phone }}</p>
                         <P class="text-[16px] mt-[4px]">{{ initializationData?.site.contact_email }}</P>
                         <ul class="flex justify-center mt-[40px]">

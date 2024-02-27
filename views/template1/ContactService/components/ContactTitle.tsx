@@ -9,7 +9,7 @@ export default defineComponent({
     setup(props, { emit}) {
         return () => (
             <div>
-                <h1 class="text-[28px] font-medium text-gray-800 mb-[32px] leading-none">{ props.title }</h1>
+                <h1 class="xl:text-[28px] text-[24px] font-bold text-gray-800 xl:mb-[32px] mb-[14px] leading-none">{ props.title }</h1>
             </div>
         )
     }

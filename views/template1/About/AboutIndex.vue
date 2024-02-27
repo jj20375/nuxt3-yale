@@ -10,8 +10,8 @@
 
         <template #content>
             <section class="bg-gray-50">
-                <div class="container py-[80px]">
-                    <div class="flex gap-[80px]">
+                <div class="md:container md:py-[80px] pt-[4px] pb-[40px]">
+                    <div class="flex md:flex-row flex-col xl:gap-[80px] gap-[35px]">
                         <div
                             class="flex-1"
                             v-if="aboutData.imgUrl"
@@ -21,18 +21,21 @@
                                 :src="aboutData.imgUrl"
                             />
                         </div>
-                        <div class="flex flex-col justify-center flex-1">
-                            <h3 class="text-[32px] font-bold mb-[20px]">{{ aboutData.title }}</h3>
-                            <div v-html="aboutData.content"></div>
+                        <div class="flex-1 flex flex-col justify-center md:px-[0] px-[24px]">
+                            <h3 class="md:text-[32px] text-[24px] font-bold md:mb-[22px] mb-[12px]">{{ aboutData.title }}</h3>
+                            <div
+                                class="edit-section"
+                                v-html="aboutData.content"
+                            ></div>
                         </div>
                     </div>
                 </div>
             </section>
             <section>
-                <div class="container font-bold pt-[120px] pb-[40px]">
-                    <h3 class="text-center text-[32px]">銷售品牌</h3>
+                <div class="container md:pt-[120px] md:pb-[40px] pt-[48px] pb-[18px]">
+                    <h3 class="text-center font-bold md:text-[32px] text-[24px]">銷售品牌</h3>
                     <Swiper
-                        :slidesPerView="6"
+                        :slidesPerView="isMobile ? 2 : isPad ? 4 : 6"
                         :spaceBetween="20"
                         :freeMode="true"
                         :scrollbar="{ draggable: true, dragSize: 100, horizontalClass: 'horizontalClass', dragClass: 'dragClass' }"
@@ -57,6 +60,7 @@
     </BannerLayout>
 </template>
 <script setup lang="ts">
+const { isMobile, isPad } = useWindowResize();
 // swiper 幻燈片套件
 import { Scrollbar } from "swiper/modules";
 import BannerLayout from "~/views/template1/layouts/BannerLayout.vue";
