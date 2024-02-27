@@ -46,8 +46,6 @@ export interface ShoppingCarCustomInterface {
             label: string;
             [key: string]: any;
         };
-        // 其他資料
-        types: any;
         // 關聯 型號 id
         optionId?: number;
     };

@@ -562,12 +562,6 @@ async function addToShoppingCar() {
                 ...currentDoorData.value,
                 color: currentDoorColorData.value,
             },
-            types: {
-                category1: {
-                    label: "防火功能",
-                    value: false,
-                },
-            },
         },
         doorOut: { label: "門框", ...currentDoorOutData.value, color: currentDoorOutColorData.value },
         lock: { label: "門鎖", ...currentLock.value },
