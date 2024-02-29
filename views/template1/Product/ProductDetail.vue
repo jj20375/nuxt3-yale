@@ -46,10 +46,9 @@
                                     </NuxtLink>
                                     <div
                                         class="relative favorite w-[30px] h-[30px] text-gray-300 cursor-pointer z-50 duration-300 transition-all"
-                                        @click="handleFavorite"
                                     >
                                         <div
-                                            v-show="detailData.is_favorite"
+                                            v-show="is_favorite"
                                             @click="handleDetailFavorite"
                                         >
                                             <NuxtImg
@@ -58,7 +57,7 @@
                                             />
                                         </div>
                                         <div
-                                            v-show="!detailData.is_favorite"
+                                            v-show="!is_favorite"
                                             @click="handleDetailFavorite"
                                         >
                                             <NuxtImg
@@ -327,7 +326,8 @@ const { data: resProductDetail }: any = await $api().ProductDetailAPI({ productI
 
 // 詳細資訊 api 回傳
 const productDetail = computed(() => {
-    return (resProductDetail.value as any).data ? (resProductDetail.value as any).data : {};
+    console.log('resProductDetail', resProductDetail)
+    return resProductDetail ? resProductDetail : {};
 });
 // 商品資訊
 const detailData = computed(() => {
@@ -418,9 +418,17 @@ const breadcrumbs = computed(() => {
     return result;
 });
 // 相關商品列表
-const sameProducts = computed(() => {
+const sameProducts = ref<any>([])
+
+/**
+ * 取得商品分類詳情
+ */
+const getData = async () => {
+    const product = detailData.value;
+    is_favorite.value = product.is_favorite
+
     if (productDetail.value.productRelations) {
-        return productDetail.value.productRelations.map((item: ProductCarInterface) => {
+        sameProducts.value  = productDetail.value.productRelations.map((item: ProductCarInterface) => {
             return {
                 id: item.id,
                 model: item.model,
@@ -434,13 +442,6 @@ const sameProducts = computed(() => {
             };
         });
     }
-});
-
-/**
- * 取得商品分類詳情
- */
-const getData = async () => {
-    const product = detailData.value;
 
     // 產品規格可多選，設定預設值
     if (product.is_single_variation === 0) {
@@ -500,7 +501,7 @@ const optionChangePrice = (init: boolean = false) => {
 
     if (!init) {
         const index = photos.value.findIndex((item) => item.imgSrc === currentImage.value);
-        if(productDetailCarouselRef.value){
+        if (productDetailCarouselRef.value) {
             productDetailCarouselRef.value.slideTo(index + 1);
         }
     }
@@ -559,6 +560,7 @@ const addToShoppingCar = () => {
         });
 };
 
+const is_favorite = ref(false)
 /**
  * 加入收藏
  */
@@ -568,13 +570,13 @@ const handleDetailFavorite = async () => {
             const params = { productId: detailData.value.product_id };
             const { data } = await $api().ProductFavoriteAPI(params);
             const message = (data.value as any).message;
-            const handleMessge = detailData.value.is_favorite ? "取消收藏" : "加入收藏";
+            const handleMessge = is_favorite.value ? "取消收藏" : "加入收藏";
             if (message === "請求成功") {
                 ElMessage({
                     type: "success",
                     message: handleMessge,
                 });
-                detailData.value.is_favorite = !detailData.value.is_favorite;
+                is_favorite.value = !is_favorite.value;
             } else {
                 ElMessage({
                     type: "error",
@@ -647,21 +649,6 @@ function socialShare(type: string) {
         $utils().openNewWindow(url);
     }
 }
-
-/**
- * 初始化
- */
-async function init() {
-    await getData();
-}
-
-onMounted(async () => {
-    nextTick(async () => {
-        if (process.client) {
-            await init();
-        }
-    });
-});
 </script>
 
 <style>

@@ -8,7 +8,7 @@
         <div class="container">
             <div class="mt-[24px] sm:mt-[60px] sm:px-[60px]">
                 <h3 class="font-medium text-[20px] sm:text-[32px] text-center mb-[24px] sm:mb-8">產品收藏清單</h3>
-                <div class="flex gap-x-5 gap-y-8 flex-wrap justify-around">
+                <div class="flex gap-x-5 gap-y-8 flex-wrap justify-center">
                     <div
                         v-for="item in datas"
                         class="w-[275px]"

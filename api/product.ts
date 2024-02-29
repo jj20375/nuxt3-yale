@@ -3,6 +3,7 @@
  * ProductList: 產品分頁列表內容
  */
 import { ProductListAPIInterface } from "~/views/template1/Product/interface/Product.d";
+import { useFetchData } from "~/composables/fetch";
 
 export default () => {
     const {
@@ -44,7 +45,8 @@ export default () => {
          * 取得商品詳細資料
          */
         ProductDetailAPI(params: { productId: any }) {
-            return useMyFetch(`${apiUrl}/product/${params.productId}`, { method: "get" });
+            return useFetchData.get(`${apiUrl}/product/${params.productId}`);
+            // return useMyFetch(`${apiUrl}/product/${params.productId}`, { method: "get" });
         },
         /**
          * 商品加入收藏
