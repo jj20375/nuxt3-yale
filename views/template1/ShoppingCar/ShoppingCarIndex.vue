@@ -125,7 +125,7 @@ import { useShoppingCarStore } from "~/store/shoppingCarStore";
 import { useUserStore } from "~/store/userStore";
 
 import { storeToRefs } from "pinia";
-import { ShoppingCarInterface } from "~/interface/shoppingCar";
+import { ShoppingCarInterface, ShoppingCarCustomInterface } from "~/interface/shoppingCar";
 const { $utils } = useNuxtApp();
 
 const route = useRoute();
@@ -133,7 +133,10 @@ const router = useRouter();
 const { $api } = useNuxtApp();
 
 const shoppingCarStore = useShoppingCarStore();
+// 一般商品購物車
 const { shoppingCar } = storeToRefs(shoppingCarStore);
+// 訂製門扇購物車
+const { shoppingCustomCar } = storeToRefs(shoppingCarStore);
 const goCheckoutStep3 = ref(false);
 const userStore = useUserStore();
 
@@ -163,12 +166,19 @@ const selectProductIds = ref<number[]>([]);
 const showComponent = shallowRef<any>(ShoppingCarStep1);
 
 // 總價
-const total = computed(() =>
-    _SumBy(
-        _Filter(shoppingCar.value, (item: ShoppingCarInterface) => (item.id ? selectProductIds.value.includes(item.id) : false)),
-        "totalPrice"
-    )
-);
+const total = computed(() => {
+    if (currentTab.value === "type1") {
+        return _SumBy(
+            _Filter(shoppingCar.value, (item: ShoppingCarInterface) => (item.id ? selectProductIds.value.includes(item.id) : false)),
+            "totalPrice"
+        );
+    } else {
+        return _SumBy(
+            _Filter(shoppingCustomCar.value, (item: ShoppingCarCustomInterface) => (item.id ? selectProductIds.value.includes(item.id) : false)),
+            "totalPrice"
+        );
+    }
+});
 // 折扣
 const salePrice = computed(() => 0);
 // go step2

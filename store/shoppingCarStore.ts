@@ -6,23 +6,38 @@ import { storeToRefs } from "pinia";
 import { useUserStore } from "~/store/userStore";
 import { removeStorage } from "~/service/localstorage";
 import { ElMessage } from "element-plus";
+/**
+ * CustomProductListIdEnum: 訂製門扇 id 對應分類
+ * CustomProductListOptionEnum: 訂製門扇 產品選項
+ */
+import { CustomProductListIdEnum, CustomProductListOptionEnum } from "@/enums/customProduct.enum";
 
 export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
     const { $api, $shoppingCarService, $utils } = useNuxtApp();
     const userStore = useUserStore();
     const { isAuth } = storeToRefs(userStore);
 
-    // 購物車
+    // 一般購物車
     const shoppingCar: Ref<ShoppingCarInterface[]> = ref([]);
+    // 訂製門扇購物車
+    const shoppingCustomCar: Ref<ShoppingCarCustomInterface[]> = ref([]);
 
-    // 設定購物車
+    // 設定一般商品購物車
     const setShoppingCar = (val: any) => {
         shoppingCar.value = [...val];
     };
+    // 設定一般商品購物車
+    const setShoppingCustomCar = (val: any) => {
+        shoppingCustomCar.value = [...val];
+    };
 
-    // 清空購物車
+    // 清空一般商品購物車
     const clearShoppingCar = () => {
         shoppingCar.value = [];
+    };
+    // 清空一般商品購物車
+    const clearShoppingCustomCar = () => {
+        shoppingCustomCar.value = [];
     };
 
     // 取得購物車
@@ -68,6 +83,292 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
             shoppingCar.value = temp ? temp : [];
         }
     };
+
+    /**
+     * 取得訂製門扇購物車
+     * @param data
+     * @returns
+     */
+    const getUserCustomShoppingCar = async () => {
+        try {
+            const { data } = await $api().GetCustomCarAPI();
+            if (data.value) {
+                setCustomShoppingCarData(data.value.data.cartItems);
+            }
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
+    const setCustomShoppingCarData = (datas: any) => {
+        const arr: ShoppingCarCustomInterface[] = [];
+        const result: ShoppingCarCustomInterface = {};
+        datas.forEach((item: any) => {
+            const service: any = [];
+            item.cartItems.forEach((item2: any, index: number) => {
+                // 判斷是 門扇 的時候執行
+                if (item2.productable.customProductType.id === CustomProductListIdEnum.door) {
+                    const door = setDoorData(item2.productable, item2.productVariationable.values, item2.productVariationable.stock);
+                    result["doorGroup"] = {
+                        label: "門扇",
+                        door: { ...door.result, color: door.color },
+                        size: door.size,
+                    };
+                    result.imgSrc = door.result.imgSrc;
+                }
+                // 判斷是 門框 的時候執行
+                if (item2.productable.customProductType.id === CustomProductListIdEnum.doorOut) {
+                    const door = setDoorData(item2.productable, item2.productVariationable.values, item2.productVariationable.stock);
+                    result["doorOut"] = {
+                        label: "門框",
+                        color: door.color,
+                        ...door.result,
+                    };
+                }
+                // 判斷是 電子鎖 的時候執行
+                if (item2.productable.customProductType.id === CustomProductListIdEnum.lock) {
+                    const data = setLocksData(item2.productable);
+                    result["lock"] = {
+                        label: "門鎖",
+                        ...data,
+                    };
+                }
+                // 判斷是 水平把手 的時候執行
+                if (item2.productable.customProductType.id === CustomProductListIdEnum.handle) {
+                    const data = setLocksData(item2.productable);
+                    result["lock"] = {
+                        label: "門鎖",
+                        ...data,
+                    };
+                }
+                // 判斷是 掛門 的時候執行
+                if (item2.productable.customProductType.id === CustomProductListIdEnum.tool1) {
+                    const data = setToolData(item2.productable);
+                    result["currentTool1"] = {
+                        label: "掛門",
+                        ...data,
+                    };
+                }
+                // 判斷是 氣密條 的時候執行
+                if (item2.productable.customProductType.id === CustomProductListIdEnum.tool2) {
+                    const data = setToolData(item2.productable);
+                    result["currentTool2"] = {
+                        label: "氣密條",
+                        ...data,
+                    };
+                }
+                // 判斷是 下將壓條 的時候執行
+                if (item2.productable.customProductType.id === CustomProductListIdEnum.other1) {
+                    const data = setToolData(item2.productable);
+                    result["currentOther1"] = {
+                        label: "下將壓條",
+                        datas: [data],
+                    };
+                }
+                // 判斷是 門弓器 的時候執行
+                if (item2.productable.customProductType.id === CustomProductListIdEnum.other2) {
+                    const data = setToolData(item2.productable);
+                    result["currentOther2"] = {
+                        label: "門弓器",
+                        datas: [data],
+                    };
+                }
+                // 判斷是 施作服務 的時候執行
+                if (item2.productable.customProductType.id === CustomProductListIdEnum.service) {
+                    const data = setServiceData(item2.productable);
+                    service.push(data);
+                    result["otherServices"] = {
+                        label: "額外施作服務",
+                    };
+                }
+            });
+            if (result["otherServices"]) {
+                result["otherServices"].datas = service;
+            }
+
+            // 門扇數量
+            const doorStock = result.doorGroup.door.doorLimit;
+            // 門框數量
+            const doorOutStock = result.doorOut.doorLimit;
+            // 鎖數量
+            const lockStock = result.lock.stock;
+            // 掛門數量
+            const currentTool1Stock = result.currentTool1.stock;
+            // 氣密條數量
+            const currentTool2Stock = result.currentTool2.stock;
+            let currentOther1 = 0;
+            if (result.currentOther1) {
+                // 下將壓條 數量
+                currentOther1 = result.currentOther1.stock;
+            }
+            let currentOther2 = 0;
+            if (result.currentOther2) {
+                // 門弓器 數量
+                currentOther2 = result.currentOther2.stock;
+            }
+            // 取的所有商品中最低數量商品
+            const stocks = _Min([doorStock, doorOutStock, lockStock, currentTool1Stock, currentTool2Stock, currentOther1, currentOther2]);
+            arr.push({
+                id: item.id,
+                count: item.quantity,
+                singlePrice: Number(item.price),
+                price: Number(item.total_amount),
+                totalPrice: Number(item.price) * item.quantity,
+                doorLimit: stocks,
+                ...result,
+                name: result.doorGroup.door.title,
+            });
+        });
+        $shoppingCarService().setCustomProductShoppingCar(arr);
+        setShoppingCustomCar(arr);
+    };
+
+    /**
+     * 門扇整理資料
+     * @param { type Object(物件) } datas 購物車資料
+     * @param { type Array(陣列) } options 型號選項
+     * @param { type Number(數字) } productLimit 庫存數量限制
+     */
+    function setDoorData(datas: any, options: any, productLimit: number) {
+        let result: any = {};
+        // 預覽圖
+        const previewImgSrc = {};
+        // 庫存
+        const stock = {};
+        // 價格
+        const price = {};
+        // 訂製門扇加入購物車時需要
+        const optionId = {};
+        for (const key of Object.keys(datas.customProductVariations)) {
+            previewImgSrc[key] = {
+                front: datas.customProductVariations[key].front_image,
+                backend: datas.customProductVariations[key].back_image,
+                half: datas.customProductVariations[key].half_image,
+            };
+            stock[key] = datas.customProductVariations[key].stock;
+            price[key] = Number(datas.customProductVariations[key].price);
+            // 訂製門扇加入購物車時需要
+            optionId[key] = datas.customProductVariations[key].id;
+        }
+        // 判斷是否有尺寸值
+        const haveSize = datas.customProductOptions.find((option: any) => option.id === CustomProductListOptionEnum.size);
+        //  判斷是否有尺寸值 沒有值給空陣列
+        const sizes = haveSize !== undefined ? haveSize.values : [];
+        result = {
+            id: datas.id,
+            style: datas.model,
+            title: datas.name,
+            name: `${datas.brand}`,
+            imgSrc: datas.main_image,
+            colors: datas.customProductOptions
+                .find((option: any) => option.id === CustomProductListOptionEnum.color)
+                .values.map((color: any) => ({
+                    id: color.id,
+                    text: color.name,
+                    imgSrc: color.icon,
+                })),
+            sizes,
+            previewImgSrc,
+            stock,
+            doorLimit: productLimit,
+            price,
+            optionId,
+            detailData: {
+                carousel: datas.carousel_images.map((item: string, index: number) => ({ id: index + 1, imgSrc: item })),
+                content: datas.content,
+            },
+        };
+
+        const colorId = options.find((option: any) => option.custom_product_option_id === CustomProductListOptionEnum.color);
+        let color = {};
+        if (colorId !== undefined) {
+            color = datas.customProductOptions
+                .find((option: any) => option.id === CustomProductListOptionEnum.color)
+                .values.map((color: any) => ({
+                    id: color.id,
+                    text: color.name,
+                    imgSrc: color.icon,
+                }))
+                .find((item: any) => item.id === colorId.custom_product_option_value_id);
+        }
+
+        const sizeId = options.find((option: any) => option.custom_product_option_id === CustomProductListOptionEnum.size);
+        let size = {};
+        if (sizeId !== undefined && haveSize.values.find((item: any) => item.id === sizeId.custom_product_option_value_id) !== undefined) {
+            size = { label: "尺寸", ...haveSize.values.find((item: any) => item.id === sizeId.custom_product_option_value_id) };
+        }
+
+        if (!$utils().isEmpty(size)) {
+            return { result, color, size };
+        }
+        return { result, color };
+    }
+
+    /**
+     * 設定鎖資料
+     * @param data
+     */
+    function setLocksData(data: any) {
+        const result = {
+            imgSrc: data.main_image,
+            style: `${data.model} ${data.name}`,
+            model: data.model,
+            title: data.name,
+            name: `${data.name}`,
+            shape: data.shape,
+            stock: data.stock,
+            price: Number(data.price),
+            id: data.id,
+            detailData: {
+                carousel: data.carousel_images.map((item: string, index: number) => ({ id: index + 1, imgSrc: item })),
+                content: data.content,
+            },
+            previewImgSrc: {
+                front: data.front_image,
+                backend: data.back_image,
+                half: data.half_image,
+            },
+        };
+        return result;
+    }
+
+    /**
+     * 設定必選五金與選配資料
+     */
+    function setToolData(data: any) {
+        const result = {
+            id: data.id,
+            style: data.model,
+            title: data.brand,
+            name: data.brand,
+            imgSrc: data.main_image,
+            stock: data.stock,
+            price: Number(data.price),
+            detailData: {
+                carousel: data.carousel_images.map((item: string, index: number) => ({ id: index + 1, imgSrc: item })),
+                content: data.content,
+            },
+        };
+        return result;
+    }
+
+    /**
+     * 設定施作服務資料
+     */
+    function setServiceData(data: any) {
+        const result = {
+            id: data.id,
+            name: data.name,
+            imgSrc: data.main_image,
+            stock: data.stock,
+            price: Number(data.price),
+            detailData: {
+                carousel: data.carousel_images.map((item: string, index: number) => ({ id: index + 1, imgSrc: item })),
+                content: data.content,
+            },
+        };
+        return result;
+    }
 
     // 加入購物車
     const addToCart = (data: ShoppingCarInterface) => {
@@ -159,7 +460,6 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
                 await $api().AddToCustomCarAPI(setCustomCarDatas);
                 resolve(true);
             } catch (err) {
-                console.log("addToCustomCarAPI 2 err => ", err);
                 ElMessage({
                     type: "error",
                     message: "加入購物車失敗",
@@ -246,15 +546,32 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
         getUserShopping();
     };
 
+    /**
+     * 同步訂製門扇購物車
+     */
+    const syncCustomCart = async () => {
+        const shoppinCar = $shoppingCarService().getCustomProductShoppingCar();
+        if (!$utils().isEmpty(shoppinCar)) {
+            shoppinCar.forEach(async (item: ShoppingCarCustomInterface) => {
+                await addToCustomCart(item, item.count);
+            });
+        }
+    };
+
     return {
         shoppingCar,
+        shoppingCustomCar,
         setShoppingCar,
+        setShoppingCustomCar,
         clearShoppingCar,
+        clearShoppingCustomCar,
         getUserShopping,
+        getUserCustomShoppingCar,
         addToCart,
         addToCustomCart,
         updateCart,
         deleteCart,
         syncCart,
+        syncCustomCart,
     };
 });

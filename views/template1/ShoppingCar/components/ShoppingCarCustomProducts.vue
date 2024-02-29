@@ -11,6 +11,7 @@
                 :class="shoppingCar.length - 1 === index ? '' : index === 0 ? 'pt-0 border-b' : 'border-b'"
             >
                 <div class="flex gap-[30px]">
+                    {{ product.id }}
                     <el-checkbox :label="product.id" />
                     <NuxtImg
                         class="w-[180px] h-fit aspect-square object-cover"
@@ -26,66 +27,67 @@
                     </div>
                     <div class="flex items-start justify-between gap-4 mb-4">
                         <div class="flex flex-col flex-1">
-                            <div class="grid grid-cols-2 gap-4 text-gray-700 text-[14px]">
-                                <template
-                                    v-for="(item, key) in shoppingCarDetail[index]"
-                                    :key="key"
-                                >
+                            <div
+                                v-for="(item, key) in shoppingCarDetail[index]"
+                                :key="key"
+                            >
+                                <div class="grid grid-cols-2 gap-4 text-gray-700 text-[14px]">
                                     <div v-if="item && item.label">
                                         {{ item.label }}
                                     </div>
-                                    <template v-if="key === 'doorGroup'">
-                                        <template v-for="(item3, index3) in item">
-                                            <template v-if="index3 === 'types'">
-                                                <template v-for="(item4, index4) in item3">
+                                    <div v-if="key === 'doorGroup'">
+                                        <div v-for="(item3, index3) in item">
+                                            <div v-if="index3 === 'types'">
+                                                <div v-for="(item4, index4) in item3">
                                                     <div>{{ item4.label }}</div>
                                                     <div>{{ item4.value ? "是" : "否" }}</div>
-                                                </template>
-                                            </template>
-                                            <template v-if="index3 === 'size'">
+                                                </div>
+                                            </div>
+                                            <div v-if="index3 === 'size'">
                                                 <div>{{ item3.label }}</div>
                                                 <div class="flex flex-col gap-1">
                                                     <div>{{ item3.name }}</div>
                                                 </div>
-                                            </template>
-                                            <template v-if="index3 === 'door'">
+                                            </div>
+                                            <div v-if="index3 === 'door'">
                                                 <div>門扇</div>
                                                 <div class="flex flex-col gap-1">
                                                     <div>{{ item3.title }}</div>
                                                     <div>{{ item3.style }}</div>
                                                     <div>{{ item3.color.text }}</div>
                                                 </div>
-                                            </template>
-                                        </template>
-                                    </template>
-                                    <template v-if="item && key === 'doorOut'">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div v-if="key === 'doorOut'">
                                         <div class="flex flex-col gap-1">
                                             <div>{{ item.title }}</div>
                                             <div>{{ item.style }}</div>
                                             <div>{{ item.color.text }}</div>
                                         </div>
-                                    </template>
-                                    <template v-if="key === 'lock'">
+                                    </div>
+                                    <div v-if="key === 'lock'">
                                         <div class="flex flex-col gap-1">
                                             <div>{{ item.name }}</div>
                                             <div>{{ item.model }}</div>
                                         </div>
-                                    </template>
+                                    </div>
                                     <div v-if="item && ['currentTool1', 'currentTool2'].includes(key)">{{ item.title }}</div>
-                                    <template v-if="item && ['currentOther1', 'currentOther2', 'otherServices'].includes(key)">
+                                    <div v-if="item && ['currentOther1', 'currentOther2', 'otherServices'].includes(key)">
                                         <ul
                                             v-if="item"
                                             class="ml-2"
                                         >
                                             <li
                                                 v-for="(item2, index2) in item.datas"
-                                                class="list-disc list-inside"
+                                                :class="!['currentOther1', 'currentOther2'].includes(key) ? 'list-disc' : '-ml-2'"
+                                                class="list-inside"
                                             >
                                                 {{ item2.name }}
                                             </li>
                                         </ul>
-                                    </template>
-                                </template>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <button
@@ -148,10 +150,10 @@ const shoppingCarStore = useShoppingCarStore();
 const shoppingCarCustomProductDetailRefDom = ref<any>(null);
 
 // 購物車資料
-const shoppingCar = computed(() => shoppingCarStore.shoppingCar);
+const shoppingCar = computed(() => shoppingCarStore.shoppingCustomCar);
 // 購物車資料連動造成效能問題 多一個變數儲存固定資料
 const shoppingCarDetail = computed(() =>
-    shoppingCarStore.shoppingCar.map((item: any) => {
+    shoppingCarStore.shoppingCustomCar.map((item: any) => {
         const obj: any = { doorGroup: item.doorGroup, doorOut: item.doorOut, lock: item.lock, currentTool1: item.currentTool1, currentTool2: item.currentTool2 };
         if (item.currentOther1) {
             obj.currentOther1 = item.currentOther1;
@@ -192,8 +194,9 @@ function countDelete(index: number) {
     // 總價除以數量得到 刪除一個數量後的金額
     shoppingCar.value[index].count--;
     shoppingCar.value[index].price = shoppingCar.value[index].singlePrice * shoppingCar.value[index].count;
+    shoppingCar.value[index].totalPrice = shoppingCar.value[index].price;
     $shoppingCarService().setCustomProductShoppingCar(shoppingCar.value);
-    shoppingCarStore.setShoppingCar($shoppingCarService().getCustomProductShoppingCar());
+    shoppingCarStore.setShoppingCustomCar($shoppingCarService().getCustomProductShoppingCar());
 }
 /**
  * 點擊增加數量按鈕
@@ -205,8 +208,9 @@ function countAdd(index: number) {
     // 總價乘以數量得到 增加一個數量後的金額
     const price = singlePrice * count;
     shoppingCar.value[index].price = price;
+    shoppingCar.value[index].totalPrice = price;
     $shoppingCarService().setCustomProductShoppingCar(shoppingCar.value);
-    shoppingCarStore.setShoppingCar($shoppingCarService().getCustomProductShoppingCar());
+    shoppingCarStore.setShoppingCustomCar($shoppingCarService().getCustomProductShoppingCar());
 }
 
 /**
@@ -230,13 +234,13 @@ function init() {
         // 當購物車不為空時執行
         if ($shoppingCarService().getCustomProductShoppingCar() !== null) {
             // 購物車資料(過濾購物車重複資料)
-            shoppingCarStore.setShoppingCar($shoppingCarService().getCustomProductShoppingCar());
+            shoppingCarStore.setShoppingCustomCar($shoppingCarService().getCustomProductShoppingCar());
             // 設定購物車商品全選
             checkList.value = shoppingCar.value.map((item: any) => item.id);
             // 選中商品參數傳給母組件
             emit("update:selectProductIds", checkList.value);
         } else {
-            shoppingCarStore.setShoppingCar([]);
+            shoppingCarStore.setShoppingCustomCar([]);
         }
     }
 }

@@ -28,6 +28,8 @@ export interface ShoppingCarCustomInterface {
     count: number;
     // 價格
     price?: number;
+    // 總價
+    totalPrice: number;
     // 單一數量價格
     singlePrice?: number;
     // 場景名稱
