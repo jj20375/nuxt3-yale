@@ -139,6 +139,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 // 欄位及變數名稱
 const columns = [
+    { label: "單價", prop: "price" },
     { label: "規格", prop: "color" },
     { label: "門扇", prop: "doorLeaf", array: true },
     { label: "門框", prop: "doorFrame", array: true },

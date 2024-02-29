@@ -2,7 +2,7 @@
     <div class="w-full">
         <div
             class="relative w-full flex gap-[30px] items-center bg-gray-100 px-[20px] py-[10px] cursor-pointer"
-            @click="toggleMenu"
+            @click.prevent="toggleMenu"
         >
             <div class="flex gap-2">
                 <div class="font-bold">訂單編號</div>
@@ -14,7 +14,7 @@
             >
                 {{ timeline[timeline.length - 1]?.status }}
             </div>
-            <button class="transparent-btn btn-xs">付款去</button>
+            <button @click.stop="refund" class="transparent-btn btn-xs">付款去</button>
             <NuxtImg
                 class="absolute right-[20px] w-[32px] transition-all duration-300 ease-in-out"
                 :class="{ '-rotate-180': isMenuOpen }"
@@ -89,6 +89,10 @@ const menuInnerHeight = ref(0);
 const toggleMenu = () => {
     isMenuOpen.value = !isMenuOpen.value;
 };
+
+const refund = (e) => {
+    console.log(e)
+}
 
 onMounted(() => {
     // 在元素渲染後獲取高度
