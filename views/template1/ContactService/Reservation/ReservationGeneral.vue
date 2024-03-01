@@ -421,8 +421,9 @@ const placeOptions = ref<any>([
     { value: "官方網站", label: "官方網站" },
     { value: "好市多", label: "好市多" },
     { value: "鎖店", label: "鎖店" },
-    { value: "全國電子代理商", label: "全國電子代理商" },
-    { value: "經銷商/其他", label: "經銷商/其他" },
+    { value: "全國電子", label: "全國電子" },
+    { value: "代理商/經銷商", label: "代理商、經銷商" },
+    { value: "其他", label: "其他" },
 ]);
 
 const seriesRadios = ref<any>([
