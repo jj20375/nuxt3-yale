@@ -30,7 +30,7 @@
                 </li>
                 <li
                     :class="isDesktop ? 'opacity-100' : showMenu ? 'opacity-100 h-auto' : 'opacity-0 overflow-hidden h-0'"
-                    class="duration-500 transition-all xl:duration-0 xl:transition-none"
+                    class="transition-all duration-500 xl:duration-0 xl:transition-none"
                     v-for="(menu, key) in menus"
                     :key="key"
                 >
@@ -45,7 +45,7 @@
                         <div class="flex justify-center py-5 xl:py-0">
                             {{ menu.title }}
                             <div
-                                class="ml-3 xl:ml-0 transition-all duration-300"
+                                class="ml-3 transition-all duration-300 xl:ml-0"
                                 :class="menuStatus[key] ? 'rotate-180' : 'rotate-0'"
                             >
                                 <font-awesome-icon
@@ -186,7 +186,10 @@ const userStore = useUserStore();
 const shoppingCarStore = useShoppingCarStore();
 
 const { isAuth } = storeToRefs(userStore);
+// 一般商品購物車
 const { shoppingCar } = storeToRefs(shoppingCarStore);
+// 訂製門扇購物車
+const { shoppingCustomCar } = storeToRefs(shoppingCarStore);
 // icon 路徑
 import IconUser from "~/assets/img/icons/user.svg";
 import IconCart from "~/assets/img/icons/shop-cart.svg";
@@ -423,7 +426,7 @@ const rightIcons = computed(() => {
                     tab: "type1",
                 },
             },
-            badgeCount: shoppingCar.value.length,
+            badgeCount: shoppingCar.value.length + shoppingCustomCar.value.length,
         },
     ];
 });

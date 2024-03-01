@@ -48,9 +48,8 @@ export function removeShoppingCar() {
 
 /**
  * 取得購物車商品
- * @param  { type Object(物件) } data 商品資料
  */
-export function getCustomProductShoppingCar(data: any) {
+export function getCustomProductShoppingCar() {
     const shoppingCarDatas = getStorage("shoppingCarCustomProductDatas");
     return shoppingCarDatas;
 }

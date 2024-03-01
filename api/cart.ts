@@ -1,5 +1,4 @@
-import { CartItem } from "~/interface/shoppingCar";
-import { useFetchData } from "~/composables/fetch";
+import { CartItem, ReqUpdateCustomCart, ReqDeleteCustomCart } from "~/interface/shoppingCar";
 
 interface ResGetCart {
     cartItems: any[];
@@ -56,7 +55,7 @@ export default () => {
          * 取得 一般商品會員購物車
          */
         GetNormalCartAPI() {
-            return useFetchData.get<ResGetCart>(`${apiUrl}/cart`, { type: "normal" });
+            return useMyFetch<ResGetCart>(`${apiUrl}/cart`, { method: "get", params: { type: "normal" } });
         },
         /**
          * 加入購物車
@@ -83,10 +82,22 @@ export default () => {
             return useMyFetch<ResGetCart>(`${apiUrl}/cart`, { method: "get", params: { type: "combination" } });
         },
         /**
-         * 取得 訂製門扇購物車資料
+         * 新增 訂製門扇購物車資料
          */
         AddToCustomCarAPI(data: ReqCustomCar) {
             return useMyFetch(`${apiUrl}/cart/create-combination`, { method: "post", body: data });
+        },
+        /**
+         * 變更 訂製門扇購物車資料
+         */
+        UpdateCustomCartAPI(data: ReqUpdateCustomCart) {
+            return useMyFetch(`${apiUrl}/cart/update-combination`, { method: "put", body: data, server: false });
+        },
+        /**
+         * 刪除 訂製門扇購物車資料
+         */
+        DeleteCustomCartAPI(data: ReqDeleteCustomCart) {
+            return useMyFetch(`${apiUrl}/cart/delete-combination`, { method: "delete", body: data });
         },
         /*
          * 取得據點列表(分頁)

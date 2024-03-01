@@ -97,11 +97,13 @@
 import { validateEmail } from "~/service/validator";
 import { ElMessage, ElLoading } from "element-plus";
 import { useUserStore } from "~/store/userStore";
+import { useShoppingCarStore } from "~/store/shoppingCarStore";
 import { useInitializationStore } from "~/store/initializationStore";
 import Cookies from "js-cookie";
 
 const { $api, $utils } = useNuxtApp();
 const userStore = useUserStore();
+const shoppingCarStore = useShoppingCarStore();
 const router = useRouter();
 const formRefDom = ref<any>();
 const initializationStore = useInitializationStore();
@@ -189,6 +191,8 @@ async function onSubmit() {
                     console.log((data.value as any).data.token);
                     const token = (data.value as any).data.token;
                     Cookies.set("token", token);
+                    await shoppingCarStore.syncCart();
+                    await shoppingCarStore.syncCustomCart();
                     userStore.getUserProfile();
                     router.push({ name: "auth-panel-slug", params: { slug: "會員中心" } });
                 } else {
