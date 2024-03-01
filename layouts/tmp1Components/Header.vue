@@ -57,15 +57,16 @@
                         </div>
                         <div
                             v-if="!isPad"
-                            class="absolute left-0 top-[86px] z-50 bg-white w-full"
+                            class="absolute left-0 z-50 bg-white w-full"
+                            :class="isMenuFixed? 'top-[66px]':'top-[86px]'"
                         >
                             <div
                                 class="border-t border-gray-300 shadow-header"
                                 v-if="currentMenu === key && showSubMenu"
                             >
                                 <ul
-                                    class="container flex items-center justify-center min-h-[300px] py-[60px] flex-wrap text-center"
-                                    :class="menu.marginSize"
+                                    class="container flex items-center justify-center min-h-[300px] flex-wrap text-center"
+                                    :class="[menu.marginSize, isMenuFixed? 'py-[40px]':'py-[60px]']"
                                 >
                                     <li
                                         v-for="(submenu, subIndex) in menu.submenus"
