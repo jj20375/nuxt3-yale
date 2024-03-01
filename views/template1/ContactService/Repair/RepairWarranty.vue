@@ -159,7 +159,7 @@
                         <div class="text-center mt-5">
                             <button
                                 @click.prevent="addSerial"
-                                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
+                                class="transparent-btn btn-md"
                             >
                                 新增一筆序號
                             </button>
