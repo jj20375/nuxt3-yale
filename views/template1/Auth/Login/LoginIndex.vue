@@ -164,6 +164,12 @@ async function onSubmit() {
                 message: `尚有欄位未填`,
             });
         } else {
+            Cookies.set("saveInfo", form.value.saveInfo);
+            if (form.value.saveInfo) {
+                Cookies.set("loginEmail", form.value.email);
+            } else {
+                Cookies.set("loginEmail", "");
+            }
             const loading = ElLoading.service({
                 lock: true,
                 text: "登入中...",
@@ -228,6 +234,11 @@ function getMessage(e: any) {
         }
         // router.push({ name: 'auth-login-sso-slug', params: { slug: '快速登入' } });
     }
+}
+
+if (Cookies.get("saveInfo") === 'true') {
+    form.value.saveInfo = Cookies.get("saveInfo") === 'true'
+    form.value.email = Cookies.get("loginEmail");
 }
 
 onMounted(async () => {
