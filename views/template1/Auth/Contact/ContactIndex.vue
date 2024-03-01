@@ -73,12 +73,24 @@
             </div>
         </div>
     </section>
+    <client-only>
+        <confirmBox
+            :title="'刪除警告'"
+            :message="'是否刪除此聯絡人'"
+            :cancelTxt="'否'"
+            :confirmTXT="'是'"
+            :dialogVisible="dialogVisible"
+            @handleConfirm="handleConfirm"
+            @handleCancel="handleCancel"
+        ></confirmBox>
+    </client-only>
 </template>
 
 <script setup lang="ts">
 import Breadcrumb from "~/views/template1/components/Breadcrumb.vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 import type { Action } from "element-plus";
+import confirmBox from "@/components/confirmBox.vue";
 
 const { $utils, $api } = useNuxtApp();
 
@@ -133,29 +145,42 @@ async function getList() {
     }
 }
 
+const dialogVisible = ref(false);
+const member_id = ref(null);
+
 function deleteData(item: { id: any }) {
-    ElMessageBox.confirm("是否刪除此聯絡人?", "警告", {
-        confirmButtonText: "是",
-        cancelButtonText: "否",
-        type: "warning",
-    })
-        .then(async () => {
-            const params = { memberAddressId: item.id };
-            const { data, status, error } = await $api().DeleteProfileAPI(params);
-            if (status.value === "success") {
-                ElMessage({
-                    type: "success",
-                    message: "刪除成功",
-                });
-                await getList();
-            } else {
-                ElMessage({
-                    type: "error",
-                    message: (error.value as any).data.message,
-                });
-            }
-        })
-        .catch(() => {});
+    member_id.value = item.id
+    dialogVisible.value = true
+}
+
+async function handleConfirm() {
+    try {
+        const params = { memberAddressId: member_id.value };
+        const { data, status, error } = await $api().DeleteProfileAPI(params);
+        if (status.value === "success") {
+            ElMessage({
+                type: "success",
+                message: "刪除成功",
+            });
+            await getList();
+            dialogVisible.value = false
+        } else {
+            ElMessage({
+                type: "error",
+                message: (error.value as any).data.message,
+            });
+        }
+    } catch (err) {
+        ElMessage({
+            type: "error",
+            message: "刪除失敗",
+        });
+        dialogVisible.value = false
+    }
+}
+
+function handleCancel() {
+    dialogVisible.value = false
 }
 
 /**
