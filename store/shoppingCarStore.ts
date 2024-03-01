@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { ReqCart } from "~/api/cart";
-import type { CartItem, ShoppingCarInterface, ShoppingCarCustomInterface, CustomCarItem } from "~/interface/shoppingCar";
+import type { CartItem, ShoppingCarInterface, ShoppingCarCustomInterface, CustomCarItem, ReqUpdateCustomCart, ReqDeleteCustomCart } from "~/interface/shoppingCar";
 import { getShoppingCar } from "~/service/shoppingCar";
 import { storeToRefs } from "pinia";
 import { useUserStore } from "~/store/userStore";
@@ -44,9 +44,9 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
     const getUserShopping = async () => {
         // 登入狀態，打 api 取得購物車內容
         if (isAuth.value) {
-            const { data } = await $api().GetNormalCartAPI();
-            if (data) {
-                shoppingCar.value = data.cartItems.map((i) => {
+            const { data }: any = await $api().GetNormalCartAPI();
+            if (data.value) {
+                shoppingCar.value = data.value.data.cartItems.map((i) => {
                     const price = i.productVariationable ? i.productVariationable.price : i.productable.price;
                     const imgSrc = i.productVariationable ? `https://yale_backed.mrjin.me/storage/${i.productVariationable.image}` : i.productable.main_image;
                     // 設置顏色名稱
@@ -75,7 +75,9 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
                         colorName,
                     };
                 });
-                $shoppingCarService().setShoppingCar(shoppingCar.value);
+                if (process.client) {
+                    $shoppingCarService().setShoppingCar(shoppingCar.value);
+                }
             }
         } else {
             // 非登入狀態，取localstorage
@@ -100,6 +102,10 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
         }
     };
 
+    /**
+     * 設定訂製門扇購物車資料
+     * @param datas
+     */
     const setCustomShoppingCarData = (datas: any) => {
         const arr: ShoppingCarCustomInterface[] = [];
         const result: ShoppingCarCustomInterface = {};
@@ -458,6 +464,7 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
             }
             try {
                 await $api().AddToCustomCarAPI(setCustomCarDatas);
+                await getUserCustomShoppingCar();
                 resolve(true);
             } catch (err) {
                 ElMessage({
@@ -503,6 +510,24 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
         });
     };
 
+    /**
+     * 更新 訂製門扇購物車商品數量
+     * @param data
+     * @returns
+     */
+    const updateCustomCart = async (data: ReqUpdateCustomCart, ReqDeleteCustomCart) => {
+        try {
+            const { error } = await $api().UpdateCustomCartAPI(data);
+            if (error.value) {
+                return error.value.data.message;
+            } else {
+                return true;
+            }
+        } catch (err) {
+            return "更新訂製門扇購物車數量失敗";
+        }
+    };
+
     // 刪除購物車商品
     const deleteCart = async (data: { cart_item_id: number | null; productID: number; product_variationable_id: number | null }) => {
         if (!isAuth.value) {
@@ -525,6 +550,21 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
         getUserShopping();
     };
 
+    /**
+     * 刪除 訂製門扇購物車商品
+     */
+    const deleteCustomCart = async (data: ReqDeleteCustomCart) => {
+        try {
+            const { error } = await $api().DeleteCustomCartAPI(data);
+            if (error.value) {
+                return error.value.data.message;
+            } else {
+                return true;
+            }
+        } catch (err) {
+            return "刪除訂製門扇購物車失敗";
+        }
+    };
     // 同步購物車
     const syncCart = async () => {
         const temp = getShoppingCar();
@@ -541,7 +581,7 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
 
         if (data.length > 0 && isAuth.value) {
             await $api().SyncCartApi({ items: data });
-            removeStorage("shoppingCarDatas");
+            $shoppingCarService().removeShoppingCar();
         }
         getUserShopping();
     };
@@ -570,7 +610,9 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
         addToCart,
         addToCustomCart,
         updateCart,
+        updateCustomCart,
         deleteCart,
+        deleteCustomCart,
         syncCart,
         syncCustomCart,
     };

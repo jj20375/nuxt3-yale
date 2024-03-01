@@ -625,14 +625,12 @@ async function addToShoppingCar() {
         if (isAuth.value) {
             // 加入訂製門扇 api
             const result = await shoppingCarStore.addToCustomCart(data, count.value);
-            if (process.client && result) {
-                // 加入 訂製門扇購物車
-                $shoppingCarService().addCustomProductToShoppingCar(data);
-            }
         } else {
             if (process.client) {
                 // 加入 訂製門扇購物車
                 $shoppingCarService().addCustomProductToShoppingCar(data);
+                // 加入 訂製門扇購物車 store 資料
+                shoppingCarStore.setShoppingCustomCar($shoppingCarService().getCustomProductShoppingCar());
             }
         }
     } catch (err) {

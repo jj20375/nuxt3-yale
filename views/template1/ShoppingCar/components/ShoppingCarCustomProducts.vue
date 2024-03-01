@@ -106,7 +106,7 @@
                             <button
                                 class="flex items-center justify-center flex-1 h-auto cursor-pointer disabled:cursor-not-allowed"
                                 :disabled="product.count <= 1"
-                                @click.prevent="countDelete(index)"
+                                @click.prevent="countReduce(index)"
                             >
                                 <el-icon><Minus /></el-icon>
                             </button>
@@ -138,6 +138,8 @@
 
 <script setup lang="ts">
 import { useShoppingCarStore } from "~/store/shoppingCarStore";
+import { useUserStore } from "~/store/userStore";
+import { ElMessage } from "element-plus";
 import ShoppingCarCustomProductDetail from "~/views/template1/ShoppingCar/components/ShoppingCarCustomProductDetail.vue";
 
 const emit = defineEmits(["update:selectProductIds"]);
@@ -145,6 +147,9 @@ const emit = defineEmits(["update:selectProductIds"]);
 const { $shoppingCarService, $utils } = useNuxtApp();
 
 const shoppingCarStore = useShoppingCarStore();
+const userStore = useUserStore();
+const isAuth = computed(() => userStore.isAuth);
+const loading = ref(false);
 
 // 商品詳情 彈窗dom
 const shoppingCarCustomProductDetailRefDom = ref<any>(null);
@@ -184,8 +189,9 @@ const checkList = ref([]);
 
 /**
  * 點擊刪除數量按鈕
+ * @param { type Number(數字) } index 索引
  */
-function countDelete(index: number) {
+async function countReduce(index: number) {
     if (shoppingCar.value[index].count <= 1) {
         shoppingCar.value[index].count = 1;
         return;
@@ -197,11 +203,32 @@ function countDelete(index: number) {
     shoppingCar.value[index].totalPrice = shoppingCar.value[index].price;
     $shoppingCarService().setCustomProductShoppingCar(shoppingCar.value);
     shoppingCarStore.setShoppingCustomCar($shoppingCarService().getCustomProductShoppingCar());
+    // 等待 1秒鐘再更新就好 以防快速點擊
+    setTimeout(async () => {
+        if (isAuth.value && !loading.value) {
+            loading.value = true;
+            const result = await shoppingCarStore.updateCustomCart({
+                cart_combination_id: shoppingCar.value[index].id,
+                quantity: shoppingCar.value[index].count,
+            });
+            if (typeof result === "string") {
+                ElMessage({
+                    type: "error",
+                    message: result,
+                });
+            }
+            // 等待 1秒鐘再更新就好 以防快速點擊
+            setTimeout(async () => {
+                loading.value = false;
+            }, 1000);
+        }
+    }, 1000);
 }
 /**
  * 點擊增加數量按鈕
+ * @param { type Number(數字) } index 索引
  */
-function countAdd(index: number) {
+async function countAdd(index: number) {
     shoppingCar.value[index].count++;
     const count = shoppingCar.value[index].count;
     const singlePrice = shoppingCar.value[index].singlePrice;
@@ -211,14 +238,49 @@ function countAdd(index: number) {
     shoppingCar.value[index].totalPrice = price;
     $shoppingCarService().setCustomProductShoppingCar(shoppingCar.value);
     shoppingCarStore.setShoppingCustomCar($shoppingCarService().getCustomProductShoppingCar());
+    // 等待 1秒鐘再更新就好 以防快速點擊
+    setTimeout(async () => {
+        if (isAuth.value && !loading.value) {
+            loading.value = true;
+            const result = await shoppingCarStore.updateCustomCart({
+                cart_combination_id: shoppingCar.value[index].id,
+                quantity: shoppingCar.value[index].count,
+            });
+            if (typeof result === "string") {
+                ElMessage({
+                    type: "error",
+                    message: result,
+                });
+            }
+            // 等待 1秒鐘再更新就好 以防快速點擊
+            setTimeout(async () => {
+                loading.value = false;
+            }, 1000);
+        }
+    }, 1000);
 }
 
 /**
  * 刪除購物車
  */
-function removeShoppingCar(index: number) {
-    $shoppingCarService().removeCustomProductSingleShoppingCarProduct(index);
-    init();
+async function removeShoppingCar(index: number) {
+    if (isAuth.value) {
+        const result = await shoppingCarStore.deleteCustomCart({
+            cart_combination_id: shoppingCar.value[index].id as number,
+        });
+        $shoppingCarService().removeCustomProductSingleShoppingCarProduct(index);
+        init();
+
+        if (typeof result === "string") {
+            ElMessage({
+                type: "error",
+                message: result,
+            });
+        }
+    } else {
+        $shoppingCarService().removeCustomProductSingleShoppingCarProduct(index);
+        init();
+    }
 }
 
 /**'

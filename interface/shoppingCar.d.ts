@@ -105,3 +105,13 @@ export interface CustomCarItem {
     // 數量
     quantity: number;
 }
+
+// 訂製門扇更新購物車數量參數
+export interface ReqUpdateCustomCart {
+    cart_combination_id: number;
+    quantity?: number;
+}
+// 訂製門扇刪除購物車參數
+export interface ReqDeleteCustomCart {
+    cart_combination_id: number;
+}

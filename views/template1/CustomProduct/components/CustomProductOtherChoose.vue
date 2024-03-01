@@ -4,6 +4,7 @@
         <el-checkbox-group
             v-model="selectedProducts"
             @change="selectProduct"
+            :max="1"
         >
             <div
                 v-for="(product, index) in products"
@@ -71,7 +72,7 @@
                 <div class="flex justify-center mt-[40px]">
                     <button
                         @click.prevent="
-                            selectedProducts.push(currentDialogProduct.id);
+                            selectedProducts[0] = currentDialogProduct.id;
                             closeDialog();
                         "
                         :disabled="selectedProducts.includes(currentDialogProduct.id)"

@@ -86,7 +86,6 @@ export const useUserStore = defineStore({
                     this.setUser(data.value.data);
                     this.setIsAuth(true);
                     await shoppingCarStore.getUserShopping();
-                    shoppingCarStore.syncCart();
                     await shoppingCarStore.getUserCustomShoppingCar();
                     // shoppingCarStore.syncCustomCart();
                 } catch (err) {
