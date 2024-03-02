@@ -218,7 +218,7 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
                 id: item.id,
                 count: item.quantity,
                 singlePrice: Number(item.price),
-                price: Number(item.total_amount),
+                price: Number(item.price),
                 totalPrice: Number(item.price) * item.quantity,
                 doorLimit: stocks,
                 ...result,
@@ -317,7 +317,7 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
     function setLocksData(data: any) {
         const result = {
             imgSrc: data.main_image,
-            style: `${data.model} ${data.name}`,
+            style: `${data.model}`,
             model: data.model,
             title: data.name,
             name: `${data.name}`,
@@ -329,6 +329,7 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
                 carousel: data.carousel_images.map((item: string, index: number) => ({ id: index + 1, imgSrc: item })),
                 content: data.content,
             },
+            imgSrc: data.main_image,
             previewImgSrc: {
                 front: data.front_image,
                 backend: data.back_image,
@@ -345,7 +346,7 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
         const result = {
             id: data.id,
             style: data.model,
-            title: data.brand,
+            title: data.name,
             name: data.brand,
             imgSrc: data.main_image,
             stock: data.stock,

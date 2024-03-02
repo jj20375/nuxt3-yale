@@ -11,7 +11,6 @@
                 :class="shoppingCar.length - 1 === index ? '' : index === 0 ? 'pt-0 border-b' : 'border-b'"
             >
                 <div class="flex gap-[30px]">
-                    {{ product.id }}
                     <el-checkbox :label="product.id" />
                     <NuxtImg
                         class="w-[180px] h-fit aspect-square object-cover"
@@ -43,8 +42,11 @@
                                                     <div>{{ item4.value ? "是" : "否" }}</div>
                                                 </div>
                                             </div>
-                                            <div v-if="index3 === 'size'">
-                                                <div>{{ item3.label }}</div>
+                                            <div
+                                                v-if="index3 === 'size'"
+                                                class="flex"
+                                            >
+                                                <div>{{ item3.label }}:</div>
                                                 <div class="flex flex-col gap-1">
                                                     <div>{{ item3.name }}</div>
                                                 </div>
@@ -72,7 +74,7 @@
                                             <div>{{ item.model }}</div>
                                         </div>
                                     </div>
-                                    <div v-if="item && ['currentTool1', 'currentTool2'].includes(key)">{{ item.title }}</div>
+                                    <div v-if="item && ['currentTool1', 'currentTool2'].includes(key)">{{ item.title }}-{{ item.style }}</div>
                                     <div v-if="item && ['currentOther1', 'currentOther2', 'otherServices'].includes(key)">
                                         <ul
                                             v-if="item"
@@ -83,7 +85,8 @@
                                                 :class="!['currentOther1', 'currentOther2'].includes(key) ? 'list-disc' : '-ml-2'"
                                                 class="list-inside"
                                             >
-                                                {{ item2.name }}
+                                                {{ item2.name }}-
+                                                {{ item2.style }}
                                             </li>
                                         </ul>
                                     </div>
