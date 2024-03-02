@@ -337,7 +337,6 @@ const checkout = async () => {
 
 // 驗證表單
 const validTest = async () => {
-    alert("work1");
     if (props.currentTab === "type1") {
         const validUserForm = await formUserRef.value.$.exposed.validForm();
         const validContactUserForm = await formContactUserRef.value.$.exposed.validForm();
