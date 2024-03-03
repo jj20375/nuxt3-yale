@@ -33,10 +33,10 @@
                             placeholder="請選擇"
                         >
                             <el-option
-                                v-for="option in 10"
-                                :key="option"
-                                :label="'門市-' + option"
-                                :value="option"
+                                v-for="(option, index) in offlinePaymentStores"
+                                :key="option.id"
+                                :label="option.name"
+                                :value="option.id"
                             >
                             </el-option>
                         </el-select>
@@ -50,6 +50,7 @@
 <script setup lang="ts">
 import { FormInstance } from "element-plus";
 
+const { $api } = useNuxtApp();
 const route = useRoute();
 const emit = defineEmits(["update:form"]);
 const formRefDom = ref<FormInstance>();
@@ -67,6 +68,7 @@ const props = defineProps({
 });
 
 const formData = ref(props.form);
+
 const rules = ref<any>({
     paymentType: [
         {
@@ -76,6 +78,9 @@ const rules = ref<any>({
         },
     ],
 });
+
+// 線下付款門市
+const offlinePaymentStores = ref<any>([]);
 
 // 付款方式
 const options = ref([
@@ -109,9 +114,33 @@ const validForm = async () => {
     return result;
 };
 
+/**
+ * 取得線下付款門市 api
+ */
+async function getOfflinePaymentStores() {
+    try {
+        const { data, error }: any = await $api().GetOfflinePaymentStoresAPI();
+        if (error.value) {
+            console.log("GetOfflinePaymentStoresAPI api error =>", error.value);
+            return;
+        }
+        offlinePaymentStores.value = data.value.data.map((item: any) => {
+            return {
+                name: `${item.name}-${item.address}`,
+                id: item.id,
+            };
+        });
+        console.log("GetOfflinePaymentStoresAPI data =>", data.value);
+    } catch (err) {
+        console.log("getOfflinePaymentStores err =>", err);
+    }
+}
+
 defineExpose({
     validForm,
 });
+
+await getOfflinePaymentStores();
 </script>
 
 <style lang="scss" scoped>

@@ -115,3 +115,10 @@ export interface ReqUpdateCustomCart {
 export interface ReqDeleteCustomCart {
     cart_combination_id: number;
 }
+//  取得丈量時間參數
+export interface ReqMeasuring {
+    // 開始時間
+    start_date: string;
+    // 結束時間
+    end_date: string;
+}

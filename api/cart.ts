@@ -1,4 +1,4 @@
-import { CartItem, ReqUpdateCustomCart, ReqDeleteCustomCart } from "~/interface/shoppingCar";
+import { CartItem, ReqUpdateCustomCart, ReqDeleteCustomCart, ReqMeasuring } from "~/interface/shoppingCar";
 
 interface ResGetCart {
     cartItems: any[];
@@ -124,6 +124,20 @@ export default () => {
                 method: "post",
                 body: data,
             });
+        },
+
+        /**
+         * 取得丈量時間範圍
+         */
+        GetMeasuringTimeAPI(data: ReqMeasuring) {
+            return useMyFetch(`${apiUrl}/measuring/available-dates`, { method: "get", params: data });
+        },
+
+        /**
+         * 取得線下付款門市
+         */
+        GetOfflinePaymentStoresAPI() {
+            return useMyFetch(`${apiUrl}/stronghold/offline-payment`, { method: "get" });
         },
     };
 };
