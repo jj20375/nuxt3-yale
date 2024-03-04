@@ -26,7 +26,10 @@ export interface ReqCheckout {
     carrier_code?: string;
     donation_code?: string;
     tax_number?: string;
-    cart_item_id: number[];
+    // 一般商品結帳購物車 id
+    cart_item_id?: number[];
+    // 訂製門扇結帳購物車 id
+    cart_combination_id?: number[];
     // 預約丈量時間
     reservation_date?: string;
     // 收款門市 id

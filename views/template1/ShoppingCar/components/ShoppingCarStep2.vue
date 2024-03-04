@@ -140,6 +140,7 @@ const userStore = useUserStore();
 const { user } = storeToRefs(userStore);
 
 const { $api } = useNuxtApp();
+const router = useRouter();
 
 interface Props {
     currentTab: string;
@@ -311,7 +312,7 @@ const initialVal = () => {
 // 結帳
 const checkout = async () => {
     const req: ReqCheckout = {
-        type: "normal", // normal
+        type: props.currentTab === "type2" ? "combination" : "normal", // normal
         member_phone: formMain.value.phone,
         contact_name: formContactUser.value.name,
         contact_email: formMain.value.email,
@@ -332,7 +333,9 @@ const checkout = async () => {
     // 訂製門扇需傳送參數
     if (props.currentTab === "type2") {
         req.reservation_date = formMeasureTheSize.value.measureSizeTime;
+        req.cart_combination_id = props.selectProductIds;
         delete req.shipping_method;
+        delete req.cart_item_id;
         if (formPayment.value.paymentType === "stronghold") {
             console.log("formPayment.value =>", formPayment.value);
             req.stronghold_id = formPayment.value.offlineStore;
@@ -343,6 +346,13 @@ const checkout = async () => {
     const resData = (data.value as any).data;
     if (resData.redirect) {
         window.open(resData.redirect_url, "self");
+    }
+    if (!resData.redirect) {
+        router.push({
+            name: "auth-door-slug",
+            text: "訂製門扇-訂單記錄",
+            params: { slug: "訂製門扇-訂單記錄" },
+        });
     }
 };
 

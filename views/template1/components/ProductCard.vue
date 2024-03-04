@@ -90,6 +90,7 @@ const shoppingCarStore = useShoppingCarStore();
 
 import { storeToRefs } from "pinia";
 import { ShoppingCarInterface } from "~/interface/shoppingCar";
+import { ElMessage } from "element-plus";
 const { isAuth } = storeToRefs(userStore);
 
 const router = useRouter();
@@ -155,7 +156,7 @@ function mouseleaveEvent(index: number) {
 function addToShoppingCar(data: any) {
     // 判斷有多商品型號時 跳轉商品細節頁
     if (data.is_single_variation === 0) {
-        alert("請選擇商品規格加入購物車");
+        ElMessage({ type: "warning", message: "請選擇商品規格加入購物車" });
         goToDetail({ name: data.name, id: data.id });
         return;
     }

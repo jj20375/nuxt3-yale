@@ -44,9 +44,7 @@
                                     <NuxtLink @click="goToCompare(detailData)">
                                         <div class="underline cursor-pointer underline-offset-2 hover:no-underline">規格比較</div>
                                     </NuxtLink>
-                                    <div
-                                        class="relative favorite w-[30px] h-[30px] text-gray-300 cursor-pointer z-50 duration-300 transition-all"
-                                    >
+                                    <div class="relative favorite w-[30px] h-[30px] text-gray-300 cursor-pointer z-50 duration-300 transition-all">
                                         <div
                                             v-show="is_favorite"
                                             @click="handleDetailFavorite"
@@ -139,7 +137,7 @@
                                 class="w-full transparent-btn"
                                 disabled
                             >
-                                售完補貨中
+                                補貨中，貨到通知
                             </button>
                             <button
                                 @click="
@@ -326,7 +324,7 @@ const { data: resProductDetail }: any = await $api().ProductDetailAPI({ productI
 
 // 詳細資訊 api 回傳
 const productDetail = computed(() => {
-    console.log('resProductDetail', resProductDetail)
+    console.log("resProductDetail", resProductDetail);
     return resProductDetail ? resProductDetail : {};
 });
 // 商品資訊
@@ -418,17 +416,17 @@ const breadcrumbs = computed(() => {
     return result;
 });
 // 相關商品列表
-const sameProducts = ref<any>([])
+const sameProducts = ref<any>([]);
 
 /**
  * 取得商品分類詳情
  */
 const getData = async () => {
     const product = detailData.value;
-    is_favorite.value = product.is_favorite
+    is_favorite.value = product.is_favorite;
 
     if (productDetail.value.productRelations) {
-        sameProducts.value  = productDetail.value.productRelations.map((item: ProductCarInterface) => {
+        sameProducts.value = productDetail.value.productRelations.map((item: ProductCarInterface) => {
             return {
                 id: item.id,
                 model: item.model,
@@ -560,7 +558,7 @@ const addToShoppingCar = () => {
         });
 };
 
-const is_favorite = ref(false)
+const is_favorite = ref(false);
 /**
  * 加入收藏
  */
