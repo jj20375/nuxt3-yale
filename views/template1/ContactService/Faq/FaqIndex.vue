@@ -38,17 +38,6 @@ const breadcrumbs = ref([
         name: "index",
         text: "首頁",
     },
-    {
-        name: "faq-slug",
-        text: "服務支援",
-        params: { slug: "耶魯服務支援" },
-    },
-    {
-        name: "faq-slug",
-        text: "服務中心",
-        params: { slug: "耶魯服務中心" },
-        query: { id: "id1" },
-    },
 ]);
 
 const sidebar = ref<any>([]);
@@ -77,6 +66,18 @@ async function getType() {
         });
         // 取得最後面的 麵包屑路徑
         const lastBreadcrumbs = rows.find((item: any) => item.id == route.query.id);
+        breadcrumbs.value.push({
+            name: "faq-slug",
+            text: "服務支援",
+            params: { slug: lastBreadcrumbs.name },
+            query: { id: lastBreadcrumbs.id },
+        });
+        breadcrumbs.value.push({
+            name: "faq-slug",
+            text: "服務中心",
+            params: { slug: lastBreadcrumbs.name },
+            query: { id: lastBreadcrumbs.id },
+        });
 
         breadcrumbs.value.push({
             name: "faq-slug",
