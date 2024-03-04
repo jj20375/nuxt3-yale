@@ -24,7 +24,10 @@
                             <p class="font-medium YaleSolisW-Bd">NT$ {{ $utils().formatCurrency(product.price) }}</p>
                         </div>
                     </div>
-                    <div class="flex items-start justify-between gap-4 mb-4">
+                    <div
+                        v-loading="loading"
+                        class="flex items-start justify-between gap-4 mb-4"
+                    >
                         <div class="flex flex-col flex-1">
                             <div
                                 v-for="(item, key) in shoppingCarDetail[index]"
@@ -268,9 +271,11 @@ async function countAdd(index: number) {
  */
 async function removeShoppingCar(index: number) {
     if (isAuth.value) {
+        loading.value = true;
         const result = await shoppingCarStore.deleteCustomCart({
             cart_combination_id: shoppingCar.value[index].id as number,
         });
+        loading.value = false;
         $shoppingCarService().removeCustomProductSingleShoppingCarProduct(index);
         init();
 

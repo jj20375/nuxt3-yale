@@ -5,9 +5,18 @@
             v-model:selectProductIds="selectProductIds"
         />
         <ShoppingCarCustomProducts
-            v-if="currentTab === 'type2' && route.query.tab === 'type2'"
+            v-else-if="currentTab === 'type2' && route.query.tab === 'type2'"
             v-model:selectProductIds="selectProductIds"
         />
+        <div
+            v-else
+            class="flex justify-center"
+        >
+            <font-awesome-icon
+                class="animate-spin text-[40px] text-gray-300"
+                :icon="['fas', 'circle-notch']"
+            />
+        </div>
         <ShoppingCarStep2FormAddPriceToBuy
             v-if="currentTab === 'type1'"
             :products="addPriceBuyProducts"
