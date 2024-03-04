@@ -46,13 +46,13 @@
                                                 v-if="index3 === 'size'"
                                                 class="flex"
                                             >
-                                                <div>{{ item3.label }}:</div>
+                                                <div class="whitespace-nowrap">{{ item3.label }}:</div>
                                                 <div class="flex flex-col gap-1">
                                                     <div>{{ item3.name }}</div>
                                                 </div>
                                             </div>
                                             <div v-if="index3 === 'door'">
-                                                <div>門扇</div>
+                                                <!-- <div class="whitespace-nowrap">門扇</div> -->
                                                 <div class="flex flex-col gap-1">
                                                     <div>{{ item3.title }}</div>
                                                     <div>{{ item3.style }}</div>

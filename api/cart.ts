@@ -1,4 +1,4 @@
-import { CartItem, ReqUpdateCustomCart, ReqDeleteCustomCart } from "~/interface/shoppingCar";
+import { CartItem, ReqUpdateCustomCart, ReqDeleteCustomCart, ReqMeasuring } from "~/interface/shoppingCar";
 
 interface ResGetCart {
     cartItems: any[];
@@ -21,12 +21,16 @@ export interface ReqCheckout {
     contact_address: string;
     remark: string;
     payment_gateway: string;
-    shipping_method: string;
+    shipping_method?: string;
     invoice_type: string;
     carrier_code?: string;
     donation_code?: string;
     tax_number?: string;
     cart_item_id: number[];
+    // 預約丈量時間
+    reservation_date?: string;
+    // 收款門市 id
+    stronghold_id?: number;
 }
 
 /**
@@ -124,6 +128,20 @@ export default () => {
                 method: "post",
                 body: data,
             });
+        },
+
+        /**
+         * 取得丈量時間範圍
+         */
+        GetMeasuringTimeAPI(data: ReqMeasuring) {
+            return useMyFetch(`${apiUrl}/measuring/available-dates`, { method: "get", params: data });
+        },
+
+        /**
+         * 取得線下付款門市
+         */
+        GetOfflinePaymentStoresAPI() {
+            return useMyFetch(`${apiUrl}/stronghold/offline-payment`, { method: "get" });
         },
     };
 };

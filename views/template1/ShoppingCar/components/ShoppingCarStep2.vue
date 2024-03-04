@@ -19,6 +19,7 @@
             ref="formPaymentRef"
         />
         <ShoppingCarStep2FormMeasureTheSize
+            ref="formMeasureTheSizeRef"
             v-if="props.currentTab === 'type2'"
             v-model:form="formMeasureTheSize"
         />
@@ -49,7 +50,7 @@
                     <span class="font-normal">我已閱讀並同意</span>
                 </el-checkbox>
                 <span
-                    @click="showDialogByCustomRule = true"
+                    @click="showDialogByCustomRule = !showDialogByCustomRule"
                     class="mx-2 text-gray-800 font-medium underline underline-offset-2 cursor-pointer hover:no-underline YaleSolisW-Bd text-[14px]"
                     >定型化契約</span
                 >
@@ -130,6 +131,7 @@ const formContactUserRef = ref<any>(null);
 const formLogisticsRef = ref<any>(null);
 const formPaymentRef = ref<any>(null);
 const formInvoiceRef = ref<any>(null);
+const formMeasureTheSizeRef = ref<any>(null);
 
 const showCheckWarning = ref(false);
 
@@ -190,14 +192,14 @@ const formLogistics = ref({
 });
 
 // 付款方式
-const formPayment = ref({
+const formPayment = ref<{ paymentType: string; offlineStore?: number }>({
     // 付款方式
     paymentType: "ecpay",
 });
 
-//
-const formMeasureTheSize = ref({
-    measureSizeTime: "2024-01-01",
+// 預約丈量時間
+const formMeasureTheSize = ref<string>({
+    measureSizeTime: "",
 });
 
 // 發票表單
@@ -327,6 +329,15 @@ const checkout = async () => {
         donation_code: formInvoice.value.invoiceType === "donation" ? formInvoice.value.donationCode : undefined,
         tax_number: formInvoice.value.invoiceType === "company" ? formInvoice.value.taxNumber : undefined,
     };
+    // 訂製門扇需傳送參數
+    if (props.currentTab === "type2") {
+        req.reservation_date = formMeasureTheSize.value.measureSizeTime;
+        delete req.shipping_method;
+        if (formPayment.value.paymentType === "stronghold") {
+            console.log("formPayment.value =>", formPayment.value);
+            req.stronghold_id = formPayment.value.offlineStore;
+        }
+    }
 
     const { data } = await $api().CheckOutApi(req);
     const resData = (data.value as any).data;
@@ -345,11 +356,29 @@ const validTest = async () => {
         const validInvoiceForm = await formInvoiceRef.value.$.exposed.validForm();
         if (!formConfirm.value.confirmRule) {
             showCheckWarning.value = true;
+            return;
         } else {
             showCheckWarning.value = false;
         }
         // 表單驗證無問題，去結帳
         if (validUserForm && validContactUserForm && validLogisticsForm && validPaymentForm && validInvoiceForm && formConfirm.value.confirmRule) {
+            checkout();
+        }
+    } else {
+        const validUserForm = await formUserRef.value.$.exposed.validForm();
+        const validContactUserForm = await formContactUserRef.value.$.exposed.validForm();
+        const validPaymentForm = await formPaymentRef.value.$.exposed.validForm();
+        const validInvoiceForm = await formInvoiceRef.value.$.exposed.validForm();
+        const validMeasureTheSizeForm = await formMeasureTheSizeRef.value.$.exposed.validForm();
+        if (!formConfirm.value.confirmCustomRule || !formConfirm.value.confirmRule) {
+            console.log("work", !formConfirm.value.confirmCustomRule, !formConfirm.value.confirmRule);
+            showCheckWarning.value = true;
+            return;
+        } else {
+            showCheckWarning.value = false;
+        }
+        // 表單驗證無問題，去結帳
+        if (validUserForm && validContactUserForm && validPaymentForm && validInvoiceForm && formConfirm.value.confirmRule && validMeasureTheSizeForm) {
             checkout();
         }
     }
