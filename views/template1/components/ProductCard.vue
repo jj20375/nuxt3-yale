@@ -1,7 +1,7 @@
 <template>
     <div>
         <div
-            class="relative bg-white product-card rounded-2xl cursor-pointer"
+            class="relative bg-white cursor-pointer product-card rounded-2xl"
             @mouseover="mouseoverEvent(product.id)"
             @mouseleave="mouseleaveEvent(product.id)"
         >
@@ -27,7 +27,7 @@
             </NuxtLink>
             <div
                 :class="currentHover === product.id ? 'opacity-100' : 'opacity-0'"
-                class="hidden xl:flex absolute top-0 z-0 items-end w-full h-full transition-all duration-500 pointer-events-none"
+                class="absolute top-0 z-0 items-end hidden w-full h-full transition-all duration-500 pointer-events-none xl:flex"
             >
                 <div class="absolute z-20 bottom-[40px] w-full text-center pointer-events-auto">
                     <div>
@@ -44,7 +44,10 @@
                         </NuxtLink>
                     </div>
                 </div>
-                <div class="absolute top-0 left-0 z-10 w-full h-full bg-white opacity-80 rounded-2xl"  @click="goToDetail({ name: product.name, id: product.id })"></div>
+                <div
+                    class="absolute top-0 left-0 z-10 w-full h-full bg-white opacity-80 rounded-2xl"
+                    @click="goToDetail({ name: product.name, id: product.id })"
+                ></div>
             </div>
             <div
                 class="hidden xl:block absolute favorite w-[30px] h-[30px] text-gray-300 top-[16px] right-[16px] cursor-pointer z-50 duration-300 transition-all"
@@ -150,6 +153,12 @@ function mouseleaveEvent(index: number) {
  * 加入購物車
  */
 function addToShoppingCar(data: any) {
+    // 判斷有多商品型號時 跳轉商品細節頁
+    if (data.is_single_variation === 0) {
+        alert("請選擇商品規格加入購物車");
+        goToDetail({ name: data.name, id: data.id });
+        return;
+    }
     const input: ShoppingCarInterface = {
         id: null,
         productID: data.id,

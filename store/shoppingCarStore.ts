@@ -395,6 +395,7 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
                         quantity: data.count,
                         product_variationable_id: data.product_variationable_id,
                     };
+                    console.log("addtocar data =>", data);
                     const { error } = await $api().AddToCartAPI(apiReq);
                     if (error.value) {
                         reject(error.value.data.message);
