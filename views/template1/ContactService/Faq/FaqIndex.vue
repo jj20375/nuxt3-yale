@@ -117,7 +117,7 @@ async function getList(params: { fqa_category_id: any }) {
                 url: {
                     name: "faq-details-slug",
                     params: { slug: item.fqa_category.name },
-                    query: { id: item.id },
+                    query: { id: route.query.id, detail_id: item.id },
                 },
             });
         });
