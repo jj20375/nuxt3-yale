@@ -21,12 +21,16 @@ export interface ReqCheckout {
     contact_address: string;
     remark: string;
     payment_gateway: string;
-    shipping_method: string;
+    shipping_method?: string;
     invoice_type: string;
     carrier_code?: string;
     donation_code?: string;
     tax_number?: string;
     cart_item_id: number[];
+    // 預約丈量時間
+    reservation_date?: string;
+    // 收款門市 id
+    stronghold_id?: number;
 }
 
 /**

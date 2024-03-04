@@ -1,7 +1,12 @@
 <template>
     <div class="mt-[60px]">
         <h5 class="bg-gray-50 py-[8px] pl-[16px] w-full font-medium mb-[30px]">預約丈量時間</h5>
-        <el-form class="custom-form">
+        <el-form
+            ref="formRefDom"
+            :model="formData"
+            :rules="rules"
+            class="custom-form"
+        >
             <el-form-item prop="measureSizeTime">
                 <div class="grid grid-cols-2 gap-[30px] w-full">
                     <div>
@@ -14,7 +19,7 @@
                                 placeholder="請選擇日期"
                                 @panel-change="handleChangeYearOrMonth"
                                 :disabled-date="disabledDate"
-                                v-model="form.date"
+                                v-model="formData.measureSizeTime"
                             >
                             </el-date-picker>
                         </el-config-provider>
@@ -29,6 +34,7 @@
 import zhTw from "element-plus/dist/locale/zh-tw.mjs";
 import en from "element-plus/dist/locale/en.mjs";
 import moment from "moment";
+import { FormInstance } from "element-plus";
 const { $api } = useNuxtApp();
 const route = useRoute();
 const emit = defineEmits(["update:form"]);
@@ -49,6 +55,16 @@ const props = defineProps({
 });
 
 const formData = ref(props.form);
+
+const rules = ref<any>({
+    measureSizeTime: [
+        {
+            required: true,
+            message: "請選擇丈量時間",
+            trigger: ["change", "blur"],
+        },
+    ],
+});
 
 // 可預訂丈量時間
 const availableDates = ref<string[]>([]);
@@ -88,6 +104,25 @@ async function handleChangeYearOrMonth(date: Date) {
 
 watch(formData.value, (val) => {
     emit("update:form", val);
+});
+
+const formRefDom = ref<FormInstance>();
+
+const validForm = async () => {
+    if (!formRefDom.value) return false;
+    const result = await formRefDom.value.validate((valid) => {
+        console.log("formRefDom.value =>", valid);
+        if (valid) {
+            return true;
+        } else {
+            return false;
+        }
+    });
+    return result;
+};
+
+defineExpose({
+    validForm,
 });
 
 await getMeasuring({ startDate: moment().startOf("month").format("YYYY-MM-DD"), endDate: moment().endOf("month").format("YYYY-MM-DD") });

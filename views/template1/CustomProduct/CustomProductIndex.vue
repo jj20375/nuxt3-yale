@@ -459,7 +459,7 @@ const count = ref(1);
 // 預設選擇鎖樣式
 const currentLockId = ref({});
 // 預設選擇鎖樣式
-const currentLock = ref({});
+const currentLock = ref<any>({});
 // 門扇資料
 const doors = ref<any>([]);
 // 門框資料
@@ -556,6 +556,7 @@ async function addToShoppingCar() {
         count: count.value,
 
         doorGroup: {
+            label: "門扇",
             size: { label: "尺寸", ...currentDoorSizeData.value },
             door: {
                 label: "門扇",
@@ -582,7 +583,7 @@ async function addToShoppingCar() {
         data.doorOut["optionId"] = currentDoorOutData.value.optionId[`option-${currentDoorOutColorId.value}`];
     }
 
-    let price = doorPrice + doorOutPrice + currentTool1Data.value.price + currentTool2Data.value.price;
+    let price = doorPrice + doorOutPrice + currentTool1Data.value.price + currentTool2Data.value.price + currentLock.value.price;
 
     // 判斷是否有選擇 選擇基本五金 下將壓條
     if (!$utils().isEmpty(currentOther1Datas.value)) {

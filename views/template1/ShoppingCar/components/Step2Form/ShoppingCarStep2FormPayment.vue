@@ -21,15 +21,15 @@
                 </el-radio-group>
             </el-form-item>
             <el-form-item
-                prop="store"
-                v-if="form.paymentType === 'type2'"
+                prop="offlineStore"
+                v-if="form.paymentType === 'stronghold'"
             >
                 <div class="grid grid-cols-2 gap-[30px] w-full mt-4">
                     <div>
                         <label class="block w-full text-gray-800 text-[15px]">選擇門市/百貨櫃位<span class="ml-1 text-red-500">*</span></label>
                         <el-select
                             class="w-full"
-                            v-model="form.store"
+                            v-model="form.offlineStore"
                             placeholder="請選擇"
                         >
                             <el-option
@@ -50,7 +50,7 @@
 <script setup lang="ts">
 import { FormInstance } from "element-plus";
 
-const { $api } = useNuxtApp();
+const { $api, $utils } = useNuxtApp();
 const route = useRoute();
 const emit = defineEmits(["update:form"]);
 const formRefDom = ref<FormInstance>();
@@ -77,6 +77,12 @@ const rules = ref<any>({
             trigger: ["change", "blur"],
         },
     ],
+    offlineStore: [
+        {
+            trigger: ["change", "blur"],
+            validator: checkHaveSelectOfflinePaymentStore,
+        },
+    ],
 });
 
 // 線下付款門市
@@ -94,7 +100,7 @@ const options = ref([
 if (route.query.tab === "type2") {
     options.value.push({
         label: "門市付款",
-        value: "type2",
+        value: "stronghold",
     });
 }
 
@@ -102,6 +108,16 @@ watch(formData.value, (val) => {
     emit("update:form", val);
 });
 
+// 判斷是否有選擇線下付款門市
+function checkHaveSelectOfflinePaymentStore(rule: any, value: any, callback: any) {
+    if ($utils().isEmpty(value) && formData.value.paymentType === "stronghold") {
+        callback(new Error("請選擇付款門市"));
+        return;
+    }
+    return callback();
+}
+
+// 表單驗證
 const validForm = async () => {
     if (!formRefDom.value) return false;
     const result = await formRefDom.value.validate((valid) => {
