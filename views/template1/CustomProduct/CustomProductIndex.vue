@@ -1,6 +1,6 @@
 <template>
     <div>
-        <section class="relative custom-top overflow-auto z-[10]">
+        <section class="relative custom-top overflow-scroll z-[10]">
             <!-- <pre>{{ scenes }}</pre> -->
             <!-- <pre>{{ doors }}</pre> -->
             <!-- <pre>{{ doorSizes }}</pre> -->
