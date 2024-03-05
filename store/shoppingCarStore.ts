@@ -26,7 +26,7 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
     const setShoppingCar = (val: any) => {
         shoppingCar.value = [...val];
     };
-    // 設定一般商品購物車
+    // 設定訂製門扇購物車
     const setShoppingCustomCar = (val: any) => {
         shoppingCustomCar.value = [...val];
     };
@@ -35,7 +35,7 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
     const clearShoppingCar = () => {
         shoppingCar.value = [];
     };
-    // 清空一般商品購物車
+    // 清空訂製門扇購物車
     const clearShoppingCustomCar = () => {
         shoppingCustomCar.value = [];
     };
@@ -192,35 +192,34 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
                 result["otherServices"].datas = service;
             }
 
-            // 門扇數量
+            // 門扇 庫存數量
             const doorStock = result.doorGroup.door.doorLimit;
-            // 門框數量
+            // 門框 庫存數量
             const doorOutStock = result.doorOut.doorLimit;
-            // 鎖數量
+            // 鎖 庫存數量
             const lockStock = result.lock.stock;
-            // 掛門數量
+            // 掛門 庫存數量
             const currentTool1Stock = result.currentTool1.stock;
-            // 氣密條數量
+            // 氣密條 庫存數量
             const currentTool2Stock = result.currentTool2.stock;
             let currentOther1 = 0;
+            // 取的所有商品中最低庫存數量商品
+            const stocks = [doorStock, doorOutStock, lockStock, currentTool1Stock, currentTool2Stock];
+            // 下將壓條 庫存數量
             if (result.currentOther1) {
-                // 下將壓條 數量
-                currentOther1 = result.currentOther1.stock;
+                stocks.push(result.currentOther1.stock);
             }
-            let currentOther2 = 0;
-            if (result.currentOther2) {
-                // 門弓器 數量
-                currentOther2 = result.currentOther2.stock;
+            // 門弓器 庫存數量
+            if (result.currentOther1) {
+                stocks.push(result.currentOther2.stock);
             }
-            // 取的所有商品中最低數量商品
-            const stocks = _Min([doorStock, doorOutStock, lockStock, currentTool1Stock, currentTool2Stock, currentOther1, currentOther2]);
             arr.push({
                 id: item.id,
                 count: item.quantity,
                 singlePrice: Number(item.price),
                 price: Number(item.price),
                 totalPrice: Number(item.price) * item.quantity,
-                doorLimit: stocks,
+                doorLimit: _Min(stocks),
                 ...result,
                 name: result.doorGroup.door.title,
             });
@@ -395,7 +394,6 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
                         quantity: data.count,
                         product_variationable_id: data.product_variationable_id,
                     };
-                    console.log("addtocar data =>", data);
                     const { error } = await $api().AddToCartAPI(apiReq);
                     if (error.value) {
                         reject(error.value.data.message);
@@ -421,30 +419,30 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
             setCustomCarDatas.items.push({
                 productable_id: data.doorGroup.door.id,
                 product_variationable_id: data.doorGroup.optionId,
-                quantity: count,
+                quantity: 1,
             });
             setCustomCarDatas.items.push({
                 productable_id: data.doorOut.id,
                 product_variationable_id: data.doorOut.optionId,
-                quantity: count,
+                quantity: 1,
             });
             setCustomCarDatas.items.push({
                 productable_id: data.lock.id,
-                quantity: count,
+                quantity: 1,
             });
             setCustomCarDatas.items.push({
                 productable_id: data.currentTool1.id,
-                quantity: count,
+                quantity: 1,
             });
             setCustomCarDatas.items.push({
                 productable_id: data.currentTool2.id,
-                quantity: count,
+                quantity: 1,
             });
             if (!$utils().isEmpty(data["currentOther1"])) {
                 data["currentOther1"]?.datas.forEach((item: any) => {
                     setCustomCarDatas.items.push({
                         productable_id: item.id,
-                        quantity: count,
+                        quantity: 1,
                     });
                 });
             }
@@ -452,7 +450,7 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
                 data["currentOther2"]?.datas.forEach((item: any) => {
                     setCustomCarDatas.items.push({
                         productable_id: item.id,
-                        quantity: count,
+                        quantity: 1,
                     });
                 });
             }
@@ -460,14 +458,18 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
                 data["otherServices"]?.datas.forEach((item: any) => {
                     setCustomCarDatas.items.push({
                         productable_id: item.id,
-                        quantity: count,
+                        quantity: 1,
                     });
                 });
             }
             try {
-                await $api().AddToCustomCarAPI(setCustomCarDatas);
-                await getUserCustomShoppingCar();
-                resolve(true);
+                const { error } = await $api().AddToCustomCarAPI(setCustomCarDatas);
+                if (error.value) {
+                    reject({ message: error.value.data.message });
+                } else {
+                    await getUserCustomShoppingCar();
+                    resolve(true);
+                }
             } catch (err) {
                 ElMessage({
                     type: "error",
@@ -500,7 +502,7 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
                 if (item) {
                     const { error } = await $api().UpdateCartAPI(apiReq);
                     if (error.value) {
-                        reject(error.value.data.message);
+                        reject({ message: error.value.data.message });
                     } else {
                         item.count = data.quantity ? data.quantity : 1;
                         item.totalPrice = item.count * Number(item.price);
@@ -584,8 +586,8 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
         if (data.length > 0 && isAuth.value) {
             await $api().SyncCartApi({ items: data });
             $shoppingCarService().removeShoppingCar();
+            getUserShopping();
         }
-        getUserShopping();
     };
 
     /**

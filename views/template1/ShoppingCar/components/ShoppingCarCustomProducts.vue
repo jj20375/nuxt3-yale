@@ -21,7 +21,7 @@
                     <div class="flex w-full text-gray-800 mb-[12px] gap-4">
                         <h3 class="YaleSolisW-Bd font-medium text-[18px] flex-1">訂製-{{ product.name }}</h3>
                         <div class="flex flex-col items-end gap-2 cursor-pointer h-fit">
-                            <p class="font-medium YaleSolisW-Bd">NT$ {{ $utils().formatCurrency(product.price) }}</p>
+                            <p class="font-medium YaleSolisW-Bd">NT$ {{ $utils().formatCurrency(product.singlePrice * product.count) }}</p>
                         </div>
                     </div>
                     <div

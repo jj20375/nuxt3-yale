@@ -191,6 +191,7 @@ async function onSubmit() {
                     console.log((data.value as any).data.token);
                     const token = (data.value as any).data.token;
                     Cookies.set("token", token);
+                    userStore.setIsAuth(true);
                     await shoppingCarStore.syncCart();
                     await shoppingCarStore.syncCustomCart();
                     userStore.getUserProfile();
@@ -240,8 +241,8 @@ function getMessage(e: any) {
     }
 }
 
-if (Cookies.get("saveInfo") === 'true') {
-    form.value.saveInfo = Cookies.get("saveInfo") === 'true'
+if (Cookies.get("saveInfo") === "true") {
+    form.value.saveInfo = Cookies.get("saveInfo") === "true";
     form.value.email = Cookies.get("loginEmail");
 }
 

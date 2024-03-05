@@ -125,6 +125,7 @@ import ShoppingCarStep2FormMeasureTheSize from "~/views/template1/ShoppingCar/co
 
 import { useUserStore } from "~/store/userStore";
 import { ReqCheckout } from "~/api/cart";
+import { useShoppingCarStore } from "~/store/shoppingCarStore";
 
 const formUserRef = ref<any>(null);
 const formContactUserRef = ref<any>(null);
@@ -136,10 +137,13 @@ const formMeasureTheSizeRef = ref<any>(null);
 const showCheckWarning = ref(false);
 
 const userStore = useUserStore();
+const shoppingCarStore = useShoppingCarStore();
 
 const { user } = storeToRefs(userStore);
+const { shoppingCar } = storeToRefs(shoppingCarStore);
+const { shoppingCustomCar } = storeToRefs(shoppingCarStore);
 
-const { $api } = useNuxtApp();
+const { $api, $shoppingCarService } = useNuxtApp();
 const router = useRouter();
 
 interface Props {
@@ -344,6 +348,7 @@ const checkout = async () => {
 
     const { data } = await $api().CheckOutApi(req);
     const resData = (data.value as any).data;
+    removeShoppingCar();
     if (resData.redirect) {
         window.open(resData.redirect_url, "self");
     }
@@ -355,6 +360,19 @@ const checkout = async () => {
         });
     }
 };
+
+// 移除購物車
+function removeShoppingCar() {
+    if (props.currentTab === "type1") {
+        shoppingCarStore.setShoppingCar(shoppingCar.value.filter((item: any) => !props.selectProductIds.includes(item.id)));
+        $shoppingCarService().setShoppingCar(shoppingCar.value);
+        return;
+    }
+    if (props.currentTab === "type2") {
+        shoppingCarStore.setShoppingCustomCar(shoppingCustomCar.value.filter((item: any) => !props.selectProductIds.includes(item.id)));
+        $shoppingCarService().setCustomProductShoppingCar(shoppingCustomCar.value);
+    }
+}
 
 // 驗證表單
 const validTest = async () => {
