@@ -1,71 +1,73 @@
 <template>
-    <section class="mt-[64px] sm:mt-[86px]">
+    <section class="mt-headerMb xl:mt-header">
         <nav class="border-t border-b border-gray-300 py-[16px] bg-white">
             <div class="container">
                 <Breadcrumb :menus="breadcrumbs" />
             </div>
         </nav>
         <div class="container">
-            <div class="pt-[24px] sm:pt-[60px] pb-[100px]">
-                <div class="flex items-center justify-between mb-6">
-                    <h3 class="font-medium text-[20px] sm:text-[32px] text-center">常用聯繫人</h3>
-                    <div class="flex items-center gap-2 cursor-pointer h-fit">
-                        <NuxtImg
-                            class="w-[20px] aspect-square object-cover"
-                            src="img/icons/auth/add.svg"
-                        />
-                        <NuxtLink :to="{ name: 'auth-contact-add-slug', params: { slug: '新增聯繫人' } }">
-                            <div>新增聯繫人</div>
-                        </NuxtLink>
+            <div class="pt-[36px] sm:pt-[60px] pb-[60px] sm:pb-[100px]">
+                <div class="flex items-center justify-between mb-4 sm:mb-6">
+                    <h3 class="font-medium text-[24px] md:text-[32px] text-center">常用聯繫人</h3>
+                    <NuxtLink :to="{ name: 'auth-contact-add-slug', params: { slug: '新增聯繫人' } }">
+                        <div class="flex items-center gap-2 cursor-pointer h-fit group">
+                            <IconAdd
+                                class="!w-[20px] !h-[20px] text-gray-800 transition-all duration-300 group-hover:text-gray-400 group-hover:transition-all group-hover:duration-300"
+                            />
+                                <div class="group-hover:text-gray-400 transition-all duration-300 group-hover:transition-all group-hover:duration-300">新增聯繫人</div>
+                        </div>
+                    </NuxtLink>
+                </div>
+                <div class="relative" :class="[leftArrived ? '': 'before:absolute before:h-full before:w-[30px] before:pointer-events-none before:top-0 before:left-0 before:shadow-[inset_12px_0px_8px_-8px_rgba(5,5,5,0.1)]',rightArrived ? '': 'after:absolute after:h-full after:w-[30px] after:pointer-events-none after:top-0 after:right-0 after:shadow-[inset_-12px_0px_8px_-8px_rgba(5,5,5,0.1)]']">
+                    <div ref="scrollRef" class="relative m-auto overflow-x-auto">
+                        <table>
+                            <thead>
+                            <tr>
+                                <th
+                                    v-for="(item, index) in tableHeadData"
+                                    :key="index"
+                                    :colspan="index === tableHeadData.length - 1 ? '2' : '1'"
+                                >
+                                    {{ item }}
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr
+                                v-for="item in tableBodyData"
+                                :key="item.index"
+                            >
+                                <td class="text-[15px] sm:text-[16px] px-[8px] min-w-[60px]">
+                                    <div class="font-bold text-[15px] sm:text-[16px]">{{ item.default ? "預設" : "" }}</div>
+                                </td>
+                                <td class="text-[15px] sm:text-[16px] px-[8px] min-w-[80px]">
+                                    {{ item.contactName }}
+                                </td>
+                                <td class="text-[15px] sm:text-[16px] px-[8px]">
+                                    {{ item.phone }}
+                                </td>
+                                <td class="text-[15px] sm:text-[16px] px-[8px] min-w-[200px]">
+                                    {{ item.address }}
+                                </td>
+                                <td class="px-[8px]">
+                                    <NuxtLink class="block w-fit" :to="item.url">
+                                        <IconEdit
+                                            class="!w-[16px] sm:!w-[20px] !h-[16px] sm:!h-[20px] transition-all duration-300 hover:text-gray-400 hover:transition-all hover:duration-300 cursor-pointer"
+                                        />
+                                    </NuxtLink>
+                                </td>
+                                <td class="px-[8px]">
+                                    <IconDelete
+                                        @click.prevent="deleteData(item)"
+                                        class="!w-[16px] sm:!w-[20px] !h-[16px] sm:!h-[20px] transition-all duration-300 hover:text-gray-400 hover:transition-all hover:duration-300 cursor-pointer"
+                                    />
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-                <table>
-                    <thead>
-                        <tr>
-                            <th
-                                v-for="(item, index) in tableHeadData"
-                                :key="index"
-                            >
-                                {{ item }}
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr
-                            v-for="item in tableBodyData"
-                            :key="item.index"
-                        >
-                            <td>
-                                <div class="font-bold text-[12px] sm:text-[16px]">{{ item.default ? "預設" : "" }}</div>
-                            </td>
-                            <td class="text-[12px] sm:text-[16px] px-[4px]">
-                                {{ item.contactName }}
-                            </td>
-                            <td class="text-[12px] sm:text-[16px] px-[4px]">
-                                {{ item.phone }}
-                            </td>
-                            <td class="text-[12px] sm:text-[16px] px-[4px]">
-                                {{ item.address }}
-                            </td>
-                            <td>
-                                <NuxtLink :to="item.url">
-                                    <NuxtImg
-                                        class="w-[16px] sm:w-[20px] aspect-square object-cover"
-                                        src="img/icons/auth/edit.svg"
-                                    />
-                                </NuxtLink>
-                            </td>
-                            <td>
-                                <NuxtImg
-                                    @click.prevent="deleteData(item)"
-                                    class="w-[16px] sm:w-[20px] aspect-square object-cover cursor-pointer"
-                                    src="img/icons/auth/delete.svg"
-                                />
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-                <div class="flex justify-center mt-10">
+                <div class="flex justify-center mt-6 sm:mt-10">
                     <NuxtLink :to="{ name: 'auth-panel-slug', params: { slug: '會員中心' } }">
                         <button class="transparent-btn btn-md">返回會員中心</button>
                     </NuxtLink>
@@ -92,6 +94,11 @@ import { ElMessage, ElMessageBox } from "element-plus";
 import type { Action } from "element-plus";
 import confirmBox from "@/components/confirmBox.vue";
 
+// icon 路徑
+import IconDelete from "~/assets/img/icons/auth/delete.svg";
+import IconEdit from "~/assets/img/icons/auth/edit.svg";
+import IconAdd from "~/assets/img/icons/auth/add.svg";
+
 const { $utils, $api } = useNuxtApp();
 
 const breadcrumbs = ref([
@@ -112,7 +119,7 @@ const breadcrumbs = ref([
 ]);
 
 // 表格資料
-const tableHeadData = ["", "聯繫人", "聯絡電話", "收件地址", "管理", ""];
+const tableHeadData = ["", "聯繫人", "聯絡電話", "收件地址", "管理"];
 const tableBodyData = ref<any>([]);
 
 /**
@@ -183,6 +190,13 @@ function handleCancel() {
     dialogVisible.value = false
 }
 
+// 表格是否出現陰影(滑到底陰影會消失)
+const scrollRef = ref(null);
+const { x: xPosition, arrivedState } = useScroll(scrollRef, {
+    behavior: "smooth"
+});
+const { right: rightArrived, left: leftArrived } = toRefs(arrivedState);
+
 /**
  * 初始化
  */
@@ -204,11 +218,7 @@ onMounted(async () => {
 table {
     @apply w-full;
     th {
-        @apply text-start bg-gray-100 text-gray-800 py-3 text-sm;
-        &:nth-child(5),
-        &:nth-child(6) {
-            width: 48px;
-        }
+        @apply text-start bg-gray-100 text-gray-800 px-2 py-3 text-sm;
     }
     td {
         @apply py-5 border-b border-gray-100;

@@ -822,7 +822,7 @@ onBeforeUnmount(() => {
     grid-template: 1fr/4fr minmax(430px, 1fr);
     grid-gap: 0 55px;
     padding-inline-end: 55px;
-    @media screen and (max-width: 1280px) {
+    @media screen and (max-width: 1279.98px) {
         grid-gap: 0;
         padding-inline-end: 0;
     }
@@ -831,7 +831,7 @@ onBeforeUnmount(() => {
         max-height: calc(var(--vh, 1vh) * 100 - 80px - 87px);
     }
     .right {
-        @apply relative overflow-visible px-6 xl:px-0 pt-6 pb-12 xl:py-12;
+        @apply relative overflow-scroll xl:overflow-visible px-6 xl:px-0 pt-6 pb-12 xl:py-12;
     }
 }
 
@@ -840,7 +840,7 @@ onBeforeUnmount(() => {
     grid-template: 1fr/4fr minmax(430px, 1fr);
     grid-gap: 0 55px;
     padding-inline-end: 55px;
-    @media screen and (max-width: 1280px) {
+    @media screen and (max-width: 1279.98px) {
         grid-gap: 0;
         padding-inline-end: 0;
     }

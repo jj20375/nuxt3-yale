@@ -1,26 +1,25 @@
 <template>
-    <section class="mt-[64px] sm:mt-[86px] pb-[60px]">
+    <section class="mt-headerMb xl:mt-header pb-[60px]">
         <nav class="border-b border-gray-300 py-[16px] bg-white">
             <div class="container">
                 <Breadcrumb :menus="breadcrumbs" />
             </div>
         </nav>
         <div class="container">
-            <div class="mt-[24px] sm:mt-[60px] sm:px-[60px]">
-                <h3 class="font-medium text-[20px] sm:text-[32px] text-center mb-[24px] sm:mb-8">產品收藏清單</h3>
-                <div class="flex gap-x-5 gap-y-8 flex-wrap justify-center">
-                    <div
+            <div class="mt-[36px] sm:mt-[60px]">
+                <h3 class="font-medium text-[24px] sm:text-[32px] mb-[24px] sm:mb-8">產品收藏清單</h3>
+                <div class="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-x-5 gap-y-8 flex-wrap justify-center">
+                    <template
                         v-for="item in datas"
-                        class="w-[275px]"
                     >
                         <ProductCard
                             :product="item"
                             @handleFavorite="handleFavorite"
                         />
-                    </div>
+                    </template>
                 </div>
             </div>
-            <Pagination class="flex justify-center mb-[95px] mt-[80px]" />
+            <Pagination class="flex justify-center mb-[30px] sm:mb-[95px] mt-[40px] sm:mt-[80px]" />
         </div>
     </section>
     <client-only>

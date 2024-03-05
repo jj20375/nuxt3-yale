@@ -1,7 +1,7 @@
 <template>
     <div class="w-full">
         <div
-            class="relative w-full flex gap-[30px] items-center bg-gray-100 px-[20px] py-[10px] cursor-pointer"
+            class="relative w-full flex flex-col md:flex-row gap-2 md:gap-[30px] items-center bg-gray-100 px-[20px] py-[10px] cursor-pointer"
             @click="toggleMenu"
         >
             <div class="flex gap-2">
@@ -16,7 +16,7 @@
             </div>
             <button class="transparent-btn btn-xs">付款去</button>
             <NuxtImg
-                class="absolute right-[20px] w-[32px] transition-all duration-300 ease-in-out"
+                class="absolute right-[20px] w-[32px] top-1/2 -translate-y-1/2 transition-all duration-300 ease-in-out"
                 :class="{ '-rotate-180': isMenuOpen }"
                 src="/img/icons/auth/arrow-down.svg"
             />
@@ -27,7 +27,7 @@
             :style="{ maxHeight: isMenuOpen ? menuInnerHeight + 'px' : '0' }"
         >
             <div
-                class="py-[20px] px-[24px]"
+                class="p-4 sm:py-[20px] sm:px-[24px]"
                 ref="menuInnerRef"
             >
                 <ul class="pl-4 text-gray-400 list-disc">
@@ -36,7 +36,7 @@
                         :key="item.index"
                         class="py-1.5"
                     >
-                        <div class="flex gap-4">
+                        <div class="flex gap-x-4 gap-y-1 flex-wrap">
                             <div>{{ item.date }}</div>
                             <div>{{ item.time }}</div>
                             <div>{{ item.status }}</div>

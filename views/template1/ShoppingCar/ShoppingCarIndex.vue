@@ -1,5 +1,5 @@
 <template>
-    <section class="mt-[64px] sm:mt-[86px] mb-[120px] border-t border-gray-300">
+    <section class="mt-headerMb xl:mt-header mb-[120px] border-t border-gray-300">
         <div class="container">
             <ul
                 v-if="currentStep == 0"

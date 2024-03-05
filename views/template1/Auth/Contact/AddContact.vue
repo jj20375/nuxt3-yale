@@ -1,12 +1,12 @@
 <template>
-    <section class="mt-[64px] sm:mt-[86px] pb-[60px] bg-gray-50">
+    <section class="mt-headerMb xl:mt-header pb-[60px] bg-gray-50">
         <nav class="border-b border-gray-300 py-[16px] bg-white">
             <div class="container">
                 <Breadcrumb :menus="breadcrumbs" />
             </div>
         </nav>
         <div class="container">
-            <div class="w-full sm:w-[620px] mt-[24px] sm:mt-[60px] py-[24px] sm:py-[60px] px-[24px] sm:px-[60px] bg-white mx-auto rounded-[24px] border-[1px] border-gray-200">
+            <div class="w-full lg:w-[620px] mt-[36px] sm:mt-[60px] py-[32px] sm:py-[60px] px-[24px] sm:px-[60px] bg-white mx-auto rounded-[24px] border-[1px] border-gray-200">
                 <el-form
                     class="custom-form"
                     ref="formRefDom"
@@ -15,7 +15,7 @@
                     require-asterisk-position="right"
                 >
                     <div class="flex items-center justify-between mb-4">
-                        <h3 class="font-medium text-[20px] sm:text-[32px] text-center sm:mb-8">新增聯繫人</h3>
+                        <h3 class="font-medium text-[24px] md:text-[32px] text-center sm:mb-8">新增聯繫人</h3>
                         <el-form-item>
                             <el-switch
                                 v-model="form.default"
@@ -65,7 +65,7 @@
                                     v-for="(item2, index2) in item.datas"
                                     class="flex-1"
                                     :key="index2"
-                                    :class="item.datas.length - 1 === index2 ? '' : 'mr-[30px]'"
+                                    :class="item.datas.length - 1 === index2 ? '' : 'mr-4 md:mr-[30px]'"
                                 >
                                     <el-form-item
                                         :prop="item2.prop"
@@ -97,13 +97,13 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="flex mt-4 gap-2 sm:gap-4 justify-center">
+                        <div class="grid grid-cols-2 md:flex mt-4 gap-4 justify-center">
                             <NuxtLink :to="{ name: 'auth-contact-slug', params: { slug: '常用聯繫人' } }">
-                                <button class="transparent-btn btn-md flex-1">返回</button>
+                                <button class="transparent-btn" :class="isMobile ? 'w-full':'btn-md'">返回</button>
                             </NuxtLink>
                             <button
                                 @click.prevent="onSubmit"
-                                class="yellow-btn btn-md flex-1 sm:flex-initial"
+                                class="yellow-btn" :class="isMobile ? '':'btn-md'"
                             >
                                 儲存
                             </button>
@@ -122,6 +122,7 @@ import { ElMessage, ElLoading } from "element-plus";
 
 const { $api } = useNuxtApp();
 const router = useRouter();
+const { isMobile } = useWindowResize();
 
 // 預先加載縣市資料
 const initializationStore = useInitializationStore();

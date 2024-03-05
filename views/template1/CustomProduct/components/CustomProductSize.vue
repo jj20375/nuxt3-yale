@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h3 class="text-[16px] font-medium YaleSolisW-Bd mb-[20px]">尺寸</h3>
+        <h3 class="text-[16px] font-medium YaleSolisW-Bd mb-[20px]">尺寸 <span class="text-[14px]">（若非以下尺寸，建議致電客製化報價）</span></h3>
         <ul class="flex flex-col gap-4">
             <li
                 @click="currentSizeDataId = size.id"
