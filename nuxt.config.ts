@@ -74,6 +74,7 @@ export default defineNuxtConfig({
             // google recaptcha key
             googleRecaptcha2Key: process.env.GOOGLE_RECAPTCHA2_KEY,
             DEBUG: process.env.DEBUG,
+            // 前台網址
             hostURL: process.env.HOST_URL,
             // goolge app id
             googleAppId: process.env.GOOGLE_APP_ID,

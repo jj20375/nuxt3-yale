@@ -144,6 +144,7 @@ const { shoppingCar } = storeToRefs(shoppingCarStore);
 const { shoppingCustomCar } = storeToRefs(shoppingCarStore);
 
 const { $api, $shoppingCarService } = useNuxtApp();
+const $config = useRuntimeConfig();
 const router = useRouter();
 
 interface Props {
@@ -315,6 +316,7 @@ const initialVal = () => {
 
 // 結帳
 const checkout = async () => {
+    const hostUrl = $config.public.hostURL;
     const req: ReqCheckout = {
         type: props.currentTab === "type2" ? "combination" : "normal", // normal
         member_phone: formMain.value.phone,
@@ -333,6 +335,7 @@ const checkout = async () => {
         carrier_code: formInvoice.value.invoiceType === "mobile_carrier" || formInvoice.value.invoiceType === "natural_person_certificate" ? formInvoice.value.carrierCode : undefined,
         donation_code: formInvoice.value.invoiceType === "donation" ? formInvoice.value.donationCode : undefined,
         tax_number: formInvoice.value.invoiceType === "company" ? formInvoice.value.taxNumber : undefined,
+        redirect_url: props.currentTab === "type2" ? `${hostUrl}/is_type2` : `${hostUrl}/is_type1`,
     };
     // 訂製門扇需傳送參數
     if (props.currentTab === "type2") {
