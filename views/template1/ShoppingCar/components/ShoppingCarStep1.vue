@@ -24,11 +24,24 @@
             v-model:selectProudctIds="selectAddPriceProductIds"
         />
 
+        {{ selectProductIds }}
         <ShoppingCarSales />
         <div class="flex">
             <NuxtLink
+                v-if="currentTab === 'type1'"
                 class="YaleSolisW-Rg text-[16px] flex items-center"
-                :to="{ name: 'product-slug', params: { slug: '耶魯產品資訊-電子鎖-主鎖' }, query: { category: 1, tag: 1 } }"
+                :to="{ name: 'product-slug', params: { slug: '產品資訊-電子鎖-主鎖' }, query: { category: 1, tag: 1 } }"
+            >
+                <NuxtImg
+                    class="w-[16px] h-[16px]"
+                    src="/img/icons/post/arrow-prev.svg"
+                />
+                <span class="ml-[8px] leading-none">繼續購物</span>
+            </NuxtLink>
+            <NuxtLink
+                v-else
+                class="YaleSolisW-Rg text-[16px] flex items-center"
+                :to="{ name: 'custom-product-slug', params: { slug: '訂製門扇' } }"
             >
                 <NuxtImg
                     class="w-[16px] h-[16px]"
@@ -126,6 +139,14 @@ watch(
     () => selectProductIds.value,
     (val) => {
         emit("update:selectProductIds", val);
+    }
+);
+
+watch(
+    () => props.currentTab,
+    (val) => {
+        selectProductIds.value = [];
+        emit("update:selectProductIds", []);
     }
 );
 </script>

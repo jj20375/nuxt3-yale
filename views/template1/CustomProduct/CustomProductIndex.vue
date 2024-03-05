@@ -482,9 +482,11 @@ const showSoppingCarDialog = ref(false);
 /**
  * 前往結賬
  */
-function goToBill() {
-    addToShoppingCar();
-    router.push({ name: "shopping-car-slug", params: { slug: "耶魯電子鎖購物車" }, query: { tab: "type2" } });
+async function goToBill() {
+    const result = await addToShoppingCar();
+    if (result) {
+        router.push({ name: "shopping-car-slug", params: { slug: "訂製門扇購物車" }, query: { tab: "type2" } });
+    }
 }
 
 // 門扇顏色
@@ -620,14 +622,14 @@ async function addToShoppingCar() {
         });
         price = price + servicePrice;
     }
-    data["price"] = price * count.value;
     data["singlePrice"] = price;
+    data["price"] = price * count.value;
     data["doorLimit"] = doorLimit.value;
-
+    console.log("addToCustomCart =>", data);
     try {
         if (isAuth.value) {
             // 加入訂製門扇 api
-            const result = await shoppingCarStore.addToCustomCart(data, count.value);
+            await shoppingCarStore.addToCustomCart(data, count.value);
         } else {
             if (process.client) {
                 // 加入 訂製門扇購物車
@@ -636,8 +638,11 @@ async function addToShoppingCar() {
                 shoppingCarStore.setShoppingCustomCar($shoppingCarService().getCustomProductShoppingCar());
             }
         }
-    } catch (err) {
-        console.log("addToCustomCarAPI => ", err);
+        return true;
+    } catch (err: { message: string }) {
+        alert(err.message);
+        console.log("addToCustomCarAPI error => ", err);
+        return false;
     }
 }
 
@@ -684,7 +689,7 @@ const total = computed(() => {
     return (doorPrice + doorOutPrice + lockPrice + tool1Price + tool2Price + other1Price + other2Price + servicePrice) * count.value;
 });
 // 訂金
-const deposit = computed(() => total.value * 0.3);
+const deposit = computed(() => Math.round(total.value * 0.3));
 
 // 選擇商品 庫存最少數量上限
 const doorLimit = computed(() => {
