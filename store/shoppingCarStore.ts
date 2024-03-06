@@ -94,6 +94,7 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
     const getUserCustomShoppingCar = async () => {
         try {
             const { data } = await $api().GetCustomCarAPI();
+            console.log("getUserCustomShoppingCar =>", data.value.data);
             if (data.value) {
                 setCustomShoppingCarData(data.value.data.cartItems);
             }
@@ -210,7 +211,7 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
                 stocks.push(result.currentOther1.stock);
             }
             // 門弓器 庫存數量
-            if (result.currentOther1) {
+            if (result.currentOther2) {
                 stocks.push(result.currentOther2.stock);
             }
             arr.push({
@@ -224,6 +225,7 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
                 name: result.doorGroup.door.title,
             });
         });
+        console.log("arr =>", arr);
         $shoppingCarService().setCustomProductShoppingCar(arr);
         setShoppingCustomCar(arr);
     };
