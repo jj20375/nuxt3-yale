@@ -117,6 +117,9 @@ import ProductCard from "~/views/template1/components/ProductCard.vue";
 import { ProductListAPIInterface, ProductList, ProductCarInterface } from "~/interface/product.d";
 
 import { ElMessage } from "element-plus";
+import { useInitializationStore } from "~/store/initializationStore";
+
+const initializationStore = useInitializationStore();
 const { isPad } = useWindowResize();
 const { $api, $utils } = useNuxtApp();
 
@@ -287,8 +290,8 @@ async function getTypeDetail() {
         };
 
         useSeoMeta({
-            title: rows.seoSetting.title,
-            description: rows.seoSetting.description,
+            title: rows.seoSetting.title ? rows.seoSetting.title : initializationStore.initializationData.site.meta_title,
+            description: rows.seoSetting.description ? rows.seoSetting.description : initializationStore.initializationData.site.meta_description,
             ogTitle: rows.seoSetting.title,
             ogDescription: rows.seoSetting.description,
             ogUrl: () => `${window.location.origin}/product/${rows.seoSetting.custom_url}`,
