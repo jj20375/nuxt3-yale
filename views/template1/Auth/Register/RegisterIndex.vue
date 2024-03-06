@@ -1,7 +1,7 @@
 <template>
-    <section class="mt-[86px] py-[60px] bg-gray-50 border-t border-gray-300">
+    <section class="mt-headerMb xl:mt-header py-[60px] bg-gray-50 border-t border-gray-300">
         <div class="container">
-            <div class="w-3/4 p-[60px] bg-white mx-auto rounded-[24px] border-[1px] border-gray-200">
+            <div class="w-full xl:w-3/4 p-[60px] bg-white mx-auto rounded-[24px] border-[1px] border-gray-200">
                 <h3 class="text-[24px] font-bold mb-6">加入會員</h3>
                 <el-form
                     class="custom-form"
@@ -10,7 +10,7 @@
                     :rules="rules"
                     require-asterisk-position="right"
                 >
-                    <div class="grid grid-cols-2 gap-6">
+                    <div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
                         <template
                             v-for="(item, index) in formDatas"
                             :key="index"

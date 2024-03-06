@@ -8,37 +8,39 @@
             <Breadcrumb :menus="breadcrumbs" />
         </template>
         <template #content>
-            <div class="max-w-[800px] mx-auto xl:mt-[80px]">
-                <!--   編輯區內容   -->
-                <div class="container mt-[24px] md:mt-[60px]">
-                    <div
-                        v-html="content"
-                        class="edit-section"
-                    ></div>
-                    <div class="mt-[40px] flex sm:flex-row flex-col gap-[24px] justify-center text-[20px] font-medium YaleSolisW-Bd">
-                        <div class="flex-1 flex flex-col items-center gap-[20px] py-[40px] bg-gray-50 rounded-[20px]">
-                            <div class="flex items-center gap-3">
-                                <NuxtImg
-                                    class="w-[36px]"
-                                    src="/img/repair/repair-doc-icon.svg"
-                                />
-                                <div>保固登記</div>
+            <div class="container">
+                <div class="max-w-[800px] mx-auto xl:mt-[80px]">
+                    <!--   編輯區內容   -->
+                    <div class="mt-[24px] md:mt-[60px]">
+                        <div
+                            v-html="content"
+                            class="edit-section"
+                        ></div>
+                        <div class="mt-[40px] flex sm:flex-row flex-col gap-[24px] justify-center text-[20px] font-medium YaleSolisW-Bd">
+                            <div class="flex-1 flex flex-col items-center gap-[20px] py-[40px] bg-gray-50 rounded-[20px]">
+                                <div class="flex items-center gap-3">
+                                    <NuxtImg
+                                        class="w-[36px]"
+                                        src="/img/repair/repair-doc-icon.svg"
+                                    />
+                                    <div>保固登記</div>
+                                </div>
+                                <NuxtLink :to="{ name: 'repair-warranty-slug', params: { slug: '保固登記' } }">
+                                    <button class="yellow-btn btn-md btn-sm">前往申請</button>
+                                </NuxtLink>
                             </div>
-                            <NuxtLink :to="{ name: 'repair-warranty-slug', params: { slug: '保固登記' } }">
-                                <button class="yellow-btn btn-md btn-sm">前往申請</button>
-                            </NuxtLink>
-                        </div>
-                        <div class="flex-1 flex flex-col items-center gap-[20px] py-[40px] bg-gray-50 rounded-[20px]">
-                            <div class="flex items-center xl:gap-3 gap-[8px]">
-                                <NuxtImg
-                                    class="w-[36px]"
-                                    src="/img/repair/repair-tool-icon.svg"
-                                />
-                                <div>線上報修</div>
+                            <div class="flex-1 flex flex-col items-center gap-[20px] py-[40px] bg-gray-50 rounded-[20px]">
+                                <div class="flex items-center xl:gap-3 gap-[8px]">
+                                    <NuxtImg
+                                        class="w-[36px]"
+                                        src="/img/repair/repair-tool-icon.svg"
+                                    />
+                                    <div>線上報修</div>
+                                </div>
+                                <NuxtLink :to="{ name: 'repair-detail-slug', params: { slug: '線上報修' } }">
+                                    <button class="yellow-btn btn-md btn-sm">前往申請</button>
+                                </NuxtLink>
                             </div>
-                            <NuxtLink :to="{ name: 'repair-detail-slug', params: { slug: '線上報修' } }">
-                                <button class="yellow-btn btn-md btn-sm">前往申請</button>
-                            </NuxtLink>
                         </div>
                     </div>
                 </div>

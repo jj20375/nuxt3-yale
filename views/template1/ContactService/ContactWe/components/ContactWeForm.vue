@@ -1,5 +1,5 @@
 <template>
-    <div class="sm:rounded-[24px] rounded-[12px] border border-gray-200 p-[24px] sm:p-[60px]">
+    <div class="rounded-[24px] border border-gray-200 px-[24px] py-[36px] sm:p-[60px]">
         <h2 class="text-[24px] mb-[30px] font-medium">填寫您的聯絡資訊</h2>
         <el-form
             ref="formRefDom"

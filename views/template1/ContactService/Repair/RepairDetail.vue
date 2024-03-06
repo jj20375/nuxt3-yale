@@ -17,7 +17,7 @@
                     :rules="rules"
                     require-asterisk-position="right"
                 >
-                    <div class="w-full sm:w-3/4 mt-[24px] sm:mt-[80px] p-[24px] sm:p-[60px] bg-white mx-auto rounded-[12px] sm:rounded-[24px] border-[1px] border-gray-200">
+                    <div class="w-full xl:w-3/4 mt-[36px] sm:mt-[80px] px-[24px] py-[36px] sm:p-[60px] bg-white mx-auto rounded-[12px] sm:rounded-[24px] border-[1px] border-gray-200">
                         <h3 class="text-[24px] font-bold mb-6">報修聯絡人</h3>
                         <div class="flex flex-col sm:grid grid-cols-2 gap-6">
                             <template
@@ -58,7 +58,7 @@
                                 </div>
                                 <div
                                     v-else
-                                    class="flex flex-col sm:flex-row flex-1 gap-6"
+                                    class="flex flex-col md:flex-row flex-1 gap-6"
                                     :class="item.span ? `col-span-${item.span}` : ''"
                                 >
                                     <div
@@ -104,7 +104,7 @@
                             </template>
                         </div>
                     </div>
-                    <div class="w-full sm:w-3/4 mt-[24px] sm:mt-[80px] p-[24px] sm:p-[60px] bg-white mx-auto rounded-[12px] sm:rounded-[24px] border-[1px] border-gray-200">
+                    <div class="w-full xl:w-3/4 mt-[36px] sm:mt-[80px] px-[24px] py-[36px] sm:p-[60px] bg-white mx-auto rounded-[12px] sm:rounded-[24px] border-[1px] border-gray-200">
                         <h3 class="text-[24px] font-bold mb-6">報修商品資訊</h3>
                         <div class="flex flex-col sm:grid grid-cols-2 gap-6">
                             <template

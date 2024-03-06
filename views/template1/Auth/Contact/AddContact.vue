@@ -59,13 +59,12 @@
                             </div>
                             <div
                                 v-else
-                                class="flex flex-1"
+                                class="flex flex-col md:flex-row flex-1 gap-[30px]"
                             >
                                 <div
                                     v-for="(item2, index2) in item.datas"
                                     class="flex-1"
                                     :key="index2"
-                                    :class="item.datas.length - 1 === index2 ? '' : 'mr-4 md:mr-[30px]'"
                                 >
                                     <el-form-item
                                         :prop="item2.prop"
