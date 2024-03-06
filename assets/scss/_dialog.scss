@@ -12,7 +12,7 @@
   }
   .el-dialog__body{
     -webkit-overflow-scrolling: touch;
-    @apply relative pt-0 pb-[40px] sm:py-[40px] pl-[12px] sm:pl-[24px] pr-[16px] sm:pr-[32px] h-full overflow-y-auto #{!important};
+    @apply relative pt-0 pb-[40px] sm:pb-[40px] pl-[12px] sm:pl-[24px] pr-[16px] sm:pr-[32px] h-full overflow-y-auto #{!important};
   }
 
   // 客制scrollbar

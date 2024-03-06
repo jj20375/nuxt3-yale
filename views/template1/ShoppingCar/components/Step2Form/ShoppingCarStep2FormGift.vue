@@ -1,6 +1,6 @@
 <template>
     <div class="mt-[40px] sm:mt-[60px]">
-        <h5 class="bg-gray-50 py-[8px] pl-[16px] font-medium w-full mb-[30px]">滿額贈品</h5>
+        <h5 class="bg-gray-50 py-[8px] pl-[16px] font-medium YaleSolisW-Bd w-full mb-[30px]">滿額贈品</h5>
         <el-checkbox-group
             v-model="checkList"
             @change="selectGift"
@@ -19,7 +19,7 @@
                         src="/img/shopping-car/shopping-gift-demo-1.jpg"
                     />
                     <div class="flex-1">
-                        <h5 class="text-[18px] text-gray-800 font-medium mb-[12px]">{{ gift.name }}</h5>
+                        <h5 class="text-[18px] text-gray-800 YaleSolisW-Bd font-medium mb-[12px]">{{ gift.name }}</h5>
                         <el-form-item>
                             <el-select
                                 v-model="formData[index].color"

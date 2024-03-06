@@ -18,7 +18,7 @@
                 >
                     <div class="w-full xl:w-3/4 mt-[36px] sm:mt-[80px] px-[24px] py-[36px] sm:p-[60px] bg-white mx-auto rounded-[12px] sm:rounded-[24px] border-[1px] border-gray-200">
                         <h3 class="text-[24px] font-bold mb-6">報修聯絡人</h3>
-                        <div class="flex flex-col grid-cols-2 gap-6 sm:grid">
+                        <div class="flex flex-col grid-cols-2 gap-6 md:grid">
                             <template
                                 v-for="(item, index) in formDatas.contactDatas"
                                 :key="index"
@@ -94,7 +94,7 @@
                                         </el-form-item>
                                     </div>
                                 </div>
-                                <template v-if="item.space && !isMobile">
+                                <template v-if="item.space && !isPad">
                                     <div
                                         v-for="index in item.space"
                                         :key="index"
@@ -105,7 +105,7 @@
                     </div>
                     <div class="w-full xl:w-3/4 mt-[36px] sm:mt-[80px] px-[24px] py-[36px] sm:p-[60px] bg-white mx-auto rounded-[12px] sm:rounded-[24px] border-[1px] border-gray-200">
                         <h3 class="text-[24px] font-bold mb-6">報修商品資訊</h3>
-                        <div class="flex flex-col grid-cols-2 gap-6 sm:grid">
+                        <div class="flex flex-col grid-cols-2 gap-6 md:grid">
                             <template
                                 v-for="(item, index) in formDatas.productDatas"
                                 :key="index"
@@ -228,7 +228,7 @@
                                         </el-form-item>
                                     </div>
                                 </div>
-                                <template v-if="item.space">
+                                <template v-if="item.space && !isPad">
                                     <div
                                         v-for="index in item.space"
                                         :key="index"
@@ -307,7 +307,7 @@ import { ProductListAPIInterface } from "~/interface/product.d";
 const { $api, $utils } = useNuxtApp();
 const router = useRouter();
 const route = useRoute();
-const { isMobile } = useWindowResize();
+const { isPad } = useWindowResize();
 
 const {
     public: { googleRecaptcha2Key },

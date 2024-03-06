@@ -15,7 +15,7 @@
                     require-asterisk-position="right"
                 >
                     <div class="flex items-center justify-between mb-4">
-                        <h3 class="font-medium text-[24px] md:text-[32px] text-center sm:mb-8">新增聯繫人</h3>
+                        <h3 class="font-medium YaleSolisW-Bd text-[24px] md:text-[32px] text-center sm:mb-8">新增聯繫人</h3>
                         <el-form-item>
                             <el-switch
                                 v-model="form.default"

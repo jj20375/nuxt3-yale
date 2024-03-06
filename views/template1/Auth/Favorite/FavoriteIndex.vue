@@ -7,7 +7,7 @@
         </nav>
         <div class="container">
             <div class="mt-[36px] sm:mt-[60px]">
-                <h3 class="font-medium text-[24px] sm:text-[32px] mb-[24px] sm:mb-8">產品收藏清單</h3>
+                <h3 class="font-medium YaleSolisW-Bd text-[24px] sm:text-[32px] mb-[24px] sm:mb-8">產品收藏清單</h3>
                 <div class="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-x-5 gap-y-8 flex-wrap justify-center">
                     <template
                         v-for="item in datas"

@@ -1,6 +1,6 @@
 <template>
     <div class="sm:mt-[60px]">
-        <h5 class="bg-gray-50 py-[8px] font-medium pl-[16px] w-full mb-[24px] sm:mb-[30px]">聯繫人</h5>
+        <h5 class="bg-gray-50 py-[8px] font-medium YaleSolisW-Bd pl-[16px] w-full mb-[24px] sm:mb-[30px]">聯繫人</h5>
         <div class="flex items-center gap-[30px] mb-[24px] sm:mb-[30px]">
             <el-checkbox
                 class="relative"

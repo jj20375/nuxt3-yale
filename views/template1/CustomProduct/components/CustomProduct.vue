@@ -72,7 +72,7 @@
             close-on-click-modal
             lock-scroll
             show-close
-            :width="isPad ? 600 : 800"
+            :width="isLargePad ? 600 : 800"
             center
             align-center
             append-to-body
@@ -112,7 +112,7 @@ import CustomProductDailogCarousel from "~/views/template1/CustomProduct/compone
 import { done } from "@liff/ready";
 
 const { $utils } = useNuxtApp();
-const { isPad } = useWindowResize();
+const { isLargePad } = useWindowResize();
 
 const emit = defineEmits(["update:currentProductId", "update:currentProductData"]);
 

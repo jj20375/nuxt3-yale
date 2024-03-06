@@ -17,13 +17,13 @@
             <h1 class="text-white text-[28px] md:text-[32px] xl:text-[40px] YaleSolisW-Bd font-medium absolute z-10">{{ title }}</h1>
         </div>
         <slot
-            v-if="isPad"
+            v-if="isLargePad"
             name="sidebar"
         ></slot>
         <div class="container">
             <div class="xl:mt-[60px] mt-[30px] flex flex-col xl:flex-row gap-4 xl:gap-0">
                 <slot
-                    v-if="!isPad"
+                    v-if="!isLargePad"
                     name="sidebar"
                 ></slot>
                 <main class="flex-1 xl:pl-[40px]">
@@ -53,5 +53,5 @@ const props = defineProps({
         default: "mb-[100px]",
     },
 });
-const { isPad } = useWindowResize();
+const { isLargePad } = useWindowResize();
 </script>

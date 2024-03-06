@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h5 class="bg-gray-50 py-[8px] font-medium pl-[16px] w-full mb-[16px] sm:mb-[30px]">訂購人</h5>
+        <h5 class="bg-gray-50 py-[8px] YaleSolisW-Bd font-medium pl-[16px] w-full mb-[16px] sm:mb-[30px]">訂購人</h5>
         <el-form
             ref="formRefDom"
             class="custom-form"

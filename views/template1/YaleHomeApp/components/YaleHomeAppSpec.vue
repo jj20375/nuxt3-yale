@@ -1,6 +1,6 @@
 <template>
     <section class="max-w-[950px] mx-auto text-gray-800 px-[24px]">
-        <div class="flex flex-col sm:flex-row mt-[20px] sm:mt-[40px]">
+        <div class="flex flex-col sm:flex-row mt-[20px] sm:mt-[40px] gap-4">
             <div class="flex-1">
                 <h2 class="sm:text-[24px] text-[18px] font-medium YaleSolisW-Bd mb-[12px] sm:mb-[20px]">規格</h2>
                 <div
@@ -26,7 +26,7 @@
                 </div>
             </div>
         </div>
-        <div class="mt-[36px] sm:mt-0">
+        <div class="mt-[36px]">
             <h2 class="sm:text-[24px] text-[18px] font-medium YaleSolisW-Bd mb-[12px] sm:mb-[20px]">APP下載</h2>
             <div class="flex gap-[20px]">
                 <NuxtImg

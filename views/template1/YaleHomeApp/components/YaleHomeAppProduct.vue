@@ -1,6 +1,6 @@
 <template>
-    <section>
-        <div class="max-w-[950px] mx-auto my-[30px] sm:my-[60px] px-[24px]">
+    <section class="container">
+        <div class="max-w-[950px] mx-auto my-[30px] sm:my-[60px]">
             <div class="flex flex-col-reverse sm:flex-row items-center sm:gap-[80px]">
                 <NuxtImg
                     v-if="props.products.image"

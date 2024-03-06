@@ -28,7 +28,7 @@
                         v-if="formData[index]"
                     >
                         <div class="flex mb-[12px]">
-                            <h5 class="flex-1 text-[16px] sm:text-[18px] text-gray-800 font-medium">{{ product.name }}</h5>
+                            <h5 class="flex-1 text-[16px] sm:text-[18px] text-gray-800 font-medium YaleSolisW-Bd">{{ product.name }}</h5>
                             <div class="hidden sm:flex gap-4">
                                 <p class="text-gray-400 line-through YaleSolisW-Lt mr-[4px]">NT${{ $utils().formatCurrency(product.price) }}</p>
                                 <p class="font-medium text-[18px] YaleSolisW-Bd">NT$ {{ $utils().formatCurrency(product.market_price * formData[index].count) }}</p>

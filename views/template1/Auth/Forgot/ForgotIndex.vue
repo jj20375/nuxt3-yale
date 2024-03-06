@@ -2,7 +2,7 @@
     <section class="mt-headerMb xl:mt-header border-t border-gray-300 py-[60px]">
         <div class="container">
             <div class="w-full xl:w-3/4 py-[32px] sm:py-[60px] px-[24px] sm:px-[60px] bg-white mx-auto rounded-[24px] border-[1px] border-gray-200">
-                <h3 class="font-medium text-[22px] md:text-[28px] mb-5">忘記密碼</h3>
+                <h3 class="font-medium YaleSolisW-Bd text-[22px] md:text-[28px] mb-5">忘記密碼</h3>
                 <p class="mb-7">請輸入您註冊帳號時填寫的 Email 信箱，並點擊「確認送出」以發送變更密碼的訊息到您的 Email 信箱！</p>
                 <el-form
                     class="custom-form"

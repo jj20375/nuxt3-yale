@@ -1,6 +1,6 @@
 <template>
     <div class="mt-[60px]">
-        <h5 class="bg-gray-50 py-[8px] pl-[16px] w-full font-medium mb-[30px]">預約丈量時間</h5>
+        <h5 class="bg-gray-50 py-[8px] pl-[16px] w-full YaleSolisW-Bd font-medium mb-[30px]">預約丈量時間</h5>
         <el-form
             ref="formRefDom"
             :model="formData"

@@ -25,7 +25,7 @@
                             <div class="mt-[24px] md:mt-[40px]">
                                 <button
                                     class="animation-btn"
-                                    :class="isMobile ? 'm-auto btn-xs' : isPad ? 'm-auto' : 'btn-lg'"
+                                    :class="isMobile ? 'm-auto btn-xs' : isLargePad ? 'm-auto' : 'btn-lg'"
                                 >
                                     了解更多
                                 </button>
@@ -41,7 +41,7 @@
 <script setup lang="ts">
 // import required modules
 import { Navigation, Pagination } from "swiper/modules";
-const { isDesktop, isMobile, isPad } = useWindowResize();
+const { isDesktop, isMobile, isLargePad } = useWindowResize();
 
 interface Props {
     carousel: {

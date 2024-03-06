@@ -1,7 +1,7 @@
 <template>
     <header
         class="fixed z-[500] items-center w-full duration-500 transition-all"
-        :class="[isMenuFixed || isPad ? 'bg-white fixed top-0 border-b border-gray-300' : route.name === 'index' ? 'top-0 border-b border-transparent' : '', route.name !== 'index' ? 'fixed top-0 bg-white border-b border-gray-300' : '']"
+        :class="[isMenuFixed || isLargePad ? 'bg-white fixed top-0 border-b border-gray-300' : route.name === 'index' ? 'top-0 border-b border-transparent' : '', route.name !== 'index' ? 'fixed top-0 bg-white border-b border-gray-300' : '']"
     >
         <nav
             class="xl:mx-[32px] xl:flex items-center xl:text-left text-center h-headerMb transition-all duration-300"
@@ -42,9 +42,9 @@
                 >
                     <div
                         v-if="menu.submenus.length > 0"
-                        @mouseover="isPad ? null : changeMenu(key)"
+                        @mouseover="isLargePad ? null : changeMenu(key)"
                         @mouseleave="closeMenu"
-                        @click="isPad ? toggleMenu(key) : null"
+                        @click="isLargePad ? toggleMenu(key) : null"
                         class="xl:px-3 2xl:px-4 3xl:px-5 text-gray-800 cursor-pointer hover:text-gray-500"
                         :class="isMenuFixed ? 'xl:py-[23px]' : 'xl:py-[33px]'"
                     >
@@ -55,14 +55,14 @@
                                 :class="menuStatus[key] ? 'rotate-180' : 'rotate-0'"
                             >
                                 <font-awesome-icon
-                                    v-if="isPad"
+                                    v-if="isLargePad"
                                     class=""
                                     :icon="['fas', 'chevron-down']"
                                 />
                             </div>
                         </div>
                         <div
-                            v-if="!isPad"
+                            v-if="!isLargePad"
                             class="absolute left-0 z-50 bg-white w-full"
                             :class="isMenuFixed ? 'top-[66px]' : 'top-[86px]'"
                         >
@@ -205,7 +205,7 @@ import IconLine from "~/assets/img/icons/medias/icon-black-3.svg";
 import IconYoutube from "~/assets/img/icons/medias/icon-black-4.svg";
 import IconMenu from "~/assets/img/icons/menu.svg";
 
-const { isPad, isDesktop } = useWindowResize();
+const { isLargePad, isDesktop } = useWindowResize();
 
 // 手機版時判斷是否顯示選單
 const showMenu = ref(false);

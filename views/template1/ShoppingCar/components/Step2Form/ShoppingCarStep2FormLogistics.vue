@@ -1,6 +1,6 @@
 <template>
     <div class="mt-[30px] sm:mt-[60px]">
-        <h5 class="bg-gray-50 py-[8px] pl-[16px] w-full font-medium mb-[16px] sm:mb-[30px]">配送方式</h5>
+        <h5 class="bg-gray-50 py-[8px] pl-[16px] w-full YaleSolisW-Bd font-medium mb-[16px] sm:mb-[30px]">配送方式</h5>
         <el-form
             ref="formRefDom"
             class="custom-form"
