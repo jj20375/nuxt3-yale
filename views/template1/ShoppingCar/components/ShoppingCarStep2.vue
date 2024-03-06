@@ -24,7 +24,7 @@
             v-model:form="formMeasureTheSize"
         />
         <ShoppingCarStep2FormInvoice
-            v-if="formPayment.value.paymentType !== 'stronghold'"
+            v-if="formPayment.paymentType !== 'stronghold'"
             ref="formInvoiceRef"
             v-model:form="formInvoice"
         />
@@ -332,8 +332,9 @@ const checkout = async () => {
         payment_gateway: formPayment.value.paymentType,
         shipping_method: formLogistics.value.logistics,
         cart_item_id: props.selectProductIds,
+        // 發票類型
         invoice_type: formInvoice.value.invoiceType,
-        carrier_code: formInvoice.value.invoiceType === "mobile_carrier" || formInvoice.value.invoiceType === "natural_person_certificate" ? formInvoice.value.carrierCode : undefined,
+        carrier_code: formInvoice.value.invoice_type === "mobile_carrier" || formInvoice.value.invoiceType === "natural_person_certificate" ? formInvoice.value.carrierCode : undefined,
         donation_code: formInvoice.value.invoiceType === "donation" ? formInvoice.value.donationCode : undefined,
         tax_number: formInvoice.value.invoiceType === "company" ? formInvoice.value.taxNumber : undefined,
         redirect_url: props.currentTab === "type2" ? `${hostUrl}/is_type2` : `${hostUrl}/is_type1`,
@@ -345,8 +346,11 @@ const checkout = async () => {
         delete req.shipping_method;
         delete req.cart_item_id;
         if (formPayment.value.paymentType === "stronghold") {
-            console.log("formPayment.value =>", formPayment.value);
             req.stronghold_id = formPayment.value.offlineStore;
+            delete req.invoice_type;
+            delete req.carrier_code;
+            delete req.donation_code;
+            delete req.tax_number;
         }
     }
 
