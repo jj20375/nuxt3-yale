@@ -24,7 +24,6 @@
             v-model:selectProudctIds="selectAddPriceProductIds"
         />
 
-        {{ selectProductIds }}
         <ShoppingCarSales />
         <div class="flex">
             <NuxtLink

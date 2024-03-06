@@ -34,6 +34,8 @@ export interface ReqCheckout {
     reservation_date?: string;
     // 收款門市 id
     stronghold_id?: number;
+    // 導頁網址
+    redirect_url: string;
 }
 
 /**
