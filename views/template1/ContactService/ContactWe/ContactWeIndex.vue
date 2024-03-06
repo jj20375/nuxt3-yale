@@ -60,13 +60,12 @@ const breadcrumbs = ref([
     {
         name: "contact-slug",
         text: "服務支援",
-        params: { slug: "服務支援" },
+        params: { slug: "聯絡我們" },
     },
     {
         name: "contact-slug",
         text: "聯絡我們",
         params: { slug: "聯絡我們" },
-        query: { id: "1" },
     },
 ]);
 

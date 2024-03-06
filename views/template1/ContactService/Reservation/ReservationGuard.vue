@@ -415,14 +415,18 @@ const { $api } = useNuxtApp();
 
 const breadcrumbs = ref([
     {
-        name: "faq-slug",
+        name: "index",
+        text: "首頁",
+    },
+    {
+        name: "reservation-guard-slug",
         text: "服務支援",
-        params: { slug: "服務支援" },
+        params: { slug: "新光保全安裝" },
     },
     {
         name: "reservation-slug",
-        params: { slug: "預約安裝" },
         text: "預約安裝",
+        params: { slug: "預約安裝" },
     },
     {
         name: "reservation-guard-slug",

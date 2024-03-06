@@ -33,7 +33,10 @@
                                     v-for="(icon, index) in contact.icons"
                                     :key="index"
                                 >
-                                    <div @click="toSocialMedia(icon)" class="flex justify-center items-center !w-[32px] !h-[32px] cursor-pointer group cursor-pointer">
+                                    <div
+                                        @click="toSocialMedia(icon)"
+                                        class="flex justify-center items-center !w-[32px] !h-[32px] cursor-pointer group cursor-pointer"
+                                    >
                                         <component
                                             class="!w-[24px] !h-[24px] transition-all duration-300 group-hover:text-yellow-500 group-hover:transition-all group-hover:duration-300"
                                             :is="icon.iconName"
@@ -54,7 +57,10 @@
                                 v-for="(caluse, index) in copyright['caluses']"
                                 :key="index"
                             >
-                                <NuxtLink class="hover:text-yellow-500" :to="caluse.url">
+                                <NuxtLink
+                                    class="hover:text-yellow-500"
+                                    :to="caluse.url"
+                                >
                                     {{ caluse.text }}
                                 </NuxtLink>
                             </li>
@@ -155,7 +161,7 @@ const footerDatas = ref({
                 text: "服務中心",
                 url: {
                     name: "faq-slug",
-                    params: { slug: "耶魯服務中心" },
+                    params: { slug: "服務中心" },
                     query: { id: "1" },
                 },
             },
@@ -163,15 +169,14 @@ const footerDatas = ref({
                 text: "維修與保固",
                 url: {
                     name: "repair-slug",
-                    params: { slug: "耶魯維修與保固" },
-                    query: { id: "1" },
+                    params: { slug: "維修與保固" },
                 },
             },
             {
                 text: "檔案下載",
                 url: {
                     name: "file-download-slug",
-                    params: { slug: "耶魯檔案下載" },
+                    params: { slug: "檔案下載" },
                     query: { id: "1" },
                 },
             },
@@ -179,16 +184,14 @@ const footerDatas = ref({
                 text: "預約安裝",
                 url: {
                     name: "reservation-slug",
-                    params: { slug: "耶魯預約安裝" },
-                    query: { id: "1" },
+                    params: { slug: "預約安裝" },
                 },
             },
             {
                 text: "聯絡我們",
                 url: {
                     name: "contact-slug",
-                    params: { slug: "耶魯聯絡我們" },
-                    query: { id: "1" },
+                    params: { slug: "聯絡我們" },
                 },
             },
         ],
@@ -258,11 +261,11 @@ const contact = ref({
     phone: initializationData.value.site.contact_phone,
 });
 
-function toSocialMedia (socialMedia: { url: string|URL|undefined; }) {
+function toSocialMedia(socialMedia: { url: string | URL | undefined }) {
     if (socialMedia.url) {
         open(socialMedia.url, "_blank");
     }
-};
+}
 
 const copyright = {
     text: `${initializationData.value.site.site_name} © Copyright All Rights Reserved. Powerd by 可思科技-網站架設`,

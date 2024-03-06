@@ -10,7 +10,10 @@
             <SideBar :menus="sidebar" />
         </template>
         <template #list>
-            <ListItem :datas="datas" />
+            <ListItem
+                ref="listRef"
+                :datas="datas"
+            />
         </template>
         <template #pagination>
             <Pagination
@@ -165,10 +168,17 @@ async function getList(params: { per_page: number; page: number; stronghold_cate
                 imgSrc: item.image,
             });
         });
+
+        nextTick(async () => {
+            listRef.value.domRef[anchorIndex.value].scrollIntoView({ block: "center", behavior: "smooth" });
+        });
     } catch (err) {
         console.log("HomeSampleAPI => ", err);
     }
 }
+
+const listRef = ref<any>();
+const anchorIndex = ref<any>();
 
 /**
  * 初始化
@@ -176,13 +186,23 @@ async function getList(params: { per_page: number; page: number; stronghold_cate
 async function init() {
     await getType();
     console.log("route.query.id", route);
-    await getList({ per_page: pagination.value.pageSize, page: 1, stronghold_category_id: route.query.id });
+    let page = 1;
+    if (process.client) {
+        console.log("history.state", history.state);
+        if (history.state.index) {
+            page = Math.floor(history.state.index / pagination.value.pageSize) + 1;
+            anchorIndex.value = history.state.index % pagination.value.pageSize;
+            pagination.value.page = page;
+        }
+    }
+    await getList({ per_page: pagination.value.pageSize, page: page, stronghold_category_id: route.query.id });
 }
 
-await init();
+// await init();
 onMounted(async () => {
     nextTick(async () => {
         if (process.client) {
+            await init();
         }
     });
 });

@@ -20,6 +20,7 @@
                             router.push({
                                 params: { slug: '直營門市' },
                                 query: { id: 1 },
+                                state: { index: index },
                                 name: 'store-slug',
                             })
                         "

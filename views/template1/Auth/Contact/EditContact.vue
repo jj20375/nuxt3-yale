@@ -308,7 +308,7 @@ async function getList(params: { memberAddressId: any }) {
         });
 
         form.value = {
-            default: contactData.is_default,
+            default: contactData.is_default == 1,
             contactName: contactData.name,
             phone: contactData.phone,
             city: contactData.city,
