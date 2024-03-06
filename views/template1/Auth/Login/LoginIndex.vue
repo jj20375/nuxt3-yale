@@ -194,7 +194,7 @@ async function onSubmit() {
                     userStore.setIsAuth(true);
                     await shoppingCarStore.syncCart();
                     await shoppingCarStore.syncCustomCart();
-                    userStore.getUserProfile();
+                    await userStore.getUserProfile();
                     router.push({ name: "auth-panel-slug", params: { slug: "會員中心" } });
                 } else {
                     ElMessage({
