@@ -24,6 +24,7 @@
             v-model:form="formMeasureTheSize"
         />
         <ShoppingCarStep2FormInvoice
+            v-if="formPayment.value.paymentType !== 'stronghold'"
             ref="formInvoiceRef"
             v-model:form="formInvoice"
         />

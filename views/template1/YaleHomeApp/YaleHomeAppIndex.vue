@@ -2,7 +2,6 @@
     <BannerLayout
         :title="'Yale Home App'"
         :banner="'/img/yale-home-app/yale-home-app-banner.jpg'"
-        :banner-mobile="'/img/yale-home-app/yale-home-app-banner-m.jpg'"
     >
         <template #breadcrumbs>
             <Breadcrumb :menus="breadcrumbs" />

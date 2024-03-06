@@ -2,7 +2,6 @@
     <BannerLayout
         :title="'聯絡我們'"
         :banner="'/img/contact/contact-banner.jpg'"
-        :banner-mobile="'/img/contact/contact-banner-m.jpg'"
     >
         <template #breadcrumbs>
             <Breadcrumb :menus="breadcrumbs" />

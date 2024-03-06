@@ -2,7 +2,6 @@
     <BannerLayout
         :title="'一般安裝'"
         :banner="'/img/reservation/reservation-banner.jpg'"
-        :banner-mobile="'/img/reservation/reservation-banner-m.jpg'"
         class="bg-gray-50"
     >
         <template #breadcrumbs>
@@ -21,7 +20,7 @@
                         <div>親愛的顧客您好：<br />完成預約後，專人將會在 3 個工作天內主動致電聯繫，詢問及確認需求，並且協助預約到府安裝。</div>
                         <div class="my-[16px] sm:my-[30px] border-b-[1px] border-gray-200"></div>
                         <h3 class="text-[24px] font-bold mb-6">申請人</h3>
-                        <div class="flex flex-col sm:grid grid-cols-2 gap-6">
+                        <div class="flex flex-col grid-cols-2 gap-6 sm:grid">
                             <template
                                 v-for="(item, index) in formDatas.applyDatas"
                                 :key="index"
@@ -60,7 +59,7 @@
                                 </div>
                                 <div
                                     v-else
-                                    class="flex flex-col sm:flex-row flex-1 gap-6"
+                                    class="flex flex-col flex-1 gap-6 sm:flex-row"
                                     :class="item.span ? `col-span-${item.span}` : ''"
                                 >
                                     <div
@@ -121,7 +120,7 @@
                     </div>
                     <div class="w-full sm:w-3/4 mt-[24px] sm:mt-[80px] p-[24px] sm:p-[60px] bg-white mx-auto rounded-[12px] sm:rounded-[24px] border-[1px] border-gray-200">
                         <h3 class="text-[24px] font-bold mb-6">商品安裝相關</h3>
-                        <div class="flex flex-col sm:grid grid-cols-2 gap-6">
+                        <div class="flex flex-col grid-cols-2 gap-6 sm:grid">
                             <template
                                 v-for="(item, index) in formDatas.installDatas"
                                 :key="index"
@@ -222,7 +221,7 @@
                     </div>
                     <div class="w-full sm:w-3/4 mt-[24px] sm:mt-[80px] p-[24px] sm:p-[60px] bg-white mx-auto rounded-[12px] sm:rounded-[24px] border-[1px] border-gray-200">
                         <h3 class="text-[24px] font-bold mb-6">廠商資訊</h3>
-                        <div class="flex flex-col sm:grid grid-cols-2 gap-6">
+                        <div class="flex flex-col grid-cols-2 gap-6 sm:grid">
                             <template
                                 v-for="(item, index) in formDatas.firmDatas"
                                 :key="index"
@@ -262,7 +261,7 @@
                     </div>
                     <div class="w-full sm:w-3/4 mt-[24px] sm:mt-[80px] p-[24px] sm:p-[60px] bg-white mx-auto rounded-[12px] sm:rounded-[24px] border-[1px] border-gray-200">
                         <h3 class="text-[24px] font-bold mb-6">上傳照片</h3>
-                        <div class="flex flex-col sm:grid grid-cols-2 gap-6">
+                        <div class="flex flex-col grid-cols-2 gap-6 sm:grid">
                             <template
                                 v-for="(item, index) in formDatas.updateDatas"
                                 :key="index"
@@ -270,7 +269,7 @@
                                 <div :class="item.span ? `col-span-${item.span}` : ''">
                                     <el-form-item :prop="item.prop">
                                         <label class="block w-full text-[15px] text-gray-800"> {{ item.label }} <span class="text-red-500">*</span> </label>
-                                        <div class="flex-col sm:flex-row flex w-full gap-4 mt-2 mb-4">
+                                        <div class="flex flex-col w-full gap-4 mt-2 mb-4 sm:flex-row">
                                             <div
                                                 class="flex items-center gap-1 underline cursor-pointer underline-offset-2 hover:no-underline"
                                                 @click="handleDialog('locker')"
