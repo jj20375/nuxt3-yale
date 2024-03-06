@@ -99,11 +99,17 @@
                         </div>
                         <div class="grid grid-cols-2 md:flex mt-4 gap-4 justify-center">
                             <NuxtLink :to="{ name: 'auth-contact-slug', params: { slug: '常用聯繫人' } }">
-                                <button class="transparent-btn" :class="isMobile ? 'w-full':'btn-md'">返回</button>
+                                <button
+                                    class="transparent-btn"
+                                    :class="isMobile ? 'w-full' : 'btn-md'"
+                                >
+                                    返回
+                                </button>
                             </NuxtLink>
                             <button
                                 @click.prevent="onSubmit"
-                                class="yellow-btn" :class="isMobile ? '':'btn-md'"
+                                class="yellow-btn"
+                                :class="isMobile ? '' : 'btn-md'"
                             >
                                 儲存
                             </button>
@@ -305,6 +311,7 @@ async function onSubmit() {
                     district: form.value.location,
                     zip3: form.value.zip3,
                     address: form.value.address,
+                    is_default: form.value.default,
                 };
                 const { data, status, error } = await $api().ADDChangeProfileAPI(params);
                 if (status.value === "success") {
