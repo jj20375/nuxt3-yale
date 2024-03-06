@@ -2,7 +2,6 @@
     <BannerLayout
         :title="'預約安裝'"
         :banner="'/img/repair/repair-banner.jpg'"
-        :banner-mobile="'/img/repair/repair-banner-m.jpg'"
     >
         <template #breadcrumbs>
             <Breadcrumb :menus="breadcrumbs" />
@@ -62,15 +61,14 @@ const breadcrumbs = ref([
         text: "首頁",
     },
     {
-        name: "faq-slug",
+        name: "reservation-slug",
         text: "服務支援",
-        params: { slug: "服務支援" },
+        params: { slug: "預約安裝" },
     },
     {
-        name: "repair-slug",
+        name: "reservation-slug",
         text: "預約安裝",
         params: { slug: "預約安裝" },
-        query: { id: route.query.id },
     },
 ]);
 

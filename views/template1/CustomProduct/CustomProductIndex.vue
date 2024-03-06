@@ -624,6 +624,7 @@ async function addToShoppingCar() {
     }
     data["singlePrice"] = price;
     data["price"] = price * count.value;
+    data["totalPrice"] = price * count.value;
     data["doorLimit"] = doorLimit.value;
     console.log("addToCustomCart =>", data);
     try {

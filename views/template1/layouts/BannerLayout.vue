@@ -6,7 +6,7 @@
             </div>
         </nav>
         <div
-            :style="!isMobile ? `background-image: url(${banner})` : `background-image: url(${bannerMobile})`"
+            :style="`background-image: url(${banner})`"
             class="relative h-[195px] md:h-[240px] xl:h-[320px] w-full bg-cover bg-center flex items-center justify-center"
         >
             <!-- <NuxtImg :src="banner" /> -->

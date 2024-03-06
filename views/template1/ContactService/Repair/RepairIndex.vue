@@ -2,7 +2,6 @@
     <BannerLayout
         :title="'維修與保固'"
         :banner="'/img/repair/repair-banner.jpg'"
-        :banner-mobile="'/img/repair/repair-banner-m.jpg'"
     >
         <template #breadcrumbs>
             <Breadcrumb :menus="breadcrumbs" />
@@ -62,15 +61,14 @@ const breadcrumbs = ref([
         text: "首頁",
     },
     {
-        name: "faq-slug",
+        name: "repair-slug",
         text: "服務支援",
-        params: { slug: "服務支援" },
+        params: { slug: "維修與保固" },
     },
     {
         name: "repair-slug",
         text: "維修與保固",
         params: { slug: "維修與保固" },
-        query: { id: route.query.id },
     },
 ]);
 

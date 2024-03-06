@@ -24,6 +24,7 @@
             v-model:form="formMeasureTheSize"
         />
         <ShoppingCarStep2FormInvoice
+            v-if="formPayment.paymentType !== 'stronghold'"
             ref="formInvoiceRef"
             v-model:form="formInvoice"
         />
@@ -144,6 +145,7 @@ const { shoppingCar } = storeToRefs(shoppingCarStore);
 const { shoppingCustomCar } = storeToRefs(shoppingCarStore);
 
 const { $api, $shoppingCarService } = useNuxtApp();
+const $config = useRuntimeConfig();
 const router = useRouter();
 
 interface Props {
@@ -315,6 +317,7 @@ const initialVal = () => {
 
 // 結帳
 const checkout = async () => {
+    const hostUrl = $config.public.hostURL;
     const req: ReqCheckout = {
         type: props.currentTab === "type2" ? "combination" : "normal", // normal
         member_phone: formMain.value.phone,
@@ -329,10 +332,15 @@ const checkout = async () => {
         payment_gateway: formPayment.value.paymentType,
         shipping_method: formLogistics.value.logistics,
         cart_item_id: props.selectProductIds,
+        // 發票類型
         invoice_type: formInvoice.value.invoiceType,
-        carrier_code: formInvoice.value.invoiceType === "mobile_carrier" || formInvoice.value.invoiceType === "natural_person_certificate" ? formInvoice.value.carrierCode : undefined,
+        // 載具編號
+        carrier_code: formInvoice.value.invoice_type === "mobile_carrier" || formInvoice.value.invoiceType === "natural_person_certificate" ? formInvoice.value.carrierCode : undefined,
+        // 捐款碼
         donation_code: formInvoice.value.invoiceType === "donation" ? formInvoice.value.donationCode : undefined,
+        // 統一編號
         tax_number: formInvoice.value.invoiceType === "company" ? formInvoice.value.taxNumber : undefined,
+        redirect_url: props.currentTab === "type2" ? `${hostUrl}/is_type2` : `${hostUrl}/is_type1`,
     };
     // 訂製門扇需傳送參數
     if (props.currentTab === "type2") {
@@ -341,8 +349,11 @@ const checkout = async () => {
         delete req.shipping_method;
         delete req.cart_item_id;
         if (formPayment.value.paymentType === "stronghold") {
-            console.log("formPayment.value =>", formPayment.value);
             req.stronghold_id = formPayment.value.offlineStore;
+            delete req.invoice_type;
+            delete req.carrier_code;
+            delete req.donation_code;
+            delete req.tax_number;
         }
     }
 

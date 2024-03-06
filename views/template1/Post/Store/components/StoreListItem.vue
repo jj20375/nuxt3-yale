@@ -4,6 +4,7 @@
         :key="index"
         class="flex flex-col md:flex-row items-center gap-5 md:gap-[48px] list-card"
         :class="datas.length - 1 === index ? '' : 'md:mb-[48px] mb-[32px]'"
+        ref="domRef"
     >
         <NuxtImg
             :src="item.imgSrc"
@@ -67,5 +68,11 @@ const props = withDefaults(defineProps<Props>(), {
     ],
 });
 
+const domRef = ref<any>();
+
 const router = useRouter();
+
+defineExpose({
+    domRef,
+});
 </script>

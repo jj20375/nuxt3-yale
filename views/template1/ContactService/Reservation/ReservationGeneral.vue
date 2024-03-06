@@ -2,7 +2,6 @@
     <BannerLayout
         :title="'一般安裝'"
         :banner="'/img/reservation/reservation-banner.jpg'"
-        :banner-mobile="'/img/reservation/reservation-banner-m.jpg'"
         class="bg-gray-50"
     >
         <template #breadcrumbs>
@@ -270,7 +269,7 @@
                                 <div :class="item.span ? `col-span-${item.span}` : ''">
                                     <el-form-item :prop="item.prop">
                                         <label class="block w-full text-[15px] text-gray-800"> {{ item.label }} <span class="text-red-500">*</span> </label>
-                                        <div class="flex-col sm:flex-row flex w-full gap-4 mt-2 mb-4">
+                                        <div class="flex flex-col w-full gap-4 mt-2 mb-4 sm:flex-row">
                                             <div
                                                 class="flex items-center gap-1 underline cursor-pointer underline-offset-2 hover:no-underline"
                                                 @click="handleDialog('locker')"
@@ -365,14 +364,18 @@ const { $api } = useNuxtApp();
 
 const breadcrumbs = ref([
     {
-        name: "faq-slug",
+        name: "index",
+        text: "首頁",
+    },
+    {
+        name: "reservation-general-slug",
         text: "服務支援",
-        params: { slug: "服務支援" },
+        params: { slug: "一般安裝" },
     },
     {
         name: "reservation-slug",
-        params: { slug: "預約安裝" },
         text: "預約安裝",
+        params: { slug: "預約安裝" },
     },
     {
         name: "reservation-general-slug",

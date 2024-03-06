@@ -2,7 +2,6 @@
     <BannerLayout
         :title="'保固登記'"
         :banner="'/img/repair/repair-warranty-banner.jpg'"
-        :banner-mobile="'/img/repair/repair-warranty-banner-m.jpg'"
         class="bg-gray-50"
     >
         <template #breadcrumbs>
@@ -156,7 +155,7 @@
                                 </el-form-item>
                             </div>
                         </div>
-                        <div class="text-center mt-5">
+                        <div class="mt-5 text-center">
                             <button
                                 @click.prevent="addSerial"
                                 class="transparent-btn btn-md"
@@ -195,15 +194,19 @@ const breadcrumbs = ref([
         text: "首頁",
     },
     {
+        name: "repair-warranty-slug",
+        text: "服務支援",
+        params: { slug: "保固登記" },
+    },
+    {
         name: "repair-slug",
         text: "維修與保固",
         params: { slug: "維修與保固" },
     },
     {
-        name: "repair-detail-slug",
+        name: "repair-warranty-slug",
         text: "保固登記",
         params: { slug: "保固登記" },
-        query: { id: "1" },
     },
 ]);
 

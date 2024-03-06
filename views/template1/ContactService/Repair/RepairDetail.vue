@@ -2,7 +2,6 @@
     <BannerLayout
         :title="'線上報修'"
         :banner="'/img/repair/repair-detail-banner.jpg'"
-        :banner-mobile="'/img/repair/repair-detail-banner-m.jpg'"
         class="bg-gray-50"
     >
         <template #breadcrumbs>
@@ -19,7 +18,7 @@
                 >
                     <div class="w-full xl:w-3/4 mt-[36px] sm:mt-[80px] px-[24px] py-[36px] sm:p-[60px] bg-white mx-auto rounded-[12px] sm:rounded-[24px] border-[1px] border-gray-200">
                         <h3 class="text-[24px] font-bold mb-6">報修聯絡人</h3>
-                        <div class="flex flex-col sm:grid grid-cols-2 gap-6">
+                        <div class="flex flex-col grid-cols-2 gap-6 sm:grid">
                             <template
                                 v-for="(item, index) in formDatas.contactDatas"
                                 :key="index"
@@ -106,7 +105,7 @@
                     </div>
                     <div class="w-full xl:w-3/4 mt-[36px] sm:mt-[80px] px-[24px] py-[36px] sm:p-[60px] bg-white mx-auto rounded-[12px] sm:rounded-[24px] border-[1px] border-gray-200">
                         <h3 class="text-[24px] font-bold mb-6">報修商品資訊</h3>
-                        <div class="flex flex-col sm:grid grid-cols-2 gap-6">
+                        <div class="flex flex-col grid-cols-2 gap-6 sm:grid">
                             <template
                                 v-for="(item, index) in formDatas.productDatas"
                                 :key="index"
@@ -360,15 +359,19 @@ const breadcrumbs = ref([
         text: "首頁",
     },
     {
-        name: "repair-slug",
+        name: "repair-detail-slug",
         text: "服務支援",
-        params: { slug: "耶魯服務支援" },
+        params: { slug: "線上報修" },
+    },
+    {
+        name: "repair-slug",
+        text: "維修與保固",
+        params: { slug: "維修與保固" },
     },
     {
         name: "repair-detail-slug",
         text: "線上報修",
-        params: { slug: "耶魯線上報修" },
-        query: { id: "1" },
+        params: { slug: "線上報修" },
     },
 ]);
 

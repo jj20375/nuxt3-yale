@@ -2,7 +2,6 @@
     <BannerLayout
         :title="'聯絡我們'"
         :banner="'/img/contact/contact-banner.jpg'"
-        :banner-mobile="'/img/contact/contact-banner-m.jpg'"
     >
         <template #breadcrumbs>
             <Breadcrumb :menus="breadcrumbs" />
@@ -60,13 +59,12 @@ const breadcrumbs = ref([
     {
         name: "contact-slug",
         text: "服務支援",
-        params: { slug: "服務支援" },
+        params: { slug: "聯絡我們" },
     },
     {
         name: "contact-slug",
         text: "聯絡我們",
         params: { slug: "聯絡我們" },
-        query: { id: "1" },
     },
 ]);
 
