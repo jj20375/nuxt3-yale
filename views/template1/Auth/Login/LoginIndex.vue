@@ -1,7 +1,7 @@
 <template>
-    <section class="mt-[24px] sm:mt-[86px] border-t border-gray-300 py-[60px] px-[16px]">
-        <div class="w-full sm:w-[504px] py-[32px] sm:py-[60px] px-[24px] sm:px-[72px] bg-white sm:mx-auto rounded-[24px] border-[1px] border-gray-200">
-            <h3 class="font-medium text-[28px] text-center mb-8">會員登入</h3>
+    <section class="mt-headerMb xl:mt-header border-t border-gray-300 py-[36px] sm:py-[60px] px-[24px]">
+        <div class="w-full md:w-[504px] py-[32px] sm:py-[60px] px-[24px] sm:px-[72px] bg-white sm:mx-auto rounded-[24px] border-[1px] border-gray-200">
+            <h3 class="font-medium text-[22px] md:text-[28px] text-center mb-6 sm:mb-8">會員登入</h3>
             <el-form
                 class="custom-form"
                 ref="formRefDom"

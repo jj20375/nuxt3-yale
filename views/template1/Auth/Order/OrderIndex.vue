@@ -1,15 +1,15 @@
 <template>
-    <section class="mt-[86px] border-t border-gray-300">
+    <section class="mt-headerMb xl:mt-header border-t border-gray-300">
         <nav class="border-b border-gray-300 py-[16px] bg-white">
             <div class="container">
                 <Breadcrumb :menus="breadcrumbs" />
             </div>
         </nav>
         <div class="container">
-            <div class="pt-[60px] pb-[100px]">
-                <h3 class="text-[32px] font-bold mb-6">一般產品-訂單記錄</h3>
+            <div class="pt-[36px] sm:pt-[60px] pb-[50px] sm:pb-[100px]">
+                <h3 class="text-[24px] md:text-[32px] font-bold mb-6">一般產品-訂單記錄</h3>
                 <RecordTable :tableHeadData="tableHeadData" :tableBodyData="tableBodyData" />
-                <Pagination class="flex justify-center mb-[95px] mt-[80px]" />
+                <Pagination class="flex justify-center mb-[40px] sm:mb-[95px] mt-[40px] sm:mt-[80px]" />
             </div>
         </div>
     </section>

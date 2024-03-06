@@ -340,10 +340,11 @@ init();
             }
         }
     }
-
-    .product-card {
-        .grid {
-            grid-template-columns: 120px 1fr;
+    @media screen and (min-width: 767.98px) {
+        .product-card {
+            .grid {
+                grid-template-columns: 120px 1fr;
+            }
         }
     }
 }
