@@ -334,8 +334,11 @@ const checkout = async () => {
         cart_item_id: props.selectProductIds,
         // 發票類型
         invoice_type: formInvoice.value.invoiceType,
+        // 載具編號
         carrier_code: formInvoice.value.invoice_type === "mobile_carrier" || formInvoice.value.invoiceType === "natural_person_certificate" ? formInvoice.value.carrierCode : undefined,
+        // 捐款碼
         donation_code: formInvoice.value.invoiceType === "donation" ? formInvoice.value.donationCode : undefined,
+        // 統一編號
         tax_number: formInvoice.value.invoiceType === "company" ? formInvoice.value.taxNumber : undefined,
         redirect_url: props.currentTab === "type2" ? `${hostUrl}/is_type2` : `${hostUrl}/is_type1`,
     };
