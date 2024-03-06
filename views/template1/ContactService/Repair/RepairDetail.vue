@@ -360,15 +360,19 @@ const breadcrumbs = ref([
         text: "首頁",
     },
     {
-        name: "repair-slug",
+        name: "repair-detail-slug",
         text: "服務支援",
-        params: { slug: "耶魯服務支援" },
+        params: { slug: "線上報修" },
+    },
+    {
+        name: "repair-slug",
+        text: "維修與保固",
+        params: { slug: "維修與保固" },
     },
     {
         name: "repair-detail-slug",
         text: "線上報修",
-        params: { slug: "耶魯線上報修" },
-        query: { id: "1" },
+        params: { slug: "線上報修" },
     },
 ]);
 

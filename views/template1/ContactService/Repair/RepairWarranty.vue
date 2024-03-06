@@ -195,15 +195,19 @@ const breadcrumbs = ref([
         text: "首頁",
     },
     {
+        name: "repair-warranty-slug",
+        text: "服務支援",
+        params: { slug: "保固登記" },
+    },
+    {
         name: "repair-slug",
         text: "維修與保固",
         params: { slug: "維修與保固" },
     },
     {
-        name: "repair-detail-slug",
+        name: "repair-warranty-slug",
         text: "保固登記",
         params: { slug: "保固登記" },
-        query: { id: "1" },
     },
 ]);
 
