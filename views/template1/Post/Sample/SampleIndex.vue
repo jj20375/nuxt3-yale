@@ -81,13 +81,13 @@ async function getType() {
             breadcrumbs.value.push({
                 name: "sample-slug",
                 text: "裝修實績",
-                params: { slug: "耶魯裝修實績" },
+                params: { slug: "裝修實績" },
                 query: { id: lastBreadcrumbs.id },
             });
             breadcrumbs.value.push({
                 name: "sample-slug",
                 text: lastBreadcrumbs.name,
-                params: { slug: "耶魯裝修實績" },
+                params: { slug: "裝修實績" },
                 query: { id: lastBreadcrumbs.id },
             });
         }
