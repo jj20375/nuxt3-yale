@@ -795,15 +795,6 @@ async function getPageData() {
         lockerData.value.content = lockPageData.content;
 
         const lockSeoSetting = (data.value as any).data.seoSetting;
-        useSeoMeta({
-            title: lockSeoSetting.title,
-            description: lockSeoSetting.description,
-            ogTitle: lockSeoSetting.title,
-            ogDescription: lockSeoSetting.description,
-            ogUrl: () => `${window.location.origin}/${lockSeoSetting.custom_url}`,
-            keywords: lockSeoSetting.keywords.join(),
-        });
-
         // 保險箱
         const params = { code: "safe_installation_photo_example_popup" };
         const { data: cofferApiData } = await $api().getPageAPI(params);
@@ -815,14 +806,6 @@ async function getPageData() {
         cofferData.value.content = cofferPageData.content;
 
         const seoSetting = (data.value as any).data.seoSetting;
-        useSeoMeta({
-            title: seoSetting.title,
-            description: seoSetting.description,
-            ogTitle: seoSetting.title,
-            ogDescription: seoSetting.description,
-            ogUrl: () => `${window.location.origin}/${seoSetting.custom_url}`,
-            keywords: seoSetting.keywords.join(),
-        });
     } catch (err) {
         console.log("HomeSampleAPI => ", err);
     }

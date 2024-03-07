@@ -340,7 +340,7 @@ const checkout = async () => {
         donation_code: formInvoice.value.invoiceType === "donation" ? formInvoice.value.donationCode : undefined,
         // 統一編號
         tax_number: formInvoice.value.invoiceType === "company" ? formInvoice.value.taxNumber : undefined,
-        redirect_url: props.currentTab === "type2" ? `${hostUrl}/is_type2` : `${hostUrl}/is_type1`,
+        redirect_url: props.currentTab === "type2" ? `${hostUrl}/order/combination` : `${hostUrl}/order/normal`,
     };
     // 訂製門扇需傳送參數
     if (props.currentTab === "type2") {

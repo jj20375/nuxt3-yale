@@ -41,6 +41,10 @@ import YaleHomeAppSpec from "~/views/template1/YaleHomeApp/components/YaleHomeAp
 // 注意事項
 import YaleHomeAppInfo from "~/views/template1/YaleHomeApp/components/YaleHomeAppInfo.vue";
 
+import { useInitializationStore } from "~/store/initializationStore";
+
+const initializationStore = useInitializationStore();
+
 const { $api } = useNuxtApp();
 
 const route = useRoute();
@@ -148,8 +152,8 @@ async function getPageData() {
         const seoSetting = (data.value as any).data.seoSetting;
         console.log("seoSetting =>", seoSetting);
         useSeoMeta({
-            title: seoSetting.title,
-            description: seoSetting.description,
+            title: seoSetting.title ? seoSetting.title : initializationStore.initializationData.site.meta_title,
+            description: seoSetting.description ? seoSetting.description : initializationStore.initializationData.site.meta_description,
             ogTitle: seoSetting.title,
             ogDescription: seoSetting.description,
             ogUrl: () => `${window.location.origin}/${seoSetting.custom_url}`,

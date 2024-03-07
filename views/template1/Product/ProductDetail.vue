@@ -291,6 +291,9 @@ interface ProductionOption {
         imgSrc: string;
     }[];
 }
+import { useInitializationStore } from "~/store/initializationStore";
+
+const initializationStore = useInitializationStore();
 
 const { $api, $utils } = useNuxtApp();
 const { isLargePad, isMobile } = useWindowResize();
@@ -447,8 +450,8 @@ const getData = async () => {
             currentColor.value[idx] = item.values[0].id;
         });
         useSeoMeta({
-            title: resProductDetail.value.data.seoSetting.title,
-            description: resProductDetail.value.data.seoSetting.description,
+            title: resProductDetail.value.data.seoSetting.title ? resProductDetail.value.data.seoSetting.title : initializationStore.initializationData.site.meta_title,
+            description: resProductDetail.value.data.seoSetting.description ? resProductDetail.value.data.seoSetting.description : initializationStore.initializationData.site.meta_description,
             ogTitle: resProductDetail.value.data.seoSetting.title,
             ogDescription: resProductDetail.value.data.seoSetting.description,
             ogUrl: () => `${window.location.origin}/product/detail/${resProductDetail.value.data.seoSetting.custom_url}`,

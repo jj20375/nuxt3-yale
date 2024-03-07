@@ -1,3 +1,5 @@
+import { useFetchData } from "~/composables/fetch";
+
 export default () => {
   const {
     public: { apiUrl },
@@ -67,6 +69,21 @@ export default () => {
       return useMyFetch(`${apiUrl}/member/product-favorites`, {
         method: "get",
       });
+    },
+    /**
+     * 取得商品訂單列表
+     */
+    GetProductOrderAPI(params: { per_page: number; page: number }) {
+      return useMyFetch(`${apiUrl}/order/paginate`, {
+        method: "get",
+        query: { ...params },
+      });
+    },
+    /**
+     * 取得商品訂單詳情
+     */
+    GetProductOrderDetailAPI(params: { orderId: number | string }) {
+      return useFetchData.get(`${apiUrl}/order/${params.orderId}`);
     },
   };
 };

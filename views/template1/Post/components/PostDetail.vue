@@ -71,6 +71,9 @@
 <script setup lang="ts">
 import { RouteLocationRaw } from "vue-router";
 import Breadcrumb from "~/views/template1/components/Breadcrumb.vue";
+import { useInitializationStore } from "~/store/initializationStore";
+
+const initializationStore = useInitializationStore();
 const route = useRoute();
 const router = useRouter();
 
@@ -159,8 +162,8 @@ async function getData(params: { articleId: any }, isChangePost: boolean) {
 
         console.log("seoSetting", detail.seoSetting);
         useSeoMeta({
-            title: detail.seoSetting.title,
-            description: detail.seoSetting.description,
+            title: detail.seoSetting.title ? detail.seoSetting.title : initializationStore.initializationData.site.meta_title,
+            description: detail.seoSetting.description ? detail.seoSetting.description : initializationStore.initializationData.site.meta_description,
             ogTitle: detail.seoSetting.title,
             ogDescription: detail.seoSetting.description,
             ogUrl: () => `${window.location.origin}/news/details/${detail.seoSetting.custom_url}`,

@@ -78,7 +78,7 @@
                                         </div>
                                         <div
                                             class="flex-1 max-w-[600px] cursor-pointer"
-                                            @click="router.push(slide.url)"
+                                            @click="goToDetail(slide.url)"
                                         >
                                             <div class="flex items-center">
                                                 <h5 class="flex-1 text-[18px] md:text-[24px] YaleSolisW-Bd font-medium line-clamp-1">
@@ -117,7 +117,7 @@
 </template>
 
 <script lang="ts" setup>
-const { $api } = useNuxtApp();
+const { $api, $utils } = useNuxtApp();
 const { isLargeDesktop, isMobile, isLargePad, nowWindowSize } = useWindowResize();
 const router = useRouter();
 
@@ -165,24 +165,30 @@ async function getList(params: { per_page: number; page: number }) {
 
         const rows = (data.value as any).data.rows;
 
-        const breadcrumbs = [
-            {
-                name: "index",
-                text: "首頁",
-            },
-        ];
+        // const breadcrumbs = [
+        //     {
+        //         name: "index",
+        //         text: "首頁",
+        //     },
+        // ];
 
         rows.forEach((item: { articleCategory: any; id: any }) => {
+            const breadcrumbs = [
+                {
+                    name: "index",
+                    text: "首頁",
+                },
+            ];
             breadcrumbs.push({
                 name: "sample-slug",
                 text: "裝修實績",
-                params: { slug: "耶魯裝修實績" },
+                params: { slug: "裝修實績" },
                 query: { id: item.articleCategory.id },
             });
             breadcrumbs.push({
                 name: "sample-slug",
                 text: item.articleCategory.name,
-                params: { slug: "耶魯裝修實績" },
+                params: { slug: "裝修實績" },
                 query: { id: item.articleCategory.id },
             });
             items.value.push({
@@ -197,6 +203,12 @@ async function getList(params: { per_page: number; page: number }) {
     } catch (err) {
         console.log("HomeSampleAPI => ", err);
     }
+}
+
+function goToDetail(url: any) {
+    // 將麵包屑存進 storage
+    $utils().saveBreadcrumbsData(url.query.breadcrumbs);
+    router.push({ name: url.name, params: url.params, query: { id: url.query.id } });
 }
 
 /**
