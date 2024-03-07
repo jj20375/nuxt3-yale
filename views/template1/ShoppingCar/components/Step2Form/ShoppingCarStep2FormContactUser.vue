@@ -80,7 +80,7 @@
             >
                 <el-checkbox
                     v-model="formData.saveContctUser"
-                    :label="'加入常用聯絡人'"
+                    :label="'加入常用聯繫人'"
                     size="large"
                 />
             </el-form-item>

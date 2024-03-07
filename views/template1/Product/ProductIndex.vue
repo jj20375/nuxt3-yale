@@ -33,70 +33,74 @@
         </template>
 
         <template #custom-content>
-            <div v-if="loading">
+            <template v-if="loading">
                 <div class="flex items-center justify-center w-full h-screen">
                     <font-awesome-icon
                         class="animate-spin text-[40px] text-gray-300"
                         :icon="['fas', 'circle-notch']"
                     />
                 </div>
-            </div>
-            <div class="-mx-6 sm:mx-0 flex flex-col xl:flex-row items-center mb-[40px] sm:mt-[32px] gap-4 md:gap-[40px]">
-                <NuxtImg
-                    v-if="productTypeDetail.media"
-                    class="w-full md:w-[400px] shrink-0 h-fit aspect-[16/9] object-cover"
-                    :src="productTypeDetail.media"
-                />
-                <div class="px-6 sm:px-0">
-                    <h2 class="YaleSolisW-Bd text-[24px] font-medium">{{ productTypeDetail.name }}</h2>
-                    <p class="md:mt-[16px] text-[16px]">{{ productTypeDetail.description }}</p>
-                </div>
-            </div>
-            <div class="flex flex-col md:flex-row justify-end mb-[24px] gap-[30px]">
-                <NuxtLink
-                    v-if="productTypeDetail.is_compare === 1"
-                    @click="goToCompare(productTypeDetail)"
-                >
-                    <button class="transparent-btn btn-xs">規格比較</button>
-                </NuxtLink>
-                <div class="flex items-center self-end md:self-start">
-                    <p class="text-[16px] text-gray-800">排序：</p>
-                    <el-select
-                        class="w-[180px]"
-                        v-model="sortBy"
-                        @change="sortChange"
-                        value-key="label"
-                        :suffix-icon="IconArrowDown"
-                    >
-                        <el-option
-                            v-for="(item, key) in sortOptions"
-                            :key="key"
-                            :label="item.label"
-                            :value="item.value"
-                        ></el-option>
-                    </el-select>
-                </div>
-            </div>
-            <div class="grid grid-cols-2 md:grid-cols-3 gap-x-[20px] gap-y-[40px]">
-                <div
-                    v-for="(product, index) in datas"
-                    :key="index"
-                >
-                    <ProductCard
-                        :breadcrumbs="breadcrumbs"
-                        :product="product"
-                        @handleFavorite="handleFavorite"
+            </template>
+            <template v-else>
+                <div class="-mx-6 sm:mx-0 flex flex-col xl:flex-row items-center mb-[40px] sm:mt-[32px] gap-4 md:gap-[40px]">
+                    <NuxtImg
+                        v-if="productTypeDetail.media"
+                        class="w-full md:w-[400px] shrink-0 h-fit aspect-[16/9] object-cover"
+                        :src="productTypeDetail.media"
                     />
+                    <div class="px-6 sm:px-0">
+                        <h2 class="YaleSolisW-Bd text-[24px] font-medium">{{ productTypeDetail.name }}</h2>
+                        <p class="md:mt-[16px] text-[16px]">{{ productTypeDetail.description }}</p>
+                    </div>
                 </div>
-            </div>
+                <div class="flex flex-col md:flex-row justify-end mb-[24px] gap-[30px]">
+                    <NuxtLink
+                        v-if="productTypeDetail.is_compare === 1"
+                        @click="goToCompare(productTypeDetail)"
+                    >
+                        <button class="transparent-btn btn-xs">規格比較</button>
+                    </NuxtLink>
+                    <div class="flex items-center self-end md:self-start">
+                        <p class="text-[16px] text-gray-800">排序：</p>
+                        <el-select
+                            class="w-[180px]"
+                            v-model="sortBy"
+                            @change="sortChange"
+                            value-key="label"
+                            :suffix-icon="IconArrowDown"
+                        >
+                            <el-option
+                                v-for="(item, key) in sortOptions"
+                                :key="key"
+                                :label="item.label"
+                                :value="item.value"
+                            ></el-option>
+                        </el-select>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-x-[20px] gap-y-[40px]">
+                    <div
+                        v-for="(product, index) in datas"
+                        :key="index"
+                    >
+                        <ProductCard
+                            :breadcrumbs="breadcrumbs"
+                            :product="product"
+                            @handleFavorite="handleFavorite"
+                        />
+                    </div>
+                </div>
+            </template>
         </template>
         <template #custom-pagination>
-            <Pagination
-                v-if="!loadingWaitPagination"
-                :pagination="pagination"
-                @handlePageChange="handlePageChange"
-                class="flex justify-center mb-[95px] mt-[80px]"
-            />
+            <template v-if="!loading">
+                <Pagination
+                    v-if="!loadingWaitPagination"
+                    :pagination="pagination"
+                    @handlePageChange="handlePageChange"
+                    class="flex justify-center mb-[95px] mt-[80px]"
+                />
+            </template>
         </template>
     </SideBarDeepLayout>
 </template>
@@ -127,7 +131,7 @@ const { $api, $utils } = useNuxtApp();
 const route = useRoute();
 const router = useRouter();
 
-const loading = ref(false);
+const loading = ref(true);
 const loadingWaitPagination = ref(true);
 
 const breadcrumbs = ref([

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <section class="relative custom-top overflow-scroll z-[10]">
+        <section class="relative custom-top z-[10]" :class="loading ? 'overflow-hidden' : 'overflow-scroll'">
             <!-- <pre>{{ scenes }}</pre> -->
             <!-- <pre>{{ doors }}</pre> -->
             <!-- <pre>{{ doorSizes }}</pre> -->

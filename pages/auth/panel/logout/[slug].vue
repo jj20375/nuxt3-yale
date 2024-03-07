@@ -1,7 +1,7 @@
 <template>
     <NuxtLayout name="template1">
         <div v-if="pageLoading">
-            <div class="flex items-center justify-center w-full h-screen">
+            <div class="fixed flex items-center justify-center w-full h-screen bg-white z-[499]">
                 <font-awesome-icon
                     class="animate-spin text-[40px] text-gray-300"
                     :icon="['fas', 'circle-notch']"

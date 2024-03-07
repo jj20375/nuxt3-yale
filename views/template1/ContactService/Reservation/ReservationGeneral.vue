@@ -269,24 +269,24 @@
                                 <div :class="item.span ? `col-span-${item.span}` : ''">
                                     <el-form-item :prop="item.prop">
                                         <label class="block w-full text-[15px] text-gray-800"> {{ item.label }} <span class="text-red-500">*</span> </label>
-                                        <div class="flex flex-col w-full gap-4 mt-2 mb-4 sm:flex-row">
+                                        <div class="flex flex-col w-full gap-4 mb-6 sm:flex-row">
                                             <div
-                                                class="flex items-center gap-1 underline cursor-pointer underline-offset-2 hover:no-underline"
+                                                class="flex items-center gap-1 text-blue-500 underline cursor-pointer underline-offset-2 hover:no-underline"
                                                 @click="handleDialog('locker')"
                                             >
                                                 <NuxtImg
                                                     class="object-cover w-4 h-fit aspect-square"
-                                                    src="/img/repair/repair-doc-icon.svg"
+                                                    src="/img/repair/repair-doc-icon-2.svg"
                                                 />
                                                 電子鎖安裝照片範例說明
                                             </div>
                                             <div
-                                                class="flex items-center gap-1 underline cursor-pointer underline-offset-2 hover:no-underline"
+                                                class="flex items-center gap-1 text-blue-500 underline cursor-pointer underline-offset-2 hover:no-underline"
                                                 @click="handleDialog('coffer')"
                                             >
                                                 <NuxtImg
                                                     class="object-cover w-4 h-fit aspect-square"
-                                                    src="/img/repair/repair-doc-icon.svg"
+                                                    src="/img/repair/repair-doc-icon-2.svg"
                                                 />
                                                 保險箱安裝照片範例說明
                                             </div>

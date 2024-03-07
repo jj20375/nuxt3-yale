@@ -209,9 +209,9 @@
                 </div>
                 <div
                     v-if="currentTab === 1"
-                    class="min-h-[500px] flex flex-col xl:flex-row gap-12 xl:gap-[80px] mt-[24px] md:mt-[60px]"
+                    class="flex flex-col xl:grid grid-cols-2 gap-12 xl:gap-[80px] mt-[24px] md:mt-[60px]"
                 >
-                    <div class="flex-1">
+                    <div>
                         <h5 class="text-[18px] font-medium YaleSolisW-Bd text-gray-800 mb-[20px]">產品規格內容</h5>
                         <div
                             v-for="(attr, key) in detailData.attributes"
@@ -222,7 +222,7 @@
                             <div class="flex-1">{{ attr }}</div>
                         </div>
                     </div>
-                    <div class="flex-1">
+                    <div v-if="detailData.documents.length > 0">
                         <h5 class="text-[18px] font-medium YaleSolisW-Bd text-gray-800 mb-[20px]">檔案下載</h5>
                         <div
                             class="block mb-2 cursor-pointer w-fit group"

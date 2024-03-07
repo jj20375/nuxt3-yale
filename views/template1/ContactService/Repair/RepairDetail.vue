@@ -237,11 +237,11 @@
                                 <!--   備註小字   -->
                                 <template v-if="item.memoText">
                                     <div :class="item.span ? `col-span-${item.span}` : ''">
-                                        <span>{{ item.memoText }}</span>
+                                        <span class="text-[15px]">{{ item.memoText }}</span>
                                         <template v-if="item.memoFunctionText">
                                             <span
                                                 @click="item.memoFunction ? item.memoFunction() : null"
-                                                class="ml-1 text-blue-500 underline cursor-pointer underline-offset-2 hover:no-underline"
+                                                class="text-[15px] ml-1 text-blue-500 underline cursor-pointer underline-offset-2 hover:no-underline"
                                                 >{{ item.memoFunctionText }}</span
                                             >
                                         </template>
