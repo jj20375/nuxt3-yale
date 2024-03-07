@@ -455,8 +455,8 @@ async function onSubmit() {
                     password: form.value.password,
                 };
                 if (userStore.ssoLogingData) {
-                    params.openid = userStore.ssoLogingData.user.openid
-                    params.provider = userStore.ssoLogingData.provider
+                    params.openid = userStore.ssoLogingData.user.openid;
+                    params.provider = userStore.ssoLogingData.provider;
                 }
                 const { data, status, error } = await $api().RegisterAPI(params);
                 if (status.value === "success") {
@@ -465,14 +465,19 @@ async function onSubmit() {
                         type: "success",
                         message: `註冊成功`,
                     });
-                    router.push({ name: "auth-register-success-slug", params: { slug: "註冊成功" } });
+                    router.push({
+                        name: "auth-verification-slug",
+                        params: { slug: "註冊成功" },
+                        state: { email: form.value.email },
+                    });
+                    loading.close();
                 } else {
                     ElMessage({
                         type: "error",
                         message: (error.value as any).data.message,
                     });
+                    loading.close();
                 }
-                loading.close();
             } catch (err) {
                 ElMessage({
                     type: "error",
