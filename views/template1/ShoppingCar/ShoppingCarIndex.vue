@@ -1,5 +1,5 @@
 <template>
-    <section class="mt-[64px] sm:mt-[86px] mb-[120px] border-t border-gray-300">
+    <section class="mt-headerMb xl:mt-header mb-[120px] border-t border-gray-300">
         <div class="container">
             <ul
                 v-if="currentStep == 0"
@@ -8,10 +8,11 @@
                 <li
                     v-for="(tab, key) in tabs"
                     :key="key"
-                    class="flex gap-3 rounded-[8px] py-[20px] px-[32px] border border-gray-300 cursor-pointer"
+                    class="flex gap-3 rounded-[8px] py-[20px] px-[32px] border border-gray-300 cursor-pointer relative"
                     :class="[currentTab === key ? 'outline outline-2 outline-yellow-600 -outline-offset-2' : '']"
                     @click="
                         currentTab = key;
+                        selectProductIds = [];
                         router.push({ name: route.name, query: { tab: key } });
                     "
                 >
@@ -20,9 +21,12 @@
                         :src="tab.imgSrc"
                     />
                     <div class="text-[16px] text-gray-800 font-medium">{{ tab.text }}</div>
-                    <template v-if="tab.quality > 0">
-                        <div class="absolute bg-red-500 rounded-2xl text-white text-[12px] px-1 top-1.5 right-2">{{ tab.quality }}</div>
-                    </template>
+                    <div
+                        v-if="tab.quality > 0"
+                        class="absolute bg-red-500 rounded-2xl text-white text-[12px] px-1 right-0 -top-2 w-[20px] h-[20px] flex items-center justify-center"
+                    >
+                        {{ tab.quality }}
+                    </div>
                 </li>
             </ul>
             <div class="flex justify-center">
@@ -81,13 +85,13 @@
                                 v-if="currentStep == 0"
                                 #deposit
                             >
-                                {{ $utils().formatCurrency(total * 0.3) }}
+                                {{ $utils().formatCurrency(Math.round(total * 0.3)) }}
                             </template>
                             <template
                                 v-if="currentStep == 1"
                                 #depositBig
                             >
-                                {{ $utils().formatCurrency(total * 0.3) }}
+                                {{ $utils().formatCurrency(Math.round(total * 0.3)) }}
                             </template>
                         </ShoppingCarBilling>
                         <div
@@ -125,7 +129,7 @@ import { useShoppingCarStore } from "~/store/shoppingCarStore";
 import { useUserStore } from "~/store/userStore";
 
 import { storeToRefs } from "pinia";
-import { ShoppingCarInterface } from "~/interface/shoppingCar";
+import { ShoppingCarInterface, ShoppingCarCustomInterface } from "~/interface/shoppingCar";
 const { $utils } = useNuxtApp();
 
 const route = useRoute();
@@ -133,23 +137,27 @@ const router = useRouter();
 const { $api } = useNuxtApp();
 
 const shoppingCarStore = useShoppingCarStore();
+// 一般商品購物車
 const { shoppingCar } = storeToRefs(shoppingCarStore);
+// 訂製門扇購物車
+const { shoppingCustomCar } = storeToRefs(shoppingCarStore);
 const goCheckoutStep3 = ref(false);
 const userStore = useUserStore();
 
+console.log("shoppingCarStore.shoppingCar.values.length =>", shoppingCar.value);
 // 購物種類
-const tabs = ref({
+const tabs = computed(() => ({
     type1: {
         text: "一般產品",
         imgSrc: "/img/shopping-car/shopping-car-icon-lock.svg",
-        quality: 0,
+        quality: shoppingCar.value.length,
     },
     type2: {
         text: "訂製門扇",
         imgSrc: "/img/shopping-car/shopping-car-icon-door.svg",
-        quality: 99,
+        quality: shoppingCustomCar.value.length,
     },
-});
+}));
 
 // 預設選擇 tab
 const currentTab = ref("type1");
@@ -163,12 +171,19 @@ const selectProductIds = ref<number[]>([]);
 const showComponent = shallowRef<any>(ShoppingCarStep1);
 
 // 總價
-const total = computed(() =>
-    _SumBy(
-        _Filter(shoppingCar.value, (item: ShoppingCarInterface) => (item.id ? selectProductIds.value.includes(item.id) : false)),
-        "totalPrice"
-    )
-);
+const total = computed(() => {
+    if (currentTab.value === "type1") {
+        return _SumBy(
+            _Filter(shoppingCar.value, (item: ShoppingCarInterface) => (item.id ? selectProductIds.value.includes(item.id) : false)),
+            "totalPrice"
+        );
+    } else {
+        return _SumBy(
+            _Filter(shoppingCustomCar.value, (item: ShoppingCarCustomInterface) => (item.id ? selectProductIds.value.includes(item.id) : false)),
+            "totalPrice"
+        );
+    }
+});
 // 折扣
 const salePrice = computed(() => 0);
 // go step2

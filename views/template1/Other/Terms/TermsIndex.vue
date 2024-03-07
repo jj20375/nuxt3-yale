@@ -23,6 +23,9 @@
 <script lang="ts" setup>
 import BannerLayout from "~/views/template1/layouts/BannerLayout.vue";
 import Breadcrumb from "~/views/template1/components/Breadcrumb.vue";
+import { useInitializationStore } from "~/store/initializationStore";
+
+const initializationStore = useInitializationStore();
 const route = useRoute();
 const { $api } = useNuxtApp();
 
@@ -52,8 +55,8 @@ async function getPageData() {
 
         const seoSetting = (data.value as any).data.seoSetting;
         useSeoMeta({
-            title: seoSetting.title,
-            description: seoSetting.description,
+            title: seoSetting.title ? seoSetting.title : initializationStore.initializationData.site.meta_title,
+            description: seoSetting.description ? seoSetting.description : initializationStore.initializationData.site.meta_description,
             ogTitle: seoSetting.title,
             ogDescription: seoSetting.description,
             ogUrl: () => `${window.location.origin}/${seoSetting.custom_url}`,

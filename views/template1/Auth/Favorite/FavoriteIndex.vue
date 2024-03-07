@@ -1,28 +1,38 @@
 <template>
-    <section class="mt-[64px] sm:mt-[86px] pb-[60px]">
+    <section class="mt-headerMb xl:mt-header pb-[60px]">
         <nav class="border-b border-gray-300 py-[16px] bg-white">
             <div class="container">
                 <Breadcrumb :menus="breadcrumbs" />
             </div>
         </nav>
         <div class="container">
-            <div class="mt-[24px] sm:mt-[60px] sm:px-[60px]">
-                <h3 class="font-medium text-[20px] sm:text-[32px] text-center mb-[24px] sm:mb-8">產品收藏清單</h3>
-                <div class="flex gap-x-5 gap-y-8 flex-wrap justify-around">
-                    <div
+            <div class="mt-[36px] sm:mt-[60px]">
+                <h3 class="font-medium text-[24px] sm:text-[32px] mb-[24px] sm:mb-8">產品收藏清單</h3>
+                <div class="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-x-5 gap-y-8 flex-wrap justify-center">
+                    <template
                         v-for="item in datas"
-                        class="w-[275px]"
                     >
                         <ProductCard
                             :product="item"
                             @handleFavorite="handleFavorite"
                         />
-                    </div>
+                    </template>
                 </div>
             </div>
-            <Pagination class="flex justify-center mb-[95px] mt-[80px]" />
+            <Pagination class="flex justify-center mb-[30px] sm:mb-[95px] mt-[40px] sm:mt-[80px]" />
         </div>
     </section>
+    <client-only>
+        <confirmBox
+            :title="'取消收藏'"
+            :message="'是否取消收藏'"
+            :cancelTxt="'取消'"
+            :confirmTXT="'確定'"
+            :dialogVisible="dialogVisible"
+            @handleConfirm="handleConfirm"
+            @handleCancel="handleCancel"
+        ></confirmBox>
+    </client-only>
 </template>
 
 <script setup lang="ts">
@@ -30,6 +40,7 @@ import Breadcrumb from "~/views/template1/components/Breadcrumb.vue";
 import Pagination from "~/views/template1/components/Pagination.vue";
 // 產品卡片樣板
 import ProductCard from "~/views/template1/components/ProductCard.vue";
+import confirmBox from "@/components/confirmBox.vue";
 /**
  * ProductListAPIInterface: 產品分頁 api 回應值
  * ProductList: 產品分頁列表內容
@@ -86,35 +97,42 @@ async function getList() {
     }
 }
 
-async function handleFavorite(id: any) {
-    try {
-        ElMessageBox.confirm("是否取消收藏?", "警告", {
-            confirmButtonText: "是",
-            cancelButtonText: "否",
-            type: "warning",
-        })
-            .then(async () => {
-                const params = { productId: id };
-                const { data } = await $api().ProductFavoriteAPI(params);
-                const message = (data.value as any).message;
+const favorite_id = ref(null);
+const dialogVisible = ref(false);
 
-                if (message === "請求成功") {
-                    const index = datas.value.findIndex((item) => item.id === id);
-                    datas.value.splice(index, 1);
-                } else {
-                    ElMessage({
-                        type: "error",
-                        message: "取消失敗",
-                    });
-                }
-            })
-            .catch(() => {});
+async function handleFavorite(id: any) {
+    favorite_id.value = id
+    dialogVisible.value = true
+}
+
+async function handleConfirm() {
+    try {
+        const params = { productId: favorite_id.value };
+         const { data } = await $api().ProductFavoriteAPI(params);
+         const message = (data.value as any).message;
+
+         if (message === "請求成功") {
+             const index = datas.value.findIndex((item) => item.id === favorite_id.value);
+             datas.value.splice(index, 1);
+             dialogVisible.value = false
+         } else {
+             ElMessage({
+                 type: "error",
+                 message: "取消失敗",
+             });
+             dialogVisible.value = false
+         }
     } catch (err) {
         ElMessage({
             type: "error",
             message: "取消失敗",
         });
+        dialogVisible.value = false
     }
+}
+
+function handleCancel() {
+    dialogVisible.value = false
 }
 
 onMounted(async () => {

@@ -1,12 +1,12 @@
 <template>
-    <section class="mt-[86px] min-h-screen border-t border-gray-300">
-        <nav class="border-b border-gray-300 py-[16px] bg-white">
+    <section class="mt-headerMb xl:mt-header">
+        <nav class="border-t border-gray-300 border-b py-[16px] bg-white">
             <div class="container">
                 <Breadcrumb :menus="breadcrumbs" />
             </div>
         </nav>
         <div class="container">
-            <div class="pt-[60px] pb-[100px]">
+            <div class="pt-[36px] sm:pt-[60px] pb-[50px] sm:pb-[100px]">
                 <NuxtLink :to="{ name: 'auth-door-slug' }">
                     <div class="flex">
                         <NuxtImg
@@ -16,8 +16,8 @@
                         <span class="text-gray-700">返回</span>
                     </div>
                 </NuxtLink>
-                <div class="flex justify-between items-end mt-9 mb-[30px]">
-                    <h3 class="text-[32px]">訂單資訊</h3>
+                <div class="flex justify-between items-end mt-6 sm:mt-9 mb-5 sm:mb-[30px]">
+                    <h3 class="text-[24px] md:text-[32px]">訂單資訊</h3>
                     <div class="flex gap-2 items-center h-fit cursor-pointer">
                         <NuxtImg
                             class="w-[20px] aspect-square object-cover"
@@ -27,11 +27,11 @@
                     </div>
                 </div>
                 <RecordTimeline :orderNumber="orderData.orderNumber" :timeline="orderData.timeline" />
-                <div class="mt-12">
+                <div class="mt-8 sm:mt-12">
                     <h4 class="font-bold mb-3">安裝資訊</h4>
                     <div class="border-b-[1px] border-gray-200 pb-5">
                         <div
-                            class="grid grid-cols-2 gap-1 w-[100%] 2xl:w-[85%] 3xl:w-[70%]">
+                            class="grid grid-cols-1 sm:grid-cols-2 gap-1 w-full 2xl:w-[85%] 3xl:w-[70%]">
                             <div v-if="orderData?.info?.contactName" class="text-gray-700">
                                 聯繫人：{{ orderData?.info?.contactName }}
                             </div>
@@ -49,7 +49,7 @@
                     <h4 class="font-bold mb-3 mt-5">付款明細</h4>
                     <div class="border-b-[1px] border-gray-200 pb-5">
                         <div
-                            class="grid grid-cols-2 gap-1 w-[100%] 2xl:w-[85%] 3xl:w-[70%]">
+                            class="grid grid-cols-1 sm:grid-cols-2 gap-1 w-full 2xl:w-[85%] 3xl:w-[70%]">
                             <div v-if="orderData?.payment?.method" class="text-gray-700">
                                 付款方式：{{ orderData?.payment?.method }}
                             </div>
@@ -59,7 +59,7 @@
                         </div>
                     </div>
                     <h4 class="font-bold mb-3 mt-5">發票資訊</h4>
-                    <div class="grid grid-cols-2 gap-1 w-[100%] 2xl:w-[85%] 3xl:w-[70%]">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-1 w-full 2xl:w-[85%] 3xl:w-[70%]">
                         <div v-if="orderData?.receipt?.status" class="text-gray-700">
                             發票狀態：{{ orderData?.receipt?.status }}
                         </div>
@@ -77,7 +77,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="mt-12">
+                <div class="mt-8 sm:mt-12">
                     <div class="bg-gray-100 px-[20px] py-[10px] font-bold">配送商品</div>
                 </div>
                 <div>
@@ -86,7 +86,7 @@
                 <div>
                     <OrderPrice :order="orderData.price" />
                 </div>
-                <div class="flex justify-center mt-[60px]">
+                <div class="flex justify-center mt-[30px] sm:mt-[60px]">
                     <button class="transparent-btn btn-xs" @click="handleRefund">取消訂單</button>
                 </div>
             </div>

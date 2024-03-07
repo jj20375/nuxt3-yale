@@ -16,6 +16,14 @@
                 >
                     <SwiperSlide
                         class="mb-9 md:mb-[60px] bg-white"
+                        @click="
+                            router.push({
+                                params: { slug: '直營門市' },
+                                query: { id: 1 },
+                                state: { index: index },
+                                name: 'store-slug',
+                            })
+                        "
                         v-for="(item, index) in stores"
                         :key="index"
                     >
@@ -40,6 +48,8 @@ const { isMobile, isPad } = useWindowResize();
 import { Scrollbar } from "swiper/modules";
 
 const { $api } = useNuxtApp();
+
+const router = useRouter();
 
 function onSwiper(swiper: any) {
     console.log(swiper);

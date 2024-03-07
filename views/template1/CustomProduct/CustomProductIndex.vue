@@ -1,8 +1,6 @@
 <template>
     <div>
-        <section
-            class="relative custom-top overflow-auto z-[10]"
-        >
+        <section class="relative custom-top overflow-scroll z-[10]">
             <!-- <pre>{{ scenes }}</pre> -->
             <!-- <pre>{{ doors }}</pre> -->
             <!-- <pre>{{ doorSizes }}</pre> -->
@@ -31,7 +29,10 @@
                         />
                     </div>
                     <!--  手機版門扇角度按鈕  -->
-                    <div class="absolute top-0 left-0 w-full h-full items-center justify-center before:absolute before:h-full before:w-full before:bg-gray-800 before:opacity-80 before:-z-[1] z-[99]" :class="showOptions ? 'flex' : 'hidden'">
+                    <div
+                        class="absolute top-0 left-0 w-full h-full items-center justify-center before:absolute before:h-full before:w-full before:bg-gray-800 before:opacity-80 before:-z-[1] z-[99]"
+                        :class="showOptions ? 'flex' : 'hidden'"
+                    >
                         <ul
                             v-if="previewWidth > 0"
                             class="h-fit flex gap-[12px] justify-center"
@@ -279,7 +280,7 @@
         </section>
         <div class="fixed top-headerMb xl:top-auto xl:bottom-0 w-full bg-white z-[100] h-[67px] xl:h-[80px] shadow-footer sidebar-wrap">
             <!--  電腦版門扇角度按鈕  -->
-            <div class="hidden xl:flex items-center justify-center">
+            <div class="items-center justify-center hidden xl:flex">
                 <ul
                     v-if="previewWidth > 0"
                     class="h-fit flex gap-[12px] justify-center"
@@ -295,14 +296,14 @@
                     </li>
                 </ul>
             </div>
-            <div class="grid grid-cols-2 w-full xl:w-auto xl:flex items-center justify-start gap-4 px-6 xl:px-0">
+            <div class="grid items-center justify-start w-full grid-cols-2 gap-4 px-6 xl:w-auto xl:flex xl:px-0">
                 <div class="flex flex-col sm:flex-row sm:items-center">
                     <p class="text-gray-600 text-[14px]">預估金額</p>
                     <div class="text-[14px] text-gray-800 flex items-center xl:ml-2">
                         NT$ <strong class="ml-2 font-medium YaleSolisW-Bd text-[20px] xl:text-[24px] leading-none xl:leading-normal">{{ $utils().formatCurrency(total) }}</strong>
                     </div>
                 </div>
-                <div class="flex flex-col sm:flex-row text-gray-600">
+                <div class="flex flex-col text-gray-600 sm:flex-row">
                     <p class="text-[14px] mr-[4px]">訂金 (總價30%)</p>
                     <div class="text-[14px]">NT$ {{ $utils().formatCurrency(deposit) }}</div>
                 </div>
@@ -315,6 +316,7 @@
 import { ElMessage } from "element-plus";
 import { v4 as uuidv4 } from "uuid";
 import { disableBodyScroll, enableBodyScroll, clearAllBodyScrollLocks } from "body-scroll-lock";
+import type { ShoppingCarCustomInterface, CustomCarItem } from "~/interface/shoppingCar";
 // 預覽圖片
 import CustomProductPrewView from "~/views/template1/CustomProduct/components/CustomProductPrewView.vue";
 // 選擇場景
@@ -343,10 +345,18 @@ import AddToShoppingCarDialog from "~/views/template1/components/AddToShoppingCa
  * 訂製門扇方法
  */
 import { useCustomProdutHook } from "./hooks/CustomProductHook";
+// 購物車 store
+import { useShoppingCarStore } from "~/store/shoppingCarStore";
+// user store
+import { useUserStore } from "~/store/userStore";
 
 const router = useRouter();
 
 const { $api, $utils, $shoppingCarService } = useNuxtApp();
+const shoppingCarStore = useShoppingCarStore();
+const userStore = useUserStore();
+
+const isAuth = computed(() => userStore.isAuth);
 const loading = ref(false);
 
 const stepMenuShow = ref({
@@ -451,7 +461,7 @@ const count = ref(1);
 // 預設選擇鎖樣式
 const currentLockId = ref({});
 // 預設選擇鎖樣式
-const currentLock = ref({});
+const currentLock = ref<any>({});
 // 門扇資料
 const doors = ref<any>([]);
 // 門框資料
@@ -472,9 +482,11 @@ const showSoppingCarDialog = ref(false);
 /**
  * 前往結賬
  */
-function goToBill() {
-    addToShoppingCar();
-    router.push({ name: "shopping-car-slug", params: { slug: "耶魯電子鎖購物車" }, query: { tab: "type2" } });
+async function goToBill() {
+    const result = await addToShoppingCar();
+    if (result) {
+        router.push({ name: "shopping-car-slug", params: { slug: "訂製門扇購物車" }, query: { tab: "type2" } });
+    }
 }
 
 // 門扇顏色
@@ -529,7 +541,7 @@ const customPreviewData = computed(() => {
 const showOptions = ref<boolean>(false);
 
 function toggleOptions() {
-    showOptions.value =!showOptions.value;
+    showOptions.value = !showOptions.value;
 }
 
 async function openShoppingCarDialog() {
@@ -541,24 +553,19 @@ async function openShoppingCarDialog() {
  * 加入購物車
  */
 async function addToShoppingCar() {
-    const data = {
+    const data: ShoppingCarCustomInterface = {
         id: uuidv4(),
         name: currentBgData.value.text,
         imgSrc: currentDoorData.value.imgSrc,
         count: count.value,
 
         doorGroup: {
+            label: "門扇",
             size: { label: "尺寸", ...currentDoorSizeData.value },
             door: {
                 label: "門扇",
                 ...currentDoorData.value,
                 color: currentDoorColorData.value,
-            },
-            types: {
-                category1: {
-                    label: "防火功能",
-                    value: false,
-                },
             },
         },
         doorOut: { label: "門框", ...currentDoorOutData.value, color: currentDoorOutColorData.value },
@@ -580,7 +587,7 @@ async function addToShoppingCar() {
         data.doorOut["optionId"] = currentDoorOutData.value.optionId[`option-${currentDoorOutColorId.value}`];
     }
 
-    let price = doorPrice + doorOutPrice + currentTool1Data.value.price + currentTool2Data.value.price;
+    let price = doorPrice + doorOutPrice + currentTool1Data.value.price + currentTool2Data.value.price + currentLock.value.price;
 
     // 判斷是否有選擇 選擇基本五金 下將壓條
     if (!$utils().isEmpty(currentOther1Datas.value)) {
@@ -615,94 +622,28 @@ async function addToShoppingCar() {
         });
         price = price + servicePrice;
     }
-    data["price"] = price * count.value;
     data["singlePrice"] = price;
+    data["price"] = price * count.value;
+    data["totalPrice"] = price * count.value;
     data["doorLimit"] = doorLimit.value;
-
+    console.log("addToCustomCart =>", data);
     try {
-        await addToCustomCarAPI(data);
-        if (process.client) {
-            // 加入 訂製門扇購物車
-            $shoppingCarService().addCustomProductToShoppingCar(data);
+        if (isAuth.value) {
+            // 加入訂製門扇 api
+            await shoppingCarStore.addToCustomCart(data, count.value);
+        } else {
+            if (process.client) {
+                // 加入 訂製門扇購物車
+                $shoppingCarService().addCustomProductToShoppingCar(data);
+                // 加入 訂製門扇購物車 store 資料
+                shoppingCarStore.setShoppingCustomCar($shoppingCarService().getCustomProductShoppingCar());
+            }
         }
-    } catch (err) {
-        console.log("addToCustomCarAPI => ", err);
-    }
-    // await addToCustomCarAPI(data);
-    // if (process.client) {
-    //     // 加入 訂製門扇購物車
-    //     $shoppingCarService().addCustomProductToShoppingCar(data);
-    // }
-}
-
-/**
- * 加入訂製門扇 api
- */
-async function addToCustomCarAPI(data: any) {
-    loading.value = true;
-    const setCustomCarDatas: any = {
-        items: [],
-        quantity: count.value,
-    };
-    setCustomCarDatas.items.push({
-        productable_id: data.doorGroup.door.id,
-        product_variationable_id: data.doorGroup.optionId,
-        quantity: count.value,
-    });
-    setCustomCarDatas.items.push({
-        productable_id: data.doorOut.id,
-        product_variationable_id: data.doorOut.optionId,
-        quantity: count.value,
-    });
-    setCustomCarDatas.items.push({
-        productable_id: data.lock.id,
-        quantity: count.value,
-    });
-    setCustomCarDatas.items.push({
-        productable_id: data.currentTool1.id,
-        quantity: count.value,
-    });
-    setCustomCarDatas.items.push({
-        productable_id: data.currentTool2.id,
-        quantity: count.value,
-    });
-    if (!$utils().isEmpty(data["currentOther1"])) {
-        currentOther1Datas.value.forEach((item: any) => {
-            setCustomCarDatas.items.push({
-                productable_id: item.id,
-                quantity: count.value,
-            });
-        });
-    }
-    if (!$utils().isEmpty(data["currentOther2"])) {
-        currentOther2Datas.value.forEach((item: any) => {
-            setCustomCarDatas.items.push({
-                productable_id: item.id,
-                quantity: count.value,
-            });
-        });
-    }
-    if (!$utils().isEmpty(data["otherServices"])) {
-        currentServiceDatas.value.forEach((item: any) => {
-            setCustomCarDatas.items.push({
-                productable_id: item.id,
-                quantity: count.value,
-            });
-        });
-    }
-    console.log("setCustomCarDatas =>", setCustomCarDatas);
-    try {
-        await $api().AddToCustomCarAPI(setCustomCarDatas);
         return true;
-    } catch (err) {
-        console.log("addToCustomCarAPI 2 err => ", err);
-        ElMessage({
-            type: "error",
-            message: "加入購物車失敗",
-        });
+    } catch (err: { message: string }) {
+        alert(err.message);
+        console.log("addToCustomCarAPI error => ", err);
         return false;
-    } finally {
-        loading.value = false;
     }
 }
 
@@ -749,7 +690,7 @@ const total = computed(() => {
     return (doorPrice + doorOutPrice + lockPrice + tool1Price + tool2Price + other1Price + other2Price + servicePrice) * count.value;
 });
 // 訂金
-const deposit = computed(() => total.value * 0.3);
+const deposit = computed(() => Math.round(total.value * 0.3));
 
 // 選擇商品 庫存最少數量上限
 const doorLimit = computed(() => {
@@ -874,7 +815,7 @@ onBeforeUnmount(() => {
 </script>
 
 <style lang="scss" scoped>
-.custom-top{
+.custom-top {
     @apply mt-[131px] xl:mt-header;
     -webkit-overflow-scrolling: touch;
     height: calc(var(--vh, 1vh) * 100 - 80px - 87px);
@@ -887,7 +828,7 @@ onBeforeUnmount(() => {
     grid-template: 1fr/4fr minmax(430px, 1fr);
     grid-gap: 0 55px;
     padding-inline-end: 55px;
-    @media screen and (max-width: 1280px) {
+    @media screen and (max-width: 1279.98px) {
         grid-gap: 0;
         padding-inline-end: 0;
     }
@@ -896,7 +837,7 @@ onBeforeUnmount(() => {
         max-height: calc(var(--vh, 1vh) * 100 - 80px - 87px);
     }
     .right {
-        @apply relative overflow-visible px-6 xl:px-0 pt-6 pb-12 xl:py-12;
+        @apply relative overflow-scroll xl:overflow-visible px-6 xl:px-0 pt-6 pb-12 xl:py-12;
     }
 }
 
@@ -905,7 +846,7 @@ onBeforeUnmount(() => {
     grid-template: 1fr/4fr minmax(430px, 1fr);
     grid-gap: 0 55px;
     padding-inline-end: 55px;
-    @media screen and (max-width: 1280px) {
+    @media screen and (max-width: 1279.98px) {
         grid-gap: 0;
         padding-inline-end: 0;
     }

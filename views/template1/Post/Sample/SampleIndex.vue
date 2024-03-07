@@ -28,6 +28,9 @@ import Breadcrumb from "~/views/template1/components/Breadcrumb.vue";
 import SideBar from "~/views/template1/components/SideBar";
 import ListItem from "~/views/template1/Post/components/PostListItem.vue";
 import Pagination from "~/views/template1/components/Pagination.vue";
+import { useInitializationStore } from "~/store/initializationStore";
+
+const initializationStore = useInitializationStore();
 
 const route = useRoute();
 
@@ -81,13 +84,13 @@ async function getType() {
             breadcrumbs.value.push({
                 name: "sample-slug",
                 text: "裝修實績",
-                params: { slug: "耶魯裝修實績" },
+                params: { slug: "裝修實績" },
                 query: { id: lastBreadcrumbs.id },
             });
             breadcrumbs.value.push({
                 name: "sample-slug",
                 text: lastBreadcrumbs.name,
-                params: { slug: "耶魯裝修實績" },
+                params: { slug: "裝修實績" },
                 query: { id: lastBreadcrumbs.id },
             });
         }
@@ -107,8 +110,8 @@ async function getTypeDetail() {
         const rows = (data.value as any).data;
 
         useSeoMeta({
-            title: rows.seoSetting.title,
-            description: rows.seoSetting.description,
+            title: rows.seoSetting.title ? rows.seoSetting.title : initializationStore.initializationData.site.meta_title,
+            description: rows.seoSetting.description ? rows.seoSetting.description : initializationStore.initializationData.site.meta_description,
             ogTitle: rows.seoSetting.title,
             ogDescription: rows.seoSetting.description,
             ogUrl: () => `${window.location.origin}/sample/${rows.seoSetting.custom_url}`,

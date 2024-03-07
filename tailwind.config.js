@@ -10,7 +10,7 @@ module.exports = {
         textColor: (theme) => theme("colors"),
         textOpacity: (theme) => theme("opacity"),
         screens: {
-            sm: "640px",
+            sm: "576px",
             md: "769px",
             lg: "992px",
             xl: "1280px",

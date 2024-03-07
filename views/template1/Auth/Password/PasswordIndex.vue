@@ -1,13 +1,13 @@
 <template>
-    <section class="mt-[64px] sm:mt-[86px] pb-[60px]">
+    <section class="mt-headerMb xl:mt-header pb-[60px]">
         <nav class="border-b border-gray-300 py-[16px] bg-white">
             <div class="container">
                 <Breadcrumb :menus="breadcrumbs" />
             </div>
         </nav>
         <div class="container overflow-auto">
-            <div class="w-full sm:w-[620px] mt-[24px] sm:mt-[60px] py-[24px] sm:py-[60px] px-[24px] sm:px-[60px] bg-white mx-auto rounded-[24px] border-[1px] border-gray-200">
-                <h3 class="font-medium text-[20px] sm:text-[32px] mb-4 sm:mb-8">變更密碼</h3>
+            <div class="w-full lg:w-[620px] mt-[60px] py-[32px] sm:py-[60px] px-[24px] sm:px-[60px] bg-white mx-auto rounded-[24px] border-[1px] border-gray-200">
+                <h3 class="font-medium text-[24px] md:text-[32px] mb-4 sm:mb-8">變更密碼</h3>
                 <el-form
                     class="custom-form"
                     ref="formRefDom"
@@ -15,7 +15,7 @@
                     :rules="rules"
                     require-asterisk-position="right"
                 >
-                    <div class="w-full flex flex-col sm:gap-6 gap-4">
+                    <div class="flex flex-col sm:gap-6 gap-4">
                         <div
                             v-for="(item, index) in formDatas"
                             :key="index"
@@ -71,13 +71,14 @@
                                 </div>
                             </el-form-item>
                         </div>
-                        <div class="flex mt-4 gap-2 sm:gap-4 justify-center">
+                        <div class="grid grid-cols-2 md:flex mt-4 gap-4 justify-center">
                             <NuxtLink :to="{ name: 'auth-panel-slug', params: { slug: '會員中心' } }">
-                                <button class="transparent-btn btn-md flex-1">返回</button>
+                                <button class="transparent-btn" :class="isMobile ? 'w-full' : 'btn-md'">返回</button>
                             </NuxtLink>
                             <button
                                 @click.prevent="onSubmit"
-                                class="yellow-btn btn-md flex-1 sm:flex-initial"
+                                class="yellow-btn"
+                                :class="isMobile ? '' : 'btn-md'"
                             >
                                 儲存
                             </button>
@@ -95,7 +96,7 @@ import { validatePassword } from "~/service/validator";
 import { ElMessage, ElLoading } from "element-plus";
 const { $api } = useNuxtApp();
 const router = useRouter();
-
+const { isMobile } = useWindowResize();
 const route = useRoute();
 
 const breadcrumbs = ref([

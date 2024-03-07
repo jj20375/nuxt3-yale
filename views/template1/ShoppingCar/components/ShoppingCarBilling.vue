@@ -18,7 +18,7 @@
             class="flex text-gray-800"
             :class="currentStep === 0 ? 'text-[24px]' : currentTab === 'type1' ? 'text-[20px]' : 'text-[16px]'"
         >
-            <span class="font-medium YaleSolisW-Bd flex-1">總計</span>
+            <span class="flex-1 font-medium YaleSolisW-Bd">總計</span>
             <div class="flex items-center font-medium YaleSolisW-Bd">
                 <span class="mr-[4px]">NT$ </span>
                 <slot name="total"></slot>
@@ -68,16 +68,24 @@ const { $utils } = useNuxtApp();
 
 const shoppingCarStore = useShoppingCarStore();
 
-// 購物車資料
+// 一般購物車資料
 const shoppingCar = computed(() => shoppingCarStore.shoppingCar);
+// 一般購物車資料
+const shoppingCustomCar = computed(() => shoppingCarStore.shoppingCustomCar);
 
 // 總價
-const total = computed(() =>
-    _SumBy(
-        _Filter(shoppingCar.value, (item: ShoppingCarInterface) => (item.id ? props.selectProductIds.includes(item.id) : false)),
+const total = computed(() => {
+    if (props.currentTab === "type1") {
+        return _SumBy(
+            _Filter(shoppingCar.value, (item: ShoppingCarInterface) => (item.id ? props.selectProductIds.includes(item.id) : false)),
+            "totalPrice"
+        );
+    }
+    return _SumBy(
+        _Filter(shoppingCustomCar.value, (item: ShoppingCarInterface) => (item.id ? props.selectProductIds.includes(item.id) : false)),
         "totalPrice"
-    )
-);
+    );
+});
 
 // 折扣
 const salePrice = computed(() => 0);

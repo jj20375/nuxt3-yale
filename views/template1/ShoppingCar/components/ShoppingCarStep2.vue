@@ -19,10 +19,12 @@
             ref="formPaymentRef"
         />
         <ShoppingCarStep2FormMeasureTheSize
+            ref="formMeasureTheSizeRef"
             v-if="props.currentTab === 'type2'"
             v-model:form="formMeasureTheSize"
         />
         <ShoppingCarStep2FormInvoice
+            v-if="formPayment.paymentType !== 'stronghold'"
             ref="formInvoiceRef"
             v-model:form="formInvoice"
         />
@@ -49,7 +51,7 @@
                     <span class="font-normal">我已閱讀並同意</span>
                 </el-checkbox>
                 <span
-                    @click="showDialogByCustomRule = true"
+                    @click="showDialogByCustomRule = !showDialogByCustomRule"
                     class="mx-2 text-gray-800 font-medium underline underline-offset-2 cursor-pointer hover:no-underline YaleSolisW-Bd text-[14px]"
                     >定型化契約</span
                 >
@@ -124,20 +126,27 @@ import ShoppingCarStep2FormMeasureTheSize from "~/views/template1/ShoppingCar/co
 
 import { useUserStore } from "~/store/userStore";
 import { ReqCheckout } from "~/api/cart";
+import { useShoppingCarStore } from "~/store/shoppingCarStore";
 
 const formUserRef = ref<any>(null);
 const formContactUserRef = ref<any>(null);
 const formLogisticsRef = ref<any>(null);
 const formPaymentRef = ref<any>(null);
 const formInvoiceRef = ref<any>(null);
+const formMeasureTheSizeRef = ref<any>(null);
 
 const showCheckWarning = ref(false);
 
 const userStore = useUserStore();
+const shoppingCarStore = useShoppingCarStore();
 
 const { user } = storeToRefs(userStore);
+const { shoppingCar } = storeToRefs(shoppingCarStore);
+const { shoppingCustomCar } = storeToRefs(shoppingCarStore);
 
-const { $api } = useNuxtApp();
+const { $api, $shoppingCarService } = useNuxtApp();
+const $config = useRuntimeConfig();
+const router = useRouter();
 
 interface Props {
     currentTab: string;
@@ -190,14 +199,14 @@ const formLogistics = ref({
 });
 
 // 付款方式
-const formPayment = ref({
+const formPayment = ref<{ paymentType: string; offlineStore?: number }>({
     // 付款方式
     paymentType: "ecpay",
 });
 
-//
-const formMeasureTheSize = ref({
-    measureSizeTime: "2024-01-01",
+// 預約丈量時間
+const formMeasureTheSize = ref<string>({
+    measureSizeTime: "",
 });
 
 // 發票表單
@@ -308,8 +317,9 @@ const initialVal = () => {
 
 // 結帳
 const checkout = async () => {
+    const hostUrl = $config.public.hostURL;
     const req: ReqCheckout = {
-        type: "normal", // normal
+        type: props.currentTab === "type2" ? "combination" : "normal", // normal
         member_phone: formMain.value.phone,
         contact_name: formContactUser.value.name,
         contact_email: formMain.value.email,
@@ -322,18 +332,58 @@ const checkout = async () => {
         payment_gateway: formPayment.value.paymentType,
         shipping_method: formLogistics.value.logistics,
         cart_item_id: props.selectProductIds,
+        // 發票類型
         invoice_type: formInvoice.value.invoiceType,
-        carrier_code: formInvoice.value.invoiceType === "mobile_carrier" || formInvoice.value.invoiceType === "natural_person_certificate" ? formInvoice.value.carrierCode : undefined,
+        // 載具編號
+        carrier_code: formInvoice.value.invoice_type === "mobile_carrier" || formInvoice.value.invoiceType === "natural_person_certificate" ? formInvoice.value.carrierCode : undefined,
+        // 捐款碼
         donation_code: formInvoice.value.invoiceType === "donation" ? formInvoice.value.donationCode : undefined,
+        // 統一編號
         tax_number: formInvoice.value.invoiceType === "company" ? formInvoice.value.taxNumber : undefined,
+        redirect_url: props.currentTab === "type2" ? `${hostUrl}/order/combination` : `${hostUrl}/order/normal`,
     };
+    // 訂製門扇需傳送參數
+    if (props.currentTab === "type2") {
+        req.reservation_date = formMeasureTheSize.value.measureSizeTime;
+        req.cart_combination_id = props.selectProductIds;
+        delete req.shipping_method;
+        delete req.cart_item_id;
+        if (formPayment.value.paymentType === "stronghold") {
+            req.stronghold_id = formPayment.value.offlineStore;
+            delete req.invoice_type;
+            delete req.carrier_code;
+            delete req.donation_code;
+            delete req.tax_number;
+        }
+    }
 
     const { data } = await $api().CheckOutApi(req);
     const resData = (data.value as any).data;
+    removeShoppingCar();
     if (resData.redirect) {
         window.open(resData.redirect_url, "self");
     }
+    if (!resData.redirect) {
+        router.push({
+            name: "auth-door-slug",
+            text: "訂製門扇-訂單記錄",
+            params: { slug: "訂製門扇-訂單記錄" },
+        });
+    }
 };
+
+// 移除購物車
+function removeShoppingCar() {
+    if (props.currentTab === "type1") {
+        shoppingCarStore.setShoppingCar(shoppingCar.value.filter((item: any) => !props.selectProductIds.includes(item.id)));
+        $shoppingCarService().setShoppingCar(shoppingCar.value);
+        return;
+    }
+    if (props.currentTab === "type2") {
+        shoppingCarStore.setShoppingCustomCar(shoppingCustomCar.value.filter((item: any) => !props.selectProductIds.includes(item.id)));
+        $shoppingCarService().setCustomProductShoppingCar(shoppingCustomCar.value);
+    }
+}
 
 // 驗證表單
 const validTest = async () => {
@@ -345,11 +395,29 @@ const validTest = async () => {
         const validInvoiceForm = await formInvoiceRef.value.$.exposed.validForm();
         if (!formConfirm.value.confirmRule) {
             showCheckWarning.value = true;
+            return;
         } else {
             showCheckWarning.value = false;
         }
         // 表單驗證無問題，去結帳
         if (validUserForm && validContactUserForm && validLogisticsForm && validPaymentForm && validInvoiceForm && formConfirm.value.confirmRule) {
+            checkout();
+        }
+    } else {
+        const validUserForm = await formUserRef.value.$.exposed.validForm();
+        const validContactUserForm = await formContactUserRef.value.$.exposed.validForm();
+        const validPaymentForm = await formPaymentRef.value.$.exposed.validForm();
+        const validInvoiceForm = await formInvoiceRef.value.$.exposed.validForm();
+        const validMeasureTheSizeForm = await formMeasureTheSizeRef.value.$.exposed.validForm();
+        if (!formConfirm.value.confirmCustomRule || !formConfirm.value.confirmRule) {
+            console.log("work", !formConfirm.value.confirmCustomRule, !formConfirm.value.confirmRule);
+            showCheckWarning.value = true;
+            return;
+        } else {
+            showCheckWarning.value = false;
+        }
+        // 表單驗證無問題，去結帳
+        if (validUserForm && validContactUserForm && validPaymentForm && validInvoiceForm && formConfirm.value.confirmRule && validMeasureTheSizeForm) {
             checkout();
         }
     }

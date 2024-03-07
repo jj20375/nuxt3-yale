@@ -2,7 +2,6 @@
     <BannerLayout
         :title="'維修與保固'"
         :banner="'/img/repair/repair-banner.jpg'"
-        :banner-mobile="'/img/repair/repair-banner-m.jpg'"
     >
         <template #breadcrumbs>
             <Breadcrumb :menus="breadcrumbs" />
@@ -50,8 +49,11 @@
 <script setup lang="ts">
 import BannerLayout from "~/views/template1/layouts/BannerLayout.vue";
 import Breadcrumb from "~/views/template1/components/Breadcrumb.vue";
+import { useInitializationStore } from "~/store/initializationStore";
 
 const route = useRoute();
+const initializationStore = useInitializationStore();
+
 const { $api } = useNuxtApp();
 
 const breadcrumbs = ref([
@@ -60,15 +62,14 @@ const breadcrumbs = ref([
         text: "首頁",
     },
     {
-        name: "faq-slug",
+        name: "repair-slug",
         text: "服務支援",
-        params: { slug: "服務支援" },
+        params: { slug: "維修與保固" },
     },
     {
         name: "repair-slug",
         text: "維修與保固",
         params: { slug: "維修與保固" },
-        query: { id: route.query.id },
     },
 ]);
 
@@ -86,8 +87,8 @@ async function getPageData() {
 
         const seoSetting = (data.value as any).data.seoSetting;
         useSeoMeta({
-            title: seoSetting.title,
-            description: seoSetting.description,
+            title: seoSetting.title ? seoSetting.title : initializationStore.initializationData.site.meta_title,
+            description: seoSetting.description ? seoSetting.description : initializationStore.initializationData.site.meta_description,
             ogTitle: seoSetting.title,
             ogDescription: seoSetting.description,
             ogUrl: () => `${window.location.origin}/${seoSetting.custom_url}`,

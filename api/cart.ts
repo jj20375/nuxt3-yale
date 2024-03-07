@@ -1,5 +1,4 @@
-import { CartItem } from "~/interface/shoppingCar";
-import { useFetchData } from "~/composables/fetch";
+import { CartItem, ReqUpdateCustomCart, ReqDeleteCustomCart, ReqMeasuring } from "~/interface/shoppingCar";
 
 interface ResGetCart {
     cartItems: any[];
@@ -22,12 +21,21 @@ export interface ReqCheckout {
     contact_address: string;
     remark: string;
     payment_gateway: string;
-    shipping_method: string;
+    shipping_method?: string;
     invoice_type: string;
     carrier_code?: string;
     donation_code?: string;
     tax_number?: string;
-    cart_item_id: number[];
+    // 一般商品結帳購物車 id
+    cart_item_id?: number[];
+    // 訂製門扇結帳購物車 id
+    cart_combination_id?: number[];
+    // 預約丈量時間
+    reservation_date?: string;
+    // 收款門市 id
+    stronghold_id?: number;
+    // 導頁網址
+    redirect_url: string;
 }
 
 /**
@@ -56,7 +64,7 @@ export default () => {
          * 取得 一般商品會員購物車
          */
         GetNormalCartAPI() {
-            return useFetchData.get<ResGetCart>(`${apiUrl}/cart`, { type: "normal" });
+            return useMyFetch<ResGetCart>(`${apiUrl}/cart`, { method: "get", params: { type: "normal" } });
         },
         /**
          * 加入購物車
@@ -83,10 +91,22 @@ export default () => {
             return useMyFetch<ResGetCart>(`${apiUrl}/cart`, { method: "get", params: { type: "combination" } });
         },
         /**
-         * 取得 訂製門扇購物車資料
+         * 新增 訂製門扇購物車資料
          */
         AddToCustomCarAPI(data: ReqCustomCar) {
             return useMyFetch(`${apiUrl}/cart/create-combination`, { method: "post", body: data });
+        },
+        /**
+         * 變更 訂製門扇購物車資料
+         */
+        UpdateCustomCartAPI(data: ReqUpdateCustomCart) {
+            return useMyFetch(`${apiUrl}/cart/update-combination`, { method: "put", body: data, server: false });
+        },
+        /**
+         * 刪除 訂製門扇購物車資料
+         */
+        DeleteCustomCartAPI(data: ReqDeleteCustomCart) {
+            return useMyFetch(`${apiUrl}/cart/delete-combination`, { method: "delete", body: data });
         },
         /*
          * 取得據點列表(分頁)
@@ -113,6 +133,20 @@ export default () => {
                 method: "post",
                 body: data,
             });
+        },
+
+        /**
+         * 取得丈量時間範圍
+         */
+        GetMeasuringTimeAPI(data: ReqMeasuring) {
+            return useMyFetch(`${apiUrl}/measuring/available-dates`, { method: "get", params: data });
+        },
+
+        /**
+         * 取得線下付款門市
+         */
+        GetOfflinePaymentStoresAPI() {
+            return useMyFetch(`${apiUrl}/stronghold/offline-payment`, { method: "get" });
         },
     };
 };

@@ -2,7 +2,6 @@
     <SideBarLayout
         :title="'服務中心'"
         :banner="'/img/contact/contact-banner.jpg'"
-        :banner-mobile="'/img/contact/contact-banner-m.jpg'"
     >
         <template #breadcrumbs>
             <Breadcrumb :menus="breadcrumbs" />
@@ -16,12 +15,13 @@
         <template #content>
             <FaqTItle :title="title" />
             <div
+                v-if="!$utils().isEmpty(content)"
                 v-html="content"
                 class="text-gray-800 text-[16px] leading-relaxed"
             ></div>
             <FaqContact class="mt-[90px]" />
             <div class="mt-[60px]">
-                <NuxtLink :to="{ name: 'faq-slug', params: { slug: route.params.slug }, query: { id: route.query.id } }">
+                <NuxtLink :to="{ name: 'faq-slug', params: { slug: categoryName }, query: { id: route.query.id } }">
                     <div class="flex">
                         <NuxtImg
                             class="w-[16px] mr-[5px]"
@@ -44,39 +44,20 @@ import FaqTItle from "~/views/template1/ContactService/components/ContactTitle";
 
 const route = useRoute();
 
-const { $api } = useNuxtApp();
+const { $api, $utils } = useNuxtApp();
 
 const breadcrumbs = ref([
     {
         name: "index",
         text: "首頁",
     },
-    {
-        name: "faq-slug",
-        text: "服務支援",
-        params: { slug: "耶魯服務支援" },
-    },
-    {
-        name: "faq-slug",
-        text: "服務中心",
-        params: { slug: "耶魯服務中心" },
-        query: { id: "id1" },
-    },
-    {
-        name: "faq-slug",
-        text: "電子鎖",
-        params: { slug: "耶魯服務中心-電子鎖" },
-        query: { id: "id1" },
-    },
-    {
-        name: "faq-details-slug",
-        text: "電子鎖沒電怎麼辦？",
-        params: { slug: "耶魯服務中心-電子鎖-電子鎖沒電怎麼辦？" },
-        query: { id: "id1" },
-    },
 ]);
 
 const sidebar = ref<any>([]);
+
+const categoryName = computed(() => {
+    return sidebar.value.find((item: any) => item.id == route.query.id) !== undefined ? sidebar.value.find((item: any) => item.id == route.query.id).name : "其他";
+});
 
 /**
  * 取得問答分類
@@ -85,7 +66,7 @@ async function getType() {
     try {
         const { data } = await $api().FQATypeAPI();
         sidebar.value = [];
-        console.log("home sampleType api => ", data.value);
+        console.log("FQATypeAPI data => ", data.value);
 
         const rows = (data.value as any).data;
 
@@ -100,8 +81,29 @@ async function getType() {
                 },
             });
         });
+
+        // 取得最後面的 麵包屑路徑
+        const lastBreadcrumbs = rows.find((item: any) => item.id == route.query.id);
+        breadcrumbs.value.push({
+            name: "faq-slug",
+            text: "服務支援",
+            params: { slug: lastBreadcrumbs.name },
+            query: { id: lastBreadcrumbs.id },
+        });
+        breadcrumbs.value.push({
+            name: "faq-slug",
+            text: "服務中心",
+            params: { slug: lastBreadcrumbs.name },
+            query: { id: lastBreadcrumbs.id },
+        });
+        breadcrumbs.value.push({
+            name: "faq-slug",
+            text: lastBreadcrumbs.name,
+            params: { slug: lastBreadcrumbs.name },
+            query: { id: lastBreadcrumbs.id },
+        });
     } catch (err) {
-        console.log("HomeSampleAPI => ", err);
+        console.log("FQATypeAPI error => ", err);
     }
 }
 
@@ -115,13 +117,19 @@ const content = ref("");
 async function getDetail(params: { fqaId: any }) {
     try {
         const { data } = await $api().FQADetailAPI(params);
-        console.log("home sample api => ", data.value);
+        console.log("FQADetailAPI data => ", data.value);
         const detail = (data.value as any).data;
 
         title.value = detail.name;
         content.value = detail.content;
+        breadcrumbs.value.push({
+            name: "faq-details-slug",
+            text: detail.name,
+            params: { slug: detail.name },
+            query: { detail_id: detail.id },
+        });
     } catch (err) {
-        console.log("HomeSampleAPI => ", err);
+        console.log("FQADetailAPI error => ", err);
     }
 }
 
@@ -131,13 +139,13 @@ async function getDetail(params: { fqaId: any }) {
 async function init() {
     await getType();
     console.log("route.query.id", route);
-    await getDetail({ fqaId: route.query.id });
+    await getDetail({ fqaId: route.query.detail_id });
 }
 
+await init();
 onMounted(async () => {
     nextTick(async () => {
         if (process.client) {
-            await init();
         }
     });
 });

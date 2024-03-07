@@ -5,6 +5,7 @@
         lock-scroll
         show-close
         center
+        :width="600"
         align-center
         append-to-body
     >
@@ -25,8 +26,8 @@
                 <template v-else>
                     <div class="product-card p-5 border-gray-200 border-[1px] rounded-[8px]">
                         <div class="text-[18px] font-bold text-gray-800 mb-4">{{ item.title }}</div>
-                        <div class="flex gap-5">
-                            <div class="flex-1">
+                        <div class="flex flex-col sm:flex-row gap-5">
+                            <div class="flex-1 order-2 sm:order-1">
                                 <div class="grid gap-2 text-gray-700">
                                     <template v-for="(column, columnIndex) in item.data" :key="columnIndex">
                                         <div class="text-gray-800">{{ column.label }}</div>
@@ -35,7 +36,7 @@
                                 </div>
                             </div>
                             <NuxtImg
-                                class="w-[200px] aspect-square object-cover h-fit"
+                                class="w-[200px] aspect-square object-cover h-fit order-1 sm:order-2 mx-auto"
                                 :src="item.imgUrl"
                             />
                         </div>

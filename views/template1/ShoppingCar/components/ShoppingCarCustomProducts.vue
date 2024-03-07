@@ -21,71 +21,79 @@
                     <div class="flex w-full text-gray-800 mb-[12px] gap-4">
                         <h3 class="YaleSolisW-Bd font-medium text-[18px] flex-1">訂製-{{ product.name }}</h3>
                         <div class="flex flex-col items-end gap-2 cursor-pointer h-fit">
-                            <p class="font-medium YaleSolisW-Bd">NT$ {{ $utils().formatCurrency(product.price) }}</p>
+                            <p class="font-medium YaleSolisW-Bd">NT$ {{ $utils().formatCurrency(product.singlePrice * product.count) }}</p>
                         </div>
                     </div>
-                    <div class="flex items-start justify-between gap-4 mb-4">
+                    <div
+                        v-loading="loading"
+                        class="flex items-start justify-between gap-4 mb-4"
+                    >
                         <div class="flex flex-col flex-1">
-                            <div class="grid grid-cols-2 gap-4 text-gray-700 text-[14px]">
-                                <template
-                                    v-for="(item, key) in shoppingCarDetail[index]"
-                                    :key="key"
-                                >
+                            <div
+                                v-for="(item, key) in shoppingCarDetail[index]"
+                                :key="key"
+                            >
+                                <div class="grid grid-cols-2 gap-4 text-gray-700 text-[14px]">
                                     <div v-if="item && item.label">
                                         {{ item.label }}
                                     </div>
-                                    <template v-if="key === 'doorGroup'">
-                                        <template v-for="(item3, index3) in item">
-                                            <template v-if="index3 === 'types'">
-                                                <template v-for="(item4, index4) in item3">
+                                    <div v-if="key === 'doorGroup'">
+                                        <div v-for="(item3, index3) in item">
+                                            <div v-if="index3 === 'types'">
+                                                <div v-for="(item4, index4) in item3">
                                                     <div>{{ item4.label }}</div>
                                                     <div>{{ item4.value ? "是" : "否" }}</div>
-                                                </template>
-                                            </template>
-                                            <template v-if="index3 === 'size'">
-                                                <div>{{ item3.label }}</div>
+                                                </div>
+                                            </div>
+                                            <div
+                                                v-if="index3 === 'size'"
+                                                class="flex"
+                                            >
+                                                <div class="whitespace-nowrap">{{ item3.label }}:</div>
                                                 <div class="flex flex-col gap-1">
                                                     <div>{{ item3.name }}</div>
                                                 </div>
-                                            </template>
-                                            <template v-if="index3 === 'door'">
-                                                <div>門扇</div>
+                                            </div>
+                                            <div v-if="index3 === 'door'">
+                                                <!-- <div class="whitespace-nowrap">門扇</div> -->
                                                 <div class="flex flex-col gap-1">
                                                     <div>{{ item3.title }}</div>
                                                     <div>{{ item3.style }}</div>
                                                     <div>{{ item3.color.text }}</div>
                                                 </div>
-                                            </template>
-                                        </template>
-                                    </template>
-                                    <template v-if="item && key === 'doorOut'">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div v-if="key === 'doorOut'">
                                         <div class="flex flex-col gap-1">
                                             <div>{{ item.title }}</div>
                                             <div>{{ item.style }}</div>
                                             <div>{{ item.color.text }}</div>
                                         </div>
-                                    </template>
-                                    <template v-if="key === 'lock'">
+                                    </div>
+                                    <div v-if="key === 'lock'">
                                         <div class="flex flex-col gap-1">
                                             <div>{{ item.name }}</div>
                                             <div>{{ item.model }}</div>
                                         </div>
-                                    </template>
-                                    <div v-if="item && ['currentTool1', 'currentTool2'].includes(key)">{{ item.title }}</div>
-                                    <template v-if="item && ['currentOther1', 'currentOther2', 'otherServices'].includes(key)">
+                                    </div>
+                                    <div v-if="item && ['currentTool1', 'currentTool2'].includes(key)">{{ item.title }}-{{ item.style }}</div>
+                                    <div v-if="item && ['currentOther1', 'currentOther2', 'otherServices'].includes(key)">
                                         <ul
                                             v-if="item"
                                             class="ml-2"
                                         >
                                             <li
                                                 v-for="(item2, index2) in item.datas"
-                                                class="list-disc list-inside"
+                                                :class="!['currentOther1', 'currentOther2'].includes(key) ? 'list-disc' : '-ml-2'"
+                                                class="list-inside"
                                             >
-                                                {{ item2.name }}
+                                                {{ item2.name }}-
+                                                {{ item2.style }}
                                             </li>
                                         </ul>
-                                    </template>
-                                </template>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <button
@@ -104,7 +112,7 @@
                             <button
                                 class="flex items-center justify-center flex-1 h-auto cursor-pointer disabled:cursor-not-allowed"
                                 :disabled="product.count <= 1"
-                                @click.prevent="countDelete(index)"
+                                @click.prevent="countReduce(index)"
                             >
                                 <el-icon><Minus /></el-icon>
                             </button>
@@ -136,6 +144,8 @@
 
 <script setup lang="ts">
 import { useShoppingCarStore } from "~/store/shoppingCarStore";
+import { useUserStore } from "~/store/userStore";
+import { ElMessage } from "element-plus";
 import ShoppingCarCustomProductDetail from "~/views/template1/ShoppingCar/components/ShoppingCarCustomProductDetail.vue";
 
 const emit = defineEmits(["update:selectProductIds"]);
@@ -143,15 +153,18 @@ const emit = defineEmits(["update:selectProductIds"]);
 const { $shoppingCarService, $utils } = useNuxtApp();
 
 const shoppingCarStore = useShoppingCarStore();
+const userStore = useUserStore();
+const isAuth = computed(() => userStore.isAuth);
+const loading = ref(false);
 
 // 商品詳情 彈窗dom
 const shoppingCarCustomProductDetailRefDom = ref<any>(null);
 
 // 購物車資料
-const shoppingCar = computed(() => shoppingCarStore.shoppingCar);
+const shoppingCar = computed(() => shoppingCarStore.shoppingCustomCar);
 // 購物車資料連動造成效能問題 多一個變數儲存固定資料
 const shoppingCarDetail = computed(() =>
-    shoppingCarStore.shoppingCar.map((item: any) => {
+    shoppingCarStore.shoppingCustomCar.map((item: any) => {
         const obj: any = { doorGroup: item.doorGroup, doorOut: item.doorOut, lock: item.lock, currentTool1: item.currentTool1, currentTool2: item.currentTool2 };
         if (item.currentOther1) {
             obj.currentOther1 = item.currentOther1;
@@ -182,8 +195,9 @@ const checkList = ref([]);
 
 /**
  * 點擊刪除數量按鈕
+ * @param { type Number(數字) } index 索引
  */
-function countDelete(index: number) {
+async function countReduce(index: number) {
     if (shoppingCar.value[index].count <= 1) {
         shoppingCar.value[index].count = 1;
         return;
@@ -192,29 +206,89 @@ function countDelete(index: number) {
     // 總價除以數量得到 刪除一個數量後的金額
     shoppingCar.value[index].count--;
     shoppingCar.value[index].price = shoppingCar.value[index].singlePrice * shoppingCar.value[index].count;
+    shoppingCar.value[index].totalPrice = shoppingCar.value[index].price;
     $shoppingCarService().setCustomProductShoppingCar(shoppingCar.value);
-    shoppingCarStore.setShoppingCar($shoppingCarService().getCustomProductShoppingCar());
+    shoppingCarStore.setShoppingCustomCar($shoppingCarService().getCustomProductShoppingCar());
+    // 等待 1秒鐘再更新就好 以防快速點擊
+    setTimeout(async () => {
+        if (isAuth.value && !loading.value) {
+            loading.value = true;
+            const result = await shoppingCarStore.updateCustomCart({
+                cart_combination_id: shoppingCar.value[index].id,
+                quantity: shoppingCar.value[index].count,
+            });
+            if (typeof result === "string") {
+                ElMessage({
+                    type: "error",
+                    message: result,
+                });
+            }
+            // 等待 1秒鐘再更新就好 以防快速點擊
+            setTimeout(async () => {
+                loading.value = false;
+            }, 1000);
+        }
+    }, 1000);
 }
 /**
  * 點擊增加數量按鈕
+ * @param { type Number(數字) } index 索引
  */
-function countAdd(index: number) {
+async function countAdd(index: number) {
     shoppingCar.value[index].count++;
     const count = shoppingCar.value[index].count;
     const singlePrice = shoppingCar.value[index].singlePrice;
     // 總價乘以數量得到 增加一個數量後的金額
     const price = singlePrice * count;
     shoppingCar.value[index].price = price;
+    shoppingCar.value[index].totalPrice = price;
     $shoppingCarService().setCustomProductShoppingCar(shoppingCar.value);
-    shoppingCarStore.setShoppingCar($shoppingCarService().getCustomProductShoppingCar());
+    shoppingCarStore.setShoppingCustomCar($shoppingCarService().getCustomProductShoppingCar());
+    // 等待 1秒鐘再更新就好 以防快速點擊
+    setTimeout(async () => {
+        if (isAuth.value && !loading.value) {
+            loading.value = true;
+            const result = await shoppingCarStore.updateCustomCart({
+                cart_combination_id: shoppingCar.value[index].id,
+                quantity: shoppingCar.value[index].count,
+            });
+            if (typeof result === "string") {
+                ElMessage({
+                    type: "error",
+                    message: result,
+                });
+            }
+            // 等待 1秒鐘再更新就好 以防快速點擊
+            setTimeout(async () => {
+                loading.value = false;
+            }, 1000);
+        }
+    }, 1000);
 }
 
 /**
  * 刪除購物車
  */
-function removeShoppingCar(index: number) {
-    $shoppingCarService().removeCustomProductSingleShoppingCarProduct(index);
-    init();
+async function removeShoppingCar(index: number) {
+    if (isAuth.value) {
+        loading.value = true;
+        const result = await shoppingCarStore.deleteCustomCart({
+            cart_combination_id: shoppingCar.value[index].id as number,
+        });
+        loading.value = false;
+        $shoppingCarService().removeCustomProductSingleShoppingCarProduct(index);
+        init();
+
+        if (typeof result === "string") {
+            ElMessage({
+                type: "error",
+                message: result,
+            });
+        }
+    } else {
+        $shoppingCarService().removeCustomProductSingleShoppingCarProduct(index);
+        init();
+    }
 }
 
 /**'
@@ -230,13 +304,13 @@ function init() {
         // 當購物車不為空時執行
         if ($shoppingCarService().getCustomProductShoppingCar() !== null) {
             // 購物車資料(過濾購物車重複資料)
-            shoppingCarStore.setShoppingCar($shoppingCarService().getCustomProductShoppingCar());
+            shoppingCarStore.setShoppingCustomCar($shoppingCarService().getCustomProductShoppingCar());
             // 設定購物車商品全選
             checkList.value = shoppingCar.value.map((item: any) => item.id);
             // 選中商品參數傳給母組件
             emit("update:selectProductIds", checkList.value);
         } else {
-            shoppingCarStore.setShoppingCar([]);
+            shoppingCarStore.setShoppingCustomCar([]);
         }
     }
 }
@@ -266,10 +340,11 @@ init();
             }
         }
     }
-
-    .product-card {
-        .grid {
-            grid-template-columns: 120px 1fr;
+    @media screen and (min-width: 767.98px) {
+        .product-card {
+            .grid {
+                grid-template-columns: 120px 1fr;
+            }
         }
     }
 }

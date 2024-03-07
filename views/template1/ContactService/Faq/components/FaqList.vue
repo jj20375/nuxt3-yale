@@ -34,7 +34,7 @@ const props = withDefaults(defineProps<Props>(), {
             url: {
                 name: "faq-details-slug",
                 params: { slug: "電子鎖沒電怎麼辦？" },
-                query: { id: "id1" },
+                query: { id: "id1", detail_id: "id1" },
             },
         },
     ],

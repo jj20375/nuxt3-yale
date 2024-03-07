@@ -37,7 +37,7 @@ const tabs = ref([
     },
     {
         id: "id3",
-        text: "歐風奢華款",
+        text: "歐風尊榮款",
     },
 ]);
 

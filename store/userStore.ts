@@ -63,9 +63,6 @@ export const useUserStore = defineStore({
         async getUserProfile() {
             const { $api }: any = useNuxtApp();
             const shoppingCarStore = useShoppingCarStore();
-            if (this.loading) {
-                return;
-            }
 
             if (Cookies.get("token")) {
                 try {
@@ -89,7 +86,8 @@ export const useUserStore = defineStore({
                     this.setUser(data.value.data);
                     this.setIsAuth(true);
                     await shoppingCarStore.getUserShopping();
-                    shoppingCarStore.syncCart();
+                    await shoppingCarStore.getUserCustomShoppingCar();
+                    // shoppingCarStore.syncCustomCart();
                 } catch (err) {
                     this.removeLoginData();
                     console.log("GetUserProfileAPI => ", err);

@@ -167,6 +167,7 @@ export function useCustomProdutHook() {
                 stock: item.stock,
                 price: Number(item.price),
                 id: item.id,
+                imgSrc: item.main_image,
                 detailData: {
                     carousel: item.carousel_images.map((item: string, index: number) => ({ id: index + 1, imgSrc: item })),
                     content: item.content,
