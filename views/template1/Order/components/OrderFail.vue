@@ -1,9 +1,9 @@
 <template>
-    <div class="sm:flex justify-center mt-[40px]">
-        <div class="flex justify-center mt-[60px]">
+    <div class="container flex justify-center items-center mt-headerMb xl:mt-header">
+        <div class="py-[70px] sm:py-[140px]">
             <div>
                 <Vue3Lottie
-                    animationLink="/json/check.json"
+                    animationLink="/json/failed.json"
                     :height="100"
                     :width="100"
                 />
