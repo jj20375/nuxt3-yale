@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-gray-50 px-[16px] py-[20px] sm:px-[24px] sm:py-[24px] rounded-[20px]">
+    <div class="bg-gray-50 px-5 py-[20px] xl:px-[24px] sm:py-[24px] rounded-[20px]">
         <div class="flex text-gray-800 text-[14px] mb-[4px]">
             <span class="flex-1">小計</span>
             <span>NT$ {{ $utils().formatCurrency(total) }}</span>

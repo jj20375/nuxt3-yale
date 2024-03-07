@@ -7,10 +7,10 @@
             <div
                 v-for="(product, index) in shoppingCar"
                 :key="index"
-                class="flex border-gray-300 gap-[48px] py-[30px] product-card"
+                class="flex border-gray-300 gap-[12px] sm:gap-4 lg:gap-[48px] py-[30px] product-card"
                 :class="shoppingCar.length - 1 === index ? '' : index === 0 ? 'pt-0 border-b' : 'border-b'"
             >
-                <div class="flex gap-[30px]">
+                <div class="flex gap-2 sm:gap-4">
                     <el-checkbox :label="product.id" />
                     <NuxtImg
                         class="w-[180px] h-fit aspect-square object-cover"
@@ -26,9 +26,9 @@
                     </div>
                     <div
                         v-loading="loading"
-                        class="flex items-start justify-between gap-4 mb-4"
+                        class="flex items-start justify-end md:justify-between gap-4 mb-4"
                     >
-                        <div class="flex flex-col flex-1">
+                        <div class="hidden md:flex flex-col flex-1">
                             <div
                                 v-for="(item, key) in shoppingCarDetail[index]"
                                 :key="key"

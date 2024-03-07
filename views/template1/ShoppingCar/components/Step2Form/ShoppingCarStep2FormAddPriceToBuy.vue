@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="mb-6 lg:mb-0">
         <h5 class="bg-gray-50 py-[8px] pl-[16px] w-full">加價購</h5>
         <el-checkbox-group
             v-model="checkList"
@@ -9,16 +9,16 @@
                 <div
                     v-for="(product, index) in products"
                     v-show="formData[index]"
-                    class="flex gap-[12px] sm:gap-[48px] border-gray-300 py-[30px]"
+                    class="flex gap-[12px] sm:gap-4 lg:gap-[48px] border-gray-300 py-4 sm:py-6 lg:py-[30px]"
                     :class="{ 'border-b': index !== products.length - 1 }"
                 >
                     <div
-                        class="flex gap-[8px] sm:gap-2"
+                        class="flex gap-2 sm:gap-4 lg:gap-[36px]"
                         v-if="formData[index]"
                     >
                         <el-checkbox :label="product.id" />
                         <NuxtImg
-                            class="w-[100px] h-[100px] sm:w-[180px] sm:h-[180px] aspect-square object-cover"
+                            class="w-[100px] h-[100px] sm:w-[140px] sm:h-[140px] lg:w-[180px] lg:h-[180px] aspect-square object-cover"
                             src="/img/shopping-car/shopping-gift-demo-1.jpg"
                         />
                     </div>
@@ -29,7 +29,7 @@
                     >
                         <div class="flex mb-[12px]">
                             <h5 class="flex-1 text-[16px] sm:text-[18px] text-gray-800 font-medium YaleSolisW-Bd">{{ product.name }}</h5>
-                            <div class="hidden sm:flex gap-4">
+                            <div class="hidden sm:flex gap-3">
                                 <p class="text-gray-400 line-through YaleSolisW-Lt mr-[4px]">NT${{ $utils().formatCurrency(product.price) }}</p>
                                 <p class="font-medium text-[18px] YaleSolisW-Bd">NT$ {{ $utils().formatCurrency(product.market_price * formData[index].count) }}</p>
                             </div>
@@ -37,7 +37,7 @@
                         <el-select
                             v-if="product.colors"
                             v-model="formData[index].color"
-                            class="w-[248px]"
+                            class="w-full sm:w-[248px]"
                         >
                             <el-option
                                 v-for="option in product.colors"
@@ -71,8 +71,8 @@
                                 />
                             </button>
                         </div>
-                        <div class="sm:hidden mt-[16px]">
-                            <p class="text-gray-400 text-[16px] line-through YaleSolisW-Lt mr-[4px]">NT${{ $utils().formatCurrency(product.price) }}</p>
+                        <div class="flex flex-col sm:hidden mt-[16px]">
+                            <p class="text-gray-400 text-[16px] line-through YaleSolisW-Lt">NT${{ $utils().formatCurrency(product.price) }}</p>
                             <p class="font-medium text-[16px] YaleSolisW-Bd">NT$ {{ $utils().formatCurrency(product.market_price * formData[index].count) }}</p>
                         </div>
                     </div>

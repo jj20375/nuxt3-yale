@@ -8,7 +8,7 @@
             :rules="rules"
             require-asterisk-position="right"
         >
-            <div class="grid sm:grid-cols-2 gap-[16px] sm:gap-6">
+            <div class="flex flex-col md:grid grid-cols-2 gap-[16px] sm:gap-6">
                 <el-form-item
                     :prop="'logistics'"
                     :label="'配送方式'"

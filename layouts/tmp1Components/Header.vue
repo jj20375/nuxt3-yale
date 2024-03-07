@@ -8,18 +8,17 @@
             :class="isMenuFixed ? 'xl:h-auto' : 'xl:h-header'"
         >
             <div
-                class="absolute flex justify-center items-center !w-[40px] !h-[40px] top-8 left-3 -translate-y-1/2 flex xl:hidden cursor-pointer z-[2]"
+                class="absolute justify-center items-center !w-[40px] !h-[40px] top-8 left-3 -translate-y-1/2 flex xl:hidden cursor-pointer z-[2]"
                 @click="showMenu = !showMenu"
-                type="button"
             >
                 <IconMenu class="!w-[20px] !h-[20px] transition-all duration-300 hover:text-gray-400 hover:transition-all hover:duration-300" />
             </div>
             <ul
-                class="items-center flex-1 text-base leading-5 xl:flex top-[64px] xl:top-0 xl:mb-0"
+                class="absolute xl:static items-center flex-1 text-base leading-5 xl:flex top-[64px] xl:top-0 xl:mb-0"
                 :class="isDesktop ? '' : showMenu ? 'py-4 nav-bar-mb' : ''"
             >
                 <li
-                    class="fixed xl:relative xl:mr-4 2xl:mr-6 3xl:mr-14 w-full xl:w-fit top-0 left-0 z-[1] bg-white xl:bg-transparent py-[8px] transition-all duration-300"
+                    class="fixed xl:relative xl:mr-4 2xl:mr-6 3xl:mr-14 w-full xl:w-fit top-0 left-0 z-[1] xl:bg-transparent py-[8px] transition-all duration-300"
                     :class="isMenuFixed ? 'xl:py-[4px]' : 'xl:py-[10px]'"
                 >
                     <NuxtLink
@@ -45,7 +44,7 @@
                         @mouseover="isLargePad ? null : changeMenu(key)"
                         @mouseleave="closeMenu"
                         @click="isLargePad ? toggleMenu(key) : null"
-                        class="xl:px-3 2xl:px-4 3xl:px-5 text-gray-800 cursor-pointer hover:text-gray-500"
+                        class="xl:px-3 2xl:px-4 3xl:px-5 text-gray-800 cursor-pointer transition-all duration-300 hover:text-gray-500"
                         :class="isMenuFixed ? 'xl:py-[23px]' : 'xl:py-[33px]'"
                     >
                         <div class="flex justify-center py-5 xl:py-0">
@@ -116,7 +115,7 @@
                     </div>
                     <div v-else>
                         <div
-                            class="relative xl:px-3 2xl:px-5 py-5 text-gray-800 hover:text-gray-500 cursor-pointer transition-all duration-300 cursor-pointer"
+                            class="relative xl:px-3 2xl:px-5 py-5 text-gray-800 hover:text-gray-500 cursor-pointer transition-all duration-300"
                             :class="[key === 'menu1' ? 'has-door' : '', isMenuFixed ? 'xl:py-[23px]' : 'xl:py-[33px]']"
                             @click="router.push(menu.url)"
                         >
@@ -586,5 +585,11 @@ function toggleMenu(key: string) {
 .nav-bar-mb {
     @apply relative overflow-auto bg-white border-t shadow-header;
     max-height: calc(var(--vh, 1vh) * 100 - #{$navbar-height-mb});
+}
+
+:deep{
+    .el-badge .el-badge__content{
+        @apply bg-red-500;
+    }
 }
 </style>

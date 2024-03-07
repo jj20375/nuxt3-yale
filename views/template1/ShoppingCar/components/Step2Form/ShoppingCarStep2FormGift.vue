@@ -1,5 +1,5 @@
 <template>
-    <div class="mt-[40px] sm:mt-[60px]">
+    <div class="mt-[30px] sm:mt-[60px]">
         <h5 class="bg-gray-50 py-[8px] pl-[16px] font-medium YaleSolisW-Bd w-full mb-[30px]">滿額贈品</h5>
         <el-checkbox-group
             v-model="checkList"
@@ -8,18 +8,18 @@
             <el-form class="custom-form">
                 <div
                     v-for="(gift, index) in gifts"
-                    class="flex border-gray-300 pb-[30px]"
-                    :class="gifts.length - 1 === index ? 'pt-[30px]' : 'border-b'"
+                    class="flex border-gray-300 pb-4 sm:pb-6 lg:pb-[30px]"
+                    :class="gifts.length - 1 === index ? 'pt-4 sm:pt-6 lg:pt-[30px]' : 'border-b'"
                 >
-                    <div class="mr-5">
+                    <div class="mr-2 sm:mr-4">
                         <el-checkbox :label="gift.id" />
                     </div>
                     <NuxtImg
-                        class="w-[100px] h-[100px] sm:w-[195px] sm:h-[195px] mr-[16px] sm:mr-[37px]"
+                        class="w-[100px] h-[100px] sm:w-[140px] sm:h-[140px] lg:w-[180px] lg:h-[180px] mr-3 sm:mr-4 lg:mr-[48px]"
                         src="/img/shopping-car/shopping-gift-demo-1.jpg"
                     />
                     <div class="flex-1">
-                        <h5 class="text-[18px] text-gray-800 YaleSolisW-Bd font-medium mb-[12px]">{{ gift.name }}</h5>
+                        <h5 class="text-[16px] sm:text-[18px] text-gray-800 YaleSolisW-Bd font-medium mb-[12px]">{{ gift.name }}</h5>
                         <el-form-item>
                             <el-select
                                 v-model="formData[index].color"

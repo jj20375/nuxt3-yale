@@ -1,5 +1,5 @@
 <template>
-    <div class="sm:mr-[40px] flex-1">
+    <div class="lg:mr-[30px] xl:mr-[40px] flex-1">
         <ShoppingCarStep2FormUser
             v-if="formMain.email"
             ref="formUserRef"
@@ -48,7 +48,7 @@
                     size="large"
                     class="text-gray-800"
                 >
-                    <span class="font-normal">我已閱讀並同意</span>
+                    <span class="font-normal text-gray-800">我已閱讀並同意</span>
                 </el-checkbox>
                 <span
                     @click="showDialogByCustomRule = !showDialogByCustomRule"
@@ -62,7 +62,7 @@
                     size="large"
                     class="text-gray-800"
                 >
-                    <span class="font-normal">我已閱讀並同意</span>
+                    <span class="font-normal text-gray-800">我已閱讀並同意</span>
                     <span class="mx-2 font-medium underline cursor-pointer underline-offset-2 hover:no-underline YaleSolisW-Bd">
                         <NuxtLink
                             class="text-gray-800"
@@ -74,7 +74,7 @@
                             >網站服務條款</NuxtLink
                         ></span
                     >
-                    <span class="font-normal">與</span>
+                    <span class="font-normal text-gray-800">與</span>
                     <span class="mx-2 font-medium underline cursor-pointer underline-offset-2 hover:no-underline YaleSolisW-Bd">
                         <NuxtLink
                             class="text-gray-800"

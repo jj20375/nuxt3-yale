@@ -1,14 +1,14 @@
 <template>
-    <section class="mt-headerMb xl:mt-header mb-[120px] border-t border-gray-300">
+    <section class="mt-headerMb xl:mt-header mb-[60px] sm:mb-[90px] lg:mb-[120px] border-t border-gray-300">
         <div class="container">
             <ul
                 v-if="currentStep == 0"
-                class="flex gap-[24px] justify-center pt-[48px] sm:pt-[64px]"
+                class="flex gap-4 sm:gap-[24px] justify-center pt-[36px] sm:pt-[48px] lg:pt-[64px]"
             >
                 <li
                     v-for="(tab, key) in tabs"
                     :key="key"
-                    class="flex gap-3 rounded-[8px] py-[20px] px-[32px] border border-gray-300 cursor-pointer relative"
+                    class="flex gap-3 rounded-[8px] py-4 sm:py-[20px] px-5 sm:px-[32px] border border-gray-300 cursor-pointer relative"
                     :class="[currentTab === key ? 'outline outline-2 outline-yellow-600 -outline-offset-2' : '']"
                     @click="
                         currentTab = key;
@@ -23,7 +23,7 @@
                     <div class="text-[16px] text-gray-800 font-medium">{{ tab.text }}</div>
                     <div
                         v-if="tab.quality > 0"
-                        class="absolute bg-red-500 rounded-2xl text-white text-[12px] px-1 right-0 -top-2 w-[20px] h-[20px] flex items-center justify-center"
+                        class="absolute before:absolute before:bg-red-500 before:rounded-2xl before:top-[1px] before:w-full before:h-[calc(100%-2px)] before:z-[-1] text-white text-[12px] -right-3 -top-2 px-[7px] h-[20px] flex items-center justify-center z-[2]"
                     >
                         {{ tab.quality }}
                     </div>
@@ -34,7 +34,7 @@
                     <ShoppingCarSteps v-model:step="currentStep" />
                 </div>
             </div>
-            <div class="sm:flex justify-center mt-[40px]">
+            <div class="lg:flex justify-center mt-[20px] lg:mt-[40px]">
                 <keep-alive>
                     <component
                         :is="showComponent"
@@ -44,13 +44,13 @@
                     />
                 </keep-alive>
                 <div
-                    class="w-full sm:w-[400px]"
+                    class="mt-12 lg:mt-0 w-full lg:w-[300px] xl:w-[400px]"
                     v-if="currentStep !== 2"
                 >
-                    <div class="sticky top-[111px]">
+                    <div class="lg:sticky lg:top-[111px]">
                         <ShoppingCarInputCoupon v-if="currentStep == 0" />
                         <ShoppingCarBilling
-                            :class="currentStep == 0 ? 'mt-[20px]' : ''"
+                            :class="currentStep == 0 ? 'mt-5 sm:mt-[30px] lg:mt-[20px]' : ''"
                             :selectProductIds="selectProductIds"
                             :currentTab="currentTab"
                             :currentStep="currentStep"
@@ -59,7 +59,7 @@
                                 v-if="currentStep == 0 || currentStep == 1"
                                 #button
                             >
-                                <div class="mt-[28px] sm:mt-[40px]">
+                                <div class="mt-[28px] lg:mt-[40px]">
                                     <button
                                         v-if="currentStep == 0"
                                         @click="goStepCheckout"

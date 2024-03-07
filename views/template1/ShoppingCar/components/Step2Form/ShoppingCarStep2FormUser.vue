@@ -8,7 +8,7 @@
             :rules="rules"
             require-asterisk-position="right"
         >
-            <div class="grid sm:grid-cols-2 gap-[16px] sm:gap-6 mb-[30px]">
+            <div class="flex flex-col md:grid grid-cols-2 gap-[16px] sm:gap-6 mb-[30px]">
                 <template
                     v-for="(item, index) in formDatas"
                     :key="index"
@@ -36,7 +36,7 @@
                             />
                         </el-form-item>
                     </div>
-                    <template v-if="item.space">
+                    <template v-if="item.space && !isPad">
                         <div
                             v-for="index in item.space"
                             :key="index"
@@ -54,6 +54,7 @@ import { validateTWMobileNumber } from "~/service/validator";
 
 const emit = defineEmits(["update:form"]);
 const formRefDom = ref<FormInstance>();
+const { isPad } = useWindowResize();
 
 interface Props {
     form: {
