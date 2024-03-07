@@ -10,7 +10,7 @@
         </nav>
         <div
             :style="`background-image: url(${banner})`"
-            class="relative h-[195px] md:h-[240px] xl:h-[320px] w-full bg-cover bg-center flex items-center justify-center"
+            class="relative h-[150px] md:h-[240px] xl:h-[320px] w-full bg-cover bg-center flex items-center justify-center"
         >
             <!-- <NuxtImg :src="banner" /> -->
             <div class="absolute top-0 w-full h-full bg-black bg-opacity-40"></div>
