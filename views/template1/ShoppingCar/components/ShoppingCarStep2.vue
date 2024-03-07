@@ -365,9 +365,9 @@ const checkout = async () => {
     }
     if (!resData.redirect) {
         router.push({
-            name: "auth-door-slug",
-            text: "訂製門扇-訂單記錄",
-            params: { slug: "訂製門扇-訂單記錄" },
+            name: "order-slug",
+            params: { slug: ["combination"] },
+            query: { status: "success" },
         });
     }
 };
@@ -407,18 +407,27 @@ const validTest = async () => {
         const validUserForm = await formUserRef.value.$.exposed.validForm();
         const validContactUserForm = await formContactUserRef.value.$.exposed.validForm();
         const validPaymentForm = await formPaymentRef.value.$.exposed.validForm();
-        const validInvoiceForm = await formInvoiceRef.value.$.exposed.validForm();
         const validMeasureTheSizeForm = await formMeasureTheSizeRef.value.$.exposed.validForm();
         if (!formConfirm.value.confirmCustomRule || !formConfirm.value.confirmRule) {
-            console.log("work", !formConfirm.value.confirmCustomRule, !formConfirm.value.confirmRule);
             showCheckWarning.value = true;
             return;
         } else {
             showCheckWarning.value = false;
         }
-        // 表單驗證無問題，去結帳
-        if (validUserForm && validContactUserForm && validPaymentForm && validInvoiceForm && formConfirm.value.confirmRule && validMeasureTheSizeForm) {
-            checkout();
+
+        // 非線下結帳時 需驗證發票
+        if (formPayment.value.paymentType !== "stronghold") {
+            const validInvoiceForm = await formInvoiceRef.value.$.exposed.validForm();
+            // 表單驗證無問題，去結帳
+            if (validUserForm && validContactUserForm && validPaymentForm && validInvoiceForm && formConfirm.value.confirmRule && validMeasureTheSizeForm) {
+                checkout();
+            }
+        } else {
+            // 判斷線下結帳 時 無需驗證是否輸入 發票
+            // 表單驗證無問題，去結帳
+            if (validUserForm && validContactUserForm && validPaymentForm && formConfirm.value.confirmRule && validMeasureTheSizeForm) {
+                checkout();
+            }
         }
     }
 };
