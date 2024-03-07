@@ -350,7 +350,8 @@ const checkout = async () => {
         delete req.cart_item_id;
         if (formPayment.value.paymentType === "stronghold") {
             req.stronghold_id = formPayment.value.offlineStore;
-            delete req.invoice_type;
+            // 線下付款發票參數寫死 offline
+            req.invoice_type = "offline";
             delete req.carrier_code;
             delete req.donation_code;
             delete req.tax_number;
