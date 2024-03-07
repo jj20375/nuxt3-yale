@@ -8,7 +8,7 @@
         lock-scroll
         show-close
         center
-        :width="isMobile ? '95%' : '600px'"
+        :width="800"
         align-center
         append-to-body
     >
@@ -38,7 +38,7 @@
                             class="border-b border-gray-200"
                         >
                             <td
-                                class="YaleSolisW-Bd sm:text-[16px] text-[12px] font-bold text-gray-800 px-[4px] sm:px-[10px] py-[4px] sm:py-[10px]"
+                                class="YaleSolisW-Bd sm:text-[16px] text-[12px] font-bold text-gray-800 px-[4px] sm:px-[10px] py-[4px] sm:py-[10px] min-w-[40px] sm:min-w-[60px]"
                                 v-if="contact.is_default"
                             >
                                 預設
@@ -47,10 +47,10 @@
                                 v-else
                                 class="text-gray-800 px-[10px] py-[10px]"
                             />
-                            <td class="sm:text-[16px] text-[12px] px-[10px] py-[10px] text-gray-800">{{ contact.name }}</td>
-                            <td class="sm:text-[16px] text-[12px] px-[10px] py-[10px] text-gray-800">{{ contact.phone }}</td>
-                            <td class="sm:text-[16px] text-[12px] px-[10px] py-[10px] text-gray-800 w-[300px]">{{ contact.full_address }}</td>
-                            <td class="px-[10px] py-[10px]">
+                            <td class="sm:text-[16px] text-[12px] px-[4px] sm:px-[10px] py-[4px] sm:py-[10px] text-gray-800 min-w-[50px] sm:min-w-[80px]">{{ contact.name }}</td>
+                            <td class="sm:text-[16px] text-[12px] px-[4px] sm:px-[10px] py-[4px] sm:py-[10px] text-gray-800 min-w-[90px] sm:min-w-[120px]">{{ contact.phone }}</td>
+                            <td class="sm:text-[16px] text-[12px] px-[4px] sm:px-[10px] py-[4px] sm:py-[10px] text-gray-800">{{ contact.full_address }}</td>
+                            <td class="px-[4px] sm:px-[10px] py-[4px] sm:py-[10px] min-w-[30px]">
                                 <el-radio
                                     :label="contact.id"
                                     size="large"

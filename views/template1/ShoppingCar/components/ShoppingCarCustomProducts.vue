@@ -1,5 +1,5 @@
 <template>
-    <section>
+    <section class="mb-6 lg:mb-0">
         <el-checkbox-group
             v-model="checkList"
             @change="selectProduct"
@@ -7,26 +7,26 @@
             <div
                 v-for="(product, index) in shoppingCar"
                 :key="index"
-                class="flex border-gray-300 gap-[12px] sm:gap-4 lg:gap-[48px] py-[30px] product-card"
+                class="flex border-gray-300 gap-[12px] sm:gap-4 lg:gap-[48px] py-4 sm:py-6 md:py-[30px] product-card"
                 :class="shoppingCar.length - 1 === index ? '' : index === 0 ? 'pt-0 border-b' : 'border-b'"
             >
                 <div class="flex gap-2 sm:gap-4">
                     <el-checkbox :label="product.id" />
                     <NuxtImg
-                        class="w-[180px] h-fit aspect-square object-cover"
+                        class="w-[100px] h-[100px] sm:w-[140px] sm:h-[140px] lg:w-[180px] lg:h-[180px] h-fit aspect-square object-cover"
                         :src="product.imgSrc"
                     />
                 </div>
                 <div class="flex-1">
                     <div class="flex w-full text-gray-800 mb-[12px] gap-4">
-                        <h3 class="YaleSolisW-Bd font-medium text-[18px] flex-1">訂製-{{ product.name }}</h3>
+                        <h3 class="YaleSolisW-Bd font-medium text-[16px] sm:text-[18px] flex-1">訂製-{{ product.name }}</h3>
                         <div class="flex flex-col items-end gap-2 cursor-pointer h-fit">
-                            <p class="font-medium YaleSolisW-Bd">NT$ {{ $utils().formatCurrency(product.singlePrice * product.count) }}</p>
+                            <p class="hidden sm:block font-medium YaleSolisW-Bd">NT$ {{ $utils().formatCurrency(product.singlePrice * product.count) }}</p>
                         </div>
                     </div>
                     <div
                         v-loading="loading"
-                        class="flex items-start justify-end md:justify-between gap-4 mb-4"
+                        class="flex items-start justify-between gap-4 mb-4"
                     >
                         <div class="hidden md:flex flex-col flex-1">
                             <div
@@ -107,8 +107,8 @@
                             <div class="text-[14px] underline underline-offset-2">查看商品詳情</div>
                         </button>
                     </div>
-                    <div class="flex gap-[18px] justify-end">
-                        <div class="flex justify-center items-stretch w-[150px] border border-gray-300 rounded-full">
+                    <div class="flex gap-4 sm:gap-[18px] justify-end">
+                        <div class="flex flex-1 sm:flex-initial justify-center items-stretch w-[150px] border border-gray-300 rounded-full">
                             <button
                                 class="flex items-center justify-center flex-1 h-auto cursor-pointer disabled:cursor-not-allowed"
                                 :disabled="product.count <= 1"
@@ -116,7 +116,7 @@
                             >
                                 <el-icon><Minus /></el-icon>
                             </button>
-                            <div class="flex items-center justify-center w-[80px] py-[10px] h-full">{{ product.count }}</div>
+                            <div class="flex items-center justify-center w-[60px] sm:w-[80px] py-[4px] sm:py-[10px] h-full">{{ product.count }}</div>
                             <button
                                 class="flex items-center justify-center flex-1 h-auto cursor-pointer disabled:cursor-not-allowed"
                                 :disabled="product.count >= product.doorLimit"
@@ -132,6 +132,7 @@
                             />
                         </button>
                     </div>
+                    <div class="sm:hidden mt-[16px] font-medium YaleSolisW-Bd text-[16px]">NT$ {{ $utils().formatCurrency(product.singlePrice * product.count) }}</div>
                 </div>
             </div>
         </el-checkbox-group>

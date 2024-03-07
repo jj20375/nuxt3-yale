@@ -48,42 +48,41 @@
                     size="large"
                     class="text-gray-800"
                 >
-                    <span class="font-normal text-gray-800">我已閱讀並同意</span>
+                    <slot name="label"
+                    ><span class="text-[14px] font-normal text-gray-800">我已閱讀並同意 </span>
+                        <span
+                            @click="showDialogByCustomRule = !showDialogByCustomRule"
+                            class="text-gray-800 font-medium underline underline-offset-2 cursor-pointer hover:no-underline YaleSolisW-Bd text-[14px]"
+                        >定型化契約</span
+                        >
+                    </slot>
                 </el-checkbox>
-                <span
-                    @click="showDialogByCustomRule = !showDialogByCustomRule"
-                    class="mx-2 text-gray-800 font-medium underline underline-offset-2 cursor-pointer hover:no-underline YaleSolisW-Bd text-[14px]"
-                    >定型化契約</span
-                >
             </div>
-            <div>
+            <div class="mt-4">
                 <el-checkbox
+                    class="!h-fit"
                     v-model="formConfirm.confirmRule"
                     size="large"
-                    class="text-gray-800"
                 >
-                    <span class="font-normal text-gray-800">我已閱讀並同意</span>
-                    <span class="mx-2 font-medium underline cursor-pointer underline-offset-2 hover:no-underline YaleSolisW-Bd">
+                    <slot name="label"
+                    ><span class="text-[14px] font-normal text-gray-800">我已閱讀並同意 </span>
                         <NuxtLink
-                            class="text-gray-800"
                             target="_blank"
+                            class="font-medium YaleSolisW-Bd text-gray-800 underline cursor-pointer underline-offset-2 hover:no-underline text-[14px]"
                             :to="{
-                                name: 'other-terms-slug',
-                                params: { slug: '耶魯網站服務條款' },
-                            }"
-                            >網站服務條款</NuxtLink
-                        ></span
-                    >
-                    <span class="font-normal text-gray-800">與</span>
-                    <span class="mx-2 font-medium underline cursor-pointer underline-offset-2 hover:no-underline YaleSolisW-Bd">
-                        <NuxtLink
-                            class="text-gray-800"
-                            target="_blank"
-                            :to="{ name: 'other-privacy-slug', params: { slug: '耶魯隱私權政權' } }"
+                                            name: 'other-terms-slug',
+                                            params: { slug: '耶魯網站服務條款' },
+                                        }"
+                        >網站服務條款</NuxtLink
                         >
-                            隱私權政策
-                        </NuxtLink>
-                    </span>
+                        <span class="text-[14px] font-normal text-gray-800"> 與 </span>
+                        <NuxtLink
+                            target="_blank"
+                            class="font-medium YaleSolisW-Bd text-gray-800 underline cursor-pointer underline-offset-2 hover:no-underline text-[14px]"
+                            :to="{ name: 'other-privacy-slug', params: { slug: '耶魯隱私權政權' } }"
+                        >隱私權政策</NuxtLink
+                        >
+                    </slot>
                 </el-checkbox>
             </div>
             <div

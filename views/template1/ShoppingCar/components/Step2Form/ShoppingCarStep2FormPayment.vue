@@ -24,7 +24,7 @@
                 prop="offlineStore"
                 v-if="form.paymentType === 'stronghold'"
             >
-                <div class="grid grid-cols-2 gap-[30px] w-full mt-4">
+                <div class="flex flex-col md:grid grid-cols-2 gap-[30px] w-full mt-4">
                     <div>
                         <label class="block w-full text-gray-800 text-[15px]">選擇門市/百貨櫃位<span class="ml-1 text-red-500">*</span></label>
                         <el-select

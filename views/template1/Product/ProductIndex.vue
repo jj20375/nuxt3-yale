@@ -121,10 +121,7 @@ import { useInitializationStore } from "~/store/initializationStore";
 
 const initializationStore = useInitializationStore();
 const { isLargePad } = useWindowResize();
-import { useInitializationStore } from "~/store/initializationStore";
 
-const initializationStore = useInitializationStore();
-const { isLargePad } = useWindowResize();
 const { $api, $utils } = useNuxtApp();
 
 const route = useRoute();

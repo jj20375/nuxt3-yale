@@ -30,7 +30,7 @@
                 </div>
                 <div class="flex-1">
                     <div
-                        class="flex justify-between w-full gap-4 text-gray-800"
+                        class="flex justify-between w-full gap-4 text-gray-800 cursor-pointer"
                         @click="
                             router.push({
                                 path: `/product/detail/${cart.name}`,
@@ -40,7 +40,7 @@
                             })
                         "
                     >
-                        <h3 class="YaleSolisW-Bd font-medium text-[16px] sm:text-[18px] cursor-pointer">{{ cart.name }}</h3>
+                        <h3 class="YaleSolisW-Bd font-medium text-[16px] sm:text-[18px]">{{ cart.name }}</h3>
                         <p class="hidden sm:block font-medium YaleSolisW-Bd text-[18px] whitespace-nowrap">NT$ {{ $utils().formatCurrency(cart.totalPrice) }}</p>
                     </div>
                     <div
@@ -50,7 +50,7 @@
                         <p class="w-[40px] sm:w-[90px] text-[14px]">顏色</p>
                         <p class="text-[14px]">{{ cart.colorName }}</p>
                     </div>
-                    <div class="flex gap-[36px] sm:gap-[18px] justify-end mt-[16px]">
+                    <div class="flex gap-4 sm:gap-[18px] justify-end mt-[16px]">
                         <div class="flex flex-1 justify-center items-stretch sm:flex-initial w-[150px] sm:w-[150px] border border-gray-300 rounded-full">
                             <button
                                 class="flex items-center text-[16px] justify-center flex-1 h-auto cursor-pointer"
@@ -58,7 +58,7 @@
                             >
                                 <el-icon><Minus /></el-icon>
                             </button>
-                            <div class="flex items-center justify-center w-[80px] py-[4px] sm:py-[10px] h-full">{{ cart.count }}</div>
+                            <div class="flex items-center justify-center w-[60px] sm:w-[80px] py-[4px] sm:py-[10px] h-full">{{ cart.count }}</div>
                             <button
                                 class="flex items-center text-[16px] justify-center flex-1 h-auto cursor-pointer"
                                 @click.prevent="countUpdate(cart.id, cart.productID, cart.count + 1, cart.product_variationable_id)"

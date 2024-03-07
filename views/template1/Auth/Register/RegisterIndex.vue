@@ -127,6 +127,7 @@
                                     ><span class="text-[14px]">我已閱讀並同意 </span>
                                     <NuxtLink
                                         class="font-bold underline cursor-pointer underline-offset-2 hover:no-underline text-[14px]"
+                                        target="_blank"
                                         :to="{
                                             name: 'other-terms-slug',
                                             params: { slug: '耶魯網站服務條款' },
@@ -136,6 +137,7 @@
                                     <span class="text-[14px]"> 與 </span>
                                     <NuxtLink
                                         class="font-bold underline cursor-pointer underline-offset-2 hover:no-underline text-[14px]"
+                                        target="_blank"
                                         :to="{ name: 'other-privacy-slug', params: { slug: '耶魯隱私權政權' } }"
                                         >隱私權政策</NuxtLink
                                     >

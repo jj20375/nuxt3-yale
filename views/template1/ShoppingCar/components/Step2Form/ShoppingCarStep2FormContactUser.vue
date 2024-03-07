@@ -11,7 +11,7 @@
             />
             <div
                 @click="showDialog = true"
-                class="relative underline underline-offset-2 text-[15px] text-blue-500 cursor-pointer"
+                class="relative underline underline-offset-2 hover:no-underline text-[15px] text-blue-500 cursor-pointer"
             >
                 選擇其他聯繫人
             </div>

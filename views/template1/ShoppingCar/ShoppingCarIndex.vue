@@ -23,7 +23,7 @@
                     <div class="text-[16px] text-gray-800 font-medium">{{ tab.text }}</div>
                     <div
                         v-if="tab.quality > 0"
-                        class="absolute before:absolute before:bg-red-500 before:rounded-2xl before:top-[1px] before:w-full before:h-[calc(100%-2px)] before:z-[-1] text-white text-[12px] -right-3 -top-2 px-[7px] h-[20px] flex items-center justify-center z-[2]"
+                        class="absolute before:absolute before:bg-red-500 before:rounded-2xl before:top-[1px] before:w-full before:h-[calc(100%-2px)] before:z-[-1] text-white text-[12px] -right-[10px] -top-2 px-[7px] h-[20px] flex items-center justify-center z-[2]"
                     >
                         {{ tab.quality }}
                     </div>
@@ -59,20 +59,13 @@
                                 v-if="currentStep == 0 || currentStep == 1"
                                 #button
                             >
-                                <div class="mt-[28px] lg:mt-[40px]">
+                                <div class="mt-[28px] lg:mt-[40px]" v-if="currentStep == 0">
                                     <button
-                                        v-if="currentStep == 0"
+
                                         @click="goStepCheckout"
                                         class="w-full yellow-btn"
                                     >
                                         下一步
-                                    </button>
-                                    <button
-                                        v-else
-                                        @click="goCheckoutStep3 = !goCheckoutStep3"
-                                        class="w-full yellow-btn"
-                                    >
-                                        前往付款
                                     </button>
                                 </div>
                             </template>
