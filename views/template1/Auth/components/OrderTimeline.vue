@@ -4,17 +4,18 @@
             class="relative w-full flex flex-col md:flex-row gap-2 md:gap-[30px] items-center bg-gray-100 px-[20px] py-[10px] cursor-pointer"
             @click.prevent="toggleMenu"
         >
-            <div class="flex gap-2">
+            <div class="flex gap-2 py-[8px]">
                 <div class="font-bold">訂單編號</div>
                 <div class="YaleSolisW-Bd">{{ orderNumber }}</div>
             </div>
             <div
                 class="font-bold"
-                :class="getStatusClass(timeline[timeline.length - 1]?.status)"
+                :class="getStatusClass(status)"
             >
-                {{ timeline[timeline.length - 1]?.status }}
+                {{ status }}
             </div>
             <button
+                v-if="status === '未付款' || status === '待付訂金' || status === '待付尾款'"
                 @click.stop="refund"
                 class="transparent-btn btn-xs"
             >
@@ -55,6 +56,7 @@
 <script setup lang="ts">
 interface Props {
     orderNumber: string;
+    status: string;
     timeline: {
         date: string;
         time: string;
@@ -64,6 +66,7 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), {
     orderNumber: "",
+    status: "",
     timeline: [
         {
             date: "",

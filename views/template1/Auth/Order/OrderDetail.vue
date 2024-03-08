@@ -29,6 +29,7 @@
                 <RecordTimeline
                     :orderNumber="orderData.orderNumber"
                     :timeline="orderData.timeline"
+                    :status="orderData?.payment?.orderStatus"
                 />
                 <div class="mt-8 sm:mt-12">
                     <h4 class="mb-3 font-bold">配送資訊</h4>
@@ -120,7 +121,17 @@
                 <div>
                     <OrderPrice :order="orderData.price" />
                 </div>
-                <div class="flex justify-center mt-[30px] sm:mt-[60px]">
+                <div
+                    v-if="
+                        orderData?.payment?.orderStatus === '未付款' ||
+                        orderData?.payment?.orderStatus === '處理中' ||
+                        orderData?.payment?.orderStatus === '已出貨' ||
+                        orderData?.payment?.orderStatus === '待付訂金' ||
+                        orderData?.payment?.orderStatus === '丈量派工中' ||
+                        orderData?.payment?.orderStatus === '待付尾款'
+                    "
+                    class="flex justify-center mt-[30px] sm:mt-[60px]"
+                >
                     <button
                         class="transparent-btn btn-xs"
                         @click="handleRefund"
@@ -167,7 +178,7 @@ import Breadcrumb from "~/views/template1/components/Breadcrumb.vue";
 import RecordTimeline from "~/views/template1/Auth/components/OrderTimeline.vue";
 import RecordProduct from "~/views/template1/Auth/components/OrderProduct.vue";
 import OrderPrice from "~/views/template1/Auth/components/OrderPrice.vue";
-import moment from "moment"
+import moment from "moment";
 
 const { $api, $utils } = useNuxtApp();
 
@@ -309,9 +320,9 @@ const orderStatus = (status: string) => {
         case "install_complete":
             return "安裝完成";
         default:
-            return '';
+            return "";
     }
-}
+};
 const receiptStatus = (status: string) => {
     switch (status) {
         case "unissued":
@@ -321,46 +332,47 @@ const receiptStatus = (status: string) => {
         case "cancelled":
             return "已作廢";
         default:
-            return '';
+            return "";
     }
-}
+};
 /**
  * 取得商品分類詳情
  */
 const getData = async () => {
     console.log("resProductDetail =>", resProductDetail);
-    orderData.value.orderNumber = resProductDetail.order_no
+    orderData.value.orderNumber = resProductDetail.order_no;
     orderData.value.info = {
         contactName: resProductDetail.contact_name,
         email: resProductDetail.contact_email,
         phone: resProductDetail.contact_phone,
         address: resProductDetail.contact_city + resProductDetail.contact_district + resProductDetail.contact_address,
-    }
-    orderData.value.products = []
-    resProductDetail.orderItems.forEach((item: { productable: { name: any; attributes: { [x: string]: any; }; }; quantity: any; }) => {
+    };
+    orderData.value.products = [];
+    resProductDetail.orderItems.forEach((item: { productable: { name: any; attributes: { [x: string]: any } }; quantity: any }) => {
         orderData.value.products.push({
             name: item.productable.name,
-            price: '$' + $utils().formatCurrency(item.price),
-            color: item.productable.attributes['顏色'],
+            price: "$" + $utils().formatCurrency(item.price),
+            color: item.productable.attributes["顏色"],
             quantity: item.quantity,
             imgUrl: item.productable.main_image,
-        })
-    })
-    orderData.value.timeline = []
-    resProductDetail.orderPayments.forEach(item => {
+        });
+    });
+    orderData.value.timeline = [];
+    resProductDetail.orderPayments.forEach((item) => {
         orderData.value.timeline.push({
-            date: moment(item.created_at).format('YYYY-MM-DD'),
-            time: moment(item.created_at).format('HH:mm'),
+            date: moment(item.created_at).format("YYYY-MM-DD"),
+            time: moment(item.created_at).format("HH:mm"),
             status: orderStatus(item.status),
-        })
-    })
-    orderData.value.receipt.type = resProductDetail.orderPayments[0].orderInvoice.type
-    orderData.value.receipt.status = receiptStatus(resProductDetail.orderPayments[0].orderInvoice.status)
-    orderData.value.receipt.date = resProductDetail.orderPayments[0].orderInvoice.issued_at
-    orderData.value.receipt.taxId = resProductDetail.orderPayments[0].orderInvoice.carrier_code
-    orderData.value.receipt.number = resProductDetail.orderPayments[0].orderInvoice.invoice_no
-    orderData.value.price.totalPrice = resProductDetail.total_amount
-    orderData.value.price.memo = resProductDetail.remark ? resProductDetail.remark : '無'
+        });
+    });
+    orderData.value.receipt.type = resProductDetail.orderPayments[0].orderInvoice.type;
+    orderData.value.receipt.status = receiptStatus(resProductDetail.orderPayments[0].orderInvoice.status);
+    orderData.value.receipt.date = resProductDetail.orderPayments[0].orderInvoice.issued_at;
+    orderData.value.receipt.taxId = resProductDetail.orderPayments[0].orderInvoice.carrier_code;
+    orderData.value.receipt.number = resProductDetail.orderPayments[0].orderInvoice.invoice_no;
+    orderData.value.price.totalPrice = resProductDetail.total_amount;
+    orderData.value.price.memo = resProductDetail.remark ? resProductDetail.remark : "無";
+    orderData.value.payment.orderStatus = orderStatus(resProductDetail.status);
 };
 
 /**
