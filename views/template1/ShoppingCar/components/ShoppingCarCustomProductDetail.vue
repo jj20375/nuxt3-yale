@@ -18,7 +18,7 @@
             class="product-card p-5 border-gray-200 border-[1px] rounded-[8px]"
         >
             <h5 class="text-[18px] font-bold text-gray-800 mb-4">門扇</h5>
-            <div class="flex flex-col sm:flex-row gap-5">
+            <div class="flex flex-col gap-5 sm:flex-row">
                 <div class="flex-1 order-2 sm:order-1">
                     <div class="grid gap-2 text-gray-700">
                         <!-- <div class="w-[80px]">場景</div> -->
@@ -47,7 +47,7 @@
             class="product-card p-5 border-gray-200 border-[1px] rounded-[8px] mt-5"
         >
             <h5 class="text-[18px] font-bold text-gray-800 mb-4">門框</h5>
-            <div class="flex flex-col sm:flex-row gap-5">
+            <div class="flex flex-col gap-5 sm:flex-row">
                 <div class="flex-1 order-2 sm:order-1">
                     <div class="grid gap-2 text-gray-700">
                         <!-- <div class="w-[80px]">場景</div> -->
@@ -72,7 +72,7 @@
             class="product-card p-5 border-gray-200 border-[1px] rounded-[8px] mt-5"
         >
             <h5 class="text-[18px] font-bold text-gray-800 mb-4">門鎖</h5>
-            <div class="flex flex-col sm:flex-row gap-5">
+            <div class="flex flex-col gap-5 sm:flex-row">
                 <div class="flex-1 order-2 sm:order-1">
                     <div class="grid gap-2 text-gray-700">
                         <!-- <div class="w-[80px]">場景</div> -->
@@ -86,7 +86,7 @@
                             v-if="products.lock.price > 0"
                             class="flex-1 w-[80px]"
                         >
-                            加構
+                            加購
                         </div>
                         <div
                             v-if="products.lock.price > 0"
@@ -107,7 +107,7 @@
             class="product-card p-5 border-gray-200 border-[1px] rounded-[8px] mt-5"
         >
             <h5 class="text-[18px] font-bold text-gray-800 mb-4">掛門</h5>
-            <div class="flex flex-col sm:flex-row gap-5">
+            <div class="flex flex-col gap-5 sm:flex-row">
                 <div class="flex-1 order-2 sm:order-1">
                     <div class="grid gap-2 text-gray-700">
                         <!-- <div class="w-[80px]">場景</div> -->
@@ -121,7 +121,7 @@
                             v-if="products.currentTool1.price > 0"
                             class="flex-1 w-[80px]"
                         >
-                            加構
+                            加購
                         </div>
                         <div
                             v-if="products.currentTool1.price > 0"
@@ -142,7 +142,7 @@
             class="product-card p-5 border-gray-200 border-[1px] rounded-[8px] mt-5"
         >
             <h5 class="text-[18px] font-bold text-gray-800 mb-4">氣密條</h5>
-            <div class="flex flex-col sm:flex-row gap-5">
+            <div class="flex flex-col gap-5 sm:flex-row">
                 <div class="flex-1 order-2 sm:order-1">
                     <div class="grid gap-2 text-gray-700">
                         <!-- <div class="w-[80px]">場景</div> -->
@@ -156,7 +156,7 @@
                             v-if="products.currentTool2.price > 0"
                             class="flex-1 w-[80px]"
                         >
-                            加構
+                            加購
                         </div>
                         <div
                             v-if="products.currentTool2.price > 0"
@@ -177,7 +177,7 @@
             class="product-card p-5 border-gray-200 border-[1px] rounded-[8px] mt-5"
         >
             <h5 class="text-[18px] font-bold text-gray-800 mb-4">下將壓條</h5>
-            <div class="flex flex-col sm:flex-row gap-5">
+            <div class="flex flex-col gap-5 sm:flex-row">
                 <div class="flex-1 order-2 sm:order-1">
                     <div class="grid gap-2 text-gray-700">
                         <!-- <div class="w-[80px]">場景</div> -->
@@ -191,7 +191,7 @@
                             v-if="products.currentOther1.datas[0].price > 0"
                             class="flex-1 w-[80px]"
                         >
-                            加構
+                            加購
                         </div>
                         <div
                             v-if="products.currentOther1.datas[0].price > 0"
@@ -212,7 +212,7 @@
             class="product-card p-5 border-gray-200 border-[1px] rounded-[8px] mt-5"
         >
             <h5 class="text-[18px] font-bold text-gray-800 mb-4">門弓器</h5>
-            <div class="flex flex-col sm:flex-row gap-5">
+            <div class="flex flex-col gap-5 sm:flex-row">
                 <div class="flex-1 order-2 sm:order-1">
                     <div class="grid gap-2 text-gray-700">
                         <!-- <div class="w-[80px]">場景</div> -->
@@ -226,7 +226,7 @@
                             v-if="products.currentOther2.datas[0].price > 0"
                             class="flex-1 w-[80px]"
                         >
-                            加構
+                            加購
                         </div>
                         <div
                             v-if="products.currentOther2.datas[0].price > 0"

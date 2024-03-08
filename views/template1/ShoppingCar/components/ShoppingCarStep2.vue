@@ -49,11 +49,11 @@
                     class="text-gray-800"
                 >
                     <slot name="label"
-                    ><span class="text-[14px] font-normal text-gray-800">我已閱讀並同意 </span>
+                        ><span class="text-[14px] font-normal text-gray-800">我已閱讀並同意 </span>
                         <span
                             @click="showDialogByCustomRule = !showDialogByCustomRule"
                             class="text-gray-800 font-medium underline underline-offset-2 cursor-pointer hover:no-underline YaleSolisW-Bd text-[14px]"
-                        >定型化契約</span
+                            >定型化契約</span
                         >
                     </slot>
                 </el-checkbox>
@@ -65,22 +65,22 @@
                     size="large"
                 >
                     <slot name="label"
-                    ><span class="text-[14px] font-normal text-gray-800">我已閱讀並同意 </span>
+                        ><span class="text-[14px] font-normal text-gray-800">我已閱讀並同意 </span>
                         <NuxtLink
                             target="_blank"
                             class="font-medium YaleSolisW-Bd text-gray-800 underline cursor-pointer underline-offset-2 hover:no-underline text-[14px]"
                             :to="{
-                                            name: 'other-terms-slug',
-                                            params: { slug: '耶魯網站服務條款' },
-                                        }"
-                        >網站服務條款</NuxtLink
+                                name: 'other-terms-slug',
+                                params: { slug: '耶魯網站服務條款' },
+                            }"
+                            >網站服務條款</NuxtLink
                         >
                         <span class="text-[14px] font-normal text-gray-800"> 與 </span>
                         <NuxtLink
                             target="_blank"
                             class="font-medium YaleSolisW-Bd text-gray-800 underline cursor-pointer underline-offset-2 hover:no-underline text-[14px]"
                             :to="{ name: 'other-privacy-slug', params: { slug: '耶魯隱私權政權' } }"
-                        >隱私權政策</NuxtLink
+                            >隱私權政策</NuxtLink
                         >
                     </slot>
                 </el-checkbox>
@@ -91,7 +91,7 @@
             >
                 請勾選
             </div>
-            <div class="hidden sm:flex justify-center mt-[40px]">
+            <div class="sm:flex justify-center mt-[40px]">
                 <button
                     @click.prevent="validTest"
                     class="yellow-btn btn-lg"

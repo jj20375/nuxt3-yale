@@ -69,9 +69,9 @@
                     class="text-[16px] text-gray-800 mt-[28px]"
                     v-html="currentLockData.detailData.content"
                 ></p>
-                <div class="flex justify-center mt-[40px]">
+                <!-- <div class="flex justify-center mt-[40px]">
                     <button class="yellow-btn btn-md">加入選擇</button>
-                </div>
+                </div> -->
             </div>
         </el-dialog>
     </div>
