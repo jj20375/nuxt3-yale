@@ -59,13 +59,20 @@
                                 v-if="currentStep == 0 || currentStep == 1"
                                 #button
                             >
-                                <div class="mt-[28px] lg:mt-[40px]" v-if="currentStep == 0">
+                                <div class="mt-[28px] lg:mt-[40px]">
                                     <button
-
+                                        v-if="currentStep == 0"
                                         @click="goStepCheckout"
                                         class="w-full yellow-btn"
                                     >
                                         下一步
+                                    </button>
+                                    <button
+                                        v-else
+                                        @click.prevent="validTest"
+                                        class="w-full yellow-btn"
+                                    >
+                                        前往付款
                                     </button>
                                 </div>
                             </template>

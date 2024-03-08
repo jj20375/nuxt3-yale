@@ -91,14 +91,15 @@
             >
                 請勾選
             </div>
-            <div class="sm:flex justify-center mt-[40px]">
-                <button
-                    @click.prevent="validTest"
-                    class="yellow-btn btn-lg"
-                >
-                    前往付款
-                </button>
-            </div>
+<!--    原本的按鈕移動到ShoppingCarIndex   -->
+<!--            <div class="sm:flex justify-center mt-[40px]">-->
+<!--                <button-->
+<!--                    @click.prevent="validTest"-->
+<!--                    class="yellow-btn btn-lg"-->
+<!--                >-->
+<!--                    前往付款-->
+<!--                </button>-->
+<!--            </div>-->
         </div>
     </div>
 </template>
