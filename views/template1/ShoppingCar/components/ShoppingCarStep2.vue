@@ -91,15 +91,15 @@
             >
                 請勾選
             </div>
-<!--    原本的按鈕移動到ShoppingCarIndex   -->
-<!--            <div class="sm:flex justify-center mt-[40px]">-->
-<!--                <button-->
-<!--                    @click.prevent="validTest"-->
-<!--                    class="yellow-btn btn-lg"-->
-<!--                >-->
-<!--                    前往付款-->
-<!--                </button>-->
-<!--            </div>-->
+            <!--    原本的按鈕移動到ShoppingCarIndex   -->
+            <!--            <div class="sm:flex justify-center mt-[40px]">-->
+            <!--                <button-->
+            <!--                    @click.prevent="validTest"-->
+            <!--                    class="yellow-btn btn-lg"-->
+            <!--                >-->
+            <!--                    前往付款-->
+            <!--                </button>-->
+            <!--            </div>-->
         </div>
     </div>
 </template>
@@ -127,6 +127,10 @@ import ShoppingCarStep2FormMeasureTheSize from "~/views/template1/ShoppingCar/co
 import { useUserStore } from "~/store/userStore";
 import { ReqCheckout } from "~/api/cart";
 import { useShoppingCarStore } from "~/store/shoppingCarStore";
+
+defineExpose({
+    validTest,
+});
 
 const formUserRef = ref<any>(null);
 const formContactUserRef = ref<any>(null);
@@ -387,7 +391,7 @@ function removeShoppingCar() {
 }
 
 // 驗證表單
-const validTest = async () => {
+async function validTest() {
     if (props.currentTab === "type1") {
         const validUserForm = await formUserRef.value.$.exposed.validForm();
         const validContactUserForm = await formContactUserRef.value.$.exposed.validForm();
@@ -431,7 +435,7 @@ const validTest = async () => {
             }
         }
     }
-};
+}
 
 watch(
     () => props.goCheckoutStep3,

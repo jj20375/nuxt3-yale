@@ -37,6 +37,7 @@
             <div class="lg:flex justify-center mt-[20px] lg:mt-[40px]">
                 <keep-alive>
                     <component
+                        ref="componentRef"
                         :is="showComponent"
                         v-model:currentTab="currentTab"
                         v-model:selectProductIds="selectProductIds"
@@ -168,6 +169,7 @@ const currentStep = ref(0);
 // 購物車選中商品 id
 const selectProductIds = ref<number[]>([]);
 
+const componentRef = ref<any>(null);
 const showComponent = shallowRef<any>(ShoppingCarStep1);
 
 // 總價
@@ -199,6 +201,15 @@ const goStepCheckout = () => {
         alert("請先登入");
     }
 };
+
+/**
+ * 表單驗證
+ */
+async function validTest() {
+    if (componentRef.value) {
+        await componentRef.value.validTest();
+    }
+}
 
 watch(
     () => currentStep.value,
