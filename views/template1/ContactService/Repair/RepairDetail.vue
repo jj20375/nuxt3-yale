@@ -798,7 +798,8 @@ async function onSubmit() {
                 product_serial_number: form.value.serial,
                 repair_time_slot: form.value.time,
                 condition_description: form.value.description,
-                attachments: form.value.photo,
+                attachment_images: form.value.photo,
+                attachment_videos: form.value.video,
                 captcha: form.value.recaptchaToken,
             };
             console.log(formData);

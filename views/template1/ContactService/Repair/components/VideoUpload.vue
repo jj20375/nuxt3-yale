@@ -107,9 +107,9 @@ async function handleChange(file: any, fcFileList: any) {
     console.log("fcFileList =>", file, fcFileList);
     const loading = ElLoading.service({
         lock: true,
-        text: '影片上傳中',
-        background: 'rgba(0, 0, 0, 0.7)',
-    })
+        text: "影片上傳中",
+        background: "rgba(0, 0, 0, 0.7)",
+    });
     fileList.value = fcFileList;
     if (file.size > 50 * 1024 * 1024) {
         ElMessage({
@@ -126,6 +126,7 @@ async function handleChange(file: any, fcFileList: any) {
             message: "不符合影片類型(mp4,avi,mov,wmv)",
         });
         fileList.value.pop();
+        loading.close();
         return;
     }
     const formData = new FormData();
@@ -146,10 +147,10 @@ async function handleChange(file: any, fcFileList: any) {
             });
             fileList.value.pop();
         }
-        loading.close()
+        loading.close();
     } catch (err) {
         console.log("HomeSampleAPI => ", err);
-        loading.close()
+        loading.close();
     }
 }
 
