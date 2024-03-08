@@ -13,7 +13,7 @@
             />
         </template>
         <template #content>
-            <ul class="grid md:grid-cols-3 grid-cols-1 md:gap-4 md:mt-10">
+            <ul class="grid sm:grid-cols-2 md:grid-cols-3 grid-cols-1 md:gap-4 md:mt-10 mx-6 sm:mx-0">
                 <li
                     v-for="(item, index) in datas"
                     :key="index"
@@ -23,7 +23,7 @@
                         target="_blank"
                     >
                         <NuxtImg
-                            class="w-full aspect-[16/9] object-contain"
+                            class="w-full aspect-[2/1] object-contain"
                             :src="item.imgSrc"
                         />
                     </NuxtLink>

@@ -15,7 +15,7 @@
                     require-asterisk-position="right"
                 >
                     <div class="flex items-center justify-between mb-4">
-                        <h3 class="font-medium text-[24px] md:text-[32px] text-center sm:mb-8">新增聯繫人</h3>
+                        <h3 class="font-medium YaleSolisW-Bd text-[24px] md:text-[32px] text-center sm:mb-8">新增聯繫人</h3>
                         <el-form-item>
                             <el-switch
                                 v-model="form.default"
@@ -59,13 +59,12 @@
                             </div>
                             <div
                                 v-else
-                                class="flex flex-1"
+                                class="flex flex-col md:flex-row flex-1 gap-[30px]"
                             >
                                 <div
                                     v-for="(item2, index2) in item.datas"
                                     class="flex-1"
                                     :key="index2"
-                                    :class="item.datas.length - 1 === index2 ? '' : 'mr-4 md:mr-[30px]'"
                                 >
                                     <el-form-item
                                         :prop="item2.prop"

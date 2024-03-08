@@ -35,7 +35,7 @@
                 <div class="container md:pt-[120px] md:pb-[40px] pt-[48px] pb-[18px]">
                     <h3 class="text-center font-bold md:text-[32px] text-[24px]">銷售品牌</h3>
                     <Swiper
-                        :slidesPerView="isMobile ? 2 : isPad ? 4 : 6"
+                        :slidesPerView="isMobile ? 2 : isLargePad ? 4 : 6"
                         :spaceBetween="20"
                         :freeMode="true"
                         :scrollbar="{ draggable: true, dragSize: 100, horizontalClass: 'horizontalClass', dragClass: 'dragClass' }"
@@ -60,7 +60,7 @@
     </BannerLayout>
 </template>
 <script setup lang="ts">
-const { isMobile, isPad } = useWindowResize();
+const { isMobile, isLargePad } = useWindowResize();
 // swiper 幻燈片套件
 import { Scrollbar } from "swiper/modules";
 import BannerLayout from "~/views/template1/layouts/BannerLayout.vue";

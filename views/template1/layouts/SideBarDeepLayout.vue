@@ -8,11 +8,11 @@
                 <slot name="breadcrumbs"></slot>
             </div>
         </nav>
-        <slot v-if="isPad" name="custom-sidebar"></slot>
+        <slot v-if="isLargePad" name="custom-sidebar"></slot>
         <div class="container">
             <div class="px-0 mr-0 xl:bg-gray-50">
                 <div class="flex flex-col xl:flex-row gap-4 xl:gap-0">
-                    <slot v-if="!isPad" name="custom-sidebar"></slot>
+                    <slot v-if="!isLargePad" name="custom-sidebar"></slot>
                     <div class="xl:flex-1 xl:bg-gray-50 xl:pl-[40px]">
                         <main class="min-h-screen">
                             <slot name="custom-content"></slot>
@@ -33,5 +33,5 @@ const props = defineProps({
     },
 });
 
-const { isPad } = useWindowResize();
+const { isLargePad } = useWindowResize();
 </script>

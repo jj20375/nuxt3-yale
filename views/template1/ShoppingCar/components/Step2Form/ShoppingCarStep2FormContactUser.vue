@@ -1,6 +1,6 @@
 <template>
     <div class="sm:mt-[60px]">
-        <h5 class="bg-gray-50 py-[8px] font-medium pl-[16px] w-full mb-[24px] sm:mb-[30px]">聯繫人</h5>
+        <h5 class="bg-gray-50 py-[8px] font-medium YaleSolisW-Bd pl-[16px] w-full mb-[24px] sm:mb-[30px]">聯繫人</h5>
         <div class="flex items-center gap-[30px] mb-[24px] sm:mb-[30px]">
             <el-checkbox
                 class="relative"
@@ -11,7 +11,7 @@
             />
             <div
                 @click="showDialog = true"
-                class="relative underline underline-offset-2 text-[15px] text-blue-500 cursor-pointer"
+                class="relative underline underline-offset-2 hover:no-underline text-[15px] text-blue-500 cursor-pointer"
             >
                 選擇其他聯繫人
             </div>
@@ -23,7 +23,7 @@
             :rules="rules"
             require-asterisk-position="right"
         >
-            <div class="grid sm:grid-cols-2 gap-[16px] sm:gap-6">
+            <div class="flex flex-col md:grid grid-cols-2 gap-[16px] sm:gap-6">
                 <div
                     v-for="(column, key) in columns"
                     :key="key"

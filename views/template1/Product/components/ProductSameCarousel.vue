@@ -4,7 +4,7 @@
             <Swiper
                 v-if="photos.length > 0"
                 :spaceBetween="isMobile ? 16 : 20"
-                :slidesPerView="isPad ? 2 : 4"
+                :slidesPerView="isLargePad ? 2 : 4"
                 :modules="modules"
                 :scrollbar="{ draggable: true, dragSize: 100, horizontalClass: 'horizontalClass', dragClass: 'dragClass' }"
                 @swiper="onSwiper"
@@ -13,7 +13,7 @@
                 <SwiperSlide
                     v-for="(item, index) in photos"
                     :key="index"
-                    class="aspect-square w-full mb-9 xl:mb-0"
+                    class="w-full mb-9 xl:mb-0"
                 >
                     <!-- {{ item }} -->
                     <ProductCard :product="item" @handleFavorite="handleFavorite" />
@@ -80,7 +80,7 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const emit = defineEmits(["handleFavorite"]);
-const { isPad, isMobile } = useWindowResize();
+const { isLargePad, isMobile } = useWindowResize();
 
 async function handleFavorite (id: any) {
     emit("handleFavorite", id);

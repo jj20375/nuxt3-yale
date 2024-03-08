@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h5 class="bg-gray-50 py-[8px] font-medium pl-[16px] w-full mb-[16px] sm:mb-[30px]">訂購人</h5>
+        <h5 class="bg-gray-50 py-[8px] YaleSolisW-Bd font-medium pl-[16px] w-full mb-[16px] sm:mb-[30px]">訂購人</h5>
         <el-form
             ref="formRefDom"
             class="custom-form"
@@ -8,7 +8,7 @@
             :rules="rules"
             require-asterisk-position="right"
         >
-            <div class="grid sm:grid-cols-2 gap-[16px] sm:gap-6 mb-[30px]">
+            <div class="flex flex-col md:grid grid-cols-2 gap-[16px] sm:gap-6 mb-[30px]">
                 <template
                     v-for="(item, index) in formDatas"
                     :key="index"
@@ -36,7 +36,7 @@
                             />
                         </el-form-item>
                     </div>
-                    <template v-if="item.space">
+                    <template v-if="item.space && !isPad">
                         <div
                             v-for="index in item.space"
                             :key="index"
@@ -54,6 +54,7 @@ import { validateTWMobileNumber } from "~/service/validator";
 
 const emit = defineEmits(["update:form"]);
 const formRefDom = ref<FormInstance>();
+const { isPad } = useWindowResize();
 
 interface Props {
     form: {

@@ -47,7 +47,6 @@ body {
 body {
     // background-color: theme("colors.gray.50");
     font-family: "YaleSolisW-Rg", sans-serif;
-    height: 100%;
 }
 
 input:focus,
@@ -58,6 +57,11 @@ textarea:focus {
 input[type="number"] {
     -moz-appearance: textfield;
 }
+
+[type="button"]{
+    -webkit-appearance:none;
+}
+
 // 將小費輸入匡內文字靠右
 #tip {
     text-align: right !important;

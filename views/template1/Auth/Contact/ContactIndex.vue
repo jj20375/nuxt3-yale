@@ -8,7 +8,7 @@
         <div class="container">
             <div class="pt-[36px] sm:pt-[60px] pb-[60px] sm:pb-[100px]">
                 <div class="flex items-center justify-between mb-4 sm:mb-6">
-                    <h3 class="font-medium text-[24px] md:text-[32px] text-center">常用聯繫人</h3>
+                    <h3 class="font-medium YaleSolisW-Bd text-[24px] md:text-[32px] text-center">常用聯繫人</h3>
                     <NuxtLink :to="{ name: 'auth-contact-add-slug', params: { slug: '新增聯繫人' } }">
                         <div class="flex items-center gap-2 cursor-pointer h-fit group">
                             <IconAdd

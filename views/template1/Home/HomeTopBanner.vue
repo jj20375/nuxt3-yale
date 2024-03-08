@@ -32,7 +32,7 @@
                             >
                                 <button
                                     class="animation-btn"
-                                    :class="isMobile ? 'm-auto btn-xs' : isPad ? 'm-auto' : 'btn-lg'"
+                                    :class="isMobile ? 'm-auto btn-xs' : isLargePad ? 'm-auto' : 'btn-lg'"
                                     @click.prevent="gotoLink(item.link)"
                                 >
                                     了解更多
@@ -49,7 +49,7 @@
 <script setup lang="ts">
 // import required modules
 import { Navigation, Pagination } from "swiper/modules";
-const { isDesktop, isMobile, isPad } = useWindowResize();
+const { isDesktop, isMobile, isLargePad } = useWindowResize();
 
 interface Props {
     carousel: {

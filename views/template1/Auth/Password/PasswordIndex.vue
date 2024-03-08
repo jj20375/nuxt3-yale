@@ -6,8 +6,8 @@
             </div>
         </nav>
         <div class="container overflow-auto">
-            <div class="w-full lg:w-[620px] mt-[60px] py-[32px] sm:py-[60px] px-[24px] sm:px-[60px] bg-white mx-auto rounded-[24px] border-[1px] border-gray-200">
-                <h3 class="font-medium text-[24px] md:text-[32px] mb-4 sm:mb-8">變更密碼</h3>
+            <div class="w-full lg:w-[620px] mt-[36px] sm:mt-[60px] py-[32px] sm:py-[60px] px-[24px] sm:px-[60px] bg-white mx-auto rounded-[24px] border-[1px] border-gray-200">
+                <h3 class="font-medium YaleSolisW-Bd text-[24px] md:text-[32px] mb-4 sm:mb-8">變更密碼</h3>
                 <el-form
                     class="custom-form"
                     ref="formRefDom"

@@ -6,13 +6,13 @@
 
         <template #custom-sidebar>
             <div
-                v-if="isPad"
+                v-if="isLargePad"
                 class="bg-white"
             >
                 <div class="container">
-                    <h1 class="text-[32px] text-gray-800 pb-2 xl:pb-[24px] leading-none pt-[20px] md:pt-[32px] font-medium">產品資訊</h1>
+                    <h1 class="text-[32px] text-gray-800 pb-2 xl:pb-[24px] leading-none pt-[32px] YaleSolisW-Bd font-medium">產品資訊</h1>
                     <div class="hidden xl:block border-b border-gray-200 py-[16px]">
-                        <h5 class="text-[16px] font-medium">商品分類</h5>
+                        <h5 class="text-[16px] YaleSolisW-Bd font-medium">商品分類</h5>
                     </div>
                 </div>
             </div>
@@ -22,11 +22,11 @@
                 :menus="sidebar"
             >
                 <template #sidebar-deep-title>
-                    <h1 class="text-[32px] text-gray-800 pb-2 xl:pb-[24px] leading-none pt-[20px] md:pt-[32px] font-medium">產品資訊</h1>
+                    <h1 class="text-[32px] text-gray-800 pb-2 xl:pb-[24px] leading-none pt-[20px] md:pt-[32px] YaleSolisW-Bd font-medium">產品資訊</h1>
                 </template>
                 <template #sidebar-deep-sub-title>
                     <div class="hidden xl:block border-b border-gray-200 py-[16px]">
-                        <h5 class="text-[16px] font-medium">商品分類</h5>
+                        <h5 class="text-[16px] YaleSolisW-Bd font-medium">商品分類</h5>
                     </div>
                 </template>
             </SideBar>
@@ -48,7 +48,7 @@
                     :src="productTypeDetail.media"
                 />
                 <div class="px-6 sm:px-0">
-                    <h2 class="text-[24px] font-medium">{{ productTypeDetail.name }}</h2>
+                    <h2 class="YaleSolisW-Bd text-[24px] font-medium">{{ productTypeDetail.name }}</h2>
                     <p class="md:mt-[16px] text-[16px]">{{ productTypeDetail.description }}</p>
                 </div>
             </div>
@@ -120,7 +120,8 @@ import { ElMessage } from "element-plus";
 import { useInitializationStore } from "~/store/initializationStore";
 
 const initializationStore = useInitializationStore();
-const { isPad } = useWindowResize();
+const { isLargePad } = useWindowResize();
+
 const { $api, $utils } = useNuxtApp();
 
 const route = useRoute();

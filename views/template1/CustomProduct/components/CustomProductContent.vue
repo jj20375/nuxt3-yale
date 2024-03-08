@@ -16,11 +16,11 @@
         </div>
         <ClientOnly>
             <el-dialog
-                class="custom-dialog" :class="isPad ? '' : 'h-[95%]'"
+                class="custom-dialog" :class="isLargePad ? '' : 'h-[95%]'"
                 close-on-click-modal
                 lock-scroll
                 show-close
-                :width="isPad ? '100%' : 1200"
+                :width="isLargePad ? '100%' : 1200"
                 center
                 align-center
                 append-to-body
@@ -50,5 +50,5 @@ const processData = {
     content: "<img class='w-full' src='/img/custom-product/custom-process.jpg'/>",
 };
 
-const { isPad } = useWindowResize();
+const { isLargePad } = useWindowResize();
 </script>

@@ -55,7 +55,7 @@
                         :space="365"
                         :controls-visible="false"
                         :clickable="false"
-                        :width="!isPad ? 1000 : !isMobile ? 640 : nowWindowSize.width"
+                        :width="!isLargePad ? 1000 : !isMobile ? 640 : nowWindowSize.width"
                         :height="!isMobile ? 150 : 120"
                         :startIndex="currentIndex"
                         @after-slide-change="onSlideChange"
@@ -118,7 +118,7 @@
 
 <script lang="ts" setup>
 const { $api, $utils } = useNuxtApp();
-const { isLargeDesktop, isMobile, isPad, nowWindowSize } = useWindowResize();
+const { isLargeDesktop, isMobile, isLargePad, nowWindowSize } = useWindowResize();
 const router = useRouter();
 
 const carousel3dRefDom = ref<any>(null);

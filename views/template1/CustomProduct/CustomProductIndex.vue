@@ -315,7 +315,6 @@
 <script setup lang="ts">
 import { ElMessage } from "element-plus";
 import { v4 as uuidv4 } from "uuid";
-import { disableBodyScroll, enableBodyScroll, clearAllBodyScrollLocks } from "body-scroll-lock";
 import type { ShoppingCarCustomInterface, CustomCarItem } from "~/interface/shoppingCar";
 // 預覽圖片
 import CustomProductPrewView from "~/views/template1/CustomProduct/components/CustomProductPrewView.vue";
@@ -798,20 +797,6 @@ watch(
         currentDoorSizeId.value = doors.value.find((item: any) => item.id === val).sizes[0].id;
     }
 );
-
-onMounted(() => {
-    nextTick(() => {
-        const bodyDom = document.querySelector("body");
-        console.log("bodyDom =>", bodyDom);
-        disableBodyScroll(bodyDom);
-    });
-});
-
-onBeforeUnmount(() => {
-    const bodyDom = document.querySelector("body");
-
-    enableBodyScroll(bodyDom);
-});
 </script>
 
 <style lang="scss" scoped>

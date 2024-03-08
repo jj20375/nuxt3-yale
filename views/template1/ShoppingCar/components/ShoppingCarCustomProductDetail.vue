@@ -4,6 +4,7 @@
         close-on-click-modal
         lock-scroll
         show-close
+        :width="600"
         center
         align-center
         append-to-body
@@ -17,8 +18,8 @@
             class="product-card p-5 border-gray-200 border-[1px] rounded-[8px]"
         >
             <h5 class="text-[18px] font-bold text-gray-800 mb-4">門扇</h5>
-            <div class="flex gap-5">
-                <div class="flex-1">
+            <div class="flex flex-col sm:flex-row gap-5">
+                <div class="flex-1 order-2 sm:order-1">
                     <div class="grid gap-2 text-gray-700">
                         <!-- <div class="w-[80px]">場景</div> -->
                         <div class="w-[80px]">款式</div>
@@ -35,12 +36,10 @@
                         </div>
                     </div>
                 </div>
-                <div>
-                    <NuxtImg
-                        class="w-[200px] aspect-square object-cover h-fit"
-                        :src="products.imgSrc"
-                    />
-                </div>
+                <NuxtImg
+                    class="w-[200px] aspect-square object-cover h-fit order-1 sm:order-2 mx-auto"
+                    :src="products.imgSrc"
+                />
             </div>
         </div>
         <div
@@ -48,8 +47,8 @@
             class="product-card p-5 border-gray-200 border-[1px] rounded-[8px] mt-5"
         >
             <h5 class="text-[18px] font-bold text-gray-800 mb-4">門框</h5>
-            <div class="flex gap-5">
-                <div class="flex-1">
+            <div class="flex flex-col sm:flex-row gap-5">
+                <div class="flex-1 order-2 sm:order-1">
                     <div class="grid gap-2 text-gray-700">
                         <!-- <div class="w-[80px]">場景</div> -->
                         <div class="w-[80px]">款式</div>
@@ -62,12 +61,10 @@
                         <div>{{ products.doorOut.color.text }}</div>
                     </div>
                 </div>
-                <div>
-                    <NuxtImg
-                        class="w-[200px] aspect-square object-cover h-fit"
-                        :src="products.doorOut.imgSrc"
-                    />
-                </div>
+                <NuxtImg
+                    class="w-[200px] aspect-square object-cover h-fit order-1 sm:order-2 mx-auto"
+                    :src="products.doorOut.imgSrc"
+                />
             </div>
         </div>
         <div
@@ -75,8 +72,8 @@
             class="product-card p-5 border-gray-200 border-[1px] rounded-[8px] mt-5"
         >
             <h5 class="text-[18px] font-bold text-gray-800 mb-4">門鎖</h5>
-            <div class="flex gap-5">
-                <div class="flex-1">
+            <div class="flex flex-col sm:flex-row gap-5">
+                <div class="flex-1 order-2 sm:order-1">
                     <div class="grid gap-2 text-gray-700">
                         <!-- <div class="w-[80px]">場景</div> -->
                         <div class="w-[80px]">款式</div>
@@ -99,12 +96,10 @@
                         </div>
                     </div>
                 </div>
-                <div>
-                    <NuxtImg
-                        class="w-[200px] aspect-square object-cover h-fit"
-                        :src="products.lock.imgSrc"
-                    />
-                </div>
+                <NuxtImg
+                    class="w-[200px] aspect-square object-cover h-fit order-1 sm:order-2 mx-auto"
+                    :src="products.lock.imgSrc"
+                />
             </div>
         </div>
         <div
@@ -112,8 +107,8 @@
             class="product-card p-5 border-gray-200 border-[1px] rounded-[8px] mt-5"
         >
             <h5 class="text-[18px] font-bold text-gray-800 mb-4">掛門</h5>
-            <div class="flex gap-5">
-                <div class="flex-1">
+            <div class="flex flex-col sm:flex-row gap-5">
+                <div class="flex-1 order-2 sm:order-1">
                     <div class="grid gap-2 text-gray-700">
                         <!-- <div class="w-[80px]">場景</div> -->
                         <div class="w-[80px]">款式</div>
@@ -136,12 +131,10 @@
                         </div>
                     </div>
                 </div>
-                <div>
-                    <NuxtImg
-                        class="w-[200px] aspect-square object-cover h-fit"
-                        :src="products.currentTool1.imgSrc"
-                    />
-                </div>
+                <NuxtImg
+                    class="w-[200px] aspect-square object-cover h-fit order-1 sm:order-2 mx-auto"
+                    :src="products.currentTool1.imgSrc"
+                />
             </div>
         </div>
         <div
@@ -149,8 +142,8 @@
             class="product-card p-5 border-gray-200 border-[1px] rounded-[8px] mt-5"
         >
             <h5 class="text-[18px] font-bold text-gray-800 mb-4">氣密條</h5>
-            <div class="flex gap-5">
-                <div class="flex-1">
+            <div class="flex flex-col sm:flex-row gap-5">
+                <div class="flex-1 order-2 sm:order-1">
                     <div class="grid gap-2 text-gray-700">
                         <!-- <div class="w-[80px]">場景</div> -->
                         <div class="w-[80px]">款式</div>
@@ -173,12 +166,10 @@
                         </div>
                     </div>
                 </div>
-                <div>
-                    <NuxtImg
-                        class="w-[200px] aspect-square object-cover h-fit"
-                        :src="products.currentTool2.imgSrc"
-                    />
-                </div>
+                <NuxtImg
+                    class="w-[200px] aspect-square object-cover h-fit order-1 sm:order-2 mx-auto"
+                    :src="products.currentTool2.imgSrc"
+                />
             </div>
         </div>
         <div
@@ -186,8 +177,8 @@
             class="product-card p-5 border-gray-200 border-[1px] rounded-[8px] mt-5"
         >
             <h5 class="text-[18px] font-bold text-gray-800 mb-4">下將壓條</h5>
-            <div class="flex gap-5">
-                <div class="flex-1">
+            <div class="flex flex-col sm:flex-row gap-5">
+                <div class="flex-1 order-2 sm:order-1">
                     <div class="grid gap-2 text-gray-700">
                         <!-- <div class="w-[80px]">場景</div> -->
                         <div class="w-[80px]">款式</div>
@@ -210,12 +201,10 @@
                         </div>
                     </div>
                 </div>
-                <div>
-                    <NuxtImg
-                        class="w-[200px] aspect-square object-cover h-fit"
-                        :src="products.currentOther1.datas[0].imgSrc"
-                    />
-                </div>
+                <NuxtImg
+                    class="w-[200px] aspect-square object-cover h-fit order-1 sm:order-2 mx-auto"
+                    :src="products.currentOther1.datas[0].imgSrc"
+                />
             </div>
         </div>
         <div
@@ -223,8 +212,8 @@
             class="product-card p-5 border-gray-200 border-[1px] rounded-[8px] mt-5"
         >
             <h5 class="text-[18px] font-bold text-gray-800 mb-4">門弓器</h5>
-            <div class="flex gap-5">
-                <div class="flex-1">
+            <div class="flex flex-col sm:flex-row gap-5">
+                <div class="flex-1 order-2 sm:order-1">
                     <div class="grid gap-2 text-gray-700">
                         <!-- <div class="w-[80px]">場景</div> -->
                         <div class="w-[80px]">款式</div>
@@ -247,12 +236,10 @@
                         </div>
                     </div>
                 </div>
-                <div>
-                    <NuxtImg
-                        class="w-[200px] aspect-square object-cover h-fit"
-                        :src="products.currentOther2.datas[0].imgSrc"
-                    />
-                </div>
+                <NuxtImg
+                    class="w-[200px] aspect-square object-cover h-fit order-1 sm:order-2 mx-auto"
+                    :src="products.currentOther2.datas[0].imgSrc"
+                />
             </div>
         </div>
         <div

@@ -3,7 +3,8 @@
         id="addToCarDialog"
         v-model="showDialog2"
         :before-close="closeDialog"
-        class="custom-dialog max-h-[500px]"
+        class="custom-dialog h-[400px]"
+        width="400"
         close-on-click-modal
         lock-scroll
         show-close
@@ -12,13 +13,9 @@
         append-to-body
     >
         <h2 class="text-gray-800 text-center font-bold text-[24px] mb-4">定型化契約</h2>
-        <div class="flex justify-center px-10">
-            <div>
-                <div
-                    v-html="customRuleData"
-                ></div>
-            </div>
-        </div>
+        <div
+            v-html="customRuleData"
+        ></div>
     </el-dialog>
 </template>
 

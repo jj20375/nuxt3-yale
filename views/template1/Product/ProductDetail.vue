@@ -7,7 +7,7 @@
         </nav>
         <div
             class="md:mt-[60px]"
-            :class="isPad && !isMobile ? 'container' : ''"
+            :class="isLargePad && !isMobile ? 'container' : ''"
         >
             <div class="w-full xl:w-[950px] mx-auto">
                 <div class="flex flex-col md:flex-row gap-[28px] md:gap-[60px] xl:gap-[120px]">
@@ -67,7 +67,7 @@
                                 </div>
                             </div>
                         </div>
-                        <h2 class="mt-[8px] text-[16px] font-medium text-gray-400">{{ detailData.name }}</h2>
+                        <h2 class="mt-[8px] text-[16px] YaleSolisW-Bd font-medium text-gray-400">{{ detailData.name }}</h2>
                         <div class="flex mt-[8px]">
                             <p class="text-gray-800 text-[20px] font-medium mr-[12px] YaleSolisW-Bd">NT${{ $utils().formatCurrency(detailData.price) }}</p>
                             <p class="text-gray-500 text-[20px] font-light line-through">NT${{ $utils().formatCurrency(detailData.market_price) }}</p>
@@ -185,7 +185,7 @@
             </div>
             <div
                 class="mt-[40px] md:mt-[80px]"
-                :class="isMobile ? 'container' : isPad ? '' : 'container'"
+                :class="isMobile ? 'container' : isLargePad ? '' : 'container'"
             >
                 <ul class="flex justify-center border-b border-gray-200">
                     <li
@@ -296,7 +296,7 @@ import { useInitializationStore } from "~/store/initializationStore";
 const initializationStore = useInitializationStore();
 
 const { $api, $utils } = useNuxtApp();
-const { isPad, isMobile } = useWindowResize();
+const { isLargePad, isMobile } = useWindowResize();
 
 const route = useRoute();
 const router = useRouter();

@@ -1,93 +1,95 @@
 <template>
-    <section class="mt-headerMb xl:mt-header border-t border-gray-300 py-[36px] sm:py-[60px] px-[24px]">
-        <div class="w-full md:w-[504px] py-[32px] sm:py-[60px] px-[24px] sm:px-[72px] bg-white sm:mx-auto rounded-[24px] border-[1px] border-gray-200">
-            <h3 class="font-medium text-[22px] md:text-[28px] text-center mb-6 sm:mb-8">會員登入</h3>
-            <el-form
-                class="custom-form"
-                ref="formRefDom"
-                :model="form"
-                :rules="rules"
-                require-asterisk-position="right"
-            >
-                <div class="grid gap-6">
-                    <div
-                        v-for="(item, index) in formDatas"
-                        :key="index"
-                    >
-                        <el-form-item
-                            :prop="item.prop"
-                            :label="item.label"
+    <section class="mt-headerMb xl:mt-header border-t border-gray-300 py-[36px] sm:py-[60px]">
+        <div class="container">
+            <div class="w-full md:w-[504px] py-[32px] sm:py-[60px] px-[24px] sm:px-[72px] bg-white sm:mx-auto rounded-[24px] border-[1px] border-gray-200">
+                <h3 class="font-medium YaleSolisW-Bd text-[22px] sm:text-[28px] text-center mb-6 sm:mb-8">會員登入</h3>
+                <el-form
+                    class="custom-form"
+                    ref="formRefDom"
+                    :model="form"
+                    :rules="rules"
+                    require-asterisk-position="right"
+                >
+                    <div class="grid gap-6">
+                        <div
+                            v-for="(item, index) in formDatas"
+                            :key="index"
                         >
-                            <el-input
-                                :type="item.type"
-                                :show-password="item.showPassword"
-                                :placeholder="item.placeholder"
-                                v-model="form[item.prop]"
-                            ></el-input>
-                        </el-form-item>
+                            <el-form-item
+                                :prop="item.prop"
+                                :label="item.label"
+                            >
+                                <el-input
+                                    :type="item.type"
+                                    :show-password="item.showPassword"
+                                    :placeholder="item.placeholder"
+                                    v-model="form[item.prop]"
+                                ></el-input>
+                            </el-form-item>
+                        </div>
+                        <div class="flex justify-between">
+                            <el-form-item
+                                class="!mb-0"
+                                prop="saveInfo"
+                            >
+                                <el-checkbox
+                                    class="!h-fit text-[15px]"
+                                    v-model="form.saveInfo"
+                                    :label="'記住我'"
+                                    size="large"
+                                />
+                            </el-form-item>
+                            <NuxtLink :to="{ name: 'auth-forgot-slug', params: { slug: '忘記密碼' } }">
+                                <div class="text-[15px]">忘記密碼?</div>
+                            </NuxtLink>
+                        </div>
+                        <button
+                            class="yellow-btn !py-3 !w-full"
+                            @click.prevent="onSubmit"
+                        >
+                            登入
+                        </button>
                     </div>
-                    <div class="flex justify-between">
-                        <el-form-item
-                            class="!mb-0"
-                            prop="saveInfo"
+                </el-form>
+                <div class="relative px-[16px] sm:px-5 mt-[30px]">
+                    <div class="relative text-center divide-text before:absolute before:top-1/2 before:left-0 before:h-px before:w-full before:bg-gray-400 before:z-0">
+                        <span class="relative px-3 text-gray-400 text-[15px] bg-white z-[2]">使用其他帳號登入</span>
+                    </div>
+                    <div class="flex gap-[20px] sm:gap-[30px] justify-center mt-4">
+                        <div
+                            v-if="ssoLogingSite.google"
+                            @click="ssoLogin('google')"
                         >
-                            <el-checkbox
-                                class="!h-fit text-[15px]"
-                                v-model="form.saveInfo"
-                                :label="'記住我'"
-                                size="large"
+                            <NuxtImg
+                                class="object-cover w-10 transition-all cursor-pointer aspect-square duration-400 hover:opacity-80 hover:transition-all hover:duration-400"
+                                src="/img/icons/medias/google.svg"
                             />
-                        </el-form-item>
-                        <NuxtLink :to="{ name: 'auth-forgot-slug', params: { slug: '忘記密碼' } }">
-                            <div class="text-[15px]">忘記密碼?</div>
+                        </div>
+                        <div
+                            v-if="ssoLogingSite.line"
+                            @click="ssoLogin('line')"
+                        >
+                            <NuxtImg
+                                class="object-cover w-10 transition-all cursor-pointer aspect-square duration-400 hover:opacity-80 hover:transition-all hover:duration-400"
+                                src="/img/icons/medias/line.svg"
+                            />
+                        </div>
+                        <div
+                            v-if="ssoLogingSite.facebook"
+                            @click="ssoLogin('facebook')"
+                        >
+                            <NuxtImg
+                                class="object-cover w-10 transition-all cursor-pointer aspect-square duration-400 hover:opacity-80 hover:transition-all hover:duration-400"
+                                src="/img/icons/medias/facebook.svg"
+                            />
+                        </div>
+                    </div>
+                    <div class="flex justify-center gap-3 mt-[30px]">
+                        <div class="text-gray-400 text-[15px]">還不是會員?</div>
+                        <NuxtLink :to="{ name: 'auth-register-slug', params: { slug: '註冊頁' } }">
+                            <div class="text-[15px] underline underline-offset-2 cursor-pointer hover:no-underline">立即註冊</div>
                         </NuxtLink>
                     </div>
-                    <button
-                        class="yellow-btn !py-3 !w-full"
-                        @click.prevent="onSubmit"
-                    >
-                        登入
-                    </button>
-                </div>
-            </el-form>
-            <div class="relative px-[16px] sm:px-5 mt-[30px]">
-                <div class="relative text-center divide-text before:absolute before:top-1/2 before:left-0 before:h-px before:w-full before:bg-gray-400 before:z-0">
-                    <span class="relative px-3 text-gray-400 text-[15px] bg-white z-[2]">使用其他帳號登入</span>
-                </div>
-                <div class="flex gap-[20px] sm:gap-[30px] justify-center mt-4">
-                    <div
-                        v-if="ssoLogingSite.google"
-                        @click="ssoLogin('google')"
-                    >
-                        <NuxtImg
-                            class="object-cover w-10 transition-all cursor-pointer aspect-square duration-400 hover:opacity-80 hover:transition-all hover:duration-400"
-                            src="/img/icons/medias/google.svg"
-                        />
-                    </div>
-                    <div
-                        v-if="ssoLogingSite.line"
-                        @click="ssoLogin('line')"
-                    >
-                        <NuxtImg
-                            class="object-cover w-10 transition-all cursor-pointer aspect-square duration-400 hover:opacity-80 hover:transition-all hover:duration-400"
-                            src="/img/icons/medias/line.svg"
-                        />
-                    </div>
-                    <div
-                        v-if="ssoLogingSite.facebook"
-                        @click="ssoLogin('facebook')"
-                    >
-                        <NuxtImg
-                            class="object-cover w-10 transition-all cursor-pointer aspect-square duration-400 hover:opacity-80 hover:transition-all hover:duration-400"
-                            src="/img/icons/medias/facebook.svg"
-                        />
-                    </div>
-                </div>
-                <div class="flex justify-center gap-3 mt-[30px]">
-                    <div class="text-gray-400 text-[15px]">還不是會員?</div>
-                    <NuxtLink :to="{ name: 'auth-register-slug', params: { slug: '註冊頁' } }">
-                        <div class="text-[15px] underline underline-offset-2 cursor-pointer hover:no-underline">立即註冊</div>
-                    </NuxtLink>
                 </div>
             </div>
         </div>

@@ -5,7 +5,7 @@
                 <h2 class="text-gray-100 text-center xl:text-start text-[32px] sm:text-[48px] xl:text-[66px] font-medium YaleSolisW-Bd leading-none">STORE</h2>
                 <h3 class="text-center xl:text-start text-[28px] sm:text-[32px] xl:text-[40px] md:mt-[14px] mb-6 md:mb-8 leading-[50px] YaleSolisW-Bd font-medium">直營門市</h3>
                 <Swiper
-                    :slidesPerView="isMobile ? 1.2 : isPad ? 2 : 3.2"
+                    :slidesPerView="isMobile ? 1.2 : isLargePad ? 2 : 3.2"
                     :spaceBetween="isMobile ? 16 : 24"
                     :freeMode="true"
                     :modules="modules"
@@ -43,7 +43,7 @@
 </template>
 
 <script lang="ts" setup>
-const { isMobile, isPad } = useWindowResize();
+const { isMobile, isLargePad } = useWindowResize();
 // import required modules
 import { Scrollbar } from "swiper/modules";
 

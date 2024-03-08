@@ -1,6 +1,6 @@
 <template>
-    <div class="mt-[60px]">
-        <h5 class="bg-gray-50 py-[8px] pl-[16px] w-full font-medium mb-[30px]">預約丈量時間</h5>
+    <div class="mt-[30px] sm:mt-[60px]">
+        <h5 class="bg-gray-50 py-[8px] pl-[16px] w-full YaleSolisW-Bd font-medium mb-[30px]">預約丈量時間</h5>
         <el-form
             ref="formRefDom"
             :model="formData"
@@ -8,7 +8,7 @@
             class="custom-form"
         >
             <el-form-item prop="measureSizeTime">
-                <div class="grid grid-cols-2 gap-[30px] w-full">
+                <div class="flex flex-col md:grid grid-cols-2 gap-[30px] w-full">
                     <div>
                         <label class="block w-full text-gray-800 text-[15px]">選擇丈量時間<span class="ml-1 text-red-500">*</span></label>
                         <el-config-provider :locale="locale">
