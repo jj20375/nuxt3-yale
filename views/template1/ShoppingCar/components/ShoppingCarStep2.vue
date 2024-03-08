@@ -364,9 +364,17 @@ const checkout = async () => {
 
     const { data } = await $api().CheckOutApi(req);
     const resData = (data.value as any).data;
-    removeShoppingCar();
+    // 討論之後前端不清除購物車商品
+    // removeShoppingCar();
+    // 重取購物車資料
+    await shoppingCarStore.getUserShopping();
+    await shoppingCarStore.getUserCustomShoppingCar();
     if (resData.redirect) {
         window.open(resData.redirect_url, "self");
+        router.push({
+            name: "auth-panel-slug",
+            params: { slug: "會員中心" },
+        });
     }
     if (!resData.redirect) {
         router.push({

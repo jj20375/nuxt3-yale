@@ -12,8 +12,8 @@
             >
                 <div class="flex gap-2 sm:gap-4">
                     <el-checkbox
-                        :key="cart.id"
-                        :label="cart.id"
+                        :key="cart.productID"
+                        :label="cart.productID"
                     />
                     <NuxtImg
                         class="w-[100px] h-[100px] sm:w-[140px] sm:h-[140px] lg:w-[180px] lg:h-[180px] aspect-square object-cover cursor-pointer"
@@ -137,26 +137,27 @@ function removeShoppingCar(id: number | null, productID: number, product_variati
  * 選擇商品事件
  */
 const selectProduct = (id: number) => {
-    if (!isAuth.value) {
-        checkList.value = [];
-        alert("請先登入");
-        return;
-    }
+    // if (!isAuth.value) {
+    //     checkList.value = [];
+    //     alert("請先登入");
+    //     return;
+    // }
     emit("update:selectProductIds", id);
 };
 
 const init = async () => {
+    await getUserShopping();
+
     // 設定購物車商品全選
-    checkList.value = shoppingCar.value.map((item: any) => item.id);
+    checkList.value = shoppingCar.value.map((item: any) => {
+        return item.productID;
+    });
     // 選中商品參數傳給母組件
     emit("update:selectProductIds", checkList.value);
-
-    await getUserShopping();
 };
 
-onMounted(() => {
-    init();
-});
+init();
+onMounted(() => {});
 </script>
 
 <style lang="scss" scoped>

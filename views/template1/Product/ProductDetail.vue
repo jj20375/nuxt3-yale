@@ -536,7 +536,7 @@ const downloadFile = (file: { url: string | URL | undefined }) => {
  */
 const addToShoppingCar = () => {
     const input: ShoppingCarInterface = {
-        id: null,
+        id: detailData.value.product_id,
         productID: detailData.value.product_id,
         name: detailData.value.name,
         imgSrc: currentImage.value,

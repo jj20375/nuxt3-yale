@@ -176,7 +176,7 @@ const showComponent = shallowRef<any>(ShoppingCarStep1);
 const total = computed(() => {
     if (currentTab.value === "type1") {
         return _SumBy(
-            _Filter(shoppingCar.value, (item: ShoppingCarInterface) => (item.id ? selectProductIds.value.includes(item.id) : false)),
+            _Filter(shoppingCar.value, (item: ShoppingCarInterface) => (item.productID ? selectProductIds.value.includes(item.productID) : false)),
             "totalPrice"
         );
     } else {

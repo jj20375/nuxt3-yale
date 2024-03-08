@@ -21,14 +21,11 @@
                     <div class="flex w-full text-gray-800 mb-[12px] gap-4">
                         <h3 class="YaleSolisW-Bd font-medium text-[16px] sm:text-[18px] flex-1">訂製-{{ product.name }}</h3>
                         <div class="flex flex-col items-end gap-2 cursor-pointer h-fit">
-                            <p class="hidden sm:block font-medium YaleSolisW-Bd">NT$ {{ $utils().formatCurrency(product.singlePrice * product.count) }}</p>
+                            <p class="hidden font-medium sm:block YaleSolisW-Bd">NT$ {{ $utils().formatCurrency(product.singlePrice * product.count) }}</p>
                         </div>
                     </div>
-                    <div
-                        v-loading="loading"
-                        class="flex items-start justify-between gap-4 mb-4"
-                    >
-                        <div class="hidden md:flex flex-col flex-1">
+                    <div class="flex items-start justify-between gap-4 mb-4">
+                        <div class="flex-col flex-1 hidden md:flex">
                             <div
                                 v-for="(item, key) in shoppingCarDetail[index]"
                                 :key="key"
@@ -88,7 +85,7 @@
                                                 :class="!['currentOther1', 'currentOther2'].includes(key) ? 'list-disc' : '-ml-2'"
                                                 class="list-inside"
                                             >
-                                                {{ item2.name }}-
+                                                {{ item2.name }}<span v-if="key !== 'otherServices'">-</span>
                                                 {{ item2.style }}
                                             </li>
                                         </ul>
@@ -125,7 +122,11 @@
                                 <el-icon><Plus /></el-icon>
                             </button>
                         </div>
-                        <button @click.prevent="removeShoppingCar(index)">
+                        <button
+                            :disabled="loading"
+                            @click.prevent="removeShoppingCar(index)"
+                            class="disabled:cursor-not-allowed"
+                        >
                             <NuxtImg
                                 class="w-[24px]"
                                 src="/img/shopping-car/shopping-car-icon-delete.svg"
