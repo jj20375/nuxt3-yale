@@ -13,7 +13,7 @@
                 <div class="flex gap-2 sm:gap-4">
                     <el-checkbox
                         :key="cart.productID"
-                        :label="cart.productID"
+                        :label="cart.id"
                     />
                     <NuxtImg
                         class="w-[100px] h-[100px] sm:w-[140px] sm:h-[140px] lg:w-[180px] lg:h-[180px] aspect-square object-cover cursor-pointer"
@@ -150,14 +150,17 @@ const init = async () => {
 
     // 設定購物車商品全選
     checkList.value = shoppingCar.value.map((item: any) => {
-        return item.productID;
+        return item.id;
     });
     // 選中商品參數傳給母組件
     emit("update:selectProductIds", checkList.value);
 };
 
-init();
-onMounted(() => {});
+onMounted(() => {
+    if (process.client) {
+        init();
+    }
+});
 </script>
 
 <style lang="scss" scoped>
