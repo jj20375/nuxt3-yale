@@ -491,6 +491,7 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
                     item.count = data.quantity ? data.quantity : 1;
                     item.totalPrice = item.count * Number(item.price);
                 }
+                console.log("shoppingCar.value => ", shoppingCar.value);
                 // localStorage setting
                 $shoppingCarService().setShoppingCar(shoppingCar.value);
                 resolve(true);
