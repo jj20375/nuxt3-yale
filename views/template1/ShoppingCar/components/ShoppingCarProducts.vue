@@ -20,10 +20,9 @@
                         :src="cart.imgSrc"
                         @click="
                             router.push({
-                                path: `/product/detail/${cart.name}`,
-                                query: {
-                                    id: cart.productID,
-                                },
+                                name: 'product-detail-slug',
+                                params: { slug: cart.name },
+                                query: { id: cart.productID },
                             })
                         "
                     />
