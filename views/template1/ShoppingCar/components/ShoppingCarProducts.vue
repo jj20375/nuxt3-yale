@@ -114,7 +114,6 @@ function countUpdate(index: number, cartId: number | null, productID: number, co
     };
     shoppingCar.value[index].count = count;
     shoppingCar.value[index].totalPrice = shoppingCar.value[index].price * count;
-    console.log("cartId => ", cartId, count, productID, apiReq);
     updateCart(apiReq).catch((err) => {
         console.log("err", err);
         if (err) {
