@@ -9,5 +9,10 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 
     if (process.client && $utils().isEmpty(token)) {
         return navigateTo("/", { redirectCode: 301 });
+    } else if (!userStore.user.is_verified) {
+        return navigateTo({
+            path: "/auth/verification/會員中心",
+            state: { email: userStore.user.email, state: '會員尚未完成驗證' }
+        });
     }
 });
