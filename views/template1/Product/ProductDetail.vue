@@ -448,19 +448,20 @@ const getData = async () => {
     if (product.is_single_variation === 0) {
         product.productOptions.forEach((item: any, idx: number) => {
             currentColor.value[idx] = item.values[0].id;
-            colorName.value = item.values[0].name;
         });
-        useSeoMeta({
-            title: resProductDetail.value.data.seoSetting.title ? resProductDetail.value.data.seoSetting.title : initializationStore.initializationData.site.meta_title,
-            description: resProductDetail.value.data.seoSetting.description ? resProductDetail.value.data.seoSetting.description : initializationStore.initializationData.site.meta_description,
-            ogTitle: resProductDetail.value.data.seoSetting.title,
-            ogDescription: resProductDetail.value.data.seoSetting.description,
-            ogUrl: () => `${window.location.origin}/product/detail/${resProductDetail.value.data.seoSetting.custom_url}`,
-            keywords: resProductDetail.value.data.seoSetting.keywords.join(),
-        });
-
         optionChangePrice(true);
         optionChange(productOptions.value[0].options[0], 0);
+
+        if (resProductDetail.value) {
+            useSeoMeta({
+                title: resProductDetail.value.data.seoSetting.title ? resProductDetail.value.data.seoSetting.title : initializationStore.initializationData.site.meta_title,
+                description: resProductDetail.value.data.seoSetting.description ? resProductDetail.value.data.seoSetting.description : initializationStore.initializationData.site.meta_description,
+                ogTitle: resProductDetail.value.data.seoSetting.title,
+                ogDescription: resProductDetail.value.data.seoSetting.description,
+                ogUrl: () => `${window.location.origin}/product/detail/${resProductDetail.value.data.seoSetting.custom_url}`,
+                keywords: resProductDetail.value.data.seoSetting.keywords.join(),
+            });
+        }
     }
 };
 
@@ -499,7 +500,8 @@ const optionChangePrice = (init: boolean = false) => {
 
     if (!init) {
         const index = photos.value.findIndex((item) => item.imgSrc === currentImage.value);
-        if (productDetailCarouselRef.value) {
+
+        if (process.client && productDetailCarouselRef.value) {
             productDetailCarouselRef.value.slideTo(index + 1);
         }
     }
