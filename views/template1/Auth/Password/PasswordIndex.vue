@@ -1,15 +1,13 @@
 <template>
-    <section class="min-h-screen mt-[86px] pb-[60px] bg-gray-50">
-        <nav class="border-t border-b border-gray-300 py-[16px] bg-white">
-            <div class="grid grid-cols-7 gap-0">
-                <div class="col-span-7 ml-[122px]">
-                    <Breadcrumb :menus="breadcrumbs" />
-                </div>
+    <section class="mt-headerMb xl:mt-header pb-[60px]">
+        <nav class="border-b border-gray-300 py-[16px] bg-white">
+            <div class="container">
+                <Breadcrumb :menus="breadcrumbs" />
             </div>
         </nav>
         <div class="container overflow-auto">
-            <div class="w-[620px] mt-[60px] py-[60px] px-[60px] bg-white mx-auto rounded-[24px] border-[1px] border-gray-200">
-                <h3 class="font-medium text-[28px] mb-8">變更密碼</h3>
+            <div class="w-full lg:w-[620px] mt-[36px] sm:mt-[60px] py-[32px] sm:py-[60px] px-[24px] sm:px-[60px] bg-white mx-auto rounded-[24px] border-[1px] border-gray-200">
+                <h3 class="font-medium YaleSolisW-Bd text-[24px] md:text-[32px] mb-4 sm:mb-8">變更密碼</h3>
                 <el-form
                     class="custom-form"
                     ref="formRefDom"
@@ -17,7 +15,7 @@
                     :rules="rules"
                     require-asterisk-position="right"
                 >
-                    <div class="grid gap-6">
+                    <div class="flex flex-col sm:gap-6 gap-4">
                         <div
                             v-for="(item, index) in formDatas"
                             :key="index"
@@ -73,11 +71,17 @@
                                 </div>
                             </el-form-item>
                         </div>
-                        <div class="flex mt-4 gap-4 justify-center">
+                        <div class="grid grid-cols-2 md:flex mt-4 gap-4 justify-center">
                             <NuxtLink :to="{ name: 'auth-panel-slug', params: { slug: '會員中心' } }">
-                                <button class="transparent-btn btn-md">返回</button>
+                                <button class="transparent-btn" :class="isMobile ? 'w-full' : 'btn-md'">返回</button>
                             </NuxtLink>
-                            <button @click.prevent="onSubmit" class="yellow-btn btn-md">儲存</button>
+                            <button
+                                @click.prevent="onSubmit"
+                                class="yellow-btn"
+                                :class="isMobile ? '' : 'btn-md'"
+                            >
+                                儲存
+                            </button>
                         </div>
                     </div>
                 </el-form>
@@ -92,7 +96,7 @@ import { validatePassword } from "~/service/validator";
 import { ElMessage, ElLoading } from "element-plus";
 const { $api } = useNuxtApp();
 const router = useRouter();
-
+const { isMobile } = useWindowResize();
 const route = useRoute();
 
 const breadcrumbs = ref([
@@ -143,7 +147,6 @@ const formDatas = ref<any>([
         showPassword: true,
     },
 ]);
-
 
 const rules = ref<any>({
     oldPassword: [
@@ -213,13 +216,12 @@ async function onSubmit() {
                     new_password_confirmation: form.value.newPasswordConfirmation,
                 };
                 const { data, status, error } = await $api().ChangePassewordAPI(params);
-                if (status.value === 'success') {
+                if (status.value === "success") {
                     ElMessage({
                         type: "success",
                         message: `變更成功`,
                     });
                     router.push({ name: "auth-password-success-slug", params: { slug: "密碼變更成功" } });
-
                 } else {
                     ElMessage({
                         type: "error",

@@ -1,14 +1,14 @@
 <template>
-    <ul class="grid grid-cols-2 gap-0 text-gray-800 YaleSolisW-Rg">
+    <ul class="grid xl:grid-cols-2 grid-cols-1 xl:gap-[28px] gap-[14px] text-gray-800 list-disc list-inside YaleSolisW-Rg">
         <li
             v-for="(data, index) in datas"
             :key="index"
-            class="flex items-center list-disc list-inside pb-[28px]"
+            class="flex items-center gap-[28px]"
         >
-            <div class="text-[16px] mr-[29px]">{{ data.text }}</div>
+            <div class="text-[16px]"><span class="mr-4">•</span>{{ data.text }}</div>
             <button
                 @click="download(data.url)"
-                class="bg-gray-100 text-[15px] rounded-full py-[8px] px-[25px]"
+                class="gray-btn !py-2"
             >
                 下載
             </button>

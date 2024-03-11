@@ -1,34 +1,37 @@
 <template>
     <div class="relative mt-[40px]">
-        <div class="px-[100px]">
+        <div>
             <Swiper
                 v-if="photos.length > 0"
-                :loop="true"
-                :spaceBetween="10"
-                :slidesPerView="4"
+                :spaceBetween="isMobile ? 16 : 20"
+                :slidesPerView="isLargePad ? 2 : 4"
                 :modules="modules"
+                :scrollbar="{ draggable: true, dragSize: 100, horizontalClass: 'horizontalClass', dragClass: 'dragClass' }"
                 @swiper="onSwiper"
+                @slideChange="onSlideChange"
             >
                 <SwiperSlide
                     v-for="(item, index) in photos"
                     :key="index"
-                    class="px-[3px]"
+                    class="w-full mb-9 xl:mb-0"
                 >
                     <!-- {{ item }} -->
-                    <ProductCard :product="item" />
+                    <ProductCard :product="item" @handleFavorite="handleFavorite" />
                 </SwiperSlide>
             </Swiper>
-            <div class="absolute top-0 left-0 z-50 flex items-center h-full">
+            <div class="absolute hidden xl:flex top-0 -left-[30px] -translate-x-full z-50 flex items-center h-full">
                 <button
-                    class="text-5xl"
+                    class="text-3xl flex justify-center items-center"
+                    :class="[ isSliderBeginning ? 'opacity-0' : 'opacity-1' ]"
                     @click.stop="mainSwiper.slidePrev()"
                 >
                     <el-icon><ArrowLeft /></el-icon>
                 </button>
             </div>
-            <div class="absolute top-0 right-0 z-50 flex items-center h-full">
+            <div class="absolute hidden xl:flex top-0 -right-[30px] translate-x-full z-50 flex items-center h-full">
                 <button
-                    class="text-5xl"
+                    class="text-3xl flex justify-center items-center"
+                    :class="[ isSliderEnd ? 'opacity-0' : 'opacity-1' ]"
                     @click.stop="mainSwiper.slideNext()"
                 >
                     <el-icon><ArrowRight /></el-icon>
@@ -40,7 +43,7 @@
 
 <script setup lang="ts">
 // swiper 幻燈片套件
-import { FreeMode, Navigation, Thumbs } from "swiper/modules";
+import { FreeMode, Navigation, Thumbs, Scrollbar } from "swiper/modules";
 import ProductCard from "~/views/template1/components/ProductCard.vue";
 /**
  * ProductCarInterface: 產品卡片樣式參數
@@ -76,13 +79,41 @@ const props = withDefaults(defineProps<Props>(), {
     ],
 });
 
+const emit = defineEmits(["handleFavorite"]);
+const { isLargePad, isMobile } = useWindowResize();
+
+async function handleFavorite (id: any) {
+    emit("handleFavorite", id);
+}
+
 // swiper slider 模組
-const modules = [FreeMode, Thumbs, Navigation];
+const modules = [FreeMode, Thumbs, Navigation, Scrollbar];
 
 // 主圖 carousel
 const mainSwiper = ref<any>(null);
+const isSliderBeginning = ref<boolean>(false);
+const isSliderEnd = ref<boolean>(false);
 
 function onSwiper(swiper: any) {
     mainSwiper.value = swiper;
+    isSliderBeginning.value = mainSwiper.value.isBeginning;
+    isSliderEnd.value = mainSwiper.value.isEnd;
 }
+
+// 更新箭頭狀態
+function onSlideChange() {
+    isSliderBeginning.value = mainSwiper.value.isBeginning;
+    isSliderEnd.value = mainSwiper.value.isEnd;
+}
+
 </script>
+<style lang="scss" scoped>
+:deep {
+    .dragClass {
+        @apply xl:hidden h-[4px] bg-black rounded-lg;
+    }
+    .horizontalClass {
+        @apply xl:hidden h-[4px];
+    }
+}
+</style>

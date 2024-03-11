@@ -1,23 +1,20 @@
 // 會員的table樣式
 .custom-table{
-    @apply w-full;
+    @apply xl:table-fixed w-full;
     th{
       @apply text-center bg-gray-100 text-gray-800 py-3 text-sm;
     }
     tr{
-      .title{
-        @apply transition-all duration-300;
-      }
       &:hover{
         .title{
-          @apply underline underline-offset-2 transition-all duration-300;
+          @apply underline YaleSolisW-Bd underline-offset-2 font-medium;
         }
       }
     }
     td{
-      @apply py-0;
+      @apply py-0 border-b-[1px] border-b-gray-100;
       a{
-        @apply block text-center text-gray-800 text-base py-5 border-b-[1px] border-b-gray-100;
+        @apply block text-center text-gray-800 text-[15px] sm:text-base py-5;
       }
     }
 }

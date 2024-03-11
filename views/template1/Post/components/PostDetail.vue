@@ -1,13 +1,15 @@
 <template>
-    <section class="min-h-screen mt-[86px] mb-[100px]">
-        <nav class="border-t border-gray-300 py-[16px] pl-[122px]">
-            <Breadcrumb :menus="breadcrumbs" />
+    <section class="mt-headerMb xl:mt-header mb-[40px] md:mb-[100px]">
+        <nav class="border-t border-gray-300 py-[16px] min-h-[43px] xl:min-h-[55px]">
+            <div class="container">
+                <Breadcrumb :menus="breadcrumbs" />
+            </div>
         </nav>
         <div class="border-t h-[1px] border-gray-300 w-full"></div>
-        <div class="container mt-[60px]">
-            <div class="max-w-[795px] mx-auto">
-                <h1 class="text-[32px] YaleSolisW-Bd font-medium text-black">{{ postData.title }}</h1>
-                <div class="flex mt-[20px] border-b border-gray-300 pb-[24px]">
+        <div class="container mt-[24px] md:mt-[60px]">
+            <div class="w-full xl:w-[800px] mx-auto">
+                <h1 class="text-[24px] sm:text-[32px] YaleSolisW-Bd font-medium text-black">{{ postData.title }}</h1>
+                <div class="flex mt-[20px] border-b border-gray-300 pb-4 md:pb-[24px]">
                     <div class="text-center mr-[16px] w-[90px] border border-gray-300 py-[6px] px-[12px] text-gray-400 text-[12px]">
                         <span>{{ postData.published_at }}</span>
                     </div>
@@ -18,24 +20,22 @@
                     /></span>
                 </div>
                 <div
-                    class="my-10 text-gray-500 YaleSolisW-Rg text-[16px] edit-section"
+                    class="my-4 md:my-10 text-gray-500 YaleSolisW-Rg text-[16px] edit-section"
                     v-html="postData.content"
                 ></div>
                 <div class="flex items-center justify-center pt-[24px] border-t border-gray-300">
-                    <div
-                        class="flex-1 mr-[40px]"
-                    >
+                    <div class="flex-1 mr-[40px]">
                         <template v-if="pagination.prev">
                             <button
                                 @click.prevent="jumpPage(pagination.prev)"
                                 class="w-full YaleSolisW-Rg text-[16px] flex items-center justify-start"
                             >
                                 <NuxtImg
-                                    class="w-[12px]"
+                                    class="w-[12px] basis-[12px] shrink-0"
                                     src="/img/icons/post/arrow-prev.svg"
                                 />
                                 <span class="ml-[8px] whitespace-nowrap">上一篇</span>
-                                <span class="text-start ml-[20px] text-gray-400 line-clamp-1">{{ pagination.prev.title }}</span>
+                                <span class="hidden md:block text-start ml-[20px] text-gray-400 md:!line-clamp-1">{{ pagination.prev.title }}</span>
                             </button>
                         </template>
                     </div>
@@ -47,18 +47,16 @@
                             回列表
                         </button>
                     </div>
-                    <div
-                        class="flex-1 ml-[40px]"
-                    >
+                    <div class="flex-1 ml-[40px]">
                         <template v-if="pagination.next">
                             <button
                                 @click.prevent="jumpPage(pagination.next)"
                                 class="w-full YaleSolisW-Rg text-[16px] flex items-center justify-end"
                             >
-                                <span class="mr-[20px] text-gray-400 line-clamp-1">{{ pagination.next.title }}</span>
+                                <span class="hidden md:block mr-[20px] text-gray-400 md:!line-clamp-1">{{ pagination.next.title }}</span>
                                 <span class="mr-[8px] whitespace-nowrap">下一篇</span>
                                 <NuxtImg
-                                    class="w-[12px]"
+                                    class="w-[12px] basis-[12px] shrink-0"
                                     src="/img/icons/post/arrow-next.svg"
                                 />
                             </button>
@@ -73,12 +71,19 @@
 <script setup lang="ts">
 import { RouteLocationRaw } from "vue-router";
 import Breadcrumb from "~/views/template1/components/Breadcrumb.vue";
+import { useInitializationStore } from "~/store/initializationStore";
+
+const initializationStore = useInitializationStore();
 const route = useRoute();
 const router = useRouter();
 
 const { $api, $utils } = useNuxtApp();
 
-const breadcrumbs = ref(JSON.parse(route.query.breadcrumbs));
+const breadcrumbs = ref([]);
+// 取得 storage 麵包屑參數值
+if (process.client) {
+    breadcrumbs.value = JSON.parse($utils().getBreadcrumbsData());
+}
 
 const postData = ref<any>({
     id: "",
@@ -154,13 +159,25 @@ async function getData(params: { articleId: any }, isChangePost: boolean) {
         } else {
             pagination.value.next = null;
         }
+
+        console.log("seoSetting", detail.seoSetting);
+        useSeoMeta({
+            title: detail.seoSetting.title ? detail.seoSetting.title : initializationStore.initializationData.site.meta_title,
+            description: detail.seoSetting.description ? detail.seoSetting.description : initializationStore.initializationData.site.meta_description,
+            ogTitle: detail.seoSetting.title,
+            ogDescription: detail.seoSetting.description,
+            ogUrl: () => `${window.location.origin}/news/details/${detail.seoSetting.custom_url}`,
+            keywords: detail.seoSetting.keywords.join(),
+        });
     } catch (err) {
         console.log("HomeSampleAPI => ", err);
     }
 }
 
 async function jumpPage(page: { id: any; url: any }) {
-    router.push(page.url);
+    // 將麵包屑存進 storage
+    $utils().saveBreadcrumbsData(page.url.query.breadcrumbs);
+    router.push({ name: page.url.name, params: page.url.params, query: { id: page.url.query.id } });
     await getData({ articleId: page.id }, true);
 }
 
@@ -179,10 +196,10 @@ async function init() {
     await getData({ articleId: route.query.id }, false);
 }
 
+await init();
 onMounted(async () => {
     nextTick(async () => {
         if (process.client) {
-            await init();
         }
     });
 });

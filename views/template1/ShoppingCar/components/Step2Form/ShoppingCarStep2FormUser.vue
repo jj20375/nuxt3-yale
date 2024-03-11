@@ -1,98 +1,167 @@
 <template>
-    <div class="mt-[40px]">
-        <h5 class="bg-gray-50 py-[8px] pl-[16px] w-full mb-[30px]">訂購人</h5>
-        <el-form>
-            <div class="grid grid-cols-2 gap-[30px]">
-                <div
-                    v-for="(column, key) in columns"
-                    :key="key"
+    <div>
+        <h5 class="bg-gray-50 py-[8px] YaleSolisW-Bd font-medium pl-[16px] w-full mb-[16px] sm:mb-[30px]">訂購人</h5>
+        <el-form
+            ref="formRefDom"
+            class="custom-form"
+            :model="formInput"
+            :rules="rules"
+            require-asterisk-position="right"
+        >
+            <div class="flex flex-col md:grid grid-cols-2 gap-[16px] sm:gap-6 mb-[30px]">
+                <template
+                    v-for="(item, index) in formDatas"
+                    :key="index"
                 >
-                    <el-form-item :prop="key">
-                        <label class="block w-full text-gray-800 text-[15px]"
-                            >{{ column.label
-                            }}<span
-                                v-if="column.required"
-                                class="ml-1 text-red-500"
-                                >*</span
-                            ></label
-                        >
-                        <div
-                            v-if="key !== 'phone'"
-                            class="bg-gray-50 p-[12px] w-full text-[16px]"
-                        >
-                            {{ formData[key] }}
-                        </div>
-                        <div
-                            v-else
-                            class="w-full"
+                    <div :class="item.span ? `col-span-1 sm:col-span-2` : ''">
+                        <el-form-item
+                            :prop="item.prop"
+                            :label="item.label"
                         >
                             <el-input
-                                class="w-full"
-                                v-model="formData[key]"
-                            ></el-input>
-                        </div>
-                    </el-form-item>
-                </div>
+                                v-if="item.style === 'input'"
+                                :type="item?.type"
+                                :show-password="item.showPassword"
+                                :disabled="item.disabled"
+                                :placeholder="item.placeholder"
+                                v-model="formInput[item.prop]"
+                            />
+                            <el-input
+                                v-if="item.style === 'textarea'"
+                                type="textarea"
+                                rows="5"
+                                resize="none"
+                                :placeholder="item.placeholder"
+                                v-model="formInput[item.prop]"
+                            />
+                        </el-form-item>
+                    </div>
+                    <template v-if="item.space && !isPad">
+                        <div
+                            v-for="index in item.space"
+                            :key="index"
+                        />
+                    </template>
+                </template>
             </div>
-            <el-form-item prop="note">
-                <label class="block w-full text-gray-800 text-[15px]">訂單備註</label>
-                <el-input
-                    v-model="formData.note"
-                    type="textarea"
-                    rows="5"
-                    placeholder="有什麼話想告訴賣家嗎?"
-                ></el-input>
-            </el-form-item>
         </el-form>
     </div>
 </template>
 
 <script setup lang="ts">
+import { FormInstance } from "element-plus";
+import { validateTWMobileNumber } from "~/service/validator";
+
 const emit = defineEmits(["update:form"]);
+const formRefDom = ref<FormInstance>();
+const { isPad } = useWindowResize();
 
-const props = defineProps({
+interface Props {
     form: {
-        type: Object,
-        default() {
-            return {
-                name: "王小明",
-                email: "123@gmail.cpm",
-                phone: "0911123123",
-                note: null,
-            };
-        },
+        name: string;
+        email: string;
+        phone: string;
+        note: string;
+    };
+}
+
+const props = withDefaults(defineProps<Props>(), {
+    form: () => {
+        return {
+            name: "",
+            email: "",
+            phone: "",
+            note: "",
+        };
     },
 });
 
-const columns = ref({
-    name: {
-        label: "會員名稱",
-    },
-    email: {
-        label: "電子信箱",
-    },
-    phone: {
-        label: "聯絡電話",
-        required: true,
-    },
-});
+const formInput = ref(props.form);
 
-const formData = ref(props.form);
-
-watch(formData.value, (val) => {
+watch(formInput.value, (val) => {
+    console.log("val", val);
     emit("update:form", val);
+});
+
+const formDatas = ref<any>([
+    {
+        prop: "name",
+        label: "會員名稱",
+        placeholder: "",
+        style: "input",
+        disabled: true,
+    },
+    {
+        prop: "email",
+        label: "電子信箱",
+        placeholder: "",
+        style: "input",
+        disabled: true,
+    },
+    {
+        prop: "phone",
+        label: "聯絡電話",
+        placeholder: "",
+        style: "input",
+        space: 1,
+    },
+    {
+        prop: "note",
+        label: "訂單備註",
+        placeholder: "有什麼話想告訴賣家嗎?",
+        style: "textarea",
+        span: 2,
+    },
+]);
+
+const rules = ref<any>({
+    name: [
+        {
+            required: true,
+            message: "請輸入會員名稱",
+            trigger: ["change", "blur"],
+        },
+    ],
+    email: [
+        {
+            required: true,
+            message: "請輸入電子信箱",
+            trigger: ["change", "blur"],
+        },
+    ],
+    phone: [
+        {
+            required: true,
+            message: "請輸入聯絡電話",
+            trigger: ["change", "blur"],
+        },
+        {
+            required: true,
+            validator: validateTWMobileNumber,
+            trigger: ["change", "blur"],
+            message: "格式不正確",
+        },
+    ],
+});
+
+const validForm = async () => {
+    if (!formRefDom.value) return false;
+    const userValid = await formRefDom.value.validate((valid) => {
+        if (valid) {
+            return true;
+        } else {
+            return false;
+        }
+    });
+    return userValid;
+};
+
+defineExpose({
+    validForm,
 });
 </script>
 
 <style lang="scss" scoped>
-:deep .el-input__wrapper {
-    @apply shadow-none border-b border-gray-200 mx-0 rounded-none #{!important};
-}
-:deep .el-select {
-    .el-input__wrapper {
-        @apply mx-0;
-    }
-}
 :deep .el-textarea__inner {
     @apply rounded-none;
 }

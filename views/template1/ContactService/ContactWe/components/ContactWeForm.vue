@@ -1,5 +1,5 @@
 <template>
-    <div class="rounded-[24px] border border-gray-200 p-[60px]">
+    <div class="rounded-[24px] border border-gray-200 px-[24px] py-[36px] sm:p-[60px]">
         <h2 class="text-[24px] mb-[30px] font-medium">填寫您的聯絡資訊</h2>
         <el-form
             ref="formRefDom"
@@ -44,7 +44,7 @@
                                     :key="index"
                                     :label="option.label"
                                     :value="option.value"
-                                ></el-option>
+                                />
                             </el-select>
                             <el-input
                                 v-if="item.style === 'textarea'"
@@ -53,7 +53,7 @@
                                 resize="none"
                                 :placeholder="item.placeholder"
                                 v-model="form[item.prop]"
-                            ></el-input>
+                            />
                             <FileUpload
                                 v-if="item.style === 'file' && !item.isHide"
                                 :prop="item.prop"
@@ -343,7 +343,7 @@ async function onSubmit() {
                     type: "success",
                     message: `送出成功`,
                 });
-                router.push({ name: "index" });
+                router.push({ name: "contact-success-slug", params: { slug: "聯絡我們表單已送出" } });
                 loading.close();
             } catch (err) {
                 loading.close();
@@ -368,4 +368,3 @@ onMounted(async () => {
     });
 });
 </script>
-

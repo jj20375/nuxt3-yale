@@ -1,23 +1,32 @@
 <template>
-    <div class="flex justify-center items-center w-full border border-gray-300 px-[2px] py-[10px] rounded-full">
-        <div
-            class="ml-5 cursor-pointer"
-            @click="countDelete()"
+    <div class="flex items-stretch justify-center w-full border border-gray-300 rounded-full">
+        <button
+            class="w-[60px] flex items-center justify-center cursor-pointer h-auto"
+            @click.prevent="countDelete()"
         >
             <el-icon><Minus /></el-icon>
-        </div>
-        <div class="flex-1 h-[28px] text-center">{{ count }}</div>
-        <div
-            class="mr-5 cursor-pointer"
-            @click="countAdd()"
+        </button>
+        <div class="flex-1 flex items-center justify-center py-[10px] h-full">{{ count }}</div>
+        <button
+            class="w-[60px] flex items-center justify-center cursor-pointer h-auto disabled:cursor-not-allowed"
+            :disabled="count >= limit"
+            @click.prevent="countAdd()"
         >
             <el-icon><Plus /></el-icon>
-        </div>
+        </button>
     </div>
 </template>
 
 <script setup lang="ts">
 const emit = defineEmits(["update:count"]);
+
+const props = defineProps({
+    // 數量上限
+    limit: {
+        type: Number,
+        default: 1,
+    },
+});
 
 // 數量
 const count = ref(1);
@@ -36,6 +45,9 @@ function countDelete() {
  * 點擊增加數量按鈕
  */
 function countAdd() {
+    if (count.value > props.limit) {
+        return (count.value = props.limit);
+    }
     count.value++;
 }
 

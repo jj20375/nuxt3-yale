@@ -32,5 +32,14 @@ export default () => {
     GetCityAreaAPI() {
       return useMyFetch(`${apiUrl}/zip-code/city`, { method: "get" });
     },
+    /**
+     * 版面設置
+     */
+    getPageAPI(params: { code: string }) {
+      return useMyFetch(`${apiUrl}/page`, {
+        method: "get",
+        query: { ...params },
+      });
+    },
   };
 };

@@ -1,28 +1,30 @@
 <template>
     <div
-        class="flex-1"
         ref="customProductPreviewRefDom"
     >
-        <div class="relative flex items-center w-full">
+        <div
+            v-if="currentBgData[currentViewAngleData]"
+            class="absolute h-full w-full object-cover"
+        >
             <NuxtImg
-                class="w-full"
-                :src="'/img/custom-product/demo/background/custom-product-background-' + backgroundImg + '.jpg'"
+                class="absolute h-full w-full object-cover"
+                :src="currentBgData[currentViewAngleData]"
             />
-            <div class="absolute z-10 w-full">
+            <div class="absolute z-10 h-full w-full">
                 <NuxtImg
-                    class="w-full"
+                    class="relative h-full w-full object-cover"
                     :src="productData.door[currentViewAngleData]"
                 />
             </div>
-            <div class="absolute w-full">
+            <div class="absolute h-full w-full">
                 <NuxtImg
-                    class="w-full"
+                    class="w-full h-full object-cover"
                     :src="productData.doorOut[currentViewAngleData]"
                 />
             </div>
-            <div class="absolute z-20 w-full">
+            <div class="absolute z-20 h-full w-full">
                 <NuxtImg
-                    class="w-full"
+                    class="w-full h-full object-cover"
                     :src="productData.lock[currentViewAngleData]"
                 />
             </div>
@@ -67,6 +69,18 @@ const props = defineProps({
         type: String,
         default: "type1",
     },
+    // 選擇背景圖資料
+    currentBgData: {
+        type: Object,
+        default() {
+            return {
+                id: 1,
+                text: "",
+                icon: "",
+                backgroundImg: "",
+            };
+        },
+    },
 });
 
 const currentViewAngleData = ref(props.currentAngle);
@@ -82,7 +96,15 @@ const customProductPreviewRefDom = ref(null);
 
 onMounted(() => {
     nextTick(() => {
+        // 計算目前預覽圖範圍寬度 讓下方 fixed 的區塊 可以計算 定位點
         emit("update:previewWidth", customProductPreviewRefDom.value.offsetWidth);
     });
 });
 </script>
+
+<style lang="scss" scoped>
+// 因為圖片本身上下距不一樣，所以用css調整距離
+.object-cover{
+    object-position: 50% 38%;
+}
+</style>

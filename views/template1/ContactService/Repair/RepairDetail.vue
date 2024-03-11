@@ -16,17 +16,29 @@
                     :rules="rules"
                     require-asterisk-position="right"
                 >
-                    <div class="w-3/4 mt-[80px] p-[60px] pt-[50px] bg-white mx-auto rounded-[24px] border-[1px] border-gray-200">
+                    <div class="w-full xl:w-3/4 mt-[36px] sm:mt-[80px] px-[24px] py-[36px] sm:p-[60px] bg-white mx-auto rounded-[12px] sm:rounded-[24px] border-[1px] border-gray-200">
                         <h3 class="text-[24px] font-bold mb-6">報修聯絡人</h3>
-                        <div class="grid grid-cols-2 gap-6">
+                        <div class="flex flex-col grid-cols-2 gap-6 md:grid">
                             <template
                                 v-for="(item, index) in formDatas.contactDatas"
                                 :key="index"
                             >
-                                <div v-if="item?.type !== 'inline'" :class="item.span ? `col-span-${item.span}` : ''">
-                                    <el-form-item :prop="item.prop" :label="item.label">
-                                        <el-input v-if="item.style === 'input'" :type="item.type" :show-password="item.showPassword" :disabled="item.disabled"
-                                                  :placeholder="item.placeholder" v-model="form[item.prop]"></el-input>
+                                <div
+                                    v-if="item?.type !== 'inline'"
+                                    :class="item.span ? `col-span-${item.span}` : ''"
+                                >
+                                    <el-form-item
+                                        :prop="item.prop"
+                                        :label="item.label"
+                                    >
+                                        <el-input
+                                            v-if="item.style === 'input'"
+                                            :type="item.type"
+                                            :show-password="item.showPassword"
+                                            :disabled="item.disabled"
+                                            :placeholder="item.placeholder"
+                                            v-model="form[item.prop]"
+                                        />
                                         <el-select
                                             v-if="item.style === 'select'"
                                             class="w-full"
@@ -45,18 +57,26 @@
                                 </div>
                                 <div
                                     v-else
-                                    class="flex flex-1"
+                                    class="flex flex-col md:flex-row flex-1 gap-6"
                                     :class="item.span ? `col-span-${item.span}` : ''"
                                 >
                                     <div
                                         v-for="(item2, index2) in item.datas"
                                         class="flex-1"
                                         :key="index2"
-                                        :class="item.datas.length - 1 === index2 ? '' : 'mr-[30px]'"
                                     >
-                                        <el-form-item :prop="item2.prop" :label="item2.label">
-                                            <el-input v-if="item2.style === 'input'" :type="item2?.type" :show-password="item2.showPassword" :disabled="item2.disabled"
-                                                      :placeholder="item2.placeholder" v-model="form[item2.prop]"></el-input>
+                                        <el-form-item
+                                            :prop="item2.prop"
+                                            :label="item2.label"
+                                        >
+                                            <el-input
+                                                v-if="item2.style === 'input'"
+                                                :type="item2?.type"
+                                                :show-password="item2.showPassword"
+                                                :disabled="item2.disabled"
+                                                :placeholder="item2.placeholder"
+                                                v-model="form[item2.prop]"
+                                            />
                                             <el-select
                                                 v-if="item2.style === 'select'"
                                                 class="w-full"
@@ -69,28 +89,45 @@
                                                     :key="optionIndex"
                                                     :label="option.label"
                                                     :value="option.value"
-                                                ></el-option>
+                                                />
                                             </el-select>
                                         </el-form-item>
                                     </div>
                                 </div>
-                                <template v-if="item.space">
-                                    <div v-for="index in item.space" :key="index"></div>
+                                <template v-if="item.space && !isPad">
+                                    <div
+                                        v-for="index in item.space"
+                                        :key="index"
+                                    ></div>
                                 </template>
                             </template>
                         </div>
                     </div>
-                    <div class="w-3/4 mt-[40px] p-[60px] pt-[50px] bg-white mx-auto rounded-[24px] border-[1px] border-gray-200">
+                    <div class="w-full xl:w-3/4 mt-[36px] sm:mt-[80px] px-[24px] py-[36px] sm:p-[60px] bg-white mx-auto rounded-[12px] sm:rounded-[24px] border-[1px] border-gray-200">
                         <h3 class="text-[24px] font-bold mb-6">報修商品資訊</h3>
-                        <div class="grid grid-cols-2 gap-6">
+                        <div class="flex flex-col grid-cols-2 gap-6 md:grid">
                             <template
                                 v-for="(item, index) in formDatas.productDatas"
                                 :key="index"
                             >
-                                <div v-if="item?.type !== 'inline'" :class="item.span ? `col-span-${item.span}` : ''">
-                                    <el-form-item :prop="item.prop" :label="item.label">
-                                        <el-input v-if="item.style === 'input'" :type="item.type" :show-password="item.showPassword" :disabled="item.disabled"
-                                                  :placeholder="item.placeholder" resize="none" :rows="item.row" v-model="form[item.prop]"></el-input>
+                                <div
+                                    v-if="item?.type !== 'inline'"
+                                    :class="item.span ? `col-span-${item.span}` : ''"
+                                >
+                                    <el-form-item
+                                        :prop="item.prop"
+                                        :label="item.label"
+                                    >
+                                        <el-input
+                                            v-if="item.style === 'input'"
+                                            :type="item.type"
+                                            :show-password="item.showPassword"
+                                            :disabled="item.disabled"
+                                            :placeholder="item.placeholder"
+                                            resize="none"
+                                            :rows="item.row"
+                                            v-model="form[item.prop]"
+                                        ></el-input>
                                         <el-select
                                             v-else-if="item.style === 'select'"
                                             class="w-full"
@@ -105,36 +142,49 @@
                                                 :value="option.value"
                                             ></el-option>
                                         </el-select>
-                                        <el-radio-group v-else-if="item.style === 'radio'" v-model="form[item.prop]">
+                                        <el-radio-group
+                                            v-else-if="item.style === 'radio'"
+                                            v-model="form[item.prop]"
+                                        >
                                             <el-radio
                                                 v-for="(option, radio_index) in item.radioData"
                                                 :key="radio_index"
                                                 :label="option.value"
                                                 size="large"
-                                            >{{ option.label }}
-                                            </el-radio
-                                            >
+                                                @change="item.change"
+                                                >{{ option.label }}
+                                            </el-radio>
                                         </el-radio-group>
-                                        <el-date-picker v-else-if="item.style === 'datepicker'"
-                                                        v-model="form[item.prop]"
-                                                        type="date"
-                                                        valueFormat="YYYY-MM-DD"
-                                                        :placeholder="item.placeholder"
-                                                        popper-class="date-box"
+                                        <el-date-picker
+                                            v-else-if="item.style === 'datepicker'"
+                                            v-model="form[item.prop]"
+                                            type="date"
+                                            valueFormat="YYYY-MM-DD"
+                                            :placeholder="item.placeholder"
+                                            popper-class="date-box"
                                         />
                                         <FileUpload
                                             v-else-if="item.style === 'file'"
                                             :prop="item.prop"
+                                            :scene="'online-repair'"
                                             @tempPath="handlefile"
                                         />
                                         <VideoUpload
                                             v-else-if="item.style === 'video'"
                                             :prop="item.prop"
+                                            :scene="'online-repair'"
                                             @tempPath="handlefile"
                                         />
-                                        <el-checkbox-group v-else-if="item.style === 'checkbox'" v-model="form[item.prop]">
-                                          <el-checkbox v-for="checkbox in item.checkboxData" :key="checkbox.label" :label="checkbox.value">{{checkbox.label}}
-                                          </el-checkbox>
+                                        <el-checkbox-group
+                                            v-else-if="item.style === 'checkbox'"
+                                            v-model="form[item.prop]"
+                                        >
+                                            <el-checkbox
+                                                v-for="checkbox in item.checkboxData"
+                                                :key="checkbox.label"
+                                                :label="checkbox.value"
+                                                >{{ checkbox.label }}
+                                            </el-checkbox>
                                         </el-checkbox-group>
                                     </el-form-item>
                                 </div>
@@ -149,9 +199,18 @@
                                         :key="index2"
                                         :class="item.datas.length - 1 === index2 ? '' : 'mr-[30px]'"
                                     >
-                                        <el-form-item :prop="item2.prop" :label="item2.label">
-                                            <el-input v-if="item2.style === 'input'" :type="item2?.type" :show-password="item2.showPassword" :disabled="item2.disabled"
-                                                      :placeholder="item2.placeholder" v-model="form[item2.prop]"></el-input>
+                                        <el-form-item
+                                            :prop="item2.prop"
+                                            :label="item2.label"
+                                        >
+                                            <el-input
+                                                v-if="item2.style === 'input'"
+                                                :type="item2?.type"
+                                                :show-password="item2.showPassword"
+                                                :disabled="item2.disabled"
+                                                :placeholder="item2.placeholder"
+                                                v-model="form[item2.prop]"
+                                            ></el-input>
                                             <el-select
                                                 v-if="item2.style === 'select'"
                                                 class="w-full"
@@ -169,21 +228,31 @@
                                         </el-form-item>
                                     </div>
                                 </div>
-                                <template v-if="item.space">
-                                    <div v-for="index in item.space" :key="index"></div>
+                                <template v-if="item.space && !isPad">
+                                    <div
+                                        v-for="index in item.space"
+                                        :key="index"
+                                    ></div>
                                 </template>
                                 <!--   備註小字   -->
                                 <template v-if="item.memoText">
                                     <div :class="item.span ? `col-span-${item.span}` : ''">
-                                      <span>{{ item.memoText }}</span>
-                                      <template v-if="item.memoFunctionText">
-                                          <span @click="item.memoFunction ? item.memoFunction() : null" class="text-blue-500 ml-1 underline cursor-pointer underline-offset-2 hover:no-underline">{{ item.memoFunctionText }}</span>
-                                      </template>
+                                        <span class="text-[15px]">{{ item.memoText }}</span>
+                                        <template v-if="item.memoFunctionText">
+                                            <span
+                                                @click="item.memoFunction ? item.memoFunction() : null"
+                                                class="text-[15px] ml-1 text-blue-500 underline cursor-pointer underline-offset-2 hover:no-underline"
+                                                >{{ item.memoFunctionText }}</span
+                                            >
+                                        </template>
                                     </div>
                                 </template>
                                 <!--   備註列表   -->
                                 <template v-if="item.listText">
-                                  <div class="col-span-2" v-html="item.listText"></div>
+                                    <div
+                                        class="col-span-2"
+                                        v-html="item.listText"
+                                    ></div>
                                 </template>
                             </template>
                             <div class="flex justify-start">
@@ -192,9 +261,12 @@
                         </div>
                     </div>
                     <div class="flex justify-center mt-[40px]">
-                        <NuxtLink :to="{ name: 'repair-detail-success-slug', params: { slug: '線上報修成功' } }">
-                            <button class="yellow-btn btn-lg">確認送出</button>
-                        </NuxtLink>
+                        <button
+                            @click.prevent="onSubmit"
+                            class="yellow-btn btn-lg"
+                        >
+                            確認送出
+                        </button>
                     </div>
                 </el-form>
             </div>
@@ -202,7 +274,7 @@
     </BannerLayout>
     <client-only>
         <el-dialog
-            class="custom-dialog"
+            class="custom-dialog h-[600px]"
             close-on-click-modal
             lock-scroll
             show-close
@@ -212,8 +284,11 @@
             append-to-body
             v-model="dialogSerial"
         >
-            <h3 class="text-[24px] font-bold text-gray-800 mb-[30px]">{{serialData.title}}</h3>
-            <div class="text-gray-800 edit-section" v-html="serialData.content"></div>
+            <h3 class="text-[24px] font-bold text-gray-800 mb-[30px]">{{ serialData.title }}</h3>
+            <div
+                class="text-gray-800 edit-section"
+                v-html="serialData.content"
+            ></div>
         </el-dialog>
     </client-only>
 </template>
@@ -226,10 +301,13 @@ import GoogleReCaptchaV2 from "~/components/GoogleRecaptchaV2.vue";
 import { ElMessage } from "element-plus";
 import FileUpload from "~/views/template1/ContactService/ContactWe/components/ContactWebFileUpload.vue";
 import VideoUpload from "~/views/template1/ContactService/Repair/components/VideoUpload.vue";
+import { validateTWMobileNumber } from "~/service/validator";
+import { ProductListAPIInterface } from "~/interface/product.d";
 
 const { $api, $utils } = useNuxtApp();
 const router = useRouter();
 const route = useRoute();
+const { isPad } = useWindowResize();
 
 const {
     public: { googleRecaptcha2Key },
@@ -275,22 +353,25 @@ async function getCity() {
 
 const dialogSerial = ref(false);
 
-
 const breadcrumbs = ref([
     {
         name: "index",
         text: "首頁",
     },
     {
-        name: "repair-slug",
+        name: "repair-detail-slug",
         text: "服務支援",
-        params: { slug: "耶魯服務支援" },
+        params: { slug: "線上報修" },
+    },
+    {
+        name: "repair-slug",
+        text: "維修與保固",
+        params: { slug: "維修與保固" },
     },
     {
         name: "repair-detail-slug",
         text: "線上報修",
-        params: { slug: "耶魯線上報修" },
-        query: { id: "1" },
+        params: { slug: "線上報修" },
     },
 ]);
 
@@ -304,7 +385,7 @@ const form = ref<any>({
     location: "",
     zip3: "",
     address: "",
-    series: 1,
+    series: "電子門鎖",
     date: "",
     model: "",
     quantity: "",
@@ -315,15 +396,15 @@ const form = ref<any>({
 });
 
 const seriesRadios = ref<any>([
-    { value: 1, label: "電子門鎖" },
-    { value: 2, label: "電子保險箱" },
+    { value: "電子門鎖", label: "電子門鎖" },
+    { value: "電子保險箱", label: "電子保險箱" },
 ]);
 
 const timeOptions = ref<any>([
-    { value: 1, label: "平日時段 (週一~週五) 早上" },
-    { value: 2, label: "平日時段 (週一~週五) 下午" },
-    { value: 3, label: "假日時段 (六、日) 早上" },
-    { value: 4, label: "假日時段 (六、日) 下午" },
+    { value: "平日時段 (週一~週五) 早上", label: "平日時段 (週一~週五) 早上" },
+    { value: "平日時段 (週一~週五) 下午", label: "平日時段 (週一~週五) 下午" },
+    { value: "假日時段 (六、日) 早上", label: "假日時段 (六、日) 早上" },
+    { value: "假日時段 (六、日) 下午", label: "假日時段 (六、日) 下午" },
 ]);
 
 const formDatas = ref<any>({
@@ -331,7 +412,7 @@ const formDatas = ref<any>({
         {
             prop: "contactPerson",
             label: "聯絡人",
-            placeholder: "",
+            placeholder: "請輸入",
             style: "input",
             space: 1,
         },
@@ -339,13 +420,13 @@ const formDatas = ref<any>({
             prop: "cellphone",
             label: "聯絡電話",
             placeholder: "例：0911-222-222",
-            style: "input"
+            style: "input",
         },
         {
             prop: "telephone",
             label: "市話",
             placeholder: "例：02-1222-2222",
-            style: "input"
+            style: "input",
         },
         {
             prop: "address",
@@ -365,15 +446,15 @@ const formDatas = ref<any>({
 
                         const cityDataFilter = initializationStore.cityAreaData.find((item: { name: any }) => item.name === e.city);
                         console.log("cityDataFilter.district", cityDataFilter);
-                        const addressProps = formDatas.value.contactDatas.find((item: { prop: string; }) => item.prop === 'address')
-                        addressProps.datas.find((item: { prop: string }) => item.prop === 'location').options = cityDataFilter.district.map((item: { name: any; zip3: any }) => {
+                        const addressProps = formDatas.value.contactDatas.find((item: { prop: string }) => item.prop === "address");
+                        addressProps.datas.find((item: { prop: string }) => item.prop === "location").options = cityDataFilter.district.map((item: { name: any; zip3: any }) => {
                             return {
                                 label: item.name,
                                 value: item.name,
                                 zip3: item.zip3,
                             };
                         });
-                    }
+                    },
                 },
                 {
                     prop: "location",
@@ -383,8 +464,8 @@ const formDatas = ref<any>({
                     style: "select",
                     function: (e: any) => {
                         console.log(e);
-                        const addressProps = formDatas.value.contactDatas.find((item: { prop: string; }) => item.prop === 'address')
-                        e.zip3 = addressProps.datas.find((item: { prop: string }) => item.prop === 'location').options.find((item: { value: any }) => item.value === e.location).zip3;
+                        const addressProps = formDatas.value.contactDatas.find((item: { prop: string }) => item.prop === "address");
+                        e.zip3 = addressProps.datas.find((item: { prop: string }) => item.prop === "location").options.find((item: { value: any }) => item.value === e.location).zip3;
                     },
                 },
                 {
@@ -392,14 +473,14 @@ const formDatas = ref<any>({
                     label: "郵遞區號",
                     placeholder: "",
                     style: "input",
-                    disabled: true
-                }
-            ]
+                    disabled: true,
+                },
+            ],
         },
         {
             prop: "address",
             label: "詳細地址",
-            placeholder: "",
+            placeholder: "請輸入",
             style: "input",
             span: 2,
         },
@@ -408,27 +489,31 @@ const formDatas = ref<any>({
         {
             prop: "series",
             label: "系列選擇",
-            placeholder: "",
+            placeholder: "請輸入",
             style: "radio",
-            radioData: seriesRadios
+            radioData: seriesRadios,
+            change: (e: any) => {
+                getList(e);
+            },
         },
         {
             prop: "date",
             label: "安裝日期",
             placeholder: "請輸入購買日期或安裝日期",
-            style: "datepicker"
+            style: "datepicker",
         },
         {
             prop: "model",
             label: "報修型號",
             placeholder: "請選擇型號",
-            style: "select"
+            style: "select",
+            options: [],
         },
         {
             prop: "quantity",
             label: "報修數量",
             placeholder: "請輸入數量",
-            style: "input"
+            style: "input",
         },
         {
             prop: "serial",
@@ -447,12 +532,12 @@ const formDatas = ref<any>({
             label: "維修時段",
             style: "checkbox",
             checkboxData: timeOptions,
-            listText: "<div class='grid-cols-2'><div class='bg-gray-50 px-4 py-3'><ul class='list-disc pl-4'><li class='text-[15px]'>請預填，後續將派專人與您聯繫</li></ul></div></div>"
+            listText: "<div class='grid-cols-2'><div class='px-4 py-3 bg-gray-50'><ul class='pl-4 list-disc'><li class='text-[15px]'>請預填，後續將派專人與您聯繫</li></ul></div></div>",
         },
         {
             prop: "description",
             label: "狀況說明",
-            placeholder: "",
+            placeholder: "請輸入",
             style: "input",
             type: "textarea",
             span: 2,
@@ -473,122 +558,270 @@ const formDatas = ref<any>({
             style: "video",
             span: 2,
         },
-    ]
-})
+    ],
+});
 
 const rules = ref<any>({
-  contactPerson: [
-    {
-      required: true,
-      message: "請輸入聯絡人",
-      trigger: "blur"
-    }
-  ],
-  cellphone: [
-    {
-      required: true,
-      message: "請輸入聯絡電話",
-      trigger: "blur"
-    }
-  ],
-  city: [
-    {
-      required: true,
-      message: "請選擇縣市",
-      trigger: "blur"
-    }
-  ],
-  location: [
-    {
-      required: true,
-      message: "請輸入地區",
-      trigger: "blur"
-    }
-  ],
-  address: [
-    {
-      required: true,
-      message: "請輸入詳細地址",
-      trigger: "blur"
-    }
-  ],
-  series: [
-    {
-      required: true,
-      message: "請輸入填單人聯絡電話",
-      trigger: "blur"
-    }
-  ],
-  date: [
-    {
-      required: true,
-      message: "請選擇安裝日期",
-      trigger: "blur"
-    }
-  ],
-  model: [
-    {
-      required: true,
-      message: "請輸入報修型號",
-      trigger: "change"
-    }
-  ],
-  serial: [
-    {
-      required: true,
-      message: "請輸入產品序號",
-      trigger: "blur"
-    }
-  ],
-  quantity: [
-    {
-      required: true,
-      message: "請輸入報修數量",
-      trigger: "blur"
-    }
-  ],
-  time: [
-    {
-      required: true,
-      message: "請選擇維修時段",
-      trigger: "change",
-    }
-  ],
-  description: [
-    {
-      required: true,
-      message: "請輸入狀況說明",
-      trigger: "blur"
-    }
-  ],
-  photo: [
-    {
-      required: true,
-      message: "請選擇照片",
-      trigger: "blur"
-    }
-  ],
+    contactPerson: [
+        {
+            required: true,
+            message: "請輸入聯絡人",
+            trigger: ["change", "blur"],
+        },
+    ],
+    cellphone: [
+        {
+            required: true,
+            message: "請輸入聯絡電話",
+            trigger: ["change", "blur"],
+        },
+        {
+            required: true,
+            validator: validateTWMobileNumber,
+            trigger: ["change", "blur"],
+            message: "格式不正確",
+        },
+    ],
+    city: [
+        {
+            required: true,
+            message: "請選擇縣市",
+            trigger: ["change", "blur"],
+        },
+    ],
+    location: [
+        {
+            required: true,
+            message: "請輸入地區",
+            trigger: ["change", "blur"],
+        },
+    ],
+    address: [
+        {
+            required: true,
+            message: "請輸入詳細地址",
+            trigger: ["change", "blur"],
+        },
+    ],
+    series: [
+        {
+            required: true,
+            message: "請選擇",
+            trigger: ["change", "blur"],
+        },
+    ],
+    date: [
+        {
+            required: true,
+            message: "請選擇安裝日期",
+            trigger: ["change", "blur"],
+        },
+    ],
+    model: [
+        {
+            required: true,
+            message: "請輸入報修型號",
+            trigger: "change",
+        },
+    ],
+    serial: [
+        {
+            required: true,
+            message: "請輸入產品序號",
+            trigger: ["change", "blur"],
+        },
+    ],
+    quantity: [
+        {
+            required: true,
+            message: "請輸入報修數量",
+            trigger: ["change", "blur"],
+        },
+    ],
+    time: [
+        {
+            required: true,
+            message: "請選擇維修時段",
+            trigger: "change",
+        },
+    ],
+    description: [
+        {
+            required: true,
+            message: "請輸入狀況說明",
+            trigger: ["change", "blur"],
+        },
+    ],
+    photo: [
+        {
+            required: true,
+            message: "請選擇照片",
+            trigger: ["change", "blur"],
+        },
+    ],
 });
 
 function handlefile(tempPath: any, prop: string) {
-  form.value[prop] = tempPath;
-  formRefDom.value.validateField("photo");
+    form.value[prop] = tempPath;
+    formRefDom.value.validateField("photo");
 }
 
 // 序號位置彈窗資料
-const serialData = {
-    title: '序號位置範例',
-    content: '<div>範例如圖</div><ol><li>盒子底下</li><li>保固書</li></ol>'
+const serialData = ref<any>({
+    title: "序號位置範例",
+    content: "",
+});
+
+async function getPageData() {
+    try {
+        const params = { code: "serial_number_position_example_popup" };
+        const { data } = await $api().getPageAPI(params);
+        console.log("getPageData api => ", data.value);
+
+        const pageData = (data.value as any).data.schema;
+        serialData.value.content = pageData.content;
+
+        const seoSetting = (data.value as any).data.seoSetting;
+        useSeoMeta({
+            title: seoSetting.title ? seoSetting.title : initializationStore.initializationData.site.meta_title,
+            description: seoSetting.description ? seoSetting.description : initializationStore.initializationData.site.meta_description,
+            ogTitle: seoSetting.title,
+            ogDescription: seoSetting.description,
+            ogUrl: () => `${window.location.origin}/${seoSetting.custom_url}`,
+            keywords: seoSetting.keywords.join(),
+        });
+    } catch (err) {
+        console.log("HomeSampleAPI => ", err);
+    }
 }
 
-// async function onSubmit() {
-//   formRefDom.value.validate(async (valid: any) => {
-//     if (!valid) {
-//       ElMessage({
-//         type: "error",
-//         message: `尚有欄位未填`,
-//       });
-//     }
-//   })
-// }
+const product_category = ref([]);
+/**
+ * 取得商品分類
+ */
+async function getType() {
+    try {
+        const { data } = await $api().ProductTypeAPI();
+
+        const rows = (data.value as any).data;
+        console.log("product_category_id", rows);
+
+        product_category.value = rows;
+        getList("電子門鎖");
+    } catch (err) {
+        console.log("HomeSampleAPI => ", err);
+    }
+}
+
+/**
+ * 取得商品列表
+ */
+async function getList(type = "電子門鎖") {
+    console.log("type => ", type);
+    try {
+        let product_category_id;
+        if (type === "電子門鎖") {
+            product_category_id = product_category.value
+                .find((item: { id: Number }) => item.id === 1)
+                .children.map((child: { id: Number }) => {
+                    return child.id;
+                });
+        } else if (type === "電子保險箱") {
+            product_category_id = product_category.value
+                .find((item: { id: Number }) => item.id === 3)
+                .children.map((child: { id: Number }) => {
+                    return child.id;
+                });
+        }
+        const params = {};
+        // 搜尋分類參數時 須帶上 搜尋模式 條件
+        params["search_fields"] = "productCategories.product_category_id:in";
+        // 搜尋分類參數 ("主鎖｜輔助鎖" 等等...)
+        params["search_relations"] = "productCategories.product_category_id:" + product_category_id.join();
+
+        const { data } = await $api().ProductLisAPI<ProductListAPIInterface>(params);
+
+        const rows = (data.value as any).data;
+        console.log("home sample api => ", rows);
+
+        formDatas.value.productDatas.find((item: { prop: string }) => item.prop === "model").options = [];
+        rows.forEach((item: { model: string }) => {
+            formDatas.value.productDatas
+                .find((item: { prop: string }) => item.prop === "model")
+                .options.push({
+                    value: item.model,
+                    label: item.model,
+                });
+        });
+        form.value.model = "";
+    } catch (err) {
+        console.log("HomeSampleAPI => ", err);
+    }
+}
+
+onMounted(async () => {
+    nextTick(async () => {
+        if (process.client) {
+            await getPageData();
+            await getType();
+        }
+    });
+});
+
+async function onSubmit() {
+    if (!form.value.recaptchaToken) {
+        ElMessage({
+            type: "error",
+            message: `請勾選我不是機器人`,
+        });
+        return;
+    }
+    formRefDom.value.validate(async (valid: any) => {
+        if (!valid) {
+            ElMessage({
+                type: "error",
+                message: `尚有欄位未填`,
+            });
+        } else {
+            const formData = {
+                contact_name: form.value.contactPerson,
+                contact_phone: form.value.cellphone,
+                city: form.value.city,
+                detailed_address: form.value.address,
+                district: form.value.location,
+                landline: form.value.telephone,
+                zip3: form.value.zip3,
+                series_selection: form.value.series,
+                installation_date: form.value.date,
+                repair_model: form.value.model,
+                repair_quantity: form.value.quantity,
+                product_serial_number: form.value.serial,
+                repair_time_slot: form.value.time,
+                condition_description: form.value.description,
+                attachment_images: form.value.photo,
+                attachment_videos: form.value.video,
+                captcha: form.value.recaptchaToken,
+            };
+            console.log(formData);
+
+            try {
+                const { data, status, error } = await $api().OnlineRepairAPI(formData);
+                if (status.value === "success") {
+                    router.push({ name: "repair-detail-success-slug", params: { slug: "線上報修成功" } });
+                } else {
+                    ElMessage({
+                        type: "error",
+                        message: (error.value as any).data.message,
+                    });
+                }
+            } catch (err) {
+                console.log(err);
+                ElMessage({
+                    type: "error",
+                    message: `表單送出失敗`,
+                });
+            }
+        }
+    });
+}
 </script>

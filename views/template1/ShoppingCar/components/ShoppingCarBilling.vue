@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-gray-50 px-[24px] pt-[24px] pb-[49px] rounded-[20px]">
+    <div class="bg-gray-50 px-5 py-[20px] xl:px-[24px] sm:py-[24px] rounded-[20px]">
         <div class="flex text-gray-800 text-[14px] mb-[4px]">
             <span class="flex-1">小計</span>
             <span>NT$ {{ $utils().formatCurrency(total) }}</span>
@@ -14,10 +14,13 @@
         </div>
         <slot name="other"></slot>
         <div class="my-[20px] border-gray-300 border-b h-[1px] w-full"></div>
-        <div class="flex text-gray-800">
-            <span class="font-medium YaleSolisW-Bd text-[24px] flex-1">總計</span>
+        <div
+            class="flex text-gray-800"
+            :class="currentStep === 0 ? 'text-[24px]' : currentTab === 'type1' ? 'text-[20px]' : 'text-[16px]'"
+        >
+            <span class="flex-1 font-medium YaleSolisW-Bd">總計</span>
             <div class="flex items-center font-medium YaleSolisW-Bd">
-                <span class="text-[16px] mr-[4px]">NT$ </span>
+                <span class="mr-[4px]">NT$ </span>
                 <slot name="total"></slot>
             </div>
         </div>
@@ -32,7 +35,7 @@
         </div>
         <div
             v-if="currentTab === 'type2' && currentStep === 1"
-            class="text-gray-800 text-[30px] font-medium YaleSolisW-Bd flex mt-[4px]"
+            class="text-gray-800 text-[20px] font-medium YaleSolisW-Bd flex mt-[4px]"
         >
             <div class="flex-1">支付訂金</div>
             <!-- 訂金 -->
@@ -44,6 +47,7 @@
 </template>
 
 <script setup lang="ts">
+import { ShoppingCarInterface } from "~/interface/shoppingCar";
 import { useShoppingCarStore } from "~/store/shoppingCarStore";
 
 interface Props {
@@ -55,7 +59,7 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-    selectProductIds: [],
+    selectProductIds: () => [],
     currentTab: "type1",
     currentStep: 0,
 });
@@ -64,17 +68,25 @@ const { $utils } = useNuxtApp();
 
 const shoppingCarStore = useShoppingCarStore();
 
-// 購物車資料
+// 一般購物車資料
 const shoppingCar = computed(() => shoppingCarStore.shoppingCar);
+// 一般購物車資料
+const shoppingCustomCar = computed(() => shoppingCarStore.shoppingCustomCar);
 
 // 總價
-const total = computed(() =>
-    _SumBy(
-        _Filter(shoppingCar.value, (item) => props.selectProductIds.includes(item.id)),
-        "price"
-    )
-);
+const total = computed(() => {
+    if (props.currentTab === "type1") {
+        return _SumBy(
+            _Filter(shoppingCar.value, (item: ShoppingCarInterface) => (item.id ? props.selectProductIds.includes(item.id) : false)),
+            "totalPrice"
+        );
+    }
+    return _SumBy(
+        _Filter(shoppingCustomCar.value, (item: ShoppingCarInterface) => (item.id ? props.selectProductIds.includes(item.id) : false)),
+        "totalPrice"
+    );
+});
 
 // 折扣
-const salePrice = computed(() => 1000);
+const salePrice = computed(() => 0);
 </script>

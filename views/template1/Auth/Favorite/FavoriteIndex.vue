@@ -1,24 +1,38 @@
 <template>
-    <section class="min-h-screen mt-[86px] pb-[60px] bg-gray-50">
-        <nav class="border-t border-b border-gray-300 py-[16px] bg-white">
-            <div class="grid grid-cols-7 gap-0">
-                <div class="col-span-7 ml-[122px]">
-                    <Breadcrumb :menus="breadcrumbs" />
-                </div>
+    <section class="mt-headerMb xl:mt-header pb-[60px]">
+        <nav class="border-b border-gray-300 py-[16px] bg-white">
+            <div class="container">
+                <Breadcrumb :menus="breadcrumbs" />
             </div>
         </nav>
         <div class="container">
-            <div class="mt-[60px] px-[60px]">
-                <h3 class="font-medium text-[32px] mb-8">產品收藏清單</h3>
-                <div class="grid grid-cols-4 gap-x-5 gap-y-8">
-                    <div v-for="item in datas">
-                        <ProductCard :product="item" />
-                    </div>
+            <div class="mt-[36px] sm:mt-[60px]">
+                <h3 class="font-medium YaleSolisW-Bd text-[24px] sm:text-[32px] mb-[24px] sm:mb-8">產品收藏清單</h3>
+                <div class="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-x-5 gap-y-8 flex-wrap justify-center">
+                    <template
+                        v-for="item in datas"
+                    >
+                        <ProductCard
+                            :product="item"
+                            @handleFavorite="handleFavorite"
+                        />
+                    </template>
                 </div>
             </div>
-            <Pagination class="flex justify-center mb-[95px] mt-[80px]" />
+            <Pagination class="flex justify-center mb-[30px] sm:mb-[95px] mt-[40px] sm:mt-[80px]" />
         </div>
     </section>
+    <client-only>
+        <confirmBox
+            :title="'取消收藏'"
+            :message="'是否取消收藏'"
+            :cancelTxt="'取消'"
+            :confirmTXT="'確定'"
+            :dialogVisible="dialogVisible"
+            @handleConfirm="handleConfirm"
+            @handleCancel="handleCancel"
+        ></confirmBox>
+    </client-only>
 </template>
 
 <script setup lang="ts">
@@ -26,11 +40,13 @@ import Breadcrumb from "~/views/template1/components/Breadcrumb.vue";
 import Pagination from "~/views/template1/components/Pagination.vue";
 // 產品卡片樣板
 import ProductCard from "~/views/template1/components/ProductCard.vue";
+import confirmBox from "@/components/confirmBox.vue";
 /**
  * ProductListAPIInterface: 產品分頁 api 回應值
  * ProductList: 產品分頁列表內容
  */
 import { ProductListAPIInterface, ProductList } from "~/interface/product.d";
+import { ElMessage, ElMessageBox } from "element-plus";
 
 const { $api } = useNuxtApp();
 
@@ -56,14 +72,14 @@ const datas = ref<ProductList[]>([]);
 /**
  * 取得商品列表
  */
-async function getList(params: { per_page: number; page: number }) {
+async function getList() {
     try {
-        const { data } = await $api().ProductListPaginateAPI<ProductListAPIInterface>(params);
+        const { data } = await $api().GetProductFavoritesAPI();
         datas.value = [];
 
-        const rows = (data.value as any).data.rows;
+        const rows = (data.value as any).data;
 
-        rows.forEach((item: { id: any; model: any; name: any; shape: any; price: any; market_price: any; main_image: any; other_images: any }) => {
+        rows.forEach((item: { id: any; model: any; name: any; shape: any; price: any; market_price: any; main_image: any; other_images: any; is_favorite: boolean }) => {
             datas.value.push({
                 id: item.id,
                 model: item.model,
@@ -72,6 +88,8 @@ async function getList(params: { per_page: number; page: number }) {
                 price: item.price,
                 market_price: item.market_price,
                 main_image: item.main_image,
+                is_favorite: item.is_favorite,
+                tags: item.tags,
             });
         });
     } catch (err) {
@@ -79,5 +97,49 @@ async function getList(params: { per_page: number; page: number }) {
     }
 }
 
-await getList({ per_page: 10, page: 1 });
+const favorite_id = ref(null);
+const dialogVisible = ref(false);
+
+async function handleFavorite(id: any) {
+    favorite_id.value = id
+    dialogVisible.value = true
+}
+
+async function handleConfirm() {
+    try {
+        const params = { productId: favorite_id.value };
+         const { data } = await $api().ProductFavoriteAPI(params);
+         const message = (data.value as any).message;
+
+         if (message === "請求成功") {
+             const index = datas.value.findIndex((item) => item.id === favorite_id.value);
+             datas.value.splice(index, 1);
+             dialogVisible.value = false
+         } else {
+             ElMessage({
+                 type: "error",
+                 message: "取消失敗",
+             });
+             dialogVisible.value = false
+         }
+    } catch (err) {
+        ElMessage({
+            type: "error",
+            message: "取消失敗",
+        });
+        dialogVisible.value = false
+    }
+}
+
+function handleCancel() {
+    dialogVisible.value = false
+}
+
+onMounted(async () => {
+    nextTick(async () => {
+        if (process.client) {
+            await getList();
+        }
+    });
+});
 </script>

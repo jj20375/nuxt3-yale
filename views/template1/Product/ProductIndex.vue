@@ -5,80 +5,108 @@
         </template>
 
         <template #custom-sidebar>
+            <div
+                v-if="isLargePad"
+                class="bg-white"
+            >
+                <div class="container">
+                    <h1 class="text-[32px] text-gray-800 pb-2 xl:pb-[24px] leading-none pt-[32px] YaleSolisW-Bd font-medium">產品資訊</h1>
+                    <div class="hidden xl:block border-b border-gray-200 py-[16px]">
+                        <h5 class="text-[16px] YaleSolisW-Bd font-medium">商品分類</h5>
+                    </div>
+                </div>
+            </div>
             <SideBar
                 ref="sideBarRef"
-                class="col-span-2 bg-white"
+                class="bg-white xl:w-[250px]"
                 :menus="sidebar"
             >
                 <template #sidebar-deep-title>
-                    <h1 class="text-[32px] text-gray-800 mb-[23px] mt-[26px] font-medium">產品資訊</h1>
+                    <h1 class="text-[32px] text-gray-800 pb-2 xl:pb-[24px] leading-none pt-[20px] md:pt-[32px] YaleSolisW-Bd font-medium">產品資訊</h1>
                 </template>
                 <template #sidebar-deep-sub-title>
-                    <div class="border-b border-gray-200 py-[16px]">
-                        <h5 class="text-[16px] font-medium">商品分類</h5>
+                    <div class="hidden xl:block border-b border-gray-200 py-[16px]">
+                        <h5 class="text-[16px] YaleSolisW-Bd font-medium">商品分類</h5>
                     </div>
                 </template>
             </SideBar>
         </template>
+
         <template #custom-content>
-            <div class="flex items-center mb-[40px] mt-[32px] mr-10">
-                <NuxtImg
-                    v-if="productTypeDetail.media"
-                    class="max-w-[387px] w-full aspect-[16/9] object-cover"
-                    :src="productTypeDetail.media"
-                />
-                <div class="ml-[40px]">
-                    <h2 class="text-[24px] font-medium">{{ productTypeDetail.name }}</h2>
-                    <p class="mt-[16px] text-[16px]">{{ productTypeDetail.description }}</p>
-                </div>
-            </div>
-            <div class="flex justify-end mr-10 mb-[24px]">
-                <NuxtLink
-                    v-if="productTypeDetail.is_compare === 1"
-                    :to="{ name: 'product-compare-slug', params: { slug: '主鎖比較' }, query: { compareId: productTypeDetail.compare_id } }"
-                >
-                    <button class="border mr-[30px] border-gray-600 w-[100px] text-center rounded-full h-[36px]">規格比較</button>
-                </NuxtLink>
-                <div class="flex items-center">
-                    <p class="text-[16px] text-gray-800">排序：</p>
-                    <el-select
-                        class="w-[180px]"
-                        v-model="sortBy"
-                        @change="sortChange"
-                        value-key="label"
-                    >
-                        <el-option
-                            v-for="(item, key) in sortOptions"
-                            :key="key"
-                            :label="item.label"
-                            :value="item.value"
-                        ></el-option>
-                    </el-select>
-                </div>
-            </div>
-            <div class="grid grid-cols-3 gap-4 mr-10">
-                <div
-                    v-for="(product, index) in datas"
-                    :key="index"
-                >
-                    <ProductCard
-                        :breadcrumbs="breadcrumbs"
-                        :product="product"
+            <template v-if="loading">
+                <div class="flex items-center justify-center w-full h-screen">
+                    <font-awesome-icon
+                        class="animate-spin text-[40px] text-gray-300"
+                        :icon="['fas', 'circle-notch']"
                     />
                 </div>
-            </div>
+            </template>
+            <template v-else>
+                <div class="-mx-6 sm:mx-0 flex flex-col xl:flex-row items-center mb-[40px] sm:mt-[32px] gap-4 md:gap-[40px]">
+                    <NuxtImg
+                        v-if="productTypeDetail.media"
+                        class="w-full md:w-[400px] shrink-0 h-fit aspect-[16/9] object-cover"
+                        :src="productTypeDetail.media"
+                    />
+                    <div class="px-6 sm:px-0">
+                        <h2 class="YaleSolisW-Bd text-[24px] font-medium">{{ productTypeDetail.name }}</h2>
+                        <p class="md:mt-[16px] text-[16px]">{{ productTypeDetail.description }}</p>
+                    </div>
+                </div>
+                <div class="flex flex-col md:flex-row justify-end mb-[24px] gap-[30px]">
+                    <NuxtLink
+                        v-if="productTypeDetail.is_compare === 1"
+                        @click="goToCompare(productTypeDetail)"
+                    >
+                        <button class="transparent-btn btn-xs">規格比較</button>
+                    </NuxtLink>
+                    <div class="flex items-center self-end md:self-start">
+                        <p class="text-[16px] text-gray-800">排序：</p>
+                        <el-select
+                            class="w-[180px]"
+                            v-model="sortBy"
+                            @change="sortChange"
+                            value-key="label"
+                            :suffix-icon="IconArrowDown"
+                        >
+                            <el-option
+                                v-for="(item, key) in sortOptions"
+                                :key="key"
+                                :label="item.label"
+                                :value="item.value"
+                            ></el-option>
+                        </el-select>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-x-[20px] gap-y-[40px]">
+                    <div
+                        v-for="(product, index) in datas"
+                        :key="index"
+                    >
+                        <ProductCard
+                            :breadcrumbs="breadcrumbs"
+                            :product="product"
+                            @handleFavorite="handleFavorite"
+                        />
+                    </div>
+                </div>
+            </template>
         </template>
         <template #custom-pagination>
-            <Pagination
-                :pagination="pagination"
-                @handlePageChange="handlePageChange"
-                class="flex justify-center mb-[95px] mt-[80px]"
-            />
+            <template v-if="!loading">
+                <Pagination
+                    v-if="!loadingWaitPagination"
+                    :pagination="pagination"
+                    @handlePageChange="handlePageChange"
+                    class="flex justify-center mb-[95px] mt-[80px]"
+                />
+            </template>
         </template>
     </SideBarDeepLayout>
 </template>
 
 <script lang="ts" setup>
+import IconArrowDown from "~/assets/img/icons/arrow-down.svg";
 import SideBarDeepLayout from "~/views/template1/layouts/SideBarDeepLayout.vue";
 import Breadcrumb from "~/views/template1/components/Breadcrumb.vue";
 import SideBar from "~/views/template1/components/SideBarByDeep.vue";
@@ -90,11 +118,21 @@ import ProductCard from "~/views/template1/components/ProductCard.vue";
  * ProductListAPIInterface: 產品分頁 api 回應值
  * ProductList: 產品分頁列表內容
  */
-import { ProductListAPIInterface, ProductList } from "~/interface/product.d";
+import { ProductListAPIInterface, ProductList, ProductCarInterface } from "~/interface/product.d";
 
-const { $api } = useNuxtApp();
+import { ElMessage } from "element-plus";
+import { useInitializationStore } from "~/store/initializationStore";
+
+const initializationStore = useInitializationStore();
+const { isLargePad } = useWindowResize();
+
+const { $api, $utils } = useNuxtApp();
 
 const route = useRoute();
+const router = useRouter();
+
+const loading = ref(true);
+const loadingWaitPagination = ref(true);
 
 const breadcrumbs = ref([
     {
@@ -169,7 +207,6 @@ async function getType() {
     try {
         const { data } = await $api().ProductTypeAPI();
         sidebar.value = [];
-        console.log("home sampleType api => ", data.value);
 
         const rows = (data.value as any).data;
 
@@ -256,6 +293,15 @@ async function getTypeDetail() {
             is_compare: rows.is_compare,
             compare_id: rows.compare_id,
         };
+
+        useSeoMeta({
+            title: rows.seoSetting.title ? rows.seoSetting.title : initializationStore.initializationData.site.meta_title,
+            description: rows.seoSetting.description ? rows.seoSetting.description : initializationStore.initializationData.site.meta_description,
+            ogTitle: rows.seoSetting.title,
+            ogDescription: rows.seoSetting.description,
+            ogUrl: () => `${window.location.origin}/product/${rows.seoSetting.custom_url}`,
+            keywords: rows.seoSetting.keywords.join(),
+        });
     } catch (err) {
         console.log("HomeSampleAPI => ", err);
     }
@@ -283,6 +329,8 @@ const sortBy = ref({
  * 取得商品列表
  */
 async function getList(params: { per_page: number; page: number }) {
+    loading.value = true;
+    loadingWaitPagination.value = true;
     try {
         params = { ...params };
         // 搜尋分類參數時 須帶上 搜尋模式 條件
@@ -298,7 +346,7 @@ async function getList(params: { per_page: number; page: number }) {
         const rows = (data.value as any).data.rows;
         const meta = (data.value as any).data.meta;
 
-        rows.forEach((item: { id: any; model: any; name: any; shape: any; price: any; market_price: any; main_image: any; other_images: any }) => {
+        rows.forEach((item: ProductCarInterface) => {
             datas.value.push({
                 id: item.id,
                 model: item.model,
@@ -306,14 +354,62 @@ async function getList(params: { per_page: number; page: number }) {
                 shape: item.shape,
                 price: item.price,
                 market_price: item.market_price,
+                is_favorite: item.is_favorite,
                 main_image: item.main_image,
+                tags: item.tags,
+                is_single_variation: item.is_single_variation,
+                stock: item.stock,
             });
         });
 
         pagination.value.total = meta.total;
+        loading.value = false;
+        setTimeout(() => {
+            loadingWaitPagination.value = false;
+        }, 20);
     } catch (err) {
         console.log("HomeSampleAPI => ", err);
+        loading.value = false;
+        loadingWaitPagination.value = false;
     }
+}
+
+async function handleFavorite(id: any) {
+    const params = { productId: id };
+    const { data } = await $api().ProductFavoriteAPI(params);
+    const message = (data.value as any).message;
+    const is_favorite = datas.value.find((item) => item.id === id).is_favorite;
+    const handleMessge = is_favorite ? "取消收藏" : "加入收藏";
+
+    if (message === "請求成功") {
+        ElMessage({
+            type: "success",
+            message: handleMessge,
+        });
+        datas.value.find((item) => item.id === id).is_favorite = !is_favorite;
+    } else {
+        ElMessage({
+            type: "error",
+            message: handleMessge + "失敗",
+        });
+    }
+}
+
+/**
+ * 前往規格比較
+ */
+function goToCompare(data: any) {
+    const setBreadcrumbs = [
+        ...breadcrumbs.value,
+        {
+            name: "product-compare-slug",
+            text: `${data.name}比較`,
+            params: { slug: `${data.name}比較` },
+            query: { compareId: data.compare_id },
+        },
+    ];
+    $utils().saveBreadcrumbsData(JSON.stringify(setBreadcrumbs));
+    router.push({ name: "product-compare-slug", params: { slug: `${data.name}比較` }, query: { compareId: data.compare_id } });
 }
 
 /**
@@ -326,10 +422,10 @@ async function init() {
     await getList({ per_page: pagination.value.pageSize, page: 1 });
 }
 
-await init();
 onMounted(async () => {
     nextTick(async () => {
         if (process.client) {
+            await init();
             console.log(sideBarRef.value.openSubMenu);
             sideBarRef.value.openSubMenu = Number(route.query.category);
         }
@@ -338,14 +434,23 @@ onMounted(async () => {
 </script>
 
 <style lang="scss" scoped>
-:deep .el-input__inner {
-    @apply border-none text-gray-800 #{!important};
-}
-:deep .el-input__wrapper {
-    @apply shadow-none bg-gray-50 text-gray-800 #{!important};
-}
+:deep .el-input {
+    @apply relative flex flex-col justify-stretch flex-wrap mb-0 bg-transparent text-base;
+    .el-input__wrapper {
+        @apply shadow-none rounded-none p-1.5 bg-transparent text-[16px] #{!important};
+        &.is-focus {
+            @apply shadow-none #{!important};
+        }
+        .el-input__inner {
+            @apply text-gray-800;
 
-:deep .el-select .el-input .el-select__caret.el-icon {
-    @apply text-[20px] font-bold text-gray-800 #{!important};
+            &::placeholder {
+                -webkit-text-fill-color: #ababac;
+            }
+        }
+    }
+    .el-select__caret.el-icon {
+        @apply text-[16px] text-gray-800 #{!important};
+    }
 }
 </style>

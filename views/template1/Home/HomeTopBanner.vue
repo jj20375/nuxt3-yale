@@ -6,30 +6,40 @@
             :navigation="true"
             :modules="modules"
             :loop="true"
+            :pagination="{ clickable: true }"
             @swiper="onSwiper"
             @slideChange="onSlideChange"
         >
             <SwiperSlide
-                v-for="item in 10"
-                :key="item"
+                v-for="(item, index) in props.carousel"
+                :key="index"
             >
                 <div
-                    class="flex items-center h-screen bg-center bg-cover"
-                    style="background-image: url('/img/banner/banner1.jpg')"
+                    class="flex xl:items-center h-screen bg-center bg-cover"
+                    :style="{ 'background-image': `url(${isMobile ? item.mobile_image : item.desktop_image})` }"
                 >
                     <article class="container">
-                        <div class="w-full lg:w-1/2">
-                            <div class="text-[48px] YaleSolisW-Bd font-medium">Yale Link 智能鎖{{ item }}<br />家居保護，安心無憂</div>
-                            <div class="text-[16px] mt-[20px]">我們不僅讓家保持安全，更讓人們感到安全。</div>
-                            <div class="mt-[40px]">
-                                <button class="animation-btn btn-lg">了解更多</button>
+                        <div class="relative w-full top-[120px] xl:top-[0] xl:w-1/2">
+                            <div class="text-[28px] md:text-[36px] xl:text-[48px] text-center xl:text-start YaleSolisW-Bd font-medium">
+                                <span v-html="item.title"></span>
+                            </div>
+                            <div class="text-[14px] md:text-[16px] text-center xl:text-start mt-[8px] md:mt-[20px]">
+                                <span v-html="item.subtitle"></span>
+                            </div>
+                            <div
+                                class="mt-[24px] md:mt-[40px]"
+                                v-if="item.link"
+                            >
+                                <button
+                                    class="animation-btn"
+                                    :class="isMobile ? 'm-auto btn-xs' : isLargePad ? 'm-auto' : 'btn-lg'"
+                                    @click.prevent="gotoLink(item.link)"
+                                >
+                                    了解更多
+                                </button>
                             </div>
                         </div>
                     </article>
-                    <!-- <NuxtImg
-                        src="/img/banner/banner1.png"
-                        class="min-h-[600px]"
-                    /> -->
                 </div>
             </SwiperSlide>
         </Swiper>
@@ -38,7 +48,22 @@
 
 <script setup lang="ts">
 // import required modules
-import { Navigation } from "swiper/modules";
+import { Navigation, Pagination } from "swiper/modules";
+const { isDesktop, isMobile, isLargePad } = useWindowResize();
+
+interface Props {
+    carousel: {
+        title: string;
+        subtitle: string;
+        desktop_image: string;
+        mobile_image: string;
+        link: string | null;
+    }[];
+}
+
+const props = withDefaults(defineProps<Props>(), {
+    carousel: () => [],
+});
 
 function onSwiper(swiper: any) {
     console.log("swiper => ", swiper);
@@ -48,7 +73,11 @@ function onSlideChange() {
     console.log("slide change");
 }
 
-const modules = ref([Navigation]);
+function gotoLink(link) {
+    window.location.href = link;
+}
+
+const modules = ref([Navigation, Pagination]);
 </script>
 
 <style lang="scss" scoped>
@@ -65,8 +94,9 @@ const modules = ref([Navigation]);
         @apply bg-no-repeat bg-center;
         @apply transition-all duration-300 ease-in-out;
         background-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTciIGhlaWdodD0iMjMiIHZpZXdCb3g9IjAgMCAxNyAyMyIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTIuNjk5NjcgMjIuOTg2TDAuMzMzMDA4IDIwLjk0NkwxMS4yOTk3IDExLjQ5M0wwLjMzMzAwOCAyLjA0MDAxTDIuNjk5NjcgMEwxNi4wMzMgMTEuNDkzTDIuNjk5NjcgMjIuOTg2WiIgZmlsbD0iIzRFNEU1MSIvPgo8L3N2Zz4=");
+        @apply hidden xl:block;
         @apply after:content-none;
-        @apply hover:opacity-80;
+        @apply xl:hover:opacity-80;
         @apply hover:transition-all hover:duration-300 hover:ease-in-out;
     }
 
@@ -76,6 +106,7 @@ const modules = ref([Navigation]);
         @apply bg-no-repeat bg-center;
         @apply transition-all duration-300 ease-in-out;
         background-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMjMiIHZpZXdCb3g9IjAgMCAxNiAyMyIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMTMuMzMzMyAyMi45ODZMMCAxMS40OTNMMTMuMzMzMyAwTDE1LjcgMi4wNDAwMUw0LjczMzMzIDExLjQ5M0wxNS43IDIwLjk0NkwxMy4zMzMzIDIyLjk4NloiIGZpbGw9IiM0RTRFNTEiLz48L3N2Zz4=");
+        @apply hidden xl:block;
         @apply after:content-none;
         @apply hover:opacity-80;
         @apply hover:transition-all hover:duration-300 hover:ease-in-out;
@@ -85,6 +116,12 @@ const modules = ref([Navigation]);
     }
     .swiper-button-next {
         @apply right-[44px];
+    }
+    .swiper-pagination {
+        @apply flex xl:hidden p-2 w-fit bg-white rounded-full top-auto left-1/2 -translate-x-1/2 bottom-4;
+        .swiper-pagination-bullet-active {
+            @apply bg-gray-800;
+        }
     }
 }
 </style>

@@ -1,6 +1,21 @@
+// 漸層標題
 .gradient-title{
     background-clip: text;
     -webkit-background-clip: text !important;
     -webkit-text-fill-color: transparent;
     background: linear-gradient(296deg, #FFD500 0.13%, #FFF1C4 99.63%);
+}
+
+// 修改fancybox套件的背景樣式
+.fancybox__backdrop {
+    @apply opacity-50 #{!important};
+}
+
+// 不想要scrollbar
+.no-scrollbar {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+    &::-webkit-scrollbar{
+        display: none;
+    }
 }

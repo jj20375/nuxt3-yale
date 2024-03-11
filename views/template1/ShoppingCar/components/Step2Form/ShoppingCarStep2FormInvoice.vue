@@ -1,24 +1,23 @@
 <template>
-    <div class="mt-[88px]">
-        <h5 class="bg-gray-50 py-[8px] pl-[16px] w-full mb-[30px]">發票</h5>
-        <el-form>
-            <div
-                v-for="(column, key) in columns"
-                :key="key"
-            >
-                <div class="grid grid-cols-2 gap-[30px]">
+    <div class="mt-[30px] sm:mt-[60px]">
+        <h5 class="bg-gray-50 py-[8px] pl-[16px] w-full YaleSolisW-Bd font-medium mb-[16px] sm:mb-[30px]">發票</h5>
+        <el-form
+            ref="formRefDom"
+            class="custom-form"
+            :model="formData"
+            :rules="rules"
+            require-asterisk-position="right"
+            :scroll-to-error="true"
+        >
+            <div class="flex flex-col grid-cols-2 gap-6 md:grid">
+                <template
+                    v-for="(column, key) in columns"
+                    :key="key"
+                >
                     <el-form-item
                         :prop="key"
-                        v-if="column.label !== null"
+                        :label="column.label"
                     >
-                        <label class="block w-full text-gray-800 text-[15px]"
-                            >{{ column.label
-                            }}<span
-                                v-if="column.required"
-                                class="ml-1 text-red-500"
-                                >*</span
-                            ></label
-                        >
                         <div
                             v-if="column.type === 'input'"
                             class="w-full"
@@ -26,34 +25,45 @@
                             <el-input
                                 class="w-full"
                                 v-model="formData[key]"
-                            ></el-input>
+                            />
                         </div>
                         <div
                             v-else-if="column.type === 'select'"
                             class="w-full"
                         >
                             <el-select
+                                v-if="column.label"
                                 class="w-full"
+                                placeholder="請選擇"
                                 v-model="formData[key]"
-                                @change="changeType"
                             >
                                 <el-option
                                     v-for="option in options"
                                     :key="option"
                                     :label="option.label"
                                     :value="option.value"
-                                ></el-option>
+                                />
                             </el-select>
                         </div>
                     </el-form-item>
-                </div>
+                </template>
             </div>
         </el-form>
     </div>
 </template>
 
 <script setup lang="ts">
+import { FormInstance } from "element-plus";
+import { validateDonationCode, validateMobileCarrier, validateNaturalPerson } from "~/service/validator";
+
 const emit = defineEmits(["update:form"]);
+const formRefDom = ref<FormInstance>();
+
+interface Column {
+    label: string;
+    required: boolean;
+    type: string;
+}
 
 const props = defineProps({
     form: {
@@ -63,23 +73,94 @@ const props = defineProps({
                 // 發票類型
                 invoiceType: null,
                 // 載具編碼 ｜ 統編 ｜ 捐贈單位編碼 等等
-                invoiceCode: null,
+                carrierCode: null,
             };
         },
     },
 });
 
-const columns = ref({
-    invoiceType: {
-        label: "發票類型",
-        required: true,
-        type: "select",
-    },
-    invoiceCode: {
-        label: null,
-        required: true,
-        type: "input",
-    },
+const formData = ref(props.form);
+
+const columns: ComputedRef<Record<string, Column>> = computed(() => {
+    const result = {
+        invoiceType: {
+            label: "發票類型",
+            required: true,
+            type: "select",
+        },
+    };
+
+    if (formData.value.invoiceType === "mobile_carrier" || formData.value.invoiceType === "natural_person_certificate") {
+        result["carrierCode"] = {
+            label: formData.value.invoiceType === "mobile_carrier" ? "手機載具條碼" : "自然人憑證載具",
+            required: true,
+            type: "input",
+        };
+    } else if (formData.value.invoiceType === "donation") {
+        result["donationCode"] = {
+            label: "愛心碼",
+            required: true,
+            type: "input",
+        };
+    } else if (formData.value.invoiceType === "company") {
+        result["taxNumber"] = {
+            label: "公司統編",
+            required: true,
+            type: "input",
+        };
+    }
+
+    return result;
+});
+
+const rules = computed(() => {
+    return {
+        invoiceType: [
+            {
+                required: true,
+                message: "請選擇",
+                trigger: ["change", "blur"],
+            },
+        ],
+
+        // 手機載具驗證
+        carrierCode: [
+            {
+                required: true,
+                message: "請輸入",
+                trigger: ["blur"],
+            },
+            {
+                required: true,
+                validator: formData.value.invoiceType === "mobile_carrier" ? validateMobileCarrier : validateNaturalPerson,
+                trigger: ["blur"],
+                message: "格式不正確",
+            },
+        ],
+
+        // 愛心捐贈碼驗證
+        donationCode: [
+            {
+                required: true,
+                message: "請輸入",
+                trigger: ["blur"],
+            },
+            {
+                required: true,
+                validator: validateDonationCode,
+                trigger: ["blur"],
+                message: "格式不正確",
+            },
+        ],
+
+        taxNumber: [
+            {
+                required: true,
+                message: "請輸入",
+                trigger: ["change", "blur"],
+            },
+        ],
+    };
 });
 
 /**
@@ -87,68 +168,45 @@ const columns = ref({
  */
 const options = ref([
     {
-        label: "會員載具",
-        value: "type1",
+        label: "雲端發票(中獎寄送紙本)",
+        value: "cloud",
     },
     {
         label: "公司用戶發票",
-        value: "type2",
+        value: "company",
     },
     {
         label: "捐贈發票",
-        value: "type3",
+        value: "donation",
     },
     {
         label: "手機條碼載具",
-        value: "type4",
+        value: "mobile_carrier",
     },
     {
         label: "自然人憑證載具",
-        value: "type5",
+        value: "natural_person_certificate",
     },
 ]);
 
-/**
- * 選擇發票類型
- */
-function changeType(type: string) {
-    switch (type) {
-        case "type1":
-            columns.value.invoiceCode.label = null;
-            return;
-        case "type2":
-            columns.value.invoiceCode.label = "公司統編";
-            return;
-        case "type3":
-            columns.value.invoiceCode.label = "愛心碼";
-            return;
-        case "type4":
-            columns.value.invoiceCode.label = "手機條碼載具";
-            return;
-        case "type5":
-            columns.value.invoiceCode.label = "自然人憑證載具";
-            return;
-    }
-}
-
-const formData = ref(props.form);
+const validForm = async () => {
+    if (!formRefDom.value) return false;
+    const result = await formRefDom.value.validate((valid) => {
+        if (valid) {
+            return true;
+        } else {
+            return false;
+        }
+    });
+    return result;
+};
 
 watch(formData.value, (val) => {
-    console.log("work update form => ", val);
+    console.log("invoiceType =>", val);
     emit("update:form", val);
 });
-</script>
 
-<style lang="scss" scoped>
-:deep .el-input__wrapper {
-    @apply shadow-none border-b border-gray-200 mx-0 rounded-none #{!important};
-}
-:deep .el-select {
-    .el-input__wrapper {
-        @apply mx-0;
-    }
-}
-:deep .el-textarea__inner {
-    @apply rounded-none;
-}
-</style>
+defineExpose({
+    validForm,
+});
+</script>

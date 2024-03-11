@@ -8,15 +8,15 @@
         </template>
 
         <template #content>
-            <section class="container mt-[80px] custom-form">
-                <div class="flex gap-[150px]">
+            <section class="container mt-[36px] sm:mt-[80px] custom-form">
+                <div class="mx-auto w-full flex-col md:flex-row 2xl:w-[88%] flex gap-[56px] xl:gap-[120px]">
                     <ContactWeForm class="flex-[1.5]" />
-                    <div class="text-gray-800 text-center flex-1">
+                    <div class="text-gray-800 text-center flex-1 mb-[44px]">
                         <NuxtImg
-                            class="w-[120px] mx-auto"
+                            class="w-[100px] sm:w-[120px] mx-auto"
                             :src="initializationData?.site.site_logo"
                         />
-                        <p class="text-[20px] mt-[40px] YaleSolisW-Bd font-medium">{{ initializationData?.site.meta_title }}</p>
+                        <p class="text-[20px] mt-[24px] sm:mt-[40px] YaleSolisW-Bd font-medium">{{ initializationData?.site.meta_title }}</p>
                         <p class="text-[16px] mt-[12px]">{{ initializationData?.site.contact_phone }}</p>
                         <P class="text-[16px] mt-[4px]">{{ initializationData?.site.contact_email }}</P>
                         <ul class="flex justify-center mt-[40px]">
@@ -57,15 +57,14 @@ const breadcrumbs = ref([
         text: "首頁",
     },
     {
-        name: "faq-slug",
+        name: "contact-slug",
         text: "服務支援",
-        params: { slug: "耶魯服務支援" },
+        params: { slug: "聯絡我們" },
     },
     {
         name: "contact-slug",
         text: "聯絡我們",
-        params: { slug: "耶魯聯絡我們" },
-        query: { id: "id1" },
+        params: { slug: "聯絡我們" },
     },
 ]);
 

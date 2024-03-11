@@ -1,46 +1,76 @@
 <template>
-    <div class="relative py-[80px] bg-gray-300">
+    <div class="relative py-[40px] sm:py-[80px] bg-gray-300">
         <div class="container">
-            <div>
+            <div class="relative">
                 <Swiper
-                    v-if="photos.length > 0"
-                    :loop="true"
-                    :spaceBetween="10"
-                    :slidesPerView="3.5"
+                    v-if="props.photos.length > 0"
+                    :spaceBetween="24"
+                    slidesPerView="auto"
+                    :slidesPerGroup="1"
                     :modules="modules"
+                    :breakpoints="{
+                        320: {
+                            slidesPerView: 1,
+                            spaceBetween: 20,
+                        },
+                        768: {
+                            slidesPerView: 2,
+                            spaceBetween: 20,
+                        },
+                        1024: {
+                            slidesPerView: 3,
+                            spaceBetween: 40,
+                        },
+                    }"
                     @swiper="onSwiper"
                 >
                     <SwiperSlide
-                        v-for="(item, index) in photos"
+                        v-for="(item, index) in props.photos"
                         :key="index"
                         class="px-[3px]"
                     >
-                        <div class="carousel__item rounded-[20px]">
-                            <NuxtImg
-                                class="h-[350px] rounded-[20px]"
-                                :src="item.imgSrc"
-                                alt=""
-                            />
+                        <div class="cursor-pointer rounded-[20px] flex justify-center">
+                            <Fancybox
+                                :options="{
+                                    compact: false,
+                                    contentClick: 'iterateZoom',
+                                    Toolbar: {
+                                        display: {
+                                            left: ['infobar'],
+                                            middle: [],
+                                            right: ['iterateZoom', 'close'],
+                                        },
+                                    },
+                                }"
+                            >
+                                <NuxtImg
+                                    data-fancybox="gallery"
+                                    class="h-[250px] sm:h-[350px] rounded-[20px]"
+                                    :src="item.imgSrc"
+                                    alt=""
+                                />
+                            </Fancybox>
                         </div>
                     </SwiperSlide>
                 </Swiper>
-            </div>
-
-            <div class="absolute top-0 z-50 flex items-center h-full left-10">
-                <button
-                    class="text-5xl"
-                    @click.stop="mainSwiper.slidePrev()"
-                >
-                    <el-icon><ArrowLeft /></el-icon>
-                </button>
-            </div>
-            <div class="absolute top-0 z-50 flex items-center h-full right-10">
-                <button
-                    class="text-5xl"
-                    @click.stop="mainSwiper.slideNext()"
-                >
-                    <el-icon><ArrowRight /></el-icon>
-                </button>
+                <div class="absolute top-0 z-50 flex items-center h-full left-[25px] sm:-left-[20px] -translate-x-full">
+                    <button
+                        class="text-[32px]"
+                        :class="{ disabled: isSliderInnerBeginning }"
+                        @click.stop="mainSwiper.slidePrev()"
+                    >
+                        <el-icon><ArrowLeft /></el-icon>
+                    </button>
+                </div>
+                <div class="absolute top-0 z-50 flex items-center h-full right-[25px] sm:-right-[20px] translate-x-full">
+                    <button
+                        class="text-[32px]"
+                        :class="{ disabled: isSliderInnerEnd }"
+                        @click.stop="mainSwiper.slideNext()"
+                    >
+                        <el-icon><ArrowRight /></el-icon>
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -55,11 +85,7 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-    photos: [
-        {
-            imgSrc: "",
-        },
-    ],
+    photos: () => [],
 });
 
 // swiper slider 模組
@@ -67,8 +93,26 @@ const modules = [FreeMode, Navigation];
 
 // 主圖 carousel
 const mainSwiper = ref<any>(null);
+const prevInnerRef = ref<any>(null);
+const nextInnerRef = ref<any>(null);
 
 function onSwiper(swiper: any) {
     mainSwiper.value = swiper;
 }
+
+// 第一個prev不顯示
+const isSliderInnerBeginning = computed(() => {
+    return mainSwiper.value ? mainSwiper.value.isBeginning : false;
+});
+
+// 最後一個next不顯示
+const isSliderInnerEnd = computed(() => {
+    return mainSwiper.value ? mainSwiper.value.isEnd : false;
+});
 </script>
+
+<style scoped lang="scss">
+.swiper-slide {
+    width: auto;
+}
+</style>

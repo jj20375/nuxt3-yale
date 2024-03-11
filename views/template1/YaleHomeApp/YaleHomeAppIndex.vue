@@ -8,15 +8,17 @@
         </template>
 
         <template #content>
-            <div class="container mt-[60px]">
-                <YaleHomeAppTop :datas="topDatas" />
-            </div>
+            <YaleHomeAppTop :datas="topDatas" />
             <YaleHomeAppCarousel :photos="carouselDatas" />
-            <YaleHomeAppProduct />
-            <YaleHomeAppProductFeature />
-            <YaleHomeAppVideo />
-            <YaleHomeAppSpec />
-            <YaleHomeAppInfo />
+            <YaleHomeAppProduct :products="products" />
+            <YaleHomeAppProductFeature :features="features" />
+            <YaleHomeAppVideo :tutorial_video="tutorial_video" />
+            <YaleHomeAppSpec
+                :specifications="specifications"
+                :files="files"
+                :appData="appData"
+            />
+            <YaleHomeAppInfo :installation_notes="installation_notes" />
         </template>
     </BannerLayout>
 </template>
@@ -39,6 +41,12 @@ import YaleHomeAppSpec from "~/views/template1/YaleHomeApp/components/YaleHomeAp
 // 注意事項
 import YaleHomeAppInfo from "~/views/template1/YaleHomeApp/components/YaleHomeAppInfo.vue";
 
+import { useInitializationStore } from "~/store/initializationStore";
+
+const initializationStore = useInitializationStore();
+
+const { $api } = useNuxtApp();
+
 const route = useRoute();
 
 const breadcrumbs = ref([
@@ -49,34 +57,133 @@ const breadcrumbs = ref([
     {
         name: "yale-home-app-slug",
         text: "Yale Home App",
-        params: { slug: "Yale Home APP" },
+        params: { slug: "Yale Home App" },
     },
 ]);
 
 // 上方區塊資料
-const topDatas = ref([]);
-
-for (let i = 1; i <= 2; i++) {
-    topDatas.value.push({
-        imgSrc: `/img/yale-home-app/demo/yale-home-app-top-${i}.jpg`,
-        title: "測試標題-" + i,
-        content: "Yale Home是Yale耶魯提供住宅市場的全球智慧門鎖解決方案，Yale智慧鎖可以透過Yale Home應用程式進行管理，讓您完全控制您的門鎖，亦可藉由您的手機裝置上鎖或解鎖您的大門、允許他人進入，並記錄訪客使用情況。",
-    });
-}
+const topDatas = ref<any>([]);
 
 // 幻燈片區塊資料
-const carouselDatas = ref([
-    {
-        imgSrc: "/img/yale-home-app/demo/yale-home-app-carousel-1.jpg",
-    },
-    {
-        imgSrc: "/img/yale-home-app/demo/yale-home-app-carousel-2.jpg",
-    },
-    {
-        imgSrc: "/img/yale-home-app/demo/yale-home-app-carousel-3.jpg",
-    },
-    {
-        imgSrc: "/img/yale-home-app/demo/yale-home-app-carousel-1.jpg",
-    },
-]);
+const carouselDatas = ref<any>([]);
+
+// 商品區塊
+const products = ref<any>({
+    content: "",
+    image: "",
+    title: "",
+});
+
+// 商品資訊區塊
+const features = ref<any>({
+    title: "",
+    subtitle: "",
+    items: [],
+});
+
+// 影片教學區塊
+const tutorial_video = ref<any>({
+    title: "",
+    video: [],
+});
+
+// APP資料
+const appData = ref<any>({
+    android_link: "",
+    ios_link: "",
+});
+
+// 型號.檔案下載
+const specifications = ref<any>([]);
+
+const files = ref<any>([]);
+
+// 安裝注意事項
+const installation_notes = ref<any>({
+    content: "",
+    title: "",
+});
+
+/**
+ * 取得頁面資料
+ */
+const schema = ref<any>({
+    carousel: [],
+    custom_door: [],
+    video: "/video/homeVideo.mp4",
+    four_promises: [],
+    yale_home_app: {},
+});
+
+async function getPageData() {
+    try {
+        const params = { code: "yale_home_app" };
+        const { data } = await $api().getPageAPI(params);
+        console.log("getPageData api => ", data.value);
+
+        const pageData = (data.value as any).data.schema;
+        topDatas.value = [];
+        carouselDatas.value = [];
+
+        pageData.introduction.forEach((item: { banner: any; title: any; content: any }) => {
+            topDatas.value.push({
+                imgSrc: item.banner,
+                title: item.title,
+                content: item.content,
+            });
+        });
+        pageData.carousel.forEach((item: any) => {
+            carouselDatas.value.push({
+                imgSrc: item,
+            });
+        });
+        products.value = pageData.features;
+
+        features.value = pageData.info_cards;
+
+        specifications.value = pageData.specifications;
+
+        installation_notes.value = pageData.installation_notes;
+
+        tutorial_video.value = pageData.tutorial_video;
+
+        files.value = pageData.downloads;
+
+        const seoSetting = (data.value as any).data.seoSetting;
+        console.log("seoSetting =>", seoSetting);
+        useSeoMeta({
+            title: seoSetting.title ? seoSetting.title : initializationStore.initializationData.site.meta_title,
+            description: seoSetting.description ? seoSetting.description : initializationStore.initializationData.site.meta_description,
+            ogTitle: seoSetting.title,
+            ogDescription: seoSetting.description,
+            ogUrl: () => `${window.location.origin}/${seoSetting.custom_url}`,
+            keywords: seoSetting.keywords.join(),
+        });
+    } catch (err) {
+        console.log("HomeSampleAPI => ", err);
+    }
+}
+
+async function getAppData() {
+    try {
+        const params = { code: "home" };
+        const { data } = await $api().getPageAPI(params);
+        console.log("getPageData api => ", data.value);
+
+        const pageData = (data.value as any).data.schema;
+
+        appData.value = pageData.yale_home_app;
+    } catch (err) {
+        console.log("HomeSampleAPI => ", err);
+    }
+}
+
+await getPageData();
+onMounted(async () => {
+    nextTick(async () => {
+        if (process.client) {
+            await getAppData();
+        }
+    });
+});
 </script>

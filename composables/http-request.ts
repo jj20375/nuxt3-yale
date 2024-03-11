@@ -1,7 +1,9 @@
-import { useUserStore } from "@/store/userStore";
+import { useUserStore } from "~/store/userStore";
 import Cookies from "js-cookie";
+import { useShoppingCarStore } from "~/store/shoppingCarStore";
 export function useMyFetch<T>(url: string, opts: any) {
     const userStore = useUserStore();
+    const shoppingCarStore = useShoppingCarStore();
     const router = useRouter();
     console.log(url, opts, "url");
     return useFetch<T>(url, {
@@ -52,6 +54,7 @@ export function useMyFetch<T>(url: string, opts: any) {
                 userStore.setIsAuth(false);
                 userStore.setUser({});
                 userStore.setCheckStatus401(true);
+                userStore.removeLoginData();
                 // 移除 token
                 Cookies.remove("token");
                 // 移除 refresh token time

@@ -15,7 +15,7 @@
         <template #content>
             <FaqTItle :title="title" />
             <FaqList :datas="datas" />
-            <FaqContact class="mt-[90px]" />
+            <FaqContact class="xl:mt-[90px] mt-[60px]" />
         </template>
     </SideBarLayout>
 </template>
@@ -36,23 +36,6 @@ const breadcrumbs = ref([
     {
         name: "index",
         text: "首頁",
-    },
-    {
-        name: "faq-slug",
-        text: "服務支援",
-        params: { slug: "耶魯服務支援" },
-    },
-    {
-        name: "faq-slug",
-        text: "服務中心",
-        params: { slug: "耶魯服務中心" },
-        query: { id: "id1" },
-    },
-    {
-        name: "faq-slug",
-        text: "電子鎖",
-        params: { slug: "耶魯服務中心-電子鎖" },
-        query: { id: "id1" },
     },
 ]);
 
@@ -79,6 +62,27 @@ async function getType() {
                     name: "faq-slug",
                 },
             });
+        });
+        // 取得最後面的 麵包屑路徑
+        const lastBreadcrumbs = rows.find((item: any) => item.id == route.query.id);
+        breadcrumbs.value.push({
+            name: "faq-slug",
+            text: "服務支援",
+            params: { slug: lastBreadcrumbs.name },
+            query: { id: lastBreadcrumbs.id },
+        });
+        breadcrumbs.value.push({
+            name: "faq-slug",
+            text: "服務中心",
+            params: { slug: lastBreadcrumbs.name },
+            query: { id: lastBreadcrumbs.id },
+        });
+
+        breadcrumbs.value.push({
+            name: "faq-slug",
+            text: lastBreadcrumbs.name,
+            params: { slug: lastBreadcrumbs.name },
+            query: { id: lastBreadcrumbs.id },
         });
     } catch (err) {
         console.log("HomeSampleAPI => ", err);
@@ -112,7 +116,7 @@ async function getList(params: { fqa_category_id: any }) {
                 url: {
                     name: "faq-details-slug",
                     params: { slug: item.fqa_category.name },
-                    query: { id: item.id },
+                    query: { id: route.query.id, detail_id: item.id },
                 },
             });
         });
@@ -130,10 +134,10 @@ async function init() {
     await getList({ fqa_category_id: route.query.id });
 }
 
+await init();
 onMounted(async () => {
     nextTick(async () => {
         if (process.client) {
-            await init();
         }
     });
 });

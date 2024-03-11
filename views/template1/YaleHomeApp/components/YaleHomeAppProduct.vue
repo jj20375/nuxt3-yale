@@ -1,16 +1,31 @@
 <template>
-    <section>
-        <div class="container flex items-center">
-            <div class="mr-[80px] flex-1">
+    <section class="container">
+        <div class="max-w-[950px] mx-auto my-[30px] sm:my-[60px]">
+            <div class="flex flex-col-reverse sm:flex-row items-center sm:gap-[80px]">
                 <NuxtImg
-                    class="w-full"
-                    src="/img/yale-home-app/yale-home-app-product.png"
+                    v-if="props.products.image"
+                    class="w-[291px] sm:w-[390px] object-contain"
+                    :src="props.products.image"
                 />
-            </div>
-            <div class="flex-1 text-gray-800">
-                <h2 class="text-[32px] font-medium YaleSolisW-Bd mb-[20px]">Yale Home 遠端智慧連線</h2>
-                <p class="text-[16px]">全新Yale Home 讓您隨時掌握門鎖資訊使用者能透過 Yale Home APP ，將門上鎖及解鎖、查看進出紀錄、即時授權開門權限、近門自動解鎖、智慧門鎖警示等等。</p>
+                <div class="flex-1 text-gray-800">
+                    <h2 class="sm:text-[32px] text-[24px] font-medium YaleSolisW-Bd mb-[12px] sm:mb-[20px]">{{ props.products.title }}</h2>
+                    <p
+                        class="text-[16px]"
+                        v-html="props.products.content"
+                    ></p>
+                </div>
             </div>
         </div>
     </section>
 </template>
+<script setup lang="ts">
+interface Props {
+    products: { content: string; image: string; title: string };
+}
+
+const props = withDefaults(defineProps<Props>(), {
+    products: () => {
+        return { content: "", image: "", title: "" };
+    },
+});
+</script>

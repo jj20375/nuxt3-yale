@@ -2,27 +2,20 @@
     <el-dialog
         id="addToCarDialog"
         v-model="showDialog2"
-        width="auto"
-        :show-close="false"
-        :align-center="true"
         :before-close="closeDialog"
-        style="border-radius: 24px"
-        appen-to-body
+        class="custom-dialog h-[400px]"
+        width="400"
+        close-on-click-modal
+        lock-scroll
+        show-close
+        center
+        align-center
+        append-to-body
     >
-        <div class="text-right">
-            <button @click="closeDialog">
-                <el-icon :size="30"><Close /></el-icon>
-            </button>
-        </div>
-        <div class="flex justify-center px-10">
-            <div>
-                <h3 class="text-center mb-[30px] text-[24px] YaleSolisW-Bd text-gray-800 font-medium">定型化契約</h3>
-                <div
-                    class="max-w-[500px]"
-                    v-html="customRuleData"
-                ></div>
-            </div>
-        </div>
+        <h2 class="text-gray-800 text-center font-bold text-[24px] mb-4">定型化契約</h2>
+        <div
+            v-html="customRuleData"
+        ></div>
     </el-dialog>
 </template>
 

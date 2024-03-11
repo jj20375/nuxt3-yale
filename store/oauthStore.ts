@@ -301,6 +301,8 @@ export const useOauthStore = defineStore({
                 // 設定使用者資料
                 userStore.setUser(data.value.user);
                 // 設定已登入
+                console.log('setAUTH2')
+
                 userStore.setIsAuth(true);
                 // 判斷是否為服務商 role = 0 為消費者
                 if (data.value.user.role !== 0) {

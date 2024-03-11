@@ -1,6 +1,10 @@
 <template>
     <div>
-        <div class="min-h-screen">
+        <div
+            class="flex flex-col min-h-screen"
+            ref="layoutRef"
+            :class="customClass"
+        >
             <Header />
             <!-- test layout2
         <el-button
@@ -10,7 +14,7 @@
         >
         <el-button type="primary">Primary</el-button> -->
             <slot />
-            <Footer />
+            <Footer v-if="showFooter" />
         </div>
     </div>
 </template>
@@ -27,11 +31,7 @@ import Header from "~/layouts/tmp1Components/Header.vue";
 // footer 區塊
 import Footer from "~/layouts/tmp1Components/Footer.vue";
 import Cookies from "js-cookie";
-
-definePageMeta({
-    middleware: ["user-middleware"],
-});
-
+import { useTemplateStore } from "~/store/templateStore";
 const { $api, $firebaseAuth, $firebaseMessaging, $utils } = useNuxtApp();
 const route = useRoute();
 const { redirectRightHome, getLineUserProfile, getLineToken, checkUrlQuery } = useLineLogin();
@@ -41,46 +41,69 @@ const initializationStore = useInitializationStore();
 const { isMobile } = useDevice();
 const $config = useRuntimeConfig();
 
+const templateStore = useTemplateStore();
+
 import { onBeforeRouteUpdate, onBeforeRouteLeave } from "vue-router";
+
+const props = defineProps({
+    customClass: {
+        type: String,
+        default: "",
+    },
+    showFooter: {
+        type: Boolean,
+        default: true,
+    },
+});
 
 // 判斷是否登入
 const isAuth = computed(() => userStore.isAuth);
 
 const pageLoading = ref(useState("loading"));
 
-// 預先加載初始化資料
-const { data, pending, error, refresh } = await useAsyncData("bootstrap", () => getInitializationData());
+const layoutRef = ref(null);
 
-useHead({
-    title: "耶魯電子鎖",
-    meta: [
-        {
-            hid: "description",
-            name: "description",
-            content: "耶魯電子鎖描述",
-        },
-        { name: "keywords", content: "citybanana" },
-        { hid: "og:url", property: "og:url", content: `${$config.public.hostURL}` },
-        { hid: "og:type", property: "og:type", content: "website" },
-        {
-            hid: "og:title",
-            property: "og:title",
-            content: "耶魯電子鎖",
-        },
-        {
-            hid: "og:description",
-            property: "og:description",
-            content: "耶魯電子鎖描述",
-        },
-        {
-            hid: "og:image",
-            property: "og:image",
-            content: "/img/ogCover/home.jpg",
-        },
-        { property: "al:ios:app_store_id", content: "284882215" },
-        { property: "al:ios:app_name", content: "Facebook" },
-    ],
+// 計算螢幕高度
+const calculateFullHeight = () => {
+    let windowsVH = window.innerHeight / 100;
+    if (layoutRef.value) {
+        layoutRef.value.style.setProperty("--vh", windowsVH + "px");
+    }
+};
+
+//
+onMounted(() => {
+    calculateFullHeight();
+    window.addEventListener("resize", calculateFullHeight);
 });
+
+onBeforeUnmount(() => {
+    window.removeEventListener("resize", calculateFullHeight);
+});
+
+function scrollInit() {
+    // 判斷滾動高度 大於50px時 固定選單在上方
+    if (window.scrollY > 50) {
+        templateStore.setMenuFixed(true);
+    } else {
+        templateStore.setMenuFixed(false);
+    }
+}
+
+onMounted(async () => {
+    nextTick(async () => {
+        if (process.client) {
+            window.addEventListener("scroll", scrollInit);
+        }
+    });
+});
+
+onBeforeUnmount(() => {
+    window.removeEventListener("scroll", scrollInit);
+});
+
+// 預先加載初始化資料
+await getInitializationData();
 
 async function getInitializationData() {
     try {
@@ -89,6 +112,42 @@ async function getInitializationData() {
         const initialData = (data.value as any).data;
 
         initializationStore.initializationData = initialData;
+
+        useHead({
+            title: initializationStore.initializationData.site.meta_title,
+            meta: [
+                {
+                    hid: "description",
+                    name: "description",
+                    content: initializationStore.initializationData.site.meta_description,
+                },
+                { name: "keywords", content: "citybanana" },
+                { hid: "og:url", property: "og:url", content: `${$config.public.hostURL}` },
+                { hid: "og:type", property: "og:type", content: "website" },
+                {
+                    hid: "og:title",
+                    property: "og:title",
+                    content: initializationStore.initializationData.site.meta_title,
+                },
+                {
+                    hid: "og:description",
+                    property: "og:description",
+                    content: initializationStore.initializationData.site.meta_description,
+                },
+                {
+                    hid: "og:image",
+                    property: "og:image",
+                    content: "/img/ogCover/home.jpg",
+                },
+            ],
+        });
+        useSeoMeta({
+            title: initializationStore.initializationData.site.meta_title,
+            description: initializationStore.initializationData.site.meta_description,
+            ogTitle: initializationStore.initializationData.site.meta_title,
+            ogDescription: initializationStore.initializationData.site.meta_description,
+            keywords: initializationStore.initializationData.site.meta_keywords.join(),
+        });
     } catch (err) {
         console.log(err);
     }
@@ -107,4 +166,11 @@ onMounted(async () => {
 });
 
 onBeforeUnmount(() => {});
+
+onBeforeRouteLeave(() => {
+    // 移除手機版選單關閉時 overflow 未消失問題 導致 畫面不能滾動
+    if (process.client) {
+        document.body.style.overflow = "";
+    }
+});
 </script>

@@ -1,6 +1,6 @@
 <template>
     <SideBarLayout
-        :title="'服務中心'"
+        :title="'檔案下載'"
         :banner="'/img/file-download/file-download-banner.jpg'"
     >
         <template #breadcrumbs>
@@ -27,31 +27,14 @@ import SideBar from "~/views/template1/components/SideBar";
 import FileDownloadContact from "~/views/template1/ContactService/components/ContactData.vue";
 import FileDownloadTItle from "~/views/template1/ContactService/components/ContactTitle";
 import FileDownloadList from "~/views/template1/ContactService/FileDownload/components/FileDownloadList.vue";
-const route = useRoute();
 
+const route = useRoute();
 const { $api } = useNuxtApp();
 
 const breadcrumbs = ref([
     {
         name: "index",
         text: "首頁",
-    },
-    {
-        name: "file-download-slug",
-        text: "服務支援",
-        params: { slug: "耶魯服務支援" },
-    },
-    {
-        name: "file-download-slug",
-        text: "檔案下載",
-        params: { slug: "耶魯檔案下載" },
-        query: { id: "id1" },
-    },
-    {
-        name: "file-download-slug",
-        text: "Yale 電子鎖使用說明書",
-        params: { slug: "耶魯檔案下載-Yale 電子鎖使用說明書" },
-        query: { id: "id1" },
     },
 ]);
 
@@ -78,6 +61,28 @@ async function getType() {
                     name: "file-download-slug",
                 },
             });
+        });
+
+        // 取得最後面的 麵包屑路徑
+        const lastBreadcrumbs = rows.find((item: any) => item.id == route.query.id);
+
+        breadcrumbs.value.push({
+            name: "file-download-slug",
+            text: "服務支援",
+            params: { slug: lastBreadcrumbs.name },
+            query: { id: lastBreadcrumbs.id },
+        });
+        breadcrumbs.value.push({
+            name: "file-download-slug",
+            text: "檔案下載",
+            params: { slug: lastBreadcrumbs.name },
+            query: { id: lastBreadcrumbs.id },
+        });
+        breadcrumbs.value.push({
+            name: "file-download-slug",
+            text: lastBreadcrumbs.name,
+            params: { slug: lastBreadcrumbs.name },
+            query: { id: lastBreadcrumbs.id },
         });
     } catch (err) {
         console.log("HomeSampleAPI => ", err);
@@ -125,10 +130,10 @@ async function init() {
     await getList({ document_category_id: route.query.id });
 }
 
+await init();
 onMounted(async () => {
     nextTick(async () => {
         if (process.client) {
-            await init();
         }
     });
 });

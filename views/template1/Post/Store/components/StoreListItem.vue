@@ -2,21 +2,22 @@
     <article
         v-for="(item, index) in datas"
         :key="index"
-        class="flex items-center gap-[48px]"
-        :class="datas.length - 1 === index ? '' : 'mb-[48px]'"
+        class="flex flex-col md:flex-row items-center gap-5 md:gap-[48px] list-card"
+        :class="datas.length - 1 === index ? '' : 'md:mb-[48px] mb-[32px]'"
+        ref="domRef"
     >
         <NuxtImg
             :src="item.imgSrc"
-            class="object-cover w-full aspect-[16/9] rounded-2xl overflow-hidden w-full max-w-[360px]"
+            class="object-cover w-full aspect-[16/9] rounded-2xl overflow-hidden w-full md:max-w-[360px]"
         />
-        <div class="w-[440px]">
-            <h2 class="text-[24px] font-medium YaleSolisW-Bd">
+        <div class="flex-1 w-full cursor-pointer">
+            <h2 class="md:text-[24px] text-[18px] font-medium YaleSolisW-Bd">
                 {{ item.title }}
             </h2>
             <ul>
                 <li
                     class="flex text-[15px] text-gray-500 YaleSolisW-Rg"
-                    :class="key !== 'phone' ? 'pt-[8px]' : 'mt-[20px]'"
+                    :class="key !== 'phone' ? 'pt-[8px]' : 'md:mt-[20px] mt-[8px]'"
                     v-for="(contact, key) in item.contact"
                     :key="key"
                 >
@@ -67,5 +68,11 @@ const props = withDefaults(defineProps<Props>(), {
     ],
 });
 
+const domRef = ref<any>();
+
 const router = useRouter();
+
+defineExpose({
+    domRef,
+});
 </script>

@@ -1,7 +1,7 @@
 // 修改element的表單樣式
 .custom-form {
   .el-form-item {
-    @apply relative flex flex-col justify-stretch flex-wrap mb-0 bg-white text-base;
+    @apply relative flex flex-col justify-stretch flex-wrap mb-0 bg-transparent text-base;
     .el-form-item__label{
       @apply justify-start text-[15px] text-gray-800;
     }
@@ -48,7 +48,7 @@
       // 單選(checkbox)
       .el-checkbox{
         .el-checkbox__label{
-          @apply text-gray-800 font-normal text-[15px] #{!important};
+          @apply text-gray-800 font-normal whitespace-normal text-[15px] #{!important};
         }
         .el-checkbox__input{
           .el-checkbox__inner {
@@ -66,10 +66,11 @@
       // 單選(radio)
       .el-radio{
         .el-radio__label{
-          @apply font-normal;
+          @apply font-normal text-[15px];
         }
         .el-radio__input{
           .el-radio__inner{
+            @apply w-[18px] h-[18px];
             &:hover{
               @apply border-yellow-600;
             }

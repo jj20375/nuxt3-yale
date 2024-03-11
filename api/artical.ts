@@ -10,6 +10,12 @@ export default () => {
             return useMyFetch(`${apiUrl}/article-category`, { method: "get", query: { ...params } });
         },
         /**
+         * 取得文章分類詳情
+         */
+        ArticalTypeDetailAPI(params: { articleId: number | string }) {
+            return useMyFetch(`${apiUrl}/article-category/${params.articleId}`, { method: "get" });
+        },
+        /**
          * 取得裝修實績列表
          */
         ArticalListAPI(params: { per_page: number; page: number; article_category_id: number | string; search_relations?: string }) {

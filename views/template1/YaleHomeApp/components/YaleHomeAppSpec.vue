@@ -1,64 +1,84 @@
 <template>
-    <section class="container text-gray-800">
-        <div class="flex">
+    <section class="max-w-[950px] mx-auto text-gray-800 px-[24px]">
+        <div class="flex flex-col sm:flex-row mt-[20px] sm:mt-[40px] gap-4">
             <div class="flex-1">
-                <h2 class="text-[24px] font-medium YaleSolisW-Bd mb-[20px] mt-[60px]">規格</h2>
+                <h2 class="sm:text-[24px] text-[18px] font-medium YaleSolisW-Bd mb-[12px] sm:mb-[20px]">規格</h2>
                 <div
                     class="flex mb-1 text-gray-800"
-                    v-for="(item, index) in specs"
+                    v-for="(item, index) in specifications"
                 >
-                    <p class="text-[16px]">{{ item.column }}</p>
-                    <p class="text-[16px]">{{ item.value }}</p>
+                    <p class="text-[16px] w-[130px]">{{ item.label }}</p>
+                    <p class="text-[16px] flex-1">{{ item.value }}</p>
                 </div>
             </div>
-            <div class="flex-1">
-                <h2 class="text-[24px] font-medium YaleSolisW-Bd mb-[20px] mt-[60px]">檔按下載</h2>
-                <button class="text-blue-500 text-[15px]">Yale Home 產品DM</button>
+            <div class="flex-1 mt-[36px] sm:mt-0">
+                <h2 class="sm:text-[24px] text-[18px] font-medium YaleSolisW-Bd mb-[12px] sm:mb-[20px]">檔案下載</h2>
+                <div
+                    v-for="(item, index) in props.files"
+                    :key="index"
+                >
+                    <button
+                        @click="download(item)"
+                        class="text-blue-500 underline cursor-pointer underline-offset-2 hover:no-underline"
+                    >
+                        Yale Home 產品DM
+                    </button>
+                </div>
             </div>
         </div>
-        <div>
-            <h2 class="text-[24px] font-medium YaleSolisW-Bd mb-[20px] mt-[60px]">APP下載</h2>
-            <div class="flex">
-                <a
-                    href=""
-                    class="mr-[20px]"
-                >
-                    <NuxtImg src="/img/yale-home-app/yale-home-app-ios-download.png" />
-                </a>
-                <a href="">
-                    <NuxtImg src="/img/yale-home-app/yale-home-app-android-download.png" />
-                </a>
+        <div class="mt-[36px]">
+            <h2 class="sm:text-[24px] text-[18px] font-medium YaleSolisW-Bd mb-[12px] sm:mb-[20px]">APP下載</h2>
+            <div class="flex gap-[20px]">
+                <NuxtImg
+                    @click="download(props.appData.ios_link)"
+                    class="flex-1 sm:max-w-[160px] cursor-pointer"
+                    src="/img/yale-home-app/yale-home-app-ios-download.png"
+                />
+                <NuxtImg
+                    @click="download(props.appData.android_link)"
+                    class="flex-1 sm:max-w-[160px] cursor-pointer"
+                    src="/img/yale-home-app/yale-home-app-android-download.png"
+                />
             </div>
-            <div class="border-b pt-[40px] border-gray-300 w-full h-[1px]"></div>
+            <div class="border-b pt-[20px] sm:pt-[40px] border-gray-300 w-full h-[1px]" />
         </div>
     </section>
 </template>
 
 <script setup lang="ts">
-const specs = ref([
-    {
-        column: "型號",
-        value: " Yale Home 遠端智慧連線",
+interface Props {
+    specifications: {
+        label: string;
+        value: string;
+    }[];
+    files: string[];
+    appData: {
+        android_link: string;
+        ios_link: string;
+    };
+}
+
+const props = withDefaults(defineProps<Props>(), {
+    specifications: () => {
+        return [
+            {
+                label: "",
+                value: "",
+            },
+        ];
     },
-    {
-        column: "尺寸 (Bridge)",
-        value: "70(W) x 70(H) x 39(D) mm",
+    files: () => {
+        return [];
     },
-    {
-        column: "顏色",
-        value: "白色",
+    appData: () => {
+        return {
+            android_link: "",
+            ios_link: "",
+        };
     },
-    {
-        column: "配對門鎖",
-        value: "1台",
-    },
-    {
-        column: "配對手機",
-        value: "100台",
-    },
-    {
-        column: "電壓",
-        value: "90 ~ 125V",
-    },
-]);
+});
+
+function download(file: string) {
+    window.open(file);
+}
 </script>

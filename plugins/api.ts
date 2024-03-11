@@ -6,6 +6,9 @@ import store from "~/api/store";
 import contactService from "~/api/contactService";
 import member from "~/api/member";
 import product from "~/api/product";
+import customProduct from "~/api/customProduct";
+import ragic from "~/api/ragic";
+import cart from "~/api/cart";
 
 export default defineNuxtPlugin((nuxtApp) => {
     return {
@@ -18,7 +21,10 @@ export default defineNuxtPlugin((nuxtApp) => {
                 ...store(),
                 ...contactService(),
                 ...member(),
-                ...product()
+                ...product(),
+                ...customProduct(),
+                ...ragic(),
+                ...cart()
             }),
         },
     };

@@ -1,19 +1,19 @@
 <template>
     <SideBarLayout
         :title="'展售門市'"
-        :banner="'/img/store/store-banner.jpg'"
+        :banner="banner"
     >
         <template #breadcrumbs>
             <Breadcrumb :menus="breadcrumbs" />
         </template>
         <template #sidebar>
-            <SideBar
-                class="col-span-2"
-                :menus="sidebar"
-            />
+            <SideBar :menus="sidebar" />
         </template>
         <template #list>
-            <ListItem :datas="datas" />
+            <ListItem
+                ref="listRef"
+                :datas="datas"
+            />
         </template>
         <template #pagination>
             <Pagination
@@ -37,6 +37,22 @@ const route = useRoute();
 
 const { $api } = useNuxtApp();
 
+const banner = computed(() => {
+    // 判斷直營門市顯示 banner
+    if (route.query.id == 1) {
+        return "/img/store/store-banner-1.jpg";
+    }
+    // 判斷授權展售門市顯示 banner
+    if (route.query.id == 3) {
+        return "/img/store/store-banner-2.jpg";
+    }
+    // 判斷全國電子顯示 banner
+    if (route.query.id == 4) {
+        return "/img/store/store-banner-3.jpg";
+    }
+    return "/img/store/store-banner-1.jpg";
+});
+
 const breadcrumbs = ref<any>([
     {
         name: "index",
@@ -58,7 +74,8 @@ async function getType() {
         const rows = (data.value as any).data;
 
         rows.forEach((item: { name: any; id: any }) => {
-            if (item.name === "電商平台") {
+            // id 2 等於電商通路樣板
+            if (item.id == 2) {
                 sidebar.value.push({
                     text: item.name,
                     id: item.id,
@@ -93,7 +110,8 @@ async function getType() {
             });
 
             breadcrumbs.value.push({
-                name: lastBreadcrumbs.name === "電商平台" ? "store-e-commerce-slug" : "store-slug",
+                // id 2 等於電商通路樣板
+                name: lastBreadcrumbs.id == 2 ? "store-e-commerce-slug" : "store-slug",
                 text: lastBreadcrumbs.name,
                 params: { slug: lastBreadcrumbs.name },
                 query: { id: lastBreadcrumbs.id },
@@ -150,10 +168,17 @@ async function getList(params: { per_page: number; page: number; stronghold_cate
                 imgSrc: item.image,
             });
         });
+
+        nextTick(async () => {
+            listRef.value.domRef[anchorIndex.value].scrollIntoView({ block: "center", behavior: "smooth" });
+        });
     } catch (err) {
         console.log("HomeSampleAPI => ", err);
     }
 }
+
+const listRef = ref<any>();
+const anchorIndex = ref<any>();
 
 /**
  * 初始化
@@ -161,9 +186,19 @@ async function getList(params: { per_page: number; page: number; stronghold_cate
 async function init() {
     await getType();
     console.log("route.query.id", route);
-    await getList({ per_page: pagination.value.pageSize, page: 1, stronghold_category_id: route.query.id });
+    let page = 1;
+    if (process.client) {
+        console.log("history.state", history.state);
+        if (history.state.index) {
+            page = Math.floor(history.state.index / pagination.value.pageSize) + 1;
+            anchorIndex.value = history.state.index % pagination.value.pageSize;
+            pagination.value.page = page;
+        }
+    }
+    await getList({ per_page: pagination.value.pageSize, page: page, stronghold_category_id: route.query.id });
 }
 
+// await init();
 onMounted(async () => {
     nextTick(async () => {
         if (process.client) {

@@ -28,7 +28,7 @@ export default defineNuxtConfig({
         // pageTransition: { name: "page", mode: "out-in" },
     },
 
-    modules: ["@pinia/nuxt", "@pinia-plugin-persistedstate/nuxt", "@vueuse/nuxt", "@nuxt/image-edge", "nuxt-viewport", "@nuxtjs/device", "nuxt-lodash", "vue3-carousel-nuxt", "@nuxtjs/tailwindcss", "nuxt-svgo"],
+    modules: ["@pinia/nuxt", "@pinia-plugin-persistedstate/nuxt", "@vueuse/nuxt", "@nuxt/image-edge", "nuxt-viewport", "@nuxtjs/device", "nuxt-lodash", "vue3-carousel-nuxt", "@nuxtjs/tailwindcss", "nuxt-svgo", "@vueuse/nuxt"],
     css: ["@/assets/scss/main.scss", "@fortawesome/fontawesome-svg-core/styles.css", "@/assets/scss/element-plus.scss"],
 
     // vu3-carousel 套件 component
@@ -52,15 +52,13 @@ export default defineNuxtConfig({
     //     viewer: true,
     // },
     vite: {
-        // css: {
-        //     preprocessorOptions: {
-        //         scss: {
-        //             additionalData: `
-        //           @import "assets/scss/element-plus.scss";
-        //           `,
-        //         },
-        //     },
-        // },
+        css: {
+            preprocessorOptions: {
+                scss: {
+                    additionalData: '@use "assets/scss/_variable.scss" as *;',
+                },
+            },
+        },
     },
 
     // lodash 套件
@@ -76,6 +74,7 @@ export default defineNuxtConfig({
             // google recaptcha key
             googleRecaptcha2Key: process.env.GOOGLE_RECAPTCHA2_KEY,
             DEBUG: process.env.DEBUG,
+            // 前台網址
             hostURL: process.env.HOST_URL,
             // goolge app id
             googleAppId: process.env.GOOGLE_APP_ID,
@@ -129,4 +128,6 @@ export default defineNuxtConfig({
             // });
         },
     },
+
+    serverMiddleware: ["~/api/payment.get.ts"],
 });

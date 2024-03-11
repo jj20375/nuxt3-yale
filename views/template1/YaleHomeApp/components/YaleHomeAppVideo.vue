@@ -1,20 +1,19 @@
 <template>
-    <section class="mt-[80px] container">
-        <h2 class="text-[32px] text-gray-800 font-medium YaleSolisW-Bd mb-[20px]">Yale Home 設定教學影片</h2>
+    <section class="mt-[30px] sm:mt-[80px] max-w-[950px] mx-auto px-[24px]">
+        <h2 class="sm:text-[32px] text-[24px] text-gray-800 font-medium YaleSolisW-Bd mb-[18px]">Yale Home 設定教學影片</h2>
 
-        <div class="flex items-center">
+        <div class="grid sm:grid-cols-2 gap-4">
             <div
-                class="relative flex-1"
-                :class="index === 0 ? 'mr-[14px]' : ''"
-                v-for="(video, index) in videos"
+                class="relative group"
+                v-for="(video, index) in props.tutorial_video.video"
                 :key="index"
             >
                 <NuxtImg
-                    :src="video.posterUrl"
-                    class="w-full h-[320px]"
-                ></NuxtImg>
+                    :src="'video/poster/poster-1.jpg'"
+                    class="w-full object-cover aspect-[16/9]"
+                />
                 <div
-                    @click.prevent="openDialog(video.videoUrl)"
+                    @click.prevent="openDialog(video)"
                     class="absolute top-0 left-0 z-10 flex items-center justify-center w-full h-full cursor-pointer"
                 >
                     <div class="text-[80px] text-white">
@@ -23,10 +22,10 @@
                         </button>
                     </div>
                 </div>
-                <div class="absolute top-0 left-0 w-full h-full bg-black bg-opacity-50"></div>
+                <div class="absolute top-0 left-0 w-full h-full bg-black bg-opacity-50 duration-300 group-hover:bg-opacity-30 group-hover:duration-300"></div>
             </div>
         </div>
-        <div class="border-b pt-[40px] border-gray-300 w-full h-[1px]"></div>
+        <div class="border-b pt-[20px] sm:pt-[40px] border-gray-300 w-full h-[1px]"></div>
         <ClientOnly>
             <el-dialog
                 class="custom-dialog"
@@ -54,10 +53,26 @@
 </template>
 
 <script setup lang="ts">
+interface Props {
+    tutorial_video: {
+        title: string;
+        video: string[];
+    };
+}
+
+const props = withDefaults(defineProps<Props>(), {
+    tutorial_video: () => {
+        return {
+            title: "",
+            video: [],
+        };
+    },
+});
+
 const videos = ref([
     {
         posterUrl: "video/poster/poster-1.jpg",
-        videoUrl: "https://www.youtube.com/embed/REaIV5ZClxQ?si=BNodONl1-bA4KrZy",
+        videoUrl: "https://yale_backed.mrjin.me/storage/pages/01HPREG47Q0D5EKP9AF7GKNDMX.mp4",
     },
     {
         posterUrl: "video/poster/poster-2.jpg",

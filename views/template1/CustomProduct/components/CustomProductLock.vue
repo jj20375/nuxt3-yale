@@ -1,23 +1,24 @@
 <template>
-    <div>
+    <div v-if="currentLockData.detailData">
         <h3 class="text-[16px] font-medium YaleSolisW-Bd mb-[20px]">款式</h3>
-        <ul class="flex">
+        <ul class="grid grid-cols-2 gap-[12px]">
             <li
                 @click="
                     lockCategoryData = category.value;
-                    currentLock = locks[lockCategoryData][0];
+                    currentLockData = locks[lockCategoryData][0];
+                    currentLockIdData = locks[lockCategoryData][0];
                 "
                 v-for="(category, index) in lockCategories"
                 :key="index"
-                class="text-[14px] text-gray-800 rounded-[8px] py-[16px] px-[24px] w-[209px] cursor-pointer"
-                :class="[lockCategoryData === category.value ? 'font-medium YaleSolisW-Bd border-2 border-yellow-600' : 'border border-gray-300', index === 0 ? 'mr-[12px]' : '']"
+                class="rounded-[8px] text-[14px] py-[16px] px-[24px] border border-gray-300 text-center cursor-pointer"
+                :class="[lockCategoryData === category.value ? 'outline outline-2 outline-yellow-600 -outline-offset-2 font-medium YaleSolisW-Bd' : 'border border-gray-300']"
             >
                 {{ category.text }}
             </li>
         </ul>
         <div class="flex mt-[30px]">
-            <p class="text-[14px] font-medium YaleSolisW-Bd text-gray-800">水平把手不銹鋼白鐵水平門鎖 (搭配歐規鎖具)</p>
-            <div class="flex-1 text-right">
+            <p class="flex-1 text-[14px] font-medium YaleSolisW-Bd text-gray-800">{{ currentLockData.name }}</p>
+            <div class="text-right">
                 <button @click.prevent="showDialog = true">
                     <NuxtImg
                         class="w-[24px]"
@@ -26,56 +27,51 @@
                 </button>
             </div>
         </div>
-        <div class="flex mb-[20px] mt-[8px]">
+        <div class="flex mb-[20px]">
             <p class="text-[14px] flex-1 text-gray-800">{{ currentLockData.style }}</p>
 
-            <p class="text-[14px] text-gray-800">$NT {{ $utils().formatCurrency(currentLockData.price) }}</p>
+            <p class="text-[14px] text-gray-800">+NT$ {{ $utils().formatCurrency(currentLockData.price) }}</p>
         </div>
-        <div
-            v-for="(showLock, index) in showLocks"
-            :key="index"
-        >
-            <ul class="flex justify-start">
+        <div class="flex flex-col gap-[15px]">
+            <ul class="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 xl:grid-cols-4 gap-[15px]">
                 <li
                     @click="currentLockData = lock"
-                    v-for="(lock, index2) in showLock"
-                    :class="[currentLockData.id === lock.id ? 'border-2 border-yellow-600  rounded-[8px]' : 'border-2 border-white', showLock.length - 1 !== index2 ? 'mr-[16px]' : '']"
-                    class="p-1 cursor-pointer"
+                    v-for="(lock, index2) in locks[props.lockCategory]"
+                    :class="[currentLockData.id === lock.id ? 'outline-2 outline-yellow-600' : 'outline-1 outline-offset-1 outline-gray-200']"
+                    class="p-1 cursor-pointer outline rounded-[8px]"
                 >
                     <NuxtImg
-                        class="w-[84px]"
+                        class="w-full aspect-square object-contain rounded-[4px]"
                         :src="lock.imgSrc"
                     />
-                </li>
-                <li
-                    v-show="showLock.length < 4"
-                    v-for="(lock, index2) in 4 - showLock.length"
-                    :key="index2"
-                >
-                    <div class="w-[84px] opacity-0">
-                        {{ lock }}
-                    </div>
                 </li>
             </ul>
         </div>
         <el-dialog
+            class="custom-dialog h-[600px]"
             v-model="showDialog"
             :before-close="closeDialog"
-            :show-close="false"
+            close-on-click-modal
+            lock-scroll
+            show-close
+            :width="800"
+            center
+            align-center
+            append-to-body
         >
-            <div class="text-right">
-                <button @click="closeDialog">
-                    <el-icon :size="30"><Close /></el-icon>
-                </button>
-            </div>
-            <h5 class="text-[20px] text-gray-800 YaleSolisW-Bd mb-[38px]">卡片密碼電子鎖-YDM 3109+</h5>
-            <CustomProductDailogCarousel :photos="photos" />
-            <p
-                class="text-[16px] text-gray-800 mt-[28px]"
-                v-html="dialogDetailHtml"
-            ></p>
-            <div class="flex justify-center mt-[40px]">
-                <button class="bg-yellow-600 text-gray-800 rounded-full w-[140px] py-[11px] text-center hover:bg-yellow-700 text-[16px]">加入選擇</button>
+            <div class="w-3/4 mx-auto">
+                <h5 class="text-[20px] text-gray-800 YaleSolisW-Bd mb-[38px]">{{ currentLockData.shape }}-{{ currentLockData.style }}</h5>
+                <CustomProductDailogCarousel
+                    v-if="!$utils().isEmpty(currentLockData.detailData.carousel)"
+                    :photos="currentLockData.detailData.carousel"
+                />
+                <p
+                    class="text-[16px] text-gray-800 mt-[28px]"
+                    v-html="currentLockData.detailData.content"
+                ></p>
+                <!-- <div class="flex justify-center mt-[40px]">
+                    <button class="yellow-btn btn-md">加入選擇</button>
+                </div> -->
             </div>
         </el-dialog>
     </div>
@@ -104,6 +100,11 @@ const props = defineProps({
                 id: "id1",
             };
         },
+    },
+    // 預設選中的鎖 id
+    currentLockId: {
+        type: Number,
+        default: 1,
     },
     // 鎖
     locks: {
@@ -138,6 +139,9 @@ const lockCategoryData = ref(props.lockCategory);
 // 預設選中的鎖
 const currentLockData = ref(props.currentLock);
 
+// 預設選中的鎖 id
+const currentLockIdData = ref(props.currentLockId);
+
 watch(
     () => lockCategoryData.value,
     (val) => {
@@ -146,35 +150,58 @@ watch(
         emit("update:currentLock", props.locks[val][0]);
     }
 );
-
 watch(
     () => currentLockData.value,
     (val) => {
         emit("update:currentLock", val);
     }
 );
+watch(
+    () => currentLockIdData.value,
+    (val) => {
+        emit("update:currentLockId", val);
+    }
+);
+watch(
+    () => props.currentLockId,
+    (val) => {
+        currentLockIdData.value = val;
+    }
+);
+watch(
+    () => props.currentLock,
+    (val) => {
+        currentLockData.value = val;
+    }
+);
+watch(
+    () => props.lockCategory,
+    (val) => {
+        lockCategoryData.value = val;
+    }
+);
 
 // 顯示 電子鎖 得規則 因為 4個顏色要換行 因此加上此演算法
-const showLocks = computed(() => {
-    // 一行顯示幾個
-    const rowShowTotal = 4;
-    var datas = props.locks[props.lockCategory];
-
-    // 可被整除的數字 (取出可被 4 整除的最大公倍數，當陣列數小於 4 時 給予預設值 1)
-    const divisble = datas.length / rowShowTotal < 0 ? 1 : datas.length / rowShowTotal;
-    // 需要更新的所有路徑 (將陣列資料 以 4 筆 為單位 拆成 二維陣列資料方式存入)
-    const datasTotal: any = [];
-    // 判斷最大公倍數有多少執行回圈多少次
-    for (let i = 0; i < divisble; i++) {
-        datasTotal[i] = datas.slice(i * rowShowTotal, (i + 1) * rowShowTotal);
-    }
-    // 陣列數 / 4 如果未整除時 將剩餘陣列資料塞入 datasToatal 中
-    if (datas.length / rowShowTotal > divisble) {
-        // 新增一筆陣列資料將最後剩餘的資料塞入
-        datasTotal[divisble] = datas.splice(divisble * rowShowTotal, datas.length);
-    }
-    return datasTotal;
-});
+// const showLocks = computed(() => {
+//     // 一行顯示幾個
+//     const rowShowTotal = 4;
+//     var datas = props.locks[props.lockCategory];
+//
+//     // 可被整除的數字 (取出可被 4 整除的最大公倍數，當陣列數小於 4 時 給予預設值 1)
+//     const divisble = datas.length / rowShowTotal < 0 ? 1 : datas.length / rowShowTotal;
+//     // 需要更新的所有路徑 (將陣列資料 以 4 筆 為單位 拆成 二維陣列資料方式存入)
+//     const datasTotal: any = [];
+//     // 判斷最大公倍數有多少執行回圈多少次
+//     for (let i = 0; i < divisble; i++) {
+//         datasTotal[i] = datas.slice(i * rowShowTotal, (i + 1) * rowShowTotal);
+//     }
+//     // 陣列數 / 4 如果未整除時 將剩餘陣列資料塞入 datasToatal 中
+//     if (datas.length / rowShowTotal > divisble) {
+//         // 新增一筆陣列資料將最後剩餘的資料塞入
+//         datasTotal[divisble] = datas.splice(divisble * rowShowTotal, datas.length);
+//     }
+//     return datasTotal;
+// });
 
 // 細節彈窗幻燈片圖
 const photos = ref<{ id: string | number; imgSrc: string }[]>([]);
@@ -199,14 +226,3 @@ function closeDialog() {
     showDialog.value = false;
 }
 </script>
-
-<style lang="scss" scoped>
-:deep {
-    .el-dialog__body {
-        @apply mx-10;
-    }
-    .el-dialog {
-        @apply rounded-[20px];
-    }
-}
-</style>

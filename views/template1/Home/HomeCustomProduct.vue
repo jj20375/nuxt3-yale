@@ -1,16 +1,21 @@
 <template>
-    <section class="relative flex items-center justify-center rounded-bl-[120px] min-h-[100%] py-[120px]">
+    <section class="relative xl:flex items-center justify-center rounded-bl-[60px] xl:rounded-bl-[120px] xl:min-h-screen py-[48px] md:py-[90px] xl:py-[120px]">
+        <h3 class="relative hidden md:block xl:hidden text-white text-center text-[32px] sm:text-[48px] xl:text-[66px] font-medium YaleSolisW-Bd leading-none z-[1]">CUSTOMIZED</h3>
+        <h5 class="relative hidden md:block xl:hidden text-gray-800 text-center xl:text-start text-[32px] mt-[14px] mb-[24px] font-medium YaleSolisW-Bd leading-[50px] tracking-wide z-[1]">{{ custom_door.title }}</h5>
         <NuxtImg
-            class="absolute w-full h-full object-cover rounded-bl-[120px]"
+            class="absolute w-full h-full top-0 left-0 object-cover rounded-bl-[60px] xl:rounded-bl-[120px]"
             src="/img/home/custom/section-bg.jpg"
         />
-        <main class="container relative flex items-center justify-between gap-6 item xl:gap-10">
+        <main class="container relative flex flex-col md:flex-row xl:items-center justify-center xl:justify-between md:gap-6 item">
             <article>
-                <h3 class="text-white text-[56px] xl:text-[66px] font-medium YaleSolisW-Bd leading-[66px]">CUSTOMIZED</h3>
-                <h5 class="text-zinc-800 text-[40px] mt-[14px] font-medium font-['Yale Solis'] leading-[50px] tracking-wide">訂製您的專屬門扇</h5>
-                <p class="w-[329px] mt-[20px] text-zinc-800 text-base font-normal font-['Yale Solis'] leading-relaxed tracking-tight">最新智慧電子鎖，從卡片密碼鎖到最先進的指紋鎖，一應俱全。</p>
-                <div class="mt-[40px]">
-                    <button class="gap-2 yellow-btn btn-lg flex items-center justify-center">
+                <h3 class="hidden xl:block text-white text-[56px] xl:text-[66px] font-medium YaleSolisW-Bd leading-[66px]">CUSTOMIZED</h3>
+                <h5 class="md:hidden xl:block text-gray-800 text-center xl:text-start text-[28px] sm:text-[32px] xl:text-[40px] xl:mt-[14px] font-medium YaleSolisW-Bd leading-[50px] tracking-wide">{{ custom_door.title }}</h5>
+                <p class="hidden xl:block w-[329px] mt-[20px] text-start text-gray-800 text-base font-normal YaleSolisW-Bd leading-relaxed tracking-tight">{{ custom_door.subtitle }}</p>
+                <div class="hidden xl:block mt-[40px]">
+                    <button
+                        @click="customLink(custom_door.link)"
+                        class="gap-2 yellow-btn btn-lg flex items-center justify-center"
+                    >
                         <img
                             class="w-[30px]"
                             src="/img/home/custom/button-icon.svg"
@@ -20,7 +25,7 @@
                     </button>
                 </div>
             </article>
-            <article class="relative right-0 top-0 aspect-[3/5] xl:ml-[80px] flex-1 max-w-[400px]">
+            <article class="relative left-1/2 md:left-0 top-0 -translate-x-1/2 md:translate-x-0 aspect-[3/5] xl:ml-[80px] flex-1 max-w-[180px] md:max-w-[300px] xl:max-w-[400px]">
                 <div
                     v-for="(door, key) in doors"
                     :key="key"
@@ -32,10 +37,10 @@
                     />
                 </div>
             </article>
-            <article class="relative self-start mt-[5%] 2xl:mt-[10%]">
-                <div class="inline-block relative left-[-15px] mb-2">
-                    <div class="mb-4 text-center">點擊變換風格</div>
-                    <div class="flex justify-center">
+            <article class="relative m-auto self-start mt-2 md:mt-auto xl:mt-[5%] 2xl:mt-[10%]">
+                <div class="inline-block relative w-full xl:w-fit xl:left-[-15px] mb-2">
+                    <div class="mb-2 xl:mb-4 text-center">點擊變換風格</div>
+                    <div class="hidden xl:flex justify-center">
                         <div class="bg-black w-[1px] h-[30px]"></div>
                     </div>
                 </div>
@@ -46,23 +51,24 @@
                     <div>
                         <div
                             class="icon-wrap"
-                            :class="isHover[key] ? 'active' : null"
+                            :class="isLargePad ? 'active' : isHover[key] ? 'active' : null"
                         >
                             <NuxtImg
-                                @mouseover="mouseoverEvent(key)"
-                                @mouseleave="mouseleaveEvent(key)"
+                                @mouseover="isLargePad ? null : mouseoverEvent(key)"
                                 class="w-[50px] aspect-square object-cover cursor-pointer"
                                 :src="icon.img"
-                                @click="handleClick(key)"
                             />
+                            <div v-if="isLargePad">
+                                {{ icon.text }}
+                            </div>
                             <div
                                 class="flex"
-                                :class="isHover[key] ? 'opacity-100 pointer-events-auto transition-all duration-400 before:ease-in-out delay-500' : 'opacity-0 pointer-events-none'"
+                                :class="isLargePad || isHover[key] ? 'opacity-100 pointer-events-auto transition-all duration-400 before:ease-in-out delay-500' : 'opacity-0 pointer-events-none'"
                             >
                                 <div
                                     v-for="item in icon.styles"
                                     :class="doorStyles[icon.key] === item.style ? 'bg-yellow-600 rounded-full pointer-events-none' : ''"
-                                    class="cursor-pointer mr-3 w-[30px] h-[30px] flex items-center justify-center hover:bg-gray-100 duration-500 transition-all rounded-full"
+                                    class="cursor-pointer mr-3 w-[30px] h-[30px] flex items-center justify-center xl:hover:bg-gray-100 duration-500 transition-all rounded-full"
                                     @click="doorStyles[icon.key] = item.style"
                                 >
                                     {{ item.value }}
@@ -77,12 +83,33 @@
                         </div>
                     </div>
                 </div>
+                <div class="xl:hidden mt-4">
+                    <button
+                        @click="customLink(custom_door.link)"
+                        class="gap-2 animation-btn btn-sm block mx-auto"
+                    >
+                        前往訂製門扇
+                    </button>
+                </div>
             </article>
         </main>
     </section>
 </template>
 
 <script setup lang="ts">
+const { isLargePad } = useWindowResize();
+interface Props {
+    custom_door: {
+        title: string;
+        subtitle: string;
+        link: string;
+    };
+}
+
+const props = withDefaults(defineProps<Props>(), {
+    custom_door: {},
+});
+
 const isHover = ref({
     lock: false,
     doorOut: false,
@@ -149,14 +176,9 @@ function mouseoverEvent(key: string) {
     isHover.value[key] = true;
 }
 
-function mouseleaveEvent(key: string) {
-    // isHover.value[key] = false;
-}
-
-// icon按鈕只能開不能關
-function handleClick(key: string) {
-    if (isHover[key] === false) {
-        isHover[key] = !isHover[key];
+function customLink(link: any) {
+    if (link) {
+        window.location.href = link;
     }
 }
 </script>
@@ -166,7 +188,7 @@ function handleClick(key: string) {
     @apply relative flex gap-6 p-2 mt-1 mb-1 items-center z-0 duration-1000 overflow-hidden rounded-full;
     @apply before:absolute before:bg-white before:top-0 before:left-0 before:h-full before:rounded-full before:opacity-0 before:min-w-[66px] before:-z-[1];
     &.active {
-        @apply mt-2 mb-2 before:opacity-100 before:min-w-[400px] before:opacity-100;
+        @apply mt-3 xl:mt-2 mb-3 xl:mb-2 before:opacity-100 before:min-w-[400px] before:opacity-100;
         @apply before:transition-opacity before:duration-200 before:ease-in-out;
         @apply before:transition-[min-width] before:duration-1000 before:ease-in-out before:delay-200;
     }
