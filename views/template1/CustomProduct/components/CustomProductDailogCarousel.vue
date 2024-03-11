@@ -14,7 +14,7 @@
             >
                 <div class="carousel__item">
                     <img
-                        class="w-full object-cover aspect-square"
+                        class="w-full"
                         :src="item.imgSrc"
                         alt=""
                     />
@@ -23,8 +23,8 @@
         </Swiper>
         <div class="absolute top-0 -left-[30px] -translate-x-1/2 z-50 flex items-center h-full">
             <button
-                class="text-3xl flex justify-center items-center"
-                :class="[ isSliderBeginning ? 'opacity-0' : 'opacity-1' ]"
+                class="flex items-center justify-center text-3xl"
+                :class="[isSliderBeginning ? 'opacity-0' : 'opacity-1']"
                 @click.stop="mainSwiper.slidePrev()"
             >
                 <el-icon><ArrowLeft /></el-icon>
@@ -32,8 +32,8 @@
         </div>
         <div class="absolute top-0 -right-[30px] translate-x-1/2 z-50 flex items-center h-full">
             <button
-                class="text-3xl flex justify-center items-center"
-                :class="[ isSliderEnd ? 'opacity-0' : 'opacity-1' ]"
+                class="flex items-center justify-center text-3xl"
+                :class="[isSliderEnd ? 'opacity-0' : 'opacity-1']"
                 @click.stop="mainSwiper.slideNext()"
             >
                 <el-icon><ArrowRight /></el-icon>
@@ -79,8 +79,8 @@ function onSlideChange() {
     isSliderEnd.value = mainSwiper.value.isEnd;
 }
 
-function resetSwiper(){
-    mainSwiper.value.slideTo(0)
+function resetSwiper() {
+    mainSwiper.value.slideTo(0);
 }
 
 defineExpose({ resetSwiper });
