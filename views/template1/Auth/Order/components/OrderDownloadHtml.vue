@@ -8,17 +8,16 @@
                 <h5>Trusted</h5>
                 <p>every day</p>
             </div>
-            <!-- {{ initializationData.site.site_logo }} -->
             <!-- {{ imageUrlToBase64(initializationData.site.site_logo) }} -->
-            {{ base64Image }}
-            <!-- <NuxtImg
+            <!-- {{ base64Image }} -->
+            <NuxtImg
                 class="mr-[20px]"
-                :src="base64Image"
-            /> -->
+                src="/img/logo/logo-1.svg"
+            />
             <h1 class="text-[28px] font-medium YaleSolisW-Bd">一般產品訂購單</h1>
             <div class="flex-1 text-right">
                 <p class="text-grqy-800 text-[16px]">訂單編號</p>
-                <p class="text-[18px] font-medium YaleSolisW-Bd">#20211010001</p>
+                <p class="text-[18px] font-medium YaleSolisW-Bd">{{ orderData.orderNumber }}</p>
             </div>
         </div>
         <div
@@ -58,33 +57,10 @@
                     class="py-[16px] border-b border-gray-300"
                 >
                     <div class="flex">
-                        <NuxtImg
+                        <!-- <NuxtImg
                             :src="item.imgSrc"
                             class="max-w-[200px] w-full mr-[37px]"
-                        />
-                        <div class="min-w-[250px]">
-                            <h5 class="text-gray-500 mb-[8px]">{{ item.name }}{{ item.model }}</h5>
-                            <div class="flex mb-[8px]">
-                                <div class="flex-1 text-gray-500">規格</div>
-                                <div class="text-gray-500">{{ item.color }}</div>
-                            </div>
-                            <div class="flex mb-[8px]">
-                                <div class="flex-1 text-gray-500">數量</div>
-                                <div class="text-gray-500">{{ item.quantity }}</div>
-                            </div>
-                        </div>
-                    </div>
-                </li>
-                <li
-                    v-for="(item, index) in product.gifts"
-                    :key="index"
-                    class="py-[16px] border-b border-gray-300"
-                >
-                    <div class="flex">
-                        <NuxtImg
-                            :src="item.imgSrc"
-                            class="max-w-[200px] w-full mr-[37px]"
-                        />
+                        /> -->
                         <div class="min-w-[250px]">
                             <h5 class="text-gray-500 mb-[8px]">{{ item.name }}</h5>
                             <div class="flex mb-[8px]">
@@ -95,9 +71,6 @@
                                 <div class="flex-1 text-gray-500">數量</div>
                                 <div class="text-gray-500">{{ item.quantity }}</div>
                             </div>
-                            <div class="flex">
-                                <div class="p-2 text-gray-500 border border-gray-800">NT${{ $utils().formatCurrency(item.price) }} 滿額贈</div>
-                            </div>
                         </div>
                     </div>
                 </li>
@@ -107,7 +80,7 @@
             v-for="(bill, key) in billingData"
             :key="key"
         >
-            <ul
+            <!-- <ul
                 v-if="key === 'columns'"
                 class="mt-[20px] pb-[16px]"
             >
@@ -119,7 +92,7 @@
                     <span class="flex-1">{{ column.label }}</span>
                     <span class=""><span v-if="key2 !== 'deliveryCharge'">-</span>NT${{ $utils().formatCurrency(column.value) }}</span>
                 </li>
-            </ul>
+            </ul> -->
             <ul
                 class="py-[16px] border-b border-gray-300"
                 v-if="key === 'markets'"
@@ -129,8 +102,8 @@
                     :key="key2"
                     class="flex mb-[4px] text-gray-500 list-disc list-inside"
                 >
-                    <div>{{ item.column }}：</div>
-                    <div>{{ item.value }}</div>
+                    <div>{{ item.name }}：</div>
+                    <div>{{ item.discountPrice }}</div>
                 </li>
             </ul>
         </div>
@@ -156,6 +129,11 @@ import { jsPDF } from "jspdf";
 // html 轉 canvas 圖片套件
 import html2canvas from "html2canvas";
 
+const props = defineProps({
+    orderData: {
+        type: Object,
+    },
+});
 defineExpose({
     downloadPdf,
 });
@@ -206,27 +184,27 @@ const paymentData = ref({
     logistics: {
         title: "配送資訊",
         columns: {
-            name: { label: "聯繫人", value: "王小明" },
-            phone: { label: "聯絡電話", value: "0911321321" },
-            email: { label: "Email", value: "test@gmail.com" },
-            address: { label: "門市名稱/收件地址", value: "台北市中正區忠孝東路一段76號5樓之1" },
+            name: { label: "聯繫人", value: props.orderData.info.contactName },
+            phone: { label: "聯絡電話", value: props.orderData.info.phone },
+            email: { label: "Email", value: props.orderData.info.email },
+            address: { label: "門市名稱/收件地址", value: props.orderData.info.address },
         },
     },
     payment: {
         title: "付款明細",
         columns: {
-            type: { label: "付款方式", value: "信用卡" },
-            status: { label: "付款狀態", value: "未付款" },
+            type: { label: "付款方式", value: props.orderData.payment.method },
+            status: { label: "付款狀態", value: props.orderData.payment.orderStatus },
         },
     },
     bill: {
         title: "發票資訊",
         columns: {
-            status: { label: "發票狀態", value: "未開立" },
-            createdDate: { label: "開立日期", value: "" },
-            type: { label: "發票類型", value: "公司戶發票" },
-            receipt: { label: "統編", value: "54567354" },
-            billCode: { label: "發票號碼", value: "" },
+            status: { label: "發票狀態", value: props.orderData.receipt.status },
+            createdDate: { label: "開立日期", value: props.orderData.receipt.date },
+            type: { label: "發票類型", value: props.orderData.receipt.type },
+            receipt: { label: "統編", value: props.orderData.receipt.taxId },
+            billCode: { label: "發票號碼", value: props.orderData.receipt.number },
         },
     },
 });
@@ -234,72 +212,28 @@ const paymentData = ref({
 const productData = ref({
     detail: {
         title: "商品明細",
-        products: [
-            {
-                imgSrc: "/img/custom-product/demo/custom-product-lock-demo-1.jpg",
-                name: "YDM 7216A",
-                model: "指紋卡片密碼鑰匙四合一",
-                color: "黑色",
-                quantity: 1,
-                id: `id1`,
-            },
-            {
-                imgSrc: "/img/custom-product/demo/custom-product-lock-demo-1.jpg",
-                name: "YDM 7216A",
-                model: "指紋卡片密碼鑰匙四合一",
-                color: "白色",
-                quantity: 1,
-                id: `id2`,
-            },
-        ],
-        gifts: [
-            {
-                imgSrc: "/img/shopping-car/shopping-gift-demo-1.jpg",
-                name: "質感托特包",
-                color: "黑色",
-                quantity: 1,
-                price: 3000,
-                id: `id1`,
-            },
-            {
-                imgSrc: "/img/shopping-car/shopping-gift-demo-1.jpg",
-                name: "質感托特包",
-                color: "紫色",
-                quantity: 1,
-                price: 1000,
-                id: `id2`,
-            },
-        ],
+        products: props.orderData.products,
     },
 });
 
 const billingData = ref({
-    columns: {
-        deliveryCharge: {
-            label: "運費",
-            value: 200,
-        },
-        sale: {
-            label: "活動折扣",
-            value: 1200,
-        },
-        coupon: {
-            label: "優惠券折扣",
-            value: 1200,
-        },
-    },
-    markets: [
-        {
-            column: "優惠促銷",
-            value: "活動名稱活動名稱活動名稱活動名稱",
-        },
-        {
-            column: "優惠促銷",
-            value: "活動名稱活動名稱活動名稱活動名稱",
-        },
-    ],
-    total: 45000,
-    note: "備註內容備註內容備註內容備註內容備註內容備註內容備註內容備註內容備註內容備註內容備註內容備註內容",
+    // columns: {
+    //     deliveryCharge: {
+    //         label: "運費",
+    //         value: 200,
+    //     },
+    //     sale: {
+    //         label: "活動折扣",
+    //         value: 1200,
+    //     },
+    //     coupon: {
+    //         label: "優惠券折扣",
+    //         value: 1200,
+    //     },
+    // },
+    markets: props.orderData.price.event,
+    total: Number(props.orderData.price.totalPrice),
+    note: props.orderData.price.memo,
 });
 
 async function downloadPdf() {

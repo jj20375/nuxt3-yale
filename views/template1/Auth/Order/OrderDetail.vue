@@ -23,13 +23,7 @@
                             class="w-[20px] aspect-square object-cover"
                             src="/img/icons/auth/download.svg"
                         />
-                        <span
-                            @click="
-                                showDownload = true;
-                                orderDownloadHtmlRefDom.downloadPdf();
-                            "
-                            >下載訂購單</span
-                        >
+                        <span @click="downloadPdf()">下載訂購單</span>
                     </div>
                 </div>
                 <RecordTimeline
@@ -191,6 +185,7 @@
             >
                 <OrderDownloadHtml
                     v-show="showDownload"
+                    :orderData="orderData"
                     ref="orderDownloadHtmlRefDom"
                 />
             </el-dialog>
@@ -410,6 +405,13 @@ const getData = async () => {
  */
 async function init() {
     await getData();
+}
+
+function downloadPdf() {
+    showDownload.value = true;
+    setTimeout(() => {
+        orderDownloadHtmlRefDom.value.downloadPdf();
+    }, 1000);
 }
 
 onMounted(async () => {
