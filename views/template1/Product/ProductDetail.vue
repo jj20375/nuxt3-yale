@@ -449,23 +449,21 @@ const getData = async () => {
         product.productOptions.forEach((item: any, idx: number) => {
             currentColor.value[idx] = item.values[0].id;
         });
-        useSeoMeta({
-            title: resProductDetail.value.data.seoSetting.title ? resProductDetail.value.data.seoSetting.title : initializationStore.initializationData.site.meta_title,
-            description: resProductDetail.value.data.seoSetting.description ? resProductDetail.value.data.seoSetting.description : initializationStore.initializationData.site.meta_description,
-            ogTitle: resProductDetail.value.data.seoSetting.title,
-            ogDescription: resProductDetail.value.data.seoSetting.description,
-            ogUrl: () => `${window.location.origin}/product/detail/${resProductDetail.value.data.seoSetting.custom_url}`,
-            keywords: resProductDetail.value.data.seoSetting.keywords.join(),
-        });
-
         optionChangePrice(true);
         optionChange(productOptions.value[0].options[0], 0);
+
+        if (resProductDetail.value) {
+            useSeoMeta({
+                title: resProductDetail.value.data.seoSetting.title ? resProductDetail.value.data.seoSetting.title : initializationStore.initializationData.site.meta_title,
+                description: resProductDetail.value.data.seoSetting.description ? resProductDetail.value.data.seoSetting.description : initializationStore.initializationData.site.meta_description,
+                ogTitle: resProductDetail.value.data.seoSetting.title,
+                ogDescription: resProductDetail.value.data.seoSetting.description,
+                ogUrl: () => `${window.location.origin}/product/detail/${resProductDetail.value.data.seoSetting.custom_url}`,
+                keywords: resProductDetail.value.data.seoSetting.keywords.join(),
+            });
+        }
     }
 };
-
-onMounted(() => {
-    getData();
-});
 
 // 切換商品選擇
 const optionChange = (opt: { id: any; text: string }, index: number) => {
@@ -502,7 +500,8 @@ const optionChangePrice = (init: boolean = false) => {
 
     if (!init) {
         const index = photos.value.findIndex((item) => item.imgSrc === currentImage.value);
-        if (productDetailCarouselRef.value) {
+
+        if (process.client && productDetailCarouselRef.value) {
             productDetailCarouselRef.value.slideTo(index + 1);
         }
     }
@@ -536,7 +535,7 @@ const downloadFile = (file: { url: string | URL | undefined }) => {
  */
 const addToShoppingCar = () => {
     const input: ShoppingCarInterface = {
-        id: null,
+        id: detailData.value.product_id,
         productID: detailData.value.product_id,
         name: detailData.value.name,
         imgSrc: currentImage.value,
@@ -650,6 +649,10 @@ function socialShare(type: string) {
         $utils().openNewWindow(url);
     }
 }
+
+onMounted(() => {
+    getData();
+});
 </script>
 
 <style>

@@ -12,7 +12,7 @@
             >
                 <div class="flex gap-2 sm:gap-4">
                     <el-checkbox
-                        :key="cart.id"
+                        :key="cart.productID"
                         :label="cart.id"
                     />
                     <NuxtImg
@@ -20,10 +20,9 @@
                         :src="cart.imgSrc"
                         @click="
                             router.push({
-                                path: `/product/detail/${cart.name}`,
-                                query: {
-                                    id: cart.productID,
-                                },
+                                name: 'product-detail-slug',
+                                params: { slug: cart.name },
+                                query: { id: cart.productID },
                             })
                         "
                     />
@@ -33,10 +32,9 @@
                         class="flex justify-between w-full gap-4 text-gray-800 cursor-pointer"
                         @click="
                             router.push({
-                                path: `/product/detail/${cart.name}`,
-                                query: {
-                                    id: cart.productID,
-                                },
+                                name: 'product-detail-slug',
+                                params: { slug: cart.name },
+                                query: { id: cart.productID },
                             })
                         "
                     >
@@ -54,14 +52,14 @@
                         <div class="flex flex-1 justify-center items-stretch sm:flex-initial w-[150px] sm:w-[150px] border border-gray-300 rounded-full">
                             <button
                                 class="flex items-center text-[16px] justify-center flex-1 h-auto cursor-pointer"
-                                @click.prevent="countUpdate(cart.id, cart.productID, cart.count - 1, cart.product_variationable_id)"
+                                @click.prevent="countUpdate(index, cart.id, cart.productID, cart.count - 1, cart.product_variationable_id)"
                             >
                                 <el-icon><Minus /></el-icon>
                             </button>
                             <div class="flex items-center justify-center w-[60px] sm:w-[80px] py-[4px] sm:py-[10px] h-full">{{ cart.count }}</div>
                             <button
                                 class="flex items-center text-[16px] justify-center flex-1 h-auto cursor-pointer"
-                                @click.prevent="countUpdate(cart.id, cart.productID, cart.count + 1, cart.product_variationable_id)"
+                                @click.prevent="countUpdate(index, cart.id, cart.productID, cart.count + 1, cart.product_variationable_id)"
                             >
                                 <el-icon><Plus /></el-icon>
                             </button>
@@ -102,7 +100,7 @@ const checkList: Ref<number[]> = ref([]);
 /**
  * 點擊更新數量按鈕
  */
-function countUpdate(cartId: number | null, productID: number, count: number, product_variationable_id?: number | null) {
+function countUpdate(index: number, cartId: number | null, productID: number, count: number, product_variationable_id?: number | null) {
     if (count < 1) {
         return;
     }
@@ -112,6 +110,8 @@ function countUpdate(cartId: number | null, productID: number, count: number, pr
         quantity: count,
         product_variationable_id: product_variationable_id ? product_variationable_id : null,
     };
+    shoppingCar.value[index].count = count;
+    shoppingCar.value[index].totalPrice = shoppingCar.value[index].price * count;
     updateCart(apiReq).catch((err) => {
         console.log("err", err);
         if (err) {
@@ -137,25 +137,29 @@ function removeShoppingCar(id: number | null, productID: number, product_variati
  * 選擇商品事件
  */
 const selectProduct = (id: number) => {
-    if (!isAuth.value) {
-        checkList.value = [];
-        alert("請先登入");
-        return;
-    }
+    // if (!isAuth.value) {
+    //     checkList.value = [];
+    //     alert("請先登入");
+    //     return;
+    // }
     emit("update:selectProductIds", id);
 };
 
 const init = async () => {
+    await getUserShopping();
+
     // 設定購物車商品全選
-    checkList.value = shoppingCar.value.map((item: any) => item.id);
+    checkList.value = shoppingCar.value.map((item: any) => {
+        return item.id;
+    });
     // 選中商品參數傳給母組件
     emit("update:selectProductIds", checkList.value);
-
-    await getUserShopping();
 };
 
 onMounted(() => {
-    init();
+    if (process.client) {
+        init();
+    }
 });
 </script>
 

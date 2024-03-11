@@ -17,7 +17,7 @@
                     >
                         <div class="carousel__item">
                             <img
-                                class="w-full cursor-pointer aspect-square object-cover"
+                                class="object-cover w-full cursor-pointer aspect-square"
                                 :src="item.imgSrc"
                                 alt=""
                             />
@@ -27,8 +27,8 @@
             </ClientOnly>
             <div class="absolute top-0 hidden md:flex md:-left-2 -left-[30px] -translate-x-full z-50 items-center h-full">
                 <button
-                    class="text-3xl text-3xl flex justify-center items-center"
-                    :class="[ isSliderBeginning ? 'opacity-0' : 'opacity-1' ]"
+                    class="flex items-center justify-center text-3xl"
+                    :class="[isSliderBeginning ? 'opacity-0' : 'opacity-1']"
                     @click.stop="mainSwiper.slidePrev()"
                 >
                     <el-icon><ArrowLeft /></el-icon>
@@ -36,8 +36,8 @@
             </div>
             <div class="absolute top-0 hidden md:flex md:right-0 md:-right-2 xl:-right-[30px] translate-x-full z-50 items-center h-full">
                 <button
-                    class="text-3xl text-3xl flex justify-center items-center"
-                    :class="[ isSliderEnd ? 'opacity-0' : 'opacity-1' ]"
+                    class="flex items-center justify-center text-3xl"
+                    :class="[isSliderEnd ? 'opacity-0' : 'opacity-1']"
                     @click.stop="mainSwiper.slideNext()"
                 >
                     <el-icon><ArrowRight /></el-icon>
@@ -63,7 +63,7 @@
                         :key="index"
                     >
                         <img
-                            class="w-full aspect-square object-cover cursor-pointer"
+                            class="object-cover w-full cursor-pointer aspect-square"
                             :src="item.imgSrc"
                             alt=""
                         />
@@ -114,7 +114,9 @@ function onSwiper(swiper: any) {
 }
 
 function slideTo(index: any) {
-    mainSwiper.value.slideToLoop(index - 1, 200);
+    if (mainSwiper.value) {
+        mainSwiper.value.slideToLoop(index - 1, 200);
+    }
 }
 
 // 切換主圖時略縮圖會置中 + 更新箭頭狀態

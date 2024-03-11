@@ -22,9 +22,9 @@
                                 <div>我已是Yale會員</div>
                             </el-radio>
                             <div class="px-4 sm:px-[48px] py-5 w-full xl:w-3/4 flex flex-col gap-6">
-                                <div class="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3">
+                                <div class="flex flex-col gap-1 sm:flex-row sm:items-center sm:gap-3">
                                     <div class="text-[15px] text-gray-700 mr-3">連結帳號</div>
-                                    <div class="flex gap-3 items-center">
+                                    <div class="flex items-center gap-3">
                                         <NuxtImg
                                             class="relative object-cover w-6 h-fit aspect-square"
                                             :src="socialIconPath"
@@ -64,9 +64,9 @@
                                 <div>我還不是Yale會員，我要同時成為新會員</div>
                             </el-radio>
                             <div class="px-4 sm:px-[48px] py-5 w-full xl:w-3/4 flex flex-col gap-6">
-                                <div class="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3">
+                                <div class="flex flex-col gap-1 sm:flex-row sm:items-center sm:gap-3">
                                     <div class="text-[15px] text-gray-700 mr-3">連結帳號</div>
-                                    <div class="flex gap-3 items-center">
+                                    <div class="flex items-center gap-3">
                                         <NuxtImg
                                             class="relative object-cover w-6 h-fit aspect-square"
                                             :src="socialIconPath"
@@ -96,11 +96,13 @@ import { validateEmail } from "~/service/validator";
 import { ElMessage, ElLoading } from "element-plus";
 import Cookies from "js-cookie";
 import { useUserStore } from "~/store/userStore";
+import { useShoppingCarStore } from "~/store/shoppingCarStore";
 import { onBeforeRouteLeave } from "vue-router";
 
 const { $api } = useNuxtApp();
 const router = useRouter();
 const userStore = useUserStore();
+const shoppingCarStore = useShoppingCarStore();
 
 const formRefDom = ref<any>();
 
@@ -205,6 +207,10 @@ async function signin() {
                     console.log((data.value as any).data.token);
                     const token = (data.value as any).data.token;
                     Cookies.set("token", token);
+                    userStore.setIsAuth(true);
+                    await shoppingCarStore.syncCart();
+                    await shoppingCarStore.syncCustomCart();
+
                     userStore.getUserProfile();
                     router.push({ name: "auth-panel-slug", params: { slug: "會員中心" } });
                 } else {

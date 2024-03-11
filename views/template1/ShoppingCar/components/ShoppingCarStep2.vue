@@ -91,14 +91,15 @@
             >
                 請勾選
             </div>
-            <div class="sm:flex justify-center mt-[40px]">
-                <button
-                    @click.prevent="validTest"
-                    class="yellow-btn btn-lg"
-                >
-                    前往付款
-                </button>
-            </div>
+            <!--    原本的按鈕移動到ShoppingCarIndex   -->
+            <!--            <div class="sm:flex justify-center mt-[40px]">-->
+            <!--                <button-->
+            <!--                    @click.prevent="validTest"-->
+            <!--                    class="yellow-btn btn-lg"-->
+            <!--                >-->
+            <!--                    前往付款-->
+            <!--                </button>-->
+            <!--            </div>-->
         </div>
     </div>
 </template>
@@ -126,6 +127,10 @@ import ShoppingCarStep2FormMeasureTheSize from "~/views/template1/ShoppingCar/co
 import { useUserStore } from "~/store/userStore";
 import { ReqCheckout } from "~/api/cart";
 import { useShoppingCarStore } from "~/store/shoppingCarStore";
+
+defineExpose({
+    validTest,
+});
 
 const formUserRef = ref<any>(null);
 const formContactUserRef = ref<any>(null);
@@ -359,9 +364,17 @@ const checkout = async () => {
 
     const { data } = await $api().CheckOutApi(req);
     const resData = (data.value as any).data;
-    removeShoppingCar();
+    // 討論之後前端不清除購物車商品
+    // removeShoppingCar();
+    // 重取購物車資料
+    await shoppingCarStore.getUserShopping();
+    await shoppingCarStore.getUserCustomShoppingCar();
     if (resData.redirect) {
         window.open(resData.redirect_url, "self");
+        router.push({
+            name: "auth-panel-slug",
+            params: { slug: "會員中心" },
+        });
     }
     if (!resData.redirect) {
         router.push({
@@ -386,7 +399,7 @@ function removeShoppingCar() {
 }
 
 // 驗證表單
-const validTest = async () => {
+async function validTest() {
     if (props.currentTab === "type1") {
         const validUserForm = await formUserRef.value.$.exposed.validForm();
         const validContactUserForm = await formContactUserRef.value.$.exposed.validForm();
@@ -430,7 +443,7 @@ const validTest = async () => {
             }
         }
     }
-};
+}
 
 watch(
     () => props.goCheckoutStep3,

@@ -37,6 +37,7 @@
             <div class="lg:flex justify-center mt-[20px] lg:mt-[40px]">
                 <keep-alive>
                     <component
+                        ref="componentRef"
                         :is="showComponent"
                         v-model:currentTab="currentTab"
                         v-model:selectProductIds="selectProductIds"
@@ -59,13 +60,20 @@
                                 v-if="currentStep == 0 || currentStep == 1"
                                 #button
                             >
-                                <div class="mt-[28px] lg:mt-[40px]" v-if="currentStep == 0">
+                                <div class="mt-[28px] lg:mt-[40px]">
                                     <button
-
+                                        v-if="currentStep == 0"
                                         @click="goStepCheckout"
                                         class="w-full yellow-btn"
                                     >
                                         下一步
+                                    </button>
+                                    <button
+                                        v-else
+                                        @click.prevent="validTest"
+                                        class="w-full yellow-btn"
+                                    >
+                                        前往付款
                                     </button>
                                 </div>
                             </template>
@@ -161,6 +169,7 @@ const currentStep = ref(0);
 // 購物車選中商品 id
 const selectProductIds = ref<number[]>([]);
 
+const componentRef = ref<any>(null);
 const showComponent = shallowRef<any>(ShoppingCarStep1);
 
 // 總價
@@ -192,6 +201,15 @@ const goStepCheckout = () => {
         alert("請先登入");
     }
 };
+
+/**
+ * 表單驗證
+ */
+async function validTest() {
+    if (componentRef.value) {
+        await componentRef.value.validTest();
+    }
+}
 
 watch(
     () => currentStep.value,

@@ -226,7 +226,7 @@ async function ssoLogin(site: string) {
     $utils().openNewWindow(ssoSite);
 }
 
-function getMessage(e: any) {
+async function getMessage(e: any) {
     if (e.origin === "https://yale-third-party.mrjin.me") {
         console.log(e, "getMessage", e.data);
         const SSOLoginData = e.data;
@@ -236,6 +236,10 @@ function getMessage(e: any) {
         } else {
             const token = SSOLoginData.token;
             Cookies.set("token", token);
+            userStore.setIsAuth(true);
+            await shoppingCarStore.syncCart();
+            await shoppingCarStore.syncCustomCart();
+
             userStore.getUserProfile();
             router.push({ name: "auth-panel-slug", params: { slug: "會員中心" } });
         }

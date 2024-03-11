@@ -1,5 +1,5 @@
 <template>
-    <div class="container flex justify-center items-center mt-headerMb xl:mt-header">
+    <div class="container flex items-center justify-center mt-headerMb xl:mt-header">
         <div class="py-[70px] sm:py-[140px]">
             <Vue3Lottie
                 animationLink="/json/check.json"
@@ -35,7 +35,7 @@ const route = useRoute();
 const contactPhone = computed(() => initializationStore.initializationData.site.contact_phone);
 
 function goToOrderList() {
-    if (route.params[0] === "normal") {
+    if (route.params.slug[0] === "normal") {
         router.push({ name: "auth-order-slug", params: { slug: "一般商品-訂單記錄" } });
     } else {
         router.push({ name: "auth-door-slug", params: { slug: "訂製門扇-訂單記錄" } });

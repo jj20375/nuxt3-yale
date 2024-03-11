@@ -10,7 +10,7 @@
                     :rules="rules"
                     require-asterisk-position="right"
                 >
-                    <div class="flex flex-col md:grid grid-cols-2 gap-6">
+                    <div class="flex flex-col grid-cols-2 gap-6 md:grid">
                         <template
                             v-for="(item, index) in formDatas"
                             :key="index"
@@ -70,7 +70,7 @@
                             </div>
                             <div
                                 v-else
-                                class="flex flex-col md:flex-row flex-1 gap-6"
+                                class="flex flex-col flex-1 gap-6 md:flex-row"
                                 :class="item.span ? `col-span-${item.span}` : ''"
                             >
                                 <div
@@ -164,12 +164,14 @@ import { InternalRuleItem } from "async-validator/dist-types/interface";
 import { validateEmail, validateTWMobileNumber, validatePassword } from "~/service/validator";
 import { ElMessage, ElLoading } from "element-plus";
 import { useUserStore } from "~/store/userStore";
+import { useShoppingCarStore } from "~/store/shoppingCarStore";
 import Cookies from "js-cookie";
 
 const { $api } = useNuxtApp();
 const router = useRouter();
 const { isPad } = useWindowResize();
 const userStore = useUserStore();
+const shoppingCarStore = useShoppingCarStore();
 
 // 預先加載縣市資料
 const initializationStore = useInitializationStore();
@@ -501,6 +503,10 @@ async function login(form: { email: string; password: string }) {
         if (status.value === "success") {
             const token = data.value.data.token;
             Cookies.set("token", token);
+            userStore.setIsAuth(true);
+            await shoppingCarStore.syncCart();
+            await shoppingCarStore.syncCustomCart();
+
             // 取得使用者資料
             await userStore.getUserProfile();
         } else {

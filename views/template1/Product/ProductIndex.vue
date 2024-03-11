@@ -358,6 +358,7 @@ async function getList(params: { per_page: number; page: number }) {
                 main_image: item.main_image,
                 tags: item.tags,
                 is_single_variation: item.is_single_variation,
+                stock: item.stock,
             });
         });
 

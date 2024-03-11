@@ -33,7 +33,8 @@
                     <div>
                         <button
                             @click="addToShoppingCar(product)"
-                            class="yellow-btn btn-sm !py-2"
+                            :disabled="product.stock === 0"
+                            class="yellow-btn btn-sm !py-2 btnDisabled"
                         >
                             加入購物車
                         </button>
@@ -68,7 +69,10 @@
                 </template>
             </div>
         </div>
-        <NuxtLink class="cursor-pointer" @click="goToDetail({ name: product.name, id: product.id })">
+        <NuxtLink
+            class="cursor-pointer"
+            @click="goToDetail({ name: product.name, id: product.id })"
+        >
             <h3 class="pt-[16px] text-[18px] sm:text-[20px] text-center xl:text-start font-medium YaleSolisW-Bd line-clamp-1">{{ product.model }}</h3>
             <h3 class="text-[15px] font-[400] text-center xl:text-start YaleSolisW-Lt mt-1.5 line-clamp-1">{{ product.name }}</h3>
             <div class="flex mt-1.5 md:gap-[8px] flex-col md:flex-row justify-center xl:justify-start items-center">
@@ -161,7 +165,7 @@ function addToShoppingCar(data: any) {
         return;
     }
     const input: ShoppingCarInterface = {
-        id: null,
+        id: data.id,
         productID: data.id,
         name: data.name,
         imgSrc: data.main_image,
