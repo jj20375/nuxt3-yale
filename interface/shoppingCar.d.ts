@@ -122,3 +122,11 @@ export interface ReqMeasuring {
     // 結束時間
     end_date: string;
 }
+// 愛心捐贈碼驗證 api 參數
+export interface ReqValidatorDonationCode {
+    donation_code: string;
+}
+// 手機載具 api 參數
+export interface ReqValidatorMobileCarrierCode {
+    carrier_code: string;
+}

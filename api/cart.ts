@@ -1,4 +1,8 @@
-import { CartItem, ReqUpdateCustomCart, ReqDeleteCustomCart, ReqMeasuring } from "~/interface/shoppingCar";
+/**
+ * ReqValidatorDonationCode: 愛心捐贈碼驗證 api 參數
+ * ReqValidatorMobileCarrierCode: 驗證手機載具 api 參數
+ */
+import { CartItem, ReqUpdateCustomCart, ReqDeleteCustomCart, ReqMeasuring, ReqValidatorDonationCode, ReqValidatorMobileCarrierCode } from "~/interface/shoppingCar";
 
 interface ResGetCart {
     cartItems: any[];
@@ -147,6 +151,20 @@ export default () => {
          */
         GetOfflinePaymentStoresAPI() {
             return useMyFetch(`${apiUrl}/stronghold/offline-payment`, { method: "get" });
+        },
+
+        /**
+         * 驗證愛心捐贈碼
+         */
+        ValidatorDonationCodeAPI(data: ReqValidatorDonationCode) {
+            return useMyFetch(`${apiUrl}/invoice/validate-donation-code`, { method: "post", body: data });
+        },
+
+        /**
+         * 驗證手機載具
+         */
+        ValidatorMobileCarrierCodeAPI(data: ReqValidatorMobileCarrierCode) {
+            return useMyFetch(`${apiUrl}/invoice/validate-mobile-carrier`, { method: "post", body: data });
         },
     };
 };

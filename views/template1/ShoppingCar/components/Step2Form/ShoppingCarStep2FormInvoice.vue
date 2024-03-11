@@ -7,8 +7,9 @@
             :model="formData"
             :rules="rules"
             require-asterisk-position="right"
+            :scroll-to-error="true"
         >
-            <div class="flex flex-col md:grid grid-cols-2 gap-6">
+            <div class="flex flex-col grid-cols-2 gap-6 md:grid">
                 <template
                     v-for="(column, key) in columns"
                     :key="key"
@@ -122,30 +123,32 @@ const rules = computed(() => {
             },
         ],
 
+        // 手機載具驗證
         carrierCode: [
             {
                 required: true,
                 message: "請輸入",
-                trigger: ["change", "blur"],
+                trigger: ["blur"],
             },
             {
                 required: true,
                 validator: formData.value.invoiceType === "mobile_carrier" ? validateMobileCarrier : validateNaturalPerson,
-                trigger: ["change", "blur"],
+                trigger: ["blur"],
                 message: "格式不正確",
             },
         ],
 
+        // 愛心捐贈碼驗證
         donationCode: [
             {
                 required: true,
                 message: "請輸入",
-                trigger: ["change", "blur"],
+                trigger: ["blur"],
             },
             {
                 required: true,
                 validator: validateDonationCode,
-                trigger: ["change", "blur"],
+                trigger: ["blur"],
                 message: "格式不正確",
             },
         ],
