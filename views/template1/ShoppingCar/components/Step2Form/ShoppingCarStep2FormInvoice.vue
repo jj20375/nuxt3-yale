@@ -202,6 +202,7 @@ const validForm = async () => {
 };
 
 watch(formData.value, (val) => {
+    console.log("invoiceType =>", val);
     emit("update:form", val);
 });
 

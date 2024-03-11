@@ -28,6 +28,7 @@
             ref="formInvoiceRef"
             v-model:form="formInvoice"
         />
+        {{ formInvoice }}
         <ShoppingCarStep2FormGift
             :gifts="gifts"
             v-model:form="formGift"
@@ -339,7 +340,7 @@ const checkout = async () => {
         // 發票類型
         invoice_type: formInvoice.value.invoiceType,
         // 載具編號
-        carrier_code: formInvoice.value.invoice_type === "mobile_carrier" || formInvoice.value.invoiceType === "natural_person_certificate" ? formInvoice.value.carrierCode : undefined,
+        carrier_code: formInvoice.value.invoiceType === "mobile_carrier" || formInvoice.value.invoiceType === "natural_person_certificate" ? formInvoice.value.carrierCode : undefined,
         // 捐款碼
         donation_code: formInvoice.value.invoiceType === "donation" ? formInvoice.value.donationCode : undefined,
         // 統一編號
