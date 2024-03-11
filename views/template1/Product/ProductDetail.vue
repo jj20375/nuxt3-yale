@@ -448,6 +448,7 @@ const getData = async () => {
     if (product.is_single_variation === 0) {
         product.productOptions.forEach((item: any, idx: number) => {
             currentColor.value[idx] = item.values[0].id;
+            colorName.value = item.values[0].name;
         });
         useSeoMeta({
             title: resProductDetail.value.data.seoSetting.title ? resProductDetail.value.data.seoSetting.title : initializationStore.initializationData.site.meta_title,
@@ -462,10 +463,6 @@ const getData = async () => {
         optionChange(productOptions.value[0].options[0], 0);
     }
 };
-
-onMounted(() => {
-    getData();
-});
 
 // 切換商品選擇
 const optionChange = (opt: { id: any; text: string }, index: number) => {
@@ -650,6 +647,10 @@ function socialShare(type: string) {
         $utils().openNewWindow(url);
     }
 }
+
+onMounted(() => {
+    getData();
+});
 </script>
 
 <style>
