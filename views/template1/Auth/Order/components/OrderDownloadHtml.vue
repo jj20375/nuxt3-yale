@@ -56,22 +56,14 @@
                     :key="index"
                     class="py-[16px] border-b border-gray-300"
                 >
-                    <div class="flex">
-                        <!-- <NuxtImg
-                            :src="item.imgSrc"
-                            class="max-w-[200px] w-full mr-[37px]"
-                        /> -->
-                        <div class="min-w-[250px]">
-                            <h5 class="text-gray-500 mb-[8px]">{{ item.name }}</h5>
-                            <div class="flex mb-[8px]">
-                                <div class="flex-1 text-gray-500">規格</div>
-                                <div class="text-gray-500">{{ item.color }}</div>
-                            </div>
-                            <div class="flex mb-[8px]">
-                                <div class="flex-1 text-gray-500">數量</div>
-                                <div class="text-gray-500">{{ item.quantity }}</div>
-                            </div>
-                        </div>
+                    <h5 class="text-gray-500 mb-[8px]">{{ item.name }}</h5>
+                    <div class="flex max-w-[250px] mb-[8px]">
+                        <div class="flex-1 text-gray-500">規格</div>
+                        <div class="text-gray-500">{{ item.color }}</div>
+                    </div>
+                    <div class="flex max-w-[250px] mb-[8px]">
+                        <div class="flex-1 text-gray-500">數量</div>
+                        <div class="text-gray-500">{{ item.quantity }}</div>
                     </div>
                 </li>
             </ul>
@@ -93,17 +85,34 @@
                     <span class=""><span v-if="key2 !== 'deliveryCharge'">-</span>NT${{ $utils().formatCurrency(column.value) }}</span>
                 </li>
             </ul> -->
+            <div
+                v-if="key === 'deliveryCharge'"
+                class="flex mb-2"
+            >
+                <div class="min-w-[250px] flex">
+                    <div class="flex-1">{{ bill.label }}</div>
+                    <div class="">NT${{ $utils().formatCurrency(bill.value) }}</div>
+                </div>
+            </div>
+
             <ul
-                class="py-[16px] border-b border-gray-300"
+                class="border-b border-gray-300"
                 v-if="key === 'markets'"
             >
+                <li class="flex mb-2">
+                    <div class="min-w-[250px] flex">
+                        <div class="flex-1">活動折扣</div>
+                        <div class="">-NT${{ $utils().formatCurrency(_SumBy(billingData[key], "discountPrice")) }}</div>
+                    </div>
+                </li>
                 <li
                     v-for="(item, key2) in bill"
                     :key="key2"
-                    class="flex mb-[4px] text-gray-500 list-disc list-inside"
+                    class="mb-[4px] text-gray-500 list-disc list-inside"
                 >
-                    <div>{{ item.name }}：</div>
-                    <div>{{ item.discountPrice }}</div>
+                    <div class="inline-block">
+                        <div>優惠促銷：{{ item.name }}</div>
+                    </div>
                 </li>
             </ul>
         </div>
@@ -217,21 +226,12 @@ const productData = ref({
 });
 
 const billingData = ref({
-    // columns: {
-    //     deliveryCharge: {
-    //         label: "運費",
-    //         value: 200,
-    //     },
-    //     sale: {
-    //         label: "活動折扣",
-    //         value: 1200,
-    //     },
-    //     coupon: {
-    //         label: "優惠券折扣",
-    //         value: 1200,
-    //     },
-    // },
-    markets: props.orderData.price.event,
+    deliveryCharge: {
+        label: "運費",
+        value: 0,
+    },
+    // 將負數轉正數 因應 ui 顯示
+    markets: props.orderData.price.event.map((item: any) => ({ ...item, discountPrice: Math.abs(item.discountPrice) })),
     total: Number(props.orderData.price.totalPrice),
     note: props.orderData.price.memo,
 });
