@@ -727,14 +727,10 @@ async function getPageData() {
 
         lockerData.value.content = lockPageData.content;
 
-        const lockSeoSetting = (data.value as any).data.seoSetting;
-
         // 保險箱
         const params = { code: "safe_installation_photo_example_popup" };
         const { data: cofferApiData } = await $api().getPageAPI(params);
         console.log("getPageData api => ", cofferApiData.value);
-
-        const seoSetting = (data.value as any).data.seoSetting;
 
         const cofferPageData = (cofferApiData.value as any).data.schema;
         console.log("pageData => ", cofferPageData);
