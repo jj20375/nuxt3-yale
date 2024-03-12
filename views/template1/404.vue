@@ -1,5 +1,5 @@
 <template>
-    <section class="mt-[86px] py-[140px] border-t border-gray-300">
+    <section class="mt-headerMb xl:mt-header py-[140px] border-t border-gray-300">
         <div class="container flex justify-center">
             <div class="max-w-[500px] text-gray-800">
                 <NuxtImg

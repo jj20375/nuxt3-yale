@@ -13,7 +13,7 @@
             />
         </template>
         <template #content>
-            <ul class="grid grid-cols-3 gap-4 mt-10">
+            <ul class="grid grid-cols-1 mx-6 sm:grid-cols-2 md:grid-cols-3 md:gap-4 md:mt-10 sm:mx-0">
                 <li
                     v-for="(item, index) in datas"
                     :key="index"
@@ -23,7 +23,7 @@
                         target="_blank"
                     >
                         <NuxtImg
-                            class="w-full aspect-[16/9] object-contain"
+                            class="w-full aspect-[2/1] object-contain"
                             :src="item.imgSrc"
                         />
                     </NuxtLink>
@@ -90,7 +90,7 @@ async function getType() {
         // 判斷是否有匹配的 id 來新增 後續的麵包屑 路徑
         if (lastBreadcrumbs !== undefined) {
             breadcrumbs.value.push({
-                name: "store-slug",
+                name: "store-e-commerce-slug",
                 text: "展售門市",
                 params: { slug: lastBreadcrumbs.name },
                 query: { id: lastBreadcrumbs.id },

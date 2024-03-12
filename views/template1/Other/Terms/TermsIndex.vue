@@ -8,8 +8,15 @@
         </template>
 
         <template #content>
-            <section class="max-w-[950px] mx-auto mt-[80px] text-gray-800">
-                <div v-html="content"></div>
+            <section class="container">
+                <div class="max-w-[950px] mx-auto xl:mt-[80px] text-gray-800">
+                    <div class="mt-[24px] md:mt-[60px]">
+                        <div
+                            class="edit-section"
+                            v-html="content"
+                        ></div>
+                    </div>
+                </div>
             </section>
         </template>
     </BannerLayout>
@@ -18,6 +25,9 @@
 <script lang="ts" setup>
 import BannerLayout from "~/views/template1/layouts/BannerLayout.vue";
 import Breadcrumb from "~/views/template1/components/Breadcrumb.vue";
+import { useInitializationStore } from "~/store/initializationStore";
+
+const initializationStore = useInitializationStore();
 const route = useRoute();
 const { $api } = useNuxtApp();
 
@@ -44,6 +54,16 @@ async function getPageData() {
         const pageData = (data.value as any).data.schema;
 
         content.value = pageData.content;
+
+        const seoSetting = (data.value as any).data.seoSetting;
+        useSeoMeta({
+            title: seoSetting.title ? seoSetting.title : initializationStore.initializationData.site.meta_title,
+            description: seoSetting.description ? seoSetting.description : initializationStore.initializationData.site.meta_description,
+            ogTitle: seoSetting.title,
+            ogDescription: seoSetting.description,
+            ogUrl: () => `${window.location.origin}/${seoSetting.custom_url}`,
+            keywords: seoSetting.keywords.join(),
+        });
     } catch (err) {
         console.log("HomeSampleAPI => ", err);
     }

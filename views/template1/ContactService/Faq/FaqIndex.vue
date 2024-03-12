@@ -15,7 +15,7 @@
         <template #content>
             <FaqTItle :title="title" />
             <FaqList :datas="datas" />
-            <FaqContact class="mt-[90px]" />
+            <FaqContact class="xl:mt-[90px] mt-[60px]" />
         </template>
     </SideBarLayout>
 </template>
@@ -36,17 +36,6 @@ const breadcrumbs = ref([
     {
         name: "index",
         text: "首頁",
-    },
-    {
-        name: "faq-slug",
-        text: "服務支援",
-        params: { slug: "耶魯服務支援" },
-    },
-    {
-        name: "faq-slug",
-        text: "服務中心",
-        params: { slug: "耶魯服務中心" },
-        query: { id: "id1" },
     },
 ]);
 
@@ -76,6 +65,18 @@ async function getType() {
         });
         // 取得最後面的 麵包屑路徑
         const lastBreadcrumbs = rows.find((item: any) => item.id == route.query.id);
+        breadcrumbs.value.push({
+            name: "faq-slug",
+            text: "服務支援",
+            params: { slug: lastBreadcrumbs.name },
+            query: { id: lastBreadcrumbs.id },
+        });
+        breadcrumbs.value.push({
+            name: "faq-slug",
+            text: "服務中心",
+            params: { slug: lastBreadcrumbs.name },
+            query: { id: lastBreadcrumbs.id },
+        });
 
         breadcrumbs.value.push({
             name: "faq-slug",
@@ -115,7 +116,7 @@ async function getList(params: { fqa_category_id: any }) {
                 url: {
                     name: "faq-details-slug",
                     params: { slug: item.fqa_category.name },
-                    query: { id: item.id },
+                    query: { id: route.query.id, detail_id: item.id },
                 },
             });
         });

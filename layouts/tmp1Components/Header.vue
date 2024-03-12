@@ -1,63 +1,77 @@
 <template>
     <header
         class="fixed z-[500] items-center w-full duration-500 transition-all"
-        :class="[isHomeMenuFixed || isPad ? 'bg-white fixed top-0 border-b border-gray-300' : route.name === 'index' ? 'top-0 border-b border-transparent' : '', route.name !== 'index' ? 'fixed top-0 bg-white border-b border-gray-300' : '']"
+        :class="[isMenuFixed || isLargePad ? 'bg-white fixed top-0 border-b border-gray-300' : route.name === 'index' ? 'top-0 border-b border-transparent' : '', route.name !== 'index' ? 'fixed top-0 bg-white border-b border-gray-300' : '']"
     >
-        <nav class="xl:mx-[32px] xl:flex items-center xl:text-left text-center h-headerMb xl:h-header">
+        <nav
+            class="xl:mx-[32px] xl:flex items-center xl:text-left text-center h-headerMb transition-all duration-300"
+            :class="isMenuFixed ? 'xl:h-auto' : 'xl:h-header'"
+        >
             <div
-                class="absolute flex justify-center items-center !w-[40px] !h-[40px] top-8 left-3 -translate-y-1/2 flex xl:hidden cursor-pointer z-[2]"
+                class="absolute justify-center items-center !w-[40px] !h-[40px] top-8 left-3 -translate-y-1/2 flex xl:hidden cursor-pointer z-[2]"
                 @click="showMenu = !showMenu"
-                type="button"
             >
                 <IconMenu class="!w-[20px] !h-[20px] transition-all duration-300 hover:text-gray-400 hover:transition-all hover:duration-300" />
             </div>
-            <ul class="items-center flex-1 text-base leading-5 xl:flex top-[64px] xl:top-0 xl:mb-0" :class="isDesktop ? '' : showMenu ? 'py-4 nav-bar-mb' : '' ">
-                <li class="fixed xl:relative xl:mr-4 2xl:mr-6 3xl:mr-14 w-full xl:w-fit top-0 left-0 z-[1] bg-white xl:bg-transparent py-[8px] xl:py-[10px]">
-                    <NuxtLink class="block mx-auto w-fit" :to="{ name: 'index' }">
+            <ul
+                class="absolute xl:static items-center flex-1 text-base leading-5 xl:flex top-[64px] xl:top-0 xl:mb-0"
+                :class="isDesktop ? '' : showMenu ? 'py-4 nav-bar-mb' : ''"
+            >
+                <li
+                    class="fixed xl:relative xl:mr-4 2xl:mr-6 3xl:mr-14 w-full xl:w-fit top-0 left-0 z-[1] xl:bg-transparent py-[8px] transition-all duration-300"
+                    :class="isMenuFixed ? 'xl:py-[4px]' : 'xl:py-[10px]'"
+                >
+                    <NuxtLink
+                        class="block mx-auto w-fit"
+                        :to="{ name: 'index' }"
+                    >
                         <NuxtImg
-                            class="h-[48px] w-[48px] xl:h-[66px] xl:w-[66px] mx-auto"
+                            class="h-[48px] w-[48px] xl:w-[66px] mx-auto transition-all duration-300"
+                            :class="isMenuFixed ? 'xl:h-[56px]' : 'xl:h-[66px]'"
                             :src="initializationData.site.site_logo"
                             :alt="$config.public.webSite"
                         />
                     </NuxtLink>
                 </li>
                 <li
-                    :class="isDesktop ? 'opacity-100' : showMenu ? 'opacity-100 h-auto' : 'opacity-0 overflow-hidden h-0' "
-                    class="duration-500 transition-all xl:duration-0 xl:transition-none"
+                    :class="isDesktop ? 'opacity-100' : showMenu ? 'opacity-100 h-auto' : 'opacity-0 overflow-hidden h-0'"
+                    class="transition-all duration-500 xl:duration-0 xl:transition-none"
                     v-for="(menu, key) in menus"
                     :key="key"
                 >
                     <div
                         v-if="menu.submenus.length > 0"
-                        @mouseover="isPad ? null : changeMenu(key)"
+                        @mouseover="isLargePad ? null : changeMenu(key)"
                         @mouseleave="closeMenu"
-                        @click="isPad ? toggleMenu(key) : null"
-                        class="xl:px-3 2xl:px-4 3xl:px-5 xl:py-[33px] text-gray-800 cursor-pointer hover:text-gray-500"
+                        @click="isLargePad ? toggleMenu(key) : null"
+                        class="xl:px-3 2xl:px-4 3xl:px-5 text-gray-800 cursor-pointer transition-all duration-300 hover:text-gray-500"
+                        :class="isMenuFixed ? 'xl:py-[23px]' : 'xl:py-[33px]'"
                     >
                         <div class="flex justify-center py-5 xl:py-0">
                             {{ menu.title }}
                             <div
-                                class="ml-3 xl:ml-0 transition-all duration-300"
+                                class="ml-3 transition-all duration-300 xl:ml-0"
                                 :class="menuStatus[key] ? 'rotate-180' : 'rotate-0'"
                             >
                                 <font-awesome-icon
-                                    v-if="isPad"
+                                    v-if="isLargePad"
                                     class=""
                                     :icon="['fas', 'chevron-down']"
                                 />
                             </div>
                         </div>
                         <div
-                            v-if="!isPad"
-                            class="absolute left-0 top-[86px] z-50 bg-white w-full"
+                            v-if="!isLargePad"
+                            class="absolute left-0 z-50 bg-white w-full"
+                            :class="isMenuFixed ? 'top-[66px]' : 'top-[86px]'"
                         >
                             <div
                                 class="border-t border-gray-300 shadow-header"
                                 v-if="currentMenu === key && showSubMenu"
                             >
                                 <ul
-                                    class="container flex items-center justify-center min-h-[300px] py-[60px] flex-wrap text-center"
-                                    :class="menu.marginSize"
+                                    class="container flex items-center justify-center min-h-[300px] flex-wrap text-center"
+                                    :class="[menu.marginSize, isMenuFixed ? 'py-[40px]' : 'py-[60px]']"
                                 >
                                     <li
                                         v-for="(submenu, subIndex) in menu.submenus"
@@ -79,13 +93,12 @@
                             </div>
                         </div>
                         <div v-else>
-                            <Vue3SlideUpDown v-model="menuStatus[key]" :duration="300">
-                                <div
-                                    class="bg-gray-100 submenu-list"
-                                >
-                                    <ul
-                                        class="py-[12px] text-center duration-300 delay-150 transition-all"
-                                    >
+                            <Vue3SlideUpDown
+                                v-model="menuStatus[key]"
+                                :duration="300"
+                            >
+                                <div class="bg-gray-100 submenu-list">
+                                    <ul class="py-[12px] text-center duration-300 delay-150 transition-all">
                                         <li
                                             v-for="(submenu, subIndex) in menu.submenus"
                                             :key="subIndex"
@@ -102,8 +115,8 @@
                     </div>
                     <div v-else>
                         <div
-                            class="relative xl:px-3 2xl:px-5 py-5 xl:py-[33px] text-gray-800 hover:text-gray-500 cursor-pointer transition-all duration-300 cursor-pointer"
-                            :class="key === 'menu1' ? 'has-door' : ''"
+                            class="relative xl:px-3 2xl:px-5 py-5 text-gray-800 hover:text-gray-500 cursor-pointer transition-all duration-300"
+                            :class="[key === 'menu1' ? 'has-door' : '', isMenuFixed ? 'xl:py-[23px]' : 'xl:py-[33px]']"
                             @click="router.push(menu.url)"
                         >
                             <template v-if="key === 'menu1'">
@@ -121,29 +134,37 @@
                     </div>
                 </li>
             </ul>
-            <ul
-                class="absolute xl:relative flex gap-[2px] xl:pr-[16px] 3xl:pr-[20px] top-8 xl:top-0 right-3 xl:right-0 -translate-y-1/2 xl:translate-y-0 xl:before:absolute xl:before:top-1/2 xl:before:-translate-y-1/2 xl:before:right-0 xl:before:bg-gray-400 xl:before:w-[1px] xl:before:h-4 z-[2]"
-            >
+            <ul class="absolute xl:relative flex gap-[2px] xl:pr-[16px] 3xl:pr-[20px] top-8 xl:top-0 right-3 xl:right-0 -translate-y-1/2 xl:translate-y-0 xl:before:absolute xl:before:top-1/2 xl:before:-translate-y-1/2 xl:before:right-0 xl:before:bg-gray-400 xl:before:w-[1px] xl:before:h-4 z-[2]">
                 <li
                     v-for="(icon, index) in rightIcons"
                     :key="index"
                 >
-                    <NuxtLink class="flex justify-center items-center !w-[40px] !h-[40px] group" :to="icon.url">
-                        <component
-                            class="!w-[20px] !h-[20px] transition-all duration-300 group-hover:text-gray-400 group-hover:transition-all group-hover:duration-300"
-                            :is="icon.name"
-                        />
+                    <NuxtLink
+                        class="flex justify-center items-center !w-[40px] !h-[40px] group"
+                        :to="icon.url"
+                    >
+                        <el-badge
+                            :value="icon.badgeCount"
+                            class="item"
+                            :hidden="!icon.badgeCount"
+                        >
+                            <component
+                                class="!w-[20px] !h-[20px] transition-all duration-300 group-hover:text-gray-400 group-hover:transition-all group-hover:duration-300"
+                                :is="icon.name"
+                            />
+                        </el-badge>
                     </NuxtLink>
                 </li>
             </ul>
-            <ul
-                class="hidden xl:flex xl:ml-[16px] 3xl:ml-[20px] gap-[2px]"
-            >
+            <ul class="hidden xl:flex xl:ml-[16px] 3xl:ml-[20px] gap-[2px]">
                 <li
                     v-for="(media, index) in socialMedia"
                     :key="index"
                 >
-                    <div @click="toSocialMedia(media)" class="flex justify-center items-center !w-[40px] !h-[40px] group cursor-pointer">
+                    <div
+                        @click="toSocialMedia(media)"
+                        class="flex justify-center items-center !w-[40px] !h-[40px] group cursor-pointer"
+                    >
                         <component
                             class="!w-[20px] !h-[20px] transition-all duration-300 group-hover:text-gray-400 group-hover:transition-all group-hover:duration-300"
                             :is="media.name"
@@ -159,6 +180,7 @@
 import { useTemplateStore } from "~/store/templateStore";
 import { useInitializationStore } from "~/store/initializationStore";
 import { useUserStore } from "~/store/userStore";
+import { useShoppingCarStore } from "~/store/shoppingCarStore";
 import { storeToRefs } from "pinia";
 const $config = useRuntimeConfig();
 const router = useRouter();
@@ -166,8 +188,13 @@ const route = useRoute();
 const templateStore = useTemplateStore();
 const initializationStore = useInitializationStore();
 const userStore = useUserStore();
-const { isAuth } = storeToRefs(userStore);
+const shoppingCarStore = useShoppingCarStore();
 
+const { isAuth } = storeToRefs(userStore);
+// 一般商品購物車
+const { shoppingCar } = storeToRefs(shoppingCarStore);
+// 訂製門扇購物車
+const { shoppingCustomCar } = storeToRefs(shoppingCarStore);
 // icon 路徑
 import IconUser from "~/assets/img/icons/user.svg";
 import IconCart from "~/assets/img/icons/shop-cart.svg";
@@ -177,12 +204,12 @@ import IconLine from "~/assets/img/icons/medias/icon-black-3.svg";
 import IconYoutube from "~/assets/img/icons/medias/icon-black-4.svg";
 import IconMenu from "~/assets/img/icons/menu.svg";
 
-const { isPad, isDesktop } = useWindowResize();
+const { isLargePad, isDesktop } = useWindowResize();
 
 // 手機版時判斷是否顯示選單
 const showMenu = ref(false);
 
-const isHomeMenuFixed = computed(() => templateStore.isHomeMenuFixed);
+const isMenuFixed = computed(() => templateStore.isMenuFixed);
 
 const initializationData = computed(() => {
     return JSON.parse(JSON.stringify(initializationStore.initializationData));
@@ -326,7 +353,6 @@ const menus = ref<any>({
                 url: {
                     name: "repair-slug",
                     params: { slug: "維修與保固" },
-                    query: { id: "1" },
                 },
             },
             {
@@ -346,7 +372,6 @@ const menus = ref<any>({
                 url: {
                     name: "reservation-slug",
                     params: { slug: "預約安裝" },
-                    query: { id: "1" },
                 },
             },
             {
@@ -356,7 +381,6 @@ const menus = ref<any>({
                 url: {
                     name: "contact-slug",
                     params: { slug: "聯絡我們" },
-                    query: { id: "1" },
                 },
             },
         ],
@@ -404,6 +428,7 @@ const rightIcons = computed(() => {
                     tab: "type1",
                 },
             },
+            badgeCount: shoppingCar.value.length + shoppingCustomCar.value.length,
         },
     ];
 });
@@ -426,13 +451,13 @@ const socialMedia = ref([
         name: shallowRef(IconYoutube),
         url: initializationData.value.site.social_youtube,
     },
-])
+]);
 
-function toSocialMedia (socialMedia: { url: string|URL|undefined; }) {
+function toSocialMedia(socialMedia: { url: string | URL | undefined }) {
     if (socialMedia.url) {
         open(socialMedia.url, "_blank");
     }
-};
+}
 
 // 預設選擇的 menu 判斷是否呈現 submenu
 const currentMenu = ref<null | string>(null);
@@ -460,7 +485,6 @@ function toggleMenu(key: string) {
     const menuKey = key;
     menuStatus.value[menuKey] = !menuStatus.value[menuKey];
 }
-
 </script>
 
 <style lang="scss" scoped>
@@ -526,24 +550,27 @@ function toggleMenu(key: string) {
         @apply mr-0 transition-all duration-300;
     }
     .image-wrap {
-        @apply max-w-0 h-[20px] overflow-hidden transition-all duration-300 opacity-0;
+        @apply xl:max-w-0 h-[20px] xl:overflow-hidden xl:transition-all xl:duration-300 xl:opacity-0;
         img {
-            @apply h-[20px] w-[20px] max-w-none;
+            @apply ml-2 xl:ml-0 h-[20px] w-[20px] max-w-none;
         }
     }
-    &:hover {
-        @apply px-1 xl:px-2 2xl:px-3 transition-all duration-300;
-        .image-wrap {
-            @apply max-w-[24px] transition-all duration-300 opacity-100;
-        }
-        .title {
-            @apply mr-2 transition-all duration-300;
+    @media screen and (min-width: 1280px) {
+        &:hover {
+            @apply px-1 xl:px-2 2xl:px-3 transition-all duration-300;
+            .image-wrap {
+                @apply max-w-[24px] transition-all duration-300 opacity-100;
+            }
+
+            .title {
+                @apply mr-2 transition-all duration-300;
+            }
         }
     }
 }
 
 // 副標題列表
-.submenu-list{
+.submenu-list {
     transition: max-height 0.5s ease-in-out;
     // 副標題類別
     .submenu-item {
@@ -555,8 +582,14 @@ function toggleMenu(key: string) {
 }
 
 // 手機版的下拉選單
-.nav-bar-mb{
+.nav-bar-mb {
     @apply relative overflow-auto bg-white border-t shadow-header;
-    max-height: calc(100vh - #{$navbar-height-mb});
+    max-height: calc(var(--vh, 1vh) * 100 - #{$navbar-height-mb});
+}
+
+:deep{
+    .el-badge .el-badge__content{
+        @apply bg-red-500;
+    }
 }
 </style>

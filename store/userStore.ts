@@ -3,6 +3,9 @@ import { UserInterface } from "~/interface/user.d";
 import Cookies from "js-cookie";
 import { ElMessage } from "element-plus";
 import { useApiStore } from "./apiStore";
+import { useShoppingCarStore } from "~/store/shoppingCarStore";
+import { removeStorage } from "~/service/localstorage";
+
 interface State {
     user: UserInterface;
 }
@@ -24,6 +27,8 @@ export const useUserStore = defineStore({
             socialMediaName: null,
             // 第三方登入使用者名稱
             ssoLogingData: null,
+            // loading
+            loading: false,
         };
     },
     getters: {},
@@ -57,9 +62,13 @@ export const useUserStore = defineStore({
         // 取得使用者資料
         async getUserProfile() {
             const { $api }: any = useNuxtApp();
+            const shoppingCarStore = useShoppingCarStore();
+
             if (Cookies.get("token")) {
                 try {
+                    this.loading = true;
                     const { data, error }: { data: any; error: any } = await $api().GetUserProfileAPI();
+                    this.loading = false;
                     // 判斷 api 錯誤
                     if (error.value) {
                         console.log("取得使用者資料失敗=>", error);
@@ -76,7 +85,11 @@ export const useUserStore = defineStore({
                     }
                     this.setUser(data.value.data);
                     this.setIsAuth(true);
+                    await shoppingCarStore.getUserShopping();
+                    await shoppingCarStore.getUserCustomShoppingCar();
+                    // shoppingCarStore.syncCustomCart();
                 } catch (err) {
+                    this.removeLoginData();
                     console.log("GetUserProfileAPI => ", err);
                 }
             }
@@ -103,10 +116,19 @@ export const useUserStore = defineStore({
         removeLoginData(userId: string | null = null) {
             const $config = useRuntimeConfig();
             const router = useRouter();
+            const { $shoppingCarService } = useNuxtApp();
+            const shoppingCarStore = useShoppingCarStore();
             this.setIsAuth(false);
             this.setUser({});
             Cookies.remove("token");
+            console.log("logout");
             if (process.client) {
+                // 清除購物車
+                shoppingCarStore.clearShoppingCar();
+                // 清空訂製門扇商品購物車
+                $shoppingCarService().removeCustomProductShoppingCar();
+                // 清空一般商品購物車
+                $shoppingCarService().removeShoppingCar();
                 window.location.href = $config.public.hostURL;
             }
         },

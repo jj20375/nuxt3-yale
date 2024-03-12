@@ -2,7 +2,6 @@
     <BannerLayout
         :title="'Yale Home App'"
         :banner="'/img/yale-home-app/yale-home-app-banner.jpg'"
-        :banner-mobile="'/img/yale-home-app/yale-home-app-banner-m.jpg'"
     >
         <template #breadcrumbs>
             <Breadcrumb :menus="breadcrumbs" />
@@ -41,6 +40,10 @@ import YaleHomeAppVideo from "~/views/template1/YaleHomeApp/components/YaleHomeA
 import YaleHomeAppSpec from "~/views/template1/YaleHomeApp/components/YaleHomeAppSpec.vue";
 // 注意事項
 import YaleHomeAppInfo from "~/views/template1/YaleHomeApp/components/YaleHomeAppInfo.vue";
+
+import { useInitializationStore } from "~/store/initializationStore";
+
+const initializationStore = useInitializationStore();
 
 const { $api } = useNuxtApp();
 
@@ -122,8 +125,6 @@ async function getPageData() {
         topDatas.value = [];
         carouselDatas.value = [];
 
-        console.log(pageData);
-
         pageData.introduction.forEach((item: { banner: any; title: any; content: any }) => {
             topDatas.value.push({
                 imgSrc: item.banner,
@@ -147,6 +148,17 @@ async function getPageData() {
         tutorial_video.value = pageData.tutorial_video;
 
         files.value = pageData.downloads;
+
+        const seoSetting = (data.value as any).data.seoSetting;
+        console.log("seoSetting =>", seoSetting);
+        useSeoMeta({
+            title: seoSetting.title ? seoSetting.title : initializationStore.initializationData.site.meta_title,
+            description: seoSetting.description ? seoSetting.description : initializationStore.initializationData.site.meta_description,
+            ogTitle: seoSetting.title,
+            ogDescription: seoSetting.description,
+            ogUrl: () => `${window.location.origin}/${seoSetting.custom_url}`,
+            keywords: seoSetting.keywords.join(),
+        });
     } catch (err) {
         console.log("HomeSampleAPI => ", err);
     }
@@ -166,10 +178,10 @@ async function getAppData() {
     }
 }
 
+await getPageData();
 onMounted(async () => {
     nextTick(async () => {
         if (process.client) {
-            await getPageData();
             await getAppData();
         }
     });

@@ -1,17 +1,17 @@
 <template>
-    <section class="mt-[64px] xl:mt-[86px] sm:pb-[80px] pb-[30px]">
-        <nav class="border-t bg-white border-gray-300 sm:py-[16px] py-[12px]">
+    <section class="mt-headerMb xl:mt-header sm:pb-[80px] pb-[30px]">
+        <nav class="border-t border-b border-gray-300 py-2.5 xl:py-4 bg-white min-h-[43px] xl:min-h-[55px]">
             <div class="container">
                 <slot name="breadcrumbs"></slot>
             </div>
         </nav>
         <div
-            :style="!isMobile ? `background-image: url(${banner})` : `background-image: url(${bannerMobile})`"
-            class="relative min-h-[195px] sm:min-h-[320px] w-full bg-cover flex items-center justify-center"
+            :style="`background-image: url(${banner})`"
+            class="relative h-[150px] md:h-[240px] xl:h-[320px] w-full bg-cover bg-center flex items-center justify-center"
         >
             <!-- <NuxtImg :src="banner" /> -->
             <div class="absolute top-0 w-full h-full bg-black bg-opacity-40"></div>
-            <h1 class="text-white text-[28px] sm:text-[40px] YaleSolisW-Bd font-medium absolute z-10">{{ title }}</h1>
+            <h1 class="text-white text-[28px] md:text-[32px] xl:text-[40px] YaleSolisW-Bd font-medium absolute z-10">{{ title }}</h1>
         </div>
 
         <slot name="content"></slot>
@@ -27,7 +27,7 @@ const props = defineProps({
     },
     bannerMobile: {
         type: String,
-        required: true,
+        required: false,
     },
     title: {
         type: String,

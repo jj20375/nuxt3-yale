@@ -20,6 +20,9 @@ import HomeSample from "~/views/template1/Home/HomeSample.vue";
 import HomeProduct from "~/views/template1/Home/HomeProduct.vue";
 import HomeApp from "~/views/template1/Home/HomeApp.vue";
 import HomeService from "~/views/template1/Home/HomeService.vue";
+import { useInitializationStore } from "~/store/initializationStore";
+
+const initializationStore = useInitializationStore();
 
 const { $api } = useNuxtApp();
 
@@ -46,6 +49,16 @@ async function getPageData() {
         schema.value.carousel = pageData.carousel;
         schema.value.custom_door = pageData.custom_door;
         schema.value.yale_home_app = pageData.yale_home_app;
+
+        const seoSetting = (data.value as any).data.seoSetting;
+        useSeoMeta({
+            title: seoSetting.title ? seoSetting.title : initializationStore.initializationData.site.meta_title,
+            description: seoSetting.description ? seoSetting.description : initializationStore.initializationData.site.meta_description,
+            ogTitle: seoSetting.title,
+            ogDescription: seoSetting.description,
+            ogUrl: () => `${window.location.origin}/${seoSetting.custom_url}`,
+            keywords: seoSetting.keywords.join(),
+        });
     } catch (err) {
         console.log("HomeSampleAPI => ", err);
     }

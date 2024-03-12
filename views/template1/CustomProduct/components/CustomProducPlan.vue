@@ -1,7 +1,7 @@
 <template>
     <div>
         <h3 class="text-[16px] font-medium YaleSolisW-Bd mb-[20px]">方案</h3>
-        <ul class="grid grid-cols-3 gap-[12px]">
+        <ul class="grid grid-cols-2 sm:grid-cols-3 gap-[12px]">
             <li
                 @click="currentPlanData = tab.id"
                 v-for="(tab, index) in tabs"
@@ -37,7 +37,7 @@ const tabs = ref([
     },
     {
         id: "id3",
-        text: "歐風奢華款",
+        text: "歐風尊榮款",
     },
 ]);
 

@@ -1,33 +1,46 @@
 <template>
     <div>
-        <h5 class="bg-gray-50 py-[8px] font-medium pl-[16px] w-full mb-[30px]">訂購人</h5>
+        <h5 class="bg-gray-50 py-[8px] YaleSolisW-Bd font-medium pl-[16px] w-full mb-[16px] sm:mb-[30px]">訂購人</h5>
         <el-form
-            class="custom-form"
             ref="formRefDom"
-            :model="form"
+            class="custom-form"
+            :model="formInput"
             :rules="rules"
-            require-asterisk-position="right">
-            <div class="grid grid-cols-2 gap-6 mb-[30px]">
+            require-asterisk-position="right"
+        >
+            <div class="flex flex-col md:grid grid-cols-2 gap-[16px] sm:gap-6 mb-[30px]">
                 <template
                     v-for="(item, index) in formDatas"
                     :key="index"
                 >
-                    <div :class="item.span ? `col-span-${item.span}` : ''">
-                        <el-form-item :prop="item.prop" :label="item.label">
-                            <el-input v-if="item.style === 'input'" :type="item?.type" :show-password="item.showPassword" :disabled="item.disabled"
-                                      :placeholder="item.placeholder" v-model="form[item.prop]"></el-input>
+                    <div :class="item.span ? `col-span-1 sm:col-span-2` : ''">
+                        <el-form-item
+                            :prop="item.prop"
+                            :label="item.label"
+                        >
+                            <el-input
+                                v-if="item.style === 'input'"
+                                :type="item?.type"
+                                :show-password="item.showPassword"
+                                :disabled="item.disabled"
+                                :placeholder="item.placeholder"
+                                v-model="formInput[item.prop]"
+                            />
                             <el-input
                                 v-if="item.style === 'textarea'"
                                 type="textarea"
                                 rows="5"
                                 resize="none"
                                 :placeholder="item.placeholder"
-                                v-model="form[item.prop]"
-                            ></el-input>
+                                v-model="formInput[item.prop]"
+                            />
                         </el-form-item>
                     </div>
-                    <template v-if="item.space">
-                        <div v-for="index in item.space" :key="index"></div>
+                    <template v-if="item.space && !isPad">
+                        <div
+                            v-for="index in item.space"
+                            :key="index"
+                        />
                     </template>
                 </template>
             </div>
@@ -36,31 +49,39 @@
 </template>
 
 <script setup lang="ts">
+import { FormInstance } from "element-plus";
 import { validateTWMobileNumber } from "~/service/validator";
 
 const emit = defineEmits(["update:form"]);
+const formRefDom = ref<FormInstance>();
+const { isPad } = useWindowResize();
 
-const props = defineProps({
+interface Props {
     form: {
-        type: Object,
-        default() {
-            return {
-                name: "王小明",
-                email: "123@gmail.cpm",
-                phone: "0911123123",
-                note: null,
-            };
-        },
+        name: string;
+        email: string;
+        phone: string;
+        note: string;
+    };
+}
+
+const props = withDefaults(defineProps<Props>(), {
+    form: () => {
+        return {
+            name: "",
+            email: "",
+            phone: "",
+            note: "",
+        };
     },
 });
 
-const form = ref(props.form);
+const formInput = ref(props.form);
 
-watch(form.value, (val) => {
+watch(formInput.value, (val) => {
+    console.log("val", val);
     emit("update:form", val);
 });
-
-const formRefDom = ref<any>();
 
 const formDatas = ref<any>([
     {
@@ -99,24 +120,45 @@ const rules = ref<any>({
             required: true,
             message: "請輸入會員名稱",
             trigger: ["change", "blur"],
-        }
+        },
     ],
     email: [
         {
             required: true,
             message: "請輸入電子信箱",
             trigger: ["change", "blur"],
-        }
+        },
     ],
     phone: [
         {
             required: true,
             message: "請輸入聯絡電話",
             trigger: ["change", "blur"],
-        }
+        },
+        {
+            required: true,
+            validator: validateTWMobileNumber,
+            trigger: ["change", "blur"],
+            message: "格式不正確",
+        },
     ],
 });
 
+const validForm = async () => {
+    if (!formRefDom.value) return false;
+    const userValid = await formRefDom.value.validate((valid) => {
+        if (valid) {
+            return true;
+        } else {
+            return false;
+        }
+    });
+    return userValid;
+};
+
+defineExpose({
+    validForm,
+});
 </script>
 
 <style lang="scss" scoped>

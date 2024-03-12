@@ -1,7 +1,7 @@
 <template>
     <div>
         <div
-            class="relative bg-white product-card rounded-2xl"
+            class="relative bg-white cursor-pointer product-card rounded-2xl"
             @mouseover="mouseoverEvent(product.id)"
             @mouseleave="mouseleaveEvent(product.id)"
         >
@@ -10,20 +10,31 @@
                     class="object-cover w-full h-full rounded-2xl aspect-square"
                     :src="product.main_image"
                 />
-                <div class="absolute bottom-[20px] left-[20px] flex gap-2">
-                    <div v-if="product.tags?.includes('new')" class="bg-yellow-500 text-[12px] px-2 py-1 rounded-md">NEW</div>
-                    <div v-if="product.tags?.includes('discount')" class="bg-pink-400 text-[12px] px-2 py-1 rounded-md">SALE</div>
+                <div class="absolute bottom-[15px] sm:bottom-[20px] left-[15px] sm:left-[20px] flex gap-2">
+                    <div
+                        v-if="product.tags?.includes('new')"
+                        class="bg-yellow-500 text-[11px] sm:text-[12px] px-1 sm:px-2 py-0.5 sm:py-1 rounded-md"
+                    >
+                        NEW
+                    </div>
+                    <div
+                        v-if="product.tags?.includes('discount')"
+                        class="bg-pink-400 text-[11px] sm:text-[12px] px-1 sm:px-2 py-0.5 sm:py-1 rounded-md"
+                    >
+                        SALE
+                    </div>
                 </div>
             </NuxtLink>
             <div
                 :class="currentHover === product.id ? 'opacity-100' : 'opacity-0'"
-                class="absolute top-0 z-0 flex items-end w-full h-full transition-all duration-500 pointer-events-none"
+                class="absolute top-0 z-0 items-end hidden w-full h-full transition-all duration-500 pointer-events-none xl:flex"
             >
-                <div class="absolute z-20 mb-[40px] w-full text-center pointer-events-auto">
+                <div class="absolute z-20 bottom-[40px] w-full text-center pointer-events-auto">
                     <div>
                         <button
                             @click="addToShoppingCar(product)"
-                            class="yellow-btn btn-sm !py-2"
+                            :disabled="product.stock === 0"
+                            class="yellow-btn btn-sm !py-2 btnDisabled"
                         >
                             加入購物車
                         </button>
@@ -34,10 +45,13 @@
                         </NuxtLink>
                     </div>
                 </div>
-                <div class="absolute top-0 left-0 z-10 w-full h-full bg-white opacity-80 rounded-2xl"></div>
+                <div
+                    class="absolute top-0 left-0 z-10 w-full h-full bg-white opacity-80 rounded-2xl"
+                    @click="goToDetail({ name: product.name, id: product.id })"
+                ></div>
             </div>
             <div
-                class="absolute favorite w-[30px] h-[30px] text-gray-300 top-[16px] right-[16px] cursor-pointer z-50 duration-300 transition-all"
+                class="hidden xl:block absolute favorite w-[30px] h-[30px] text-gray-300 top-[16px] right-[16px] cursor-pointer z-50 duration-300 transition-all"
                 :class="isFavorite === true ? 'opacity-100' : 'opacity-0'"
                 @click="handleFavorite"
             >
@@ -55,8 +69,11 @@
                 </template>
             </div>
         </div>
-        <NuxtLink @click="goToDetail({ name: product.name, id: product.id })">
-            <h3 class="pt-[16px] text-[20px] text-center xl:text-start font-medium YaleSolisW-Bd line-clamp-1">{{ product.model }}</h3>
+        <NuxtLink
+            class="cursor-pointer"
+            @click="goToDetail({ name: product.name, id: product.id })"
+        >
+            <h3 class="pt-[16px] text-[18px] sm:text-[20px] text-center xl:text-start font-medium YaleSolisW-Bd line-clamp-1">{{ product.model }}</h3>
             <h3 class="text-[15px] font-[400] text-center xl:text-start YaleSolisW-Lt mt-1.5 line-clamp-1">{{ product.name }}</h3>
             <div class="flex mt-1.5 md:gap-[8px] flex-col md:flex-row justify-center xl:justify-start items-center">
                 <span class="font-medium YaleSolisW-Bd">NT${{ $utils().formatCurrency(product.price) }}</span>
@@ -70,8 +87,14 @@
 <script lang="ts" setup>
 import AddToShoppingCarDialog from "~/views/template1/components/AddToShoppingCarDialog.vue";
 import { useUserStore } from "~/store/userStore";
-import { storeToRefs } from "pinia";
 const userStore = useUserStore();
+
+import { useShoppingCarStore } from "~/store/shoppingCarStore";
+const shoppingCarStore = useShoppingCarStore();
+
+import { storeToRefs } from "pinia";
+import { ShoppingCarInterface } from "~/interface/shoppingCar";
+import { ElMessage } from "element-plus";
 const { isAuth } = storeToRefs(userStore);
 
 const router = useRouter();
@@ -84,11 +107,13 @@ interface Props {
     breadcrumbs: { name: string; text: string; params?: { slug: string } }[];
 }
 const props: Props = withDefaults(defineProps<Props>(), {
-    product: {
-        id: 1,
+    product: () => {
+        return {
+            id: 1,
+        };
     },
     // 麵包屑
-    breadcrumbs: [
+    breadcrumbs: () => [
         {
             name: "index",
             text: "首頁",
@@ -105,8 +130,8 @@ const emit = defineEmits(["handleFavorite"]);
 
 // 判斷是否為喜愛項目
 const isFavorite = computed(() => {
-    return props.product.is_favorite
-})
+    return props.product.is_favorite;
+});
 
 const handleFavorite = async () => {
     if (isAuth.value) {
@@ -128,15 +153,38 @@ function mouseoverEvent(index: number) {
 function mouseleaveEvent(index: number) {
     currentHover.value = null;
 }
+
 /**
  * 加入購物車
  */
 function addToShoppingCar(data: any) {
-    showDialog.value = true;
-    console.log("addToShoppingCar => ", data);
-    if (process.client) {
-        $shoppingCarService().addToShoppingCar({ ...data, mark: "YDM 4109A", name: "指紋密碼鑰匙三合一", color: "黑色", imgSrc: "/img/home/product/product1.jpg", count: 1, singlePrice: 1760 });
+    // 判斷有多商品型號時 跳轉商品細節頁
+    if (data.is_single_variation === 0) {
+        ElMessage({ type: "warning", message: "請選擇商品規格加入購物車" });
+        goToDetail({ name: data.name, id: data.id });
+        return;
     }
+    const input: ShoppingCarInterface = {
+        id: data.id,
+        productID: data.id,
+        name: data.name,
+        imgSrc: data.main_image,
+        count: 1,
+        price: data.price,
+        totalPrice: data.price * 1,
+    };
+    shoppingCarStore
+        .addToCart(input)
+        .then(() => {
+            showDialog.value = true;
+        })
+        .catch((err) => {
+            console.log("err", err);
+            if (err) {
+                alert(err);
+                return;
+            }
+        });
 }
 
 /**
@@ -153,7 +201,7 @@ function goToDetail(product: { name: string; id: number }) {
 </script>
 
 <style>
-.product-card:hover{
+.product-card:hover {
     .favorite {
         @apply opacity-100 duration-300 transition-all;
     }

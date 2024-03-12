@@ -1,6 +1,6 @@
 <template>
-    <section>
-        <div class="max-w-[950px] mx-auto my-[30px] sm:my-[60px] px-[24px]">
+    <section class="container">
+        <div class="max-w-[950px] mx-auto my-[30px] sm:my-[60px]">
             <div class="flex flex-col gap-[30px]">
                 <div v-for="(data, index) in props.datas">
                     <NuxtImg

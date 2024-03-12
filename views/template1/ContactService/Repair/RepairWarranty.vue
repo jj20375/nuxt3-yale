@@ -16,9 +16,9 @@
                     :rules="rules"
                     require-asterisk-position="right"
                 >
-                    <div class="w-3/4 mt-[80px] p-[60px] bg-white mx-auto rounded-[24px] border-[1px] border-gray-200">
+                    <div class="w-full xl:w-3/4 mt-[36px] sm:mt-[80px] py-[32px] px-[24px] sm:p-[60px] bg-white mx-auto rounded-[12px] sm:rounded-[24px] border-[1px] border-gray-200">
                         <h3 class="text-[24px] font-bold mb-6">序號登錄</h3>
-                        <div class="grid grid-cols-2 gap-6">
+                        <div class="flex flex-col md:grid grid-cols-2 gap-6">
                             <div
                                 v-for="(item, index) in formDatas?.registerDatas"
                                 :key="index"
@@ -35,7 +35,7 @@
                                         :disabled="item.disabled"
                                         :placeholder="item.placeholder"
                                         v-model="form[item.prop]"
-                                    ></el-input>
+                                    />
                                     <el-radio-group
                                         v-else-if="item.style === 'radio'"
                                         v-model="form[item.prop]"
@@ -68,15 +68,15 @@
                                             :key="index"
                                             :label="option.label"
                                             :value="option.value"
-                                        ></el-option>
+                                        />
                                     </el-select>
                                 </el-form-item>
                             </div>
                         </div>
                     </div>
-                    <div class="w-3/4 mt-[40px] p-[60px] bg-white mx-auto rounded-[24px] border-[1px] border-gray-200">
+                    <div class="w-full xl:w-3/4 mt-[24px] sm:mt-[80px] py-[32px] px-[24px] sm:p-[60px] bg-white mx-auto rounded-[12px] sm:rounded-[24px] border-[1px] border-gray-200">
                         <h3 class="text-[24px] font-bold mb-6">安裝客戶資料</h3>
-                        <div class="grid grid-cols-2 gap-6">
+                        <div class="flex flex-col md:grid grid-cols-2 gap-6">
                             <div
                                 v-for="(item, index) in formDatas?.customerDatas"
                                 :key="index"
@@ -132,9 +132,9 @@
                             </div>
                         </div>
                     </div>
-                    <div class="w-3/4 mt-[40px] p-[60px] bg-white mx-auto rounded-[24px] border-[1px] border-gray-200">
+                    <div class="w-full xl:w-3/4 mt-[24px] sm:mt-[80px] py-[32px] px-[24px] sm:p-[60px] bg-white mx-auto rounded-[12px] sm:rounded-[24px] border-[1px] border-gray-200">
                         <h3 class="text-[24px] font-bold mb-6">序號</h3>
-                        <div class="grid grid-cols-2 gap-6">
+                        <div class="flex flex-col md:grid grid-cols-2 gap-6">
                             <div
                                 v-for="(item, index) in formDatas?.serialDatas"
                                 :key="index"
@@ -155,10 +155,10 @@
                                 </el-form-item>
                             </div>
                         </div>
-                        <div class="text-center mt-5">
+                        <div class="mt-5 text-center">
                             <button
                                 @click.prevent="addSerial"
-                                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
+                                class="transparent-btn btn-md"
                             >
                                 新增一筆序號
                             </button>
@@ -194,15 +194,19 @@ const breadcrumbs = ref([
         text: "首頁",
     },
     {
+        name: "repair-warranty-slug",
+        text: "服務支援",
+        params: { slug: "保固登記" },
+    },
+    {
         name: "repair-slug",
         text: "維修與保固",
         params: { slug: "維修與保固" },
     },
     {
-        name: "repair-detail-slug",
+        name: "repair-warranty-slug",
         text: "保固登記",
         params: { slug: "保固登記" },
-        query: { id: "1" },
     },
 ]);
 

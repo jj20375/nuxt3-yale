@@ -5,7 +5,7 @@
         </div>
         <section
             id="HomeSample"
-            class="flex items-center justify-center md:mt-5 overflow-hidden"
+            class="flex items-center justify-center overflow-hidden md:mt-5"
         >
             <main class="flex-1 mx-auto">
                 <div class="text-center">
@@ -21,7 +21,7 @@
                     :perspective="0"
                     :inverseScaling="300"
                     :width="isLargeDesktop ? 800 : !isMobile ? 640 : nowWindowSize.width"
-                    :height="isLargeDesktop ? 500 : !isMobile ? 400 : nowWindowSize.width / 8 * 5"
+                    :height="isLargeDesktop ? 500 : !isMobile ? 400 : (nowWindowSize.width / 8) * 5"
                     :startIndex="currentIndex"
                     @after-slide-change="onSlideChange"
                 >
@@ -32,10 +32,10 @@
                         class="flex justify-center md:m-5"
                     >
                         <template v-slot="{ index, isCurrent, leftIndex, rightIndex }">
-                            <div class="w-full p-6 md:p-10 transition-all duration-500">
+                            <div class="w-full p-6 transition-all duration-500 md:p-10">
                                 <div :class="currentIndex === index ? 'bg-white p-2 drop-shadow-lg rounded-2xl  ' : ' opacity-30'">
                                     <NuxtImg
-                                        class="rounded-lg"
+                                        class="rounded-lg aspect-[16/9] object-cover"
                                         :src="slide.thumbnail"
                                     />
                                     <!-- {{ slide }} -->
@@ -55,7 +55,7 @@
                         :space="365"
                         :controls-visible="false"
                         :clickable="false"
-                        :width="!isPad ? 1000 : !isMobile ? 640 : nowWindowSize.width"
+                        :width="!isLargePad ? 1000 : !isMobile ? 640 : nowWindowSize.width"
                         :height="!isMobile ? 150 : 120"
                         :startIndex="currentIndex"
                         @after-slide-change="onSlideChange"
@@ -66,7 +66,7 @@
                             :key="i"
                         >
                             <template v-slot="{ index, isCurrent, leftIndex, rightIndex }">
-                                <div class="px-5 xl:p-5 mx-auto bg-white">
+                                <div class="px-5 mx-auto bg-white xl:p-5">
                                     <div class="flex items-center justify-center">
                                         <div
                                             class="mr-[20px] md:mr-[50px] text-2xl font-light bg-gray-100 p-2 h-[30px] w-[30px] md:h-[50px] md:w-[50px] flex justify-center items-center rounded-full cursor-pointer"
@@ -76,16 +76,22 @@
                                                 <el-icon><ArrowLeft /></el-icon>
                                             </button>
                                         </div>
-                                        <div class="flex-1 max-w-[600px] cursor-pointer" @click="router.push(slide.url)">
+                                        <div
+                                            class="flex-1 max-w-[600px] cursor-pointer"
+                                            @click="goToDetail(slide.url)"
+                                        >
                                             <div class="flex items-center">
-                                                <h5
-                                                    class="flex-1 text-[18px] md:text-[24px] YaleSolisW-Bd font-medium line-clamp-1"
-                                                >
+                                                <h5 class="flex-1 text-[18px] md:text-[24px] YaleSolisW-Bd font-medium line-clamp-1">
                                                     {{ slide.title }}
                                                 </h5>
                                                 <h6 class="hidden xl:block text-[14px] font-medium YaleSolisW-Bd">{{ slide.published_at }}</h6>
                                             </div>
-                                            <p class="md:mt-[6px] mt-[12px] YaleSolisW-Lt font-[400] text-[16px] line-clamp-2" v-if="slide.description">{{ slide.description }}</p>
+                                            <p
+                                                class="md:mt-[6px] mt-[12px] YaleSolisW-Lt font-[400] text-[16px] line-clamp-2"
+                                                v-if="slide.description"
+                                            >
+                                                {{ slide.description }}
+                                            </p>
                                             <!-- {{ index }} -->
                                         </div>
                                         <div
@@ -111,13 +117,9 @@
 </template>
 
 <script lang="ts" setup>
-import { useTemplateStore } from "~/store/templateStore";
-
-const { $api } = useNuxtApp();
-const { isLargeDesktop, isMobile, isPad, nowWindowSize } = useWindowResize();
+const { $api, $utils } = useNuxtApp();
+const { isLargeDesktop, isMobile, isLargePad, nowWindowSize } = useWindowResize();
 const router = useRouter();
-
-const templateStore = useTemplateStore();
 
 const carousel3dRefDom = ref<any>(null);
 const carousel3d2RefDom = ref<any>(null);
@@ -152,15 +154,6 @@ function onSlideChange(val: any) {
     console.log("onSlideChange =>>", val);
 }
 
-function scrollInit() {
-    // 判斷滾動高度 大於50px時 固定選單在上方
-    if (window.scrollY > 50) {
-        templateStore.setHomeMenuFixed(true);
-    } else {
-        templateStore.setHomeMenuFixed(false);
-    }
-}
-
 /**
  * 取得裝修實績列表
  */
@@ -172,32 +165,37 @@ async function getList(params: { per_page: number; page: number }) {
 
         const rows = (data.value as any).data.rows;
 
-
-        const breadcrumbs = [
-            {
-                name: "index",
-                text: "首頁",
-            },
-        ];
+        // const breadcrumbs = [
+        //     {
+        //         name: "index",
+        //         text: "首頁",
+        //     },
+        // ];
 
         rows.forEach((item: { articleCategory: any; id: any }) => {
+            const breadcrumbs = [
+                {
+                    name: "index",
+                    text: "首頁",
+                },
+            ];
             breadcrumbs.push({
                 name: "sample-slug",
                 text: "裝修實績",
-                params: { slug: "耶魯裝修實績" },
+                params: { slug: "裝修實績" },
                 query: { id: item.articleCategory.id },
             });
             breadcrumbs.push({
                 name: "sample-slug",
                 text: item.articleCategory.name,
-                params: { slug: "耶魯裝修實績" },
+                params: { slug: "裝修實績" },
                 query: { id: item.articleCategory.id },
             });
             items.value.push({
                 ...item,
                 url: {
                     name: "sample-details-slug",
-                    params: { slug: item.articleCategory.name, },
+                    params: { slug: item.articleCategory.name },
                     query: { id: item.id, breadcrumbs: JSON.stringify(breadcrumbs) },
                 },
             });
@@ -207,26 +205,19 @@ async function getList(params: { per_page: number; page: number }) {
     }
 }
 
+function goToDetail(url: any) {
+    // 將麵包屑存進 storage
+    $utils().saveBreadcrumbsData(url.query.breadcrumbs);
+    router.push({ name: url.name, params: url.params, query: { id: url.query.id } });
+}
+
 /**
  * 初始化
  */
 async function init() {
     await getList({ per_page: 10, page: 1 });
 }
-// await init();
-
-onMounted(async () => {
-    nextTick(async () => {
-        if (process.client) {
-            await init();
-            window.addEventListener("scroll", scrollInit);
-        }
-    });
-});
-
-onBeforeUnmount(() => {
-    window.removeEventListener("scroll", scrollInit);
-});
+await init();
 </script>
 
 <style lang="scss" scoped>

@@ -3,17 +3,17 @@
         <div>
             <Swiper
                 v-if="photos.length > 0"
-                :loop="isPad ? false : true"
                 :spaceBetween="isMobile ? 16 : 20"
-                :slidesPerView="isPad ? 2 : 4"
+                :slidesPerView="isLargePad ? 2 : 4"
                 :modules="modules"
                 :scrollbar="{ draggable: true, dragSize: 100, horizontalClass: 'horizontalClass', dragClass: 'dragClass' }"
                 @swiper="onSwiper"
+                @slideChange="onSlideChange"
             >
                 <SwiperSlide
                     v-for="(item, index) in photos"
                     :key="index"
-                    class="aspect-square w-full mb-9 xl:mb-0"
+                    class="w-full mb-9 xl:mb-0"
                 >
                     <!-- {{ item }} -->
                     <ProductCard :product="item" @handleFavorite="handleFavorite" />
@@ -21,7 +21,8 @@
             </Swiper>
             <div class="absolute hidden xl:flex top-0 -left-[30px] -translate-x-full z-50 flex items-center h-full">
                 <button
-                    class="text-3xl"
+                    class="text-3xl flex justify-center items-center"
+                    :class="[ isSliderBeginning ? 'opacity-0' : 'opacity-1' ]"
                     @click.stop="mainSwiper.slidePrev()"
                 >
                     <el-icon><ArrowLeft /></el-icon>
@@ -29,7 +30,8 @@
             </div>
             <div class="absolute hidden xl:flex top-0 -right-[30px] translate-x-full z-50 flex items-center h-full">
                 <button
-                    class="text-3xl"
+                    class="text-3xl flex justify-center items-center"
+                    :class="[ isSliderEnd ? 'opacity-0' : 'opacity-1' ]"
                     @click.stop="mainSwiper.slideNext()"
                 >
                     <el-icon><ArrowRight /></el-icon>
@@ -78,7 +80,7 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const emit = defineEmits(["handleFavorite"]);
-const { isPad, isMobile } = useWindowResize();
+const { isLargePad, isMobile } = useWindowResize();
 
 async function handleFavorite (id: any) {
     emit("handleFavorite", id);
@@ -89,10 +91,21 @@ const modules = [FreeMode, Thumbs, Navigation, Scrollbar];
 
 // 主圖 carousel
 const mainSwiper = ref<any>(null);
+const isSliderBeginning = ref<boolean>(false);
+const isSliderEnd = ref<boolean>(false);
 
 function onSwiper(swiper: any) {
     mainSwiper.value = swiper;
+    isSliderBeginning.value = mainSwiper.value.isBeginning;
+    isSliderEnd.value = mainSwiper.value.isEnd;
 }
+
+// 更新箭頭狀態
+function onSlideChange() {
+    isSliderBeginning.value = mainSwiper.value.isBeginning;
+    isSliderEnd.value = mainSwiper.value.isEnd;
+}
+
 </script>
 <style lang="scss" scoped>
 :deep {

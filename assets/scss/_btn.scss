@@ -134,6 +134,9 @@
     &.btn-xs {
         @apply w-[108px] py-2;
     }
+    &:disabled {
+        @apply bg-gray-100 text-gray-400 cursor-not-allowed;
+    }
 }
 
 // 白色按鈕(有圓形動畫效果的按鈕，只有首頁才會用到)

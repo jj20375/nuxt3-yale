@@ -1,7 +1,7 @@
 <template>
-    <section class="mt-[86px] py-[60px] bg-gray-50 border-t border-gray-300">
+    <section class="mt-headerMb xl:mt-header py-[36px] sm:py-[60px] bg-gray-50 border-t border-gray-300">
         <div class="container">
-            <div class="w-3/4 p-[60px] bg-white mx-auto rounded-[24px] border-[1px] border-gray-200">
+            <div class="w-full xl:w-3/4 px-[24px] py-[36px] sm:p-[60px] bg-white mx-auto rounded-[24px] border-[1px] border-gray-200">
                 <h3 class="text-[24px] font-bold mb-6">快速登入</h3>
                 <p>歡迎使用FB、Google、Line帳號快速登入，設定完成後可直接使用FB、Google、Line帳號登入</p>
                 <div class="border-gray-200 border-b-[1px] my-[30px]"></div>
@@ -21,14 +21,16 @@
                             >
                                 <div>我已是Yale會員</div>
                             </el-radio>
-                            <div class="px-[48px] py-5 w-3/4 flex flex-col gap-6">
-                                <div class="flex items-center gap-3">
+                            <div class="px-4 sm:px-[48px] py-5 w-full xl:w-3/4 flex flex-col gap-6">
+                                <div class="flex flex-col gap-1 sm:flex-row sm:items-center sm:gap-3">
                                     <div class="text-[15px] text-gray-700 mr-3">連結帳號</div>
-                                    <NuxtImg
-                                        class="relative object-cover w-6 h-fit aspect-square"
-                                        :src="socialIconPath"
-                                    />
-                                    <div class="text-[15px] text-gray-700">{{ memberData.email }}</div>
+                                    <div class="flex items-center gap-3">
+                                        <NuxtImg
+                                            class="relative object-cover w-6 h-fit aspect-square"
+                                            :src="socialIconPath"
+                                        />
+                                        <div class="text-[15px] text-gray-700">{{ memberData.email }}</div>
+                                    </div>
                                 </div>
                                 <el-form-item
                                     prop="email"
@@ -61,14 +63,16 @@
                             >
                                 <div>我還不是Yale會員，我要同時成為新會員</div>
                             </el-radio>
-                            <div class="px-[48px] py-5 w-3/4 flex flex-col gap-6">
-                                <div class="flex items-center gap-3">
+                            <div class="px-4 sm:px-[48px] py-5 w-full xl:w-3/4 flex flex-col gap-6">
+                                <div class="flex flex-col gap-1 sm:flex-row sm:items-center sm:gap-3">
                                     <div class="text-[15px] text-gray-700 mr-3">連結帳號</div>
-                                    <NuxtImg
-                                        class="relative object-cover w-6 h-fit aspect-square"
-                                        :src="socialIconPath"
-                                    />
-                                    <div class="text-[15px] text-gray-700">{{ memberData.email }}</div>
+                                    <div class="flex items-center gap-3">
+                                        <NuxtImg
+                                            class="relative object-cover w-6 h-fit aspect-square"
+                                            :src="socialIconPath"
+                                        />
+                                        <div class="text-[15px] text-gray-700">{{ memberData.email }}</div>
+                                    </div>
                                 </div>
                             </div>
                         </el-radio-group>
@@ -92,11 +96,13 @@ import { validateEmail } from "~/service/validator";
 import { ElMessage, ElLoading } from "element-plus";
 import Cookies from "js-cookie";
 import { useUserStore } from "~/store/userStore";
+import { useShoppingCarStore } from "~/store/shoppingCarStore";
 import { onBeforeRouteLeave } from "vue-router";
 
 const { $api } = useNuxtApp();
 const router = useRouter();
 const userStore = useUserStore();
+const shoppingCarStore = useShoppingCarStore();
 
 const formRefDom = ref<any>();
 
@@ -201,6 +207,10 @@ async function signin() {
                     console.log((data.value as any).data.token);
                     const token = (data.value as any).data.token;
                     Cookies.set("token", token);
+                    userStore.setIsAuth(true);
+                    await shoppingCarStore.syncCart();
+                    await shoppingCarStore.syncCustomCart();
+
                     userStore.getUserProfile();
                     router.push({ name: "auth-panel-slug", params: { slug: "會員中心" } });
                 } else {
@@ -241,9 +251,9 @@ onBeforeRouteLeave((to, from, next) => {
     .el-radio-group {
         @apply w-full;
         .el-radio {
-            @apply w-full font-normal mr-0 border-0 bg-gray-50 rounded-[8px];
+            @apply w-full font-normal mr-0 border-0 bg-gray-50 rounded-[8px] whitespace-normal;
             &.el-radio--large {
-                @apply px-4 py-6;
+                @apply px-4 py-8 sm:py-6 leading-6;
             }
         }
     }

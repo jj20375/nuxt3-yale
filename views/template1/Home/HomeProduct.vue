@@ -6,7 +6,7 @@
                     <h2 class="font-medium text-white text-center xl:text-start text-[32px] sm:text-[48px] xl:text-[66px] leading-none YaleSolisW-Bd">BEST SELLER</h2>
                     <h3 class="font-medium leading-[50px] text-[28px] sm:text-[32px] xl:text-[40px] text-center xl:text-start YaleSolisW-Bd md:mt-[14px] mb-6 md:mb-8">精選商品</h3>
                     <Swiper
-                        :slidesPerView="isMobile ? 2 : isPad ? 3 : 3.5"
+                        :slidesPerView="isMobile ? 2 : isLargePad ? 3 : 3.5"
                         :spaceBetween="isMobile ? 16 : 30"
                         :freeMode="true"
                         :scrollbar="{ draggable: true, dragSize: 100, horizontalClass: 'horizontalClass', dragClass: 'dragClass' }"
@@ -16,7 +16,7 @@
                         class="products-swiper"
                     >
                         <SwiperSlide
-                            class="aspect-square w-full mb-9 xl:mb-0"
+                            class="w-full mb-9 xl:mb-0"
                             v-for="item in datas"
                             :key="item"
                         >
@@ -31,7 +31,7 @@
 
 <script lang="ts" setup>
 // import required modules
-const { isMobile, isPad } = useWindowResize();
+const { isMobile, isLargePad } = useWindowResize();
 import { Scrollbar } from "swiper/modules";
 import { current } from "tailwindcss/colors";
 // 產品卡片樣板

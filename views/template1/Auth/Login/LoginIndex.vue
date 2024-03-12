@@ -1,93 +1,95 @@
 <template>
-    <section class="mt-[86px] border-t border-gray-300 py-[60px]">
-        <div class="w-[504px] py-[60px] px-[72px] bg-white mx-auto rounded-[24px] border-[1px] border-gray-200">
-            <h3 class="font-medium text-[28px] text-center mb-8">會員登入</h3>
-            <el-form
-                class="custom-form"
-                ref="formRefDom"
-                :model="form"
-                :rules="rules"
-                require-asterisk-position="right"
-            >
-                <div class="grid gap-6">
-                    <div
-                        v-for="(item, index) in formDatas"
-                        :key="index"
-                    >
-                        <el-form-item
-                            :prop="item.prop"
-                            :label="item.label"
+    <section class="mt-headerMb xl:mt-header border-t border-gray-300 py-[36px] sm:py-[60px]">
+        <div class="container">
+            <div class="w-full md:w-[504px] py-[32px] sm:py-[60px] px-[24px] sm:px-[72px] bg-white sm:mx-auto rounded-[24px] border-[1px] border-gray-200">
+                <h3 class="font-medium YaleSolisW-Bd text-[22px] sm:text-[28px] text-center mb-6 sm:mb-8">會員登入</h3>
+                <el-form
+                    class="custom-form"
+                    ref="formRefDom"
+                    :model="form"
+                    :rules="rules"
+                    require-asterisk-position="right"
+                >
+                    <div class="grid gap-6">
+                        <div
+                            v-for="(item, index) in formDatas"
+                            :key="index"
                         >
-                            <el-input
-                                :type="item.type"
-                                :show-password="item.showPassword"
-                                :placeholder="item.placeholder"
-                                v-model="form[item.prop]"
-                            ></el-input>
-                        </el-form-item>
+                            <el-form-item
+                                :prop="item.prop"
+                                :label="item.label"
+                            >
+                                <el-input
+                                    :type="item.type"
+                                    :show-password="item.showPassword"
+                                    :placeholder="item.placeholder"
+                                    v-model="form[item.prop]"
+                                ></el-input>
+                            </el-form-item>
+                        </div>
+                        <div class="flex justify-between">
+                            <el-form-item
+                                class="!mb-0"
+                                prop="saveInfo"
+                            >
+                                <el-checkbox
+                                    class="!h-fit text-[15px]"
+                                    v-model="form.saveInfo"
+                                    :label="'記住我'"
+                                    size="large"
+                                />
+                            </el-form-item>
+                            <NuxtLink :to="{ name: 'auth-forgot-slug', params: { slug: '忘記密碼' } }">
+                                <div class="text-[15px]">忘記密碼?</div>
+                            </NuxtLink>
+                        </div>
+                        <button
+                            class="yellow-btn !py-3 !w-full"
+                            @click.prevent="onSubmit"
+                        >
+                            登入
+                        </button>
                     </div>
-                    <div class="flex justify-between">
-                        <el-form-item
-                            class="!mb-0"
-                            prop="saveInfo"
+                </el-form>
+                <div class="relative px-[16px] sm:px-5 mt-[30px]">
+                    <div class="relative text-center divide-text before:absolute before:top-1/2 before:left-0 before:h-px before:w-full before:bg-gray-400 before:z-0">
+                        <span class="relative px-3 text-gray-400 text-[15px] bg-white z-[2]">使用其他帳號登入</span>
+                    </div>
+                    <div class="flex gap-[20px] sm:gap-[30px] justify-center mt-4">
+                        <div
+                            v-if="ssoLogingSite.google"
+                            @click="ssoLogin('google')"
                         >
-                            <el-checkbox
-                                class="!h-fit text-[15px]"
-                                v-model="form.saveInfo"
-                                :label="'記住我'"
-                                size="large"
+                            <NuxtImg
+                                class="object-cover w-10 transition-all cursor-pointer aspect-square duration-400 hover:opacity-80 hover:transition-all hover:duration-400"
+                                src="/img/icons/medias/google.svg"
                             />
-                        </el-form-item>
-                        <NuxtLink :to="{ name: 'auth-forgot-slug', params: { slug: '忘記密碼' } }">
-                            <div class="text-[15px]">忘記密碼?</div>
+                        </div>
+                        <div
+                            v-if="ssoLogingSite.line"
+                            @click="ssoLogin('line')"
+                        >
+                            <NuxtImg
+                                class="object-cover w-10 transition-all cursor-pointer aspect-square duration-400 hover:opacity-80 hover:transition-all hover:duration-400"
+                                src="/img/icons/medias/line.svg"
+                            />
+                        </div>
+                        <div
+                            v-if="ssoLogingSite.facebook"
+                            @click="ssoLogin('facebook')"
+                        >
+                            <NuxtImg
+                                class="object-cover w-10 transition-all cursor-pointer aspect-square duration-400 hover:opacity-80 hover:transition-all hover:duration-400"
+                                src="/img/icons/medias/facebook.svg"
+                            />
+                        </div>
+                    </div>
+                    <div class="flex justify-center gap-3 mt-[30px]">
+                        <div class="text-gray-400 text-[15px]">還不是會員?</div>
+                        <NuxtLink :to="{ name: 'auth-register-slug', params: { slug: '註冊頁' } }">
+                            <div class="text-[15px] underline underline-offset-2 cursor-pointer hover:no-underline">立即註冊</div>
                         </NuxtLink>
                     </div>
-                    <button
-                        class="yellow-btn !py-3 !w-full"
-                        @click.prevent="onSubmit"
-                    >
-                        登入
-                    </button>
-                </div>
-            </el-form>
-            <div class="relative px-5 mt-[30px]">
-                <div class="relative text-center divide-text before:absolute before:top-1/2 before:left-0 before:h-px before:w-full before:bg-gray-400 before:z-0">
-                    <span class="relative px-3 text-gray-400 text-[15px] bg-white z-[2]">使用其他帳號登入</span>
-                </div>
-                <div class="flex gap-[30px] justify-center mt-4">
-                    <div
-                        v-if="ssoLogingSite.google"
-                        @click="ssoLogin('google')"
-                    >
-                        <NuxtImg
-                            class="object-cover w-10 transition-all cursor-pointer aspect-1/1 duration-400 hover:opacity-80 hover:transition-all hover:duration-400"
-                            src="/img/icons/medias/google.svg"
-                        />
-                    </div>
-                    <div
-                        v-if="ssoLogingSite.line"
-                        @click="ssoLogin('line')"
-                    >
-                        <NuxtImg
-                            class="object-cover w-10 transition-all cursor-pointer aspect-1/1 duration-400 hover:opacity-80 hover:transition-all hover:duration-400"
-                            src="/img/icons/medias/line.svg"
-                        />
-                    </div>
-                    <div
-                        v-if="ssoLogingSite.facebook"
-                        @click="ssoLogin('facebook')"
-                    >
-                        <NuxtImg
-                            class="object-cover w-10 transition-all cursor-pointer aspect-1/1 duration-400 hover:opacity-80 hover:transition-all hover:duration-400"
-                            src="/img/icons/medias/facebook.svg"
-                        />
-                    </div>
-                </div>
-                <div class="flex justify-center gap-3 mt-[30px]">
-                    <div class="text-gray-400 text-[15px]">還不是會員?</div>
-                    <NuxtLink :to="{ name: 'auth-register-slug', params: { slug: '註冊頁' } }">
-                        <div class="text-[15px] underline underline-offset-2 cursor-pointer hover:no-underline">立即註冊</div>
-                    </NuxtLink>
                 </div>
             </div>
         </div>
@@ -97,11 +99,13 @@
 import { validateEmail } from "~/service/validator";
 import { ElMessage, ElLoading } from "element-plus";
 import { useUserStore } from "~/store/userStore";
+import { useShoppingCarStore } from "~/store/shoppingCarStore";
 import { useInitializationStore } from "~/store/initializationStore";
 import Cookies from "js-cookie";
 
 const { $api, $utils } = useNuxtApp();
 const userStore = useUserStore();
+const shoppingCarStore = useShoppingCarStore();
 const router = useRouter();
 const formRefDom = ref<any>();
 const initializationStore = useInitializationStore();
@@ -164,6 +168,12 @@ async function onSubmit() {
                 message: `尚有欄位未填`,
             });
         } else {
+            Cookies.set("saveInfo", form.value.saveInfo);
+            if (form.value.saveInfo) {
+                Cookies.set("loginEmail", form.value.email);
+            } else {
+                Cookies.set("loginEmail", "");
+            }
             const loading = ElLoading.service({
                 lock: true,
                 text: "登入中...",
@@ -183,7 +193,10 @@ async function onSubmit() {
                     console.log((data.value as any).data.token);
                     const token = (data.value as any).data.token;
                     Cookies.set("token", token);
-                    userStore.getUserProfile();
+                    userStore.setIsAuth(true);
+                    await shoppingCarStore.syncCart();
+                    await shoppingCarStore.syncCustomCart();
+                    await userStore.getUserProfile();
                     router.push({ name: "auth-panel-slug", params: { slug: "會員中心" } });
                 } else {
                     ElMessage({
@@ -210,24 +223,33 @@ async function ssoLogin(site: string) {
     } else if (site === "facebook") {
         ssoSite = ssoLogingSite.value.facebook;
     }
-    $utils().openNewWindow(ssoSite)
+    $utils().openNewWindow(ssoSite);
 }
 
-function getMessage(e: any) {
-    if (e.origin === 'https://yale-third-party.mrjin.me') {
-        console.log(e, 'getMessage', e.data);
-        const SSOLoginData = e.data
+async function getMessage(e: any) {
+    if (e.origin === "https://yale-third-party.mrjin.me") {
+        console.log(e, "getMessage", e.data);
+        const SSOLoginData = e.data;
         if (!SSOLoginData.registered) {
-            userStore.ssoLogingData = SSOLoginData
-            router.push({ name: 'auth-login-sso-slug', params: { slug: '快速登入' } });
+            userStore.ssoLogingData = SSOLoginData;
+            router.push({ name: "auth-login-sso-slug", params: { slug: "快速登入" } });
         } else {
             const token = SSOLoginData.token;
             Cookies.set("token", token);
+            userStore.setIsAuth(true);
+            await shoppingCarStore.syncCart();
+            await shoppingCarStore.syncCustomCart();
+
             userStore.getUserProfile();
             router.push({ name: "auth-panel-slug", params: { slug: "會員中心" } });
         }
         // router.push({ name: 'auth-login-sso-slug', params: { slug: '快速登入' } });
     }
+}
+
+if (Cookies.get("saveInfo") === "true") {
+    form.value.saveInfo = Cookies.get("saveInfo") === "true";
+    form.value.email = Cookies.get("loginEmail");
 }
 
 onMounted(async () => {

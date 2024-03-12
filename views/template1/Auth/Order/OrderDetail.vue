@@ -1,12 +1,12 @@
 <template>
-    <section class="mt-[86px] border-t border-gray-300">
-        <nav class="border-b border-gray-300 py-[16px] bg-white">
+    <section class="mt-headerMb xl:mt-header">
+        <nav class="border-t border-gray-300 border-b py-[16px] bg-white">
             <div class="container">
                 <Breadcrumb :menus="breadcrumbs" />
             </div>
         </nav>
         <div class="container">
-            <div class="pt-[60px] pb-[100px]">
+            <div class="pt-[36px] sm:pt-[60px] pb-[50px] sm:pb-[100px]">
                 <NuxtLink :to="{ name: 'auth-order-slug' }">
                     <div class="flex">
                         <NuxtImg
@@ -16,24 +16,25 @@
                         <span class="text-gray-700">返回</span>
                     </div>
                 </NuxtLink>
-                <div class="flex justify-between items-end mt-9 mb-[30px]">
-                    <h3 class="text-[32px]">訂單資訊</h3>
+                <div class="flex justify-between items-end mt-6 sm:mt-9 mb-5 sm:mb-[30px]">
+                    <h3 class="text-[24px] md:text-[32px]">訂單資訊</h3>
                     <div class="flex items-center gap-2 cursor-pointer h-fit">
                         <NuxtImg
                             class="w-[20px] aspect-square object-cover"
                             src="/img/icons/auth/download.svg"
                         />
-                        <span>下載訂購單</span>
+                        <span @click="downloadPdf()">下載訂購單</span>
                     </div>
                 </div>
                 <RecordTimeline
                     :orderNumber="orderData.orderNumber"
                     :timeline="orderData.timeline"
+                    :status="orderData?.payment?.orderStatus"
                 />
-                <div class="mt-12">
+                <div class="mt-8 sm:mt-12">
                     <h4 class="mb-3 font-bold">配送資訊</h4>
                     <div class="border-b-[1px] border-gray-200 pb-5">
-                        <div class="grid grid-cols-2 gap-1 w-[100%] 2xl:w-[85%] 3xl:w-[70%]">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-1 w-full 2xl:w-[85%] 3xl:w-[70%]">
                             <div
                                 v-if="orderData?.info?.contactName"
                                 class="text-gray-700"
@@ -62,7 +63,7 @@
                     </div>
                     <h4 class="mt-5 mb-3 font-bold">付款明細</h4>
                     <div class="border-b-[1px] border-gray-200 pb-5">
-                        <div class="grid grid-cols-2 gap-1 w-[100%] 2xl:w-[85%] 3xl:w-[70%]">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-1 w-full 2xl:w-[85%] 3xl:w-[70%]">
                             <div
                                 v-if="orderData?.payment?.method"
                                 class="text-gray-700"
@@ -78,7 +79,7 @@
                         </div>
                     </div>
                     <h4 class="mt-5 mb-3 font-bold">發票資訊</h4>
-                    <div class="grid grid-cols-2 gap-1 w-[100%] 2xl:w-[85%] 3xl:w-[70%]">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-1 w-full 2xl:w-[85%] 3xl:w-[70%]">
                         <div
                             v-if="orderData?.receipt?.status"
                             class="text-gray-700"
@@ -111,7 +112,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="mt-12">
+                <div class="mt-8 sm:mt-12">
                     <div class="bg-gray-100 px-[20px] py-[10px] font-bold">配送商品</div>
                 </div>
                 <div>
@@ -120,7 +121,17 @@
                 <div>
                     <OrderPrice :order="orderData.price" />
                 </div>
-                <div class="flex justify-center mt-[60px]">
+                <div
+                    v-if="
+                        orderData?.payment?.orderStatus === '未付款' ||
+                        orderData?.payment?.orderStatus === '處理中' ||
+                        orderData?.payment?.orderStatus === '已出貨' ||
+                        orderData?.payment?.orderStatus === '待付訂金' ||
+                        orderData?.payment?.orderStatus === '丈量派工中' ||
+                        orderData?.payment?.orderStatus === '待付尾款'
+                    "
+                    class="flex justify-center mt-[30px] sm:mt-[60px]"
+                >
                     <button
                         class="transparent-btn btn-xs"
                         @click="handleRefund"
@@ -160,6 +171,25 @@
                 </div>
             </el-dialog>
         </client-only>
+        <client-only>
+            <el-dialog
+                class="custom-dialog"
+                close-on-click-modal
+                lock-scroll
+                show-close
+                center
+                align-center
+                append-to-
+                fullscreen
+                v-model="showDownload"
+            >
+                <OrderDownloadHtml
+                    v-show="showDownload"
+                    :orderData="orderData"
+                    ref="orderDownloadHtmlRefDom"
+                />
+            </el-dialog>
+        </client-only>
     </section>
 </template>
 <script setup lang="ts">
@@ -167,8 +197,15 @@ import Breadcrumb from "~/views/template1/components/Breadcrumb.vue";
 import RecordTimeline from "~/views/template1/Auth/components/OrderTimeline.vue";
 import RecordProduct from "~/views/template1/Auth/components/OrderProduct.vue";
 import OrderPrice from "~/views/template1/Auth/components/OrderPrice.vue";
+// 訂單下載 html
+import OrderDownloadHtml from "~/views/template1/Auth/Order/components/OrderDownloadHtml.vue";
 
-const { $utils } = useNuxtApp();
+import moment from "moment";
+
+const { $api, $utils } = useNuxtApp();
+
+const showDownload = ref(false);
+const route = useRoute();
 
 const breadcrumbs = ref([
     {
@@ -200,22 +237,12 @@ const handleRefund = () => {
 
 // 訂單資料
 const orderData = ref({
-    orderNumber: "#20211010001",
+    orderNumber: "",
     timeline: [
         {
             date: "2022-06-11",
             time: "11:00",
             status: "未付款",
-        },
-        {
-            date: "2022-06-20",
-            time: "13:23",
-            status: "訂單成立",
-        },
-        {
-            date: "2022-06-25",
-            time: "11:00",
-            status: "派工確認完成",
         },
     ],
     info: {
@@ -275,5 +302,123 @@ const orderData = ref({
         totalPrice: 43399,
         memo: "備註內容備註內容備註內容備註內容備註內容備註內容備註內容備註內容備註內容備註內容備註內容備註內容",
     },
+});
+
+// 訂單下載 html
+const orderDownloadHtmlRefDom = ref<any>(null);
+const { data: resProductDetail }: any = await $api().GetProductOrderDetailAPI({ orderId: route.query.id });
+
+const orderStatus = (status: string) => {
+    switch (status) {
+        case "unpaid":
+            return "未付款";
+        case "paid":
+            return "已付款";
+        case "process":
+            return "處理中";
+        case "shipped":
+            return "已出貨";
+        case "cancel":
+            return "已取消";
+        case "refund":
+            return "已退款";
+        case "return":
+            return "已退貨";
+        case "complete":
+            return "訂單完成";
+        case "measure_complete":
+            return "待付訂金";
+        case "waiting_deposit":
+            return "已付訂金";
+        case "deposited":
+            return "丈量派工中";
+        case "measure_dispatch":
+            return "丈量完成";
+        case "waiting_final_payment":
+            return "待付尾款";
+        case "final_payment":
+            return "已付尾款";
+        case "door_finish":
+            return "門扇製作完成";
+        case "install_dispatch":
+            return "安裝派工中";
+        case "install_complete":
+            return "安裝完成";
+        default:
+            return "";
+    }
+};
+const receiptStatus = (status: string) => {
+    switch (status) {
+        case "unissued":
+            return "未開立";
+        case "issued":
+            return "已開立";
+        case "cancelled":
+            return "已作廢";
+        default:
+            return "";
+    }
+};
+/**
+ * 取得商品分類詳情
+ */
+const getData = async () => {
+    console.log("resProductDetail =>", resProductDetail);
+    orderData.value.orderNumber = resProductDetail.order_no;
+    orderData.value.info = {
+        contactName: resProductDetail.contact_name,
+        email: resProductDetail.contact_email,
+        phone: resProductDetail.contact_phone,
+        address: resProductDetail.contact_city + resProductDetail.contact_district + resProductDetail.contact_address,
+    };
+    orderData.value.products = [];
+    resProductDetail.orderItems.forEach((item: { productable: { name: any; attributes: { [x: string]: any } }; quantity: any }) => {
+        orderData.value.products.push({
+            name: item.productable.name,
+            price: "$" + $utils().formatCurrency(item.price),
+            color: item.productable.attributes["顏色"],
+            quantity: item.quantity,
+            imgUrl: item.productable.main_image,
+        });
+    });
+    orderData.value.timeline = [];
+    resProductDetail.orderPayments.forEach((item) => {
+        orderData.value.timeline.push({
+            date: moment(item.created_at).format("YYYY-MM-DD"),
+            time: moment(item.created_at).format("HH:mm"),
+            status: orderStatus(item.status),
+        });
+    });
+    orderData.value.receipt.type = resProductDetail.orderPayments[0].orderInvoice.type;
+    orderData.value.receipt.status = receiptStatus(resProductDetail.orderPayments[0].orderInvoice.status);
+    orderData.value.receipt.date = resProductDetail.orderPayments[0].orderInvoice.issued_at;
+    orderData.value.receipt.taxId = resProductDetail.orderPayments[0].orderInvoice.carrier_code;
+    orderData.value.receipt.number = resProductDetail.orderPayments[0].orderInvoice.invoice_no;
+    orderData.value.price.totalPrice = resProductDetail.total_amount;
+    orderData.value.price.memo = resProductDetail.remark ? resProductDetail.remark : "無";
+    orderData.value.payment.orderStatus = orderStatus(resProductDetail.status);
+};
+
+/**
+ * 初始化
+ */
+async function init() {
+    await getData();
+}
+
+function downloadPdf() {
+    showDownload.value = true;
+    setTimeout(() => {
+        orderDownloadHtmlRefDom.value.downloadPdf();
+    }, 1000);
+}
+
+onMounted(async () => {
+    nextTick(async () => {
+        if (process.client) {
+            await init();
+        }
+    });
 });
 </script>

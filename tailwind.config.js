@@ -10,7 +10,7 @@ module.exports = {
         textColor: (theme) => theme("colors"),
         textOpacity: (theme) => theme("opacity"),
         screens: {
-            sm: "640px",
+            sm: "576px",
             md: "769px",
             lg: "992px",
             xl: "1280px",
@@ -183,7 +183,6 @@ module.exports = {
             center: true,
             padding: {
                 DEFAULT: "1.5rem",
-                sm: "2rem",
                 lg: "3rem",
                 xl: "5rem",
                 "2xl": "6rem",

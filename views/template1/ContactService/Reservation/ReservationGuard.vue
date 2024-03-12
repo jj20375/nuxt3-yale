@@ -17,11 +17,11 @@
                     @submit.prevent="onSubmit"
                     require-asterisk-position="right"
                 >
-                    <div class="w-3/4 mt-[80px] p-[60px] pt-[50px] bg-white mx-auto rounded-[24px] border-[1px] border-gray-200">
+                    <div class="w-full xl:w-3/4 mt-[36px] sm:mt-[80px] px-[24px] py-[36px] sm:p-[60px] bg-white mx-auto rounded-[12px] sm:rounded-[24px] border-[1px] border-gray-200">
                         <div>親愛的顧客您好：<br />完成預約後，專人將會在 3 個工作天內主動致電聯繫，詢問及確認需求，並且協助預約到府安裝。</div>
-                        <div class="my-[30px] border-b-[1px] border-gray-200"></div>
+                        <div class="my-[16px] sm:my-[30px] border-b-[1px] border-gray-200"></div>
                         <h3 class="text-[24px] font-bold mb-6">申請人</h3>
-                        <div class="grid grid-cols-2 gap-6">
+                        <div class="flex flex-col md:grid grid-cols-2 gap-6">
                             <template
                                 v-for="(item, index) in formDatas.applyDatas"
                                 :key="index"
@@ -60,14 +60,13 @@
                                 </div>
                                 <div
                                     v-else
-                                    class="flex flex-1"
+                                    class="flex flex-col md:flex-row flex-1 gap-6"
                                     :class="item.span ? `col-span-${item.span}` : ''"
                                 >
                                     <div
                                         v-for="(item2, index2) in item.datas"
                                         class="flex-1"
                                         :key="index2"
-                                        :class="item.datas.length - 1 === index2 ? '' : 'mr-[30px]'"
                                     >
                                         <el-form-item
                                             :prop="item2.prop"
@@ -98,7 +97,7 @@
                                         </el-form-item>
                                     </div>
                                 </div>
-                                <template v-if="item.space">
+                                <template v-if="item.space && !isMobile">
                                     <div
                                         v-for="index in item.space"
                                         :key="index"
@@ -107,9 +106,9 @@
                             </template>
                         </div>
                     </div>
-                    <div class="w-3/4 mt-[40px] p-[60px] pt-[50px] bg-white mx-auto rounded-[24px] border-[1px] border-gray-200">
+                    <div class="w-full xl:w-3/4 mt-[36px] sm:mt-[80px] px-[24px] py-[36px] sm:p-[60px] bg-white mx-auto rounded-[12px] sm:rounded-[24px] border-[1px] border-gray-200">
                         <h3 class="text-[24px] font-bold mb-6">新光保全</h3>
-                        <div class="grid grid-cols-2 gap-6">
+                        <div class="flex flex-col md:grid grid-cols-2 gap-6">
                             <template
                                 v-for="(item, index) in formDatas.guardDatas"
                                 :key="index"
@@ -126,7 +125,7 @@
                                             :disabled="item.disabled"
                                             :placeholder="item.placeholder"
                                             v-model="form[item.prop]"
-                                        ></el-input>
+                                        />
                                         <el-select
                                             v-else-if="item.style === 'select'"
                                             class="w-full"
@@ -139,7 +138,7 @@
                                                 :key="optionIndex"
                                                 :label="option.label"
                                                 :value="option.value"
-                                            ></el-option>
+                                            />
                                         </el-select>
                                         <el-radio-group
                                             v-else-if="item.style === 'radio'"
@@ -180,7 +179,7 @@
                                         </el-checkbox-group>
                                     </el-form-item>
                                 </div>
-                                <template v-if="item.space">
+                                <template v-if="item.space && !isMobile">
                                     <div
                                         v-for="index in item.space"
                                         :key="index"
@@ -191,7 +190,7 @@
                                         <span>{{ item.memoText }}</span>
                                         <template v-if="item.memoUrl">
                                             <NuxtLink :to="item.memoUrl">
-                                                <span class="text-blue-500 ml-1 underline cursor-pointer underline-offset-2 hover:no-underline">{{ item.memoUrlText }}</span>
+                                                <span class="ml-1 text-blue-500 underline cursor-pointer underline-offset-2 hover:no-underline">{{ item.memoUrlText }}</span>
                                             </NuxtLink>
                                         </template>
                                     </div>
@@ -199,9 +198,9 @@
                             </template>
                         </div>
                     </div>
-                    <div class="w-3/4 mt-[40px] p-[60px] pt-[50px] bg-white mx-auto rounded-[24px] border-[1px] border-gray-200">
+                    <div class="w-full xl:w-3/4 mt-[36px] sm:mt-[80px] px-[24px] py-[36px] sm:p-[60px] bg-white mx-auto rounded-[12px] sm:rounded-[24px] border-[1px] border-gray-200">
                         <h3 class="text-[24px] font-bold mb-6">商品安裝相關</h3>
-                        <div class="grid grid-cols-2 gap-6">
+                        <div class="flex flex-col md:grid grid-cols-2 gap-6">
                             <template
                                 v-for="(item, index) in formDatas.productDatas"
                                 :key="index"
@@ -272,7 +271,7 @@
                                         </el-checkbox-group>
                                     </el-form-item>
                                 </div>
-                                <template v-if="item.space">
+                                <template v-if="item.space && !isMobile">
                                     <div
                                         v-for="index in item.space"
                                         :key="index"
@@ -283,15 +282,15 @@
                                         <span>{{ item.memoText }}</span>
                                         <template v-if="item.memoUrl">
                                             <NuxtLink :to="item.memoUrl">
-                                                <span class="text-blue-500 ml-1 underline cursor-pointer underline-offset-2 hover:no-underline">{{ item.memoUrlText }}</span>
+                                                <span class="ml-1 text-blue-500 underline cursor-pointer underline-offset-2 hover:no-underline">{{ item.memoUrlText }}</span>
                                             </NuxtLink>
                                         </template>
                                     </div>
                                 </template>
                             </template>
                             <div class="col-span-2">
-                                <div class="bg-gray-50 px-4 py-3 leading-7">
-                                    <ul class="list-disc pl-4">
+                                <div class="px-4 py-3 leading-7 bg-gray-50">
+                                    <ul class="pl-4 list-disc">
                                         <li class="text-[15px]">請預填，後續將派專人與您聯繫</li>
                                         <li class="text-[15px]">安裝過程中會有敲打、電鑽挖孔噪音，請先確認大樓社區能否假日施工，謝謝。</li>
                                     </ul>
@@ -311,9 +310,9 @@
                             </el-form-item>
                         </div>
                     </div>
-                    <div class="w-3/4 mt-[40px] p-[60px] pt-[50px] bg-white mx-auto rounded-[24px] border-[1px] border-gray-200">
+                    <div class="w-full xl:w-3/4 mt-[36px] sm:mt-[80px] px-[24px] py-[36px] sm:p-[60px] bg-white mx-auto rounded-[12px] sm:rounded-[24px] border-[1px] border-gray-200">
                         <h3 class="text-[24px] font-bold mb-6">上傳照片</h3>
-                        <div class="grid gap-6">
+                        <div class="flex flex-col md:grid grid-cols-2 gap-6">
                             <template
                                 v-for="(item, index) in formDatas.updateDatas"
                                 :key="index"
@@ -321,24 +320,24 @@
                                 <div :class="item.span ? `col-span-${item.span}` : ''">
                                     <el-form-item :prop="item.prop">
                                         <label class="block w-full text-[15px] text-gray-800"> {{ item.label }} <span class="text-red-500">*</span> </label>
-                                        <div class="flex gap-4 w-full mt-2 mb-4">
+                                        <div class="flex flex-col w-full gap-4 mb-6 sm:flex-row">
                                             <div
-                                                class="flex gap-1 items-center underline cursor-pointer underline-offset-2 hover:no-underline"
+                                                class="flex items-center gap-1 text-blue-500 underline cursor-pointer underline-offset-2 hover:no-underline"
                                                 @click="handleDialog('locker')"
                                             >
                                                 <NuxtImg
-                                                    class="w-4 h-fit aspect-square object-cover"
-                                                    src="/img/repair/repair-doc-icon.svg"
+                                                    class="object-cover w-4 h-fit aspect-square"
+                                                    src="/img/repair/repair-doc-icon-2.svg"
                                                 />
                                                 電子鎖安裝照片範例說明
                                             </div>
                                             <div
-                                                class="flex gap-1 items-center underline cursor-pointer underline-offset-2 hover:no-underline"
+                                                class="flex items-center gap-1 text-blue-500 underline cursor-pointer underline-offset-2 hover:no-underline"
                                                 @click="handleDialog('coffer')"
                                             >
                                                 <NuxtImg
-                                                    class="w-4 h-fit aspect-square object-cover"
-                                                    src="/img/repair/repair-doc-icon.svg"
+                                                    class="object-cover w-4 h-fit aspect-square"
+                                                    src="/img/repair/repair-doc-icon-2.svg"
                                                 />
                                                 保險箱安裝照片範例說明
                                             </div>
@@ -353,8 +352,8 @@
                                 </div>
                             </template>
                             <div class="col-span-2">
-                                <div class="bg-gray-50 px-4 py-3 leading-7">
-                                    <ul class="list-disc pl-4">
+                                <div class="px-4 py-3 leading-7 bg-gray-50">
+                                    <ul class="pl-4 list-disc">
                                         <li class="text-[15px]">請注意：如因門扇特殊 或需要額外使用其他安裝配件、耗材，將由專人報價收費。</li>
                                     </ul>
                                 </div>
@@ -408,19 +407,24 @@ import GoogleReCaptchaV2 from "~/components/GoogleRecaptchaV2.vue";
 import FileUpload from "~/views/template1/ContactService/ContactWe/components/ContactWebFileUpload.vue";
 import { ProductListAPIInterface } from "~/interface/product.d";
 const router = useRouter();
+const { isMobile } = useWindowResize();
 
 const { $api } = useNuxtApp();
 
 const breadcrumbs = ref([
     {
-        name: "faq-slug",
+        name: "index",
+        text: "首頁",
+    },
+    {
+        name: "reservation-guard-slug",
         text: "服務支援",
-        params: { slug: "服務支援" },
+        params: { slug: "新光保全安裝" },
     },
     {
         name: "reservation-slug",
-        params: { slug: "預約安裝" },
         text: "預約安裝",
+        params: { slug: "預約安裝" },
     },
     {
         name: "reservation-guard-slug",

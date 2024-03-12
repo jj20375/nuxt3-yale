@@ -1,8 +1,8 @@
 <template>
-    <section class="mt-[86px] pb-[60px] bg-gray-50">
+    <section class="mt-headerMb xl:mt-header pb-[60px] bg-gray-50">
         <div class="container overflow-auto">
-            <div class="w-[620px] mt-[60px] py-[60px] px-[60px] bg-white mx-auto rounded-[24px] border-[1px] border-gray-200">
-                <h3 class="font-medium text-[28px] mb-8">重設密碼</h3>
+            <div class="w-full lg:w-[620px] mt-[36px] sm:mt-[60px] py-[60px] px-[60px] bg-white mx-auto rounded-[24px] border-[1px] border-gray-200">
+                <h3 class="font-medium YaleSolisW-Bd text-[28px] mb-8">重設密碼</h3>
                 <el-form
                     class="custom-form"
                     ref="formRefDom"

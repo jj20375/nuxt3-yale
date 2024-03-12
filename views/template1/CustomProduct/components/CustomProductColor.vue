@@ -2,13 +2,12 @@
     <div>
         <h3 class="text-[16px] font-medium YaleSolisW-Bd mb-[20px]">顏色</h3>
         <ul
-            class="flex mt-[20px] gap-[20px]"
-            v-for="(rowColor, index) in showColors"
+            class="flex flex-wrap mt-[20px] gap-x-[20px] gap-y-[12px]"
         >
             <li
-                v-for="color in rowColor"
+                v-for="color in colors"
                 :key="color.id"
-                class="cursor-pointer group"
+                class="cursor-pointer group w-[48px]"
                 @click="currentColorIdData = color.id"
             >
                 <div
@@ -16,7 +15,7 @@
                     :class="currentColorIdData === color.id ? 'border-yellow-600' : 'group-hover:border-gray-100'"
                 >
                     <NuxtImg
-                        class="w-[32px]"
+                        class="w-[32px] aspect-square"
                         :src="color.imgSrc"
                     />
                 </div>
@@ -60,28 +59,6 @@ const props = withDefaults(defineProps<Props>(), {
         },
     ],
     currentColorId: "id1",
-});
-
-// 顯示顏色規則 因為 6個顏色要換行 因此加上此演算法
-const showColors = computed(() => {
-    // 一行顯示幾個
-    const rowShowTotal = 6;
-    var datas = props.colors;
-
-    // 可被整除的數字 (取出可被 6 整除的最大公倍數，當陣列數小於 6 時 給予預設值 1)
-    const divisble = datas.length / rowShowTotal < 0 ? 1 : datas.length / rowShowTotal;
-    // 需要更新的所有路徑 (將陣列資料 以 4 筆 為單位 拆成 二維陣列資料方式存入)
-    const datasTotal: any = [];
-    // 判斷最大公倍數有多少執行回圈多少次
-    for (let i = 0; i < divisble; i++) {
-        datasTotal[i] = datas.slice(i * rowShowTotal, (i + 1) * rowShowTotal);
-    }
-    // 陣列數 / 6 如果未整除時 將剩餘陣列資料塞入 datasToatal 中
-    if (datas.length / rowShowTotal > divisble) {
-        // 新增一筆陣列資料將最後剩餘的資料塞入
-        datasTotal[divisble] = datas.splice(divisble * rowShowTotal, datas.length);
-    }
-    return datasTotal;
 });
 
 // 預設選中顏色

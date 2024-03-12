@@ -1,25 +1,25 @@
 <template>
-    <section class="mt-[86px]">
+    <section class="mt-headerMb xl:mt-header">
         <nav class="border-t border-b border-gray-300 py-[16px] bg-white min-h-[43px] xl:min-h-[55px]">
             <div class="container">
                 <Breadcrumb :menus="breadcrumbs" />
             </div>
         </nav>
         <div class="text-center bg-gray-50">
-            <div class="container min-h-[200px] flex items-center">
-                <div class="w-[164px]"></div>
-                <h1 class="text-[32px] font-medium YaleSolisW-Bd flex-1">{{ route.params.slug }}</h1>
-                <div class="flex items-center">
-                    <div class="mr-[20px]">
+            <div class="container min-h-[200px] flex flex-col xl:flex-row justify-center xl:justify-start items-center gap-4 xl:gap-0">
+                <div class="hidden xl:block w-[164px]"></div>
+                <h1 class="text-[32px] font-medium YaleSolisW-Bd xl:flex-1">{{ route.params.slug }}</h1>
+                <div class="flex flex-col xl:flex-row items-center gap-4 xl:gap-0 w-full xl:w-auto">
+                    <div class="xl:mr-[20px]">
                         <NuxtLink :to="{ name: 'product-compare-slug', params: { slug: '耶魯產品資訊-主鎖-主鎖比較' }, query: { compareId: route.query.compareId } }">
                             <button class="text-blue-500 underline underline-offset-2 hover:no-underline">重新選擇</button>
                         </NuxtLink>
                     </div>
-                    <ul class="flex gap-4">
-                        <li class="p-1 cursor-pointer">
+                    <ul class="flex gap-4 self-end">
+                        <li @click="socialShare('fb')" class="p-1 cursor-pointer">
                             <IconFacebook class="!w-[24px] !h-[24px] transition-all duration-300 hover:text-gray-400 hover:transition-all hover:duration-300" />
                         </li>
-                        <li class="p-1 cursor-pointer">
+                        <li @click="socialShare('line')" class="p-1 cursor-pointer">
                             <IconLine class="!w-[24px] !h-[24px] transition-all duration-300 hover:text-gray-400 hover:transition-all hover:duration-300" />
                         </li>
                     </ul>
@@ -28,6 +28,7 @@
         </div>
         <div class="container">
             <ProductDifferenceContent
+                ref="productDifferenceContentRef"
                 :products="products"
                 :columns="columns"
                 :datas="datas"
@@ -50,6 +51,7 @@ import IconFacebook from "assets/img/icons/medias/icon-black-1.svg";
 const { $api, $utils } = useNuxtApp();
 const route = useRoute();
 const productCompareStore = useProductCompareStore();
+const productDifferenceContentRef = ref<any>(null)
 
 const compareStore = computed(() => {
     return JSON.stringify(productCompareStore.compareStore);
@@ -66,7 +68,7 @@ const products = ref<any>([]);
 watch(
     () => compareStore.value,
     (val) => {
-        productsCompareData();
+        productsCompareData(false);
     }
 );
 
@@ -107,13 +109,25 @@ async function getList(params: { product_type_id: string }) {
             });
             attributes.value = obj;
         }
+        await getShareData()
         await productsCompareData();
     } catch (err) {
         console.log("HomeSampleAPI => ", err);
     }
 }
 
-function productsCompareData() {
+function getShareData () {
+    if (route.query.selectItem && JSON.parse(route.query.selectItem)) {
+        productCompareStore.compareStoreReset()
+        const selectItems = JSON.parse(route.query.selectItem)
+        console.log(selectItems)
+        selectItems.forEach((item: string | number, index: number) => {
+            productCompareStore.compareStore[index] = datas.value.find((data) => data.id === item);
+        });
+    }
+}
+
+function productsCompareData(init = true) {
     products.value = [];
     if (productCompareStore.compareStore[0]?.attributes) {
         Object.keys(productCompareStore.compareStore[0]?.attributes).forEach((item) => {
@@ -126,14 +140,17 @@ function productsCompareData() {
             obj[key] = item?.attributes[key];
         });
         products.value.push({
-            id: item.id,
-            name: item.name,
+            id: item?.id,
+            name: item?.name,
             style: item?.model,
             category: item?.shape,
             imgSrc: item?.main_image,
             ...obj,
         });
     });
+    if (init) {
+        productDifferenceContentRef.value?.getStyleModel();
+    }
 }
 
 productsCompareData();
@@ -146,6 +163,40 @@ const columns = computed(() => {
         ...attributes.value,
     };
 });
+
+// 分享
+function socialShare (type:string) {
+    const selectItems: string[] = []
+    products.value.forEach((item: { id: string; }) => {
+        if (item.id) {
+            console.log(item.id)
+            selectItems.push(item.id)
+        }
+    })
+    let path =  window.location.origin + route.path + '?'
+    console.log(route.query)
+    Object.keys(route.query).forEach(key => {
+        if (key !=='selectItem') {
+            console.log(key)
+            path  = path + `${key}=${route.query[key]}`
+        }
+    })
+    console.log(path)
+    path = encodeURIComponent(path + `&selectItem=${JSON.stringify(selectItems)}`)
+    console.log(path)
+    if (type === 'line') {
+        console.log(path)
+        const url = 'https://social-plugins.line.me/lineit/share?url=' + path
+        console.log(path)
+
+        $utils().openNewWindow(url)
+    }
+    if (type === 'fb') {
+        const url = 'https://www.facebook.com/sharer/sharer.php?u=' + path
+
+        $utils().openNewWindow(url)
+    }
+}
 
 /**
  * 初始化

@@ -5,11 +5,14 @@
         </template>
 
         <template #custom-sidebar>
-            <div v-if="isPad" class="bg-white">
+            <div
+                v-if="isLargePad"
+                class="bg-white"
+            >
                 <div class="container">
-                    <h1 class="text-[32px] text-gray-800 pb-2 xl:pb-[24px] leading-none pt-[20px] md:pt-[32px] font-medium">產品資訊</h1>
+                    <h1 class="text-[32px] text-gray-800 pb-2 xl:pb-[24px] leading-none pt-[32px] YaleSolisW-Bd font-medium">產品資訊</h1>
                     <div class="hidden xl:block border-b border-gray-200 py-[16px]">
-                        <h5 class="text-[16px] font-medium">商品分類</h5>
+                        <h5 class="text-[16px] YaleSolisW-Bd font-medium">商品分類</h5>
                     </div>
                 </div>
             </div>
@@ -19,78 +22,85 @@
                 :menus="sidebar"
             >
                 <template #sidebar-deep-title>
-                    <h1 class="text-[32px] text-gray-800 pb-2 xl:pb-[24px] leading-none pt-[20px] md:pt-[32px] font-medium">產品資訊</h1>
+                    <h1 class="text-[32px] text-gray-800 pb-2 xl:pb-[24px] leading-none pt-[20px] md:pt-[32px] YaleSolisW-Bd font-medium">產品資訊</h1>
                 </template>
                 <template #sidebar-deep-sub-title>
                     <div class="hidden xl:block border-b border-gray-200 py-[16px]">
-                        <h5 class="text-[16px] font-medium">商品分類</h5>
+                        <h5 class="text-[16px] YaleSolisW-Bd font-medium">商品分類</h5>
                     </div>
                 </template>
             </SideBar>
         </template>
 
         <template #custom-content>
-            <div v-if="loading">
+            <template v-if="loading">
                 <div class="flex items-center justify-center w-full h-screen">
-                    <font-awesome-icon class="animate-spin text-[40px] text-gray-300"  :icon="['fas', 'circle-notch']"/>
-                </div>
-            </div>
-            <div class="-mx-6 sm:mx-0 flex flex-col xl:flex-row items-center mb-[40px] sm:mt-[32px] gap-4 md:gap-[40px]">
-                <NuxtImg
-                    v-if="productTypeDetail.media"
-                    class="w-full md:w-[400px] shrink-0 h-fit aspect-[16/9] object-cover"
-                    :src="productTypeDetail.media"
-                />
-                <div class="px-6 sm:px-0">
-                    <h2 class="text-[24px] font-medium">{{ productTypeDetail.name }}</h2>
-                    <p class="md:mt-[16px] text-[16px]">{{ productTypeDetail.description }}</p>
-                </div>
-            </div>
-            <div class="flex flex-col md:flex-row justify-end mb-[24px] gap-[30px]">
-                <NuxtLink
-                    v-if="productTypeDetail.is_compare === 1"
-                    @click="goToCompare(productTypeDetail)"
-                >
-                    <button class="transparent-btn btn-xs">規格比較</button>
-                </NuxtLink>
-                <div class="flex items-center self-end md:self-start">
-                    <p class="text-[16px] text-gray-800">排序：</p>
-                    <el-select
-                        class="w-[180px]"
-                        v-model="sortBy"
-                        @change="sortChange"
-                        value-key="label"
-                        :suffix-icon="IconArrowDown"
-                    >
-                        <el-option
-                            v-for="(item, key) in sortOptions"
-                            :key="key"
-                            :label="item.label"
-                            :value="item.value"
-                        ></el-option>
-                    </el-select>
-                </div>
-            </div>
-            <div class="grid grid-cols-2 md:grid-cols-3 gap-x-[20px] gap-y-[40px]">
-                <div
-                    v-for="(product, index) in datas"
-                    :key="index"
-                >
-                    <ProductCard
-                        :breadcrumbs="breadcrumbs"
-                        :product="product"
-                        @handleFavorite="handleFavorite"
+                    <font-awesome-icon
+                        class="animate-spin text-[40px] text-gray-300"
+                        :icon="['fas', 'circle-notch']"
                     />
                 </div>
-            </div>
+            </template>
+            <template v-else>
+                <div class="-mx-6 sm:mx-0 flex flex-col xl:flex-row items-center mb-[40px] sm:mt-[32px] gap-4 md:gap-[40px]">
+                    <NuxtImg
+                        v-if="productTypeDetail.media"
+                        class="w-full md:w-[400px] shrink-0 h-fit aspect-[16/9] object-cover"
+                        :src="productTypeDetail.media"
+                    />
+                    <div class="px-6 sm:px-0">
+                        <h2 class="YaleSolisW-Bd text-[24px] font-medium">{{ productTypeDetail.name }}</h2>
+                        <p class="md:mt-[16px] text-[16px]">{{ productTypeDetail.description }}</p>
+                    </div>
+                </div>
+                <div class="flex flex-col md:flex-row justify-end mb-[24px] gap-[30px]">
+                    <NuxtLink
+                        v-if="productTypeDetail.is_compare === 1"
+                        @click="goToCompare(productTypeDetail)"
+                    >
+                        <button class="transparent-btn btn-xs">規格比較</button>
+                    </NuxtLink>
+                    <div class="flex items-center self-end md:self-start">
+                        <p class="text-[16px] text-gray-800">排序：</p>
+                        <el-select
+                            class="w-[180px]"
+                            v-model="sortBy"
+                            @change="sortChange"
+                            value-key="label"
+                            :suffix-icon="IconArrowDown"
+                        >
+                            <el-option
+                                v-for="(item, key) in sortOptions"
+                                :key="key"
+                                :label="item.label"
+                                :value="item.value"
+                            ></el-option>
+                        </el-select>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-x-[20px] gap-y-[40px]">
+                    <div
+                        v-for="(product, index) in datas"
+                        :key="index"
+                    >
+                        <ProductCard
+                            :breadcrumbs="breadcrumbs"
+                            :product="product"
+                            @handleFavorite="handleFavorite"
+                        />
+                    </div>
+                </div>
+            </template>
         </template>
         <template #custom-pagination>
-            <Pagination
-                v-if="!loadingWaitPagination"
-                :pagination="pagination"
-                @handlePageChange="handlePageChange"
-                class="flex justify-center mb-[95px] mt-[80px]"
-            />
+            <template v-if="!loading">
+                <Pagination
+                    v-if="!loadingWaitPagination"
+                    :pagination="pagination"
+                    @handlePageChange="handlePageChange"
+                    class="flex justify-center mb-[95px] mt-[80px]"
+                />
+            </template>
         </template>
     </SideBarDeepLayout>
 </template>
@@ -111,13 +121,17 @@ import ProductCard from "~/views/template1/components/ProductCard.vue";
 import { ProductListAPIInterface, ProductList, ProductCarInterface } from "~/interface/product.d";
 
 import { ElMessage } from "element-plus";
-const { isPad } = useWindowResize();
+import { useInitializationStore } from "~/store/initializationStore";
+
+const initializationStore = useInitializationStore();
+const { isLargePad } = useWindowResize();
+
 const { $api, $utils } = useNuxtApp();
 
 const route = useRoute();
 const router = useRouter();
 
-const loading = ref(false);
+const loading = ref(true);
 const loadingWaitPagination = ref(true);
 
 const breadcrumbs = ref([
@@ -204,7 +218,7 @@ async function getType() {
                 breadcrumbs.value.push({
                     name: "product-slug",
                     text: "產品資訊",
-                    params: { slug: "耶魯產品資訊" },
+                    params: { slug: `產品資訊-${item.name}` },
                     query: { category: route.query.category, tag: route.query.tag },
                 });
                 breadcrumbs.value.push({
@@ -279,6 +293,15 @@ async function getTypeDetail() {
             is_compare: rows.is_compare,
             compare_id: rows.compare_id,
         };
+
+        useSeoMeta({
+            title: rows.seoSetting.title ? rows.seoSetting.title : initializationStore.initializationData.site.meta_title,
+            description: rows.seoSetting.description ? rows.seoSetting.description : initializationStore.initializationData.site.meta_description,
+            ogTitle: rows.seoSetting.title,
+            ogDescription: rows.seoSetting.description,
+            ogUrl: () => `${window.location.origin}/product/${rows.seoSetting.custom_url}`,
+            keywords: rows.seoSetting.keywords.join(),
+        });
     } catch (err) {
         console.log("HomeSampleAPI => ", err);
     }
@@ -334,6 +357,8 @@ async function getList(params: { per_page: number; page: number }) {
                 is_favorite: item.is_favorite,
                 main_image: item.main_image,
                 tags: item.tags,
+                is_single_variation: item.is_single_variation,
+                stock: item.stock,
             });
         });
 

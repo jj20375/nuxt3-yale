@@ -1,27 +1,25 @@
 <template>
-    <div class="mt-[40px] mb-[100px]">
-        <div>
-            <div class="flex flex-col">
-                <div
+    <div class="mt-[24px] md:mt-[40px] mb-[48px] md:mb-[100px]">
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-x-[20px] sm:gap-x-0 place-content-center different-wrap">
+                <template
                     v-for="(column, key, columnIndex) in columns"
                     :key="key"
-                    class="flex grid grid-cols-4 place-content-center"
                 >
-                    <div
-                        v-for="index in 4"
+                    <template
+                        v-for="index in tableColumn"
                         :key="index"
                     >
                         <div
-                            class="h-full"
+                            class="h-full col-span-2 sm:col-span-1"
                             v-if="index === 1"
                         >
                             <div
                                 v-if="key === 'imgSrc'"
-                                class="h-[300px] w-[150px]"
+                                class="hidden sm:block h-[300px] w-[150px]"
                             ></div>
                             <div
-                                class="py-[16px] h-full border-b border-gray-300 YaleSolisW-Bd font-medium text-[16px] text-gray-800"
-                                :class="columnIndex < 2 ? 'mr-[10px]' : ''"
+                                class="py-[14px] sm:py-[16px] h-full border-b border-gray-300 YaleSolisW-Bd font-medium text-[16px] text-gray-800"
+                                :class="columnIndex < 2 ? 'hidden sm:block mr-[10px]' : ''"
                                 v-else
                             >
                                 {{ column }}
@@ -43,7 +41,8 @@
                                     <div class="mt-4 text-center">
                                         <button
                                             @click.prevent="goToDetail(products[index - 2])"
-                                            class="yellow-btn btn-md"
+                                            class="yellow-btn"
+                                            :class="isMobile ? 'btn-sm':'btn-md'"
                                         >
                                             立即選購
                                         </button>
@@ -51,7 +50,7 @@
                                 </div>
                             </div>
                             <div
-                                class="mx-[10px]"
+                                class="sm:mx-[10px]"
                                 v-else-if="key === 'style'"
                             >
                                 <el-select
@@ -70,7 +69,7 @@
                                 </el-select>
                             </div>
                             <div
-                                class="mx-[10px]"
+                                class="sm:mx-[10px]"
                                 v-else-if="key === 'category'"
                             >
                                 <el-select
@@ -90,17 +89,16 @@
                             </div>
                             <div
                                 v-else
-                                class="py-[16px] h-full border-b border-gray-300 text-[16px] text-gray-800 flex justify-center"
+                                class="py-[14px] sm:py-[16px] h-full sm:border-b border-gray-300 text-[15px] sm:text-[16px] text-gray-800 flex sm:justify-center"
                             >
-                                <div class="px-[12px]">
+                                <div class="sm:px-[12px]">
                                     {{ products[index - 2] && products[index - 2][key] ? products[index - 2][key] : "-" }}
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
+                    </template>
+                </template>
             </div>
-        </div>
     </div>
 </template>
 
@@ -111,7 +109,7 @@ import { useProductCompareStore } from "~/store/productCompareStore";
 const { $api, $utils } = useNuxtApp();
 const route = useRoute();
 const router = useRouter();
-
+const { isMobile } = useWindowResize();
 const productCompareStore = useProductCompareStore();
 
 interface Props {
@@ -127,7 +125,7 @@ interface Props {
 const breadcrumbs = ref<any>([]);
 // 取得 storage 麵包屑參數值
 if (process.client) {
-    breadcrumbs.value = JSON.parse($utils().getBreadcrumbsData()).slice(0, 3);
+    // breadcrumbs.value = JSON.parse($utils().getBreadcrumbsData()).slice(0, 3);
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -216,6 +214,10 @@ const form = ref<any>({
     style: ["", "", ""],
 });
 
+
+// 表格的行數
+const tableColumn = computed(() => isMobile.value ? 3 : 4);
+
 const styleArr = computed(() => {
     const arr: any[] = [];
     const defaultArr = props.datas.map((item: { model: string }) => item.model);
@@ -256,7 +258,10 @@ function modelChange(index: string | number) {
         form.value.category[index] = props.datas.find((data) => data.model === form.value.style[index]).shape;
         productCompareStore.compareStoreReset();
         form.value.style.forEach((item: string, index: number) => {
-            productCompareStore.compareStore[index] = props.datas.find((data: { model: string }) => data.model === item);
+            console.log(item,index)
+            if (item) {
+                productCompareStore.compareStore[index] = props.datas.find((data: { model: string }) => data.model === item);
+            }
         });
     } else {
         form.value.category[index] = null;
@@ -277,17 +282,26 @@ function goToDetail(product: any) {
     });
 }
 
+function getStyleModel() {
+    console.log("props.products => ", props.products);
+    props.products.forEach((item, index) => {
+        form.value.category[index] = item.category;
+        form.value.style[index] = item.style;
+    });
+}
+
 /**
  * 初始化
  */
 
 onMounted(() => {
     console.log("props.products => ", props.products);
-    props.products.forEach((item, index) => {
-        form.value.category[index] = item.category;
-        form.value.style[index] = item.style;
-    });
+    getStyleModel()
 });
+
+defineExpose({
+    getStyleModel
+})
 </script>
 
 <style lang="scss" scoped>
@@ -310,5 +324,16 @@ onMounted(() => {
             }
         }
     }
+}
+
+.different-wrap{
+    // 強制斷行
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+    -ms-hyphens: auto;
+    -moz-hyphens: auto;
+    -webkit-hyphens: auto;
+    hyphens: auto;
 }
 </style>

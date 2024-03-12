@@ -2,14 +2,28 @@
     <div
         v-for="(product, index) in order"
         :key="index"
-        class="flex product-card border-gray-200 gap-9 py-[30px]"
+        class="flex product-card border-gray-200 gap-4 sm:gap-9 py-[30px]"
     >
         <NuxtImg
-            class="w-[180px] aspect-square object-cover h-fit"
+            class="w-[100px] sm:w-[180px] aspect-square object-cover h-fit"
             :src="product.imgUrl"
         />
         <div class="flex-1">
             <h5 class="text-[18px] font-bold mb-4 YaleSolisW-Bd">{{ product.name }}</h5>
+            <template v-if="isDoor && isMobile">
+                <div class="flex items-center justify-end gap-2 mb-8 cursor-pointer h-fit">
+                    <NuxtImg
+                        class="w-[20px] aspect-square object-cover"
+                        src="img/icons/auth/info.svg"
+                    />
+                    <div
+                        class="underline underline-offset-2"
+                        @click="handleDetail"
+                    >
+                        查看商品詳情
+                    </div>
+                </div>
+            </template>
             <div class="flex flex-col gap-3">
                 <template
                     v-for="(column, columnIndex) in columns"
@@ -22,7 +36,7 @@
                         <div>{{ column.label }}</div>
                         <div
                             class="flex flex-col gap-1"
-                            v-if="column.array === true"
+                            v-if="column.type === 'array'"
                         >
                             <div
                                 v-for="(item, itemIndex) in product[column.prop]"
@@ -53,7 +67,7 @@
             </div>
         </div>
         <div
-            v-if="isDoor"
+            v-if="isDoor && !isMobile"
             class="flex items-center gap-2 cursor-pointer h-fit"
         >
             <NuxtImg
@@ -77,7 +91,7 @@
 </template>
 <script setup lang="ts">
 import ProductDialog from "~/views/template1/components/ProductDialog.vue";
-
+const { isMobile } = useWindowResize();
 const { $utils } = useNuxtApp();
 
 interface Props {
@@ -139,15 +153,16 @@ const props = withDefaults(defineProps<Props>(), {
 
 // 欄位及變數名稱
 const columns = [
+    { label: "單價", prop: "price" },
     { label: "規格", prop: "color" },
-    { label: "門扇", prop: "doorLeaf", array: true },
-    { label: "門框", prop: "doorFrame", array: true },
-    { label: "門鎖", prop: "doorLock", array: true },
-    { label: "掛門", prop: "doorHanging", array: true },
+    { label: "門扇", prop: "doorLeaf", type: "array" },
+    { label: "門框", prop: "doorFrame", type: "array" },
+    { label: "門鎖", prop: "doorLock", type: "array" },
+    { label: "掛門", prop: "doorHanging", type: "array" },
     { label: "氣密條", prop: "doorSealStrip" },
-    { label: "下降壓條", prop: "doorGasket", array: true },
-    { label: "門弓器", prop: "doorOperator", array: true },
-    { label: "額外施作服務", prop: "otherService", array: true },
+    { label: "下降壓條", prop: "doorGasket", type: "array" },
+    { label: "門弓器", prop: "doorOperator", type: "array" },
+    { label: "額外施作服務", prop: "otherService", type: "array" },
     { label: "數量", prop: "quantity" },
 ];
 
@@ -164,8 +179,10 @@ const handleDetail = () => {
     //&:not(:last-child){
     @apply border-b-[1px] border-gray-200;
     //}
-    .grid {
-        grid-template-columns: 150px 1fr;
+    @media screen and (min-width: 767.98px) {
+        .grid {
+            grid-template-columns: 150px 1fr;
+        }
     }
 }
 </style>

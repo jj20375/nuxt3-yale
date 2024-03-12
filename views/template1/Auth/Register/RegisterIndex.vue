@@ -1,7 +1,7 @@
 <template>
-    <section class="mt-[86px] py-[60px] bg-gray-50 border-t border-gray-300">
+    <section class="mt-headerMb xl:mt-header py-[36px] sm:py-[60px] bg-gray-50 border-t border-gray-300">
         <div class="container">
-            <div class="w-3/4 p-[60px] bg-white mx-auto rounded-[24px] border-[1px] border-gray-200">
+            <div class="w-full xl:w-3/4 px-[24px] py-[36px] sm:p-[60px] bg-white mx-auto rounded-[24px] border-[1px] border-gray-200">
                 <h3 class="text-[24px] font-bold mb-6">加入會員</h3>
                 <el-form
                     class="custom-form"
@@ -10,7 +10,7 @@
                     :rules="rules"
                     require-asterisk-position="right"
                 >
-                    <div class="grid grid-cols-2 gap-6">
+                    <div class="flex flex-col grid-cols-2 gap-6 md:grid">
                         <template
                             v-for="(item, index) in formDatas"
                             :key="index"
@@ -70,14 +70,13 @@
                             </div>
                             <div
                                 v-else
-                                class="flex flex-1"
+                                class="flex flex-col flex-1 gap-6 md:flex-row"
                                 :class="item.span ? `col-span-${item.span}` : ''"
                             >
                                 <div
                                     v-for="(item2, index2) in item.datas"
                                     class="flex-1"
                                     :key="index2"
-                                    :class="item.datas.length - 1 === index2 ? '' : 'mr-[30px]'"
                                 >
                                     <el-form-item
                                         :prop="item2.prop"
@@ -108,7 +107,7 @@
                                     </el-form-item>
                                 </div>
                             </div>
-                            <template v-if="item.space">
+                            <template v-if="item.space && !isPad">
                                 <div
                                     v-for="index in item.space"
                                     :key="index"
@@ -120,23 +119,25 @@
                             prop="agree"
                         >
                             <el-checkbox
-                                class="!h-fit text-[15px]"
+                                class="!h-fit"
                                 v-model="form.agree"
                                 size="large"
                             >
                                 <slot name="label"
-                                    >我已閱讀並同意
+                                    ><span class="text-[14px]">我已閱讀並同意 </span>
                                     <NuxtLink
-                                        class="font-bold underline cursor-pointer underline-offset-2 hover:no-underline"
+                                        class="font-bold underline cursor-pointer underline-offset-2 hover:no-underline text-[14px]"
+                                        target="_blank"
                                         :to="{
                                             name: 'other-terms-slug',
                                             params: { slug: '耶魯網站服務條款' },
                                         }"
                                         >網站服務條款</NuxtLink
                                     >
-                                    與
+                                    <span class="text-[14px]"> 與 </span>
                                     <NuxtLink
-                                        class="font-bold underline cursor-pointer underline-offset-2 hover:no-underline"
+                                        class="font-bold underline cursor-pointer underline-offset-2 hover:no-underline text-[14px]"
+                                        target="_blank"
                                         :to="{ name: 'other-privacy-slug', params: { slug: '耶魯隱私權政權' } }"
                                         >隱私權政策</NuxtLink
                                     >
@@ -163,12 +164,14 @@ import { InternalRuleItem } from "async-validator/dist-types/interface";
 import { validateEmail, validateTWMobileNumber, validatePassword } from "~/service/validator";
 import { ElMessage, ElLoading } from "element-plus";
 import { useUserStore } from "~/store/userStore";
+import { useShoppingCarStore } from "~/store/shoppingCarStore";
 import Cookies from "js-cookie";
 
 const { $api } = useNuxtApp();
 const router = useRouter();
-
+const { isPad } = useWindowResize();
 const userStore = useUserStore();
+const shoppingCarStore = useShoppingCarStore();
 
 // 預先加載縣市資料
 const initializationStore = useInitializationStore();
@@ -455,8 +458,8 @@ async function onSubmit() {
                     password: form.value.password,
                 };
                 if (userStore.ssoLogingData) {
-                    params.openid = userStore.ssoLogingData.user.openid
-                    params.provider = userStore.ssoLogingData.provider
+                    params.openid = userStore.ssoLogingData.user.openid;
+                    params.provider = userStore.ssoLogingData.provider;
                 }
                 const { data, status, error } = await $api().RegisterAPI(params);
                 if (status.value === "success") {
@@ -465,14 +468,19 @@ async function onSubmit() {
                         type: "success",
                         message: `註冊成功`,
                     });
-                    router.push({ name: "auth-register-success-slug", params: { slug: "註冊成功" } });
+                    router.push({
+                        name: "auth-verification-slug",
+                        params: { slug: "註冊成功" },
+                        state: { email: form.value.email },
+                    });
+                    loading.close();
                 } else {
                     ElMessage({
                         type: "error",
                         message: (error.value as any).data.message,
                     });
+                    loading.close();
                 }
-                loading.close();
             } catch (err) {
                 ElMessage({
                     type: "error",
@@ -495,6 +503,10 @@ async function login(form: { email: string; password: string }) {
         if (status.value === "success") {
             const token = data.value.data.token;
             Cookies.set("token", token);
+            userStore.setIsAuth(true);
+            await shoppingCarStore.syncCart();
+            await shoppingCarStore.syncCustomCart();
+
             // 取得使用者資料
             await userStore.getUserProfile();
         } else {

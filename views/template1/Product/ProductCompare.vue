@@ -1,5 +1,5 @@
 <template>
-    <section class="mt-[86px]">
+    <section class="mt-headerMb xl:mt-header">
         <nav class="border-t border-b border-gray-300 py-[16px] bg-white min-h-[43px] xl:min-h-[55px]">
             <div class="container">
                 <Breadcrumb :menus="breadcrumbs" />
@@ -23,13 +23,13 @@
                     </div>
                 </div>
             </div>
-            <div class="container grid grid-cols-4 gap-x-[20px] gap-y-[40px] mt-[30px] pb-[100px]">
+            <div class="container grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-x-4 sm:gap-x-[20px] gap-y-4 sm:gap-y-[40px] mt-[30px] pb-[100px]">
                 <div
                     @click="selectProduct(item)"
                     v-for="(item, index) in datas"
                     :key="index"
-                    class="bg-white p-[30px] rounded-[16px] cursor-pointer outline -outline-offset-2 outline-2 duration-200 transition-all"
-                    :class="[selectProducts.includes(item.id) ? 'outline-yellow-600' : 'outline-transparent', selectProducts.length === 3 && !selectProducts.includes(item.id) ? 'opacity-50' : '']"
+                    class="bg-white p-4 sm:p-[30px] rounded-[16px] cursor-pointer outline -outline-offset-2 outline-2 duration-200 transition-all"
+                    :class="[selectProducts.includes(item.id) ? 'outline-yellow-600' : 'outline-transparent', selectProducts.length === 3 && !selectProducts.includes(item.id) && !isMobile ? 'opacity-50 pointer-events-none cursor-not-allowed' : selectProducts.length === 2 && !selectProducts.includes(item.id) && isMobile ? 'opacity-50 pointer-events-none cursor-not-allowed' : '']"
                 >
                     <NuxtImg
                         class="object-cover w-full rounded-2xl aspect-square"
@@ -53,6 +53,7 @@ const { $api, $utils } = useNuxtApp();
 const route = useRoute();
 const router = useRouter();
 const productCompareStore = useProductCompareStore();
+const { isMobile } = useWindowResize();
 
 const breadcrumbs = ref([]);
 // 取得 storage 麵包屑參數值
@@ -85,11 +86,19 @@ function selectProduct(val: { id: string | number; model: any; name: any; shape:
         // 刪除選中的地區值
         selectProducts.value.splice(arrIndex, 1);
     } else {
-        // 如果選擇區域超過或等於3個時 直接回傳 不給選擇
-        if (selectProducts.value.length >= 3) {
-            // 將可選擇狀態改為 false
-            cnaSelected.value = false;
-            return;
+        // 如果選擇區域超過或等於3個時 直接回傳 不給選擇(手機版為2個)
+        if(isMobile.value){
+            if (selectProducts.value.length >= 2) {
+                // 將可選擇狀態改為 false
+                cnaSelected.value = false;
+                return;
+            }
+        }else{
+            if (selectProducts.value.length >= 3) {
+                // 將可選擇狀態改為 false
+                cnaSelected.value = false;
+                return;
+            }
         }
         // 新增選中的地區值
         selectProducts.value.push(val.id);
@@ -146,7 +155,11 @@ function goToDifference() {
         query: { compareId: route.query.compareId },
     });
     $utils().saveBreadcrumbsData(JSON.stringify(setBreadcrumbs));
-    router.push({ name: "product-compare-difference-slug", params: { slug: `${productName}規格比較` }, query: { compareId: route.query.compareId } });
+    router.push({ 
+        name: "product-compare-difference-slug",
+        params: { slug: `${productName}規格比較` },
+        query: { compareId: route.query.compareId }
+    });
 }
 
 /**

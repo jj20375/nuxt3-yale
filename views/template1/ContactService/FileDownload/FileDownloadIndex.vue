@@ -1,6 +1,6 @@
 <template>
     <SideBarLayout
-        :title="'服務中心'"
+        :title="'檔案下載'"
         :banner="'/img/file-download/file-download-banner.jpg'"
     >
         <template #breadcrumbs>
@@ -36,17 +36,6 @@ const breadcrumbs = ref([
         name: "index",
         text: "首頁",
     },
-    {
-        name: "file-download-slug",
-        text: "服務支援",
-        params: { slug: "服務支援" },
-    },
-    {
-        name: "file-download-slug",
-        text: "檔案下載",
-        params: { slug: "檔案下載" },
-        query: { id: route.query.id },
-    },
 ]);
 
 const sidebar = ref<any>([]);
@@ -77,6 +66,18 @@ async function getType() {
         // 取得最後面的 麵包屑路徑
         const lastBreadcrumbs = rows.find((item: any) => item.id == route.query.id);
 
+        breadcrumbs.value.push({
+            name: "file-download-slug",
+            text: "服務支援",
+            params: { slug: lastBreadcrumbs.name },
+            query: { id: lastBreadcrumbs.id },
+        });
+        breadcrumbs.value.push({
+            name: "file-download-slug",
+            text: "檔案下載",
+            params: { slug: lastBreadcrumbs.name },
+            query: { id: lastBreadcrumbs.id },
+        });
         breadcrumbs.value.push({
             name: "file-download-slug",
             text: lastBreadcrumbs.name,

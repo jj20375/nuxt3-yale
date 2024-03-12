@@ -7,9 +7,7 @@
             <Breadcrumb :menus="breadcrumbs" />
         </template>
         <template #sidebar>
-            <SideBar
-                :menus="sidebar"
-            />
+            <SideBar :menus="sidebar" />
         </template>
         <template #list>
             <ListItem :datas="datas" />
@@ -30,6 +28,9 @@ import Breadcrumb from "~/views/template1/components/Breadcrumb.vue";
 import SideBar from "~/views/template1/components/SideBar";
 import ListItem from "~/views/template1/Post/components/PostListItem.vue";
 import Pagination from "~/views/template1/components/Pagination.vue";
+import { useInitializationStore } from "~/store/initializationStore";
+
+const initializationStore = useInitializationStore();
 
 const route = useRoute();
 
@@ -61,7 +62,7 @@ async function getType() {
     try {
         const { data } = await $api().ArticalTypeAPI({ type: "news" });
         sidebar.value = [];
-        console.log("home sampleType api => ", data.value);
+        console.log("home sampleType api 123 => ", data.value);
 
         const rows = (data.value as any).data;
 
@@ -93,6 +94,29 @@ async function getType() {
                 query: { id: lastBreadcrumbs.id },
             });
         }
+    } catch (err) {
+        console.log("HomeSampleAPI => ", err);
+    }
+}
+
+/**
+ * 取得文章分類詳情
+ */
+async function getTypeDetail() {
+    try {
+        const params = { articleId: route.query.id };
+        const { data } = await $api().ArticalTypeDetailAPI(params);
+
+        const rows = (data.value as any).data;
+
+        useSeoMeta({
+            title: rows.seoSetting.title ? rows.seoSetting.title : initializationStore.initializationData.site.meta_title,
+            description: rows.seoSetting.description ? rows.seoSetting.description : initializationStore.initializationData.site.meta_description,
+            ogTitle: rows.seoSetting.title,
+            ogDescription: rows.seoSetting.description,
+            ogUrl: () => `${window.location.origin}/news/${rows.seoSetting.custom_url}`,
+            keywords: rows.seoSetting.keywords.join(),
+        });
     } catch (err) {
         console.log("HomeSampleAPI => ", err);
     }
@@ -140,6 +164,7 @@ async function getList(params: { per_page: number; page: number; article_categor
  */
 async function init() {
     await getType();
+    await getTypeDetail();
     console.log("route.query.id", route);
     await getList({ per_page: pagination.value.pageSize, page: 1, article_category_id: route.query.id });
 }

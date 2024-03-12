@@ -1,5 +1,5 @@
 <template>
-    <ul class="grid grid-cols-2 gap-[28px] text-gray-800 list-disc list-inside YaleSolisW-Rg">
+    <ul class="grid xl:grid-cols-2 grid-cols-1 xl:gap-[28px] gap-[14px] text-gray-800 list-disc list-inside YaleSolisW-Rg">
         <li
             v-for="(data, index) in datas"
             :key="index"

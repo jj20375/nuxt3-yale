@@ -10,16 +10,22 @@
         </nav>
         <div
             :style="`background-image: url(${banner})`"
-            class="relative h-[195px] md:h-[240px] xl:h-[320px] w-full bg-cover bg-center flex items-center justify-center"
+            class="relative h-[150px] md:h-[240px] xl:h-[320px] w-full bg-cover bg-center flex items-center justify-center"
         >
             <!-- <NuxtImg :src="banner" /> -->
             <div class="absolute top-0 w-full h-full bg-black bg-opacity-40"></div>
             <h1 class="text-white text-[28px] md:text-[32px] xl:text-[40px] YaleSolisW-Bd font-medium absolute z-10">{{ title }}</h1>
         </div>
-        <slot v-if="isPad" name="sidebar"></slot>
+        <slot
+            v-if="isLargePad"
+            name="sidebar"
+        ></slot>
         <div class="container">
-            <div class="mt-[20px] xl:mt-[60px] flex flex-col xl:flex-row gap-4 xl:gap-0">
-                <slot v-if="!isPad" name="sidebar"></slot>
+            <div class="xl:mt-[60px] mt-[30px] flex flex-col xl:flex-row gap-4 xl:gap-0">
+                <slot
+                    v-if="!isLargePad"
+                    name="sidebar"
+                ></slot>
                 <main class="flex-1 xl:pl-[40px]">
                     <slot name="list"></slot>
                     <slot name="content"></slot>
@@ -47,5 +53,5 @@ const props = defineProps({
         default: "mb-[100px]",
     },
 });
-const { isPad } = useWindowResize();
+const { isLargePad } = useWindowResize();
 </script>

@@ -1,7 +1,7 @@
 <template>
     <section class="relative xl:flex items-center justify-center rounded-bl-[60px] xl:rounded-bl-[120px] xl:min-h-screen py-[48px] md:py-[90px] xl:py-[120px]">
         <h3 class="relative hidden md:block xl:hidden text-white text-center text-[32px] sm:text-[48px] xl:text-[66px] font-medium YaleSolisW-Bd leading-none z-[1]">CUSTOMIZED</h3>
-        <h5 class="relative hidden md:block xl:hidden text-gray-800 text-center xl:text-start text-[32px] mt-[14px] mb-[24px] font-medium font-['Yale Solis'] leading-[50px] tracking-wide z-[1]">{{ custom_door.title }}</h5>
+        <h5 class="relative hidden md:block xl:hidden text-gray-800 text-center xl:text-start text-[32px] mt-[14px] mb-[24px] font-medium YaleSolisW-Bd leading-[50px] tracking-wide z-[1]">{{ custom_door.title }}</h5>
         <NuxtImg
             class="absolute w-full h-full top-0 left-0 object-cover rounded-bl-[60px] xl:rounded-bl-[120px]"
             src="/img/home/custom/section-bg.jpg"
@@ -9,8 +9,8 @@
         <main class="container relative flex flex-col md:flex-row xl:items-center justify-center xl:justify-between md:gap-6 item">
             <article>
                 <h3 class="hidden xl:block text-white text-[56px] xl:text-[66px] font-medium YaleSolisW-Bd leading-[66px]">CUSTOMIZED</h3>
-                <h5 class="md:hidden xl:block text-gray-800 text-center xl:text-start text-[28px] sm:text-[32px] xl:text-[40px] xl:mt-[14px] font-medium font-['Yale Solis'] leading-[50px] tracking-wide">{{ custom_door.title }}</h5>
-                <p class="hidden xl:block w-[329px] mt-[20px] text-start text-gray-800 text-base font-normal font-['Yale Solis'] leading-relaxed tracking-tight">{{ custom_door.subtitle }}</p>
+                <h5 class="md:hidden xl:block text-gray-800 text-center xl:text-start text-[28px] sm:text-[32px] xl:text-[40px] xl:mt-[14px] font-medium YaleSolisW-Bd leading-[50px] tracking-wide">{{ custom_door.title }}</h5>
+                <p class="hidden xl:block w-[329px] mt-[20px] text-start text-gray-800 text-base font-normal YaleSolisW-Bd leading-relaxed tracking-tight">{{ custom_door.subtitle }}</p>
                 <div class="hidden xl:block mt-[40px]">
                     <button
                         @click="customLink(custom_door.link)"
@@ -51,19 +51,19 @@
                     <div>
                         <div
                             class="icon-wrap"
-                            :class="isPad ? 'active' : isHover[key] ? 'active' : null"
+                            :class="isLargePad ? 'active' : isHover[key] ? 'active' : null"
                         >
                             <NuxtImg
-                                @mouseover="isPad ? null : mouseoverEvent(key)"
+                                @mouseover="isLargePad ? null : mouseoverEvent(key)"
                                 class="w-[50px] aspect-square object-cover cursor-pointer"
                                 :src="icon.img"
                             />
-                            <div v-if="isPad">
+                            <div v-if="isLargePad">
                                 {{ icon.text }}
                             </div>
                             <div
                                 class="flex"
-                                :class="isPad || isHover[key] ? 'opacity-100 pointer-events-auto transition-all duration-400 before:ease-in-out delay-500' : 'opacity-0 pointer-events-none'"
+                                :class="isLargePad || isHover[key] ? 'opacity-100 pointer-events-auto transition-all duration-400 before:ease-in-out delay-500' : 'opacity-0 pointer-events-none'"
                             >
                                 <div
                                     v-for="item in icon.styles"
@@ -97,7 +97,7 @@
 </template>
 
 <script setup lang="ts">
-const { isPad } = useWindowResize();
+const { isLargePad } = useWindowResize();
 interface Props {
     custom_door: {
         title: string;

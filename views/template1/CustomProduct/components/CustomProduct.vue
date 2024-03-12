@@ -72,31 +72,34 @@
             close-on-click-modal
             lock-scroll
             show-close
-            :width="800"
+            :width="isLargePad ? 600 : 800"
             center
             align-center
             append-to-body
         >
-            <h5 class="text-[20px] text-gray-800 YaleSolisW-Bd mt-[20px] mb-[30px]">{{ currentDialogProduct.name }}-{{ currentDialogProduct.style }}</h5>
-            <CustomProductDailogCarousel
-                v-if="!$utils().isEmpty(currentDialogProduct.detailData.carousel)"
-                :photos="currentDialogProduct.detailData.carousel"
-            />
-            <div
-                class="text-[16px] text-gray-800 mt-[28px]"
-                v-html="currentDialogProduct.detailData.content"
-            ></div>
-            <div class="flex justify-center mt-[40px]">
-                <button
-                    @click.prevent="
+            <div class="mx-auto w-full xl:w-3/4">
+                <h5 class="text-[20px] text-gray-800 YaleSolisW-Bd mt-[20px] sm:mt-0 mb-[15px] sm:mb-[30px]">{{ currentDialogProduct.name }}-{{ currentDialogProduct.style }}</h5>
+                <CustomProductDailogCarousel
+                    ref="customProductDialogCarousel"
+                    v-if="!$utils().isEmpty(currentDialogProduct.detailData.carousel)"
+                    :photos="currentDialogProduct.detailData.carousel"
+                />
+                <div
+                    class="text-[16px] text-gray-800 mt-[28px]"
+                    v-html="currentDialogProduct.detailData.content"
+                ></div>
+                <div class="flex justify-center mt-[20px] sm:mt-[40px]">
+                    <button
+                        @click.prevent="
                         currentProductIdData = currentDialogProduct.id;
                         closeDialog();
                     "
-                    :disabled="currentProductIdData === currentDialogProduct.id"
-                    class="yellow-btn btn-md btnDisabled"
-                >
-                    加入選擇
-                </button>
+                        :disabled="currentProductIdData === currentDialogProduct.id"
+                        class="yellow-btn btn-md btnDisabled"
+                    >
+                        加入選擇
+                    </button>
+                </div>
             </div>
         </el-dialog>
     </div>
@@ -106,8 +109,10 @@
 // 導入細節彈窗 幻燈片
 import product from "~/api/product";
 import CustomProductDailogCarousel from "~/views/template1/CustomProduct/components/CustomProductDailogCarousel.vue";
+import { done } from "@liff/ready";
 
 const { $utils } = useNuxtApp();
+const { isLargePad } = useWindowResize();
 
 const emit = defineEmits(["update:currentProductId", "update:currentProductData"]);
 
@@ -194,11 +199,19 @@ const showDialog = ref(false);
 // 彈窗顯示資料
 const currentDialogProduct = ref<any>({});
 
+// 彈窗dom
+const customProductDialogCarousel = ref(null);
+
 /**
  * 關閉彈窗
  */
 
 function closeDialog() {
+    setTimeout(() => {
+        if (customProductDialogCarousel.value) {
+            customProductDialogCarousel.value.resetSwiper();
+        }
+    }, 1000)
     showDialog.value = false;
 }
 
@@ -236,15 +249,6 @@ onMounted(() => {
                 @apply border-yellow-600 bg-yellow-600;
             }
         }
-    }
-}
-
-:deep {
-    .el-dialog__body {
-        @apply mx-10;
-    }
-    .el-dialog {
-        @apply rounded-[20px];
     }
 }
 </style>

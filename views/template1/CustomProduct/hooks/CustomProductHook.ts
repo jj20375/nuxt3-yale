@@ -98,7 +98,7 @@ export function useCustomProdutHook() {
      * 門扇整理資料
      */
     function setDoorData(datas: any) {
-        const result = [];
+        const result: any = [];
         datas.customProducts.forEach((item: any) => {
             // 預覽圖
             const previewImgSrc = {};
@@ -106,6 +106,8 @@ export function useCustomProdutHook() {
             const stock = {};
             // 價格
             const price = {};
+            // 訂製門扇加入購物車時需要
+            const optionId = {};
             for (const key of Object.keys(item.customProductVariations)) {
                 previewImgSrc[key] = {
                     front: item.customProductVariations[key].front_image,
@@ -114,6 +116,8 @@ export function useCustomProdutHook() {
                 };
                 stock[key] = item.customProductVariations[key].stock;
                 price[key] = Number(item.customProductVariations[key].price);
+                // 訂製門扇加入購物車時需要
+                optionId[key] = item.customProductVariations[key].id;
             }
             // 判斷是否有尺寸值
             const haveSize = item.customProductOptions.find((option: any) => option.id === CustomProductListOptionEnum.size);
@@ -136,6 +140,7 @@ export function useCustomProdutHook() {
                 previewImgSrc,
                 stock,
                 price,
+                optionId,
                 detailData: {
                     carousel: item.carousel_images.map((item: string, index: number) => ({ id: index + 1, imgSrc: item })),
                     content: item.content,
@@ -150,17 +155,19 @@ export function useCustomProdutHook() {
      * @param datas
      */
     function setLocksData(datas: any) {
-        const result = [];
+        const result: any = [];
         datas.customProducts.forEach((item: any) => {
             result.push({
                 imgSrc: item.main_image,
                 style: `${item.model} ${item.name}`,
+                model: item.model,
                 title: item.name,
                 name: `${item.name}`,
                 shape: item.shape,
                 stock: item.stock,
                 price: Number(item.price),
                 id: item.id,
+                imgSrc: item.main_image,
                 detailData: {
                     carousel: item.carousel_images.map((item: string, index: number) => ({ id: index + 1, imgSrc: item })),
                     content: item.content,
