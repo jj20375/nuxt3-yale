@@ -218,7 +218,7 @@ async function getType() {
                 breadcrumbs.value.push({
                     name: "product-slug",
                     text: "產品資訊",
-                    params: { slug: "耶魯產品資訊" },
+                    params: { slug: `產品資訊-${item.name}` },
                     query: { category: route.query.category, tag: route.query.tag },
                 });
                 breadcrumbs.value.push({

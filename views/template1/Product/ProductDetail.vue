@@ -405,21 +405,35 @@ const productOptions = computed(() => {
     return result;
 });
 // breadcrumbs
-const breadcrumbs = computed(() => {
-    const rows = detailData.value;
-    const result = process.client ? JSON.parse($utils().getBreadcrumbsData()) : [];
-    if (!result.map((item: any) => item.text).includes(rows.model)) {
-        result.push({
-            name: route.name,
-            text: rows.model,
-            params: { slug: `${rows.model}-${rows.name}` },
-            query: { id: route.query.id },
-        });
-    }
-    return result;
-});
+const breadcrumbs = ref([
+    {
+        name: "index",
+        text: "首頁",
+    },
+]);
 // 相關商品列表
 const sameProducts = ref<any>([]);
+
+/**
+ * 取得商品分類
+ */
+async function getType() {
+    const { data }: any = await $api().ProductTypeAPI();
+
+    const category = data.value.data.find((item: any) => item.id === detailData.value.product_type_id);
+    breadcrumbs.value.push({
+        name: "product-slug",
+        text: category.name,
+        params: { slug: `產品資訊-${category.name}` },
+        query: { category: category.id, tag: category.id },
+    });
+    breadcrumbs.value.push({
+        name: "product-detail-slug",
+        text: detailData.value.name,
+        params: { slug: `${detailData.value.name}` },
+        query: { id: detailData.value.product_id },
+    });
+}
 
 /**
  * 取得商品分類詳情
@@ -650,8 +664,9 @@ function socialShare(type: string) {
     }
 }
 
-onMounted(() => {
-    getData();
+onMounted(async () => {
+    await getData();
+    await getType();
 });
 </script>
 

@@ -28,7 +28,6 @@
             ref="formInvoiceRef"
             v-model:form="formInvoice"
         />
-        {{ formInvoice }}
         <ShoppingCarStep2FormGift
             :gifts="gifts"
             v-model:form="formGift"
