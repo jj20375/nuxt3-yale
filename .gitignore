@@ -4,7 +4,6 @@ node_modules
 .nitro
 .cache
 .output
-.env
 dist
 .DS_Store
 .vercel
@@ -12,3 +11,7 @@ dist
 
 # OS or Editor folders
 ._*
+
+# local env files
+.env.local
+.env.*.local
