@@ -104,8 +104,9 @@ const receiptStatus = (status) => {
 /**
  * 取得訂單列表
  */
-async function getList(params: { per_page: number; page: number }) {
+async function getList(params: { per_page: number; page: number; type: string }) {
     try {
+        params.type = "normal";
         const { data } = await $api().GetProductOrderAPI(params);
         console.log("home sample api => ", data.value);
 

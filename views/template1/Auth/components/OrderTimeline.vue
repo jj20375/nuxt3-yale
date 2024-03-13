@@ -16,7 +16,7 @@
             </div>
             <button
                 v-if="status === '未付款' || status === '待付訂金' || status === '待付尾款'"
-                @click.stop="refund"
+                @click.stop="repay()"
                 class="transparent-btn btn-xs"
             >
                 付款去
@@ -54,6 +54,8 @@
     </div>
 </template>
 <script setup lang="ts">
+const { $api, $utils } = useNuxtApp();
+
 interface Props {
     orderNumber: string;
     status: string;
@@ -75,6 +77,8 @@ const props = withDefaults(defineProps<Props>(), {
         },
     ],
 });
+
+const emit = defineEmits(["orderRepay"]);
 
 // 計算文字顏色
 const getStatusClass = (status: any) => {
@@ -98,8 +102,8 @@ const toggleMenu = () => {
     isMenuOpen.value = !isMenuOpen.value;
 };
 
-const refund = (e) => {
-    console.log(e);
+const repay = () => {
+    emit("orderRepay");
 };
 
 onMounted(() => {
