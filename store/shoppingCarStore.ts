@@ -378,7 +378,11 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
         return result;
     }
 
-    // 加入購物車
+    /**
+     * 加入購物車
+     * @param data 購物車資料
+     * @returns
+     */
     const addToCart = (data: ShoppingCarInterface) => {
         return new Promise(async (resolve, reject) => {
             const item = shoppingCar.value.find((i) => i.productID === data.productID && i.product_variationable_id === data.product_variationable_id);

@@ -539,8 +539,9 @@ const downloadFile = (file: { url: string | URL | undefined }) => {
 
 /**
  * 加入購物車
+ * @param isGoToShoppingCarPage 判斷是點選結帳按鈕 不跳 alert 錯誤
  */
-const addToShoppingCar = () => {
+const addToShoppingCar = (isGoToShoppingCarPage: boolean = false) => {
     const input: ShoppingCarInterface = {
         id: detailData.value.product_id,
         productID: detailData.value.product_id,
@@ -561,6 +562,9 @@ const addToShoppingCar = () => {
         .catch((err) => {
             console.log("err", err);
             if (err) {
+                if (isGoToShoppingCarPage) {
+                    return;
+                }
                 alert(err);
                 return;
             }
@@ -571,7 +575,7 @@ const addToShoppingCar = () => {
  * 導頁至購物車
  */
 function goToShoppingCar() {
-    addToShoppingCar();
+    addToShoppingCar(true);
     router.push({
         name: "shopping-car-slug",
         params: { slug: "一般商品購物車" },
