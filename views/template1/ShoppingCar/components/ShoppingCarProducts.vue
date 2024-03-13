@@ -73,6 +73,12 @@
                             />
                         </button>
                     </div>
+                    <div
+                        v-if="cart.stock <= cart.count"
+                        class="mt-1 text-right text-red-500"
+                    >
+                        庫存數量只剩下{{ cart.stock }}
+                    </div>
                     <div class="sm:hidden mt-[16px] font-medium YaleSolisW-Bd text-[16px]">NT$ {{ $utils().formatCurrency(cart.totalPrice) }}</div>
                 </div>
             </div>
@@ -108,10 +114,14 @@ function countUpdate(index: number, cartId: number | null, productID: number, is
     if (shoppingCar.value[index].count < 1) {
         return;
     }
+    if (isAdd) {
+        shoppingCar.value[index].count++;
+    } else {
+        shoppingCar.value[index].count--;
+    }
     const apiReq = {
         cart_item_id: cartId ? cartId : 0,
         productID,
-        quantity: isAdd ? shoppingCar.value[index].count++ : shoppingCar.value[index].count--,
         product_variationable_id: product_variationable_id ? product_variationable_id : null,
     };
     shoppingCar.value[index].totalPrice = shoppingCar.value[index].price * shoppingCar.value[index].count;
@@ -120,7 +130,7 @@ function countUpdate(index: number, cartId: number | null, productID: number, is
         if (!loading.value) {
             loading.value = true;
             console.log("work loading", shoppingCar.value[index].count);
-            await updateCart(apiReq).catch((err) => {
+            await updateCart({ ...apiReq, quantity: shoppingCar.value[index].count }).catch((err) => {
                 console.log("err", err);
                 if (err) {
                     ElMessage({
