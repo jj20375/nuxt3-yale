@@ -109,6 +109,7 @@ const shoppingCarStore = useShoppingCarStore();
 const router = useRouter();
 const formRefDom = ref<any>();
 const initializationStore = useInitializationStore();
+const $config = useRuntimeConfig();
 
 const form = ref<any>({
     email: "",
@@ -227,8 +228,7 @@ async function ssoLogin(site: string) {
 }
 
 async function getMessage(e: any) {
-    if (e.origin === "https://yale-third-party.mrjin.me") {
-        console.log(e, "getMessage", e.data);
+    if (e.origin === $config.public.thirdURL) {
         const SSOLoginData = e.data;
         if (!SSOLoginData.registered) {
             userStore.ssoLogingData = SSOLoginData;
