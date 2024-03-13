@@ -76,6 +76,8 @@ export default defineNuxtConfig({
             DEBUG: process.env.DEBUG,
             // 前台網址
             hostURL: process.env.HOST_URL,
+            // 第三方網址
+            thirdURL: process.env.THIRD_URL,
             // goolge app id
             googleAppId: process.env.GOOGLE_APP_ID,
             // line app id
