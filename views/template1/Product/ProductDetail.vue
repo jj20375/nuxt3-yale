@@ -110,25 +110,34 @@
                             <h5 class="text-[16px] font-medium text-gray-800 mb-[20px] YaleSolisW-Bd">數量</h5>
                             <div class="flex justify-center items-stretch w-full lg:w-[180px] border border-gray-300 rounded-full">
                                 <button
-                                    class="flex items-center justify-center flex-1 h-auto cursor-pointer"
+                                    class="flex items-center justify-center flex-1 h-auto cursor-pointer disabled:cursor-not-allowed"
+                                    :disabled="count <= 1"
                                     @click.prevent="countDelete()"
                                 >
                                     <el-icon><Minus /></el-icon>
                                 </button>
                                 <div class="flex items-center justify-center w-[calc(100%-8rem)] lg:w-[80px] py-[10px] h-full">{{ count }}</div>
                                 <button
-                                    class="flex items-center justify-center flex-1 h-auto cursor-pointer"
+                                    class="flex items-center justify-center flex-1 h-auto cursor-pointer disabled:cursor-not-allowed"
+                                    :disabled="detailData.stock < count"
                                     @click.prevent="countAdd()"
                                 >
                                     <el-icon><Plus /></el-icon>
                                 </button>
                             </div>
                         </div>
+                        <div
+                            v-if="detailData.stock < count"
+                            class="text-red-500"
+                        >
+                            庫存不足
+                        </div>
                         <div class="flex flex-row xl:flex-col gap-[12px] my-[30px]">
                             <button
                                 v-if="detailData.stock > 0"
                                 class="w-full transparent-btn"
-                                @click="addToShoppingCar"
+                                :disabled="detailData.stock === 0 || detailData.stock < count"
+                                @click="addToShoppingCar(false)"
                             >
                                 加入購物車
                             </button>
@@ -141,7 +150,8 @@
                             </button>
                             <button
                                 @click="goToShoppingCar"
-                                class="w-full yellow-btn"
+                                :disabled="detailData.stock === 0 || detailData.stock < count"
+                                class="w-full yellow-btn disabled:cursor-not-allowed disabled:bg-gray-100"
                             >
                                 結帳
                             </button>
@@ -525,7 +535,7 @@ const countDelete = () => {
 
 // 點擊增加數量按鈕
 const countAdd = () => {
-    if (count.value >= detailData.value.stock) {
+    if (count.value > detailData.value.stock) {
         count.value = detailData.value.stock;
         return;
     }
@@ -552,20 +562,24 @@ const addToShoppingCar = (isGoToShoppingCarPage: boolean = false) => {
         totalPrice: Number(detailData.value.price) * count.value,
         product_variationable_id: currentItem.value ? currentItem.value.id : undefined,
         colorName: colorName.value ? colorName.value : undefined,
+        stock: detailData.value.stock,
     };
-
+    console.log("isGoToShoppingCarPage =>", isGoToShoppingCarPage);
     shoppingCarStore
         .addToCart(input)
         .then(() => {
             showDialog.value = true;
         })
         .catch((err) => {
-            console.log("err", err);
+            console.log("err", err, isGoToShoppingCarPage);
             if (err) {
                 if (isGoToShoppingCarPage) {
                     return;
                 }
-                alert(err);
+                ElMessage({
+                    type: "error",
+                    message: err,
+                });
                 return;
             }
         });
@@ -615,7 +629,10 @@ const handleDetailFavorite = async () => {
             });
         }
     } else {
-        alert("請先登入或註冊新帳號以便管理您的收藏！");
+        ElMessage({
+            type: "error",
+            message: "請先登入或註冊新帳號以便管理您的收藏！",
+        });
     }
 };
 

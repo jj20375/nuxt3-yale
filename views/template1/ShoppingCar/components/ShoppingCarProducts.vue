@@ -51,15 +51,17 @@
                     <div class="flex gap-4 sm:gap-[18px] justify-end mt-[16px]">
                         <div class="flex flex-1 justify-center items-stretch sm:flex-initial w-[150px] sm:w-[150px] border border-gray-300 rounded-full">
                             <button
-                                class="flex items-center text-[16px] justify-center flex-1 h-auto cursor-pointer"
-                                @click.prevent="countUpdate(index, cart.id, cart.productID, cart.count - 1, cart.product_variationable_id)"
+                                class="flex items-center text-[16px] justify-center flex-1 h-auto cursor-pointer disabled:cursor-not-allowed"
+                                :disabled="cart.count <= 1"
+                                @click.prevent="countUpdate(index, cart.id, cart.productID, false, cart.product_variationable_id)"
                             >
                                 <el-icon><Minus /></el-icon>
                             </button>
                             <div class="flex items-center justify-center w-[60px] sm:w-[80px] py-[4px] sm:py-[10px] h-full">{{ cart.count }}</div>
                             <button
-                                class="flex items-center text-[16px] justify-center flex-1 h-auto cursor-pointer"
-                                @click.prevent="countUpdate(index, cart.id, cart.productID, cart.count + 1, cart.product_variationable_id)"
+                                class="flex items-center text-[16px] justify-center flex-1 h-auto cursor-pointer disabled:cursor-not-allowed"
+                                :disabled="cart.stock <= cart.count"
+                                @click.prevent="countUpdate(index, cart.id, cart.productID, true, cart.product_variationable_id)"
                             >
                                 <el-icon><Plus /></el-icon>
                             </button>
@@ -82,6 +84,7 @@
 import { storeToRefs } from "pinia";
 import { useShoppingCarStore } from "~/store/shoppingCarStore";
 import { useUserStore } from "~/store/userStore";
+import { ElMessage } from "element-plus";
 
 const emit = defineEmits(["update:selectProductIds"]);
 
@@ -96,29 +99,43 @@ const router = useRouter();
 
 // 選中資料
 const checkList: Ref<number[]> = ref([]);
+const loading = ref(false);
 
 /**
  * 點擊更新數量按鈕
  */
-function countUpdate(index: number, cartId: number | null, productID: number, count: number, product_variationable_id?: number | null) {
-    if (count < 1) {
+function countUpdate(index: number, cartId: number | null, productID: number, isAdd: boolean, product_variationable_id?: number | null) {
+    if (shoppingCar.value[index].count < 1) {
         return;
     }
     const apiReq = {
         cart_item_id: cartId ? cartId : 0,
         productID,
-        quantity: count,
+        quantity: isAdd ? shoppingCar.value[index].count++ : shoppingCar.value[index].count--,
         product_variationable_id: product_variationable_id ? product_variationable_id : null,
     };
-    shoppingCar.value[index].count = count;
-    shoppingCar.value[index].totalPrice = shoppingCar.value[index].price * count;
-    updateCart(apiReq).catch((err) => {
-        console.log("err", err);
-        if (err) {
-            alert(err);
-            return;
+    shoppingCar.value[index].totalPrice = shoppingCar.value[index].price * shoppingCar.value[index].count;
+    // 等待 1秒鐘再更新就好 以防快速點擊
+    setTimeout(async () => {
+        if (!loading.value) {
+            loading.value = true;
+            console.log("work loading", shoppingCar.value[index].count);
+            await updateCart(apiReq).catch((err) => {
+                console.log("err", err);
+                if (err) {
+                    ElMessage({
+                        type: "error",
+                        message: err.message,
+                    });
+                    loading.value = false;
+                    return;
+                }
+            });
+            setTimeout(() => {
+                loading.value = false;
+            }, 1000);
         }
-    });
+    }, 1000);
 }
 
 /**

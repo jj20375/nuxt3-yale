@@ -1,6 +1,9 @@
 <template>
     <div>
-        <section class="relative custom-top z-[10]" :class="loading ? 'overflow-hidden' : 'overflow-scroll'">
+        <section
+            class="relative custom-top z-[10]"
+            :class="loading ? 'overflow-hidden' : 'overflow-scroll'"
+        >
             <!-- <pre>{{ scenes }}</pre> -->
             <!-- <pre>{{ doors }}</pre> -->
             <!-- <pre>{{ doorSizes }}</pre> -->
@@ -640,7 +643,10 @@ async function addToShoppingCar() {
         }
         return true;
     } catch (err: { message: string }) {
-        alert(err.message);
+        ElMessage({
+            type: "error",
+            message: err.message,
+        });
         console.log("addToCustomCarAPI error => ", err);
         return false;
     }

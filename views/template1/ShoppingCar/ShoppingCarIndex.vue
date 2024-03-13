@@ -131,6 +131,7 @@ import { useUserStore } from "~/store/userStore";
 
 import { storeToRefs } from "pinia";
 import { ShoppingCarInterface, ShoppingCarCustomInterface } from "~/interface/shoppingCar";
+import { ElMessage } from "element-plus";
 const { $utils } = useNuxtApp();
 
 const route = useRoute();
@@ -191,14 +192,20 @@ const salePrice = computed(() => 0);
 // go step2
 const goStepCheckout = () => {
     if (selectProductIds.value.length === 0) {
-        alert("請先選擇商品");
+        ElMessage({
+            type: "error",
+            message: "請先選擇商品",
+        });
         return;
     }
     if (userStore.isAuth) {
         currentStep.value = 1;
         showComponent.value = ShoppingCarStep2;
     } else {
-        alert("請先登入");
+        ElMessage({
+            type: "error",
+            message: "請先登入",
+        });
     }
 };
 
