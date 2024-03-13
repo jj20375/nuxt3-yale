@@ -7,7 +7,6 @@
             :model="formData"
             :rules="rules"
             require-asterisk-position="right"
-            :scroll-to-error="true"
         >
             <div class="flex flex-col grid-cols-2 gap-6 md:grid">
                 <template
@@ -19,7 +18,7 @@
                         :label="column.label"
                     >
                         <div
-                            v-if="column.type === 'input'"
+                            v-show="column.type === 'input'"
                             class="w-full"
                         >
                             <el-input
@@ -28,7 +27,7 @@
                             />
                         </div>
                         <div
-                            v-else-if="column.type === 'select'"
+                            v-show="column.type === 'select'"
                             class="w-full"
                         >
                             <el-select

@@ -29,7 +29,7 @@
                         >
                             繼續選購
                         </button>
-                        <NuxtLink :to="{ name: 'shopping-car-slug', params: { slug: '耶魯電子鎖購物車' }, query: { tab } }">
+                        <NuxtLink :to="{ name: 'shopping-car-slug', params: { slug: '一般商品購物車' }, query: { tab } }">
                             <button class="yellow-btn btn-sm !py-2">前往購物車</button>
                         </NuxtLink>
                     </div>

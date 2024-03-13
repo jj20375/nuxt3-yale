@@ -44,7 +44,7 @@
                         @mouseover="isLargePad ? null : changeMenu(key)"
                         @mouseleave="closeMenu"
                         @click="isLargePad ? toggleMenu(key) : null"
-                        class="xl:px-3 2xl:px-4 3xl:px-5 text-gray-800 cursor-pointer transition-all duration-300 hover:text-gray-500"
+                        class="text-gray-800 transition-all duration-300 cursor-pointer xl:px-3 2xl:px-4 3xl:px-5 hover:text-gray-500"
                         :class="isMenuFixed ? 'xl:py-[23px]' : 'xl:py-[33px]'"
                     >
                         <div class="flex justify-center py-5 xl:py-0">
@@ -62,7 +62,7 @@
                         </div>
                         <div
                             v-if="!isLargePad"
-                            class="absolute left-0 z-50 bg-white w-full"
+                            class="absolute left-0 z-50 w-full bg-white"
                             :class="isMenuFixed ? 'top-[66px]' : 'top-[86px]'"
                         >
                             <div
@@ -115,7 +115,7 @@
                     </div>
                     <div v-else>
                         <div
-                            class="relative xl:px-3 2xl:px-5 py-5 text-gray-800 hover:text-gray-500 cursor-pointer transition-all duration-300"
+                            class="relative py-5 text-gray-800 transition-all duration-300 cursor-pointer xl:px-3 2xl:px-5 hover:text-gray-500"
                             :class="[key === 'menu1' ? 'has-door' : '', isMenuFixed ? 'xl:py-[23px]' : 'xl:py-[33px]']"
                             @click="router.push(menu.url)"
                         >
@@ -422,7 +422,7 @@ const rightIcons = computed(() => {
             url: {
                 name: "shopping-car-slug",
                 params: {
-                    slug: "電子鎖購物車",
+                    slug: "一般商品購物車",
                 },
                 query: {
                     tab: "type1",
@@ -587,8 +587,8 @@ function toggleMenu(key: string) {
     max-height: calc(var(--vh, 1vh) * 100 - #{$navbar-height-mb});
 }
 
-:deep{
-    .el-badge .el-badge__content{
+:deep {
+    .el-badge .el-badge__content {
         @apply bg-red-500;
     }
 }
