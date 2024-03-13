@@ -73,7 +73,11 @@ export default () => {
     /**
      * 取得商品訂單列表
      */
-    GetProductOrderAPI(params: { per_page: number; page: number }) {
+    GetProductOrderAPI(params: {
+      per_page: number;
+      page: number;
+      type: string;
+    }) {
       return useMyFetch(`${apiUrl}/order/paginate`, {
         method: "get",
         query: { ...params },
@@ -84,6 +88,22 @@ export default () => {
      */
     GetProductOrderDetailAPI(params: { orderId: number | string }) {
       return useFetchData.get(`${apiUrl}/order/${params.orderId}`);
+    },
+    /**
+     * 重新付款
+     */
+    orderRepayAPI(params: {
+      orderId: any;
+      orderPaymentId: any;
+      redirect_url: any;
+    }) {
+      return useMyFetch(
+        `${apiUrl}/order/${params.orderId}/repay/${params.orderPaymentId}`,
+        {
+          method: "post",
+          body: { redirect_url: params.redirect_url },
+        }
+      );
     },
   };
 };

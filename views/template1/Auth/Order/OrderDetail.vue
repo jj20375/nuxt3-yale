@@ -30,6 +30,7 @@
                     :orderNumber="orderData.orderNumber"
                     :timeline="orderData.timeline"
                     :status="orderData?.payment?.orderStatus"
+                    @orderRepay="orderRepay"
                 />
                 <div class="mt-8 sm:mt-12">
                     <h4 class="mb-3 font-bold">配送資訊</h4>
@@ -206,6 +207,7 @@ const { $api, $utils } = useNuxtApp();
 
 const showDownload = ref(false);
 const route = useRoute();
+const $config = useRuntimeConfig();
 
 const breadcrumbs = ref([
     {
@@ -237,9 +239,11 @@ const handleRefund = () => {
 
 // 訂單資料
 const orderData = ref({
+    orderId: "",
     orderNumber: "",
     timeline: [
         {
+            id: "",
             date: "2022-06-11",
             time: "11:00",
             status: "未付款",
@@ -360,11 +364,30 @@ const receiptStatus = (status: string) => {
             return "";
     }
 };
+
+const orderRepay = async () => {
+    const hostUrl = $config.public.hostURL;
+    console.log("Refund", hostUrl, $config.public);
+    // const params = {
+    //     orderId: orderData.value.orderId,
+    //     orderPaymentId: orderData.value.timeline[0]?.id,
+    //     redirect_url: `${hostUrl}/order/normal`,
+    // };
+    // const { data, status, error } = await $api().orderRepayAPI(params);
+    // if (status.value === "success") {
+    //     const resData = (data.value as any).data;
+    //     if (resData.redirect) {
+    //         window.location.href = resData.redirect_url;
+    //         // window.open(resData.redirect_url, "self");
+    //     }
+    // }
+};
 /**
  * 取得商品分類詳情
  */
 const getData = async () => {
     console.log("resProductDetail =>", resProductDetail);
+    orderData.value.orderId = resProductDetail.id;
     orderData.value.orderNumber = resProductDetail.order_no;
     orderData.value.info = {
         contactName: resProductDetail.contact_name,
@@ -383,8 +406,9 @@ const getData = async () => {
         });
     });
     orderData.value.timeline = [];
-    resProductDetail.orderPayments.forEach((item) => {
+    resProductDetail.orderPayments.forEach((item: { id: any; created_at: moment.MomentInput; status: string }) => {
         orderData.value.timeline.push({
+            id: item.id,
             date: moment(item.created_at).format("YYYY-MM-DD"),
             time: moment(item.created_at).format("HH:mm"),
             status: orderStatus(item.status),
