@@ -140,14 +140,7 @@
                                 補貨中，貨到通知
                             </button>
                             <button
-                                @click="
-                                    router.push({
-                                        path: '/shopping-car/電子鎖購物車',
-                                        query: {
-                                            tab: 'type1',
-                                        },
-                                    })
-                                "
+                                @click="goToShoppingCar"
                                 class="w-full yellow-btn"
                             >
                                 結帳
@@ -573,6 +566,20 @@ const addToShoppingCar = () => {
             }
         });
 };
+
+/**
+ * 導頁至購物車
+ */
+function goToShoppingCar() {
+    addToShoppingCar();
+    router.push({
+        name: "shopping-car-slug",
+        params: { slug: "一般商品購物車" },
+        query: {
+            tab: "type1",
+        },
+    });
+}
 
 const is_favorite = ref(false);
 /**
