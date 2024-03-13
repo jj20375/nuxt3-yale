@@ -25,7 +25,7 @@
                     </SwiperSlide>
                 </Swiper>
             </ClientOnly>
-            <div class="absolute top-0 hidden md:flex md:-left-2 -left-[30px] -translate-x-full z-50 items-center h-full">
+            <div class="absolute top-0 hidden md:flex md:-left-2 xl:-left-[30px] -translate-x-full z-50 items-center h-full">
                 <button
                     class="flex items-center justify-center text-3xl"
                     :class="[isSliderBeginning ? 'opacity-0' : 'opacity-1']"
@@ -34,7 +34,7 @@
                     <el-icon><ArrowLeft /></el-icon>
                 </button>
             </div>
-            <div class="absolute top-0 hidden md:flex md:right-0 md:-right-2 xl:-right-[30px] translate-x-full z-50 items-center h-full">
+            <div class="absolute top-0 hidden md:flex md:-right-2 xl:-right-[30px] translate-x-full z-50 items-center h-full">
                 <button
                     class="flex items-center justify-center text-3xl"
                     :class="[isSliderEnd ? 'opacity-0' : 'opacity-1']"
