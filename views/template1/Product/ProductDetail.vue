@@ -631,15 +631,15 @@ const handleFavorite = async (id: any) => {
  */
 const goToCompare = (data: any) => {
     const setBreadcrumbs: any = [...breadcrumbs.value.slice(0, 3)];
-    setBreadcrumbs.push({
-        name: "product-compare-slug",
-        text: `${breadcrumbs.value[2].text}比較`,
-        params: { slug: `${breadcrumbs.value[2].text}比較` },
-        query: { compareId: data.product_type_id, productId: data.product_id },
-    });
+    // setBreadcrumbs.push({
+    //     name: "product-compare-slug",
+    //     text: `${breadcrumbs.value[2].text}比較`,
+    //     params: { slug: `${breadcrumbs.value[2].text}比較` },
+    //     query: { compareId: data.product_type_id, productId: data.product_id },
+    // });
 
     $utils().saveBreadcrumbsData(JSON.stringify(setBreadcrumbs));
-    router.push({ name: "product-compare-slug", params: { slug: `${breadcrumbs.value[2].text}比較` }, query: { compareId: data.product_type_id, productId: data.product_id } });
+    router.push({ name: "product-compare-slug", params: { slug: `商品比較` }, query: { compareId: data.product_type_id, productId: data.product_id } });
 };
 
 // 分享
