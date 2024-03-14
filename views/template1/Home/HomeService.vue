@@ -1,6 +1,6 @@
 <template>
     <div>
-        <section class="pb-[60px] md:pb-[90px] xl:pb-[120px] rounded-tl-[60px]  md:rounded-tl-[90px] xl:rounded-tl-[120px] rounded-bl-[60px] md:rounded-bl-[90px] xl:rounded-bl-[120px] bg-gray-100">
+        <section class="pb-[60px] md:pb-[90px] xl:pb-[120px] rounded-tl-[60px] md:rounded-tl-[90px] xl:rounded-tl-[120px] rounded-bl-[60px] md:rounded-bl-[90px] xl:rounded-bl-[120px] bg-gray-100">
             <div class="pt-[60px] md:pt-[90px] xl:pt-[120px] text-center">
                 <h2 class="font-medium text-white leading-none text-[32px] sm:text-[48px] xl:text-[66px] YaleSolisW-Bd">OUR PROMISE</h2>
                 <h3 class="font-medium leading-[50px] md:mt-[14px] text-[28px] sm:text-[32px] xl:text-[40px] YaleSolisW-Bd">Yale 四大安心宣言</h3>
@@ -17,7 +17,7 @@
                                 class="w-[40px] md:w-[56px] mx-auto"
                                 :src="item.image"
                             />
-                            <p class="mt-3 lg:mt-5 text-center text-[14px] md:text-[16px]">{{ item.title }}</p>
+                            <p class="mt-3 lg:mt-5 text-center text-[10px] md:text-[16px]">{{ item.title }}</p>
                         </div>
                     </div>
                 </div>
