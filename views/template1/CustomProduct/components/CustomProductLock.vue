@@ -11,7 +11,7 @@
                 v-for="(category, index) in lockCategories"
                 :key="index"
                 class="rounded-[8px] text-[14px] py-[16px] px-[24px] border border-gray-300 text-center cursor-pointer"
-                :class="[lockCategoryData === category.value ? 'outline outline-2 outline-yellow-600 -outline-offset-2 font-medium YaleSolisW-Bd' : 'border border-gray-300']"
+                :class="[lockCategoryData === category.value ? 'shadow-[inset_0_0_0_1px_rgb(255,204,0)] border-yellow-600 font-medium YaleSolisW-Bd' : 'border border-gray-300']"
             >
                 {{ category.text }}
             </li>

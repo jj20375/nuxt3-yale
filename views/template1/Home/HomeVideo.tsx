@@ -9,7 +9,7 @@ export default defineComponent({
     emits: [],
     setup(props, {emit}) {
         return () => (
-            <video class="w-full" src={props.videoUrl} preload="auto" autoplay muted loop></video>
+            <video class="w-full" src={props.videoUrl} playsinline autoplay muted></video>
         )
     }
 })

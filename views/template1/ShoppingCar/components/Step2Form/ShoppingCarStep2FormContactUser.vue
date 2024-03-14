@@ -208,7 +208,7 @@ const rules = ref<any>({
     phone: [
         {
             required: true,
-            message: "請輸入聯絡電話",
+            message: "請輸入行動電話",
             trigger: ["change", "blur"],
         },
         {

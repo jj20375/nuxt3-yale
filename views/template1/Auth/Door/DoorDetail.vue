@@ -52,7 +52,7 @@
                                 v-if="orderData?.info?.phone"
                                 class="text-gray-700"
                             >
-                                聯絡電話：{{ orderData?.info?.phone }}
+                                行動電話：{{ orderData?.info?.phone }}
                             </div>
                             <div
                                 v-if="orderData?.info?.address"
@@ -718,7 +718,6 @@ function setLocksData(data: any) {
             carousel: data.carousel_images.map((item: string, index: number) => ({ id: index + 1, imgSrc: item })),
             content: data.content,
         },
-        imgSrc: data.main_image,
         previewImgSrc: {
             front: data.front_image,
             backend: data.back_image,

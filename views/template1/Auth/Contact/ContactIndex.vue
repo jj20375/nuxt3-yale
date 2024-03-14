@@ -119,7 +119,7 @@ const breadcrumbs = ref([
 ]);
 
 // 表格資料
-const tableHeadData = ["", "聯繫人", "聯絡電話", "收件地址", "管理"];
+const tableHeadData = ["", "聯繫人", "行動電話", "收件地址", "管理"];
 const tableBodyData = ref<any>([]);
 
 /**

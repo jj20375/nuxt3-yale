@@ -16,7 +16,7 @@
             >
                 <div
                     class="flex xl:items-center h-screen bg-center bg-cover"
-                    :style="{ 'background-image': `url(${isMobile ? item.mobile_image : item.desktop_image})` }"
+                    :style="{ 'background-image': `url(${isLargePad ? item.mobile_image : item.desktop_image})` }"
                 >
                     <article class="container">
                         <div class="relative w-full top-[120px] xl:top-[0] xl:w-1/2">

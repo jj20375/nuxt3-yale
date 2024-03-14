@@ -76,8 +76,8 @@
             <h3 class="pt-[16px] text-[18px] sm:text-[20px] text-center xl:text-start font-medium YaleSolisW-Bd line-clamp-1">{{ product.model }}</h3>
             <h3 class="text-[15px] font-[400] text-center xl:text-start YaleSolisW-Lt mt-1.5 line-clamp-1">{{ product.name }}</h3>
             <div class="flex mt-1.5 md:gap-[8px] flex-col md:flex-row justify-center xl:justify-start items-center">
-                <span class="font-medium YaleSolisW-Bd">NT${{ $utils().formatCurrency(product.price) }}</span>
                 <span class="text-gray-400 line-through YaleSolisW-Lt">NT${{ $utils().formatCurrency(product.market_price) }}</span>
+                <span class="font-medium YaleSolisW-Bd">NT${{ $utils().formatCurrency(product.price) }}</span>
             </div>
         </NuxtLink>
         <AddToShoppingCarDialog v-model:showDialog="showDialog" />

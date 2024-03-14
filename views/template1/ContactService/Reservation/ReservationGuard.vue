@@ -509,7 +509,7 @@ const formDatas = ref<any>({
         },
         {
             prop: "cellphone",
-            label: "聯絡電話",
+            label: "行動電話",
             placeholder: "例：0911-222-222",
             style: "input",
         },
@@ -586,7 +586,7 @@ const formDatas = ref<any>({
         },
         {
             prop: "guardCellphone",
-            label: "新光保全-聯絡電話",
+            label: "新光保全-行動電話",
             placeholder: "例：0911-222-222",
             style: "input",
         },
@@ -658,7 +658,7 @@ const rules = ref<any>({
     cellphone: [
         {
             required: true,
-            message: "請輸入聯絡電話",
+            message: "請輸入行動電話",
             trigger: ["change", "blur"],
         },
         {
@@ -699,7 +699,7 @@ const rules = ref<any>({
     guardCellphone: [
         {
             required: true,
-            message: "請輸入聯絡電話",
+            message: "請輸入行動電話",
             trigger: ["change", "blur"],
         },
         {

@@ -5,8 +5,8 @@
             <li
                 @click="currentPlanData = tab.id"
                 v-for="(tab, index) in tabs"
-                class="rounded-[8px] py-[16px] px-[24px] border border-gray-300 cursor-pointer"
-                :class="currentPlanData == tab.id ? 'outline outline-2 outline-yellow-600 -outline-offset-2' : ''"
+                class="relative rounded-[8px] py-[16px] px-[24px] border border-gray-300 cursor-pointer overflow-hidden z-[0]"
+                :class="currentPlanData == tab.id ? 'shadow-[inset_0_0_0_1px_rgb(255,204,0)] border-yellow-600' : ''"
             >
                 <div class="flex items-center justify-center">
                     <div class="text-[14px]" :class="currentPlanData == tab.id ? 'YaleSolisW-Bd font-medium' : ''">{{ tab.text }}</div>

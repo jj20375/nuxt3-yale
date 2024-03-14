@@ -68,9 +68,9 @@
                             </div>
                         </div>
                         <h2 class="mt-[8px] text-[16px] YaleSolisW-Bd font-medium text-gray-400">{{ detailData.name }}</h2>
-                        <div class="flex mt-[8px]">
-                            <p class="text-gray-800 text-[20px] font-medium mr-[12px] YaleSolisW-Bd">NT${{ $utils().formatCurrency(detailData.price) }}</p>
+                        <div class="flex mt-[8px] gap-[12px]">
                             <p class="text-gray-500 text-[20px] font-light line-through">NT${{ $utils().formatCurrency(detailData.market_price) }}</p>
+                            <p class="text-gray-800 text-[20px] font-medium YaleSolisW-Bd">NT${{ $utils().formatCurrency(detailData.price) }}</p>
                         </div>
                         <div class="mt-[16px] text-gray-900 list-disc list-inside text-[16px] mb-1">
                             {{ detailData.description }}
@@ -697,11 +697,3 @@ onMounted(async () => {
     await getType();
 });
 </script>
-
-<style>
-.product-card:hover {
-    .favorite {
-        @apply opacity-100 duration-300 transition-all;
-    }
-}
-</style>

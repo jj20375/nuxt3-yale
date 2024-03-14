@@ -331,7 +331,6 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
                 carousel: data.carousel_images.map((item: string, index: number) => ({ id: index + 1, imgSrc: item })),
                 content: data.content,
             },
-            imgSrc: data.main_image,
             previewImgSrc: {
                 front: data.front_image,
                 backend: data.back_image,

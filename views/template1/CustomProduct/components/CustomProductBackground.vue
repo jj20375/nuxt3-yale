@@ -6,7 +6,7 @@
                 @click="currentTabId = tab.id"
                 v-for="(tab, index) in tabDatas"
                 class="rounded-[8px] py-[16px] px-[24px] border border-gray-300 cursor-pointer"
-                :class="currentTabId == tab.id ? 'outline outline-2 outline-yellow-600 -outline-offset-2' : ''"
+                :class="currentTabId == tab.id ? 'shadow-[inset_0_0_0_1px_rgb(255,204,0)] border-yellow-600' : ''"
             >
                 <div class="flex items-center">
                     <div class="mr-[12px]">

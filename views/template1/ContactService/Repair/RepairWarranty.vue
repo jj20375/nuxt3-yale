@@ -284,7 +284,7 @@ const formDatas = ref<any>({
         },
         {
             prop: "phone",
-            label: "填單人聯絡電話",
+            label: "填單人行動電話",
             style: "input",
             placeholder: "請輸入",
         },
@@ -298,7 +298,7 @@ const formDatas = ref<any>({
         },
         {
             prop: "customerPhone",
-            label: "聯絡電話",
+            label: "行動電話",
             placeholder: "請輸入",
             style: "input",
         },
@@ -389,7 +389,7 @@ const rules = ref<any>({
     phone: [
         {
             required: true,
-            message: "請輸入填單人聯絡電話",
+            message: "請輸入填單人行動電話",
             trigger: "blur",
         },
     ],
@@ -403,7 +403,7 @@ const rules = ref<any>({
     customerPhone: [
         {
             required: true,
-            message: "請輸入聯絡電話",
+            message: "請輸入行動電話",
             trigger: "blur",
         },
     ],
