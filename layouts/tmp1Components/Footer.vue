@@ -44,7 +44,7 @@
                                     </div>
                                 </li>
                             </ul>
-                            <div class="flex xl:flex-col gap-2 mt-[30px]">
+                            <div class="flex xl:flex-col gap-2 mt-[30px] text-[14px] xl:text-[16px]">
                                 <div>{{ contact.name }}</div>
                                 <div>{{ contact.phone }}</div>
                             </div>

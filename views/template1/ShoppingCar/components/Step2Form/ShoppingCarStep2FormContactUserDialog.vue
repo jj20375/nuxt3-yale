@@ -102,7 +102,7 @@ const selectID = ref(0);
 const columns = {
     index: null,
     name: "聯絡人",
-    phone: "聯絡電話",
+    phone: "行動電話",
     address: "收件地址",
     radio: null,
 };

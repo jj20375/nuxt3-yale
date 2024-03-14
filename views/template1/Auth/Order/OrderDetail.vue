@@ -52,7 +52,7 @@
                                 v-if="orderData?.info?.phone"
                                 class="text-gray-700"
                             >
-                                聯絡電話：{{ orderData?.info?.phone }}
+                                行動電話：{{ orderData?.info?.phone }}
                             </div>
                             <div
                                 v-if="orderData?.info?.address"

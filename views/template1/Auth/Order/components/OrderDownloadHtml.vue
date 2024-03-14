@@ -194,7 +194,7 @@ const paymentData = ref({
         title: "配送資訊",
         columns: {
             name: { label: "聯繫人", value: props.orderData.info.contactName },
-            phone: { label: "聯絡電話", value: props.orderData.info.phone },
+            phone: { label: "行動電話", value: props.orderData.info.phone },
             email: { label: "Email", value: props.orderData.info.email },
             address: { label: "門市名稱/收件地址", value: props.orderData.info.address },
         },
