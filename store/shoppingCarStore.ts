@@ -165,11 +165,11 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
                         ...data,
                     };
                 }
-                // 判斷是 下將壓條 的時候執行
+                // 判斷是 下降壓條 的時候執行
                 if (item2.productable.customProductType.id === CustomProductListIdEnum.other1) {
                     const data = setToolData(item2.productable);
                     result["currentOther1"] = {
-                        label: "下將壓條",
+                        label: "下降壓條",
                         datas: [data],
                     };
                 }

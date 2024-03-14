@@ -274,3 +274,63 @@ export const openNewWindow = (url: string | URL | undefined, pageWidth = 500, pa
 
     window.open(url, 'newwindow', `height=${pageHeight}, width=${pageWidth}, left=${left}, top=${top}`);
 };
+
+/**
+ * 訂單狀態
+ */
+export const orderStatus = (status: string) => {
+    switch (status) {
+        case "unpaid":
+            return "未付款";
+        case "paid":
+            return "已付款";
+        case "process":
+            return "處理中";
+        case "shipped":
+            return "已出貨";
+        case "cancel":
+            return "已取消";
+        case "refund":
+            return "已退款";
+        case "return":
+            return "已退貨";
+        case "complete":
+            return "訂單完成";
+        case "waiting_deposit":
+            return "待付訂金";
+        case "deposited":
+            return "已付訂金";
+        case "measure_dispatch":
+            return "丈量派工中";
+        case "measure_complete":
+            return "丈量完成";
+        case "waiting_final_payment":
+            return "待付尾款";
+        case "final_payment":
+            return "已付尾款";
+        case "door_finish":
+            return "門扇製作完成";
+        case "install_dispatch":
+            return "安裝派工中";
+        case "install_complete":
+            return "安裝完成";
+        default:
+            return "";
+    }
+};
+
+/**
+ * 發票狀態
+ */
+export const receiptStatus = (status: string) => {
+    switch (status) {
+        case "unissued":
+            return "未開立";
+        case "issued":
+            return "已開立";
+        case "cancelled":
+            return "已作廢";
+        default:
+            return "";
+    }
+};

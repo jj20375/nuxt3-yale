@@ -60,47 +60,6 @@ const handlePageChange = (val: any) => {
 
 const tableBodyData = ref<any>([]);
 
-const receiptStatus = (status) => {
-    switch (status) {
-        case "unpaid":
-            return "未付款";
-        case "paid":
-            return "已付款";
-        case "process":
-            return "處理中";
-        case "shipped":
-            return "已出貨";
-        case "cancel":
-            return "已取消";
-        case "refund":
-            return "已退款";
-        case "return":
-            return "已退貨";
-        case "complete":
-            return "訂單完成";
-        case "measure_complete":
-            return "待付訂金";
-        case "waiting_deposit":
-            return "已付訂金";
-        case "deposited":
-            return "丈量派工中";
-        case "measure_dispatch":
-            return "丈量完成";
-        case "waiting_final_payment":
-            return "待付尾款";
-        case "final_payment":
-            return "已付尾款";
-        case "door_finish":
-            return "門扇製作完成";
-        case "install_dispatch":
-            return "安裝派工中";
-        case "install_complete":
-            return "安裝完成";
-        default:
-            return "";
-    }
-};
-
 /**
  * 取得訂單列表
  */
@@ -120,7 +79,7 @@ async function getList(params: { per_page: number; page: number; type: string })
                 date: item.created_at,
                 quantity: "10",
                 price: item.total_amount,
-                status: receiptStatus(item.status),
+                status: $utils().orderStatus(item.status),
                 url: {
                     name: "auth-order-detail-slug",
                     params: { slug: "訂單資訊" },

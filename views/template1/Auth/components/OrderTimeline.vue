@@ -30,7 +30,7 @@
         <div
             :class="{ active: isMenuOpen }"
             class="menu-content"
-            :style="{ maxHeight: isMenuOpen ? menuInnerHeight + 'px' : '0' }"
+            :style="{ maxHeight: isMenuOpen ? 'auto' : '0' }"
         >
             <div
                 class="p-4 sm:py-[20px] sm:px-[24px]"
@@ -96,7 +96,7 @@ const getStatusClass = (status: any) => {
 // 一開始為展開
 const isMenuOpen = ref(true);
 const menuInnerRef = ref(null);
-const menuInnerHeight = ref(0);
+// const menuInnerHeight = ref(0);
 
 const toggleMenu = () => {
     isMenuOpen.value = !isMenuOpen.value;
@@ -105,13 +105,6 @@ const toggleMenu = () => {
 const repay = () => {
     emit("orderRepay");
 };
-
-onMounted(() => {
-    // 在元素渲染後獲取高度
-    if (menuInnerRef.value) {
-        menuInnerHeight.value = menuInnerRef.value.clientHeight;
-    }
-});
 </script>
 
 <style scoped lang="scss">

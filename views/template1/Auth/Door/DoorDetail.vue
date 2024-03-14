@@ -238,6 +238,7 @@ const orderData = ref({
         method: "信用卡",
         orderStatus: "未付款",
     },
+    orderPayments: [],
     receipt: {
         status: "未開立",
         type: "公司戶發票",
@@ -427,66 +428,14 @@ const dialogData = ref([
     },
 ]);
 
-const orderStatus = (status: string) => {
-    switch (status) {
-        case "unpaid":
-            return "未付款";
-        case "paid":
-            return "已付款";
-        case "process":
-            return "處理中";
-        case "shipped":
-            return "已出貨";
-        case "cancel":
-            return "已取消";
-        case "refund":
-            return "已退款";
-        case "return":
-            return "已退貨";
-        case "complete":
-            return "訂單完成";
-        case "measure_complete":
-            return "待付訂金";
-        case "waiting_deposit":
-            return "已付訂金";
-        case "deposited":
-            return "丈量派工中";
-        case "measure_dispatch":
-            return "丈量完成";
-        case "waiting_final_payment":
-            return "待付尾款";
-        case "final_payment":
-            return "已付尾款";
-        case "door_finish":
-            return "門扇製作完成";
-        case "install_dispatch":
-            return "安裝派工中";
-        case "install_complete":
-            return "安裝完成";
-        default:
-            return "";
-    }
-};
-const receiptStatus = (status: string) => {
-    switch (status) {
-        case "unissued":
-            return "未開立";
-        case "issued":
-            return "已開立";
-        case "cancelled":
-            return "已作廢";
-        default:
-            return "";
-    }
-};
 const { data: resProductDetail }: any = await $api().GetProductOrderDetailAPI({ orderId: route.query.id });
 
 const orderRepay = async () => {
     const hostUrl = $config.public.hostURL;
-    console.log("Refund", hostUrl);
+    console.log("Refund", hostUrl, orderData.value);
     const params = {
         orderId: orderData.value.orderId,
-        orderPaymentId: orderData.value.timeline[0]?.id,
+        orderPaymentId: orderData.value.orderPayments[0]?.id,
         redirect_url: `${hostUrl}/order/normal`,
     };
     const { data, status, error } = await $api().orderRepayAPI(params);
@@ -513,13 +462,13 @@ const getData = async () => {
         address: resProductDetail.contact_city + resProductDetail.contact_district + resProductDetail.contact_address,
     };
     orderData.value.receipt.type = resProductDetail.orderPayments[0].orderInvoice.type;
-    orderData.value.receipt.status = receiptStatus(resProductDetail.orderPayments[0].orderInvoice.status);
+    orderData.value.receipt.status = $utils().receiptStatus(resProductDetail.orderPayments[0].orderInvoice.status);
     orderData.value.receipt.date = resProductDetail.orderPayments[0].orderInvoice.issued_at;
     orderData.value.receipt.taxId = resProductDetail.orderPayments[0].orderInvoice.carrier_code;
     orderData.value.receipt.number = resProductDetail.orderPayments[0].orderInvoice.invoice_no;
     orderData.value.price.totalPrice = resProductDetail.total_amount;
     orderData.value.price.memo = resProductDetail.remark ? resProductDetail.remark : "無";
-    orderData.value.payment.orderStatus = orderStatus(resProductDetail.status);
+    orderData.value.payment.orderStatus = $utils().orderStatus(resProductDetail.status);
     // orderData.value.products = [];
     // resProductDetail.orderItems.forEach((item: { productable: { name: any; attributes: { [x: string]: any } }; quantity: any }) => {
     //     orderData.value.products.push({
@@ -530,13 +479,13 @@ const getData = async () => {
     //         imgUrl: item.productable.main_image,
     //     });
     // });
+    orderData.value.orderPayments = resProductDetail.orderPayments
     orderData.value.timeline = [];
-    resProductDetail.orderPayments.forEach((item) => {
+    resProductDetail.orderTimelines.forEach((item: { id: any; changed_at: moment.MomentInput; after_status: string }) => {
         orderData.value.timeline.push({
-            id: item.id,
-            date: moment(item.created_at).format("YYYY-MM-DD"),
-            time: moment(item.created_at).format("HH:mm"),
-            status: orderStatus(item.status),
+            date: moment(item.changed_at).format("YYYY-MM-DD"),
+            time: moment(item.changed_at).format("HH:mm"),
+            status: item.after_status,
         });
     });
 
@@ -604,11 +553,11 @@ const setCustomShoppingCarData = (datas: any) => {
                     ...data,
                 };
             }
-            // 判斷是 下將壓條 的時候執行
+            // 判斷是 下降壓條 的時候執行
             if (item2.productable.customProductType.id === CustomProductListIdEnum.other1) {
                 const data = setToolData(item2.productable);
                 result["currentOther1"] = {
-                    label: "下將壓條",
+                    label: "下降壓條",
                     datas: [data],
                 };
             }

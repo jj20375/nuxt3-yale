@@ -228,6 +228,7 @@ async function ssoLogin(site: string) {
 }
 
 async function getMessage(e: any) {
+    console.log(e, "getMessage", e.data, $config.public.thirdURL);
     if (e.origin === $config.public.thirdURL) {
         const SSOLoginData = e.data;
         if (!SSOLoginData.registered) {
