@@ -9,7 +9,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
     const { isAuth, user } = storeToRefs(userStore);
     const token = useCookie("token");
 
-    if (token.value) {
+    if (token.value && !isAuth) {
         return userStore.getUserProfile();
     } else {
         if (process.client) {
