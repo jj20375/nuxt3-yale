@@ -208,10 +208,9 @@ function goToDetail(product: { name: string; id: number }) {
 </script>
 
 <style>
-.product-card {
-    @apply group;
+.product-card:hover {
     .favorite {
-        @apply group-hover:opacity-100 group-hover:duration-300 group-hover:transition-all;
+        @apply opacity-100 duration-300 transition-all;
     }
 }
 </style>
