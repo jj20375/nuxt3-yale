@@ -17,6 +17,8 @@ export interface ShoppingCarInterface {
     count: number;
     // 總價
     totalPrice: number;
+    // 庫存
+    stock: number;
 }
 
 /**

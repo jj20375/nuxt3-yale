@@ -62,7 +62,7 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
                             }
                         }
                     }
-
+                    console.log("GetNormalCartAPI =>", i);
                     return {
                         id: i.id,
                         productID: i.productable.id,
@@ -73,6 +73,7 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
                         totalPrice: Number(price) * i.quantity,
                         product_variationable_id: i.productVariationable ? i.productVariationable.id : undefined,
                         colorName,
+                        stock: i.productable.stock,
                     };
                 });
                 if (process.client) {

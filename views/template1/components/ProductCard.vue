@@ -137,7 +137,10 @@ const handleFavorite = async () => {
     if (isAuth.value) {
         emit("handleFavorite", props.product.id);
     } else {
-        alert("請先登入或註冊新帳號以便管理您的收藏！");
+        ElMessage({
+            type: "error",
+            message: "請先登入或註冊新帳號以便管理您的收藏！",
+        });
     }
 };
 
@@ -172,6 +175,7 @@ function addToShoppingCar(data: any) {
         count: 1,
         price: data.price,
         totalPrice: data.price * 1,
+        stock: data.stock,
     };
     shoppingCarStore
         .addToCart(input)
@@ -181,7 +185,10 @@ function addToShoppingCar(data: any) {
         .catch((err) => {
             console.log("err", err);
             if (err) {
-                alert(err);
+                ElMessage({
+                    type: "error",
+                    message: err,
+                });
                 return;
             }
         });
