@@ -65,10 +65,12 @@ const items = [
 .promise-card {
     @apply relative aspect-square object-cover p-4 md:p-6 bg-white rounded-lg flex items-center justify-center top-0 transition-all duration-300;
     @apply before:absolute before:top-0 before:left-0 before:rounded-lg before:w-full before:h-full before:opacity-0 before:-z-[1] before:bg-[linear-gradient(296deg,_#FFD500_0.13%,_#FFF1C4_99.63%)] before:transition-all before:duration-300;
-    &:hover {
-        @apply -top-2.5 drop-shadow-lg;
-        &::before {
-            @apply opacity-100 transition-all transition-all duration-300;
+    @include res(nb) {
+        &:hover {
+            @apply -top-2.5 drop-shadow-lg;
+            &::before {
+                @apply opacity-100 transition-all transition-all duration-300;
+            }
         }
     }
 }

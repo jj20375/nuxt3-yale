@@ -28,8 +28,8 @@
                     @click="selectProduct(item)"
                     v-for="(item, index) in datas"
                     :key="index"
-                    class="bg-white p-4 sm:p-[30px] rounded-[16px] cursor-pointer outline -outline-offset-2 outline-2 duration-200 transition-all"
-                    :class="[selectProducts.includes(item.id) ? 'outline-yellow-600' : 'outline-transparent', selectProducts.length === 3 && !selectProducts.includes(item.id) && !isMobile ? 'opacity-50 pointer-events-none cursor-not-allowed' : selectProducts.length === 2 && !selectProducts.includes(item.id) && isMobile ? 'opacity-50 pointer-events-none cursor-not-allowed' : '']"
+                    class="bg-white p-4 sm:p-[30px] rounded-[16px] cursor-pointer duration-200 transition-all"
+                    :class="[selectProducts.includes(item.id) ? 'shadow-[inset_0_0_0_2px_rgb(255,204,0)]' : '', selectProducts.length === 3 && !selectProducts.includes(item.id) && !isMobile ? 'opacity-50 pointer-events-none cursor-not-allowed' : selectProducts.length === 2 && !selectProducts.includes(item.id) && isMobile ? 'opacity-50 pointer-events-none cursor-not-allowed' : '']"
                 >
                     <NuxtImg
                         class="object-cover w-full rounded-2xl aspect-square"

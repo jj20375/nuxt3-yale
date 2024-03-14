@@ -7,7 +7,7 @@
                 v-for="(size, index) in sizes"
                 :key="index"
                 class="py-[16px] px-[24px] text-[14px] rounded-[8px] text-gray-800 cursor-pointer border border-gray-300 cursor-pointer"
-                :class="currentSizeDataId === size.id ? 'outline outline-2 outline-yellow-600 -outline-offset-2 font-medium' : ''"
+                :class="currentSizeDataId === size.id ? 'shadow-[inset_0_0_0_1px_rgb(255,204,0)] border-yellow-600 font-medium YaleSolisW-Bd' : ''"
             >
                 <div>{{ size.name }}</div>
             </li>
