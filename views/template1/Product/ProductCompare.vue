@@ -29,7 +29,10 @@
                     v-for="(item, index) in datas"
                     :key="index"
                     class="bg-white p-4 sm:p-[30px] rounded-[16px] cursor-pointer outline -outline-offset-2 outline-2 duration-200 transition-all"
-                    :class="[selectProducts.includes(item.id) ? 'outline-yellow-600' : 'outline-transparent', selectProducts.length === 3 && !selectProducts.includes(item.id) && !isMobile ? 'opacity-50 pointer-events-none cursor-not-allowed' : selectProducts.length === 2 && !selectProducts.includes(item.id) && isMobile ? 'opacity-50 pointer-events-none cursor-not-allowed' : '']"
+                    :class="[
+                        selectProducts.includes(item.id) ? 'outline-yellow-600' : 'outline-transparent',
+                        selectProducts.length === 3 && !selectProducts.includes(item.id) && !isMobile ? 'opacity-50 pointer-events-none cursor-not-allowed' : selectProducts.length === 2 && !selectProducts.includes(item.id) && isMobile ? 'opacity-50 pointer-events-none cursor-not-allowed' : '',
+                    ]"
                 >
                     <NuxtImg
                         class="object-cover w-full rounded-2xl aspect-square"
@@ -87,13 +90,13 @@ function selectProduct(val: { id: string | number; model: any; name: any; shape:
         selectProducts.value.splice(arrIndex, 1);
     } else {
         // 如果選擇區域超過或等於3個時 直接回傳 不給選擇(手機版為2個)
-        if(isMobile.value){
+        if (isMobile.value) {
             if (selectProducts.value.length >= 2) {
                 // 將可選擇狀態改為 false
                 cnaSelected.value = false;
                 return;
             }
-        }else{
+        } else {
             if (selectProducts.value.length >= 3) {
                 // 將可選擇狀態改為 false
                 cnaSelected.value = false;
@@ -145,20 +148,25 @@ async function getList(params: { product_type_id: string }) {
  * 跳轉規格比較
  */
 function goToDifference() {
-    const setBreadcrumbs = [...breadcrumbs.value.slice(0, 4)];
-    const comparisonText = breadcrumbs.value[3].text;
-    const productName = comparisonText.replace("比較", "");
-    setBreadcrumbs.push({
-        name: "product-compare-slug",
-        text: `${productName}規格比較`,
-        params: { slug: `${productName}規格比較` },
-        query: { compareId: route.query.compareId },
-    });
-    $utils().saveBreadcrumbsData(JSON.stringify(setBreadcrumbs));
-    router.push({ 
+    // const setBreadcrumbs = [...breadcrumbs.value.slice(0, 4)];
+    // const comparisonText = breadcrumbs.value[3].text;
+    // const productName = comparisonText.replace("比較", "");
+    // setBreadcrumbs.push({
+    //     name: "product-compare-slug",
+    //     text: `${productName}規格比較`,
+    //     params: { slug: `${productName}規格比較` },
+    //     query: { compareId: route.query.compareId },
+    // });
+    // $utils().saveBreadcrumbsData(JSON.stringify(setBreadcrumbs));
+    // router.push({
+    //     name: "product-compare-difference-slug",
+    //     params: { slug: `${productName}規格比較` },
+    //     query: { compareId: route.query.compareId }
+    // });
+    router.push({
         name: "product-compare-difference-slug",
-        params: { slug: `${productName}規格比較` },
-        query: { compareId: route.query.compareId }
+        params: { slug: `規格比較` },
+        query: { compareId: route.query.compareId },
     });
 }
 

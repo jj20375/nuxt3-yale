@@ -197,10 +197,17 @@ async function init() {
 }
 
 await init();
-onMounted(async () => {
-    nextTick(async () => {
+
+// 切換文章時 自動滾回上方
+watch(
+    () => route.query.id,
+    (val) => {
         if (process.client) {
+            window.scrollTo(0, 0);
         }
-    });
+    }
+);
+onMounted(async () => {
+    nextTick(async () => {});
 });
 </script>

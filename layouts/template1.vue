@@ -155,6 +155,7 @@ async function getInitializationData() {
 
 onMounted(async () => {
     if (process.client) {
+        console.table({ 版本號: $config.public.yaleVersion });
         // const dataLayer = window.dataLayer || [];
         // function gtag() {
         //     dataLayer.push(arguments);

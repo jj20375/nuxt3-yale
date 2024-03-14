@@ -88,6 +88,8 @@ export default defineNuxtConfig({
             paginationLimit: process.env.PAGINATION_LIMIT,
             // 滾動分頁 一頁載入幾筆資料
             infinitePaginationLimit: process.env.INFINITE_PAGINATION_LIMIT || "30",
+            // 版本確認
+            yaleVersion: process.env.VERSION,
         },
     },
 

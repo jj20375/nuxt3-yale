@@ -64,7 +64,8 @@
                                     <button
                                         v-if="currentStep == 0"
                                         @click="goStepCheckout"
-                                        class="w-full yellow-btn"
+                                        :disabled="checkStockLimit"
+                                        class="w-full yellow-btn disabled:cursor-not-allowed disabled:bg-gray-100"
                                     >
                                         下一步
                                     </button>
@@ -146,7 +147,6 @@ const { shoppingCustomCar } = storeToRefs(shoppingCarStore);
 const goCheckoutStep3 = ref(false);
 const userStore = useUserStore();
 
-console.log("shoppingCarStore.shoppingCar.values.length =>", shoppingCar.value);
 // 購物種類
 const tabs = computed(() => ({
     type1: {
@@ -169,6 +169,12 @@ const currentStep = ref(0);
 
 // 購物車選中商品 id
 const selectProductIds = ref<number[]>([]);
+
+// 確認商品數量
+const checkStockLimit = computed(() => {
+    const haveStockLimit = shoppingCar.value.filter((item: any) => item.count > item.stock);
+    return haveStockLimit.length > 0 ? true : false;
+});
 
 const componentRef = ref<any>(null);
 const showComponent = shallowRef<any>(ShoppingCarStep1);
