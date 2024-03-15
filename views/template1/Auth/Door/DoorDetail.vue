@@ -29,7 +29,7 @@
                 <RecordTimeline
                     :orderNumber="orderData.orderNumber"
                     :timeline="orderData.timeline"
-                    :status="orderData?.payment?.orderStatus"
+                    :status="orderData.orderStatus"
                     @orderRepay="orderRepay"
                 />
                 <div class="mt-8 sm:mt-12">
@@ -98,6 +98,12 @@
                             class="text-gray-700"
                         >
                             開立日期：{{ orderData?.receipt?.date }}
+                        </div>
+                        <div
+                            v-if="orderData?.receipt?.carrier_code"
+                            class="text-gray-700"
+                        >
+                            電子載具：{{ orderData?.receipt?.carrier_code }}
                         </div>
                         <div
                             v-if="orderData?.receipt?.taxId"
@@ -238,12 +244,14 @@ const orderData = ref({
         method: "信用卡",
         orderStatus: "未付款",
     },
+    orderStatus: '',
     orderPayments: [],
     receipt: {
         status: "未開立",
         type: "公司戶發票",
         date: "2022-06-11",
         taxId: "54567354",
+        carrier_code: "",
         number: "XG-345345123",
     },
     products: [
@@ -279,6 +287,10 @@ const orderData = ref({
             },
         ],
         coupon: -1000,
+        deposit: 0,
+        deposit_ratio: 30,
+        finalPayment: 0,
+        finalPayment_ratio: 70,
         totalPrice: 43399,
         memo: "備註內容備註內容備註內容備註內容備註內容備註內容備註內容備註內容備註內容備註內容備註內容備註內容",
     },
@@ -433,9 +445,13 @@ const { data: resProductDetail }: any = await $api().GetProductOrderDetailAPI({ 
 const orderRepay = async () => {
     const hostUrl = $config.public.hostURL;
     console.log("Refund", hostUrl, orderData.value);
+    let orderPaymentId = orderData.value.orderPayments[0]?.id
+    if (orderData.value.orderStatus === '待付尾款') {
+        orderPaymentId = orderData.value.orderPayments[1]?.id
+    }
     const params = {
         orderId: orderData.value.orderId,
-        orderPaymentId: orderData.value.orderPayments[0]?.id,
+        orderPaymentId: orderPaymentId,
         redirect_url: `${hostUrl}/order/normal`,
     };
     const { data, status, error } = await $api().orderRepayAPI(params);
@@ -447,6 +463,18 @@ const orderRepay = async () => {
         }
     }
 };
+
+const paymentStatus = (orderPayments:string) => {
+    let result = '訂金未付款'
+    if (orderPayments[0]?.status === 'paid') {
+        result = '已付訂金'
+    }
+    if (orderPayments[1]?.status === 'paid') {
+        result = '已付尾款'
+    }
+
+    return result
+}
 
 /**
  * 取得商品分類詳情
@@ -464,21 +492,17 @@ const getData = async () => {
     orderData.value.receipt.type = resProductDetail.orderPayments[0].orderInvoice.type;
     orderData.value.receipt.status = $utils().receiptStatus(resProductDetail.orderPayments[0].orderInvoice.status);
     orderData.value.receipt.date = resProductDetail.orderPayments[0].orderInvoice.issued_at;
-    orderData.value.receipt.taxId = resProductDetail.orderPayments[0].orderInvoice.carrier_code;
+    orderData.value.receipt.taxId = resProductDetail.orderPayments[0].orderInvoice.tax_number;
+    orderData.value.receipt.carrier_code = resProductDetail.orderPayments[0].orderInvoice.carrier_code;
     orderData.value.receipt.number = resProductDetail.orderPayments[0].orderInvoice.invoice_no;
+    orderData.value.price.deposit = resProductDetail.orderPayments[0].amount;
+    orderData.value.price.deposit_ratio = resProductDetail.orderPayments[0].amount_ratio;
+    orderData.value.price.finalPayment = resProductDetail.orderPayments[1].amount;
+    orderData.value.price.finalPayment_ratio = resProductDetail.orderPayments[1].amount_ratio;
     orderData.value.price.totalPrice = resProductDetail.total_amount;
     orderData.value.price.memo = resProductDetail.remark ? resProductDetail.remark : "無";
-    orderData.value.payment.orderStatus = $utils().orderStatus(resProductDetail.status);
-    // orderData.value.products = [];
-    // resProductDetail.orderItems.forEach((item: { productable: { name: any; attributes: { [x: string]: any } }; quantity: any }) => {
-    //     orderData.value.products.push({
-    //         name: item.productable.name,
-    //         price: "$" + $utils().formatCurrency(item.price),
-    //         color: item.productable.attributes["顏色"],
-    //         quantity: item.quantity,
-    //         imgUrl: item.productable.main_image,
-    //     });
-    // });
+    orderData.value.orderStatus = $utils().orderStatus(resProductDetail.status);
+    orderData.value.payment.orderStatus = paymentStatus(resProductDetail.orderPayments);
     orderData.value.orderPayments = resProductDetail.orderPayments
     orderData.value.timeline = [];
     resProductDetail.orderTimelines.forEach((item: { id: any; changed_at: moment.MomentInput; after_status: string }) => {
@@ -718,6 +742,7 @@ function setLocksData(data: any) {
             carousel: data.carousel_images.map((item: string, index: number) => ({ id: index + 1, imgSrc: item })),
             content: data.content,
         },
+        imgSrc: data.main_image,
         previewImgSrc: {
             front: data.front_image,
             backend: data.back_image,

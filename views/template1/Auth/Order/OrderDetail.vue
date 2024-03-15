@@ -29,7 +29,7 @@
                 <RecordTimeline
                     :orderNumber="orderData.orderNumber"
                     :timeline="orderData.timeline"
-                    :status="orderData?.payment?.orderStatus"
+                    :status="orderData.orderStatus"
                     @orderRepay="orderRepay"
                 />
                 <div class="mt-8 sm:mt-12">
@@ -98,6 +98,12 @@
                             class="text-gray-700"
                         >
                             開立日期：{{ orderData?.receipt?.date }}
+                        </div>
+                        <div
+                            v-if="orderData?.receipt?.carrier_code"
+                            class="text-gray-700"
+                        >
+                            電子載具：{{ orderData?.receipt?.carrier_code }}
                         </div>
                         <div
                             v-if="orderData?.receipt?.taxId"
@@ -259,12 +265,14 @@ const orderData = ref({
         method: "信用卡",
         orderStatus: "未付款",
     },
+    orderStatus: '',
     orderPayments: [],
     receipt: {
         status: "未開立",
         type: "公司戶發票",
         date: "2022-06-11",
         taxId: "54567354",
+        carrier_code: "",
         number: "XG-345345123",
     },
     products: [
@@ -330,8 +338,17 @@ const orderRepay = async () => {
         }
     }
 };
+
+const paymentStatus = (orderPayments:string) => {
+    let result = '未付款'
+    if (orderPayments[0]?.status === 'paid') {
+        result = '已付款'
+    }
+
+    return result
+}
 /**
- * 取得商品分類詳情
+ * 取得訂單詳情
  */
 const getData = async () => {
     console.log("resProductDetail =>", resProductDetail);
@@ -365,11 +382,13 @@ const getData = async () => {
     orderData.value.receipt.type = resProductDetail.orderPayments[0].orderInvoice.type;
     orderData.value.receipt.status = $utils().receiptStatus(resProductDetail.orderPayments[0].orderInvoice.status);
     orderData.value.receipt.date = resProductDetail.orderPayments[0].orderInvoice.issued_at;
-    orderData.value.receipt.taxId = resProductDetail.orderPayments[0].orderInvoice.carrier_code;
+    orderData.value.receipt.taxId = resProductDetail.orderPayments[0].orderInvoice.tax_number;
+    orderData.value.receipt.carrier_code = resProductDetail.orderPayments[0].orderInvoice.carrier_code;
     orderData.value.receipt.number = resProductDetail.orderPayments[0].orderInvoice.invoice_no;
     orderData.value.price.totalPrice = resProductDetail.total_amount;
     orderData.value.price.memo = resProductDetail.remark ? resProductDetail.remark : "無";
-    orderData.value.payment.orderStatus = $utils().orderStatus(resProductDetail.status);
+    orderData.value.orderStatus = $utils().orderStatus(resProductDetail.status);
+    orderData.value.payment.orderStatus = paymentStatus(resProductDetail.orderPayments);
 };
 
 /**

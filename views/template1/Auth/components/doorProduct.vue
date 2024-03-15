@@ -19,7 +19,7 @@
                     />
                     <div
                         class="underline underline-offset-2"
-                        @click="handleDetail"
+                        @click="handleDetail(index)"
                     >
                         查看商品詳情
                     </div>
@@ -116,7 +116,7 @@
             />
             <div
                 class="underline underline-offset-2"
-                @click="handleDetail"
+                @click="handleDetail(index)"
             >
                 查看商品詳情
             </div>
@@ -124,7 +124,7 @@
         <client-only>
             <ProductDialog
                 ref="shoppingCarCustomProductDetailRefDom"
-                :products="order[0]"
+                :products="dialogData"
             />
         </client-only>
     </div>
@@ -209,8 +209,28 @@ const columns = [
 // 商品詳情彈窗
 const shoppingCarCustomProductDetailRefDom = ref<any>(null);
 
-const handleDetail = () => {
+const dialogData = ref<any>({
+    name: "",
+    color: "",
+    doorLeaf: [],
+    doorFrame: [],
+    doorLock: [],
+    doorHanging: [],
+    doorSealStrip: "",
+    doorGasket: [],
+    doorOperator: [],
+    otherService: [],
+    quantity: 1,
+    price: 0,
+    rule: {
+        needPrice: NaN, // 滿額贈
+        getFree: false, // 加價購
+    },
+})
+
+const handleDetail = (index:Number) => {
     console.log(shoppingCarCustomProductDetailRefDom);
+    dialogData.value = props.order[index]
     shoppingCarCustomProductDetailRefDom.value[0].openDialog();
 };
 </script>
