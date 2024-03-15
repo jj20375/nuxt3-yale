@@ -20,7 +20,10 @@
                             v-for="item in datas"
                             :key="item"
                         >
-                            <ProductCard :product="item" @handleFavorite="handleFavorite" />
+                            <ProductCard
+                                :product="item"
+                                @handleFavorite="handleFavorite"
+                            />
                         </SwiperSlide>
                     </Swiper>
                 </div>
@@ -33,7 +36,6 @@
 // import required modules
 const { isMobile, isLargePad } = useWindowResize();
 import { Scrollbar } from "swiper/modules";
-import { current } from "tailwindcss/colors";
 // 產品卡片樣板
 import ProductCard from "@/views/template1/components/ProductCard.vue";
 /**
@@ -68,24 +70,25 @@ async function getList() {
         const { data } = await $api().ProductLisAPI<ProductListAPIInterface>(params);
         datas.value = [];
         console.log("ProductLisAPI api => ", data.value);
+        if (data.value) {
+            const rows = (data.value as any).data;
 
-        const rows = (data.value as any).data;
-
-        rows.forEach((item: ProductCarInterface) => {
-            datas.value.push({
-                id: item.id,
-                model: item.model,
-                name: item.name,
-                shape: item.shape,
-                price: item.price,
-                market_price: item.market_price,
-                main_image: item.main_image,
-                is_favorite: item.is_favorite,
-                tags: item.tags,
+            rows.forEach((item: ProductCarInterface) => {
+                datas.value.push({
+                    id: item.id,
+                    model: item.model,
+                    name: item.name,
+                    shape: item.shape,
+                    price: item.price,
+                    market_price: item.market_price,
+                    main_image: item.main_image,
+                    is_favorite: item.is_favorite,
+                    tags: item.tags,
+                });
             });
-        });
+        }
     } catch (err) {
-        console.log("HomeSampleAPI => ", err);
+        console.log("ProductLisAPI error => ", err);
     }
 }
 
@@ -95,7 +98,6 @@ async function handleFavorite(id: any) {
     const message = (data.value as any).message;
     const is_favorite = datas.value.find((item) => item.id === id).is_favorite;
     const handleMessge = is_favorite ? "取消收藏" : "加入收藏";
-
     if (message === "請求成功") {
         ElMessage({
             type: "success",
@@ -110,7 +112,13 @@ async function handleFavorite(id: any) {
     }
 }
 
-await getList();
+onMounted(async () => {
+    nextTick(async () => {
+        if (process.client) {
+            await getList();
+        }
+    });
+});
 </script>
 
 <style lang="scss" scoped>
