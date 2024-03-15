@@ -483,6 +483,8 @@ const getData = async () => {
     console.log("resProductDetail =>", resProductDetail);
     orderData.value.orderId = resProductDetail.id;
     orderData.value.orderNumber = resProductDetail.order_no;
+    breadcrumbs.value[3].text = resProductDetail.order_no;
+    breadcrumbs.value[3].params.slug = resProductDetail.order_no;
     orderData.value.info = {
         contactName: resProductDetail.contact_name,
         email: resProductDetail.contact_email,
