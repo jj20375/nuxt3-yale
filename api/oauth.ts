@@ -300,7 +300,7 @@ export default () => {
       email: string;
       token: string;
     }) {
-      return useMyFetch(`${apiUrl}/member/email-verification`, {
+      return useMyFetch(`${apiUrl}/member/verify-email-verification`, {
         method: "post",
         body: { ...params },
       });
@@ -315,7 +315,19 @@ export default () => {
       password: string;
       password_confirmation: string;
     }) {
-      return useMyFetch(`${apiUrl}/member/email-verification`, {
+      return useMyFetch(`${apiUrl}/member/verify-email-verification`, {
+        method: "post",
+        body: { ...params },
+      });
+    },
+    /**
+     * 重發驗證縣
+     */
+    EmailVerificationResendAPI(params: {
+      scene: string;
+      email: string;
+    }) {
+      return useMyFetch(`${apiUrl}/member/resend-email-verification`, {
         method: "post",
         body: { ...params },
       });

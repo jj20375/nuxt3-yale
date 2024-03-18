@@ -9,6 +9,7 @@ import { ref, onMounted, onBeforeUnmount } from "vue";
 
 const countdownTimer = ref(60); // 設置初始倒數時間為 60 秒
 let timerId: any; // 用於儲存計時器的 ID
+const emit = defineEmits(["resendVerification"]);
 
 const startTimer = () => {
     timerId = setInterval(() => {
@@ -25,6 +26,7 @@ const startTimer = () => {
 
 const restartTimer = () => {
     if (countdownTimer.value === 0) {
+        emit("resendVerification");
         // 清除舊的計時器
         if (timerId !== undefined) {
             clearInterval(timerId);
