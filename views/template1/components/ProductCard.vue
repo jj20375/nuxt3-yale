@@ -198,7 +198,6 @@ function addToShoppingCar(data: any) {
  * 細節頁
  */
 function goToDetail(product: { name: string; id: number }) {
-    $utils().saveBreadcrumbsData(JSON.stringify(props.breadcrumbs));
     router.push({
         name: "product-detail-slug",
         params: { slug: product.name },

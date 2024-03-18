@@ -9,17 +9,23 @@
             <div class="container min-h-[200px] flex flex-col xl:flex-row justify-center xl:justify-start items-center gap-4 xl:gap-0">
                 <div class="hidden xl:block w-[164px]"></div>
                 <h1 class="text-[32px] font-medium YaleSolisW-Bd xl:flex-1">{{ route.params.slug }}</h1>
-                <div class="flex flex-col xl:flex-row items-center gap-4 xl:gap-0 w-full xl:w-auto">
+                <div class="flex flex-col items-center w-full gap-4 xl:flex-row xl:gap-0 xl:w-auto">
                     <div class="xl:mr-[20px]">
-                        <NuxtLink :to="{ name: 'product-compare-slug', params: { slug: '耶魯產品資訊-主鎖-主鎖比較' }, query: { compareId: route.query.compareId } }">
+                        <NuxtLink :to="{ name: 'product-compare-slug', params: { slug: route.params.slug }, query: { compareId: route.query.compareId } }">
                             <button class="text-blue-500 underline underline-offset-2 hover:no-underline">重新選擇</button>
                         </NuxtLink>
                     </div>
-                    <ul class="flex gap-4 self-end">
-                        <li @click="socialShare('fb')" class="p-1 cursor-pointer">
+                    <ul class="flex self-end gap-4">
+                        <li
+                            @click="socialShare('fb')"
+                            class="p-1 cursor-pointer"
+                        >
                             <IconFacebook class="!w-[24px] !h-[24px] transition-all duration-300 hover:text-gray-400 hover:transition-all hover:duration-300" />
                         </li>
-                        <li @click="socialShare('line')" class="p-1 cursor-pointer">
+                        <li
+                            @click="socialShare('line')"
+                            class="p-1 cursor-pointer"
+                        >
                             <IconLine class="!w-[24px] !h-[24px] transition-all duration-300 hover:text-gray-400 hover:transition-all hover:duration-300" />
                         </li>
                     </ul>
@@ -51,17 +57,24 @@ import IconFacebook from "assets/img/icons/medias/icon-black-1.svg";
 const { $api, $utils } = useNuxtApp();
 const route = useRoute();
 const productCompareStore = useProductCompareStore();
-const productDifferenceContentRef = ref<any>(null)
+const productDifferenceContentRef = ref<any>(null);
 
 const compareStore = computed(() => {
     return JSON.stringify(productCompareStore.compareStore);
 });
 
-const breadcrumbs = ref([]);
-// 取得 storage 麵包屑參數值
-if (process.client) {
-    breadcrumbs.value = JSON.parse($utils().getBreadcrumbsData());
-}
+// 麵包屑
+const breadcrumbs = computed(() => [
+    {
+        name: "index",
+        text: "首頁",
+    },
+    {
+        name: "product-compare-difference-slug",
+        text: `${route.params.slug}`,
+        query: { compareId: route.query.compareId },
+    },
+]);
 
 const products = ref<any>([]);
 
@@ -109,18 +122,18 @@ async function getList(params: { product_type_id: string }) {
             });
             attributes.value = obj;
         }
-        await getShareData()
+        await getShareData();
         await productsCompareData();
     } catch (err) {
         console.log("HomeSampleAPI => ", err);
     }
 }
 
-function getShareData () {
+function getShareData() {
     if (route.query.selectItem && JSON.parse(route.query.selectItem)) {
-        productCompareStore.compareStoreReset()
-        const selectItems = JSON.parse(route.query.selectItem)
-        console.log(selectItems)
+        productCompareStore.compareStoreReset();
+        const selectItems = JSON.parse(route.query.selectItem);
+        console.log(selectItems);
         selectItems.forEach((item: string | number, index: number) => {
             productCompareStore.compareStore[index] = datas.value.find((data) => data.id === item);
         });
@@ -165,36 +178,36 @@ const columns = computed(() => {
 });
 
 // 分享
-function socialShare (type:string) {
-    const selectItems: string[] = []
-    products.value.forEach((item: { id: string; }) => {
+function socialShare(type: string) {
+    const selectItems: string[] = [];
+    products.value.forEach((item: { id: string }) => {
         if (item.id) {
-            console.log(item.id)
-            selectItems.push(item.id)
+            console.log(item.id);
+            selectItems.push(item.id);
         }
-    })
-    let path =  window.location.origin + route.path + '?'
-    console.log(route.query)
-    Object.keys(route.query).forEach(key => {
-        if (key !=='selectItem') {
-            console.log(key)
-            path  = path + `${key}=${route.query[key]}`
+    });
+    let path = window.location.origin + route.path + "?";
+    console.log(route.query);
+    Object.keys(route.query).forEach((key) => {
+        if (key !== "selectItem") {
+            console.log(key);
+            path = path + `${key}=${route.query[key]}`;
         }
-    })
-    console.log(path)
-    path = encodeURIComponent(path + `&selectItem=${JSON.stringify(selectItems)}`)
-    console.log(path)
-    if (type === 'line') {
-        console.log(path)
-        const url = 'https://social-plugins.line.me/lineit/share?url=' + path
-        console.log(path)
+    });
+    console.log(path);
+    path = encodeURIComponent(path + `&selectItem=${JSON.stringify(selectItems)}`);
+    console.log(path);
+    if (type === "line") {
+        console.log(path);
+        const url = "https://social-plugins.line.me/lineit/share?url=" + path;
+        console.log(path);
 
-        $utils().openNewWindow(url)
+        $utils().openNewWindow(url);
     }
-    if (type === 'fb') {
-        const url = 'https://www.facebook.com/sharer/sharer.php?u=' + path
+    if (type === "fb") {
+        const url = "https://www.facebook.com/sharer/sharer.php?u=" + path;
 
-        $utils().openNewWindow(url)
+        $utils().openNewWindow(url);
     }
 }
 

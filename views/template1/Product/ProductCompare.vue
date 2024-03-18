@@ -58,11 +58,17 @@ const router = useRouter();
 const productCompareStore = useProductCompareStore();
 const { isMobile } = useWindowResize();
 
-const breadcrumbs = ref([]);
-// 取得 storage 麵包屑參數值
-if (process.client) {
-    breadcrumbs.value = JSON.parse($utils().getBreadcrumbsData());
-}
+const breadcrumbs = ref([
+    {
+        name: "index",
+        text: "首頁",
+    },
+    {
+        name: "product-compare-slug",
+        text: `${route.params.slug}`,
+        query: { compareId: route.query.compareId },
+    },
+]);
 
 // 選中產品
 const selectProducts = ref<string | number[]>([]);
@@ -148,24 +154,9 @@ async function getList(params: { product_type_id: string }) {
  * 跳轉規格比較
  */
 function goToDifference() {
-    // const setBreadcrumbs = [...breadcrumbs.value.slice(0, 4)];
-    // const comparisonText = breadcrumbs.value[3].text;
-    // const productName = comparisonText.replace("比較", "");
-    // setBreadcrumbs.push({
-    //     name: "product-compare-slug",
-    //     text: `${productName}規格比較`,
-    //     params: { slug: `${productName}規格比較` },
-    //     query: { compareId: route.query.compareId },
-    // });
-    // $utils().saveBreadcrumbsData(JSON.stringify(setBreadcrumbs));
-    // router.push({
-    //     name: "product-compare-difference-slug",
-    //     params: { slug: `${productName}規格比較` },
-    //     query: { compareId: route.query.compareId }
-    // });
     router.push({
         name: "product-compare-difference-slug",
-        params: { slug: `規格比較` },
+        params: { slug: `${route.params.slug}` },
         query: { compareId: route.query.compareId },
     });
 }

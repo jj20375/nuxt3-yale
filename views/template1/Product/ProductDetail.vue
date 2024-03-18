@@ -353,6 +353,7 @@ const detailData = computed(() => {
         price: product.price,
         market_price: product.market_price,
         stock: product.stock,
+        breadcrumbs: product.breadcrumbs,
     };
     if (product.is_single_variation === 1) {
         // 只有一個產品選擇
@@ -424,18 +425,6 @@ async function getType() {
     const { data }: any = await $api().ProductTypeAPI();
 
     const category = data.value.data.find((item: any) => item.id === detailData.value.product_type_id);
-    breadcrumbs.value.push({
-        name: "product-slug",
-        text: category.name,
-        params: { slug: `產品資訊-${category.name}` },
-        query: { category: category.id, tag: category.id },
-    });
-    breadcrumbs.value.push({
-        name: "product-detail-slug",
-        text: detailData.value.name,
-        params: { slug: `${detailData.value.name}` },
-        query: { id: detailData.value.product_id },
-    });
 }
 
 /**
@@ -444,6 +433,27 @@ async function getType() {
 const getData = async () => {
     const product = detailData.value;
     is_favorite.value = product.is_favorite;
+
+    if (product.breadcrumbs[0] && product.breadcrumbs[1]) {
+        breadcrumbs.value.push({
+            name: "product-slug",
+            text: product.breadcrumbs[0].name,
+            params: { slug: `產品資訊-${product.breadcrumbs[0].name}` },
+            query: { category: product.breadcrumbs[0].id, tag: product.breadcrumbs[1].id },
+        });
+        breadcrumbs.value.push({
+            name: "product-slug",
+            text: product.breadcrumbs[1].name,
+            params: { slug: `產品資訊-${product.breadcrumbs[1].name}` },
+            query: { category: product.breadcrumbs[0].id, tag: product.breadcrumbs[1].id },
+        });
+    }
+    breadcrumbs.value.push({
+        name: "product-detail-slug",
+        text: detailData.value.name,
+        params: { slug: `${detailData.value.name}` },
+        query: { id: detailData.value.product_id },
+    });
 
     if (productDetail.value.productRelations) {
         sameProducts.value = productDetail.value.productRelations.map((item: ProductCarInterface) => {
@@ -658,16 +668,7 @@ const handleFavorite = async (id: any) => {
  * 前往規格比較
  */
 const goToCompare = (data: any) => {
-    const setBreadcrumbs: any = [...breadcrumbs.value.slice(0, 3)];
-    // setBreadcrumbs.push({
-    //     name: "product-compare-slug",
-    //     text: `${breadcrumbs.value[2].text}比較`,
-    //     params: { slug: `${breadcrumbs.value[2].text}比較` },
-    //     query: { compareId: data.product_type_id, productId: data.product_id },
-    // });
-
-    $utils().saveBreadcrumbsData(JSON.stringify(setBreadcrumbs));
-    router.push({ name: "product-compare-slug", params: { slug: `商品比較` }, query: { compareId: data.product_type_id, productId: data.product_id } });
+    router.push({ name: "product-compare-slug", params: { slug: breadcrumbs.value[2].text + "比較" }, query: { compareId: data.product_type_id, productId: data.product_id } });
 };
 
 // 分享
