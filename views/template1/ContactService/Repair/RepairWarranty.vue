@@ -143,6 +143,7 @@
                                 <el-form-item
                                     :prop="item.prop"
                                     :label="item.label"
+                                    :rules="rules.serial"
                                 >
                                     <el-input
                                         v-if="item.style === 'input'"
@@ -186,7 +187,7 @@ import { ElMessage, ElLoading } from "element-plus";
 import { ProductListAPIInterface } from "~/interface/product.d";
 const router = useRouter();
 
-const { $api } = useNuxtApp();
+const { $api, $utils } = useNuxtApp();
 
 const breadcrumbs = ref([
     {
@@ -274,6 +275,7 @@ const formDatas = ref<any>({
             prop: "quantity",
             label: "數量",
             placeholder: "請輸入",
+            type: "number",
             style: "input",
         },
         {
@@ -392,6 +394,12 @@ const rules = ref<any>({
             message: "請輸入填單人行動電話",
             trigger: "blur",
         },
+        {
+            required: true,
+            validator: validateTWMobileNumber,
+            trigger: ["change", "blur"],
+            message: "格式不正確",
+        },
     ],
     customerName: [
         {
@@ -406,12 +414,25 @@ const rules = ref<any>({
             message: "請輸入行動電話",
             trigger: "blur",
         },
+        {
+            required: true,
+            validator: validateTWMobileNumber,
+            trigger: ["change", "blur"],
+            message: "格式不正確",
+        },
     ],
     customerAddress: [
         {
             required: true,
             message: "請輸入安裝或出貨地址",
             trigger: "blur",
+        },
+    ],
+    serial: [
+        {
+            pattern: /^.{11,11}$/,
+            trigger: ["change", "blur"],
+            message: "格式不正確",
         },
     ],
     serial0: [
@@ -422,6 +443,20 @@ const rules = ref<any>({
         },
     ],
 });
+
+watch(
+    () => form.value.phone,
+    (newValue) => {
+        form.value.phone =  $utils().cellphoneFormat(newValue);
+    }
+);
+
+watch(
+    () => form.value.customerPhone,
+    (newValue) => {
+        form.value.customerPhone =  $utils().cellphoneFormat(newValue);
+    }
+);
 
 async function onSubmit() {
     formRefDom.value.validate(async (valid: any) => {
@@ -439,14 +474,14 @@ async function onSubmit() {
             }
             const formData = {
                 company_name: form.value.companyName,
-                installation_or_delivery_date: form.value.date,
+                installation_or_delivery_date: $utils().formatToDate(form.value.date),
                 sales_purpose: form.value.purpose,
                 model: form.value.model,
                 quantity: form.value.quantity,
                 contact_name: form.value.name,
-                contact_phone: form.value.phone,
+                contact_phone: form.value.phone.replace(/-/g, ''),
                 customer_name: form.value.customerName,
-                customer_phone: form.value.customerPhone,
+                customer_phone: form.value.customerPhone.replace(/-/g, ''),
                 installation_or_delivery_address: form.value.customerAddress,
                 remarks: form.value.memo,
                 project_name: form.value.building,

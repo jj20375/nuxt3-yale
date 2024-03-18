@@ -334,3 +334,15 @@ export const receiptStatus = (status: string) => {
             return "";
     }
 };
+
+/**
+ * 手機格式轉換
+ */
+export const cellphoneFormat = (phone: string) => {
+    // 移除所有非數字字符
+    const sanitizedValue = phone.replace(/\D/g, '');
+    // 將數字格式化為 XXXX-XXX-XXX 的形式
+    const formatted = sanitizedValue.replace(/(\d{4})(\d{3})(\d{3})/, '$1-$2-$3');
+
+    return formatted
+};

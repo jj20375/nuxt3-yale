@@ -360,7 +360,7 @@ import { ProductListAPIInterface, ProductList, ProductCarInterface } from "~/int
 const router = useRouter();
 const { isMobile } = useWindowResize();
 
-const { $api } = useNuxtApp();
+const { $api, $utils } = useNuxtApp();
 
 const breadcrumbs = ref([
     {
@@ -657,6 +657,7 @@ const rules = ref<any>({
     serial: [
         {
             required: true,
+            pattern: /^.{11,11}$/,
             message: "請輸入產品序號",
             trigger: ["change", "blur"],
         },
@@ -682,6 +683,13 @@ const rules = ref<any>({
         },
     ],
 });
+
+watch(
+    () => form.value.cellphone,
+    (newValue) => {
+        form.value.cellphone = $utils().cellphoneFormat(newValue);
+    }
+);
 
 function handlefile(tempPath: any, prop: string) {
     form.value[prop] = tempPath;

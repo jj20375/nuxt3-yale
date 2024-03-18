@@ -409,7 +409,7 @@ import { ProductListAPIInterface } from "~/interface/product.d";
 const router = useRouter();
 const { isMobile } = useWindowResize();
 
-const { $api } = useNuxtApp();
+const { $api, $utils } = useNuxtApp();
 
 const breadcrumbs = ref([
     {
@@ -637,6 +637,7 @@ const rules = ref<any>({
     contractId: [
         {
             required: true,
+            pattern: /^.{10,10}$/,
             message: "請輸入成約訂單編號",
             trigger: ["change", "blur"],
         },
@@ -749,6 +750,21 @@ const rules = ref<any>({
         },
     ],
 });
+
+// 電話自動格式
+watch(
+    () => form.value.cellphone,
+    (newValue) => {
+        form.value.cellphone = $utils().cellphoneFormat(newValue);
+    }
+);
+
+watch(
+    () => form.value.guardCellphone,
+    (newValue) => {
+        form.value.guardCellphone = $utils().cellphoneFormat(newValue);
+    }
+);
 
 function handlefile(tempPath: any, prop: string) {
     form.value[prop] = tempPath;

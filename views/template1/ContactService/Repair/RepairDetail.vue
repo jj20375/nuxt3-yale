@@ -627,6 +627,7 @@ const rules = ref<any>({
     serial: [
         {
             required: true,
+            pattern: /^.{11,11}$/,
             message: "請輸入產品序號",
             trigger: ["change", "blur"],
         },
@@ -660,6 +661,14 @@ const rules = ref<any>({
         },
     ],
 });
+
+// 電話自動格式
+watch(
+    () => form.value.cellphone,
+    (newValue) => {
+        form.value.cellphone = $utils().cellphoneFormat(newValue);
+    }
+);
 
 function handlefile(tempPath: any, prop: string) {
     form.value[prop] = tempPath;
