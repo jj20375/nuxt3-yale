@@ -132,7 +132,10 @@
                 <div>
                     <OrderPrice :order="orderData.price" />
                 </div>
-                <div class="flex justify-center mt-[30px] sm:mt-[60px]">
+                <div
+                    v-if="orderData?.orderStatus === '待付訂金' || orderData?.orderStatus === '已付訂金' || orderData?.orderStatus === '丈量派工中' || orderData?.orderStatus === '丈量完成' || orderData?.orderStatus === '待付尾款'"
+                    class="flex justify-center mt-[30px] sm:mt-[60px]"
+                >
                     <button
                         class="transparent-btn btn-xs"
                         @click="handleRefund"
@@ -155,11 +158,41 @@
                 v-model="dialogRefund"
             >
                 <h3 class="text-center text-gray-800 font-bold text-[24px] mb-4">取消訂單</h3>
-                <div class="text-center text-gray-800 text-[20px]">請撥打服務專線 0912345678<br />取消此筆訂單</div>
+                <div class="text-center text-gray-800 text-[20px]">是否確定取消此筆訂單</div>
+                <div class="flex justify-center gap-4 mt-6">
+                    <button
+                        class="transparent-btn btn-sm"
+                        @click="dialogRefund = false"
+                    >
+                        否
+                    </button>
+                    <button
+                        class="yellow-btn btn-sm"
+                        @click="orderCancel"
+                    >
+                        是
+                    </button>
+                </div>
+            </el-dialog>
+        </client-only>
+        <client-only>
+            <el-dialog
+                class="custom-dialog"
+                close-on-click-modal
+                lock-scroll
+                show-close
+                :width="400"
+                center
+                align-center
+                append-to-body
+                v-model="dialogRefundCustom.isVisible"
+            >
+                <h3 class="text-center text-gray-800 font-bold text-[24px] mb-4">取消訂單</h3>
+                <div class="text-center text-gray-800 text-[20px]">請撥打服務專線 {{ dialogRefundCustom.phone }}<br />取消此筆訂單</div>
                 <div class="flex gap-4 justify-center mt-6">
                     <button
                         class="yellow-btn btn-sm"
-                        @click="dialogRefund = false"
+                        @click="dialogRefundCustom.isVisible = false"
                     >
                         確認
                     </button>
@@ -170,6 +203,7 @@
 </template>
 <script setup lang="ts">
 import Breadcrumb from "~/views/template1/components/Breadcrumb.vue";
+import { ElMessage } from "element-plus";
 import RecordTimeline from "~/views/template1/Auth/components/OrderTimeline.vue";
 import RecordProduct from "~/views/template1/Auth/components/doorProduct.vue";
 import OrderPrice from "~/views/template1/Auth/components/OrderPrice.vue";
@@ -180,6 +214,9 @@ import moment from "moment";
  * CustomProductListOptionEnum: 訂製門扇 產品選項
  */
 import { CustomProductListIdEnum, CustomProductListOptionEnum } from "@/enums/customProduct.enum";
+import { useInitializationStore } from "~/store/initializationStore";
+
+const initializationStore = useInitializationStore();
 
 const { $api, $utils } = useNuxtApp();
 const $config = useRuntimeConfig();
@@ -211,8 +248,41 @@ const breadcrumbs = ref([
 const dialogRefund = ref(false);
 
 const handleRefund = () => {
-    dialogRefund.value = true;
+    if (orderData?.value?.orderStatus === "待付訂金") {
+        dialogRefund.value = true;
+    } else if (orderData?.value?.orderStatus === "已付訂金" || orderData?.value?.orderStatus === "丈量派工中" || orderData?.value?.orderStatus === "丈量完成" || orderData?.value?.orderStatus === "待付尾款") {
+        dialogRefundCustom.value.isVisible = true;
+    }
 };
+
+const orderCancel = async () => {
+    const params = {
+        orderId: orderData.value.orderId,
+    };
+    const { data, status, error } = await $api().orderCancelAPI(params);
+
+    console.log(data, status, error);
+    if (status.value === "success") {
+        ElMessage({
+            type: "success",
+            message: "取消成功",
+        });
+        const { data: resProductDetail }: any = await $api().GetProductOrderDetailAPI({ orderId: route.query.id });
+        resProductDetail.value = resProductDetail;
+        await getData();
+    } else {
+        ElMessage({
+            type: "error",
+            message: (error.value as any).data.message,
+        });
+    }
+    dialogRefund.value = false;
+};
+
+const dialogRefundCustom = ref({
+    isVisible: false,
+    phone: initializationStore.initializationData.site.contact_phone,
+});
 
 // 訂單資料
 const orderData = ref({
@@ -244,7 +314,7 @@ const orderData = ref({
         method: "信用卡",
         orderStatus: "未付款",
     },
-    orderStatus: '',
+    orderStatus: "",
     orderPayments: [],
     receipt: {
         status: "未開立",
@@ -440,14 +510,17 @@ const dialogData = ref([
     },
 ]);
 
-const { data: resProductDetail }: any = await $api().GetProductOrderDetailAPI({ orderId: route.query.id });
+const resProductDetail = ref<any>(null);
+
+const { data: resProductDetailData }: any = await $api().GetProductOrderDetailAPI({ orderId: route.query.id });
+resProductDetail.value = resProductDetailData;
 
 const orderRepay = async () => {
     const hostUrl = $config.public.hostURL;
     console.log("Refund", hostUrl, orderData.value);
-    let orderPaymentId = orderData.value.orderPayments[0]?.id
-    if (orderData.value.orderStatus === '待付尾款') {
-        orderPaymentId = orderData.value.orderPayments[1]?.id
+    let orderPaymentId = orderData.value.orderPayments[0]?.id;
+    if (orderData.value.orderStatus === "待付尾款") {
+        orderPaymentId = orderData.value.orderPayments[1]?.id;
     }
     const params = {
         orderId: orderData.value.orderId,
@@ -464,50 +537,50 @@ const orderRepay = async () => {
     }
 };
 
-const paymentStatus = (orderPayments:string) => {
-    let result = '訂金未付款'
-    if (orderPayments[0]?.status === 'paid') {
-        result = '已付訂金'
+const paymentStatus = (orderPayments: string) => {
+    let result = "訂金未付款";
+    if (orderPayments[0]?.status === "paid") {
+        result = "已付訂金";
     }
-    if (orderPayments[1]?.status === 'paid') {
-        result = '已付尾款'
+    if (orderPayments[1]?.status === "paid") {
+        result = "已付尾款";
     }
 
-    return result
-}
+    return result;
+};
 
 /**
  * 取得商品分類詳情
  */
 const getData = async () => {
     console.log("resProductDetail =>", resProductDetail);
-    orderData.value.orderId = resProductDetail.id;
-    orderData.value.orderNumber = resProductDetail.order_no;
-    breadcrumbs.value[3].text = resProductDetail.order_no;
-    breadcrumbs.value[3].params.slug = resProductDetail.order_no;
+    orderData.value.orderId = resProductDetail.value.id;
+    orderData.value.orderNumber = resProductDetail.value.order_no;
+    breadcrumbs.value[3].text = resProductDetail.value.order_no;
+    breadcrumbs.value[3].params.slug = resProductDetail.value.order_no;
     orderData.value.info = {
-        contactName: resProductDetail.contact_name,
-        email: resProductDetail.contact_email,
-        phone: resProductDetail.contact_phone,
-        address: resProductDetail.contact_city + resProductDetail.contact_district + resProductDetail.contact_address,
+        contactName: resProductDetail.value.contact_name,
+        email: resProductDetail.value.contact_email,
+        phone: resProductDetail.value.contact_phone,
+        address: resProductDetail.value.contact_city + resProductDetail.value.contact_district + resProductDetail.value.contact_address,
     };
-    orderData.value.receipt.type = resProductDetail.orderPayments[0].orderInvoice.type;
-    orderData.value.receipt.status = $utils().receiptStatus(resProductDetail.orderPayments[0].orderInvoice.status);
-    orderData.value.receipt.date = resProductDetail.orderPayments[0].orderInvoice.issued_at;
-    orderData.value.receipt.taxId = resProductDetail.orderPayments[0].orderInvoice.tax_number;
-    orderData.value.receipt.carrier_code = resProductDetail.orderPayments[0].orderInvoice.carrier_code;
-    orderData.value.receipt.number = resProductDetail.orderPayments[0].orderInvoice.invoice_no;
-    orderData.value.price.deposit = resProductDetail.orderPayments[0].amount;
-    orderData.value.price.deposit_ratio = resProductDetail.orderPayments[0].amount_ratio;
-    orderData.value.price.finalPayment = resProductDetail.orderPayments[1].amount;
-    orderData.value.price.finalPayment_ratio = resProductDetail.orderPayments[1].amount_ratio;
-    orderData.value.price.totalPrice = resProductDetail.total_amount;
-    orderData.value.price.memo = resProductDetail.remark ? resProductDetail.remark : "無";
-    orderData.value.orderStatus = $utils().orderStatus(resProductDetail.status);
-    orderData.value.payment.orderStatus = paymentStatus(resProductDetail.orderPayments);
-    orderData.value.orderPayments = resProductDetail.orderPayments
+    orderData.value.receipt.type = resProductDetail.value.orderPayments[0].orderInvoice.type;
+    orderData.value.receipt.status = $utils().receiptStatus(resProductDetail.value.orderPayments[0].orderInvoice.status);
+    orderData.value.receipt.date = resProductDetail.value.orderPayments[0].orderInvoice.issued_at;
+    orderData.value.receipt.taxId = resProductDetail.value.orderPayments[0].orderInvoice.tax_number;
+    orderData.value.receipt.carrier_code = resProductDetail.value.orderPayments[0].orderInvoice.carrier_code;
+    orderData.value.receipt.number = resProductDetail.value.orderPayments[0].orderInvoice.invoice_no;
+    orderData.value.price.deposit = resProductDetail.value.orderPayments[0].amount;
+    orderData.value.price.deposit_ratio = resProductDetail.value.orderPayments[0].amount_ratio;
+    orderData.value.price.finalPayment = resProductDetail.value.orderPayments[1].amount;
+    orderData.value.price.finalPayment_ratio = resProductDetail.value.orderPayments[1].amount_ratio;
+    orderData.value.price.totalPrice = resProductDetail.value.total_amount;
+    orderData.value.price.memo = resProductDetail.value.remark ? resProductDetail.value.remark : "無";
+    orderData.value.orderStatus = $utils().orderStatus(resProductDetail.value.status);
+    orderData.value.payment.orderStatus = paymentStatus(resProductDetail.value.orderPayments);
+    orderData.value.orderPayments = resProductDetail.value.orderPayments;
     orderData.value.timeline = [];
-    resProductDetail.orderTimelines.forEach((item: { id: any; changed_at: moment.MomentInput; after_status: string }) => {
+    resProductDetail.value.orderTimelines.forEach((item: { id: any; changed_at: moment.MomentInput; after_status: string }) => {
         orderData.value.timeline.push({
             date: moment(item.changed_at).format("YYYY-MM-DD"),
             time: moment(item.changed_at).format("HH:mm"),
@@ -515,7 +588,7 @@ const getData = async () => {
         });
     });
 
-    setCustomShoppingCarData(resProductDetail.orderItems);
+    setCustomShoppingCarData(resProductDetail.value.orderItems);
 };
 
 /**
