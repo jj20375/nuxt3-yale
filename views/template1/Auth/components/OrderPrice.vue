@@ -17,6 +17,28 @@
         <div class="text-[24px] font-bold">總計</div>
         <div class="flex items-center gap-2 YaleSolisW-Bd">NT$<span class="text-[24px]">{{ $utils().formatCurrency(order?.totalPrice) }}</span></div>
     </div>
+    <div
+        class="text-gray-600 text-[14px] flex mt-[4px]"
+    >
+        <div class="flex-1">訂金(總價{{order?.deposit_ratio}}%)</div>
+        <!-- 訂金 -->
+        <span class="mr-[4px]">NT$ {{ $utils().formatCurrency(order?.deposit) }}</span>
+    </div>
+    <div
+        class="text-gray-600 text-[14px] flex mt-[4px]"
+    >
+        <div class="flex-1">尾款(預估總價{{order?.finalPayment_ratio}}%)</div>
+        <!-- 訂金 -->
+        <span class="mr-[4px]">NT$ {{ $utils().formatCurrency(order?.finalPayment) }}</span>
+    </div>
+    <div
+        class="text-gray-600 text-[14px] flex mt-[4px]"
+    >
+        <div class="flex-1">實際尾款</div>
+        <!-- 訂金 -->
+        <span class="mr-[4px]">NT$ </span>
+        <slot name="deposit"></slot>
+    </div>
     <div class="mt-4" v-if="order?.memo">
         <div class="text-gray-700 text-sm leading-8">備註</div>
         <div class="text-gray-700 text-sm leading-8" v-html="order?.memo"></div>
@@ -37,6 +59,10 @@ interface Props {
         ],
         coupon: number,
         totalPrice: number,
+        deposit: number,
+        deposit_ratio: number,
+        finalPayment: number,
+        finalPayment_ratio: number,
         memo: string,
     }[];
 };
@@ -56,6 +82,10 @@ const props = withDefaults(defineProps<Props>(), {
                 }
             ],
             coupon: -1000,
+            deposit: 0,
+            deposit_ratio: 30,
+            finalPayment: 0,
+            finalPayment_ratio: 70,
             totalPrice: 43399,
             memo: "備註內容備註內容備註內容備註內容備註內容備註內容備註內容備註內容備註內容備註內容備註內容備註內容"
         }

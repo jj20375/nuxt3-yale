@@ -43,8 +43,8 @@
                         class="py-1.5"
                     >
                         <div class="flex gap-x-4 gap-y-1 flex-wrap">
-                            <div>{{ item.date }}</div>
-                            <div>{{ item.time }}</div>
+                            <div class="font-variant-numeric: tabular-nums">{{ item.date }}</div>
+                            <div class="font-variant-numeric: tabular-nums">{{ item.time }}</div>
                             <div>{{ item.status }}</div>
                         </div>
                     </li>
@@ -115,7 +115,7 @@ const repay = () => {
         @apply transition-all duration-300 ease-in-out;
     }
     ul {
-        li:last-child {
+        li:first-child {
             @apply text-gray-800;
         }
     }
