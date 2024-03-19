@@ -1,7 +1,10 @@
 <template>
-    <section class="mt-headerMb xl:mt-header border-t border-gray-300 py-[36px] sm:py-[60px]">
+    <section
+        class="py-[36px] sm:py-[60px]"
+        :class="customClass"
+    >
         <div class="container">
-            <div class="w-full md:w-[504px] py-[32px] sm:py-[60px] px-[24px] sm:px-[72px] bg-white sm:mx-auto rounded-[24px] border-[1px] border-gray-200">
+            <div class="w-full border-[1px] border-gray-200 md:w-[504px] py-[32px] sm:py-[60px] px-[24px] sm:px-[72px] bg-white sm:mx-auto rounded-[24px]">
                 <h3 class="font-medium YaleSolisW-Bd text-[22px] sm:text-[28px] text-center mb-6 sm:mb-8">會員登入</h3>
                 <el-form
                     class="custom-form"
@@ -111,6 +114,20 @@ const formRefDom = ref<any>();
 const initializationStore = useInitializationStore();
 const $config = useRuntimeConfig();
 
+const emit = defineEmits(["onCloseDialog"]);
+
+const props = defineProps({
+    customClass: {
+        type: String,
+        default: "mt-headerMb xl:mt-header border-t border-gray-300",
+    },
+    // 判斷是否需要導頁
+    isNeedPageRouter: {
+        type: Boolean,
+        default: true,
+    },
+});
+
 const form = ref<any>({
     email: "",
     password: "",
@@ -198,7 +215,10 @@ async function onSubmit() {
                     await shoppingCarStore.syncCart();
                     await shoppingCarStore.syncCustomCart();
                     await userStore.getUserProfile();
-                    router.push({ name: "auth-panel-slug", params: { slug: "會員中心" } });
+                    emit("onCloseDialog", false);
+                    if (props.isNeedPageRouter) {
+                        router.push({ name: "auth-panel-slug", params: { slug: "會員中心" } });
+                    }
                 } else {
                     ElMessage({
                         type: "error",
@@ -240,9 +260,11 @@ async function getMessage(e: any) {
             userStore.setIsAuth(true);
             await shoppingCarStore.syncCart();
             await shoppingCarStore.syncCustomCart();
-
+            emit("onCloseDialog", false);
             userStore.getUserProfile();
-            router.push({ name: "auth-panel-slug", params: { slug: "會員中心" } });
+            if (props.isNeedPageRouter) {
+                router.push({ name: "auth-panel-slug", params: { slug: "會員中心" } });
+            }
         }
         // router.push({ name: 'auth-login-sso-slug', params: { slug: '快速登入' } });
     }

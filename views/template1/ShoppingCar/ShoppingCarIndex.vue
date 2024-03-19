@@ -1,5 +1,9 @@
 <template>
     <section class="mt-headerMb xl:mt-header mb-[60px] sm:mb-[90px] lg:mb-[120px] border-t border-gray-300">
+        <LoginDialog
+            :showDialog="showLoginDialog"
+            @onCloseDialog="closeDialog"
+        />
         <div class="container">
             <ul
                 v-if="currentStep == 0"
@@ -118,6 +122,7 @@
 </template>
 
 <script setup lang="ts">
+import LoginDialog from "~/components/LoginDialog.vue";
 // 訂單狀態
 import ShoppingCarSteps from "~/views/template1/ShoppingCar/components/ShoppingCarSteps.vue";
 import ShoppingCarStep1 from "~/views/template1/ShoppingCar/components/ShoppingCarStep1.vue";
@@ -208,6 +213,7 @@ const goStepCheckout = () => {
         currentStep.value = 1;
         showComponent.value = ShoppingCarStep2;
     } else {
+        showLoginDialog.value = true;
         ElMessage({
             type: "error",
             message: "請先登入",
@@ -222,6 +228,17 @@ async function validTest() {
     if (componentRef.value) {
         await componentRef.value.validTest();
     }
+}
+
+// 判斷是否顯示登入彈窗
+const showLoginDialog = ref(false);
+
+/**
+ * 關閉登入彈窗
+ */
+function closeDialog(val) {
+    showLoginDialog.value = false;
+    window.scrollTo(0, 0);
 }
 
 watch(
