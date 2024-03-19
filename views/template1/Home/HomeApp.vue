@@ -6,7 +6,7 @@
         <div class="container">
             <div class="flex flex-col md:flex-row items-center justify-between w-full mx-auto xl:w-5/6">
                 <article class="order-3 md:order-1">
-                    <p class="text-[16px] text-center YaleSolisW-Rg font-light mt-6 xl:mt-0">{{ props.yale_home_app.title }} is available on</p>
+                    <p class="text-[16px] text-center YaleSolisW-Rg font-light mt-6 xl:mt-0">立即下載</p>
                     <div class="flex justify-center items-center gap-4 md:gap-5 mt-6 xl:mt-[41px]">
                         <qrcode-vue
                             :value="props.yale_home_app.ios_link"

@@ -19,10 +19,11 @@
         </el-drawer> -->
         <el-dialog
             id="loginDialog"
-            class="custom-dialog"
-            :width="isMobile ? '100%' : '50%'"
+            class="no-padding-dialog"
             close-on-click-modal
             lock-scroll
+            width="500"
+            :show-close="false"
             center
             align-center
             append-to-body
@@ -32,8 +33,9 @@
         >
             <template #header="{ close, titleId, titleClass }"></template>
             <LoginIndex
-                :customClass="''"
+                :customClass="'!p-0'"
                 :isNeedPageRouter="false"
+                :isDialog="true"
                 @onCloseDialog="closeDialog"
             />
         </el-dialog>

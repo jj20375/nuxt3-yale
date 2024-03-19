@@ -17,16 +17,16 @@
                         v-model:currentBgData="currentBgData"
                         :productData="customPreviewData"
                     />
-                    <div class="absolute cursor-pointer w-[30px] h-[30px] right-3 bottom-4 z-[100] block xl:hidden">
+                    <div class="absolute cursor-pointer w-[40px] h-[40px] right-3 bottom-4 z-[100] block bg-white rounded-3xl xl:hidden">
                         <NuxtImg
                             @click="toggleOptions"
-                            class="absolute w-full h-full"
+                            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[30px] w-[30px]"
                             :class="showOptions ? 'hidden' : 'block'"
-                            src="/img/icons/more.svg"
+                            src="/img/icons/angle-view.svg"
                         />
                         <NuxtImg
                             @click="toggleOptions"
-                            class="absolute w-full h-full"
+                            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[25px] w-[25px]"
                             :class="showOptions ? 'block' : 'hidden'"
                             src="/img/icons/cancel.svg"
                         />
