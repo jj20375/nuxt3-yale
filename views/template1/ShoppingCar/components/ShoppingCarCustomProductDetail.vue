@@ -10,7 +10,6 @@
         append-to-body
         v-model="showDialog"
         :before-close="closeDialog"
-        :show-close="false"
     >
         <h2 class="text-gray-800 font-bold text-[24px] mb-4">商品詳情</h2>
         <div
