@@ -8,7 +8,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
     const token = Cookies.get("token");
 
     if (process.client && $utils().isEmpty(token)) {
-        return navigateTo("/", { redirectCode: 301 });
+        return navigateTo({ name: 'auth-login-slug', params: { slug: '會員登入' } });
     } else if (!userStore.user.is_verified) {
         return navigateTo({
             path: "/auth/verification/會員中心",

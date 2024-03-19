@@ -11,6 +11,16 @@ const countdownTimer = ref(60); // 設置初始倒數時間為 60 秒
 let timerId: any; // 用於儲存計時器的 ID
 const emit = defineEmits(["resendVerification"]);
 
+const props = defineProps({
+    restarter: {
+        type: Boolean,
+        default() {
+            return true;
+        },
+    },
+});
+
+
 const startTimer = () => {
     timerId = setInterval(() => {
         // 每一秒減少倒數時間
@@ -41,7 +51,11 @@ const restartTimer = () => {
 
 // 在組件被掛載後啟動計時器
 onMounted(() => {
-    startTimer();
+    if (props.restarter) {
+        startTimer();
+    } else {
+        countdownTimer.value = 0
+    }
 });
 
 // 在組件被卸載前清除計時器
