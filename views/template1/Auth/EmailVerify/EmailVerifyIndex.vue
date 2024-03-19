@@ -39,6 +39,7 @@ async function init() {
                 type: "error",
                 message: (error.value as any).data.message,
             });
+            router.push({ name: "auth-verification-failed-slug",state: { email: route.query.email }, params: { slug: "驗證失敗" } });
         }
     } else {
         router.push({
