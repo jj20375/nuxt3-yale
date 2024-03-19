@@ -1,5 +1,6 @@
 <template>
     <header
+        ref="headerRef"
         class="fixed z-[500] items-center w-full duration-500 transition-all"
         :class="[isMenuFixed || isLargePad ? 'bg-white fixed top-0 border-b border-gray-300' : route.name === 'index' ? 'top-0 border-b border-transparent' : '', route.name !== 'index' ? 'fixed top-0 bg-white border-b border-gray-300' : '']"
     >
@@ -14,6 +15,7 @@
                 <IconMenu class="!w-[20px] !h-[20px] transition-all duration-300 hover:text-gray-400 hover:transition-all hover:duration-300" />
             </div>
             <ul
+                ref="dropdownMenuRef"
                 class="absolute xl:static items-center flex-1 text-base leading-5 xl:flex top-[64px] xl:top-0 xl:mb-0"
                 :class="isDesktop ? '' : showMenu ? 'py-4 nav-bar-mb' : ''"
             >
@@ -485,6 +487,29 @@ function toggleMenu(key: string) {
     const menuKey = key;
     menuStatus.value[menuKey] = !menuStatus.value[menuKey];
 }
+
+const headerRef = ref<HTMLElement | null>(null);
+const dropdownMenuRef = ref<HTMLElement | null>(null);
+
+function handleGlobalClick(event: MouseEvent) {
+    const targetNode = event.target as Node;
+    const isHeaderClicked = headerRef.value?.contains(targetNode);
+    const isDropdownMenuClicked =
+        dropdownMenuRef.value && dropdownMenuRef.value.contains(targetNode);
+
+    if (!isHeaderClicked && !isDropdownMenuClicked) {
+        showMenu.value = false;
+    }
+}
+
+onMounted(() => {
+    window.addEventListener("click", handleGlobalClick);
+});
+
+onBeforeUnmount(() => {
+    window.removeEventListener("click", handleGlobalClick);
+});
+
 </script>
 
 <style lang="scss" scoped>
