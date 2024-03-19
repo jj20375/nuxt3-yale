@@ -77,6 +77,8 @@ export default () => {
       per_page: number;
       page: number;
       type: string;
+      order_by: string;
+      order_direction: string;
     }) {
       return useMyFetch(`${apiUrl}/order/paginate`, {
         method: "get",
@@ -102,6 +104,19 @@ export default () => {
         {
           method: "post",
           body: { redirect_url: params.redirect_url },
+        }
+      );
+    },
+    /**
+     * 取消付款
+     */
+    orderCancelAPI(params: {
+      orderId: any;
+    }) {
+      return useMyFetch(
+        `${apiUrl}/order/${params.orderId}/cancel`,
+        {
+          method: "post"
         }
       );
     },

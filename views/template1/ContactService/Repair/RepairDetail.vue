@@ -493,7 +493,7 @@ const formDatas = ref<any>({
             style: "radio",
             radioData: seriesRadios,
             change: (e: any) => {
-                getList(e);
+                seriesChange(e);
             },
         },
         {
@@ -627,6 +627,7 @@ const rules = ref<any>({
     serial: [
         {
             required: true,
+            pattern: /^.{11,11}$/,
             message: "請輸入產品序號",
             trigger: ["change", "blur"],
         },
@@ -660,6 +661,14 @@ const rules = ref<any>({
         },
     ],
 });
+
+// 電話自動格式
+watch(
+    () => form.value.cellphone,
+    (newValue) => {
+        form.value.cellphone = $utils().cellphoneFormat(newValue);
+    }
+);
 
 function handlefile(tempPath: any, prop: string) {
     form.value[prop] = tempPath;
@@ -695,64 +704,69 @@ async function getPageData() {
     }
 }
 
-const product_category = ref([]);
-/**
- * 取得商品分類
- */
-async function getType() {
-    try {
-        const { data } = await $api().ProductTypeAPI();
-
-        const rows = (data.value as any).data;
-        console.log("product_category_id", rows);
-
-        product_category.value = rows;
-        getList("電子門鎖");
-    } catch (err) {
-        console.log("HomeSampleAPI => ", err);
+const seriesChange = (e:string) => {
+    form.value.model = "";
+    formDatas.value.productDatas.find((item: { prop: string }) => item.prop === "model").options = [];
+    if (repair_model.value[e]) {
+        repair_model.value[e].forEach((item:string) => {
+            formDatas.value.productDatas
+                .find((item: { prop: string }) => item.prop === "model")
+                .options.push({
+                    value: item,
+                    label: item,
+                });
+        });
     }
 }
 
-/**
- * 取得商品列表
- */
-async function getList(type = "電子門鎖") {
-    console.log("type => ", type);
-    try {
-        let product_category_id;
-        if (type === "電子門鎖") {
-            product_category_id = product_category.value
-                .find((item: { id: Number }) => item.id === 1)
-                .children.map((child: { id: Number }) => {
-                    return child.id;
-                });
-        } else if (type === "電子保險箱") {
-            product_category_id = product_category.value
-                .find((item: { id: Number }) => item.id === 3)
-                .children.map((child: { id: Number }) => {
-                    return child.id;
-                });
-        }
-        const params = {};
-        // 搜尋分類參數時 須帶上 搜尋模式 條件
-        params["search_fields"] = "productCategories.product_category_id:in";
-        // 搜尋分類參數 ("主鎖｜輔助鎖" 等等...)
-        params["search_relations"] = "productCategories.product_category_id:" + product_category_id.join();
+const repair_model = ref([]);
 
-        const { data } = await $api().ProductLisAPI<ProductListAPIInterface>(params);
+/**
+ * 取得表單設置
+ */
+async function getList() {
+    try {
+        const params = {
+            code: 'online-repair'
+        };
+        const { data } = await $api().RagicConfigAPI(params);
 
         const rows = (data.value as any).data;
         console.log("home sample api => ", rows);
 
+        const series_selection = rows.series_selection.options
+        const repair_time_slot = rows.repair_time_slot.options
+        seriesRadios.value = []
+        timeOptions.value = []
+
+        series_selection.forEach((item:string) => {
+            seriesRadios.value.push({
+                value: item,
+                label: item
+            })
+        })
+
+        repair_time_slot.forEach((item:string) => {
+            timeOptions.value.push({
+                value: item,
+                label: item
+            })
+        })
+
+        repair_model.value = rows.repair_model
+        form.value.series = series_selection[0]
+        
         formDatas.value.productDatas.find((item: { prop: string }) => item.prop === "model").options = [];
-        rows.forEach((item: { model: string }) => {
-            formDatas.value.productDatas
-                .find((item: { prop: string }) => item.prop === "model")
-                .options.push({
-                    value: item.model,
-                    label: item.model,
-                });
-        });
+        if (repair_model.value[series_selection[0]]) {
+            repair_model.value[series_selection[0]].forEach((item:string) => {
+                formDatas.value.productDatas
+                    .find((item: { prop: string }) => item.prop === "model")
+                    .options.push({
+                        value: item,
+                        label: item,
+                    });
+            });            
+        }
         form.value.model = "";
     } catch (err) {
         console.log("HomeSampleAPI => ", err);
@@ -763,7 +777,7 @@ onMounted(async () => {
     nextTick(async () => {
         if (process.client) {
             await getPageData();
-            await getType();
+            await getList();
         }
     });
 });

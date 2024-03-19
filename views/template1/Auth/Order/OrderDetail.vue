@@ -130,12 +130,10 @@
                 </div>
                 <div
                     v-if="
-                        orderData?.payment?.orderStatus === '未付款' ||
-                        orderData?.payment?.orderStatus === '處理中' ||
-                        orderData?.payment?.orderStatus === '已出貨' ||
-                        orderData?.payment?.orderStatus === '待付訂金' ||
-                        orderData?.payment?.orderStatus === '丈量派工中' ||
-                        orderData?.payment?.orderStatus === '待付尾款'
+                        orderData?.orderStatus === '未付款' ||
+                        orderData?.orderStatus === '已付款' ||
+                        orderData?.orderStatus === '處理中' ||
+                        orderData?.orderStatus === '已出貨'
                     "
                     class="flex justify-center mt-[30px] sm:mt-[60px]"
                 >
@@ -161,7 +159,7 @@
                 v-model="dialogRefund"
             >
                 <h3 class="text-center text-gray-800 font-bold text-[24px] mb-4">取消訂單</h3>
-                <div class="text-center text-gray-800 text-[20px]">是否確定取消此筆預約</div>
+                <div class="text-center text-gray-800 text-[20px]">是否確定取消此筆訂單</div>
                 <div class="flex justify-center gap-4 mt-6">
                     <button
                         class="transparent-btn btn-sm"
@@ -171,7 +169,7 @@
                     </button>
                     <button
                         class="yellow-btn btn-sm"
-                        @click="dialogRefund = false"
+                        @click="orderCancel"
                     >
                         是
                     </button>
@@ -201,6 +199,7 @@
 </template>
 <script setup lang="ts">
 import Breadcrumb from "~/views/template1/components/Breadcrumb.vue";
+import { ElMessage } from "element-plus";
 import RecordTimeline from "~/views/template1/Auth/components/OrderTimeline.vue";
 import RecordProduct from "~/views/template1/Auth/components/OrderProduct.vue";
 import OrderPrice from "~/views/template1/Auth/components/OrderPrice.vue";
@@ -241,6 +240,31 @@ const dialogRefund = ref(false);
 
 const handleRefund = () => {
     dialogRefund.value = true;
+};
+
+const orderCancel = async () => {
+    const params = {
+        orderId: orderData.value.orderId,
+    };
+    const { data, status, error } = await $api().orderCancelAPI(params);
+
+
+    console.log(data, status, error)
+    if (status.value === "success") {
+        ElMessage({
+            type: "success",
+            message: "取消成功",
+        });
+        const { data: resProductDetailData }: any = await $api().GetProductOrderDetailAPI({ orderId: route.query.id });
+        resProductDetail.value = resProductDetailData
+        await getData();
+    } else {
+        ElMessage({
+            type: "error",
+            message: (error.value as any).data.message,
+        });
+    }
+    dialogRefund.value = false;
 };
 
 // 訂單資料
@@ -319,7 +343,10 @@ const orderData = ref({
 
 // 訂單下載 html
 const orderDownloadHtmlRefDom = ref<any>(null);
-const { data: resProductDetail }: any = await $api().GetProductOrderDetailAPI({ orderId: route.query.id });
+    const resProductDetail = ref<any>(null)
+
+const { data: resProductDetailData }: any = await $api().GetProductOrderDetailAPI({ orderId: route.query.id });
+resProductDetail.value = resProductDetailData
 
 const orderRepay = async () => {
     const hostUrl = $config.public.hostURL;
@@ -352,18 +379,18 @@ const paymentStatus = (orderPayments:string) => {
  */
 const getData = async () => {
     console.log("resProductDetail =>", resProductDetail);
-    orderData.value.orderId = resProductDetail.id;
-    orderData.value.orderNumber = resProductDetail.order_no;
-    breadcrumbs.value[3].text = resProductDetail.order_no;
-    breadcrumbs.value[3].params.slug = resProductDetail.order_no;
+    orderData.value.orderId = resProductDetail.value.id;
+    orderData.value.orderNumber = resProductDetail.value.order_no;
+    breadcrumbs.value[3].text = resProductDetail.value.order_no;
+    breadcrumbs.value[3].params.slug = resProductDetail.value.order_no;
     orderData.value.info = {
-        contactName: resProductDetail.contact_name,
-        email: resProductDetail.contact_email,
-        phone: resProductDetail.contact_phone,
-        address: resProductDetail.contact_city + resProductDetail.contact_district + resProductDetail.contact_address,
+        contactName: resProductDetail.value.contact_name,
+        email: resProductDetail.value.contact_email,
+        phone: resProductDetail.value.contact_phone,
+        address: resProductDetail.value.contact_city + resProductDetail.value.contact_district + resProductDetail.value.contact_address,
     };
     orderData.value.products = [];
-    resProductDetail.orderItems.forEach((item: { productable: { name: any; attributes: { [x: string]: any } }; quantity: any }) => {
+    resProductDetail.value.orderItems.forEach((item: { productable: { name: any; attributes: { [x: string]: any } }; quantity: any }) => {
         orderData.value.products.push({
             name: item.productable.name,
             price: "$" + $utils().formatCurrency(item.price),
@@ -372,25 +399,25 @@ const getData = async () => {
             imgUrl: item.productable.main_image,
         });
     });
-    orderData.value.orderPayments = resProductDetail.orderPayments
+    orderData.value.orderPayments = resProductDetail.value.orderPayments
     orderData.value.timeline = [];
-    resProductDetail.orderTimelines.forEach((item: { id: any; changed_at: moment.MomentInput; after_status: string }) => {
+    resProductDetail.value.orderTimelines.forEach((item: { id: any; changed_at: moment.MomentInput; after_status: string }) => {
         orderData.value.timeline.push({
             date: moment(item.changed_at).format("YYYY-MM-DD"),
             time: moment(item.changed_at).format("HH:mm"),
             status: item.after_status,
         });
     });
-    orderData.value.receipt.type = resProductDetail.orderPayments[0].orderInvoice.type;
-    orderData.value.receipt.status = $utils().receiptStatus(resProductDetail.orderPayments[0].orderInvoice.status);
-    orderData.value.receipt.date = resProductDetail.orderPayments[0].orderInvoice.issued_at;
-    orderData.value.receipt.taxId = resProductDetail.orderPayments[0].orderInvoice.tax_number;
-    orderData.value.receipt.carrier_code = resProductDetail.orderPayments[0].orderInvoice.carrier_code;
-    orderData.value.receipt.number = resProductDetail.orderPayments[0].orderInvoice.invoice_no;
-    orderData.value.price.totalPrice = resProductDetail.total_amount;
-    orderData.value.price.memo = resProductDetail.remark ? resProductDetail.remark : "無";
-    orderData.value.orderStatus = $utils().orderStatus(resProductDetail.status);
-    orderData.value.payment.orderStatus = paymentStatus(resProductDetail.orderPayments);
+    orderData.value.receipt.type = resProductDetail.value.orderPayments[0].orderInvoice.type;
+    orderData.value.receipt.status = $utils().receiptStatus(resProductDetail.value.orderPayments[0].orderInvoice.status);
+    orderData.value.receipt.date = resProductDetail.value.orderPayments[0].orderInvoice.issued_at;
+    orderData.value.receipt.taxId = resProductDetail.value.orderPayments[0].orderInvoice.tax_number;
+    orderData.value.receipt.carrier_code = resProductDetail.value.orderPayments[0].orderInvoice.carrier_code;
+    orderData.value.receipt.number = resProductDetail.value.orderPayments[0].orderInvoice.invoice_no;
+    orderData.value.price.totalPrice = resProductDetail.value.total_amount;
+    orderData.value.price.memo = resProductDetail.value.remark ? resProductDetail.value.remark : "無";
+    orderData.value.orderStatus = $utils().orderStatus(resProductDetail.value.status);
+    orderData.value.payment.orderStatus = paymentStatus(resProductDetail.value.orderPayments);
 };
 
 /**

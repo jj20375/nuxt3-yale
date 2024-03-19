@@ -87,7 +87,7 @@ const getStatusClass = (status) => {
         return "!text-pink-900";
     } else if (status === "處理中" || status === "派工確認完成" || status === "施工確認完成") {
         return "!text-blue-500";
-    } else if (status === "已取消") {
+    } else if (status === "已取消" || status === "待退款") {
         return "!text-orange-500";
     } else {
         return "";

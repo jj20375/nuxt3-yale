@@ -63,9 +63,11 @@ const tableBodyData = ref<any>([]);
 /**
  * 取得訂單列表
  */
-async function getList(params: { per_page: number; page: number; type: string }) {
+async function getList(params: { per_page: number; page: number; type: string; order_by: string; order_direction: string; }) {
     try {
         params.type = "normal";
+        params.order_by="created_at"
+        params.order_direction="desc"
         const { data } = await $api().GetProductOrderAPI(params);
         console.log("home sample api => ", data.value);
 

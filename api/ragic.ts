@@ -28,11 +28,10 @@ export default () => {
         method: "post",
         body: data,
       });
-    }
+    },
     /**
      * 新光保全安裝
-     */,
-    SkSecurityInstallationnAPI(data: {
+     */ SkSecurityInstallationnAPI(data: {
       contract_order_number: string;
       contract_content: string;
       customer_name: string;
@@ -84,26 +83,35 @@ export default () => {
      * 線上報修
      */
     OnlineRepairAPI(data: {
-        contact_name: string;
-        contact_phone: string;
-        landline: string;
-        city: string;
-        district: string;
-        zip3: string;
-        detailed_address: string;
-        series_selection: string;
-        installation_date: string;
-        repair_model: string;
-        repair_quantity: string;
-        product_serial_number: string;
-        repair_time_slot: string[];
-        condition_description: string;
-        attachments: string[];
-        captcha: string;
+      contact_name: string;
+      contact_phone: string;
+      landline: string;
+      city: string;
+      district: string;
+      zip3: string;
+      detailed_address: string;
+      series_selection: string;
+      installation_date: string;
+      repair_model: string;
+      repair_quantity: string;
+      product_serial_number: string;
+      repair_time_slot: string[];
+      condition_description: string;
+      attachments: string[];
+      captcha: string;
     }) {
       return useMyFetch(`${apiUrl}/ragic/online-repair`, {
         method: "post",
         body: data,
+      });
+    },
+    /**
+     * 表單設置
+     */
+    RagicConfigAPI(params: { code: string }) {
+      return useMyFetch(`${apiUrl}/ragic/config`, {
+        method: "get",
+        params
       });
     },
   };

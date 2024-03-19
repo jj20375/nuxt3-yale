@@ -143,6 +143,7 @@
                                 <el-form-item
                                     :prop="item.prop"
                                     :label="item.label"
+                                    :rules="rules.serial"
                                 >
                                     <el-input
                                         v-if="item.style === 'input'"
@@ -155,7 +156,7 @@
                                 </el-form-item>
                             </div>
                         </div>
-                        <div class="mt-5 text-center">
+                        <div class="mt-[40px] text-center">
                             <button
                                 @click.prevent="addSerial"
                                 class="transparent-btn btn-md"
@@ -186,7 +187,7 @@ import { ElMessage, ElLoading } from "element-plus";
 import { ProductListAPIInterface } from "~/interface/product.d";
 const router = useRouter();
 
-const { $api } = useNuxtApp();
+const { $api, $utils } = useNuxtApp();
 
 const breadcrumbs = ref([
     {
@@ -247,16 +248,7 @@ const formDatas = ref<any>({
             label: "銷售用途",
             placeholder: "請選擇",
             style: "select",
-            options: [
-                {
-                    label: "零售",
-                    value: "零售",
-                },
-                {
-                    label: "建案",
-                    value: "建案",
-                },
-            ],
+            options: [],
         },
         {
             prop: "model",
@@ -274,6 +266,7 @@ const formDatas = ref<any>({
             prop: "quantity",
             label: "數量",
             placeholder: "請輸入",
+            type: "number",
             style: "input",
         },
         {
@@ -324,7 +317,7 @@ const formDatas = ref<any>({
             span: 2,
         },
     ],
-    serialDatas: Array.from({ length: 16 }, (v, i) => ({
+    serialDatas: Array.from({ length: 2 }, (v, i) => ({
         prop: `serial${i}`,
         label: "序號",
         placeholder: "請輸入",
@@ -392,6 +385,12 @@ const rules = ref<any>({
             message: "請輸入填單人行動電話",
             trigger: "blur",
         },
+        {
+            required: true,
+            validator: validateTWMobileNumber,
+            trigger: ["change", "blur"],
+            message: "格式不正確",
+        },
     ],
     customerName: [
         {
@@ -406,12 +405,25 @@ const rules = ref<any>({
             message: "請輸入行動電話",
             trigger: "blur",
         },
+        {
+            required: true,
+            validator: validateTWMobileNumber,
+            trigger: ["change", "blur"],
+            message: "格式不正確",
+        },
     ],
     customerAddress: [
         {
             required: true,
             message: "請輸入安裝或出貨地址",
             trigger: "blur",
+        },
+    ],
+    serial: [
+        {
+            pattern: /^.{11,11}$/,
+            trigger: ["change", "blur"],
+            message: "格式不正確",
         },
     ],
     serial0: [
@@ -422,6 +434,20 @@ const rules = ref<any>({
         },
     ],
 });
+
+watch(
+    () => form.value.phone,
+    (newValue) => {
+        form.value.phone =  $utils().cellphoneFormat(newValue);
+    }
+);
+
+watch(
+    () => form.value.customerPhone,
+    (newValue) => {
+        form.value.customerPhone =  $utils().cellphoneFormat(newValue);
+    }
+);
 
 async function onSubmit() {
     formRefDom.value.validate(async (valid: any) => {
@@ -439,14 +465,14 @@ async function onSubmit() {
             }
             const formData = {
                 company_name: form.value.companyName,
-                installation_or_delivery_date: form.value.date,
+                installation_or_delivery_date: $utils().formatToDate(form.value.date),
                 sales_purpose: form.value.purpose,
                 model: form.value.model,
                 quantity: form.value.quantity,
                 contact_name: form.value.name,
-                contact_phone: form.value.phone,
+                contact_phone: form.value.phone.replace(/-/g, ''),
                 customer_name: form.value.customerName,
-                customer_phone: form.value.customerPhone,
+                customer_phone: form.value.customerPhone.replace(/-/g, ''),
                 installation_or_delivery_address: form.value.customerAddress,
                 remarks: form.value.memo,
                 project_name: form.value.building,
@@ -476,23 +502,37 @@ async function onSubmit() {
 }
 
 /**
- * 取得商品列表
+ * 取得型號
  */
 async function getList() {
     try {
-        const params = {};
-        const { data } = await $api().ProductLisAPI<ProductListAPIInterface>(params);
+        const params = {
+            code: 'warranty-registration'
+        };
+        const { data } = await $api().RagicConfigAPI(params);
 
         const rows = (data.value as any).data;
         console.log("rows => ", rows);
 
+        const modelOptions = rows.model.options
+        const sales_purpose = rows.sales_purpose.options
+
         formDatas.value.registerDatas.find((item: { prop: string }) => item.prop === "model").options = [];
-        rows.forEach((item: { model: string }) => {
+        modelOptions.forEach((model: string) => {
             formDatas.value.registerDatas
                 .find((item: { prop: string }) => item.prop === "model")
                 .options.push({
-                    value: item.model,
-                    label: item.model,
+                    value: model,
+                    label: model,
+                });
+        });
+        formDatas.value.registerDatas.find((item: { prop: string }) => item.prop === "purpose").options = [];
+        sales_purpose.forEach((purpose: string ) => {
+            formDatas.value.registerDatas
+                .find((item: { prop: string }) => item.prop === "purpose")
+                .options.push({
+                    value: purpose,
+                    label: purpose,
                 });
         });
     } catch (err) {
