@@ -159,7 +159,7 @@
                 v-model="dialogRefund"
             >
                 <h3 class="text-center text-gray-800 font-bold text-[24px] mb-4">取消訂單</h3>
-                <div class="text-center text-gray-800 text-[20px]">是否確定取消此筆預約</div>
+                <div class="text-center text-gray-800 text-[20px]">是否確定取消此筆訂單</div>
                 <div class="flex justify-center gap-4 mt-6">
                     <button
                         class="transparent-btn btn-sm"

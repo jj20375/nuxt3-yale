@@ -30,7 +30,7 @@
                     :orderNumber="orderData.orderNumber"
                     :timeline="orderData.timeline"
                     :status="orderData.orderStatus"
-                    @orderRepay="orderRepay"
+                    @orderRepay="handleRepay"
                 />
                 <div class="mt-8 sm:mt-12">
                     <h4 class="font-bold mb-3">安裝資訊</h4>
@@ -146,6 +146,12 @@
             </div>
         </div>
         <client-only>
+            <finalPaymentRule
+                v-model:showDialog="dialogRepay"
+                @orderRepay="orderRepay"
+            />
+        </client-only>
+        <client-only>
             <el-dialog
                 class="custom-dialog"
                 close-on-click-modal
@@ -203,7 +209,7 @@
 </template>
 <script setup lang="ts">
 import Breadcrumb from "~/views/template1/components/Breadcrumb.vue";
-import { ElMessage } from "element-plus";
+import { ElMessage, ElLoading } from "element-plus";
 import RecordTimeline from "~/views/template1/Auth/components/OrderTimeline.vue";
 import RecordProduct from "~/views/template1/Auth/components/doorProduct.vue";
 import OrderPrice from "~/views/template1/Auth/components/OrderPrice.vue";
@@ -215,6 +221,8 @@ import moment from "moment";
  */
 import { CustomProductListIdEnum, CustomProductListOptionEnum } from "@/enums/customProduct.enum";
 import { useInitializationStore } from "~/store/initializationStore";
+// 尾款付款同意視窗
+import finalPaymentRule from "~/views/template1/Auth/Door/component/finalPaymentRule.vue";
 
 const initializationStore = useInitializationStore();
 
@@ -244,6 +252,8 @@ const breadcrumbs = ref([
         params: { slug: "#20211010001" },
     },
 ]);
+
+const dialogRepay = ref(false);
 
 const dialogRefund = ref(false);
 
@@ -515,6 +525,14 @@ const resProductDetail = ref<any>(null);
 const { data: resProductDetailData }: any = await $api().GetProductOrderDetailAPI({ orderId: route.query.id });
 resProductDetail.value = resProductDetailData;
 
+const handleRepay = async () => {
+    if (orderData.value.orderStatus === "待付尾款") {
+        dialogRepay.value = true;
+    } else {
+        orderRepay()
+    }
+};
+
 const orderRepay = async () => {
     const hostUrl = $config.public.hostURL;
     console.log("Refund", hostUrl, orderData.value);
@@ -527,6 +545,11 @@ const orderRepay = async () => {
         orderPaymentId: orderPaymentId,
         redirect_url: `${hostUrl}/order/normal`,
     };
+    const loading = ElLoading.service({
+        lock: true,
+        text: "重新付款中...",
+        background: "rgba(0, 0, 0, 0.7)",
+    });
     const { data, status, error } = await $api().orderRepayAPI(params);
     if (status.value === "success") {
         const resData = (data.value as any).data;
@@ -535,6 +558,7 @@ const orderRepay = async () => {
             // window.open(resData.redirect_url, "self");
         }
     }
+    loading.close()
 };
 
 const paymentStatus = (orderPayments: string) => {
