@@ -1,6 +1,6 @@
 <template>
     <client-only>
-        <el-drawer
+        <!-- <el-drawer
             id="loginDialog"
             v-model="showDialogData"
             :with-header="false"
@@ -16,28 +16,33 @@
                 :isNeedPageRouter="false"
                 @onCloseDialog="closeDialog"
             />
-        </el-drawer>
-        <!-- <el-dialog
+        </el-drawer> -->
+        <el-dialog
             id="loginDialog"
+            class="custom-dialog"
+            :width="isMobile ? '100%' : '50%'"
             close-on-click-modal
             lock-scroll
-            show-close
             center
             align-center
-            fullscreen
             append-to-body
+            destroy-on-close
             v-model="showDialogData"
             :before-close="closeDialog"
         >
             <template #header="{ close, titleId, titleClass }"></template>
-            <LoginIndex :customClass="''" />
-        </el-dialog> -->
+            <LoginIndex
+                :customClass="''"
+                :isNeedPageRouter="false"
+                @onCloseDialog="closeDialog"
+            />
+        </el-dialog>
     </client-only>
 </template>
 
 <script setup>
 import LoginIndex from "~/views/template1/Auth/Login/LoginIndex.vue";
-
+const { isMobile, isLargePad } = useWindowResize();
 const emit = defineEmits(["onCloseDialog"]);
 
 const props = defineProps({
@@ -64,8 +69,5 @@ watch(
 
 <style lang="scss">
 #loginDialog {
-    .el-dialog__header {
-        @apply p-0 #{!important};
-    }
 }
 </style>
