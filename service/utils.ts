@@ -290,6 +290,8 @@ export const orderStatus = (status: string) => {
             return "已出貨";
         case "cancel":
             return "已取消";
+        case "waiting_refund":
+            return "待退款";
         case "refund":
             return "已退款";
         case "return":

@@ -3,8 +3,8 @@
         class="py-[36px] sm:py-[60px]"
         :class="customClass"
     >
-        <div class="container">
-            <div class="w-full border-[1px] border-gray-200 md:w-[504px] py-[32px] sm:py-[60px] px-[24px] sm:px-[72px] bg-white sm:mx-auto rounded-[24px]">
+        <div :class="isDialog? '' : 'container'">
+            <div class="w-full border-[1px] border-gray-200 py-[32px] sm:py-[60px] px-[24px] sm:px-[72px] bg-white sm:mx-auto rounded-[16px]" :class="isDialog? '' : 'md:w-[504px]'">
                 <h3 class="font-medium YaleSolisW-Bd text-[22px] sm:text-[28px] text-center mb-6 sm:mb-8">會員登入</h3>
                 <el-form
                     class="custom-form"
@@ -125,6 +125,11 @@ const props = defineProps({
     isNeedPageRouter: {
         type: Boolean,
         default: true,
+    },
+    // 是否在彈窗內的樣式
+    isDialog: {
+        type: Boolean,
+        default: false,
     },
 });
 

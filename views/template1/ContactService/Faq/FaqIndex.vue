@@ -1,7 +1,7 @@
 <template>
     <SideBarLayout
         :title="'服務中心'"
-        :banner="'/img/contact/contact-banner.jpg'"
+        :banner="'/img/faq/faq-banner.jpg'"
     >
         <template #breadcrumbs>
             <Breadcrumb :menus="breadcrumbs" />
