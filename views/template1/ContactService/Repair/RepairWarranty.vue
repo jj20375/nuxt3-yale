@@ -156,7 +156,7 @@
                                 </el-form-item>
                             </div>
                         </div>
-                        <div class="mt-5 text-center">
+                        <div class="mt-[40px] text-center">
                             <button
                                 @click.prevent="addSerial"
                                 class="transparent-btn btn-md"
@@ -248,16 +248,7 @@ const formDatas = ref<any>({
             label: "銷售用途",
             placeholder: "請選擇",
             style: "select",
-            options: [
-                {
-                    label: "零售",
-                    value: "零售",
-                },
-                {
-                    label: "建案",
-                    value: "建案",
-                },
-            ],
+            options: [],
         },
         {
             prop: "model",
@@ -326,7 +317,7 @@ const formDatas = ref<any>({
             span: 2,
         },
     ],
-    serialDatas: Array.from({ length: 16 }, (v, i) => ({
+    serialDatas: Array.from({ length: 2 }, (v, i) => ({
         prop: `serial${i}`,
         label: "序號",
         placeholder: "請輸入",
@@ -511,23 +502,37 @@ async function onSubmit() {
 }
 
 /**
- * 取得商品列表
+ * 取得型號
  */
 async function getList() {
     try {
-        const params = {};
-        const { data } = await $api().ProductLisAPI<ProductListAPIInterface>(params);
+        const params = {
+            code: 'warranty-registration'
+        };
+        const { data } = await $api().RagicConfigAPI(params);
 
         const rows = (data.value as any).data;
         console.log("rows => ", rows);
 
+        const modelOptions = rows.model.options
+        const sales_purpose = rows.sales_purpose.options
+
         formDatas.value.registerDatas.find((item: { prop: string }) => item.prop === "model").options = [];
-        rows.forEach((item: { model: string }) => {
+        modelOptions.forEach((model: string) => {
             formDatas.value.registerDatas
                 .find((item: { prop: string }) => item.prop === "model")
                 .options.push({
-                    value: item.model,
-                    label: item.model,
+                    value: model,
+                    label: model,
+                });
+        });
+        formDatas.value.registerDatas.find((item: { prop: string }) => item.prop === "purpose").options = [];
+        sales_purpose.forEach((purpose: string ) => {
+            formDatas.value.registerDatas
+                .find((item: { prop: string }) => item.prop === "purpose")
+                .options.push({
+                    value: purpose,
+                    label: purpose,
                 });
         });
     } catch (err) {

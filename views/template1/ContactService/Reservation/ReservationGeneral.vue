@@ -417,29 +417,14 @@ const form = ref<any>({
     photo: "",
 });
 
-const placeOptions = ref<any>([
-    { value: "PChome", label: "PChome" },
-    { value: "MOMO", label: "MOMO" },
-    { value: "蝦皮", label: "蝦皮" },
-    { value: "官方網站", label: "官方網站" },
-    { value: "好市多", label: "好市多" },
-    { value: "鎖店", label: "鎖店" },
-    { value: "全國電子", label: "全國電子" },
-    { value: "代理商/經銷商", label: "代理商、經銷商" },
-    { value: "其他", label: "其他" },
-]);
+const placeOptions = ref<any>([]);
 
 const seriesRadios = ref<any>([
     { value: "電子門鎖", label: "電子門鎖" },
     { value: "電子保險箱", label: "電子保險箱" },
 ]);
 
-const timeOptions = ref<any>([
-    { value: "平日時段 (週一~週五) 早上", label: "平日時段 (週一~週五) 早上" },
-    { value: "平日時段 (週一~週五) 下午", label: "平日時段 (週一~週五) 下午" },
-    { value: "假日時段 (六、日) 早上", label: "假日時段 (六、日) 早上" },
-    { value: "假日時段 (六、日) 下午", label: "假日時段 (六、日) 下午" },
-]);
+const timeOptions = ref<any>([]);
 
 const formDatas = ref<any>({
     applyDatas: [
@@ -534,7 +519,7 @@ const formDatas = ref<any>({
             style: "radio",
             radioData: seriesRadios,
             change: (e: any) => {
-                getList(e);
+                seriesChange(e);
             },
         },
         {
@@ -749,64 +734,78 @@ async function getPageData() {
     }
 }
 
-const product_category = ref([]);
-/**
- * 取得商品分類
- */
-async function getType() {
-    try {
-        const { data } = await $api().ProductTypeAPI();
-
-        const rows = (data.value as any).data;
-        console.log("product_category_id", rows);
-
-        product_category.value = rows;
-        getList("電子門鎖");
-    } catch (err) {
-        console.log("HomeSampleAPI => ", err);
+const seriesChange = (e:string) => {
+    form.value.model = "";
+    formDatas.value.installDatas.find((item: { prop: string }) => item.prop === "model").options = [];
+    if (installation_model.value[e]) {
+        installation_model.value[e].forEach((item:string) => {
+            formDatas.value.installDatas
+                .find((item: { prop: string }) => item.prop === "model")
+                .options.push({
+                    value: item,
+                    label: item,
+                });
+        });
     }
 }
 
-/**
- * 取得商品列表
- */
-async function getList(type = "電子門鎖") {
-    console.log("type => ", type);
-    try {
-        let product_category_id;
-        if (type === "電子門鎖") {
-            product_category_id = product_category.value
-                .find((item: { id: Number }) => item.id === 1)
-                .children.map((child: { id: Number }) => {
-                    return child.id;
-                });
-        } else if (type === "電子保險箱") {
-            product_category_id = product_category.value
-                .find((item: { id: Number }) => item.id === 3)
-                .children.map((child: { id: Number }) => {
-                    return child.id;
-                });
-        }
-        const params = {};
-        // 搜尋分類參數時 須帶上 搜尋模式 條件
-        params["search_fields"] = "productCategories.product_category_id:in";
-        // 搜尋分類參數 ("主鎖｜輔助鎖" 等等...)
-        params["search_relations"] = "productCategories.product_category_id:" + product_category_id.join();
+const installation_model = ref([]);
 
-        const { data } = await $api().ProductLisAPI<ProductListAPIInterface>(params);
+/**
+ * 取得表單設置
+ */
+async function getList() {
+    try {
+        const params = {
+            code: 'general-installation'
+        };
+        const { data } = await $api().RagicConfigAPI(params);
 
         const rows = (data.value as any).data;
         console.log("home sample api => ", rows);
 
+        const series_selection = rows.series_selection.options
+        const appointment_time_slot = rows.appointment_time_slot.options
+        const purchase_channel = rows.purchase_channel.options
+        seriesRadios.value = []
+        timeOptions.value = []
+        placeOptions.value = []
+
+        series_selection.forEach((item:string) => {
+            seriesRadios.value.push({
+                value: item,
+                label: item
+            })
+        })
+
+        appointment_time_slot.forEach((item:string) => {
+            timeOptions.value.push({
+                value: item,
+                label: item
+            })
+        })
+
+        purchase_channel.forEach((item:string) => {
+            placeOptions.value.push({
+                value: item,
+                label: item
+            })
+        })
+
+        installation_model.value = rows.installation_model
+        form.value.series = series_selection[0]
+        
         formDatas.value.installDatas.find((item: { prop: string }) => item.prop === "model").options = [];
-        rows.forEach((item: { model: string }) => {
-            formDatas.value.installDatas
-                .find((item: { prop: string }) => item.prop === "model")
-                .options.push({
-                    value: item.model,
-                    label: item.model,
-                });
-        });
+        if (installation_model.value[series_selection[0]]) {
+            installation_model.value[series_selection[0]].forEach((model:string) => {
+                formDatas.value.installDatas
+                    .find((item: { prop: string }) => item.prop === "model")
+                    .options.push({
+                        value: model,
+                        label: model,
+                    });
+            });
+        }
         form.value.model = "";
     } catch (err) {
         console.log("HomeSampleAPI => ", err);
@@ -817,7 +816,7 @@ onMounted(async () => {
     nextTick(async () => {
         if (process.client) {
             await getPageData();
-            await getType();
+            await getList();
         }
     });
 });

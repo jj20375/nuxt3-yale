@@ -468,22 +468,9 @@ const form = ref<any>({
     photo: [],
 });
 
-const contractOptions = ref<any>([
-    { value: "租賃契約", label: "租賃契約" },
-    { value: "賣斷", label: "賣斷" },
-]);
+const contractOptions = ref<any>([]);
 
-const seriesRadios = ref<any>([
-    { value: "電子門鎖", label: "電子門鎖" },
-    { value: "電子保險箱", label: "電子保險箱" },
-]);
-
-const timeOptions = ref<any>([
-    { value: "平日時段 (週一~週五) 早上", label: "平日時段 (週一~週五) 早上" },
-    { value: "平日時段 (週一~週五) 下午", label: "平日時段 (週一~週五) 下午" },
-    { value: "假日時段 (六、日) 早上", label: "假日時段 (六、日) 早上" },
-    { value: "假日時段 (六、日) 下午", label: "假日時段 (六、日) 下午" },
-]);
+const timeOptions = ref<any>([]);
 
 const formDatas = ref<any>({
     applyDatas: [
@@ -825,25 +812,48 @@ async function getPageData() {
 }
 
 /**
- * 取得商品列表
+ * 取得型號
  */
-async function getList() {
+ async function getList() {
     try {
-        const params = {};
-        const { data } = await $api().ProductLisAPI<ProductListAPIInterface>(params);
+        const params = {
+            code: 'sk-security-installation'
+        };
+        const { data } = await $api().RagicConfigAPI(params);
 
         const rows = (data.value as any).data;
         console.log("rows => ", rows);
 
+        const installation_model = rows.installation_model.options
+        const appointment_time_slot = rows.appointment_time_slot.options
+        const contract_content = rows.contract_content.options
+
+        timeOptions.value = []
+        contractOptions.value = []
+
         formDatas.value.productDatas.find((item: { prop: string }) => item.prop === "model").options = [];
-        rows.forEach((item: { model: string }) => {
+        installation_model.forEach((model: string) => {
             formDatas.value.productDatas
                 .find((item: { prop: string }) => item.prop === "model")
                 .options.push({
-                    value: item.model,
-                    label: item.model,
+                    value: model,
+                    label: model,
                 });
         });
+
+        appointment_time_slot.forEach((item:string) => {
+            timeOptions.value.push({
+                value: item,
+                label: item
+            })
+        })
+
+        contract_content.forEach((item:string) => {
+            contractOptions.value.push({
+                value: item,
+                label: item
+            })
+        })
     } catch (err) {
         console.log("HomeSampleAPI => ", err);
     }
