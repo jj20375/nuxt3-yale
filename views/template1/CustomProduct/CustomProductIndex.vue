@@ -222,7 +222,7 @@
                             class="flex items-center mb-[30px] mt-[30px] cursor-pointer"
                             type="button"
                         >
-                            <h3 class="flex-1 text-gray-800 text-[20px] font-medium YaleSolisW-Bd">{{ stepMenuShow["step6"].text }}</h3>
+                            <h3 class="flex-1 text-gray-800 text-[20px] font-medium YaleSolisW-Bd">{{ stepMenuShow["step6"].text }}<span class="text-red-500 ms-1">*</span></h3>
                             <font-awesome-icon
                                 class="transition-all duration-500"
                                 :class="!stepMenuShow['step6'].show ? 'rotate-180' : ''"
