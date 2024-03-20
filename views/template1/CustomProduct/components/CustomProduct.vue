@@ -40,8 +40,15 @@
                         :src="product.imgSrc"
                     />
                     <div class="flex flex-col gap-1 text-[14px]">
-                        <p class="text-gray-500">{{ product.style }}</p>
-                        <p class="text-gray-500">{{ product.name }}</p>
+                        <p class="text-gray-500">
+                            {{ product.style }}
+                        </p>
+                        <p
+                            v-if="product.name !== 'null'"
+                            class="text-gray-500"
+                        >
+                            {{ product.name }}
+                        </p>
                         <p
                             v-if="currentDoorColorId && currentDoorSizeId && currentProductId === product.id"
                             class="text-gray-800"
@@ -77,7 +84,7 @@
             align-center
             append-to-body
         >
-            <div class="mx-auto w-full xl:w-3/4">
+            <div class="w-full mx-auto xl:w-3/4">
                 <h5 class="text-[20px] text-gray-800 YaleSolisW-Bd mt-[20px] sm:mt-0 mb-[15px] sm:mb-[30px]">{{ currentDialogProduct.name }}-{{ currentDialogProduct.style }}</h5>
                 <CustomProductDailogCarousel
                     ref="customProductDialogCarousel"
@@ -91,9 +98,9 @@
                 <div class="flex justify-center mt-[20px] sm:mt-[40px]">
                     <button
                         @click.prevent="
-                        currentProductIdData = currentDialogProduct.id;
-                        closeDialog();
-                    "
+                            currentProductIdData = currentDialogProduct.id;
+                            closeDialog();
+                        "
                         :disabled="currentProductIdData === currentDialogProduct.id"
                         class="yellow-btn btn-md btnDisabled"
                     >
@@ -211,7 +218,7 @@ function closeDialog() {
         if (customProductDialogCarousel.value) {
             customProductDialogCarousel.value.resetSwiper();
         }
-    }, 1000)
+    }, 1000);
     showDialog.value = false;
 }
 

@@ -40,8 +40,15 @@
                         :src="product.imgSrc"
                     />
                     <div class="flex flex-col gap-1 text-[14px]">
-                        <p class="text-gray-500">{{ product.style }}</p>
-                        <p class="text-gray-500">{{ product.name }}</p>
+                        <p class="text-gray-500">
+                            {{ product.style }}
+                        </p>
+                        <p
+                            v-if="product.name !== 'null'"
+                            class="text-gray-500"
+                        >
+                            {{ product.name }}
+                        </p>
                         <p class="text-gray-800">+NT${{ $utils().formatCurrency(product.price) }}</p>
                     </div>
                 </div>
