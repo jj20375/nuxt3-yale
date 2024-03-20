@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h3 class="text-[16px] font-medium YaleSolisW-Bd mb-[20px]">方案</h3>
+        <h3 class="text-[16px] font-medium YaleSolisW-Bd mb-[20px]">方案<span class="text-red-500 ms-1">*</span></h3>
         <ul class="grid grid-cols-2 sm:grid-cols-3 gap-[12px]">
             <li
                 @click="currentPlanData = tab.id"
@@ -29,15 +29,15 @@ const props = defineProps({
 const tabs = ref([
     {
         id: "id1",
-        text: " 標準款",
+        text: "標準款",
     },
     {
         id: "id2",
-        text: "日風經典款",
+        text: "經典款",
     },
     {
         id: "id3",
-        text: "歐風尊榮款",
+        text: "奢華款",
     },
 ]);
 

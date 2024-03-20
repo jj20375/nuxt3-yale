@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h3 class="text-[16px] font-medium YaleSolisW-Bd mb-[20px]">顏色</h3>
+        <h3 class="text-[16px] font-medium YaleSolisW-Bd mb-[20px]">顏色<span class="text-red-500 ms-1">*</span></h3>
         <ul
             class="flex flex-wrap mt-[20px] gap-x-[20px] gap-y-[12px]"
         >

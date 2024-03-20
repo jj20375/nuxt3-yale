@@ -50,7 +50,7 @@
                     />
                     <div class="px-6 sm:px-0">
                         <h2 class="YaleSolisW-Bd text-[24px] font-medium">{{ productTypeDetail.name }}</h2>
-                        <p class="md:mt-[16px] text-[16px]">{{ productTypeDetail.description }}</p>
+                        <p class="mt-[8px] md:mt-[16px] text-[16px]">{{ productTypeDetail.description }}</p>
                     </div>
                 </div>
                 <div class="flex flex-col md:flex-row justify-end mb-[24px] gap-[30px]">
