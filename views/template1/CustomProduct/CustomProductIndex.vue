@@ -380,7 +380,7 @@ const stepMenuShow = ref({
     },
     step5: {
         show: true,
-        text: "05 選配區",
+        text: "05 加購區",
     },
     step6: {
         show: true,

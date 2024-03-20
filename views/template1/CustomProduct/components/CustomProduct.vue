@@ -1,6 +1,6 @@
 <template>
     <div class="custom-form">
-        <h3 class="text-[16px] font-medium YaleSolisW-Bd">{{ title }}</h3>
+        <h3 class="text-[16px] font-medium YaleSolisW-Bd">{{ title }}<span class="text-red-500 ms-1">*</span></h3>
         <el-radio-group
             v-model="currentProductIdData"
             @change="setProduct"

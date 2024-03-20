@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h3 class="text-[16px] font-medium YaleSolisW-Bd mb-[20px]">用途</h3>
+        <h3 class="text-[16px] font-medium YaleSolisW-Bd mb-[20px]">用途<span class="text-red-500 ms-1">*</span></h3>
         <ul class="grid grid-cols-2 sm:grid-cols-3 gap-[12px]">
             <li
                 @click="currentTabId = tab.id"

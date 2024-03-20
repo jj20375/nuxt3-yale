@@ -1,6 +1,6 @@
 <template>
     <div v-if="currentLockData.detailData">
-        <h3 class="text-[16px] font-medium YaleSolisW-Bd mb-[20px]">款式</h3>
+        <h3 class="text-[16px] font-medium YaleSolisW-Bd mb-[20px]">款式<span class="text-red-500 ms-1">*</span></h3>
         <ul class="grid grid-cols-2 gap-[12px]">
             <li
                 @click="
