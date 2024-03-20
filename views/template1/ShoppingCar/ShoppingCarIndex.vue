@@ -237,7 +237,7 @@ const showLoginDialog = ref(false);
  * 關閉登入彈窗
  */
 function closeDialog(val) {
-    showLoginDialog.value = false;
+    showLoginDialog.value = val;
     window.scrollTo(0, 0);
 }
 

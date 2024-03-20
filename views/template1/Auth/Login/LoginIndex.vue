@@ -3,8 +3,11 @@
         class="py-[36px] sm:py-[60px]"
         :class="customClass"
     >
-        <div :class="isDialog? '' : 'container'">
-            <div class="w-full border-[1px] border-gray-200 py-[32px] sm:py-[60px] px-[24px] sm:px-[72px] bg-white sm:mx-auto rounded-[16px]" :class="isDialog? '' : 'md:w-[504px]'">
+        <div :class="isDialog ? '' : 'container'">
+            <div
+                class="w-full border-[1px] border-gray-200 py-[32px] sm:py-[60px] px-[24px] sm:px-[72px] bg-white sm:mx-auto rounded-[16px]"
+                :class="isDialog ? '' : 'md:w-[504px]'"
+            >
                 <h3 class="font-medium YaleSolisW-Bd text-[22px] sm:text-[28px] text-center mb-6 sm:mb-8">會員登入</h3>
                 <el-form
                     class="custom-form"
@@ -223,6 +226,9 @@ async function onSubmit() {
                     emit("onCloseDialog", false);
                     if (props.isNeedPageRouter) {
                         router.push({ name: "auth-panel-slug", params: { slug: "會員中心" } });
+                    } else {
+                        // 使用登入彈窗登入後重整畫面 重新同步購物車資訊
+                        location.reload();
                     }
                 } else {
                     ElMessage({
@@ -266,9 +272,12 @@ async function getMessage(e: any) {
             await shoppingCarStore.syncCart();
             await shoppingCarStore.syncCustomCart();
             emit("onCloseDialog", false);
-            userStore.getUserProfile();
+            await userStore.getUserProfile();
             if (props.isNeedPageRouter) {
                 router.push({ name: "auth-panel-slug", params: { slug: "會員中心" } });
+            } else {
+                // 使用登入彈窗登入後重整畫面 重新同步購物車資訊
+                location.reload();
             }
         }
         // router.push({ name: 'auth-login-sso-slug', params: { slug: '快速登入' } });
