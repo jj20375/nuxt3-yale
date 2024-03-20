@@ -29,11 +29,11 @@ const props = defineProps({
 const tabs = ref([
     {
         id: "id1",
-        text: "基本款",
+        text: "標準款",
     },
     {
         id: "id2",
-        text: "標準款",
+        text: "經典款",
     },
     {
         id: "id3",
