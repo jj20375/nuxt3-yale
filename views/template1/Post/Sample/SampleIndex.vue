@@ -99,6 +99,8 @@ async function getType() {
     }
 }
 
+await useAsyncData(() => getTypeDetail());
+
 /**
  * 取得文章分類詳情
  */
@@ -164,7 +166,6 @@ async function getList(params: { per_page: number; page: number; article_categor
  */
 async function init() {
     await getType();
-    await getTypeDetail();
     console.log("route.query.id", route);
     await getList({ per_page: pagination.value.pageSize, page: 1, article_category_id: route.query.id });
 }
