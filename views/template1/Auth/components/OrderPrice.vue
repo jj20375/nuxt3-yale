@@ -29,14 +29,14 @@
     >
         <div class="flex-1">尾款(預估總價{{order?.finalPayment_ratio}}%)</div>
         <!-- 訂金 -->
-        <span class="mr-[4px]">NT$ {{ $utils().formatCurrency(order?.finalPayment) }}</span>
+        <span class="mr-[4px]">NT$ {{ $utils().formatCurrency(order?.finalPayment_ori) }}</span>
     </div>
     <div
         class="text-gray-600 text-[14px] flex mt-[4px]"
     >
         <div class="flex-1">實際尾款</div>
         <!-- 訂金 -->
-        <span class="mr-[4px]">NT$ </span>
+        <span class="mr-[4px]">NT$  {{ $utils().formatCurrency(order?.finalPayment) }}</span>
         <slot name="deposit"></slot>
     </div>
     <div class="mt-4" v-if="order?.memo">
@@ -61,6 +61,7 @@ interface Props {
         totalPrice: number,
         deposit: number,
         deposit_ratio: number,
+        finalPayment_ori: number,
         finalPayment: number,
         finalPayment_ratio: number,
         memo: string,
@@ -84,6 +85,7 @@ const props = withDefaults(defineProps<Props>(), {
             coupon: -1000,
             deposit: 0,
             deposit_ratio: 30,
+            finalPayment_ori: 0,
             finalPayment: 0,
             finalPayment_ratio: 70,
             totalPrice: 43399,
