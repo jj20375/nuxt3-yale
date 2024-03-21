@@ -98,9 +98,7 @@ async function getType() {
         console.log("HomeSampleAPI => ", err);
     }
 }
-
-await useAsyncData(() => getTypeDetail());
-
+const { data, pending, error, refresh } = await useAsyncData("sample", () => getTypeDetail());
 /**
  * 取得文章分類詳情
  */
@@ -112,12 +110,13 @@ async function getTypeDetail() {
         const rows = (data.value as any).data;
 
         useSeoMeta({
-            title: rows.seoSetting.title ? rows.seoSetting.title : initializationStore.initializationData.site.meta_title,
-            description: rows.seoSetting.description ? rows.seoSetting.description : initializationStore.initializationData.site.meta_description,
-            ogTitle: rows.seoSetting.title,
-            ogDescription: rows.seoSetting.description,
-            ogUrl: () => `${window.location.origin}/sample/${rows.seoSetting.custom_url}`,
-            keywords: rows.seoSetting.keywords.join(),
+            title: () => rows.seoSetting.title ? rows.seoSetting.title : initializationStore.initializationData.site.meta_title,
+            description: () => rows.seoSetting.description ? rows.seoSetting.description : initializationStore.initializationData.site.meta_description,
+            ogTitle: () => rows.seoSetting.title,
+            ogDescription: () => rows.seoSetting.description,
+            ogUrl: () => `${window.location.origin}/sample/${rows.seoSetting.custom_url}?id=${route.query.id}`,
+            keywords: () => rows.seoSetting.keywords.join(),
+            // and other stuff
         });
     } catch (err) {
         console.log("HomeSampleAPI => ", err);
@@ -178,5 +177,3 @@ onMounted(async () => {
     });
 });
 </script>
-
-'articleCategory|type': 'renovation'
