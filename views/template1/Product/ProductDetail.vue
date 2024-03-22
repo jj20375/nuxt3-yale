@@ -674,19 +674,14 @@ const goToCompare = (data: any) => {
 // 分享
 function socialShare(type: string) {
     if (type === "line") {
-        let path = window.location.origin + encodeURIComponent(route.path) + "?";
-        Object.keys(route.params).forEach((key) => {
-            path = path + `${key}=${route.params[key]}`;
-        });
+        let path = window.location.origin + encodeURIComponent(route.path);
         const url = "https://social-plugins.line.me/lineit/share?url=" + path;
 
         $utils().openNewWindow(url);
     }
     if (type === "fb") {
-        let path = window.location.origin + encodeURIComponent(route.path) + "?";
-        Object.keys(route.params).forEach((key) => {
-            path = path + `${key}=${route.params[key]}`;
-        });
+        console.log("route.params =>", route.params);
+        let path = window.location.origin + encodeURIComponent(route.path);
         const url = "https://www.facebook.com/sharer/sharer.php?u=" + path;
 
         $utils().openNewWindow(url);
