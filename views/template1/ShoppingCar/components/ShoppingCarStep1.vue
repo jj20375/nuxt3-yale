@@ -29,7 +29,7 @@
             <NuxtLink
                 v-if="currentTab === 'type1'"
                 class="YaleSolisW-Rg text-[16px] flex items-center"
-                :to="{ name: 'product-slug', params: { slug: '產品資訊-電子鎖-主鎖' }, query: { category: 1, tag: 1 } }"
+                :to="{ name: 'product-slug-category-tag', params: { slug: '產品資訊-電子鎖-主鎖', category: 1, tag: 1 } }"
             >
                 <NuxtImg
                     class="w-[16px] h-[16px]"

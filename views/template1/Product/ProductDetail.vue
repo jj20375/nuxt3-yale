@@ -203,7 +203,7 @@
                 </ul>
                 <div
                     v-if="currentTab === 0"
-                    class="min-h-[500px] text-center flex items-center justify-center flex mt-[24px] md:mt-[60px]"
+                    class="min-h-[500px] text-center flex items-center justify-center mt-[24px] md:mt-[60px]"
                 >
                     <div
                         class="edit-section"
@@ -326,7 +326,7 @@ const showDialog = ref(false);
 // 預設選中 tab
 const currentTab = ref(0);
 
-const { data: resProductDetail }: any = await $api().ProductDetailAPI({ productId: route.query.id });
+const { data: resProductDetail }: any = await $api().ProductDetailAPI({ productId: route.params.id });
 
 // 詳細資訊 api 回傳
 const productDetail = computed(() => {
@@ -436,23 +436,20 @@ const getData = async () => {
 
     if (product.breadcrumbs[0] && product.breadcrumbs[1]) {
         breadcrumbs.value.push({
-            name: "product-slug",
+            name: "product-slug-category-tag",
             text: product.breadcrumbs[0].name,
-            params: { slug: `產品資訊-${product.breadcrumbs[0].name}` },
-            query: { category: product.breadcrumbs[0].id, tag: product.breadcrumbs[1].id },
+            params: { slug: `產品資訊-${product.breadcrumbs[0].name}`, category: product.breadcrumbs[0].id, tag: product.breadcrumbs[1].id },
         });
         breadcrumbs.value.push({
-            name: "product-slug",
+            name: "product-slug-category-tag",
             text: product.breadcrumbs[1].name,
-            params: { slug: `產品資訊-${product.breadcrumbs[1].name}` },
-            query: { category: product.breadcrumbs[0].id, tag: product.breadcrumbs[1].id },
+            params: { slug: `產品資訊-${product.breadcrumbs[1].name}`, category: product.breadcrumbs[0].id, tag: product.breadcrumbs[1].id },
         });
     }
     breadcrumbs.value.push({
-        name: "product-detail-slug",
+        name: "product-detail-slug-id",
         text: detailData.value.name,
-        params: { slug: `${detailData.value.name}` },
-        query: { id: detailData.value.product_id },
+        params: { slug: `${detailData.value.name}`, id: detailData.value.product_id },
     });
 
     if (productDetail.value.productRelations) {
@@ -480,10 +477,10 @@ const getData = async () => {
         optionChange(productOptions.value[0].options[0], 0);
     }
 
-    console.log('productDetail.value =>', productDetail.value)
+    console.log("productDetail.value =>", productDetail.value);
 
     if (productDetail.value) {
-        console.log('productDetail.value.seoSetting.title', productDetail.value.seoSetting.title)
+        console.log("productDetail.value.seoSetting.title", productDetail.value.seoSetting.title);
         useSeoMeta({
             title: productDetail.value.seoSetting.title ? productDetail.value.seoSetting.title : initializationStore.initializationData.site.meta_title,
             description: productDetail.value.seoSetting.description ? productDetail.value.seoSetting.description : initializationStore.initializationData.site.meta_description,
@@ -678,8 +675,8 @@ const goToCompare = (data: any) => {
 function socialShare(type: string) {
     if (type === "line") {
         let path = window.location.origin + encodeURIComponent(route.path) + "?";
-        Object.keys(route.query).forEach((key) => {
-            path = path + `${key}=${route.query[key]}`;
+        Object.keys(route.params).forEach((key) => {
+            path = path + `${key}=${route.params[key]}`;
         });
         const url = "https://social-plugins.line.me/lineit/share?url=" + path;
 
@@ -687,8 +684,8 @@ function socialShare(type: string) {
     }
     if (type === "fb") {
         let path = window.location.origin + encodeURIComponent(route.path) + "?";
-        Object.keys(route.query).forEach((key) => {
-            path = path + `${key}=${route.query[key]}`;
+        Object.keys(route.params).forEach((key) => {
+            path = path + `${key}=${route.params[key]}`;
         });
         const url = "https://www.facebook.com/sharer/sharer.php?u=" + path;
 

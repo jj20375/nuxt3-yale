@@ -199,7 +199,7 @@ function sortChange() {
 const sidebar = ref<any>([]);
 const sideBarRef = ref<any>(null);
 
-const product_category_id = ref(route.query.tag);
+const product_category_id = ref(route.params.tag);
 /**
  * 取得商品分類
  */
@@ -216,16 +216,14 @@ async function getType() {
             const children: { text: any; categoryId: any; url: { name: string; query: { category: any; tag: any }; params: { slug: any } } }[] = [];
             if (item.id == route.query.category) {
                 breadcrumbs.value.push({
-                    name: "product-slug",
+                    name: "product-slug-category-tag",
                     text: "產品資訊",
-                    params: { slug: `產品資訊-${item.name}` },
-                    query: { category: route.query.category, tag: route.query.tag },
+                    params: { slug: `產品資訊-${item.name}`, category: route.params.category, tag: route.params.tag },
                 });
                 breadcrumbs.value.push({
                     name: route.name,
                     text: item.name,
-                    params: { slug: item.name },
-                    query: { category: route.query.category, tag: route.query.tag },
+                    params: { slug: item.name, category: route.params.category, tag: route.params.tag },
                 });
             }
             item.children.forEach((child: { name: any; id: any }) => {
@@ -233,17 +231,15 @@ async function getType() {
                     text: child.name,
                     categoryId: child.id,
                     url: {
-                        name: "product-slug",
-                        query: { category: item.id, tag: child.id },
-                        params: { slug: `產品資訊-${item.name}-${child.name}` },
+                        name: "product-slug-category-tag",
+                        params: { slug: `產品資訊-${item.name}-${child.name}`, category: item.id, tag: child.id },
                     },
                 });
                 if (child.id == route.query.tag) {
                     breadcrumbs.value.push({
                         name: route.name,
                         text: child.name,
-                        params: { slug: child.name },
-                        query: { category: route.query.category, tag: route.query.tag },
+                        params: { slug: child.name, category: route.params.category, tag: route.params.tag },
                     });
                 }
             });
@@ -251,16 +247,15 @@ async function getType() {
                 text: item.name,
                 categoryId: item.id,
                 url: {
-                    name: "product-slug",
-                    query: { category: item.id, tag: item.id },
-                    params: { slug: `產品資訊-${item.name}` },
+                    name: "product-slug-category-tag",
+                    params: { slug: `產品資訊-${item.name}`, category: item.id, tag: item.id },
                 },
                 options: children,
             });
         });
 
-        if (route.query.tag === route.query.category) {
-            const children_id = rows.find((item: { id: any }) => item.id == route.query.category).children.map((child: { id: any }) => child.id);
+        if (route.params.tag === route.params.category) {
+            const children_id = rows.find((item: { id: any }) => item.id == route.params.category).children.map((child: { id: any }) => child.id);
             console.log(children_id);
             product_category_id.value = children_id.join();
         }
@@ -279,7 +274,7 @@ const productTypeDetail = ref<any>({
  */
 async function getTypeDetail() {
     try {
-        const params = { productCategoryId: route.query.tag };
+        const params = { productCategoryId: route.params.tag };
         const { data } = await $api().ProductTypeDetailAPI(params);
         console.log("home getTypeDetail api => ", data.value);
 
@@ -418,7 +413,6 @@ function goToCompare(data: any) {
 async function init() {
     await getType();
     await getTypeDetail();
-    console.log("route.query.id", route);
     await getList({ per_page: pagination.value.pageSize, page: 1 });
 }
 
@@ -427,7 +421,7 @@ onMounted(async () => {
     nextTick(async () => {
         if (process.client) {
             console.log(sideBarRef.value.openSubMenu);
-            sideBarRef.value.openSubMenu = Number(route.query.category);
+            sideBarRef.value.openSubMenu = Number(route.params.category);
         }
     });
 });

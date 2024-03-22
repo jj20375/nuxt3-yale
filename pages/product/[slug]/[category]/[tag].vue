@@ -8,9 +8,7 @@
                 />
             </div>
         </div>
-        <component
-            :is="AsyncComp"
-        ></component>
+        <component :is="AsyncComp"></component>
     </NuxtLayout>
 </template>
 

@@ -20,9 +20,8 @@
                         :src="cart.imgSrc"
                         @click="
                             router.push({
-                                name: 'product-detail-slug',
-                                params: { slug: cart.name },
-                                query: { id: cart.productID },
+                                name: 'product-detail-slug-id',
+                                params: { slug: cart.name, id: cart.productID },
                             })
                         "
                     />
@@ -32,9 +31,8 @@
                         class="flex justify-between w-full gap-4 text-gray-800 cursor-pointer"
                         @click="
                             router.push({
-                                name: 'product-detail-slug',
-                                params: { slug: cart.name },
-                                query: { id: cart.productID },
+                                name: 'product-detail-slug-id',
+                                params: { slug: cart.name, id: cart.productID },
                             })
                         "
                     >

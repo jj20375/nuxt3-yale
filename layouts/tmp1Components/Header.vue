@@ -270,9 +270,8 @@ initializationData.value.site.product_categories.forEach((item: { id: any; menu_
         imgSrc: item.menu_image,
         text: item.name,
         url: {
-            params: { slug: `產品資訊-${item.name}` },
-            query: { category: item.id, tag: item.id },
-            name: "product-slug",
+            params: { slug: `產品資訊-${item.name}`, category: item.id, tag: item.id },
+            name: "product-slug-category-tag",
         },
     });
 });
@@ -306,9 +305,8 @@ const menus = ref<any>({
     menu6: {
         title: "產品資訊",
         url: {
-            name: "product-slug",
-            params: { slug: "產品資訊-電子鎖-主鎖" },
-            query: { category: "id1", tag: "id1" },
+            name: "product-slug-category-tag",
+            params: { slug: "產品資訊-電子鎖-主鎖", category: "id1", tag: "id1" },
         },
         marginSize: "gap-x-[40px] gap-y-[20px]",
         submenus: product_categories,
@@ -494,8 +492,7 @@ const dropdownMenuRef = ref<HTMLElement | null>(null);
 function handleGlobalClick(event: MouseEvent) {
     const targetNode = event.target as Node;
     const isHeaderClicked = headerRef.value?.contains(targetNode);
-    const isDropdownMenuClicked =
-        dropdownMenuRef.value && dropdownMenuRef.value.contains(targetNode);
+    const isDropdownMenuClicked = dropdownMenuRef.value && dropdownMenuRef.value.contains(targetNode);
 
     if (!isHeaderClicked && !isDropdownMenuClicked) {
         showMenu.value = false;
@@ -509,7 +506,6 @@ onMounted(() => {
 onBeforeUnmount(() => {
     window.removeEventListener("click", handleGlobalClick);
 });
-
 </script>
 
 <style lang="scss" scoped>

@@ -50,9 +50,9 @@
                             </div>
                         </li>
                     </ul>
-                    <aside class="flex flex-col xl:flex-row justify-between mt-2 xl:mt-20 text-sm font-light mb-10 xl:mb-6">
-                        <div class="order-2 xl:order-1 mt-2 xl:mt-0">{{ copyright.text }}</div>
-                        <ul class="flex gap-5 order-1 xl:order-2">
+                    <aside class="flex flex-col justify-between mt-2 mb-10 text-sm font-light xl:flex-row xl:mt-20 xl:mb-6">
+                        <div class="order-2 mt-2 xl:order-1 xl:mt-0">{{ copyright.text }}</div>
+                        <ul class="flex order-1 gap-5 xl:order-2">
                             <li
                                 v-for="(caluse, index) in copyright['caluses']"
                                 :key="index"
@@ -137,9 +137,8 @@ initializationData.value.site.product_categories.forEach((item: { id: any; menu_
         imgSrc: item.menu_image,
         text: item.name,
         url: {
-            params: { slug: `產品資訊-${item.name}` },
-            query: { category: item.id, tag: item.id },
-            name: "product-slug",
+            params: { slug: `產品資訊-${item.name}`, category: item.id, tag: item.id },
+            name: "product-slug-category-tag",
         },
     });
 });
