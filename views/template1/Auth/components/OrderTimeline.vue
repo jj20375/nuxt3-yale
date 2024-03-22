@@ -15,7 +15,7 @@
                 {{ status }}
             </div>
             <button
-                v-if="status === '未付款' || status === '待付訂金' || status === '待付尾款'"
+                v-if="method === '信用卡' && (status === '未付款' || status === '待付訂金' || status === '待付尾款')"
                 @click.stop="repay()"
                 class="transparent-btn btn-xs"
             >
@@ -59,6 +59,7 @@ const { $api, $utils } = useNuxtApp();
 interface Props {
     orderNumber: string;
     status: string;
+    method: string;
     timeline: {
         date: string;
         time: string;
@@ -69,6 +70,7 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
     orderNumber: "",
     status: "",
+    method: '',
     timeline: [
         {
             date: "",

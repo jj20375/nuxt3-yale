@@ -30,6 +30,7 @@
                     :orderNumber="orderData.orderNumber"
                     :timeline="orderData.timeline"
                     :status="orderData.orderStatus"
+                    :method="orderData.payment[0].method"
                     @orderRepay="handleRepay"
                 />
                 <div class="mt-8 sm:mt-12">
@@ -64,18 +65,30 @@
                     </div>
                     <h4 class="font-bold mb-3 mt-5">付款明細</h4>
                     <div class="border-b-[1px] border-gray-200 pb-5">
+                        <h5 class="font-bold mb-1">訂金</h5>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-1 w-full 2xl:w-[85%] 3xl:w-[70%]">
                             <div
-                                v-if="orderData?.payment?.method"
                                 class="text-gray-700"
                             >
-                                付款方式：{{ orderData?.payment?.method }}
+                                付款方式：{{ orderData?.payment[0]?.method }}
                             </div>
                             <div
-                                v-if="orderData?.payment?.orderStatus"
                                 class="text-gray-700"
                             >
-                                付款狀態：{{ orderData?.payment?.orderStatus }}
+                                付款狀態：{{ orderData?.payment[0]?.orderStatus }}
+                            </div>
+                        </div>
+                        <h5 class="font-bold my-1">尾款</h5>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-1 w-full 2xl:w-[85%] 3xl:w-[70%]">
+                            <div
+                                class="text-gray-700"
+                            >
+                                付款方式：{{ orderData?.payment[1]?.method }}
+                            </div>
+                            <div
+                                class="text-gray-700"
+                            >
+                                付款狀態：{{ orderData?.payment[1]?.orderStatus }}
                             </div>
                         </div>
                     </div>
@@ -320,10 +333,16 @@ const orderData = ref({
         phone: "0912345678",
         address: "台北市中正區忠孝東路一段76號5樓之1",
     },
-    payment: {
-        method: "信用卡",
-        orderStatus: "未付款",
-    },
+    payment: [
+        {
+            method: "信用卡",
+            orderStatus: "未付款",
+        },
+        {
+            method: "信用卡",
+            orderStatus: "未付款",
+        },
+    ],
     orderStatus: "",
     orderPayments: [],
     receipt: {
@@ -369,6 +388,7 @@ const orderData = ref({
         coupon: -1000,
         deposit: 0,
         deposit_ratio: 30,
+        finalPayment_ori: 0,
         finalPayment: 0,
         finalPayment_ratio: 70,
         totalPrice: 43399,
@@ -561,13 +581,21 @@ const orderRepay = async () => {
     loading.close()
 };
 
-const paymentStatus = (orderPayments: string) => {
-    let result = "訂金未付款";
-    if (orderPayments[0]?.status === "paid") {
-        result = "已付訂金";
+const paymentStatus = (status: string) => {
+    let result = "未付款";
+    if (status === "paid") {
+        result = "已付款";
     }
-    if (orderPayments[1]?.status === "paid") {
-        result = "已付尾款";
+    return result;
+};
+
+const paymentMethod = (method: string) => {
+    let result = "";
+    if (method === "綠界") {
+        result = "信用卡";
+    }
+    if (method === "門市") {
+        result = "門市";
     }
 
     return result;
@@ -596,12 +624,17 @@ const getData = async () => {
     orderData.value.receipt.number = resProductDetail.value.orderPayments[0].orderInvoice.invoice_no;
     orderData.value.price.deposit = resProductDetail.value.orderPayments[0].amount;
     orderData.value.price.deposit_ratio = resProductDetail.value.orderPayments[0].amount_ratio;
+    orderData.value.price.finalPayment_ori = resProductDetail.value.orderPayments[1].original_amount;
     orderData.value.price.finalPayment = resProductDetail.value.orderPayments[1].amount;
     orderData.value.price.finalPayment_ratio = resProductDetail.value.orderPayments[1].amount_ratio;
-    orderData.value.price.totalPrice = resProductDetail.value.total_amount;
+    // orderData.value.price.totalPrice = resProductDetail.value.total_amount;
+    orderData.value.price.totalPrice = Number(resProductDetail.value.orderPayments[0].amount) + Number(resProductDetail.value.orderPayments[1].amount)
     orderData.value.price.memo = resProductDetail.value.remark ? resProductDetail.value.remark : "無";
     orderData.value.orderStatus = $utils().orderStatus(resProductDetail.value.status);
-    orderData.value.payment.orderStatus = paymentStatus(resProductDetail.value.orderPayments);
+    orderData.value.payment[0].method = paymentMethod(resProductDetail.value.orderPayments[0].payment_gateway);
+    orderData.value.payment[0].orderStatus = paymentStatus(resProductDetail.value.orderPayments[0].status);
+    orderData.value.payment[1].method = paymentMethod(resProductDetail.value.orderPayments[1].payment_gateway);
+    orderData.value.payment[1].orderStatus = paymentStatus(resProductDetail.value.orderPayments[1].status);
     orderData.value.orderPayments = resProductDetail.value.orderPayments;
     orderData.value.timeline = [];
     resProductDetail.value.orderTimelines.forEach((item: { id: any; changed_at: moment.MomentInput; after_status: string }) => {

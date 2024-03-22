@@ -17,18 +17,22 @@
                             :src="initializationData?.site.site_logo"
                         />
                         <p class="text-[20px] mt-[24px] sm:mt-[40px] YaleSolisW-Bd font-medium">{{ initializationData?.site.meta_title }}</p>
-                        <p class="text-[16px] mt-[12px]">{{ initializationData?.site.contact_phone }}</p>
-                        <P class="text-[16px] mt-[4px]">{{ initializationData?.site.contact_email }}</P>
+                        <p class="text-[16px] mt-[12px]"><a :href="`tel:${initializationData?.site.contact_phone}`">{{ initializationData?.site.contact_phone }}</a></p>
+                        <p class="text-[16px] mt-[4px]"><a :href="`mailto:${initializationData?.site.contact_email}`">{{ initializationData?.site.contact_email }}</a></p>
                         <ul class="flex justify-center mt-[40px]">
                             <li
-                                v-for="(media, index) in medias"
+                                v-for="(media, index) in socialMedia"
                                 :key="index"
                             >
-                                <NuxtImg
-                                    class="w-[24px]"
-                                    :class="medias.length - 1 !== index ? 'mr-[24px]' : ''"
-                                    :src="media"
+                            <div
+                                @click="toSocialMedia(media)"
+                                class="flex justify-center items-center !w-[40px] !h-[40px] group cursor-pointer"
+                            >
+                                <component
+                                    class="!w-[20px] !h-[20px] transition-all duration-300 group-hover:text-gray-400 group-hover:transition-all group-hover:duration-300"
+                                    :is="media.name"
                                 />
+                            </div>
                             </li>
                         </ul>
                     </div>
@@ -43,6 +47,10 @@ import BannerLayout from "~/views/template1/layouts/BannerLayout.vue";
 import Breadcrumb from "~/views/template1/components/Breadcrumb.vue";
 import ContactWeForm from "~/views/template1/ContactService/ContactWe/components/ContactWeForm.vue";
 import { useInitializationStore } from "~/store/initializationStore";
+import IconFacebook from "~/assets/img/icons/medias/icon-black-1.svg";
+import IconInstagram from "~/assets/img/icons/medias/icon-black-2.svg";
+import IconLine from "~/assets/img/icons/medias/icon-black-3.svg";
+import IconYoutube from "~/assets/img/icons/medias/icon-black-4.svg";
 const route = useRoute();
 
 const initializationStore = useInitializationStore();
@@ -68,9 +76,29 @@ const breadcrumbs = ref([
     },
 ]);
 
-const medias = ref([]);
+// 社群資料
+const socialMedia = ref([
+    {
+        name: shallowRef(IconFacebook),
+        url: initializationData.value.site.social_facebook,
+    },
+    {
+        name: shallowRef(IconLine),
+        url: initializationData.value.site.social_line,
+    },
+    {
+        name: shallowRef(IconInstagram),
+        url: initializationData.value.site.social_instagram,
+    },
+    {
+        name: shallowRef(IconYoutube),
+        url: initializationData.value.site.social_youtube,
+    },
+]);
 
-for (let i = 0; i < 4; i++) {
-    medias.value.push("/img/icons/medias/icon-black-" + (i + 1) + ".svg");
+function toSocialMedia(socialMedia: { url: string | URL | undefined }) {
+    if (socialMedia.url) {
+        open(socialMedia.url, "_blank");
+    }
 }
 </script>
