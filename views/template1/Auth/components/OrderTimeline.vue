@@ -30,7 +30,7 @@
         <div
             :class="{ active: isMenuOpen }"
             class="menu-content"
-            :style="{ maxHeight: isMenuOpen ? 'auto' : '0' }"
+            :style="{ maxHeight: isMenuOpen ? '100vh' : '0' }"
         >
             <div
                 class="p-4 sm:py-[20px] sm:px-[24px]"
