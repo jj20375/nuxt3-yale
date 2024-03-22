@@ -47,8 +47,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 function goToDetail(url: any) {
     // 將麵包屑存進 storage
-    $utils().saveBreadcrumbsData(url.query.breadcrumbs);
-    router.push({ name: url.name, params: url.params, query: { id: url.query.id } });
+    router.push({ name: url.name, params: url.params });
 }
 </script>
 

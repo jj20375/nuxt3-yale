@@ -18,10 +18,9 @@
                         class="mb-9 md:mb-[60px] bg-white"
                         @click="
                             router.push({
-                                params: { slug: '直營門市' },
-                                query: { id: 1 },
+                                params: { slug: '直營門市', id: 1 },
                                 state: { index: index },
-                                name: 'store-slug',
+                                name: 'store-slug-id',
                             })
                         "
                         v-for="(item, index) in stores"

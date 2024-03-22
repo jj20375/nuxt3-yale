@@ -97,9 +97,8 @@ initializationData.value.site.renovation_categories.forEach((item: { id: any; im
         imgSrc: item.image,
         text: item.name,
         url: {
-            params: { slug: item.name },
-            query: { id: item.id },
-            name: "sample-slug",
+            params: { slug: item.name, id: item.id },
+            name: "sample-slug-id",
         },
     });
 });
@@ -113,9 +112,8 @@ initializationData.value.site.stronghold_categories.forEach((item: { id: any; ic
         imgSrc: item.icon,
         text: item.name,
         url: {
-            params: { slug: item.name },
-            query: { id: item.id },
-            name: item.id === 2 ? "store-e-commerce-slug" : "store-slug",
+            params: { slug: item.name, id: item.id },
+            name: item.id === 2 ? "store-e-commerce-slug-id" : "store-slug-id",
         },
     });
 });
@@ -208,17 +206,15 @@ const footerDatas = ref({
             {
                 text: "最新消息",
                 url: {
-                    name: "news-slug",
-                    params: { slug: "slug" },
-                    query: { id: "4" },
+                    name: "news-slug-id",
+                    params: { slug: "slug", id: "4" },
                 },
             },
             {
                 text: "裝修實績",
                 url: {
-                    name: "sample-slug",
-                    params: { slug: "耶魯裝修實績" },
-                    query: { id: "3" },
+                    name: "sample-slug-id",
+                    params: { slug: "耶魯裝修實績", id: "3" },
                 },
             },
             {
