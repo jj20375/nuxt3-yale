@@ -186,21 +186,10 @@ function socialShare(type: string) {
             selectItems.push(item.id);
         }
     });
-    let path = window.location.origin + route.path + "?";
-    console.log(route.query);
-    Object.keys(route.query).forEach((key) => {
-        if (key !== "selectItem") {
-            console.log(key);
-            path = path + `${key}=${route.query[key]}`;
-        }
-    });
-    console.log(path);
+    let path = window.location.origin + route.path;
     path = encodeURIComponent(path + `&selectItem=${JSON.stringify(selectItems)}`);
-    console.log(path);
     if (type === "line") {
-        console.log(path);
         const url = "https://social-plugins.line.me/lineit/share?url=" + path;
-        console.log(path);
 
         $utils().openNewWindow(url);
     }
