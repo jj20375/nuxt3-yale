@@ -214,7 +214,7 @@ async function getType() {
         rows.forEach((item: { name: any; id: any; children: any }) => {
             console.log(item);
             const children: { text: any; categoryId: any; url: { name: string; query: { category: any; tag: any }; params: { slug: any } } }[] = [];
-            if (item.id == route.query.category) {
+            if (item.id == route.params.category) {
                 breadcrumbs.value.push({
                     name: "product-slug-category-tag",
                     text: "產品資訊",
@@ -235,7 +235,7 @@ async function getType() {
                         params: { slug: `產品資訊-${item.name}-${child.name}`, category: item.id, tag: child.id },
                     },
                 });
-                if (child.id == route.query.tag) {
+                if (child.id == route.params.tag) {
                     breadcrumbs.value.push({
                         name: route.name,
                         text: child.name,
