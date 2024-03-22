@@ -5,7 +5,7 @@ import parseMobile from "libphonenumber-js/mobile";
 //密碼驗證
 export const validatePassword = (rule: InternalRuleItem, value: string, callback: (error?: string | Error) => void) => {
     if (value) {
-        const reg = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+        const reg = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)[A-Za-z\d!@#$%^&*()_+{}\[\]:;<>,.?\/\\~-]{8,}$/;
         if (!reg.test(value)) {
             callback(new Error());
         } else {
