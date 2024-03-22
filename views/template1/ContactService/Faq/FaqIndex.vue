@@ -57,40 +57,34 @@ async function getType() {
                 text: item.name,
                 id: item.id,
                 url: {
-                    params: { slug: item.name },
-                    query: { id: item.id },
-                    name: "faq-slug",
+                    params: { slug: item.name, id: item.id },
+                    name: "faq-slug-id",
                 },
             });
         });
         // 取得最後面的 麵包屑路徑
-        const lastBreadcrumbs = rows.find((item: any) => item.id == route.query.id);
+        const lastBreadcrumbs = rows.find((item: any) => item.id == route.params.id);
         breadcrumbs.value.push({
-            name: "faq-slug",
+            name: "faq-slug-id",
             text: "服務支援",
-            params: { slug: lastBreadcrumbs.name },
-            query: { id: lastBreadcrumbs.id },
+            params: { slug: lastBreadcrumbs.name, id: lastBreadcrumbs.id },
         });
         breadcrumbs.value.push({
-            name: "faq-slug",
+            name: "faq-slug-id",
             text: "服務中心",
-            params: { slug: lastBreadcrumbs.name },
-            query: { id: lastBreadcrumbs.id },
+            params: { slug: lastBreadcrumbs.name, id: lastBreadcrumbs.id },
         });
 
         breadcrumbs.value.push({
-            name: "faq-slug",
+            name: "faq-slug-id",
             text: lastBreadcrumbs.name,
-            params: { slug: lastBreadcrumbs.name },
-            query: { id: lastBreadcrumbs.id },
+            params: { slug: lastBreadcrumbs.name, id: lastBreadcrumbs.id },
         });
-    } catch (err) {
-        console.log("HomeSampleAPI => ", err);
-    }
+    } catch (err) {}
 }
 
 const title = computed(() => {
-    const title = sidebar.value.find((item: { id: any }) => item.id == route.query.id);
+    const title = sidebar.value.find((item: { id: any }) => item.id == route.params.id);
     if (title !== undefined) {
         return title.text;
     }
@@ -114,15 +108,12 @@ async function getList(params: { fqa_category_id: any }) {
             datas.value.push({
                 text: item.name,
                 url: {
-                    name: "faq-details-slug",
-                    params: { slug: item.fqa_category.name },
-                    query: { id: route.query.id, detail_id: item.id },
+                    name: "faq-details-slug-id-detail_id",
+                    params: { slug: item.fqa_category.name, id: route.params.id, detail_id: item.id },
                 },
             });
         });
-    } catch (err) {
-        console.log("HomeSampleAPI => ", err);
-    }
+    } catch (err) {}
 }
 
 /**
@@ -130,8 +121,7 @@ async function getList(params: { fqa_category_id: any }) {
  */
 async function init() {
     await getType();
-    console.log("route.query.id", route);
-    await getList({ fqa_category_id: route.query.id });
+    await getList({ fqa_category_id: route.params.id });
 }
 
 await init();

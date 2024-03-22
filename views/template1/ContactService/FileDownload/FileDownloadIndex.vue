@@ -47,7 +47,6 @@ async function getType() {
     try {
         const { data } = await $api().DocumentTypeAPI();
         sidebar.value = [];
-        console.log("home sampleType api => ", data.value);
 
         const rows = (data.value as any).data;
 
@@ -56,41 +55,35 @@ async function getType() {
                 text: item.name,
                 id: item.id,
                 url: {
-                    params: { slug: item.name },
-                    query: { id: item.id },
-                    name: "file-download-slug",
+                    params: { slug: item.name, id: item.id },
+                    name: "file-download-slug-id",
                 },
             });
         });
 
         // 取得最後面的 麵包屑路徑
-        const lastBreadcrumbs = rows.find((item: any) => item.id == route.query.id);
+        const lastBreadcrumbs = rows.find((item: any) => item.id == route.params.id);
 
         breadcrumbs.value.push({
-            name: "file-download-slug",
+            name: "file-download-slug-id",
             text: "服務支援",
-            params: { slug: lastBreadcrumbs.name },
-            query: { id: lastBreadcrumbs.id },
+            params: { slug: lastBreadcrumbs.name, id: lastBreadcrumbs.id },
         });
         breadcrumbs.value.push({
-            name: "file-download-slug",
+            name: "file-download-slug-id",
             text: "檔案下載",
-            params: { slug: lastBreadcrumbs.name },
-            query: { id: lastBreadcrumbs.id },
+            params: { slug: lastBreadcrumbs.name, id: lastBreadcrumbs.id },
         });
         breadcrumbs.value.push({
-            name: "file-download-slug",
+            name: "file-download-slug-id",
             text: lastBreadcrumbs.name,
-            params: { slug: lastBreadcrumbs.name },
-            query: { id: lastBreadcrumbs.id },
+            params: { slug: lastBreadcrumbs.name, id: lastBreadcrumbs.id },
         });
-    } catch (err) {
-        console.log("HomeSampleAPI => ", err);
-    }
+    } catch (err) {}
 }
 
 const title = computed(() => {
-    const title = sidebar.value.find((item: { id: any }) => item.id == route.query.id);
+    const title = sidebar.value.find((item: { id: any }) => item.id == route.params.id);
     if (title !== undefined) {
         return title.text;
     }
@@ -106,7 +99,6 @@ async function getList(params: { document_category_id: any }) {
     try {
         const { data } = await $api().DocumentListAPI(params);
         datas.value = [];
-        console.log("home sample api => ", data.value);
 
         const rows = (data.value as any).data;
 
@@ -116,9 +108,7 @@ async function getList(params: { document_category_id: any }) {
                 url: item.link,
             });
         });
-    } catch (err) {
-        console.log("HomeSampleAPI => ", err);
-    }
+    } catch (err) {}
 }
 
 /**
@@ -126,8 +116,7 @@ async function getList(params: { document_category_id: any }) {
  */
 async function init() {
     await getType();
-    console.log("route.query.id", route);
-    await getList({ document_category_id: route.query.id });
+    await getList({ document_category_id: route.params.id });
 }
 
 await init();

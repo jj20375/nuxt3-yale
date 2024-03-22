@@ -157,9 +157,8 @@ const footerDatas = ref({
             {
                 text: "服務中心",
                 url: {
-                    name: "faq-slug",
-                    params: { slug: "服務中心" },
-                    query: { id: "1" },
+                    name: "faq-slug-id",
+                    params: { slug: "服務中心", id: "1" },
                 },
             },
             {
@@ -172,9 +171,8 @@ const footerDatas = ref({
             {
                 text: "檔案下載",
                 url: {
-                    name: "file-download-slug",
-                    params: { slug: "檔案下載" },
-                    query: { id: "1" },
+                    name: "file-download-slug-id",
+                    params: { slug: "檔案下載", id: "1" },
                 },
             },
             {
