@@ -11,7 +11,7 @@
                 <h1 class="text-[32px] font-medium YaleSolisW-Bd xl:flex-1">{{ route.params.slug }}</h1>
                 <div class="flex flex-col items-center w-full gap-4 xl:flex-row xl:gap-0 xl:w-auto">
                     <div class="xl:mr-[20px]">
-                        <NuxtLink :to="{ name: 'product-compare-slug', params: { slug: route.params.slug }, query: { compareId: route.query.compareId } }">
+                        <NuxtLink :to="{ name: 'product-compare-slug-compareId-productId', params: { slug: route.params.slug, compareId: route.params.compareId } }">
                             <button class="text-blue-500 underline underline-offset-2 hover:no-underline">重新選擇</button>
                         </NuxtLink>
                     </div>
@@ -70,9 +70,9 @@ const breadcrumbs = computed(() => [
         text: "首頁",
     },
     {
-        name: "product-compare-difference-slug",
+        name: "product-compare-difference-slug-compareId",
         text: `${route.params.slug}`,
-        query: { compareId: route.query.compareId },
+        params: { compareId: route.params.compareId },
     },
 ]);
 

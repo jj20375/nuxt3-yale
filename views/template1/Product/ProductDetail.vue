@@ -668,7 +668,7 @@ const handleFavorite = async (id: any) => {
  * 前往規格比較
  */
 const goToCompare = (data: any) => {
-    router.push({ name: "product-compare-slug", params: { slug: breadcrumbs.value[2].text + "比較" }, query: { compareId: data.product_type_id, productId: data.product_id } });
+    router.push({ name: "product-compare-slug-compareId-productId", params: { slug: breadcrumbs.value[2].text + "比較", compareId: data.product_type_id, productId: data.product_id } });
 };
 
 // 分享

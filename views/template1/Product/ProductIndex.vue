@@ -397,14 +397,13 @@ function goToCompare(data: any) {
     const setBreadcrumbs = [
         ...breadcrumbs.value,
         {
-            name: "product-compare-slug",
+            name: "product-compare-slug-compareId-productId",
             text: `${data.name}比較`,
-            params: { slug: `${data.name}比較` },
-            query: { compareId: data.compare_id },
+            params: { slug: `${data.name}比較`, compareId: data.compare_id },
         },
     ];
     $utils().saveBreadcrumbsData(JSON.stringify(setBreadcrumbs));
-    router.push({ name: "product-compare-slug", params: { slug: `${data.name}比較` }, query: { compareId: data.compare_id } });
+    router.push({ name: "product-compare-slug-compareId-productId", params: { slug: `${data.name}比較`, compareId: data.compare_id } });
 }
 
 /**
