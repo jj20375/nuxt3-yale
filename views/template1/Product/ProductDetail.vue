@@ -478,17 +478,20 @@ const getData = async () => {
         });
         optionChangePrice(true);
         optionChange(productOptions.value[0].options[0], 0);
+    }
 
-        if (resProductDetail.value) {
-            useSeoMeta({
-                title: resProductDetail.value.data.seoSetting.title ? resProductDetail.value.data.seoSetting.title : initializationStore.initializationData.site.meta_title,
-                description: resProductDetail.value.data.seoSetting.description ? resProductDetail.value.data.seoSetting.description : initializationStore.initializationData.site.meta_description,
-                ogTitle: resProductDetail.value.data.seoSetting.title,
-                ogDescription: resProductDetail.value.data.seoSetting.description,
-                ogUrl: () => `${window.location.origin}/product/detail/${resProductDetail.value.data.seoSetting.custom_url}`,
-                keywords: resProductDetail.value.data.seoSetting.keywords.join(),
-            });
-        }
+    console.log('productDetail.value =>', productDetail.value)
+
+    if (productDetail.value) {
+        console.log('productDetail.value.seoSetting.title', productDetail.value.seoSetting.title)
+        useSeoMeta({
+            title: productDetail.value.seoSetting.title ? productDetail.value.seoSetting.title : initializationStore.initializationData.site.meta_title,
+            description: productDetail.value.seoSetting.description ? productDetail.value.seoSetting.description : initializationStore.initializationData.site.meta_description,
+            ogTitle: productDetail.value.seoSetting.title,
+            ogDescription: productDetail.value.seoSetting.description,
+            ogUrl: () => `${window.location.origin}/product/detail/${productDetail.value.seoSetting.custom_url}`,
+            keywords: productDetail.value.seoSetting.keywords.join(),
+        });
     }
 };
 
