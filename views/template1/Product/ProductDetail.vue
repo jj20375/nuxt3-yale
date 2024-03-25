@@ -479,7 +479,7 @@ const getData = async () => {
     }
 
     if (productDetail.value) {
-        console.log("$config.public.webSite =>", initializationStore.initializationData.site);
+        console.log("productDetail.value.main_image =>", productDetail.value.main_image);
 
         useHead({
             title: initializationStore.initializationData.site.site_name + "|" + (productDetail.value.seoSetting.title ? productDetail.value.seoSetting.title : productDetail.value.name),
@@ -491,7 +491,7 @@ const getData = async () => {
                     content: productDetail.value.seoSetting.description ? productDetail.value.seoSetting.description : productDetail.value.description,
                 },
                 { name: "keywords", content: productDetail.value.seoSetting.keywords },
-                { hid: "og:url", property: "og:url", content: `${$config.public.hostURL}` },
+                { hid: "og:url", property: "og:url", content: `${$config.public.hostURL}/product/detail/${productDetail.value.name}/${productDetail.value.id}` },
                 { hid: "og:type", property: "og:type", content: "website" },
                 {
                     hid: "og:title",
