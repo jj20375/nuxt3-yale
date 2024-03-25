@@ -22,8 +22,7 @@ interface Props {
         text: string;
         url: {
             name: string;
-            params: { slug: string };
-            query: any;
+            params: { slug: string; id: string };
         };
     }[];
 }
@@ -32,9 +31,8 @@ const props = withDefaults(defineProps<Props>(), {
         {
             text: "電子鎖沒電怎麼辦？",
             url: {
-                name: "faq-details-slug",
-                params: { slug: "電子鎖沒電怎麼辦？" },
-                query: { id: "id1", detail_id: "id1" },
+                name: "faq-details-slug-id-detail_id",
+                params: { slug: "電子鎖沒電怎麼辦？", id: "id1", detail_id: "id1" },
             },
         },
     ],

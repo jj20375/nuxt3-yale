@@ -64,9 +64,9 @@ const breadcrumbs = ref([
         text: "首頁",
     },
     {
-        name: "product-compare-slug",
+        name: "product-compare-slug-compareId-productId",
         text: `${route.params.slug}`,
-        query: { compareId: route.query.compareId },
+        params: { slug: route.params.slug, compareId: route.params.compareId },
     },
 ]);
 
@@ -142,8 +142,8 @@ async function getList(params: { product_type_id: string }) {
             });
         });
 
-        if (route.query.productId) {
-            selectProduct(datas.value.find((item) => item.id == route.query.productId));
+        if (route.params.productId) {
+            selectProduct(datas.value.find((item) => item.id == route.params.productId));
         }
     } catch (err) {
         console.log("HomeSampleAPI => ", err);
@@ -155,9 +155,8 @@ async function getList(params: { product_type_id: string }) {
  */
 function goToDifference() {
     router.push({
-        name: "product-compare-difference-slug",
-        params: { slug: `${route.params.slug}` },
-        query: { compareId: route.query.compareId },
+        name: "product-compare-difference-slug-compareId",
+        params: { slug: `${route.params.slug}`, compareId: route.params.compareId },
     });
 }
 
@@ -165,7 +164,7 @@ function goToDifference() {
  * 初始化
  */
 async function init() {
-    await getList({ product_type_id: route.query.compareId });
+    await getList({ product_type_id: route.params.compareId });
 }
 
 onMounted(async () => {

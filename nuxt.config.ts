@@ -126,9 +126,9 @@ export default defineNuxtConfig({
     hooks: {
         "pages:extend"(pages) {
             // pages.push({
-            //     name: "user-providerHome",
-            //     path: "/user/providerHome",
-            //     file: resolve(__dirname, "pages/provider/home.vue"),
+            //     name: "product-slug-category-tag",
+            //     path: "/product/:slug/:category/:tag",
+            //     file: resolve(__dirname, "pages/index.vue"),
             // });
         },
     },

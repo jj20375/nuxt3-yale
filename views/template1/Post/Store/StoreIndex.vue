@@ -39,15 +39,15 @@ const { $api } = useNuxtApp();
 
 const banner = computed(() => {
     // 判斷直營門市顯示 banner
-    if (route.query.id == 1) {
+    if (route.params.id == 1) {
         return "/img/store/store-banner-1.jpg";
     }
     // 判斷授權展售門市顯示 banner
-    if (route.query.id == 3) {
+    if (route.params.id == 3) {
         return "/img/store/store-banner-2.jpg";
     }
     // 判斷全國電子顯示 banner
-    if (route.query.id == 4) {
+    if (route.params.id == 4) {
         return "/img/store/store-banner-3.jpg";
     }
     return "/img/store/store-banner-1.jpg";
@@ -80,9 +80,8 @@ async function getType() {
                     text: item.name,
                     id: item.id,
                     url: {
-                        params: { slug: item.name },
-                        query: { id: item.id },
-                        name: "store-e-commerce-slug",
+                        params: { slug: item.name, id: item.id },
+                        name: "store-e-commerce-slug-id",
                     },
                 });
             } else {
@@ -90,31 +89,28 @@ async function getType() {
                     text: item.name,
                     id: item.id,
                     url: {
-                        params: { slug: item.name },
-                        query: { id: item.id },
-                        name: "store-slug",
+                        params: { slug: item.name, id: item.id },
+                        name: "store-slug-id",
                     },
                 });
             }
         });
 
         // 取得最後面的 麵包屑路徑
-        const lastBreadcrumbs = rows.find((item: any) => item.id == route.query.id);
+        const lastBreadcrumbs = rows.find((item: any) => item.id == route.params.id);
         // 判斷是否有匹配的 id 來新增 後續的麵包屑 路徑
         if (lastBreadcrumbs !== undefined) {
             breadcrumbs.value.push({
-                name: "store-slug",
+                name: "store-slug-id",
                 text: "展售門市",
-                params: { slug: lastBreadcrumbs.name },
-                query: { id: lastBreadcrumbs.id },
+                params: { slug: lastBreadcrumbs.name, id: lastBreadcrumbs.id },
             });
 
             breadcrumbs.value.push({
                 // id 2 等於電商通路樣板
-                name: lastBreadcrumbs.id == 2 ? "store-e-commerce-slug" : "store-slug",
+                name: lastBreadcrumbs.id == 2 ? "store-e-commerce-slug-id" : "store-slug-id",
                 text: lastBreadcrumbs.name,
-                params: { slug: lastBreadcrumbs.name },
-                query: { id: lastBreadcrumbs.id },
+                params: { slug: lastBreadcrumbs.name, id: lastBreadcrumbs.id },
             });
         }
     } catch (err) {
@@ -129,7 +125,7 @@ const pagination = ref<any>({
 });
 
 const handlePageChange = (val: any) => {
-    getList({ per_page: pagination.value.pageSize, page: val, stronghold_category_id: route.query.id });
+    getList({ per_page: pagination.value.pageSize, page: val, stronghold_category_id: route.params.id });
 };
 
 const datas = ref<any>([]);
@@ -185,7 +181,6 @@ const anchorIndex = ref<any>();
  */
 async function init() {
     await getType();
-    console.log("route.query.id", route);
     let page = 1;
     if (process.client) {
         console.log("history.state", history.state);
@@ -195,7 +190,7 @@ async function init() {
             pagination.value.page = page;
         }
     }
-    await getList({ per_page: pagination.value.pageSize, page: page, stronghold_category_id: route.query.id });
+    await getList({ per_page: pagination.value.pageSize, page: page, stronghold_category_id: route.params.id });
 }
 
 // await init();

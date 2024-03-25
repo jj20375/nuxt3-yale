@@ -21,7 +21,7 @@
             ></div>
             <FaqContact class="mt-[90px]" />
             <div class="mt-[60px]">
-                <NuxtLink :to="{ name: 'faq-slug', params: { slug: categoryName }, query: { id: route.query.id } }">
+                <NuxtLink :to="{ name: 'faq-slug-id', params: { slug: categoryName, id: route.params.id } }">
                     <div class="flex">
                         <NuxtImg
                             class="w-[16px] mr-[5px]"
@@ -56,7 +56,7 @@ const breadcrumbs = ref([
 const sidebar = ref<any>([]);
 
 const categoryName = computed(() => {
-    return sidebar.value.find((item: any) => item.id == route.query.id) !== undefined ? sidebar.value.find((item: any) => item.id == route.query.id).name : "其他";
+    return sidebar.value.find((item: any) => item.id == route.params.id) !== undefined ? sidebar.value.find((item: any) => item.id == route.params.id).name : "其他";
 });
 
 /**
@@ -66,7 +66,6 @@ async function getType() {
     try {
         const { data } = await $api().FQATypeAPI();
         sidebar.value = [];
-        console.log("FQATypeAPI data => ", data.value);
 
         const rows = (data.value as any).data;
 
@@ -75,36 +74,30 @@ async function getType() {
                 text: item.name,
                 id: item.id,
                 url: {
-                    params: { slug: item.name },
-                    query: { id: item.id },
-                    name: "faq-slug",
+                    params: { slug: item.name, id: item.id },
+                    name: "faq-slug-id",
                 },
             });
         });
 
         // 取得最後面的 麵包屑路徑
-        const lastBreadcrumbs = rows.find((item: any) => item.id == route.query.id);
+        const lastBreadcrumbs = rows.find((item: any) => item.id == route.params.id);
         breadcrumbs.value.push({
-            name: "faq-slug",
+            name: "faq-slug-id",
             text: "服務支援",
-            params: { slug: lastBreadcrumbs.name },
-            query: { id: lastBreadcrumbs.id },
+            params: { slug: lastBreadcrumbs.name, id: lastBreadcrumbs.id },
         });
         breadcrumbs.value.push({
-            name: "faq-slug",
+            name: "faq-slug-id",
             text: "服務中心",
-            params: { slug: lastBreadcrumbs.name },
-            query: { id: lastBreadcrumbs.id },
+            params: { slug: lastBreadcrumbs.name, id: lastBreadcrumbs.id },
         });
         breadcrumbs.value.push({
-            name: "faq-slug",
+            name: "faq-slug-id",
             text: lastBreadcrumbs.name,
-            params: { slug: lastBreadcrumbs.name },
-            query: { id: lastBreadcrumbs.id },
+            params: { slug: lastBreadcrumbs.name, id: lastBreadcrumbs.id },
         });
-    } catch (err) {
-        console.log("FQATypeAPI error => ", err);
-    }
+    } catch (err) {}
 }
 
 const title = ref("");
@@ -117,20 +110,16 @@ const content = ref("");
 async function getDetail(params: { fqaId: any }) {
     try {
         const { data } = await $api().FQADetailAPI(params);
-        console.log("FQADetailAPI data => ", data.value);
         const detail = (data.value as any).data;
 
         title.value = detail.name;
         content.value = detail.content;
         breadcrumbs.value.push({
-            name: "faq-details-slug",
+            name: "faq-details-slug-id-detail_id",
             text: detail.name,
-            params: { slug: detail.name },
-            query: { detail_id: detail.id },
+            params: { slug: detail.name, detail_id: detail.id },
         });
-    } catch (err) {
-        console.log("FQADetailAPI error => ", err);
-    }
+    } catch (err) {}
 }
 
 /**
@@ -138,8 +127,7 @@ async function getDetail(params: { fqaId: any }) {
  */
 async function init() {
     await getType();
-    console.log("route.query.id", route);
-    await getDetail({ fqaId: route.query.detail_id });
+    await getDetail({ fqaId: route.params.detail_id });
 }
 
 await init();

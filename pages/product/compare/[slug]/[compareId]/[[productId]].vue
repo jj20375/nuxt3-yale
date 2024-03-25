@@ -8,14 +8,12 @@
                 />
             </div>
         </div>
-        <component
-            :is="AsyncComp"
-        ></component>
+        <component :is="AsyncComp"></component>
     </NuxtLayout>
 </template>
 
 <script setup lang="ts">
-const AsyncComp = defineAsyncComponent(() => import("~/views/template1/Product/ProductIndex.vue"));
+const AsyncComp = defineAsyncComponent(() => import("~/views/template1/Product/ProductCompare.vue"));
 definePageMeta({
     middleware: [],
 });

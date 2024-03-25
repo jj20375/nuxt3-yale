@@ -80,10 +80,6 @@ const router = useRouter();
 const { $api, $utils } = useNuxtApp();
 
 const breadcrumbs = ref([]);
-// 取得 storage 麵包屑參數值
-if (process.client) {
-    breadcrumbs.value = JSON.parse($utils().getBreadcrumbsData());
-}
 
 const postData = ref<any>({
     id: "",
@@ -116,14 +112,28 @@ async function getData(params: { articleId: any }, isChangePost: boolean) {
             published_at: $utils().formatToDate(detail.published_at),
         };
 
+        breadcrumbs.value.push({
+            name: "index",
+            text: "首頁",
+        });
+        breadcrumbs.value.push({
+            name: detail.article_category.type === "news" ? "news-slug-id" : "sample-slug-id",
+            text: detail.article_category.type === "news" ? "最新消息" : "裝修實績",
+            params: { slug: detail.article_category.name, id: detail.article_category.id },
+        });
+        breadcrumbs.value.push({
+            name: detail.article_category.type === "news" ? "news-slug-id" : "sample-slug-id",
+            text: detail.article_category.name,
+            params: { slug: detail.article_category.name, id: detail.article_category.id },
+        });
+
         //判斷在內頁切換文章時 麵包屑 只更新最後一筆陣列簪料
         if (!isChangePost) {
             if (breadcrumbs.value.find((item: any) => item.name === route.name) === undefined) {
                 breadcrumbs.value.push({
                     name: route.name,
-                    params: { slug: detail.title.substr(0, 10) },
+                    params: { slug: detail.title.substr(0, 10), id: detail.id },
                     text: detail.title.length > 10 ? detail.title.substr(0, 10) + "..." : detail.title,
-                    query: { id: detail.id, breadcrumbs: JSON.stringify(breadcrumbs.value) },
                 });
             }
         }
@@ -135,9 +145,9 @@ async function getData(params: { articleId: any }, isChangePost: boolean) {
                 url: {
                     name: route.name,
                     params: {
-                        slug: route.params.slug,
+                        slug: detail.previous_article.title,
+                        id: detail.previous_article.id,
                     },
-                    query: { id: detail.previous_article.id, breadcrumbs: JSON.stringify(breadcrumbs.value) },
                 },
             };
         } else {
@@ -151,9 +161,9 @@ async function getData(params: { articleId: any }, isChangePost: boolean) {
                 url: {
                     name: route.name,
                     params: {
-                        slug: route.params.slug,
+                        slug: detail.next_article.title,
+                        id: detail.next_article.id,
                     },
-                    query: { id: detail.next_article.id, breadcrumbs: JSON.stringify(breadcrumbs.value) },
                 },
             };
         } else {
@@ -175,17 +185,15 @@ async function getData(params: { articleId: any }, isChangePost: boolean) {
 }
 
 async function jumpPage(page: { id: any; url: any }) {
-    // 將麵包屑存進 storage
-    $utils().saveBreadcrumbsData(page.url.query.breadcrumbs);
-    router.push({ name: page.url.name, params: page.url.params, query: { id: page.url.query.id } });
+    console.log("page.url.params =>", page.url.params);
+    router.push({ name: page.url.name, params: page.url.params });
     await getData({ articleId: page.id }, true);
 }
 
 function backList() {
     router.push({
-        params: { slug: postData.value.article_category.name },
-        query: { id: postData.value.article_category.id },
-        name: postData.value.article_category.type === "news" ? "news-slug" : "sample-slug",
+        params: { slug: postData.value.article_category.name, id: postData.value.article_category.id },
+        name: postData.value.article_category.type === "news" ? "news-slug-id" : "sample-slug-id",
     });
 }
 
@@ -193,14 +201,14 @@ function backList() {
  * 初始化
  */
 async function init() {
-    await getData({ articleId: route.query.id }, false);
+    await getData({ articleId: route.params.id }, false);
 }
 
 await init();
 
 // 切換文章時 自動滾回上方
 watch(
-    () => route.query.id,
+    () => route.params.id,
     (val) => {
         if (process.client) {
             window.scrollTo(0, 0);
