@@ -102,57 +102,6 @@ onBeforeUnmount(() => {
     window.removeEventListener("scroll", scrollInit);
 });
 
-// 預先加載初始化資料
-await getInitializationData();
-
-async function getInitializationData() {
-    try {
-        const { data } = await $api().GetInitializationDatasAPI();
-        console.log("GetInitializationDatasAPI => ", data.value);
-        const initialData = (data.value as any).data;
-
-        initializationStore.initializationData = initialData;
-
-        useHead({
-            title: initializationStore.initializationData.site.meta_title,
-            meta: [
-                {
-                    hid: "description",
-                    name: "description",
-                    content: initializationStore.initializationData.site.meta_description,
-                },
-                { name: "keywords", content: "citybanana" },
-                { hid: "og:url", property: "og:url", content: `${$config.public.hostURL}` },
-                { hid: "og:type", property: "og:type", content: "website" },
-                {
-                    hid: "og:title",
-                    property: "og:title",
-                    content: initializationStore.initializationData.site.meta_title,
-                },
-                {
-                    hid: "og:description",
-                    property: "og:description",
-                    content: initializationStore.initializationData.site.meta_description,
-                },
-                {
-                    hid: "og:image",
-                    property: "og:image",
-                    content: "/img/ogCover/home.jpg",
-                },
-            ],
-        });
-        useSeoMeta({
-            title: initializationStore.initializationData.site.meta_title,
-            description: initializationStore.initializationData.site.meta_description,
-            ogTitle: initializationStore.initializationData.site.meta_title,
-            ogDescription: initializationStore.initializationData.site.meta_description,
-            keywords: initializationStore.initializationData.site.meta_keywords.join(),
-        });
-    } catch (err) {
-        console.log(err);
-    }
-}
-
 onMounted(async () => {
     if (process.client) {
         console.table({ 版本號: $config.public.yaleVersion });
