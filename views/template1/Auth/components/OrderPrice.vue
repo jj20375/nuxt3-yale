@@ -17,27 +17,29 @@
         <div class="text-[24px] font-bold">總計</div>
         <div class="flex items-center gap-2 YaleSolisW-Bd">NT$<span class="text-[24px]">{{ $utils().formatCurrency(order?.totalPrice) }}</span></div>
     </div>
-    <div
-        class="text-gray-600 text-[14px] flex mt-[4px]"
-    >
-        <div class="flex-1">訂金(總價{{order?.deposit_ratio}}%)</div>
-        <!-- 訂金 -->
-        <span class="mr-[4px]">NT$ {{ $utils().formatCurrency(order?.deposit) }}</span>
-    </div>
-    <div
-        class="text-gray-600 text-[14px] flex mt-[4px]"
-    >
-        <div class="flex-1">尾款(預估總價{{order?.finalPayment_ratio}}%)</div>
-        <!-- 訂金 -->
-        <span class="mr-[4px]">NT$ {{ $utils().formatCurrency(order?.finalPayment_ori) }}</span>
-    </div>
-    <div
-        class="text-gray-600 text-[14px] flex mt-[4px]"
-    >
-        <div class="flex-1">實際尾款</div>
-        <!-- 訂金 -->
-        <span class="mr-[4px]">NT$  {{ $utils().formatCurrency(order?.finalPayment) }}</span>
-        <slot name="deposit"></slot>
+    <div v-if="type === 'combination'">
+        <div
+            class="text-gray-600 text-[14px] flex mt-[4px]"
+        >
+            <div class="flex-1">訂金(總價{{order?.deposit_ratio}}%)</div>
+            <!-- 訂金 -->
+            <span class="mr-[4px]">NT$ {{ $utils().formatCurrency(order?.deposit) }}</span>
+        </div>
+        <div
+            class="text-gray-600 text-[14px] flex mt-[4px]"
+        >
+            <div class="flex-1">尾款(預估總價{{order?.finalPayment_ratio}}%)</div>
+            <!-- 訂金 -->
+            <span class="mr-[4px]">NT$ {{ $utils().formatCurrency(order?.finalPayment_ori) }}</span>
+        </div>
+        <div
+            class="text-gray-600 text-[14px] flex mt-[4px]"
+        >
+            <div class="flex-1">實際尾款</div>
+            <!-- 訂金 -->
+            <span class="mr-[4px]">NT$  {{ $utils().formatCurrency(order?.finalPayment) }}</span>
+            <slot name="deposit"></slot>
+        </div>
     </div>
     <div class="mt-4" v-if="order?.memo">
         <div class="text-gray-700 text-sm leading-8">備註</div>
@@ -66,6 +68,7 @@ interface Props {
         finalPayment_ratio: number,
         memo: string,
     }[];
+    type: string;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -91,6 +94,7 @@ const props = withDefaults(defineProps<Props>(), {
             totalPrice: 43399,
             memo: "備註內容備註內容備註內容備註內容備註內容備註內容備註內容備註內容備註內容備註內容備註內容備註內容"
         }
-    ]
+    ],
+    type: 'normal'
 });
 </script>
