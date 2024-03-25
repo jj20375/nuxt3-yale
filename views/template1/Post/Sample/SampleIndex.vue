@@ -52,7 +52,7 @@ const pagination = ref<any>({
 });
 
 const handlePageChange = (val: any) => {
-    getList({ per_page: pagination.value.pageSize, page: val, article_category_id: route.query.id });
+    getList({ per_page: pagination.value.pageSize, page: val, article_category_id: route.params.id });
 };
 
 /**
@@ -71,27 +71,24 @@ async function getType() {
                 text: item.name,
                 id: item.id,
                 url: {
-                    params: { slug: item.name },
-                    query: { id: item.id },
-                    name: "sample-slug",
+                    params: { slug: item.name, id: item.id },
+                    name: "sample-slug-id",
                 },
             });
         });
         // 取得最後面的 麵包屑路徑
-        const lastBreadcrumbs = rows.find((item: any) => item.id == route.query.id);
+        const lastBreadcrumbs = rows.find((item: any) => item.id == route.params.id);
         // 判斷是否有匹配的 id 來新增 後續的麵包屑 路徑
         if (lastBreadcrumbs !== undefined) {
             breadcrumbs.value.push({
-                name: "sample-slug",
+                name: "sample-slug-id",
                 text: "裝修實績",
-                params: { slug: "裝修實績" },
-                query: { id: lastBreadcrumbs.id },
+                params: { slug: "裝修實績", id: lastBreadcrumbs.id },
             });
             breadcrumbs.value.push({
-                name: "sample-slug",
+                name: "sample-slug-id",
                 text: lastBreadcrumbs.name,
-                params: { slug: "裝修實績" },
-                query: { id: lastBreadcrumbs.id },
+                params: { slug: "裝修實績", id: lastBreadcrumbs.id },
             });
         }
     } catch (err) {
@@ -104,17 +101,17 @@ const { data, pending, error, refresh } = await useAsyncData("sample", () => get
  */
 async function getTypeDetail() {
     try {
-        const params = { articleId: route.query.id };
+        const params = { articleId: route.params.id };
         const { data } = await $api().ArticalTypeDetailAPI(params);
 
         const rows = (data.value as any).data;
 
         useSeoMeta({
-            title: () => rows.seoSetting.title ? rows.seoSetting.title : initializationStore.initializationData.site.meta_title,
-            description: () => rows.seoSetting.description ? rows.seoSetting.description : initializationStore.initializationData.site.meta_description,
+            title: () => (rows.seoSetting.title ? rows.seoSetting.title : initializationStore.initializationData.site.meta_title),
+            description: () => (rows.seoSetting.description ? rows.seoSetting.description : initializationStore.initializationData.site.meta_description),
             ogTitle: () => rows.seoSetting.title,
             ogDescription: () => rows.seoSetting.description,
-            ogUrl: () => `${window.location.origin}/sample/${rows.seoSetting.custom_url}?id=${route.query.id}`,
+            ogUrl: () => `${window.location.origin}/sample/${rows.seoSetting.custom_url}/${route.params.id}`,
             keywords: () => rows.seoSetting.keywords.join(),
             // and other stuff
         });
@@ -149,9 +146,8 @@ async function getList(params: { per_page: number; page: number; article_categor
                 date: $utils().formatToDate(item.published_at),
                 is_top: item.is_top,
                 url: {
-                    name: "sample-details-slug",
-                    params: { slug: route.params.slug },
-                    query: { id: item.id, breadcrumbs: JSON.stringify(breadcrumbs.value) },
+                    name: "sample-details-slug-id",
+                    params: { slug: route.params.slug, id: item.id },
                 },
             });
         });
@@ -165,8 +161,7 @@ async function getList(params: { per_page: number; page: number; article_categor
  */
 async function init() {
     await getType();
-    console.log("route.query.id", route);
-    await getList({ per_page: pagination.value.pageSize, page: 1, article_category_id: route.query.id });
+    await getList({ per_page: pagination.value.pageSize, page: 1, article_category_id: route.params.id });
 }
 
 await init();

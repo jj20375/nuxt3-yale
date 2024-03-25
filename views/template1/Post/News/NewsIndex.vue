@@ -52,7 +52,7 @@ const pagination = ref<any>({
 });
 
 const handlePageChange = (val: any) => {
-    getList({ per_page: pagination.value.pageSize, page: val, article_category_id: route.query.id });
+    getList({ per_page: pagination.value.pageSize, page: val, article_category_id: route.params.id });
 };
 
 /**
@@ -71,27 +71,24 @@ async function getType() {
                 text: item.name,
                 id: item.id,
                 url: {
-                    params: { slug: item.name },
-                    query: { id: item.id },
-                    name: "news-slug",
+                    params: { slug: item.name, id: item.id },
+                    name: "news-slug-id",
                 },
             });
         });
         // 取得最後面的 麵包屑路徑
-        const lastBreadcrumbs = rows.find((item: any) => item.id == route.query.id);
+        const lastBreadcrumbs = rows.find((item: any) => item.id == route.params.id);
         // 判斷是否有匹配的 id 來新增 後續的麵包屑 路徑
         if (lastBreadcrumbs !== undefined) {
             breadcrumbs.value.push({
-                name: "news-slug",
+                name: "news-slug-id",
                 text: "最新消息",
-                params: { slug: "耶魯最新消息" },
-                query: { id: lastBreadcrumbs.id },
+                params: { slug: "最新消息", id: lastBreadcrumbs.id },
             });
             breadcrumbs.value.push({
-                name: "news-slug",
+                name: "news-slug-id",
                 text: lastBreadcrumbs.name,
-                params: { slug: "耶魯最新消息" },
-                query: { id: lastBreadcrumbs.id },
+                params: { slug: "最新消息", id: lastBreadcrumbs.id },
             });
         }
     } catch (err) {
@@ -104,7 +101,7 @@ async function getType() {
  */
 async function getTypeDetail() {
     try {
-        const params = { articleId: route.query.id };
+        const params = { articleId: route.params.id };
         const { data } = await $api().ArticalTypeDetailAPI(params);
 
         const rows = (data.value as any).data;
@@ -148,9 +145,8 @@ async function getList(params: { per_page: number; page: number; article_categor
                 date: $utils().formatToDate(item.published_at),
                 is_top: item.is_top,
                 url: {
-                    name: "news-details-slug",
-                    params: { slug: route.params.slug },
-                    query: { id: item.id, breadcrumbs: JSON.stringify(breadcrumbs.value) },
+                    name: "news-details-slug-id",
+                    params: { slug: item.title, id: item.id },
                 },
             });
         });
@@ -165,8 +161,7 @@ async function getList(params: { per_page: number; page: number; article_categor
 async function init() {
     await getType();
     await getTypeDetail();
-    console.log("route.query.id", route);
-    await getList({ per_page: pagination.value.pageSize, page: 1, article_category_id: route.query.id });
+    await getList({ per_page: pagination.value.pageSize, page: 1, article_category_id: route.params.id });
 }
 
 await init();

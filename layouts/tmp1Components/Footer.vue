@@ -50,9 +50,9 @@
                             </div>
                         </li>
                     </ul>
-                    <aside class="flex flex-col xl:flex-row justify-between mt-2 xl:mt-20 text-sm font-light mb-10 xl:mb-6">
-                        <div class="order-2 xl:order-1 mt-2 xl:mt-0">{{ copyright.text }}</div>
-                        <ul class="flex gap-5 order-1 xl:order-2">
+                    <aside class="flex flex-col justify-between mt-2 mb-10 text-sm font-light xl:flex-row xl:mt-20 xl:mb-6">
+                        <div class="order-2 mt-2 xl:order-1 xl:mt-0">{{ copyright.text }}</div>
+                        <ul class="flex order-1 gap-5 xl:order-2">
                             <li
                                 v-for="(caluse, index) in copyright['caluses']"
                                 :key="index"
@@ -97,9 +97,8 @@ initializationData.value.site.renovation_categories.forEach((item: { id: any; im
         imgSrc: item.image,
         text: item.name,
         url: {
-            params: { slug: item.name },
-            query: { id: item.id },
-            name: "sample-slug",
+            params: { slug: item.name, id: item.id },
+            name: "sample-slug-id",
         },
     });
 });
@@ -113,9 +112,8 @@ initializationData.value.site.stronghold_categories.forEach((item: { id: any; ic
         imgSrc: item.icon,
         text: item.name,
         url: {
-            params: { slug: item.name },
-            query: { id: item.id },
-            name: item.id === 2 ? "store-e-commerce-slug" : "store-slug",
+            params: { slug: item.name, id: item.id },
+            name: item.id === 2 ? "store-e-commerce-slug-id" : "store-slug-id",
         },
     });
 });
@@ -137,9 +135,8 @@ initializationData.value.site.product_categories.forEach((item: { id: any; menu_
         imgSrc: item.menu_image,
         text: item.name,
         url: {
-            params: { slug: `產品資訊-${item.name}` },
-            query: { category: item.id, tag: item.id },
-            name: "product-slug",
+            params: { slug: `產品資訊-${item.name}`, category: item.id, tag: item.id },
+            name: "product-slug-category-tag",
         },
     });
 });
@@ -160,9 +157,8 @@ const footerDatas = ref({
             {
                 text: "服務中心",
                 url: {
-                    name: "faq-slug",
-                    params: { slug: "服務中心" },
-                    query: { id: "1" },
+                    name: "faq-slug-id",
+                    params: { slug: "服務中心", id: "1" },
                 },
             },
             {
@@ -175,9 +171,8 @@ const footerDatas = ref({
             {
                 text: "檔案下載",
                 url: {
-                    name: "file-download-slug",
-                    params: { slug: "檔案下載" },
-                    query: { id: "1" },
+                    name: "file-download-slug-id",
+                    params: { slug: "檔案下載", id: "1" },
                 },
             },
             {
@@ -209,17 +204,15 @@ const footerDatas = ref({
             {
                 text: "最新消息",
                 url: {
-                    name: "news-slug",
-                    params: { slug: "slug" },
-                    query: { id: "4" },
+                    name: "news-slug-id",
+                    params: { slug: "slug", id: "4" },
                 },
             },
             {
                 text: "裝修實績",
                 url: {
-                    name: "sample-slug",
-                    params: { slug: "耶魯裝修實績" },
-                    query: { id: "3" },
+                    name: "sample-slug-id",
+                    params: { slug: "耶魯裝修實績", id: "3" },
                 },
             },
             {

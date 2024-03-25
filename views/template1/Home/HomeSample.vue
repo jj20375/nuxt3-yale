@@ -180,23 +180,20 @@ async function getList(params: { per_page: number; page: number }) {
                 },
             ];
             breadcrumbs.push({
-                name: "sample-slug",
+                name: "sample-slug-id",
                 text: "裝修實績",
-                params: { slug: "裝修實績" },
-                query: { id: item.articleCategory.id },
+                params: { slug: "裝修實績", id: item.articleCategory.id },
             });
             breadcrumbs.push({
-                name: "sample-slug",
+                name: "sample-slug-id",
                 text: item.articleCategory.name,
-                params: { slug: "裝修實績" },
-                query: { id: item.articleCategory.id },
+                params: { slug: "裝修實績", id: item.articleCategory.id },
             });
             items.value.push({
                 ...item,
                 url: {
-                    name: "sample-details-slug",
-                    params: { slug: item.articleCategory.name },
-                    query: { id: item.id, breadcrumbs: JSON.stringify(breadcrumbs) },
+                    name: "sample-details-slug-id",
+                    params: { slug: item.articleCategory.name, id: item.id },
                 },
             });
         });
@@ -207,8 +204,7 @@ async function getList(params: { per_page: number; page: number }) {
 
 function goToDetail(url: any) {
     // 將麵包屑存進 storage
-    $utils().saveBreadcrumbsData(url.query.breadcrumbs);
-    router.push({ name: url.name, params: url.params, query: { id: url.query.id } });
+    router.push({ name: url.name, params: url.params });
 }
 
 /**

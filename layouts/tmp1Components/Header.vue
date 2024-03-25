@@ -238,9 +238,8 @@ initializationData.value.site.renovation_categories.forEach((item: { id: any; im
         imgSrc: item.image,
         text: item.name,
         url: {
-            params: { slug: item.name },
-            query: { id: item.id },
-            name: "sample-slug",
+            params: { slug: item.name, id: item.id },
+            name: "sample-slug-id",
         },
     });
 });
@@ -254,9 +253,8 @@ initializationData.value.site.stronghold_categories.forEach((item: { id: any; ic
         imgSrc: item.icon,
         text: item.name,
         url: {
-            params: { slug: item.name },
-            query: { id: item.id },
-            name: item.id === 2 ? "store-e-commerce-slug" : "store-slug",
+            params: { slug: item.name, id: item.id },
+            name: item.id === 2 ? "store-e-commerce-slug-id" : "store-slug-id",
         },
     });
 });
@@ -270,9 +268,8 @@ initializationData.value.site.product_categories.forEach((item: { id: any; menu_
         imgSrc: item.menu_image,
         text: item.name,
         url: {
-            params: { slug: `產品資訊-${item.name}` },
-            query: { category: item.id, tag: item.id },
-            name: "product-slug",
+            params: { slug: `產品資訊-${item.name}`, category: item.id, tag: item.id },
+            name: "product-slug-category-tag",
         },
     });
 });
@@ -297,18 +294,16 @@ const menus = ref<any>({
     menu3: {
         title: "最新消息",
         url: {
-            name: "news-slug",
-            params: { slug: "slug" },
-            query: { id: "4" },
+            name: "news-slug-id",
+            params: { slug: "訂製門扇", id: "4" },
         },
         submenus: [],
     },
     menu6: {
         title: "產品資訊",
         url: {
-            name: "product-slug",
-            params: { slug: "產品資訊-電子鎖-主鎖" },
-            query: { category: "id1", tag: "id1" },
+            name: "product-slug-category-tag",
+            params: { slug: "產品資訊-電子鎖-主鎖", category: "id1", tag: "id1" },
         },
         marginSize: "gap-x-[40px] gap-y-[20px]",
         submenus: product_categories,
@@ -316,9 +311,8 @@ const menus = ref<any>({
     menu5: {
         title: "展售門市",
         url: {
-            name: "store-slug",
-            params: { slug: "耶魯展售門市" },
-            query: { id: "id1" },
+            name: "store-slug-id",
+            params: { slug: "展售門市", id: "id1" },
         },
         marginSize: "gap-x-[80px] gap-y-[20px]",
         submenus: stronghold_categories,
@@ -326,9 +320,8 @@ const menus = ref<any>({
     menu4: {
         title: "裝修實績",
         url: {
-            name: "sample-slug",
-            params: { slug: "裝修實績" },
-            query: { id: "1" },
+            name: "sample-slug-id",
+            params: { slug: "裝修實績", id: "1" },
         },
         marginSize: "gap-x-[40px] gap-y-[20px]",
         submenus: renovation_categories,
@@ -343,9 +336,8 @@ const menus = ref<any>({
                 text: "服務中心",
                 imgSrc: "/img/menu/service/menu-service-icon-1.svg",
                 url: {
-                    name: "faq-slug",
-                    params: { slug: "服務中心" },
-                    query: { id: "1" },
+                    name: "faq-slug-id",
+                    params: { slug: "服務中心", id: "1" },
                 },
             },
             {
@@ -362,9 +354,8 @@ const menus = ref<any>({
                 text: "檔案下載",
                 imgSrc: "/img/menu/service/menu-service-icon-3.svg",
                 url: {
-                    name: "file-download-slug",
-                    params: { slug: "檔案下載" },
-                    query: { id: "1" },
+                    name: "file-download-slug-id",
+                    params: { slug: "檔案下載", id: "1" },
                 },
             },
             {
@@ -392,7 +383,6 @@ const menus = ref<any>({
         url: {
             name: "yale-home-app-slug",
             params: { slug: "Yale-Home-App下載" },
-            query: { id: "1" },
         },
         submenus: [],
     },
@@ -494,8 +484,7 @@ const dropdownMenuRef = ref<HTMLElement | null>(null);
 function handleGlobalClick(event: MouseEvent) {
     const targetNode = event.target as Node;
     const isHeaderClicked = headerRef.value?.contains(targetNode);
-    const isDropdownMenuClicked =
-        dropdownMenuRef.value && dropdownMenuRef.value.contains(targetNode);
+    const isDropdownMenuClicked = dropdownMenuRef.value && dropdownMenuRef.value.contains(targetNode);
 
     if (!isHeaderClicked && !isDropdownMenuClicked) {
         showMenu.value = false;
@@ -509,7 +498,6 @@ onMounted(() => {
 onBeforeUnmount(() => {
     window.removeEventListener("click", handleGlobalClick);
 });
-
 </script>
 
 <style lang="scss" scoped>

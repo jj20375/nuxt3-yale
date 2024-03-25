@@ -119,7 +119,7 @@ const props: Props = withDefaults(defineProps<Props>(), {
             text: "首頁",
         },
         {
-            name: "product-slug",
+            name: "product-slug-category-tag",
             text: "產品資訊",
             params: { slug: "耶魯產品資訊" },
         },
@@ -199,9 +199,8 @@ function addToShoppingCar(data: any) {
  */
 function goToDetail(product: { name: string; id: number }) {
     router.push({
-        name: "product-detail-slug",
-        params: { slug: product.name },
-        query: { id: product.id },
+        name: "product-detail-slug-id",
+        params: { slug: product.name, id: product.id },
     });
 }
 </script>
