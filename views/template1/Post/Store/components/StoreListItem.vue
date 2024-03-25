@@ -11,7 +11,7 @@
             class="object-cover w-full aspect-[16/9] rounded-2xl overflow-hidden w-full md:max-w-[360px]"
         />
         <div class="flex-1 w-full cursor-pointer">
-            <h2 class="md:text-[24px] text-[18px] font-medium YaleSolisW-Bd">
+            <h2 class="cursor-auto md:text-[24px] text-[18px] font-medium YaleSolisW-Bd">
                 {{ item.title }}
             </h2>
             <ul>
@@ -25,7 +25,7 @@
                         class="w-[20px] mr-[8px]"
                         :src="contact.icon"
                     />
-                    <div v-if="key !== 'phone' && key !== 'location'">{{ contact.value }}</div>
+                    <div class="cursor-auto" v-if="key !== 'phone' && key !== 'location'">{{ contact.value }}</div>
                     <div v-else-if="key === 'phone'">
                         <a :href="'tel:' + contact.value">{{ contact.value }}</a>
                     </div>
