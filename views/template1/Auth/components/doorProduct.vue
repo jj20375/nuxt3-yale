@@ -31,8 +31,8 @@
                     :key="key"
                 >
                     <div class="grid grid-cols-2 gap-4 text-gray-700">
-                        <div v-if="item && item.label">{{ item.label }}</div>
-                        <div v-if="key === 'doorGroup'">
+                        <div class="mt-2" v-if="item && item.label">{{ item.label }}</div>
+                        <div class="mt-2" v-if="key === 'doorGroup'">
                             <div v-for="(item3, index3) in item">
                                 <div v-if="index3 === 'types'">
                                     <div v-for="(item4, index4) in item3">
@@ -59,21 +59,21 @@
                                 </div>
                             </div>
                         </div>
-                        <div v-if="key === 'doorOut'">
+                        <div class="mt-2" v-if="key === 'doorOut'">
                             <div class="flex flex-col gap-1">
                                 <div>{{ item.title }}</div>
                                 <div>{{ item.style }}</div>
                                 <div>{{ item.color.text }}</div>
                             </div>
                         </div>
-                        <div v-if="key === 'lock'">
+                        <div class="mt-2" v-if="key === 'lock'">
                             <div class="flex flex-col gap-1">
                                 <div>{{ item.name }}</div>
                                 <div>{{ item.model }}</div>
                             </div>
                         </div>
-                        <div v-if="item && ['currentTool1', 'currentTool2'].includes(key)">{{ item.title }}-{{ item.style }}</div>
-                        <div v-if="item && ['currentOther1', 'currentOther2', 'otherServices'].includes(key)">
+                        <div class="mt-2" v-if="item && ['currentTool1', 'currentTool2'].includes(key)">{{ item.title }}-{{ item.style }}</div>
+                        <div class="mt-2" v-if="item && ['currentOther1', 'currentOther2', 'otherServices'].includes(key)">
                             <ul
                                 v-if="item"
                                 class="ml-2"
@@ -90,6 +90,10 @@
                         </div>
                     </div>
                 </template>
+                <div class="mt-2 grid grid-cols-2 gap-4 text-gray-700">
+                    <div>數量</div>
+                    <div>{{ product.count }}</div>
+                </div>
                 <div v-if="product.rule">
                     <div
                         class="inline-block text-gray-500 text-sm px-3 py-1 border-[1px] border-gray-500"

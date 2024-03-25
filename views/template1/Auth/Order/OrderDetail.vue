@@ -2,7 +2,7 @@
     <section class="mt-headerMb xl:mt-header">
         <nav class="border-t border-gray-300 border-b py-[16px] bg-white">
             <div class="container">
-                <Breadcrumb :menus="breadcrumbs" />
+                <ClientOnly> <Breadcrumb :menus="breadcrumbs" /></ClientOnly>
             </div>
         </nav>
         <div class="container">
@@ -230,9 +230,9 @@ const breadcrumbs = ref([
         params: { slug: "一般產品-訂單記錄" },
     },
     {
-        name: "auth-order-detail-slug",
+        name: "auth-order-detail-slug-id",
         text: "#20211010001",
-        params: { slug: "#20211010001" },
+        params: { slug: "訂單資訊", id: '1' }
     },
 ]);
 
@@ -345,7 +345,7 @@ const orderData = ref({
 const orderDownloadHtmlRefDom = ref<any>(null);
     const resProductDetail = ref<any>(null)
 
-const { data: resProductDetailData }: any = await $api().GetProductOrderDetailAPI({ orderId: route.query.id });
+const { data: resProductDetailData }: any = await $api().GetProductOrderDetailAPI({ orderId: route.params.id });
 resProductDetail.value = resProductDetailData
 
 const orderRepay = async () => {
@@ -382,7 +382,8 @@ const getData = async () => {
     orderData.value.orderId = resProductDetail.value.id;
     orderData.value.orderNumber = resProductDetail.value.order_no;
     breadcrumbs.value[3].text = resProductDetail.value.order_no;
-    breadcrumbs.value[3].params.slug = resProductDetail.value.order_no;
+    breadcrumbs.value[3].params.slug = '訂單資訊';
+    breadcrumbs.value[3].params.id = resProductDetail.value.id;
     orderData.value.info = {
         contactName: resProductDetail.value.contact_name,
         email: resProductDetail.value.contact_email,
