@@ -46,16 +46,9 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
                     {
                         hid: "og:image",
                         property: "og:image",
-                        content: "/img/ogCover/home.jpg",
+                        content: initializationStore.initializationData.site.site_logo,
                     },
                 ],
-            });
-            useSeoMeta({
-                title: initializationStore.initializationData.site.meta_title,
-                description: initializationStore.initializationData.site.meta_description,
-                ogTitle: initializationStore.initializationData.site.meta_title,
-                ogDescription: initializationStore.initializationData.site.meta_description,
-                keywords: initializationStore.initializationData.site.meta_keywords.join(),
             });
         } catch (err) {
             console.log("GetInitializationDatasAPI err =>", err);
