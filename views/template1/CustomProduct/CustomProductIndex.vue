@@ -2,7 +2,7 @@
     <div>
         <section
             class="relative custom-top z-[10]"
-            :class="loading ? 'overflow-hidden' : 'overflow-scroll'"
+            :class="loading ? 'overflow-hidden' : 'overflow-y-scroll'"
         >
             <!-- <pre>{{ scenes }}</pre> -->
             <!-- <pre>{{ doors }}</pre> -->
