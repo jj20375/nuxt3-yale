@@ -9,6 +9,7 @@
             multiple
             action=""
             :limit="5"
+            accept=".jpg, .jpeg, .png, .gif"
             :on-exceed="imageOverLimit"
         >
             <el-icon><Plus /></el-icon>

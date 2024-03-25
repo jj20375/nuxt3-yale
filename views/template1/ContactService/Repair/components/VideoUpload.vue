@@ -9,6 +9,7 @@
             multiple
             action=""
             :limit="5"
+            accept=".mp4, .avi, .wmv, .mov"
             :on-exceed="imageOverLimit"
         >
             <el-icon><Plus /></el-icon>
