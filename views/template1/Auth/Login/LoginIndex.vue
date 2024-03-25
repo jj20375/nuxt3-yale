@@ -167,7 +167,7 @@ const rules = ref<any>({
     email: [
         {
             required: true,
-            message: "請輸入email",
+            message: "請輸入信箱",
             trigger: "blur",
         },
         {

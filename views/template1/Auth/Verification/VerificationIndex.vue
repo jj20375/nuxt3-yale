@@ -16,9 +16,16 @@
                 <div class="font-bold text-[28px] text-center mt-5 mb-5">{{userData.title}}</div>
                 <div class="text-center">請至您的信箱<br />{{ userData.email }} 中收信完成驗證</div>
                 <div class="flex justify-center mt-10">
-                    <VerificationButton @resendVerification="resendVerification" />
+                    <VerificationButton :restarter="false" @resendVerification="resendVerification" />
                 </div>
                 <div class="mt-12 text-center">沒有在收件夾中找到認證信件？請先確認您的垃圾郵件。</div>
+                <div class="text-center mt-3">
+                    <NuxtLink
+                        :to="{ name: 'auth-login-slug', params: { slug: '會員登入' } }"
+                    >
+                        登入其他帳號
+                    </NuxtLink>
+                </div>
             </div>
         </div>
     </section>

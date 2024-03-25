@@ -13,12 +13,22 @@
     >
         <div class="container flex justify-center">
             <div class="max-w-[500px]">
-                <div class="font-bold text-[28px] text-center mt-5 mb-5">{{userData.title}}</div>
+                <div class="font-bold text-[28px] text-center mt-5 mb-5">{{ userData.title }}</div>
                 <div class="text-center">請重發驗證信，並至您的信箱<br />{{ userData.email }} 中收信完成驗證</div>
                 <div class="flex justify-center mt-10">
-                    <VerificationButton :restarter="false" @resendVerification="resendVerification" />
+                    <VerificationButton
+                        :restarter="false"
+                        @resendVerification="resendVerification"
+                    />
                 </div>
                 <div class="mt-12 text-center">沒有在收件夾中找到認證信件？請先確認您的垃圾郵件。</div>
+                <div class="text-center mt-3">
+                    <NuxtLink
+                        :to="{ name: 'auth-login-slug', params: { slug: '會員登入' } }"
+                    >
+                        登入其他帳號
+                    </NuxtLink>
+                </div>
             </div>
         </div>
     </section>
@@ -31,14 +41,14 @@ const { $api } = useNuxtApp();
 
 // 會員資料
 const userData = ref({
-    title: '驗證信驗證失敗',
+    title: "驗證信驗證失敗",
     email: "ABC@gmail.com",
     verification: false, // 是否為驗證失敗導過來的
 });
 
 const resendVerification = async () => {
     const params = {
-        scene: 'register',
+        scene: "register",
         email: history.state.email,
     };
     const { data, status, error } = await $api().EmailVerificationResendAPI(params);
@@ -54,7 +64,7 @@ const resendVerification = async () => {
             message: (error.value as any).data.message,
         });
     }
-}
+};
 
 /**
  * 初始化
@@ -63,8 +73,8 @@ function init() {
     if (history.state.email) {
         userData.value.verification = true;
         userData.value.email = history.state.email;
-        if (history.state.state === '會員尚未完成驗證') {
-            userData.value.title = '會員尚未完成驗證'
+        if (history.state.state === "會員尚未完成驗證") {
+            userData.value.title = "會員尚未完成驗證";
         }
     } else {
         router.push({
