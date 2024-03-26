@@ -158,7 +158,7 @@ const breadcrumbs = ref([
         params: { slug: "常用聯繫人" },
     },
     {
-        name: "auth-contact-edit-slug",
+        name: "auth-contact-add-slug",
         text: "新增聯繫人",
         params: { slug: "新增聯繫人" },
     },
