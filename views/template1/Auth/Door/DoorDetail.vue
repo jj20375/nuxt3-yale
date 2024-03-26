@@ -143,7 +143,7 @@
                     />
                 </div>
                 <div>
-                    <OrderPrice :order="orderData.price" :type="'combination'" />
+                    <OrderPrice :order="orderData.price" :status="orderData.orderStatus" :type="'combination'" />
                 </div>
                 <div
                     v-if="orderData?.orderStatus === '待付訂金' || orderData?.orderStatus === '已付訂金' || orderData?.orderStatus === '丈量派工中' || orderData?.orderStatus === '丈量完成' || orderData?.orderStatus === '待付尾款'"

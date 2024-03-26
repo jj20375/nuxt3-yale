@@ -33,6 +33,7 @@
             <span class="mr-[4px]">NT$ {{ $utils().formatCurrency(order?.finalPayment_ori) }}</span>
         </div>
         <div
+            v-if="status === '丈量完成' || status === '待付尾款' || status === '已付尾款' || status === '門扇製作完成' || status === '安裝派工中' || status === '安裝完成'"
             class="text-gray-600 text-[14px] flex mt-[4px]"
         >
             <div class="flex-1">實際尾款</div>
@@ -68,6 +69,7 @@ interface Props {
         finalPayment_ratio: number,
         memo: string,
     }[];
+    status: string;
     type: string;
 };
 
@@ -95,6 +97,7 @@ const props = withDefaults(defineProps<Props>(), {
             memo: "備註內容備註內容備註內容備註內容備註內容備註內容備註內容備註內容備註內容備註內容備註內容備註內容"
         }
     ],
+    status: '',
     type: 'normal'
 });
 </script>
