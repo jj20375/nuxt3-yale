@@ -6,7 +6,7 @@
                 <h3 class="font-medium leading-[50px] md:mt-[14px] text-[28px] sm:text-[32px] xl:text-[40px] YaleSolisW-Bd">Yale 四大安心宣言</h3>
             </div>
             <article class="container">
-                <div class="grid grid-cols-2 md:grid-cols-4 items-center justify-center gap-4 lg:gap-[30px] mt-8 md:mt-[52px] mx-auto w-full px-4 md:px-0 2xl:w-[85%]">
+                <div class="grid grid-cols-2 md:grid-cols-4 items-center justify-center gap-4 lg:gap-[30px] mt-8 md:mt-[52px] mx-auto w-full px-0 2xl:w-[85%]">
                     <div
                         v-for="(item, index) in four_promises"
                         :key="index"
@@ -17,7 +17,7 @@
                                 class="w-[40px] md:w-[56px] mx-auto"
                                 :src="item.image"
                             />
-                            <p class="mt-3 lg:mt-5 text-center text-[10px] md:text-[16px]">{{ item.title }}</p>
+                            <p class="mt-3 lg:mt-5 text-center text-[15px] sm:text-[16px]">{{ item.title }}</p>
                         </div>
                     </div>
                 </div>
@@ -63,7 +63,7 @@ const items = [
 
 <style lang="scss" scoped>
 .promise-card {
-    @apply relative aspect-square object-cover p-4 md:p-6 bg-white rounded-lg flex items-center justify-center top-0 transition-all duration-300;
+    @apply relative aspect-square object-cover p-2 md:p-4 md:p-6 bg-white rounded-lg flex items-center justify-center top-0 transition-all duration-300;
     @apply before:absolute before:top-0 before:left-0 before:rounded-lg before:w-full before:h-full before:opacity-0 before:-z-[1] before:bg-[linear-gradient(296deg,_#FFD500_0.13%,_#FFF1C4_99.63%)] before:transition-all before:duration-300;
     @include res(nb) {
         &:hover {
