@@ -300,6 +300,7 @@ const initializationStore = useInitializationStore();
 
 const { $api, $utils } = useNuxtApp();
 const { isLargePad, isMobile } = useWindowResize();
+const $config = useRuntimeConfig();
 
 const route = useRoute();
 const router = useRouter();
@@ -477,18 +478,46 @@ const getData = async () => {
         optionChange(productOptions.value[0].options[0], 0);
     }
 
-    console.log("productDetail.value =>", productDetail.value);
-
     if (productDetail.value) {
-        console.log("productDetail.value.seoSetting.title", productDetail.value.seoSetting.title);
-        useSeoMeta({
-            title: productDetail.value.seoSetting.title ? productDetail.value.seoSetting.title : initializationStore.initializationData.site.meta_title,
-            description: productDetail.value.seoSetting.description ? productDetail.value.seoSetting.description : initializationStore.initializationData.site.meta_description,
-            ogTitle: productDetail.value.seoSetting.title,
-            ogDescription: productDetail.value.seoSetting.description,
-            ogUrl: () => `${window.location.origin}/product/detail/${productDetail.value.seoSetting.custom_url}`,
-            keywords: productDetail.value.seoSetting.keywords.join(),
+        console.log("productDetail.value.main_image =>", productDetail.value.main_image);
+
+        useHead({
+            title: initializationStore.initializationData.site.site_name + "|" + (productDetail.value.seoSetting.title ? productDetail.value.seoSetting.title : productDetail.value.name),
+
+            meta: [
+                {
+                    hid: "description",
+                    name: "description",
+                    content: productDetail.value.seoSetting.description ? productDetail.value.seoSetting.description : productDetail.value.description,
+                },
+                { name: "keywords", content: productDetail.value.seoSetting.keywords },
+                { hid: "og:url", property: "og:url", content: `${$config.public.hostURL}/product/detail/${productDetail.value.name}/${productDetail.value.id}` },
+                { hid: "og:type", property: "og:type", content: "website" },
+                {
+                    hid: "og:title",
+                    property: "og:title",
+                    content: initializationStore.initializationData.site.site_name + "|" + (productDetail.value.seoSetting.title ? productDetail.value.seoSetting.title : productDetail.value.name),
+                },
+                {
+                    hid: "og:description",
+                    property: "og:description",
+                    content: productDetail.value.seoSetting.description ? productDetail.value.seoSetting.description : productDetail.value.description,
+                },
+                {
+                    hid: "og:image",
+                    property: "og:image",
+                    content: productDetail.value.main_image,
+                },
+            ],
         });
+        // useSeoMeta({
+        //     title: productDetail.value.seoSetting.title ? productDetail.value.seoSetting.title : initializationStore.initializationData.site.meta_title,
+        //     description: productDetail.value.seoSetting.description ? productDetail.value.seoSetting.description : initializationStore.initializationData.site.meta_description,
+        //     ogTitle: productDetail.value.seoSetting.title,
+        //     ogDescription: productDetail.value.seoSetting.description,
+        //     ogUrl: () => `${$config.public.hostURL}/product/detail/${productDetail.value.seoSetting.custom_url}`,
+        //     keywords: productDetail.value.seoSetting.keywords.join(),
+        // });
     }
 };
 
@@ -688,8 +717,7 @@ function socialShare(type: string) {
     }
 }
 
-onMounted(async () => {
-    await getData();
-    await getType();
-});
+await getData();
+await getType();
+onMounted(async () => {});
 </script>

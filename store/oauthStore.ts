@@ -259,7 +259,6 @@ export const useOauthStore = defineStore({
                             }
                             return;
                         } else if (error.value.statusCode === 412 && error.value.data.error.error === "n7018") {
-                            alert("您尚未加 CityBanana 官方帳號為好友，請重新登入並新增 CityBanana 官方帳號為好友（或解除封鎖）");
                             let uuid = uuidv4();
                             if (redirect_uri == null) {
                                 redirect_uri = `${hostURL}`;
@@ -301,7 +300,7 @@ export const useOauthStore = defineStore({
                 // 設定使用者資料
                 userStore.setUser(data.value.user);
                 // 設定已登入
-                console.log('setAUTH2')
+                console.log("setAUTH2");
 
                 userStore.setIsAuth(true);
                 // 判斷是否為服務商 role = 0 為消費者
