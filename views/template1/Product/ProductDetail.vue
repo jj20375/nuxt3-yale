@@ -480,6 +480,7 @@ const getData = async () => {
 
     if (productDetail.value) {
         console.log("productDetail.value.main_image =>", productDetail.value.main_image);
+        ogUrl.value = `${$config.public.hostURL}/product/detail/${productDetail.value.seoSetting.custom_url ? productDetail.value.seoSetting.custom_url : productDetail.value.name}/${productDetail.value.id}`
 
         useHead({
             title: initializationStore.initializationData.site.site_name + "|" + (productDetail.value.seoSetting.title ? productDetail.value.seoSetting.title : productDetail.value.name),
@@ -491,7 +492,7 @@ const getData = async () => {
                     content: productDetail.value.seoSetting.description ? productDetail.value.seoSetting.description : productDetail.value.description,
                 },
                 { name: "keywords", content: productDetail.value.seoSetting.keywords },
-                { hid: "og:url", property: "og:url", content: `${$config.public.hostURL}/product/detail/${productDetail.value.name}/${productDetail.value.id}` },
+                { hid: "og:url", property: "og:url", content: `${$config.public.hostURL}/product/detail/${productDetail.value.seoSetting.custom_url ? productDetail.value.seoSetting.custom_url : productDetail.value.name}/${productDetail.value.id}` },
                 { hid: "og:type", property: "og:type", content: "website" },
                 {
                     hid: "og:title",
@@ -701,16 +702,19 @@ const goToCompare = (data: any) => {
 };
 
 // 分享
+const ogUrl = ref<any>(null)
 function socialShare(type: string) {
+    console.log(route)
+    let path = window.location.origin + encodeURIComponent(route.path);
+    if (ogUrl.value) {
+        path = ogUrl.value
+    }
     if (type === "line") {
-        let path = window.location.origin + encodeURIComponent(route.path);
         const url = "https://social-plugins.line.me/lineit/share?url=" + path;
 
         $utils().openNewWindow(url);
     }
     if (type === "fb") {
-        console.log("route.params =>", route.params);
-        let path = window.location.origin + encodeURIComponent(route.path);
         const url = "https://www.facebook.com/sharer/sharer.php?u=" + path;
 
         $utils().openNewWindow(url);
