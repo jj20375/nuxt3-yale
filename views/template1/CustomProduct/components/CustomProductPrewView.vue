@@ -1,31 +1,35 @@
 <template>
-    <div
-        ref="customProductPreviewRefDom"
-    >
+    <div ref="customProductPreviewRefDom">
         <div
             v-if="currentBgData[currentViewAngleData]"
-            class="absolute h-full w-full object-cover"
+            class="absolute object-cover w-full h-full"
         >
             <NuxtImg
-                class="absolute h-full w-full object-cover"
+                class="absolute object-cover w-full h-full"
                 :src="currentBgData[currentViewAngleData]"
             />
-            <div class="absolute z-10 h-full w-full">
+            <div class="absolute z-10 w-full h-full">
                 <NuxtImg
-                    class="relative h-full w-full object-cover"
+                    class="relative object-cover w-full h-full"
                     :src="productData.door[currentViewAngleData]"
                 />
             </div>
-            <div class="absolute h-full w-full">
+            <div class="absolute w-full h-full">
                 <NuxtImg
-                    class="w-full h-full object-cover"
+                    class="object-cover w-full h-full"
                     :src="productData.doorOut[currentViewAngleData]"
                 />
             </div>
-            <div class="absolute z-20 h-full w-full">
+            <div class="absolute z-20 w-full h-full">
                 <NuxtImg
-                    class="w-full h-full object-cover"
+                    class="object-cover w-full h-full"
                     :src="productData.lock[currentViewAngleData]"
+                />
+            </div>
+            <div class="absolute z-20 w-full h-full">
+                <NuxtImg
+                    class="object-cover w-full h-full mt-10"
+                    :src="productData.tool1Data[currentViewAngleData]"
                 />
             </div>
         </div>
@@ -104,7 +108,7 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 // 因為圖片本身上下距不一樣，所以用css調整距離
-.object-cover{
+.object-cover {
     object-position: 50% 38%;
 }
 </style>
