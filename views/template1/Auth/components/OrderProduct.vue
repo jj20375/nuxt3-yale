@@ -10,46 +10,28 @@
         />
         <div class="flex-1">
             <h5 class="text-[18px] font-bold mb-4 YaleSolisW-Bd">{{ product.name }}</h5>
-            <template v-if="isDoor && isMobile">
-                <div class="flex items-center justify-end gap-2 mb-8 cursor-pointer h-fit">
-                    <NuxtImg
-                        class="w-[20px] aspect-square object-cover"
-                        src="img/icons/auth/info.svg"
-                    />
-                    <div
-                        class="underline underline-offset-2"
-                        @click="handleDetail"
-                    >
-                        查看商品詳情
-                    </div>
-                </div>
-            </template>
             <div class="flex flex-col gap-3">
                 <template
-                    v-for="(column, columnIndex) in columns"
-                    :key="columnIndex"
+                    v-for="(item, index) in product.productVariationable"
+                    :key="index"
                 >
                     <div
                         class="grid grid-cols-2 gap-4 text-gray-700"
-                        v-if="product?.[column.prop]"
                     >
-                        <div>{{ column.label }}</div>
-                        <div
-                            class="flex flex-col gap-1"
-                            v-if="column.type === 'array'"
-                        >
-                            <div
-                                v-for="(item, itemIndex) in product[column.prop]"
-                                :key="itemIndex"
-                            >
-                                {{ item }}
-                            </div>
-                        </div>
-                        <div v-else>
-                            {{ product[column.prop] }}
+                        <div>{{ item.label }}</div>
+                        <div>
+                            {{ item.value }}
                         </div>
                     </div>
                 </template>
+                <div
+                    class="grid grid-cols-2 gap-4 text-gray-700"
+                >
+                    <div>數量</div>
+                    <div>
+                        {{ product.quantity }}
+                    </div>
+                </div>
                 <div v-if="product.rule">
                     <div
                         class="inline-block text-gray-500 text-sm px-3 py-1 border-[1px] border-gray-500"
@@ -66,47 +48,16 @@
                 </div>
             </div>
         </div>
-        <div
-            v-if="isDoor && !isMobile"
-            class="flex items-center gap-2 cursor-pointer h-fit"
-        >
-            <NuxtImg
-                class="w-[20px] aspect-square object-cover"
-                src="img/icons/auth/info.svg"
-            />
-            <div
-                class="underline underline-offset-2"
-                @click="handleDetail"
-            >
-                查看商品詳情
-            </div>
-        </div>
-        <client-only>
-            <ProductDialog
-                v-model="dialogDetail"
-                :dialogData="dialogData"
-            />
-        </client-only>
     </div>
 </template>
 <script setup lang="ts">
-import ProductDialog from "~/views/template1/components/ProductDialog.vue";
 const { isMobile } = useWindowResize();
 const { $utils } = useNuxtApp();
 
 interface Props {
-    isDoor: boolean; // 是否為訂製門扇頁面
     order: {
         name: string;
-        color: string;
-        doorLeaf: string[];
-        doorFrame: string[];
-        doorLock: string[];
-        doorHanging: string[];
-        doorSealStrip: string;
-        doorGasket: string[];
-        doorOperator: string[];
-        otherService: string[];
+        productVariationable: any;
         quantity: number;
         rule: {
             needPrice: number;
@@ -122,19 +73,10 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-    isDoor: false,
     order: [
         {
             name: "",
-            color: "",
-            doorLeaf: [],
-            doorFrame: [],
-            doorLock: [],
-            doorHanging: [],
-            doorSealStrip: "",
-            doorGasket: [],
-            doorOperator: [],
-            otherService: [],
+            productVariationable: null,
             quantity: 1,
             price: 0,
             rule: {
@@ -151,27 +93,9 @@ const props = withDefaults(defineProps<Props>(), {
     },
 });
 
-// 欄位及變數名稱
-const columns = [
-    { label: "單價", prop: "price" },
-    { label: "規格", prop: "color" },
-    { label: "門扇", prop: "doorLeaf", type: "array" },
-    { label: "門框", prop: "doorFrame", type: "array" },
-    { label: "門鎖", prop: "doorLock", type: "array" },
-    { label: "掛門", prop: "doorHanging", type: "array" },
-    { label: "氣密條", prop: "doorSealStrip" },
-    { label: "下降壓條", prop: "doorGasket", type: "array" },
-    { label: "門弓器", prop: "doorOperator", type: "array" },
-    { label: "額外施作服務", prop: "otherService", type: "array" },
-    { label: "數量", prop: "quantity" },
-];
-
 // 商品詳情彈窗
 const dialogDetail = ref(false);
 
-const handleDetail = () => {
-    dialogDetail.value = true;
-};
 </script>
 
 <style lang="scss" scoped>

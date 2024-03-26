@@ -161,9 +161,9 @@ const breadcrumbs = ref([
         params: { slug: "常用聯繫人" },
     },
     {
-        name: "auth-contact-edit-slug",
+        name: "auth-contact-edit-slug-id",
         text: "編輯聯繫人",
-        params: { slug: "編輯聯繫人" },
+        params: { slug: "編輯聯繫人", id: route.params.id },
     },
 ]);
 
@@ -350,7 +350,7 @@ async function onSubmit() {
                     address: form.value.address,
                     is_default: form.value.default,
                 };
-                const { data, status, error } = await $api().EditChangeProfileAPI({ memberAddressId: route.query.id }, params);
+                const { data, status, error } = await $api().EditChangeProfileAPI({ memberAddressId: route.params.id }, params);
                 if (status.value === "success") {
                     ElMessage({
                         type: "success",
@@ -380,7 +380,7 @@ async function onSubmit() {
  * 初始化
  */
 async function init() {
-    await getList({ memberAddressId: route.query.id });
+    await getList({ memberAddressId: route.params.id });
 }
 
 onMounted(async () => {

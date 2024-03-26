@@ -219,8 +219,7 @@ const footerDatas = ref({
                 text: "Yale Home App",
                 url: {
                     name: "yale-home-app-slug",
-                    params: { slug: "Yale-Home-App下載" },
-                    query: { id: "1" },
+                    params: { slug: "Yale-Home-App下載" }
                 },
             },
         ],

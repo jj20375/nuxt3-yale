@@ -2,7 +2,7 @@
     <section class="mt-headerMb xl:mt-header">
         <nav class="border-t border-gray-300 border-b py-[16px] bg-white">
             <div class="container">
-                <Breadcrumb :menus="breadcrumbs" />
+                <ClientOnly> <Breadcrumb :menus="breadcrumbs" /></ClientOnly>
             </div>
         </nav>
         <div class="container">
@@ -110,6 +110,12 @@
                             class="text-gray-700"
                         >
                             統編：{{ orderData?.receipt?.taxId }}
+                        </div>
+                        <div
+                            v-if="orderData?.receipt?.donation_code"
+                            class="text-gray-700"
+                        >
+                            愛心碼：{{ orderData?.receipt?.donation_code }}
                         </div>
                         <div
                             v-if="orderData?.receipt?.number"
@@ -230,9 +236,9 @@ const breadcrumbs = ref([
         params: { slug: "一般產品-訂單記錄" },
     },
     {
-        name: "auth-order-detail-slug",
+        name: "auth-order-detail-slug-id",
         text: "#20211010001",
-        params: { slug: "#20211010001" },
+        params: { slug: "訂單資訊", id: '1' }
     },
 ]);
 
@@ -345,7 +351,7 @@ const orderData = ref({
 const orderDownloadHtmlRefDom = ref<any>(null);
     const resProductDetail = ref<any>(null)
 
-const { data: resProductDetailData }: any = await $api().GetProductOrderDetailAPI({ orderId: route.query.id });
+const { data: resProductDetailData }: any = await $api().GetProductOrderDetailAPI({ orderId: route.params.id });
 resProductDetail.value = resProductDetailData
 
 const orderRepay = async () => {
@@ -382,7 +388,8 @@ const getData = async () => {
     orderData.value.orderId = resProductDetail.value.id;
     orderData.value.orderNumber = resProductDetail.value.order_no;
     breadcrumbs.value[3].text = resProductDetail.value.order_no;
-    breadcrumbs.value[3].params.slug = resProductDetail.value.order_no;
+    breadcrumbs.value[3].params.slug = '訂單資訊';
+    breadcrumbs.value[3].params.id = resProductDetail.value.id;
     orderData.value.info = {
         contactName: resProductDetail.value.contact_name,
         email: resProductDetail.value.contact_email,
@@ -390,13 +397,24 @@ const getData = async () => {
         address: resProductDetail.value.contact_city + resProductDetail.value.contact_district + resProductDetail.value.contact_address,
     };
     orderData.value.products = [];
-    resProductDetail.value.orderItems.forEach((item: { productable: { name: any; attributes: { [x: string]: any } }; quantity: any }) => {
+    resProductDetail.value.orderItems.forEach((item: { productable: { name: any; attributes: { [x: string]: any } }; quantity: any; productVariationable:any; }) => {
+        let productVariationable = []
+        let imgUrl = item.productable.main_image
+        if (item.productVariationable) {
+            productVariationable = item.productVariationable?.values.map((variation: { product_option_name: any; product_option_value_name: any; }) => {
+                return {
+                    label: variation.product_option_name,
+                    value: variation.product_option_value_name
+                }
+            })
+            imgUrl = item.productable.other_images.find(img => img.includes(item.productVariationable.image))
+        }
         orderData.value.products.push({
             name: item.productable.name,
             price: "$" + $utils().formatCurrency(item.price),
-            color: item.productable.attributes["顏色"],
+            productVariationable: productVariationable,
             quantity: item.quantity,
-            imgUrl: item.productable.main_image,
+            imgUrl: imgUrl,
         });
     });
     orderData.value.orderPayments = resProductDetail.value.orderPayments
@@ -413,6 +431,7 @@ const getData = async () => {
     orderData.value.receipt.date = resProductDetail.value.orderPayments[0].orderInvoice.issued_at;
     orderData.value.receipt.taxId = resProductDetail.value.orderPayments[0].orderInvoice.tax_number;
     orderData.value.receipt.carrier_code = resProductDetail.value.orderPayments[0].orderInvoice.carrier_code;
+    orderData.value.receipt.donation_code = resProductDetail.value.orderPayments[0].orderInvoice.donation_code;
     orderData.value.receipt.number = resProductDetail.value.orderPayments[0].orderInvoice.invoice_no;
     orderData.value.price.totalPrice = resProductDetail.value.total_amount;
     orderData.value.price.memo = resProductDetail.value.remark ? resProductDetail.value.remark : "無";

@@ -141,9 +141,8 @@ async function getList() {
                 phone: item.phone,
                 address: item.full_address,
                 url: {
-                    name: "auth-contact-edit-slug",
-                    params: { slug: "訂單資訊" },
-                    query: { id: item.id },
+                    name: "auth-contact-edit-slug-id",
+                    params: { slug: "編輯聯繫人", id: item.id },
                 },
             });
         });

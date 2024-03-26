@@ -143,7 +143,7 @@
                     />
                 </div>
                 <div>
-                    <OrderPrice :order="orderData.price" :type="'combination'" />
+                    <OrderPrice :order="orderData.price" :status="orderData.orderStatus" :type="'combination'" />
                 </div>
                 <div
                     v-if="orderData?.orderStatus === '待付訂金' || orderData?.orderStatus === '已付訂金' || orderData?.orderStatus === '丈量派工中' || orderData?.orderStatus === '丈量完成' || orderData?.orderStatus === '待付尾款'"
@@ -260,9 +260,9 @@ const breadcrumbs = ref([
         params: { slug: "訂製門扇-訂單記錄" },
     },
     {
-        name: "auth-door-detail-slug",
+        name: "auth-door-detail-slug-id",
         text: "#20211010001",
-        params: { slug: "#20211010001" },
+        params: { slug: "訂單資訊", id: 1 },
     },
 ]);
 
@@ -542,7 +542,7 @@ const dialogData = ref([
 
 const resProductDetail = ref<any>(null);
 
-const { data: resProductDetailData }: any = await $api().GetProductOrderDetailAPI({ orderId: route.query.id });
+const { data: resProductDetailData }: any = await $api().GetProductOrderDetailAPI({ orderId: route.params.id });
 resProductDetail.value = resProductDetailData;
 
 const handleRepay = async () => {
@@ -609,7 +609,7 @@ const getData = async () => {
     orderData.value.orderId = resProductDetail.value.id;
     orderData.value.orderNumber = resProductDetail.value.order_no;
     breadcrumbs.value[3].text = resProductDetail.value.order_no;
-    breadcrumbs.value[3].params.slug = resProductDetail.value.order_no;
+    breadcrumbs.value[3].params.id = resProductDetail.value.id;
     orderData.value.info = {
         contactName: resProductDetail.value.contact_name,
         email: resProductDetail.value.contact_email,
@@ -667,6 +667,7 @@ const setCustomShoppingCarData = (datas: any) => {
                     size: door.size,
                 };
                 result.imgSrc = door.result.imgSrc;
+                result.count = item2.quantity;
             }
             // 判斷是 門框 的時候執行
             if (item2.productable.customProductType.id === CustomProductListIdEnum.doorOut) {

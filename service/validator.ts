@@ -127,3 +127,12 @@ export const validateNaturalPerson = (rule: InternalRuleItem, value: string, cal
         callback();
     }
 };
+
+//驗證checkbox為必選
+export const validateSingleCheckbox = (rule: InternalRuleItem, value: string, callback: (error?: string | Error) => void) => {
+    if (value === false) {
+      callback(new Error());
+    } else {
+      callback();
+    }
+  };

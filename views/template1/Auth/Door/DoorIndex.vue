@@ -82,9 +82,8 @@ async function getList(params: { per_page: number; page: number; type: string; o
                 price: item.total_amount,
                 status: $utils().orderStatus(item.status),
                 url: {
-                    name: "auth-door-detail-slug",
-                    params: { slug: "訂單資訊" },
-                    query: { id: item.id },
+                    name: "auth-door-detail-slug-id",
+                    params: { slug: "訂單資訊", id: item.id },
                 },
             });
         });
