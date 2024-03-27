@@ -6,11 +6,11 @@
         </div>
         <div class="flex text-gray-800 text-[14px] mb-[4px]">
             <span class="flex-1">活動折扣</span>
-            <span>-NT$ {{ $utils().formatCurrency(salePrice) }}</span>
+            <span>-NT$ {{ $utils().formatCurrency(discountData.discount_amount) }}</span>
         </div>
         <div class="flex text-gray-800 text-[14px]">
             <span class="flex-1">優惠券折扣</span>
-            <span>-NT$ {{ $utils().formatCurrency(salePrice) }}</span>
+            <span>-NT$ {{ $utils().formatCurrency(discountData.coupon_discount_amount) }}</span>
         </div>
         <slot name="other"></slot>
         <div class="my-[20px] border-gray-300 border-b h-[1px] w-full"></div>
@@ -56,12 +56,22 @@ interface Props {
     currentTab: string;
     // 訂單狀態
     currentStep: number;
+    discountData: {
+        original_amount: string;
+        after_discount_amount: string;
+        coupon_discount_amount: string;
+    }
 }
 
 const props = withDefaults(defineProps<Props>(), {
     selectProductIds: () => [],
     currentTab: "type1",
     currentStep: 0,
+    discountData: {
+        original_amount: 0,
+        after_discount_amount: 0,
+        coupon_discount_amount: 0,
+    }
 });
 
 const { $utils } = useNuxtApp();

@@ -69,7 +69,7 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
                                 value: variation.product_option_value_name
                             }
                         })
-                        imgSrc = i.productable.other_images.find(img => img.includes(i.productVariationable.image))
+                        imgSrc = i.productVariationable.image ? i.productable.other_images.find(img => img.includes(i.productVariationable.image)) : imgSrc
                     }
                     console.log("GetNormalCartAPI =>", i);
                     return {

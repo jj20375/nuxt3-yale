@@ -17,6 +17,7 @@
                     />
                     <NuxtImg
                         class="w-[100px] h-[100px] sm:w-[140px] sm:h-[140px] lg:w-[180px] lg:h-[180px] aspect-square object-cover cursor-pointer"
+                        v-if="cart.imgSrc"
                         :src="cart.imgSrc"
                         @click="
                             router.push({
@@ -61,7 +62,7 @@
                         <div class="flex flex-1 justify-center items-stretch sm:flex-initial w-[150px] sm:w-[150px] border border-gray-300 rounded-full">
                             <button
                                 class="flex items-center text-[16px] justify-center flex-1 h-auto cursor-pointer disabled:cursor-not-allowed"
-                                :disabled="cart.count <= 1"
+                                :disabled="cart.count <= 1 || loading"
                                 @click.prevent="countUpdate(index, cart.id, cart.productID, false, cart.product_variationable_id)"
                             >
                                 <el-icon><Minus /></el-icon>
@@ -69,7 +70,7 @@
                             <div class="flex items-center justify-center w-[60px] sm:w-[80px] py-[4px] sm:py-[10px] h-full">{{ cart.count }}</div>
                             <button
                                 class="flex items-center text-[16px] justify-center flex-1 h-auto cursor-pointer disabled:cursor-not-allowed"
-                                :disabled="cart.stock <= cart.count"
+                                :disabled="cart.stock <= cart.count || loading"
                                 @click.prevent="countUpdate(index, cart.id, cart.productID, true, cart.product_variationable_id)"
                             >
                                 <el-icon><Plus /></el-icon>
@@ -101,7 +102,7 @@ import { useShoppingCarStore } from "~/store/shoppingCarStore";
 import { useUserStore } from "~/store/userStore";
 import { ElMessage } from "element-plus";
 
-const emit = defineEmits(["update:selectProductIds"]);
+const emit = defineEmits(["update:selectProductIds", "productCountUpdate"]);
 
 const shoppingCarStore = useShoppingCarStore();
 const { updateCart, getUserShopping, deleteCart } = shoppingCarStore;
@@ -134,27 +135,49 @@ function countUpdate(index: number, cartId: number | null, productID: number, is
         product_variationable_id: product_variationable_id ? product_variationable_id : null,
     };
     shoppingCar.value[index].totalPrice = shoppingCar.value[index].price * shoppingCar.value[index].count;
-    // 等待 1秒鐘再更新就好 以防快速點擊
-    setTimeout(async () => {
-        if (!loading.value) {
-            loading.value = true;
-            console.log("work loading", shoppingCar.value[index].count);
-            await updateCart({ ...apiReq, quantity: shoppingCar.value[index].count }).catch((err) => {
-                console.log("err", err);
-                if (err) {
-                    ElMessage({
-                        type: "error",
-                        message: err.message,
-                    });
-                    loading.value = false;
-                    return;
-                }
-            });
-            setTimeout(() => {
+    
+    // 防止連續點擊
+    if (!loading.value) {
+        loading.value = true;
+        console.log("work loading", shoppingCar.value[index].count);
+        updateCart({ ...apiReq, quantity: shoppingCar.value[index].count }).then(() => {
+            emit("productCountUpdate");
+            loading.value = false;
+        })
+        .catch((err) => {
+            console.log("err", err);
+            if (err) {
+                ElMessage({
+                    type: "error",
+                    message: err.message,
+                });
                 loading.value = false;
-            }, 1000);
-        }
-    }, 1000);
+                return;
+            }
+        });
+    }
+    // 等待 1秒鐘再更新就好 以防快速點擊
+    // setTimeout(async () => {
+    //     if (!loading.value) {
+    //         loading.value = true;
+    //         console.log("work loading", shoppingCar.value[index].count);
+    //         await updateCart({ ...apiReq, quantity: shoppingCar.value[index].count }).catch((err) => {
+    //             console.log("err", err);
+    //             if (err) {
+    //                 ElMessage({
+    //                     type: "error",
+    //                     message: err.message,
+    //                 });
+    //                 loading.value = false;
+    //                 return;
+    //             }
+    //         });
+    //         setTimeout(() => {
+    //             emit("productCountUpdate");
+    //             loading.value = false;
+    //         }, 1000);
+    //     }
+    // }, 1000);
 }
 
 /**
