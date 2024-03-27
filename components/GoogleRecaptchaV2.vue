@@ -11,7 +11,7 @@ export default {
         },
     },
     setup(props, { emit }) {
-        const siteKey = "6Lfq0UYbAAAAAOeg70msjouhaQM-WpTbQPTlTCmJ";
+        const siteKey = process.env.VUE_APP_GOOGLE_reCAPTCHA_SITE_KEY;
         const setlang = props.lang ? props.lang : "zh-TW";
 
         const refresh = () => {
