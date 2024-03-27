@@ -45,6 +45,8 @@
                         :is="showComponent"
                         v-model:currentTab="currentTab"
                         v-model:selectProductIds="selectProductIds"
+                        @selectProduct="selectProduct"
+                        @productCountUpdate="productCountUpdate"
                         :goCheckoutStep3="goCheckoutStep3"
                     />
                 </keep-alive>
@@ -53,12 +55,13 @@
                     v-if="currentStep !== 2"
                 >
                     <div class="lg:sticky lg:top-[111px]">
-                        <ShoppingCarInputCoupon v-if="currentStep == 0" />
+                        <ShoppingCarInputCoupon ref="couponRef" @getCoupon="getCoupon" v-if="currentStep == 0" />
                         <ShoppingCarBilling
                             :class="currentStep == 0 ? 'mt-5 sm:mt-[30px] lg:mt-[20px]' : ''"
                             :selectProductIds="selectProductIds"
                             :currentTab="currentTab"
                             :currentStep="currentStep"
+                            :discountData="discountData"
                         >
                             <template
                                 v-if="currentStep == 0 || currentStep == 1"
@@ -84,7 +87,7 @@
                             </template>
                             <template #total>
                                 <span>
-                                    {{ $utils().formatCurrency(total - salePrice - salePrice) }}
+                                    {{ $utils().formatCurrency(total - discountData.discount_amount - discountData.coupon_discount_amount) }}
                                 </span>
                             </template>
                             <template
@@ -137,7 +140,7 @@ import { useUserStore } from "~/store/userStore";
 
 import { storeToRefs } from "pinia";
 import { ShoppingCarInterface, ShoppingCarCustomInterface } from "~/interface/shoppingCar";
-import { ElMessage } from "element-plus";
+import { ElMessage, ElLoading } from "element-plus";
 const { $utils } = useNuxtApp();
 
 const route = useRoute();
@@ -200,6 +203,92 @@ const total = computed(() => {
 });
 // 折扣
 const salePrice = computed(() => 0);
+
+const discountData = ref<any>({
+    original_amount: 0,
+    discount_amount: 0,
+    after_discount_amount: 0,
+    coupon_discount_amount: 0,
+})
+
+const couponRef = ref<any>(null)
+
+const getCoupon = async(val: any) => {
+    console.log('getCoupon', val)
+    const params = {
+        type: 'normal',
+        cart_items: [],
+        coupon_code: val
+    }
+    if (selectProductIds.value.length === 0) {
+        ElMessage({
+            type: "error",
+            message: '請先選擇商品',
+        });
+    } else {
+        params.cart_items = selectProductIds.value
+        const { data, status, error } = await $api().DiscountCheckAPI(params);
+        console.log(status)
+        if (status.value === "success") {
+            const { data: couponDatas, status, error } = await $api().DiscountCalculateAPI(params);
+            const couponData = (couponDatas.value as any).data;
+            console.log(couponData)
+            discountData.value.coupon_discount_amount = couponData.coupon_discount_amount
+            discountData.value.discount_amount = couponData.discount_amount
+        } else {
+            ElMessage({
+                type: "error",
+                message: (error.value as any).data.message,
+            });
+            discountData.value.coupon_discount_amount = 0
+            discountData.value.discount_amount = 0
+        }
+    }
+}
+
+const discountCalculate = async () => {
+    const loading = ElLoading.service({
+        lock: true,
+        text: "計算價格中...",
+        background: "rgba(0, 0, 0, 0.5)",
+    });
+    try {
+        const params = {
+            type: 'normal',
+            cart_items: selectProductIds.value,
+            coupon_code: couponRef.value.formData.coupon ? couponRef.value.formData.coupon : 'nocoupon'
+        }
+        const { data: couponDatas, status, error } = await $api().DiscountCalculateAPI(params);
+        const couponData = (couponDatas.value as any).data;
+        console.log(couponData)
+        discountData.value.coupon_discount_amount = couponData.coupon_discount_amount
+        discountData.value.discount_amount = couponData.discount_amount
+        loading.close()
+    } catch{
+        loading.close()
+    }
+}
+
+const productCountUpdate = async () => {
+    console.log('gdsdgf')
+    if (currentTab.value === 'type1' && selectProductIds.value.length > 0) {
+        discountCalculate()
+    } else {
+        discountData.value.coupon_discount_amount = 0
+        discountData.value.discount_amount = 0
+    }
+}
+
+const selectProduct = async (val: number[]) => {
+    console.log(val)
+    selectProductIds.value = val
+    if (currentTab.value === 'type1' && selectProductIds.value.length > 0) {
+        discountCalculate()
+    } else {
+        discountData.value.coupon_discount_amount = 0
+        discountData.value.discount_amount = 0
+    }
+}
 // go step2
 const goStepCheckout = () => {
     if (selectProductIds.value.length === 0) {
@@ -236,7 +325,7 @@ const showLoginDialog = ref(false);
 /**
  * 關閉登入彈窗
  */
-function closeDialog(val) {
+function closeDialog(val: boolean) {
     showLoginDialog.value = val;
     window.scrollTo(0, 0);
 }

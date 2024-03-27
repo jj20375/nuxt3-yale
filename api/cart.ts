@@ -2,7 +2,7 @@
  * ReqValidatorDonationCode: 愛心捐贈碼驗證 api 參數
  * ReqValidatorMobileCarrierCode: 驗證手機載具 api 參數
  */
-import { CartItem, ReqUpdateCustomCart, ReqDeleteCustomCart, ReqMeasuring, ReqValidatorDonationCode, ReqValidatorMobileCarrierCode } from "~/interface/shoppingCar";
+import { CartItem, ReqUpdateCustomCart, ReqDeleteCustomCart, ReqMeasuring, ReqValidatorDonationCode, ReqValidatorMobileCarrierCode, DiscountCalculate } from "~/interface/shoppingCar";
 
 interface ResGetCart {
     cartItems: any[];
@@ -165,6 +165,20 @@ export default () => {
          */
         ValidatorMobileCarrierCodeAPI(data: ReqValidatorMobileCarrierCode) {
             return useMyFetch(`${apiUrl}/invoice/validate-mobile-carrier`, { method: "post", body: data });
+        },
+
+        /**
+         * 折扣計算
+         */
+        DiscountCalculateAPI(data: DiscountCalculate) {
+            return useMyFetch(`${apiUrl}/discount/calculate`, { method: "post", body: data });
+        },
+
+        /**
+         * 檢查優惠券
+         */
+        DiscountCheckAPI(data: DiscountCalculate) {
+            return useMyFetch(`${apiUrl}/discount/check-coupon-code`, { method: "post", body: data });
         },
     };
 };
