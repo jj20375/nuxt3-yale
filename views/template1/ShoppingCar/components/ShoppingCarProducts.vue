@@ -39,6 +39,17 @@
                         <h3 class="YaleSolisW-Bd font-medium text-[16px] sm:text-[18px]">{{ cart.name }}</h3>
                         <p class="hidden sm:block font-medium YaleSolisW-Bd text-[18px] whitespace-nowrap">NT$ {{ $utils().formatCurrency(cart.totalPrice) }}</p>
                     </div>
+                    <template
+                        v-for="(item, index) in cart.productVariationable"
+                        :key="index"
+                    >
+                        <div
+                            class="flex gap-4 text-gray-800 items-center mt-[12px]"
+                        >
+                            <p class="w-[40px] sm:w-[90px] text-[14px]">{{ item.label }}</p>
+                            <p class="text-[14px]">{{ item.value }}</p>
+                        </div>
+                    </template>
                     <div
                         v-if="cart.colorName"
                         class="flex gap-4 text-gray-800 items-center mt-[12px]"

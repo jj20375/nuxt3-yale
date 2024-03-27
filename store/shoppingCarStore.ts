@@ -48,10 +48,11 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
             if (data.value) {
                 shoppingCar.value = data.value.data.cartItems.map((i) => {
                     const price = i.productVariationable ? i.productVariationable.price : i.productable.price;
-                    const imgSrc = i.productVariationable ? `https://yale_backed.mrjin.me/storage/${i.productVariationable.image}` : i.productable.main_image;
                     // 設置顏色名稱
                     let colorIndex = -1;
                     let colorName = undefined;
+                    let imgSrc = i.productable.main_image
+                    let productVariationable = []
                     if (i.productVariationable) {
                         for (const [key, value] of Object.entries(i.productable.productVariations)) {
                             const item: any = value;
@@ -61,6 +62,14 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
                                 break;
                             }
                         }
+
+                        productVariationable = i.productVariationable?.values.map((variation: { product_option_name: any; product_option_value_name: any; }) => {
+                            return {
+                                label: variation.product_option_name,
+                                value: variation.product_option_value_name
+                            }
+                        })
+                        imgSrc = i.productable.other_images.find(img => img.includes(i.productVariationable.image))
                     }
                     console.log("GetNormalCartAPI =>", i);
                     return {
@@ -74,6 +83,7 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
                         product_variationable_id: i.productVariationable ? i.productVariationable.id : undefined,
                         colorName,
                         stock: i.productable.stock,
+                        productVariationable: productVariationable
                     };
                 });
                 if (process.client) {

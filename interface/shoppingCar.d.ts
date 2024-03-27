@@ -19,6 +19,8 @@ export interface ShoppingCarInterface {
     totalPrice: number;
     // 庫存
     stock: number;
+    // 選項
+    productVariationable: number;
 }
 
 /**
@@ -131,4 +133,11 @@ export interface ReqValidatorDonationCode {
 // 手機載具 api 參數
 export interface ReqValidatorMobileCarrierCode {
     carrier_code: string;
+}
+
+// 折扣計算 api 參數
+export interface DiscountCalculate {
+    type: string;
+    coupon_code: string;
+    cart_items: string[];
 }
