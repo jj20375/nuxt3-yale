@@ -536,6 +536,8 @@ const customPreviewData = computed(() => {
         doorOut: doorsOut.value.find((item: any) => item.id === currentDoorOutId.value).previewImgSrc[`option-${currentDoorOutColorId.value}`],
         // 鎖
         lock: locks.value[lockCategory.value].find((item: any) => item.id === currentLock.value.id).previewImgSrc,
+        // 掛門
+        tool1Data: tool1Datas.value.find((item: any) => item.id === currentTool1Data.value.id).previewImgSrc,
     };
 });
 
