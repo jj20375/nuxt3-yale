@@ -355,6 +355,7 @@ const detailData = computed(() => {
         market_price: product.market_price,
         stock: product.stock,
         breadcrumbs: product.breadcrumbs,
+        seoSetting: product.seoSetting,
     };
     if (product.is_single_variation === 1) {
         // 只有一個產品選擇
@@ -439,18 +440,18 @@ const getData = async () => {
         breadcrumbs.value.push({
             name: "product-slug-category-tag",
             text: product.breadcrumbs[0].name,
-            params: { slug: `產品資訊-${product.breadcrumbs[0].name}`, category: product.breadcrumbs[0].id, tag: product.breadcrumbs[1].id },
+            params: { slug: product.breadcrumbs[0].id, category: product.breadcrumbs[0].id, tag: product.breadcrumbs[1].id },
         });
         breadcrumbs.value.push({
             name: "product-slug-category-tag",
             text: product.breadcrumbs[1].name,
-            params: { slug: `產品資訊-${product.breadcrumbs[1].name}`, category: product.breadcrumbs[0].id, tag: product.breadcrumbs[1].id },
+            params: { slug: product.breadcrumbs[0].id, category: product.breadcrumbs[0].id, tag: product.breadcrumbs[1].id },
         });
     }
     breadcrumbs.value.push({
         name: "product-detail-slug-id",
         text: detailData.value.name,
-        params: { slug: `${detailData.value.name}`, id: detailData.value.product_id },
+        params: { slug: product.seoSetting.custom_url, id: detailData.value.product_id },
     });
 
     if (productDetail.value.productRelations) {
@@ -480,7 +481,7 @@ const getData = async () => {
 
     if (productDetail.value) {
         console.log("productDetail.value.main_image =>", productDetail.value.main_image);
-        ogUrl.value = `${$config.public.hostURL}/product/detail/${productDetail.value.seoSetting.custom_url ? productDetail.value.seoSetting.custom_url : productDetail.value.name}/${productDetail.value.id}`
+        ogUrl.value = `${$config.public.hostURL}/product/detail/${productDetail.value.seoSetting.custom_url ? productDetail.value.seoSetting.custom_url : productDetail.value.name}/${productDetail.value.id}`;
 
         useHead({
             title: initializationStore.initializationData.site.site_name + "|" + (productDetail.value.seoSetting.title ? productDetail.value.seoSetting.title : productDetail.value.name),
@@ -702,12 +703,12 @@ const goToCompare = (data: any) => {
 };
 
 // 分享
-const ogUrl = ref<any>(null)
+const ogUrl = ref<any>(null);
 function socialShare(type: string) {
-    console.log(route)
+    console.log(route);
     let path = window.location.origin + encodeURIComponent(route.path);
     if (ogUrl.value) {
-        path = ogUrl.value
+        path = ogUrl.value;
     }
     if (type === "line") {
         const url = "https://social-plugins.line.me/lineit/share?url=" + path;

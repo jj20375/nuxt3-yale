@@ -57,7 +57,7 @@ const breadcrumbs = ref([
     {
         name: "yale-home-app-slug",
         text: "Yale Home App",
-        params: { slug: "Yale Home App" },
+        params: { slug: "Yale-Home-App-Download" },
     },
 ]);
 
@@ -179,11 +179,4 @@ async function getAppData() {
 }
 
 await getPageData();
-onMounted(async () => {
-    nextTick(async () => {
-        if (process.client) {
-            await getAppData();
-        }
-    });
-});
 </script>

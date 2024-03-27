@@ -66,12 +66,12 @@ const breadcrumbs = ref([
     {
         name: "repair-slug",
         text: "服務支援",
-        params: { slug: "維修與保固" },
+        params: { slug: "warranty" },
     },
     {
         name: "repair-slug",
         text: "維修與保固",
-        params: { slug: "維修與保固" },
+        params: { slug: "warranty" },
     },
 ]);
 

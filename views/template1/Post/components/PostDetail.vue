@@ -119,12 +119,12 @@ async function getData(params: { articleId: any }, isChangePost: boolean) {
         breadcrumbs.value.push({
             name: detail.article_category.type === "news" ? "news-slug-id" : "sample-slug-id",
             text: detail.article_category.type === "news" ? "最新消息" : "裝修實績",
-            params: { slug: detail.article_category.name, id: detail.article_category.id },
+            params: { slug: detail.article_category.type, id: detail.article_category.id },
         });
         breadcrumbs.value.push({
             name: detail.article_category.type === "news" ? "news-slug-id" : "sample-slug-id",
             text: detail.article_category.name,
-            params: { slug: detail.article_category.name, id: detail.article_category.id },
+            params: { slug: detail.article_category.type, id: detail.article_category.id },
         });
 
         //判斷在內頁切換文章時 麵包屑 只更新最後一筆陣列簪料
@@ -132,7 +132,7 @@ async function getData(params: { articleId: any }, isChangePost: boolean) {
             if (breadcrumbs.value.find((item: any) => item.name === route.name) === undefined) {
                 breadcrumbs.value.push({
                     name: route.name,
-                    params: { slug: detail.title.substr(0, 10), id: detail.id },
+                    params: { slug: detail.seoSetting.custom_url, id: detail.id },
                     text: detail.title.length > 10 ? detail.title.substr(0, 10) + "..." : detail.title,
                 });
             }
@@ -145,7 +145,7 @@ async function getData(params: { articleId: any }, isChangePost: boolean) {
                 url: {
                     name: route.name,
                     params: {
-                        slug: detail.previous_article.title,
+                        slug: detail.previous_article.articleCategory.type,
                         id: detail.previous_article.id,
                     },
                 },
@@ -161,7 +161,7 @@ async function getData(params: { articleId: any }, isChangePost: boolean) {
                 url: {
                     name: route.name,
                     params: {
-                        slug: detail.next_article.title,
+                        slug: detail.next_article.articleCategory.type,
                         id: detail.next_article.id,
                     },
                 },
@@ -204,8 +204,6 @@ async function init() {
     await getData({ articleId: route.params.id }, false);
 }
 
-await init();
-
 // 切換文章時 自動滾回上方
 watch(
     () => route.params.id,
@@ -215,6 +213,7 @@ watch(
         }
     }
 );
+await init();
 onMounted(async () => {
     nextTick(async () => {});
 });

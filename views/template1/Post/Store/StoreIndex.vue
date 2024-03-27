@@ -80,7 +80,7 @@ async function getType() {
                     text: item.name,
                     id: item.id,
                     url: {
-                        params: { slug: item.name, id: item.id },
+                        params: { slug: item.sort_order, id: item.id },
                         name: "store-e-commerce-slug-id",
                     },
                 });
@@ -89,7 +89,7 @@ async function getType() {
                     text: item.name,
                     id: item.id,
                     url: {
-                        params: { slug: item.name, id: item.id },
+                        params: { slug: item.sort_order, id: item.id },
                         name: "store-slug-id",
                     },
                 });
@@ -103,14 +103,14 @@ async function getType() {
             breadcrumbs.value.push({
                 name: "store-slug-id",
                 text: "展售門市",
-                params: { slug: lastBreadcrumbs.name, id: lastBreadcrumbs.id },
+                params: { slug: lastBreadcrumbs.sort_order, id: lastBreadcrumbs.id },
             });
 
             breadcrumbs.value.push({
                 // id 2 等於電商通路樣板
                 name: lastBreadcrumbs.id == 2 ? "store-e-commerce-slug-id" : "store-slug-id",
                 text: lastBreadcrumbs.name,
-                params: { slug: lastBreadcrumbs.name, id: lastBreadcrumbs.id },
+                params: { slug: lastBreadcrumbs.sort_order, id: lastBreadcrumbs.id },
             });
         }
     } catch (err) {
@@ -193,11 +193,11 @@ async function init() {
     await getList({ per_page: pagination.value.pageSize, page: page, stronghold_category_id: route.params.id });
 }
 
-// await init();
+await init();
 onMounted(async () => {
     nextTick(async () => {
         if (process.client) {
-            await init();
+            // await init();
         }
     });
 });

@@ -20,7 +20,7 @@
                         <div>親愛的顧客您好：<br />完成預約後，專人將會在 3 個工作天內主動致電聯繫，詢問及確認需求，並且協助預約到府安裝。</div>
                         <div class="my-[16px] sm:my-[30px] border-b-[1px] border-gray-200"></div>
                         <h3 class="text-[24px] font-bold mb-6">申請人</h3>
-                        <div class="flex flex-col md:grid grid-cols-2 gap-6">
+                        <div class="flex flex-col grid-cols-2 gap-6 md:grid">
                             <template
                                 v-for="(item, index) in formDatas.applyDatas"
                                 :key="index"
@@ -59,7 +59,7 @@
                                 </div>
                                 <div
                                     v-else
-                                    class="flex flex-col md:flex-row flex-1 gap-6"
+                                    class="flex flex-col flex-1 gap-6 md:flex-row"
                                     :class="item.span ? `col-span-${item.span}` : ''"
                                 >
                                     <div
@@ -120,7 +120,7 @@
                     </div>
                     <div class="w-full xl:w-3/4 mt-[36px] sm:mt-[80px] px-[24px] py-[36px] sm:p-[60px] bg-white mx-auto rounded-[12px] sm:rounded-[24px] border-[1px] border-gray-200">
                         <h3 class="text-[24px] font-bold mb-6">商品安裝相關</h3>
-                        <div class="flex flex-col md:grid grid-cols-2 gap-6">
+                        <div class="flex flex-col grid-cols-2 gap-6 md:grid">
                             <template
                                 v-for="(item, index) in formDatas.installDatas"
                                 :key="index"
@@ -221,7 +221,7 @@
                     </div>
                     <div class="w-full xl:w-3/4 mt-[36px] sm:mt-[80px] px-[24px] py-[36px] sm:p-[60px] bg-white mx-auto rounded-[12px] sm:rounded-[24px] border-[1px] border-gray-200">
                         <h3 class="text-[24px] font-bold mb-6">廠商資訊</h3>
-                        <div class="flex flex-col md:grid grid-cols-2 gap-6">
+                        <div class="flex flex-col grid-cols-2 gap-6 md:grid">
                             <template
                                 v-for="(item, index) in formDatas.firmDatas"
                                 :key="index"
@@ -261,7 +261,7 @@
                     </div>
                     <div class="w-full xl:w-3/4 mt-[36px] sm:mt-[80px] px-[24px] py-[36px] sm:p-[60px] bg-white mx-auto rounded-[12px] sm:rounded-[24px] border-[1px] border-gray-200">
                         <h3 class="text-[24px] font-bold mb-6">上傳照片</h3>
-                        <div class="flex flex-col md:grid grid-cols-2 gap-6">
+                        <div class="flex flex-col grid-cols-2 gap-6 md:grid">
                             <template
                                 v-for="(item, index) in formDatas.updateDatas"
                                 :key="index"
@@ -370,17 +370,17 @@ const breadcrumbs = ref([
     {
         name: "reservation-general-slug",
         text: "服務支援",
-        params: { slug: "一般安裝" },
+        params: { slug: "install" },
     },
     {
         name: "reservation-slug",
         text: "預約安裝",
-        params: { slug: "預約安裝" },
+        params: { slug: "install" },
     },
     {
         name: "reservation-general-slug",
         text: "一般安裝",
-        params: { slug: "一般安裝" },
+        params: { slug: "install" },
     },
 ]);
 
@@ -734,11 +734,11 @@ async function getPageData() {
     }
 }
 
-const seriesChange = (e:string) => {
+const seriesChange = (e: string) => {
     form.value.model = "";
     formDatas.value.installDatas.find((item: { prop: string }) => item.prop === "model").options = [];
     if (installation_model.value[e]) {
-        installation_model.value[e].forEach((item:string) => {
+        installation_model.value[e].forEach((item: string) => {
             formDatas.value.installDatas
                 .find((item: { prop: string }) => item.prop === "model")
                 .options.push({
@@ -747,7 +747,7 @@ const seriesChange = (e:string) => {
                 });
         });
     }
-}
+};
 
 const installation_model = ref([]);
 
@@ -757,47 +757,47 @@ const installation_model = ref([]);
 async function getList() {
     try {
         const params = {
-            code: 'general-installation'
+            code: "general-installation",
         };
         const { data } = await $api().RagicConfigAPI(params);
 
         const rows = (data.value as any).data;
         console.log("home sample api => ", rows);
 
-        const series_selection = rows.series_selection.options
-        const appointment_time_slot = rows.appointment_time_slot.options
-        const purchase_channel = rows.purchase_channel.options
-        seriesRadios.value = []
-        timeOptions.value = []
-        placeOptions.value = []
+        const series_selection = rows.series_selection.options;
+        const appointment_time_slot = rows.appointment_time_slot.options;
+        const purchase_channel = rows.purchase_channel.options;
+        seriesRadios.value = [];
+        timeOptions.value = [];
+        placeOptions.value = [];
 
-        series_selection.forEach((item:string) => {
+        series_selection.forEach((item: string) => {
             seriesRadios.value.push({
                 value: item,
-                label: item
-            })
-        })
+                label: item,
+            });
+        });
 
-        appointment_time_slot.forEach((item:string) => {
+        appointment_time_slot.forEach((item: string) => {
             timeOptions.value.push({
                 value: item,
-                label: item
-            })
-        })
+                label: item,
+            });
+        });
 
-        purchase_channel.forEach((item:string) => {
+        purchase_channel.forEach((item: string) => {
             placeOptions.value.push({
                 value: item,
-                label: item
-            })
-        })
+                label: item,
+            });
+        });
 
-        installation_model.value = rows.installation_model
-        form.value.series = series_selection[0]
-        
+        installation_model.value = rows.installation_model;
+        form.value.series = series_selection[0];
+
         formDatas.value.installDatas.find((item: { prop: string }) => item.prop === "model").options = [];
         if (installation_model.value[series_selection[0]]) {
-            installation_model.value[series_selection[0]].forEach((model:string) => {
+            installation_model.value[series_selection[0]].forEach((model: string) => {
                 formDatas.value.installDatas
                     .find((item: { prop: string }) => item.prop === "model")
                     .options.push({

@@ -218,12 +218,12 @@ async function getType() {
                 breadcrumbs.value.push({
                     name: "product-slug-category-tag",
                     text: "產品資訊",
-                    params: { slug: `產品資訊-${item.name}`, category: route.params.category, tag: route.params.tag },
+                    params: { slug: route.params.category, category: route.params.category, tag: route.params.tag },
                 });
                 breadcrumbs.value.push({
                     name: route.name,
                     text: item.name,
-                    params: { slug: item.name, category: route.params.category, tag: route.params.tag },
+                    params: { slug: item.id, category: route.params.category, tag: route.params.tag },
                 });
             }
             item.children.forEach((child: { name: any; id: any }) => {
@@ -232,14 +232,14 @@ async function getType() {
                     categoryId: child.id,
                     url: {
                         name: "product-slug-category-tag",
-                        params: { slug: `產品資訊-${item.name}-${child.name}`, category: item.id, tag: child.id },
+                        params: { slug: child.id, category: item.id, tag: child.id },
                     },
                 });
                 if (child.id == route.params.tag) {
                     breadcrumbs.value.push({
                         name: route.name,
                         text: child.name,
-                        params: { slug: child.name, category: route.params.category, tag: route.params.tag },
+                        params: { slug: child.id, category: route.params.category, tag: route.params.tag },
                     });
                 }
             });
@@ -248,7 +248,7 @@ async function getType() {
                 categoryId: item.id,
                 url: {
                     name: "product-slug-category-tag",
-                    params: { slug: `產品資訊-${item.name}`, category: item.id, tag: item.id },
+                    params: { slug: item.id, category: item.id, tag: item.id },
                 },
                 options: children,
             });

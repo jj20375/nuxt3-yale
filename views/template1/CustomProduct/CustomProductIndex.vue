@@ -352,6 +352,7 @@ import { useShoppingCarStore } from "~/store/shoppingCarStore";
 // user store
 import { useUserStore } from "~/store/userStore";
 
+const route = useRoute();
 const router = useRouter();
 
 const { $api, $utils, $shoppingCarService } = useNuxtApp();
@@ -740,9 +741,9 @@ const { getCustomProductList, customProductList, getCustomProductSceneList, scen
 async function init(id: number) {
     // 取得場景
     await getCustomProductSceneList();
-    currentBgId.value = scenes.value[0].id;
     // 取得訂製門扇商品
     await getCustomProductList(id);
+    currentBgId.value = Number(route.params.slug);
     doors.value = customProductList.value.doors;
     doorsOut.value = customProductList.value.doorsOut;
     locks.value = {
@@ -788,13 +789,13 @@ async function init(id: number) {
 
 // await init();
 
-await init(1);
+await init(Number(route.params.slug));
 
 watch(
-    () => currentBgId.value,
+    () => route.params.slug,
     async (val) => {
         console.log("val currentBgId =>", val);
-        await init(val);
+        await init(Number(val));
     }
 );
 

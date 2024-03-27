@@ -21,7 +21,7 @@
                         <div>親愛的顧客您好：<br />完成預約後，專人將會在 3 個工作天內主動致電聯繫，詢問及確認需求，並且協助預約到府安裝。</div>
                         <div class="my-[16px] sm:my-[30px] border-b-[1px] border-gray-200"></div>
                         <h3 class="text-[24px] font-bold mb-6">申請人</h3>
-                        <div class="flex flex-col md:grid grid-cols-2 gap-6">
+                        <div class="flex flex-col grid-cols-2 gap-6 md:grid">
                             <template
                                 v-for="(item, index) in formDatas.applyDatas"
                                 :key="index"
@@ -60,7 +60,7 @@
                                 </div>
                                 <div
                                     v-else
-                                    class="flex flex-col md:flex-row flex-1 gap-6"
+                                    class="flex flex-col flex-1 gap-6 md:flex-row"
                                     :class="item.span ? `col-span-${item.span}` : ''"
                                 >
                                     <div
@@ -108,7 +108,7 @@
                     </div>
                     <div class="w-full xl:w-3/4 mt-[36px] sm:mt-[80px] px-[24px] py-[36px] sm:p-[60px] bg-white mx-auto rounded-[12px] sm:rounded-[24px] border-[1px] border-gray-200">
                         <h3 class="text-[24px] font-bold mb-6">新光保全</h3>
-                        <div class="flex flex-col md:grid grid-cols-2 gap-6">
+                        <div class="flex flex-col grid-cols-2 gap-6 md:grid">
                             <template
                                 v-for="(item, index) in formDatas.guardDatas"
                                 :key="index"
@@ -200,7 +200,7 @@
                     </div>
                     <div class="w-full xl:w-3/4 mt-[36px] sm:mt-[80px] px-[24px] py-[36px] sm:p-[60px] bg-white mx-auto rounded-[12px] sm:rounded-[24px] border-[1px] border-gray-200">
                         <h3 class="text-[24px] font-bold mb-6">商品安裝相關</h3>
-                        <div class="flex flex-col md:grid grid-cols-2 gap-6">
+                        <div class="flex flex-col grid-cols-2 gap-6 md:grid">
                             <template
                                 v-for="(item, index) in formDatas.productDatas"
                                 :key="index"
@@ -312,7 +312,7 @@
                     </div>
                     <div class="w-full xl:w-3/4 mt-[36px] sm:mt-[80px] px-[24px] py-[36px] sm:p-[60px] bg-white mx-auto rounded-[12px] sm:rounded-[24px] border-[1px] border-gray-200">
                         <h3 class="text-[24px] font-bold mb-6">上傳照片</h3>
-                        <div class="flex flex-col md:grid grid-cols-2 gap-6">
+                        <div class="flex flex-col grid-cols-2 gap-6 md:grid">
                             <template
                                 v-for="(item, index) in formDatas.updateDatas"
                                 :key="index"
@@ -419,17 +419,17 @@ const breadcrumbs = ref([
     {
         name: "reservation-guard-slug",
         text: "服務支援",
-        params: { slug: "新光保全安裝" },
+        params: { slug: "install" },
     },
     {
         name: "reservation-slug",
         text: "預約安裝",
-        params: { slug: "預約安裝" },
+        params: { slug: "install" },
     },
     {
         name: "reservation-guard-slug",
         text: "新光保全安裝",
-        params: { slug: "新光保全安裝" },
+        params: { slug: "install" },
     },
 ]);
 
@@ -814,22 +814,22 @@ async function getPageData() {
 /**
  * 取得型號
  */
- async function getList() {
+async function getList() {
     try {
         const params = {
-            code: 'sk-security-installation'
+            code: "sk-security-installation",
         };
         const { data } = await $api().RagicConfigAPI(params);
 
         const rows = (data.value as any).data;
         console.log("rows => ", rows);
 
-        const installation_model = rows.installation_model.options
-        const appointment_time_slot = rows.appointment_time_slot.options
-        const contract_content = rows.contract_content.options
+        const installation_model = rows.installation_model.options;
+        const appointment_time_slot = rows.appointment_time_slot.options;
+        const contract_content = rows.contract_content.options;
 
-        timeOptions.value = []
-        contractOptions.value = []
+        timeOptions.value = [];
+        contractOptions.value = [];
 
         formDatas.value.productDatas.find((item: { prop: string }) => item.prop === "model").options = [];
         installation_model.forEach((model: string) => {
@@ -841,19 +841,19 @@ async function getPageData() {
                 });
         });
 
-        appointment_time_slot.forEach((item:string) => {
+        appointment_time_slot.forEach((item: string) => {
             timeOptions.value.push({
                 value: item,
-                label: item
-            })
-        })
+                label: item,
+            });
+        });
 
-        contract_content.forEach((item:string) => {
+        contract_content.forEach((item: string) => {
             contractOptions.value.push({
                 value: item,
-                label: item
-            })
-        })
+                label: item,
+            });
+        });
     } catch (err) {
         console.log("HomeSampleAPI => ", err);
     }

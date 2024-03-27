@@ -34,6 +34,7 @@
 
 import { CustomProductGetSceneInterface } from "~/interface/customProduct";
 
+const router = useRouter();
 const emit = defineEmits(["update:currentBgId", "update:currentBgData"]);
 
 const props = defineProps({
@@ -92,6 +93,7 @@ watch(
             "update:currentBgData",
             tabDatas.value.find((item) => item.id === val)
         );
+        router.push({ name: "custom-product-slug", params: { slug: val } });
     }
 );
 

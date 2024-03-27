@@ -26,7 +26,10 @@
                     :src="productData.lock[currentViewAngleData]"
                 />
             </div>
-            <div class="absolute z-20 w-full h-full">
+            <div
+                class="absolute z-20 w-full h-full"
+                v-if="productData.tool1Data[currentViewAngleData]"
+            >
                 <NuxtImg
                     class="object-cover w-full h-full mt-10"
                     :src="productData.tool1Data[currentViewAngleData]"

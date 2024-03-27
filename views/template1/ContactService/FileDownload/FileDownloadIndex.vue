@@ -55,7 +55,7 @@ async function getType() {
                 text: item.name,
                 id: item.id,
                 url: {
-                    params: { slug: item.name, id: item.id },
+                    params: { slug: "download", id: item.id },
                     name: "file-download-slug-id",
                 },
             });
@@ -72,12 +72,12 @@ async function getType() {
         breadcrumbs.value.push({
             name: "file-download-slug-id",
             text: "檔案下載",
-            params: { slug: lastBreadcrumbs.name, id: lastBreadcrumbs.id },
+            params: { slug: "download", id: lastBreadcrumbs.id },
         });
         breadcrumbs.value.push({
             name: "file-download-slug-id",
             text: lastBreadcrumbs.name,
-            params: { slug: lastBreadcrumbs.name, id: lastBreadcrumbs.id },
+            params: { slug: "download", id: lastBreadcrumbs.id },
         });
     } catch (err) {}
 }

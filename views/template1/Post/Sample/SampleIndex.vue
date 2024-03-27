@@ -71,7 +71,7 @@ async function getType() {
                 text: item.name,
                 id: item.id,
                 url: {
-                    params: { slug: item.name, id: item.id },
+                    params: { slug: item.type, id: item.id },
                     name: "sample-slug-id",
                 },
             });
@@ -83,12 +83,12 @@ async function getType() {
             breadcrumbs.value.push({
                 name: "sample-slug-id",
                 text: "裝修實績",
-                params: { slug: "裝修實績", id: lastBreadcrumbs.id },
+                params: { slug: lastBreadcrumbs.type, id: lastBreadcrumbs.id },
             });
             breadcrumbs.value.push({
                 name: "sample-slug-id",
                 text: lastBreadcrumbs.name,
-                params: { slug: "裝修實績", id: lastBreadcrumbs.id },
+                params: { slug: lastBreadcrumbs.type, id: lastBreadcrumbs.id },
             });
         }
     } catch (err) {

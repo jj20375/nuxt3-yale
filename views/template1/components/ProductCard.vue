@@ -5,7 +5,7 @@
             @mouseover="mouseoverEvent(product.id)"
             @mouseleave="mouseleaveEvent(product.id)"
         >
-            <NuxtLink @click="goToDetail({ name: product.name, id: product.id })">
+            <NuxtLink @click="goToDetail({ name: product.id, id: product.id })">
                 <NuxtImg
                     class="object-cover w-full h-full rounded-2xl aspect-square"
                     :src="product.main_image"
@@ -40,14 +40,14 @@
                         </button>
                     </div>
                     <div>
-                        <NuxtLink @click="goToDetail({ name: product.name, id: product.id })">
+                        <NuxtLink @click="goToDetail({ name: product.id, id: product.id })">
                             <button class="z-10 mt-2 gray-btn btn-sm !py-2">了解更多</button>
                         </NuxtLink>
                     </div>
                 </div>
                 <div
                     class="absolute top-0 left-0 z-10 w-full h-full bg-white opacity-80 rounded-2xl"
-                    @click="goToDetail({ name: product.name, id: product.id })"
+                    @click="goToDetail({ name: product.id, id: product.id })"
                 ></div>
             </div>
             <div
@@ -71,7 +71,7 @@
         </div>
         <NuxtLink
             class="cursor-pointer"
-            @click="goToDetail({ name: product.name, id: product.id })"
+            @click="goToDetail({ name: product.id, id: product.id })"
         >
             <h3 class="pt-[16px] text-[18px] sm:text-[20px] text-center xl:text-start font-medium YaleSolisW-Bd line-clamp-1">{{ product.model }}</h3>
             <h3 class="text-[15px] font-[400] text-center xl:text-start YaleSolisW-Lt mt-1.5 line-clamp-1">{{ product.name }}</h3>

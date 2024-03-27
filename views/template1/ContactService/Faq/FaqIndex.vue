@@ -57,7 +57,7 @@ async function getType() {
                 text: item.name,
                 id: item.id,
                 url: {
-                    params: { slug: item.name, id: item.id },
+                    params: { slug: "service", id: item.id },
                     name: "faq-slug-id",
                 },
             });
@@ -67,18 +67,18 @@ async function getType() {
         breadcrumbs.value.push({
             name: "faq-slug-id",
             text: "服務支援",
-            params: { slug: lastBreadcrumbs.name, id: lastBreadcrumbs.id },
+            params: { slug: "service", id: lastBreadcrumbs.id },
         });
         breadcrumbs.value.push({
             name: "faq-slug-id",
             text: "服務中心",
-            params: { slug: lastBreadcrumbs.name, id: lastBreadcrumbs.id },
+            params: { slug: "service", id: lastBreadcrumbs.id },
         });
 
         breadcrumbs.value.push({
             name: "faq-slug-id",
             text: lastBreadcrumbs.name,
-            params: { slug: lastBreadcrumbs.name, id: lastBreadcrumbs.id },
+            params: { slug: "service", id: lastBreadcrumbs.id },
         });
     } catch (err) {}
 }

@@ -71,7 +71,7 @@ async function getType() {
                 text: item.name,
                 id: item.id,
                 url: {
-                    params: { slug: item.name, id: item.id },
+                    params: { slug: "post", id: item.id },
                     name: "news-slug-id",
                 },
             });
@@ -83,12 +83,12 @@ async function getType() {
             breadcrumbs.value.push({
                 name: "news-slug-id",
                 text: "最新消息",
-                params: { slug: "最新消息", id: lastBreadcrumbs.id },
+                params: { slug: "post", id: lastBreadcrumbs.id },
             });
             breadcrumbs.value.push({
                 name: "news-slug-id",
                 text: lastBreadcrumbs.name,
-                params: { slug: "最新消息", id: lastBreadcrumbs.id },
+                params: { slug: "post", id: lastBreadcrumbs.id },
             });
         }
     } catch (err) {
@@ -146,7 +146,7 @@ async function getList(params: { per_page: number; page: number; article_categor
                 is_top: item.is_top,
                 url: {
                     name: "news-details-slug-id",
-                    params: { slug: item.title, id: item.id },
+                    params: { slug: item.id, id: item.id },
                 },
             });
         });

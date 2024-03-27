@@ -238,7 +238,7 @@ initializationData.value.site.renovation_categories.forEach((item: { id: any; im
         imgSrc: item.image,
         text: item.name,
         url: {
-            params: { slug: item.name, id: item.id },
+            params: { slug: "renovation", id: item.id },
             name: "sample-slug-id",
         },
     });
@@ -253,7 +253,7 @@ initializationData.value.site.stronghold_categories.forEach((item: { id: any; ic
         imgSrc: item.icon,
         text: item.name,
         url: {
-            params: { slug: item.name, id: item.id },
+            params: { slug: item.sort_order, id: item.id },
             name: item.id === 2 ? "store-e-commerce-slug-id" : "store-slug-id",
         },
     });
@@ -268,7 +268,7 @@ initializationData.value.site.product_categories.forEach((item: { id: any; menu_
         imgSrc: item.menu_image,
         text: item.name,
         url: {
-            params: { slug: `產品資訊-${item.name}`, category: item.id, tag: item.id },
+            params: { slug: item.id, category: item.id, tag: item.id },
             name: "product-slug-category-tag",
         },
     });
@@ -279,7 +279,7 @@ const menus = ref<any>({
         title: "訂製您的專屬門扇",
         url: {
             name: "custom-product-slug",
-            params: { slug: "訂製門扇" },
+            params: { slug: "1" },
         },
         submenus: [],
     },
@@ -287,7 +287,7 @@ const menus = ref<any>({
         title: "關於我們",
         url: {
             name: "about-slug",
-            params: { slug: "關於我們" },
+            params: { slug: "1" },
         },
         submenus: [],
     },
@@ -295,7 +295,7 @@ const menus = ref<any>({
         title: "最新消息",
         url: {
             name: "news-slug-id",
-            params: { slug: "訂製門扇", id: "4" },
+            params: { slug: "post", id: "4" },
         },
         submenus: [],
     },
@@ -337,7 +337,7 @@ const menus = ref<any>({
                 imgSrc: "/img/menu/service/menu-service-icon-1.svg",
                 url: {
                     name: "faq-slug-id",
-                    params: { slug: "服務中心", id: "1" },
+                    params: { slug: "service", id: "1" },
                 },
             },
             {
@@ -346,7 +346,7 @@ const menus = ref<any>({
                 imgSrc: "/img/menu/service/menu-service-icon-2.svg",
                 url: {
                     name: "repair-slug",
-                    params: { slug: "維修與保固" },
+                    params: { slug: "warranty" },
                 },
             },
             {
@@ -355,7 +355,7 @@ const menus = ref<any>({
                 imgSrc: "/img/menu/service/menu-service-icon-3.svg",
                 url: {
                     name: "file-download-slug-id",
-                    params: { slug: "檔案下載", id: "1" },
+                    params: { slug: "download", id: "1" },
                 },
             },
             {
@@ -364,7 +364,7 @@ const menus = ref<any>({
                 imgSrc: "/img/menu/service/menu-service-icon-4.svg",
                 url: {
                     name: "reservation-slug",
-                    params: { slug: "預約安裝" },
+                    params: { slug: "install" },
                 },
             },
             {
@@ -373,7 +373,7 @@ const menus = ref<any>({
                 imgSrc: "/img/menu/service/menu-service-icon-5.svg",
                 url: {
                     name: "contact-slug",
-                    params: { slug: "聯絡我們" },
+                    params: { slug: "form" },
                 },
             },
         ],
@@ -382,7 +382,7 @@ const menus = ref<any>({
         title: "Yale Home App",
         url: {
             name: "yale-home-app-slug",
-            params: { slug: "Yale-Home-App下載" },
+            params: { slug: "Yale-Home-App-Download" },
         },
         submenus: [],
     },

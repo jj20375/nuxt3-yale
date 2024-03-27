@@ -24,7 +24,7 @@
                                     />
                                     <div>一般安裝</div>
                                 </div>
-                                <NuxtLink :to="{ name: 'reservation-general-slug', params: { slug: '一般安裝' } }">
+                                <NuxtLink :to="{ name: 'reservation-general-slug', params: { slug: 'install' } }">
                                     <button class="yellow-btn btn-md">前往申請</button>
                                 </NuxtLink>
                             </div>
@@ -36,7 +36,7 @@
                                     />
                                     <div>新光保全安裝</div>
                                 </div>
-                                <NuxtLink :to="{ name: 'reservation-guard-slug', params: { slug: '新光保全安裝' } }">
+                                <NuxtLink :to="{ name: 'reservation-guard-slug', params: { slug: 'install' } }">
                                     <button class="yellow-btn btn-md">前往申請</button>
                                 </NuxtLink>
                             </div>
@@ -66,12 +66,12 @@ const breadcrumbs = ref([
     {
         name: "reservation-slug",
         text: "服務支援",
-        params: { slug: "預約安裝" },
+        params: { slug: "install" },
     },
     {
         name: "reservation-slug",
         text: "預約安裝",
-        params: { slug: "預約安裝" },
+        params: { slug: "install" },
     },
 ]);
 
