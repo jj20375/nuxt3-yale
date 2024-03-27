@@ -5,6 +5,7 @@
         class="flex product-card border-gray-200 gap-4 sm:gap-9 py-[30px]"
     >
         <NuxtImg
+            v-if="product.imgUrl"
             class="w-[100px] sm:w-[180px] aspect-square object-cover h-fit"
             :src="product.imgUrl"
         />
