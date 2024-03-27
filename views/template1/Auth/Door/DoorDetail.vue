@@ -290,7 +290,7 @@ const orderCancel = async () => {
             type: "success",
             message: "取消成功",
         });
-        const { data: resProductDetail }: any = await $api().GetProductOrderDetailAPI({ orderId: route.query.id });
+        const { data: resProductDetail }: any = await $api().GetProductOrderDetailAPI({ orderId: route.params.id });
         resProductDetail.value = resProductDetail;
         await getData();
     } else {

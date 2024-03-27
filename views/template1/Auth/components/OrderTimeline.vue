@@ -70,7 +70,7 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
     orderNumber: "",
     status: "",
-    method: '',
+    method: '信用卡',
     timeline: [
         {
             date: "",
