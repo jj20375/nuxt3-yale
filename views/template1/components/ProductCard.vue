@@ -206,7 +206,9 @@ function goToDetail(product: { name: string; id: number }) {
 </script>
 
 <style>
-.product-card:hover .favorite {
-    @apply opacity-100 duration-300 transition-all;
+.product-card:hover {
+    .favorite {
+        @apply opacity-100 duration-300 transition-all;
+    }
 }
 </style>
