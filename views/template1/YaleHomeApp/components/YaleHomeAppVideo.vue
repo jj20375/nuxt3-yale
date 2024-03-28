@@ -156,12 +156,10 @@ function closeDialog() {
 </script>
 
 <style lang="scss" scoped>
-:deep {
-    .el-dialog__body {
-        @apply mx-10;
-    }
-    .el-dialog {
-        @apply rounded-[20px];
-    }
+:deep(.el-dialog__body) {
+    @apply mx-10;
+}
+:deep(.el-dialog) {
+    @apply rounded-[20px];
 }
 </style>

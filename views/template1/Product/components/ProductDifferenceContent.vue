@@ -302,20 +302,18 @@ defineExpose({
 
 <style lang="scss" scoped>
 // 下拉選單
-:deep {
-    .el-select {
-        .el-input {
-            .el-input__wrapper {
-                @apply shadow-formDefault rounded-none py-[14px] px-0 bg-transparent text-[16px] #{!important};
-                &.is-focus {
-                    @apply shadow-formFocus #{!important};
-                }
-                .el-input__inner {
-                    @apply text-gray-800 font-medium;
-                    font-family: YaleSolisW-Bd;
-                    &::placeholder {
-                        -webkit-text-fill-color: #ababac;
-                    }
+:deep(.el-select) {
+    .el-input {
+        .el-input__wrapper {
+            @apply shadow-formDefault rounded-none py-[14px] px-0 bg-transparent text-[16px] #{!important};
+            &.is-focus {
+                @apply shadow-formFocus #{!important};
+            }
+            .el-input__inner {
+                @apply text-gray-800 font-medium;
+                font-family: YaleSolisW-Bd;
+                &::placeholder {
+                    -webkit-text-fill-color: #ababac;
                 }
             }
         }

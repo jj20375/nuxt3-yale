@@ -39,24 +39,25 @@ interface Props {
         price: number;
     }[];
 }
+
 const props = withDefaults(defineProps<Props>(), {
     services: [
         {
             id: "id1",
             name: "拆除及清運",
-            price: 1000,
+            price: 1000
         },
         {
             id: "id2",
             name: "泥作",
-            price: 1500,
+            price: 1500
         },
         {
             id: "id3",
             name: "油漆",
-            price: 1800,
-        },
-    ],
+            price: 1800
+        }
+    ]
 });
 
 const selectedServices = ref([]);
@@ -87,29 +88,31 @@ watch(
 function init() {
     selectedServices.value = props.services.map((item: any) => item.id);
 }
+
 // init();
 </script>
 
 <style lang="scss" scoped>
-:deep {
-    .el-checkbox-group {
-        @apply text-base leading-normal block #{!important};
+:deep(.el-checkbox-group) {
+    @apply text-base leading-normal block #{!important};
+}
+
+:deep(.el-checkbox.el-checkbox--large) {
+    @apply w-full mr-0;
+    .el-checkbox__label {
+        @apply font-normal #{!important};
     }
-    .el-checkbox.el-checkbox--large {
-        @apply w-full mr-0;
-        .el-checkbox__label {
-            @apply font-normal #{!important};
+
+    .el-checkbox__inner {
+        @apply w-[18px] h-[18px] #{!important};
+        &:hover {
+            @apply border-yellow-600;
         }
+    }
+
+    .is-checked {
         .el-checkbox__inner {
-            @apply w-[18px] h-[18px] #{!important};
-            &:hover{
-                @apply border-yellow-600;
-            }
-        }
-        .is-checked{
-            .el-checkbox__inner {
-                @apply bg-yellow-600 border-yellow-600 after:h-[9px] after:left-[6px] after:top-[2px] #{!important};
-            }
+            @apply bg-yellow-600 border-yellow-600 after:h-[9px] after:left-[6px] after:top-[2px] #{!important};
         }
     }
 }

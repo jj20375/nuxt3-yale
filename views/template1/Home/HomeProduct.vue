@@ -126,13 +126,11 @@ onMounted(async () => {
     @apply overflow-visible;
 }
 
-:deep {
-    .dragClass {
-        @apply xl:hidden h-[4px] bg-black rounded-lg;
-    }
-    .horizontalClass {
-        @apply xl:hidden h-[4px];
-    }
+:deep(.dragClass) {
+    @apply xl:hidden h-[4px] bg-black rounded-lg;
+}
+:deep(.horizontalClass) {
+    @apply xl:hidden h-[4px];
 }
 
 .store-swiper {

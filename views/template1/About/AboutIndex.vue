@@ -197,12 +197,10 @@ onMounted(async () => {
 </script>
 
 <style lang="scss" scoped>
-:deep {
-    .dragClass {
-        @apply h-[4px] w-[100px] bg-black rounded-lg;
-    }
-    .horizontalClass {
-        @apply h-[4px] w-[450px] left-1/2 -translate-x-1/2;
-    }
+:deep(.dragClass) {
+    @apply h-[4px] w-[100px] bg-black rounded-lg;
+}
+:deep(.horizontalClass) {
+    @apply h-[4px] w-[450px] left-1/2 -translate-x-1/2;
 }
 </style>

@@ -162,7 +162,7 @@ defineExpose({
 </script>
 
 <style lang="scss" scoped>
-:deep .el-textarea__inner {
+:deep(.el-textarea__inner) {
     @apply rounded-none;
 }
 </style>

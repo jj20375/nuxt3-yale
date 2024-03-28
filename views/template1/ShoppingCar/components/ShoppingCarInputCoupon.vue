@@ -33,9 +33,7 @@ defineExpose({
 });
 </script>
 <style lang="scss" scoped>
-:deep {
-    .el-input__inner {
-        font-size: 16px;
-    }
+:deep(.el-input__inner) {
+    font-size: 16px;
 }
 </style>

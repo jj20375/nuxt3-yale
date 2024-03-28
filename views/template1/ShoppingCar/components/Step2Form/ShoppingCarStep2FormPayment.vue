@@ -160,7 +160,7 @@ await getOfflinePaymentStores();
 </script>
 
 <style lang="scss" scoped>
-:deep .el-radio-group {
+:deep(.el-radio-group) {
     @apply flex flex-col items-start #{!important};
     .el-radio.el-radio--large {
         @apply mr-[8px] #{!important};

@@ -19,9 +19,11 @@
                 </div>
                 <div class="flex-1">
                     <div class="flex w-full text-gray-800 mb-[12px] gap-4">
-                        <h3 class="YaleSolisW-Bd font-medium text-[16px] sm:text-[18px] flex-1">訂製-{{ product.name }}</h3>
+                        <h3 class="YaleSolisW-Bd font-medium text-[16px] sm:text-[18px] flex-1">訂製-{{ product.name
+                            }}</h3>
                         <div class="flex flex-col items-end gap-2 cursor-pointer h-fit">
-                            <p class="hidden font-medium sm:block YaleSolisW-Bd">NT$ {{ $utils().formatCurrency(product.singlePrice * product.count) }}</p>
+                            <p class="hidden font-medium sm:block YaleSolisW-Bd">NT$
+                                {{ $utils().formatCurrency(product.singlePrice * product.count) }}</p>
                         </div>
                     </div>
                     <div class="flex items-start justify-between gap-4 mb-4">
@@ -74,8 +76,11 @@
                                             <div>{{ item.model }}</div>
                                         </div>
                                     </div>
-                                    <div v-if="item && ['currentTool1', 'currentTool2'].includes(key)">{{ item.title }}-{{ item.style }}</div>
-                                    <div v-if="item && ['currentOther1', 'currentOther2', 'otherServices'].includes(key)">
+                                    <div v-if="item && ['currentTool1', 'currentTool2'].includes(key)">{{ item.title
+                                        }}-{{ item.style }}
+                                    </div>
+                                    <div
+                                        v-if="item && ['currentOther1', 'currentOther2', 'otherServices'].includes(key)">
                                         <ul
                                             v-if="item"
                                             class="ml-2"
@@ -105,21 +110,29 @@
                         </button>
                     </div>
                     <div class="flex gap-4 sm:gap-[18px] justify-end">
-                        <div class="flex flex-1 sm:flex-initial justify-center items-stretch w-[150px] border border-gray-300 rounded-full">
+                        <div
+                            class="flex flex-1 sm:flex-initial justify-center items-stretch w-[150px] border border-gray-300 rounded-full">
                             <button
                                 class="flex items-center justify-center flex-1 h-auto cursor-pointer disabled:cursor-not-allowed"
                                 :disabled="product.count <= 1"
                                 @click.prevent="countReduce(index)"
                             >
-                                <el-icon><Minus /></el-icon>
+                                <el-icon>
+                                    <Minus />
+                                </el-icon>
                             </button>
-                            <div class="flex items-center justify-center w-[60px] sm:w-[80px] py-[4px] sm:py-[10px] h-full">{{ product.count }}</div>
+                            <div
+                                class="flex items-center justify-center w-[60px] sm:w-[80px] py-[4px] sm:py-[10px] h-full">
+                                {{ product.count }}
+                            </div>
                             <button
                                 class="flex items-center justify-center flex-1 h-auto cursor-pointer disabled:cursor-not-allowed"
                                 :disabled="product.count >= product.doorLimit"
                                 @click.prevent="countAdd(index)"
                             >
-                                <el-icon><Plus /></el-icon>
+                                <el-icon>
+                                    <Plus />
+                                </el-icon>
                             </button>
                         </div>
                         <button
@@ -133,7 +146,9 @@
                             />
                         </button>
                     </div>
-                    <div class="sm:hidden mt-[16px] font-medium YaleSolisW-Bd text-[16px]">NT$ {{ $utils().formatCurrency(product.singlePrice * product.count) }}</div>
+                    <div class="sm:hidden mt-[16px] font-medium YaleSolisW-Bd text-[16px]">NT$
+                        {{ $utils().formatCurrency(product.singlePrice * product.count) }}
+                    </div>
                 </div>
             </div>
         </el-checkbox-group>
@@ -148,7 +163,8 @@
 import { useShoppingCarStore } from "~/store/shoppingCarStore";
 import { useUserStore } from "~/store/userStore";
 import { ElMessage } from "element-plus";
-import ShoppingCarCustomProductDetail from "~/views/template1/ShoppingCar/components/ShoppingCarCustomProductDetail.vue";
+import ShoppingCarCustomProductDetail
+    from "~/views/template1/ShoppingCar/components/ShoppingCarCustomProductDetail.vue";
 
 const emit = defineEmits(["update:selectProductIds"]);
 
@@ -217,12 +233,12 @@ async function countReduce(index: number) {
             loading.value = true;
             const result = await shoppingCarStore.updateCustomCart({
                 cart_combination_id: shoppingCar.value[index].id,
-                quantity: shoppingCar.value[index].count,
+                quantity: shoppingCar.value[index].count
             });
             if (typeof result === "string") {
                 ElMessage({
                     type: "error",
-                    message: result,
+                    message: result
                 });
             }
             // 等待 1秒鐘再更新就好 以防快速點擊
@@ -232,6 +248,7 @@ async function countReduce(index: number) {
         }
     }, 1000);
 }
+
 /**
  * 點擊增加數量按鈕
  * @param { type Number(數字) } index 索引
@@ -252,12 +269,12 @@ async function countAdd(index: number) {
             loading.value = true;
             const result = await shoppingCarStore.updateCustomCart({
                 cart_combination_id: shoppingCar.value[index].id,
-                quantity: shoppingCar.value[index].count,
+                quantity: shoppingCar.value[index].count
             });
             if (typeof result === "string") {
                 ElMessage({
                     type: "error",
-                    message: result,
+                    message: result
                 });
             }
             // 等待 1秒鐘再更新就好 以防快速點擊
@@ -275,7 +292,7 @@ async function removeShoppingCar(index: number) {
     if (isAuth.value) {
         loading.value = true;
         const result = await shoppingCarStore.deleteCustomCart({
-            cart_combination_id: shoppingCar.value[index].id as number,
+            cart_combination_id: shoppingCar.value[index].id as number
         });
         loading.value = false;
         $shoppingCarService().removeCustomProductSingleShoppingCarProduct(index);
@@ -284,7 +301,7 @@ async function removeShoppingCar(index: number) {
         if (typeof result === "string") {
             ElMessage({
                 type: "error",
-                message: result,
+                message: result
             });
         }
     } else {
@@ -321,32 +338,34 @@ init();
 </script>
 
 <style lang="scss" scoped>
-:deep {
-    .el-checkbox-group {
-        @apply text-base leading-normal block #{!important};
+:deep(.el-checkbox-group) {
+    @apply text-base leading-normal block #{!important};
+}
+
+:deep(.el-checkbox) {
+    @apply h-[18px];
+    .el-checkbox__label {
+        @apply hidden #{!important};
     }
-    .el-checkbox {
-        @apply h-[18px];
-        .el-checkbox__label {
-            @apply hidden #{!important};
+
+    .el-checkbox__inner {
+        @apply w-[18px] h-[18px] #{!important};
+        &:hover {
+            @apply border-yellow-600;
         }
+    }
+
+    .is-checked {
         .el-checkbox__inner {
-            @apply w-[18px] h-[18px] #{!important};
-            &:hover {
-                @apply border-yellow-600;
-            }
-        }
-        .is-checked {
-            .el-checkbox__inner {
-                @apply bg-yellow-600 border-yellow-600 after:h-[9px] after:left-[6px] after:top-[2px] #{!important};
-            }
+            @apply bg-yellow-600 border-yellow-600 after:h-[9px] after:left-[6px] after:top-[2px] #{!important};
         }
     }
-    @media screen and (min-width: 767.98px) {
-        .product-card {
-            .grid {
-                grid-template-columns: 120px 1fr;
-            }
+}
+
+@media screen and (min-width: 767.98px) {
+    .product-card {
+        .grid {
+            grid-template-columns: 120px 1fr;
         }
     }
 }

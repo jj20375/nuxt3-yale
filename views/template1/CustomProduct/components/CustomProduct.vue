@@ -232,11 +232,11 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
-:deep .el-radio__input.is-checked .el-radio__inner {
+:deep(.el-radio__input.is-checked .el-radio__inner) {
     @apply bg-yellow-600 border-yellow-600 #{!important};
 }
 
-:deep .el-radio-group {
+:deep(.el-radio-group) {
     @apply block #{!important};
     .el-radio.el-radio--large {
         @apply mr-[8px] #{!important};

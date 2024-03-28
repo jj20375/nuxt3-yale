@@ -427,7 +427,7 @@ onMounted(async () => {
 </script>
 
 <style lang="scss" scoped>
-:deep .el-input {
+:deep(.el-input) {
     @apply relative flex flex-col justify-stretch flex-wrap mb-0 bg-transparent text-base;
     .el-input__wrapper {
         @apply shadow-none rounded-none p-1.5 bg-transparent text-[16px] #{!important};

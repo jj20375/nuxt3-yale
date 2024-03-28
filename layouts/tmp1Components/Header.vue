@@ -501,10 +501,8 @@ onBeforeUnmount(() => {
 </script>
 
 <style lang="scss" scoped>
-:deep {
-    .el-dropdown {
-        @apply text-gray-800 text-base leading-5;
-    }
+:deep(.el-dropdown) {
+    @apply text-gray-800 text-base leading-5;
 }
 
 // 有黃色背景的特效
@@ -600,9 +598,7 @@ onBeforeUnmount(() => {
     max-height: calc(var(--vh, 1vh) * 100 - #{$navbar-height-mb});
 }
 
-:deep {
-    .el-badge .el-badge__content {
-        @apply bg-red-500;
-    }
+:deep(.el-badge .el-badge__content) {
+    @apply bg-red-500;
 }
 </style>

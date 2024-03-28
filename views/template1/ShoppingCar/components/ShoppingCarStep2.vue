@@ -463,22 +463,20 @@ onMounted(async () => {
 </script>
 
 <style lang="scss" scoped>
-:deep {
-    .el-checkbox-group {
-        @apply text-base leading-normal block #{!important};
-    }
-    .el-checkbox {
-        @apply h-[18px] #{!important};
-        .el-checkbox__inner {
-            @apply w-[18px] h-[18px] #{!important};
-            &:hover {
-                @apply border-yellow-600;
-            }
+:deep(.el-checkbox-group) {
+    @apply text-base leading-normal block #{!important};
+}
+:deep(.el-checkbox) {
+    @apply h-[18px] #{!important};
+    .el-checkbox__inner {
+        @apply w-[18px] h-[18px] #{!important};
+        &:hover {
+            @apply border-yellow-600;
         }
-        .is-checked {
-            .el-checkbox__inner {
-                @apply bg-yellow-600 border-yellow-600 after:h-[9px] after:left-[6px] after:top-[2px] #{!important};
-            }
+    }
+    .is-checked {
+        .el-checkbox__inner {
+            @apply bg-yellow-600 border-yellow-600 after:h-[9px] after:left-[6px] after:top-[2px] #{!important};
         }
     }
 }

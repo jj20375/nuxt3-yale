@@ -25,7 +25,9 @@
                     :class="[ isSliderBeginning ? 'opacity-0' : 'opacity-1' ]"
                     @click.stop="mainSwiper.slidePrev()"
                 >
-                    <el-icon><ArrowLeft /></el-icon>
+                    <el-icon>
+                        <ArrowLeft />
+                    </el-icon>
                 </button>
             </div>
             <div class="absolute hidden xl:flex top-0 -right-[30px] translate-x-full z-50 flex items-center h-full">
@@ -34,7 +36,9 @@
                     :class="[ isSliderEnd ? 'opacity-0' : 'opacity-1' ]"
                     @click.stop="mainSwiper.slideNext()"
                 >
-                    <el-icon><ArrowRight /></el-icon>
+                    <el-icon>
+                        <ArrowRight />
+                    </el-icon>
                 </button>
             </div>
         </div>
@@ -68,21 +72,21 @@ const props = withDefaults(defineProps<Props>(), {
             price: 0,
             market_price: 0,
             main_image: "",
-            other_images: [""],
-        },
+            other_images: [""]
+        }
     ],
     breadcrumbs: [
         {
             name: "",
-            text: "",
-        },
-    ],
+            text: ""
+        }
+    ]
 });
 
 const emit = defineEmits(["handleFavorite"]);
 const { isLargePad, isMobile } = useWindowResize();
 
-async function handleFavorite (id: any) {
+async function handleFavorite(id: any) {
     emit("handleFavorite", id);
 }
 
@@ -108,12 +112,12 @@ function onSlideChange() {
 
 </script>
 <style lang="scss" scoped>
-:deep {
-    .dragClass {
-        @apply xl:hidden h-[4px] bg-black rounded-lg;
-    }
-    .horizontalClass {
-        @apply xl:hidden h-[4px];
-    }
+
+:deep(.dragClass) {
+    @apply xl:hidden h-[4px] bg-black rounded-lg;
+}
+
+:deep(.horizontalClass) {
+    @apply xl:hidden h-[4px];
 }
 </style>

@@ -156,18 +156,18 @@ function imageOverLimit(files: any, fileList: any) {
 </script>
 
 <style lang="scss" scoped>
-:deep .el-upload.is-drag {
+:deep(.el-upload.is-drag) {
     @apply border-none;
 }
 
-:deep .el-upload-dragger {
+:deep(.el-upload-dragger) {
     @apply h-full border-gray-300 rounded-none flex items-center justify-center #{!important};
     &:hover {
         @apply border-yellow-600 #{!important};
     }
 }
 
-:deep .el-upload-list__item {
+:deep(.el-upload-list__item) {
     @apply rounded-none border-gray-300;
     > * {
         @apply w-full;

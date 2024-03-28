@@ -18,7 +18,8 @@
                         :label="product.id"
                         size="large"
                         class="flex-1"
-                        >{{ product.title }}</el-checkbox
+                    >{{ product.title }}
+                    </el-checkbox
                     >
                     <div class="absolute right-0">
                         <button
@@ -67,7 +68,8 @@
             append-to-body
         >
             <div class="w-3/4 mx-auto">
-                <h5 class="text-[20px] text-gray-800 YaleSolisW-Bd mb-[38px]">{{ currentDialogProduct.name }}-{{ currentDialogProduct.style }}</h5>
+                <h5 class="text-[20px] text-gray-800 YaleSolisW-Bd mb-[38px]">{{ currentDialogProduct.name
+                    }}-{{ currentDialogProduct.style }}</h5>
                 <CustomProductDailogCarousel
                     v-if="!$utils().isEmpty(currentDialogProduct.detailData.carousel)"
                     :photos="currentDialogProduct.detailData.carousel"
@@ -121,11 +123,11 @@ const props = withDefaults(defineProps<Props>(), {
             imgSrc: "/img/custom-product/demo/custom-product-door-demo-1.jpg",
             title: "品牌/ASSA ABLOY",
             style: "YDM3109A",
-            price: 2000,
-        },
+            price: 2000
+        }
     ],
     // 標題
-    title: "款式",
+    title: "款式"
 });
 
 const selectedProducts = ref([]);
@@ -164,24 +166,26 @@ function closeDialog() {
 </script>
 
 <style lang="scss" scoped>
-:deep {
-    .el-checkbox-group {
-        @apply text-base leading-normal block #{!important};
+
+:deep(.el-checkbox-group) {
+    @apply text-base leading-normal block #{!important};
+}
+
+:deep(.el-checkbox.el-checkbox--large) {
+    .el-checkbox__label {
+        @apply font-normal #{!important};
     }
-    .el-checkbox.el-checkbox--large {
-        .el-checkbox__label {
-            @apply font-normal #{!important};
+
+    .el-checkbox__inner {
+        @apply w-[18px] h-[18px] #{!important};
+        &:hover {
+            @apply border-yellow-600;
         }
+    }
+
+    .is-checked {
         .el-checkbox__inner {
-            @apply w-[18px] h-[18px] #{!important};
-            &:hover {
-                @apply border-yellow-600;
-            }
-        }
-        .is-checked {
-            .el-checkbox__inner {
-                @apply bg-yellow-600 border-yellow-600 after:h-[9px] after:left-[6px] after:top-[2px] #{!important};
-            }
+            @apply bg-yellow-600 border-yellow-600 after:h-[9px] after:left-[6px] after:top-[2px] #{!important};
         }
     }
 }

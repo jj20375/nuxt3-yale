@@ -56,7 +56,7 @@ function init() {}
 </script>
 
 <style lang="scss" scoped>
-:deep .el-radio__input.is-checked .el-radio__inner {
+:deep(.el-radio__input.is-checked .el-radio__inner) {
     @apply bg-yellow-600 border-yellow-600 #{!important};
 }
 </style>

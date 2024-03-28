@@ -94,13 +94,11 @@ const modules = ref([Scrollbar]);
 </script>
 
 <style lang="scss" scoped>
-:deep {
-    .dragClass {
-        @apply h-[4px] md:w-[100px] bg-black rounded-lg;
-    }
-    .horizontalClass {
-        @apply h-[4px] md:w-[450px];
-    }
+:deep(.dragClass) {
+    @apply h-[4px] md:w-[100px] bg-black rounded-lg;
+}
+:deep(.horizontalClass) {
+    @apply h-[4px] md:w-[450px];
 }
 
 .store-swiper {

@@ -328,7 +328,7 @@ defineExpose({
 </script>
 
 <style lang="scss" scoped>
-:deep .el-checkbox {
+:deep(.el-checkbox) {
     .el-checkbox__label {
         @apply text-gray-800 text-[15px] leading-none font-normal #{!important};
     }

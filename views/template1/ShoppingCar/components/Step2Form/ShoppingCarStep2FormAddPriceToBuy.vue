@@ -204,11 +204,11 @@ watch(formData.value, (val) => {
 </script>
 
 <style lang="scss" scoped>
-:deep .el-input__wrapper {
+:deep(.el-input__wrapper) {
     @apply px-2;
 }
 // 輸入框
-:deep .el-select {
+:deep(.el-select) {
     .el-input {
         .el-input__wrapper {
             @apply shadow-formDefault rounded-none py-1.5 px-0 bg-transparent text-[16px] #{!important};
@@ -226,25 +226,24 @@ watch(formData.value, (val) => {
     }
 }
 
-:deep {
-    .el-checkbox-group {
-        @apply text-base leading-normal block #{!important};
+:deep(.el-checkbox-group) {
+    @apply text-base leading-normal block #{!important};
+}
+
+:deep(.el-checkbox) {
+    @apply h-[18px] #{!important};
+    .el-checkbox__label {
+        @apply hidden #{!important};
     }
-    .el-checkbox {
-        @apply h-[18px] #{!important};
-        .el-checkbox__label {
-            @apply hidden #{!important};
+    .el-checkbox__inner {
+        @apply w-[18px] h-[18px] #{!important};
+        &:hover {
+            @apply border-yellow-600;
         }
+    }
+    .is-checked {
         .el-checkbox__inner {
-            @apply w-[18px] h-[18px] #{!important};
-            &:hover {
-                @apply border-yellow-600;
-            }
-        }
-        .is-checked {
-            .el-checkbox__inner {
-                @apply bg-yellow-600 border-yellow-600 after:h-[9px] after:left-[6px] after:top-[2px] #{!important};
-            }
+            @apply bg-yellow-600 border-yellow-600 after:h-[9px] after:left-[6px] after:top-[2px] #{!important};
         }
     }
 }

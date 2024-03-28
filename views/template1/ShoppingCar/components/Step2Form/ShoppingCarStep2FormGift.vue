@@ -156,7 +156,7 @@ watch(formData.value, (val) => {
 </script>
 
 <style lang="scss" scoped>
-:deep .el-checkbox {
+:deep(.el-checkbox) {
     .el-checkbox__label {
         @apply hidden #{!important};
     }
