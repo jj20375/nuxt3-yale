@@ -16,13 +16,16 @@
                     class="w-full mb-9 xl:mb-0"
                 >
                     <!-- {{ item }} -->
-                    <ProductCard :product="item" @handleFavorite="handleFavorite" />
+                    <ProductCard
+                        :product="item"
+                        @handleFavorite="handleFavorite"
+                    />
                 </SwiperSlide>
             </Swiper>
             <div class="absolute hidden xl:flex top-0 -left-[30px] -translate-x-full z-50 flex items-center h-full">
                 <button
-                    class="text-3xl flex justify-center items-center"
-                    :class="[ isSliderBeginning ? 'opacity-0' : 'opacity-1' ]"
+                    class="flex items-center justify-center text-3xl"
+                    :class="[isSliderBeginning ? 'opacity-0' : 'opacity-1']"
                     @click.stop="mainSwiper.slidePrev()"
                 >
                     <el-icon>
@@ -32,8 +35,8 @@
             </div>
             <div class="absolute hidden xl:flex top-0 -right-[30px] translate-x-full z-50 flex items-center h-full">
                 <button
-                    class="text-3xl flex justify-center items-center"
-                    :class="[ isSliderEnd ? 'opacity-0' : 'opacity-1' ]"
+                    class="flex items-center justify-center text-3xl"
+                    :class="[isSliderEnd ? 'opacity-0' : 'opacity-1']"
                     @click.stop="mainSwiper.slideNext()"
                 >
                     <el-icon>
@@ -72,15 +75,15 @@ const props = withDefaults(defineProps<Props>(), {
             price: 0,
             market_price: 0,
             main_image: "",
-            other_images: [""]
-        }
+            other_images: [""],
+        },
     ],
     breadcrumbs: [
         {
             name: "",
-            text: ""
-        }
-    ]
+            text: "",
+        },
+    ],
 });
 
 const emit = defineEmits(["handleFavorite"]);
@@ -109,10 +112,8 @@ function onSlideChange() {
     isSliderBeginning.value = mainSwiper.value.isBeginning;
     isSliderEnd.value = mainSwiper.value.isEnd;
 }
-
 </script>
 <style lang="scss" scoped>
-
 :deep(.dragClass) {
     @apply xl:hidden h-[4px] bg-black rounded-lg;
 }

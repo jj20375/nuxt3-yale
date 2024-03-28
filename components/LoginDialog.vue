@@ -34,7 +34,6 @@
             <template #header="{ close, titleId, titleClass }"></template>
             <LoginIndex
                 :customClass="'!p-0'"
-                :isNeedPageRouter="false"
                 :isDialog="true"
                 @onCloseDialog="closeDialog"
             />

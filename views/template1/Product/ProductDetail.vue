@@ -367,6 +367,7 @@ const detailData = computed(() => {
             key += `-${item}`;
         });
 
+        console.log("key =>", key);
         return {
             ...result,
             price: product.productVariations[key]?.price,
@@ -466,6 +467,7 @@ const getData = async () => {
                 main_image: item.main_image,
                 is_favorite: item.is_favorite,
                 tags: item.tags,
+                is_single_variation: item.is_single_variation,
             };
         });
     }

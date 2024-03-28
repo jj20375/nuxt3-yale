@@ -1,5 +1,5 @@
 <template>
-    <section class="mt-headerMb xl:mt-header border-t border-gray-300">
+    <section class="border-t border-gray-300 mt-headerMb xl:mt-header">
         <nav class="border-b border-gray-300 py-[16px] bg-white">
             <div class="container">
                 <Breadcrumb :menus="breadcrumbs" />
@@ -7,8 +7,8 @@
         </nav>
         <div class="container">
             <div class="mb-[40px] sm:mb-[80px] mt-[40px] sm:mt-[80px] xl:w-4/5 mx-auto">
-                <div class="flex sm:items-end justify-between">
-                    <div class="flex flex-col sm:flex-row justify-center sm:items-end gap-1 sm:gap-7">
+                <div class="flex justify-between sm:items-end">
+                    <div class="flex flex-col justify-center gap-1 sm:flex-row sm:items-end sm:gap-7">
                         <h3 class="text-[20px] sm:text-[32px] font-bold">會員中心</h3>
                         <div class="text-[16px] mt-1 sm:mt-0 sm:mb-1.5">您好，{{ user.name }}</div>
                     </div>
@@ -18,10 +18,8 @@
                         class="group"
                     >
                         <div class="flex gap-2 mt-1 sm:mt-0 sm:mb-1.5 cursor-pointer transition-all duration-400 hover:text-gray-500 hover:transition-all hover:duration-400">
-                            <IconLogout
-                                class="!w-[24px] !h-[24px] text-gray-800 transition-all duration-300 group-hover:text-gray-400 group-hover:transition-all group-hover:duration-300"
-                            />
-                            <div class="group-hover:text-gray-400 transition-all duration-300 group-hover:transition-all group-hover:duration-300">登出</div>
+                            <IconLogout class="!w-[24px] !h-[24px] text-gray-800 transition-all duration-300 group-hover:text-gray-400 group-hover:transition-all group-hover:duration-300" />
+                            <div class="transition-all duration-300 group-hover:text-gray-400 group-hover:transition-all group-hover:duration-300">登出</div>
                         </div>
                     </NuxtLink>
                 </div>
@@ -57,6 +55,7 @@ import { storeToRefs } from "pinia";
 // icon 路徑
 import IconLogout from "~/assets/img/icons/auth/logout.svg";
 
+const router = useRouter();
 const userStore = useUserStore();
 const { user } = storeToRefs(userStore);
 
@@ -126,4 +125,9 @@ const panelDatas = ref([
         imgSrc: "img/icons/auth/favorite.svg",
     },
 ]);
+onMounted(() => {
+    if (!user.value.is_verified && userStore.isAuth) {
+        router.push({ name: "auth-verification-slug", params: { slug: "user" } });
+    }
+});
 </script>

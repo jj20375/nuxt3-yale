@@ -51,8 +51,8 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
                     // 設置顏色名稱
                     let colorIndex = -1;
                     let colorName = undefined;
-                    let imgSrc = i.productable.main_image
-                    let productVariationable = []
+                    let imgSrc = i.productable.main_image;
+                    let productVariationable = [];
                     if (i.productVariationable) {
                         for (const [key, value] of Object.entries(i.productable.productVariations)) {
                             const item: any = value;
@@ -63,13 +63,13 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
                             }
                         }
 
-                        productVariationable = i.productVariationable?.values.map((variation: { product_option_name: any; product_option_value_name: any; }) => {
+                        productVariationable = i.productVariationable?.values.map((variation: { product_option_name: any; product_option_value_name: any }) => {
                             return {
                                 label: variation.product_option_name,
-                                value: variation.product_option_value_name
-                            }
-                        })
-                        imgSrc = i.productVariationable.image ? i.productable.other_images.find(img => img.includes(i.productVariationable.image)) : imgSrc
+                                value: variation.product_option_value_name,
+                            };
+                        });
+                        imgSrc = i.productVariationable.image ? i.productable.other_images.find((img) => img.includes(i.productVariationable.image)) : imgSrc;
                     }
                     console.log("GetNormalCartAPI =>", i);
                     return {
@@ -83,7 +83,7 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
                         product_variationable_id: i.productVariationable ? i.productVariationable.id : undefined,
                         colorName,
                         stock: i.productable.stock,
-                        productVariationable: productVariationable
+                        productVariationable: productVariationable,
                     };
                 });
                 if (process.client) {
@@ -612,8 +612,9 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
     const syncCustomCart = async () => {
         const shoppinCar = $shoppingCarService().getCustomProductShoppingCar();
         if (!$utils().isEmpty(shoppinCar)) {
-            shoppinCar.forEach(async (item: ShoppingCarCustomInterface) => {
+            shoppinCar.forEach(async (item: ShoppingCarCustomInterface, index: number) => {
                 await addToCustomCart(item, item.count);
+                $shoppingCarService().removeSingleShoppingCarProduct(index);
             });
         }
     };

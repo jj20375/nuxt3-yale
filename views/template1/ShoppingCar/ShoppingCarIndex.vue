@@ -55,7 +55,11 @@
                     v-if="currentStep !== 2"
                 >
                     <div class="lg:sticky lg:top-[111px]">
-                        <ShoppingCarInputCoupon ref="couponRef" @getCoupon="getCoupon" v-if="currentStep == 0" />
+                        <ShoppingCarInputCoupon
+                            ref="couponRef"
+                            @getCoupon="getCoupon"
+                            v-if="currentStep == 0"
+                        />
                         <ShoppingCarBilling
                             :class="currentStep == 0 ? 'mt-5 sm:mt-[30px] lg:mt-[20px]' : ''"
                             :selectProductIds="selectProductIds"
@@ -209,42 +213,42 @@ const discountData = ref<any>({
     discount_amount: 0,
     after_discount_amount: 0,
     coupon_discount_amount: 0,
-})
+});
 
-const couponRef = ref<any>(null)
+const couponRef = ref<any>(null);
 
-const getCoupon = async(val: any) => {
-    console.log('getCoupon', val)
+const getCoupon = async (val: any) => {
+    console.log("getCoupon", val);
     const params = {
-        type: 'normal',
+        type: "normal",
         cart_items: [],
-        coupon_code: val
-    }
+        coupon_code: val,
+    };
     if (selectProductIds.value.length === 0) {
         ElMessage({
             type: "error",
-            message: '請先選擇商品',
+            message: "請先選擇商品",
         });
     } else {
-        params.cart_items = selectProductIds.value
+        params.cart_items = selectProductIds.value;
         const { data, status, error } = await $api().DiscountCheckAPI(params);
-        console.log(status)
+        console.log(status);
         if (status.value === "success") {
             const { data: couponDatas, status, error } = await $api().DiscountCalculateAPI(params);
             const couponData = (couponDatas.value as any).data;
-            console.log(couponData)
-            discountData.value.coupon_discount_amount = couponData.coupon_discount_amount
-            discountData.value.discount_amount = couponData.discount_amount
+            console.log(couponData);
+            discountData.value.coupon_discount_amount = couponData.coupon_discount_amount;
+            discountData.value.discount_amount = couponData.discount_amount;
         } else {
             ElMessage({
                 type: "error",
                 message: (error.value as any).data.message,
             });
-            discountData.value.coupon_discount_amount = 0
-            discountData.value.discount_amount = 0
+            discountData.value.coupon_discount_amount = 0;
+            discountData.value.discount_amount = 0;
         }
     }
-}
+};
 
 const discountCalculate = async () => {
     const loading = ElLoading.service({
@@ -254,41 +258,41 @@ const discountCalculate = async () => {
     });
     try {
         const params = {
-            type: 'normal',
+            type: "normal",
             cart_items: selectProductIds.value,
-            coupon_code: couponRef.value.formData.coupon ? couponRef.value.formData.coupon : 'nocoupon'
-        }
+            coupon_code: couponRef.value.formData.coupon ? couponRef.value.formData.coupon : "nocoupon",
+        };
         const { data: couponDatas, status, error } = await $api().DiscountCalculateAPI(params);
         const couponData = (couponDatas.value as any).data;
-        console.log(couponData)
-        discountData.value.coupon_discount_amount = couponData.coupon_discount_amount
-        discountData.value.discount_amount = couponData.discount_amount
-        loading.close()
-    } catch{
-        loading.close()
+        console.log(couponData);
+        discountData.value.coupon_discount_amount = couponData.coupon_discount_amount;
+        discountData.value.discount_amount = couponData.discount_amount;
+        loading.close();
+    } catch {
+        loading.close();
     }
-}
+};
 
 const productCountUpdate = async () => {
-    console.log('gdsdgf')
-    if (currentTab.value === 'type1' && selectProductIds.value.length > 0) {
-        discountCalculate()
+    console.log("gdsdgf");
+    if (currentTab.value === "type1" && selectProductIds.value.length > 0) {
+        discountCalculate();
     } else {
-        discountData.value.coupon_discount_amount = 0
-        discountData.value.discount_amount = 0
+        discountData.value.coupon_discount_amount = 0;
+        discountData.value.discount_amount = 0;
     }
-}
+};
 
 const selectProduct = async (val: number[]) => {
-    console.log(val)
-    selectProductIds.value = val
-    if (currentTab.value === 'type1' && selectProductIds.value.length > 0) {
-        discountCalculate()
+    console.log(val);
+    selectProductIds.value = val;
+    if (currentTab.value === "type1" && selectProductIds.value.length > 0) {
+        discountCalculate();
     } else {
-        discountData.value.coupon_discount_amount = 0
-        discountData.value.discount_amount = 0
+        discountData.value.coupon_discount_amount = 0;
+        discountData.value.discount_amount = 0;
     }
-}
+};
 // go step2
 const goStepCheckout = () => {
     if (selectProductIds.value.length === 0) {
