@@ -85,7 +85,7 @@
                                 <li
                                     v-for="opt in item.options"
                                     :key="opt.id"
-                                    class="cursor-pointer group w-[48px]"
+                                    class="relative cursor-pointer group w-[48px] mb-[29px]"
                                     @click="optionChange(opt, index)"
                                 >
                                     <div
@@ -98,7 +98,7 @@
                                         />
                                     </div>
                                     <p
-                                        class="text-[14px] text-center text-gray-800 px-2 pt-[8px] opacity-0 group-hover:opacity-100 duration-300 transition-all"
+                                        class="absolute text-[14px] text-center text-gray-800 w-[60px] left-1/2 -translate-x-1/2 pt-[8px] opacity-0 group-hover:opacity-100 duration-300 transition-all"
                                         :class="currentColor[index] === opt.id ? 'opacity-100' : ''"
                                     >
                                         {{ opt.text }}
