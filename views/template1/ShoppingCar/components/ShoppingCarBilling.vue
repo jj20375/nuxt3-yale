@@ -4,11 +4,11 @@
             <span class="flex-1">小計</span>
             <span>NT$ {{ $utils().formatCurrency(total) }}</span>
         </div>
-        <div class="flex text-gray-800 text-[14px] mb-[4px]">
+        <div v-if="userStore.isAuth" class="flex text-gray-800 text-[14px] mb-[4px]">
             <span class="flex-1">活動折扣</span>
             <span>-NT$ {{ $utils().formatCurrency(discountData.discount_amount) }}</span>
         </div>
-        <div class="flex text-gray-800 text-[14px]">
+        <div v-if="userStore.isAuth" class="flex text-gray-800 text-[14px]">
             <span class="flex-1">優惠券折扣</span>
             <span>-NT$ {{ $utils().formatCurrency(discountData.coupon_discount_amount) }}</span>
         </div>
@@ -49,6 +49,9 @@
 <script setup lang="ts">
 import { ShoppingCarInterface } from "~/interface/shoppingCar";
 import { useShoppingCarStore } from "~/store/shoppingCarStore";
+import { useUserStore } from "~/store/userStore";
+
+const userStore = useUserStore();
 
 interface Props {
     selectProductIds: number[];
