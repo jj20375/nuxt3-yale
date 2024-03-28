@@ -9,11 +9,19 @@
             />
             <button @click="handleCoupon" class="bg-gray-800 py-[10px] px-[16px] xl:px-[24px] text-white rounded-tr-[4px] rounded-br-[4px] text-[16px]">確認</button>
         </div>
+        <div
+            v-if="formData.showCheckWarning"
+            class="text-pink-900 text-[14px] mt[10px]"
+        >
+            {{formData.warningTXT}}
+        </div>
     </div>
 </template>
 <script lang="ts" setup>
 import { ElMessage } from "element-plus";
 const formData = ref<any>({
+    warningTXT: '',
+    showCheckWarning: false,
     coupon: ''
 })
 const emit = defineEmits(["getCoupon"]);

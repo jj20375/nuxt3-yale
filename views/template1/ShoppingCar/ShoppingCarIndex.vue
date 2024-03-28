@@ -215,34 +215,52 @@ const couponRef = ref<any>(null)
 
 const getCoupon = async(val: any) => {
     console.log('getCoupon', val)
+    if (currentTab.value === "type2") {
+        return
+    }
     const params = {
         type: 'normal',
         cart_items: [],
         coupon_code: val
     }
-    if (selectProductIds.value.length === 0) {
+    if (!userStore.isAuth) {
+        showLoginDialog.value = true;
+        ElMessage({
+            type: "error",
+            message: "請先登入",
+        });
+    } else if (selectProductIds.value.length === 0) {
         ElMessage({
             type: "error",
             message: '請先選擇商品',
         });
+    } else if (couponRef.value.formData.coupon === '') {
+        ElMessage({
+            type: "error",
+            message: '請輸入優惠序號',
+        });
+        couponRef.value.formData.warningTXT = '請輸入優惠序號'
+        couponRef.value.formData.showCheckWarning = true
     } else {
         params.cart_items = selectProductIds.value
-        const { data, status, error } = await $api().DiscountCheckAPI(params);
-        console.log(status)
-        if (status.value === "success") {
-            const { data: couponDatas, status, error } = await $api().DiscountCalculateAPI(params);
-            const couponData = (couponDatas.value as any).data;
-            console.log(couponData)
-            discountData.value.coupon_discount_amount = couponData.coupon_discount_amount
-            discountData.value.discount_amount = couponData.discount_amount
-        } else {
+        const { data, status: checkStatus, error: checkError } = await $api().DiscountCheckAPI(params);
+        console.log(checkStatus)
+        if (checkStatus.value !== "success") {
             ElMessage({
                 type: "error",
-                message: (error.value as any).data.message,
+                message: (checkError.value as any).data.message,
             });
-            discountData.value.coupon_discount_amount = 0
-            discountData.value.discount_amount = 0
+            couponRef.value.formData.coupon = ''
+            couponRef.value.formData.warningTXT = (checkError.value as any).data.message
+            couponRef.value.formData.showCheckWarning = true
+        } else {
+            couponRef.value.formData.warningTXT = ''
+            couponRef.value.formData.showCheckWarning = false
         }
+        const { data: couponDatas, status, error } = await $api().DiscountCalculateAPI(params);
+        const couponData = (couponDatas.value as any).data;
+        discountData.value.coupon_discount_amount = couponData.coupon_discount_amount
+        discountData.value.discount_amount = couponData.discount_amount
     }
 }
 
@@ -271,7 +289,7 @@ const discountCalculate = async () => {
 
 const productCountUpdate = async () => {
     console.log('gdsdgf')
-    if (currentTab.value === 'type1' && selectProductIds.value.length > 0) {
+    if (userStore.isAuth && currentTab.value === 'type1' && selectProductIds.value.length > 0) {
         discountCalculate()
     } else {
         discountData.value.coupon_discount_amount = 0
@@ -282,7 +300,7 @@ const productCountUpdate = async () => {
 const selectProduct = async (val: number[]) => {
     console.log(val)
     selectProductIds.value = val
-    if (currentTab.value === 'type1' && selectProductIds.value.length > 0) {
+    if (userStore.isAuth && currentTab.value === 'type1' && selectProductIds.value.length > 0) {
         discountCalculate()
     } else {
         discountData.value.coupon_discount_amount = 0
