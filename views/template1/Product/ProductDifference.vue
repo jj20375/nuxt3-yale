@@ -130,9 +130,9 @@ async function getList(params: { product_type_id: string }) {
 }
 
 function getShareData() {
-    if (route.query.selectItem && JSON.parse(route.query.selectItem)) {
+    if (route.params.selectItem && JSON.parse(route.params.selectItem)) {
         productCompareStore.compareStoreReset();
-        const selectItems = JSON.parse(route.query.selectItem);
+        const selectItems = JSON.parse(route.params.selectItem);
         console.log(selectItems);
         selectItems.forEach((item: string | number, index: number) => {
             productCompareStore.compareStore[index] = datas.value.find((data) => data.id === item);
@@ -204,7 +204,7 @@ function socialShare(type: string) {
  * 初始化
  */
 async function init() {
-    await getList({ product_type_id: route.query.compareId });
+    await getList({ product_type_id: route.params.compareId });
 }
 
 onMounted(() => {
