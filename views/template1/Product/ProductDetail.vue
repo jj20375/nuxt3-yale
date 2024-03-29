@@ -90,7 +90,7 @@
                                 >
                                     <div
                                         class="p-2 transition-all duration-300 border-2 border-transparent rounded-full"
-                                        :class="currentColor[index] === opt.id ? 'border-yellow-600' : 'group-hover:border-gray-100'"
+                                        :class="currentOption[index] === opt.id ? 'border-yellow-600' : 'group-hover:border-gray-100'"
                                     >
                                         <NuxtImg
                                             class="w-[32px] aspect-square"
@@ -99,7 +99,7 @@
                                     </div>
                                     <p
                                         class="absolute text-[14px] text-center text-gray-800 w-[60px] left-1/2 -translate-x-1/2 pt-[8px] opacity-0 group-hover:opacity-100 duration-300 transition-all"
-                                        :class="currentColor[index] === opt.id ? 'opacity-100' : ''"
+                                        :class="currentOption[index] === opt.id ? 'opacity-100' : ''"
                                     >
                                         {{ opt.text }}
                                     </p>
@@ -312,8 +312,8 @@ const shoppingCarStore = useShoppingCarStore();
 
 const productDetailCarouselRef = ref<any>(null);
 
-// 預設選中顏色
-const currentColor = ref<any>([]);
+// 預設選中型號
+const currentOption = ref<any>([]);
 // 顏色名稱
 const colorName = ref("");
 // 詳細介紹 產品規格 tab
@@ -363,7 +363,7 @@ const detailData = computed(() => {
     } else {
         // 有多個產品選擇
         let key = "option";
-        currentColor.value.forEach((item: string) => {
+        currentOption.value.forEach((item: string) => {
             key += `-${item}`;
         });
 
@@ -390,11 +390,13 @@ const productOptions = computed(() => {
     const result: ProductionOption[] = [];
     const product = productDetail.value;
     if (product.is_single_variation === 0) {
+        const productKeys = Object.keys(product.productVariations).map((key) => key);
         product.productOptions.forEach((item: { values: any[]; name: any }, index: number) => {
-            const option: {
+            let option: {
                 id: any;
                 text: any;
                 imgSrc: string;
+                [key: string]: any;
             }[] = [];
             item.values.forEach((opt: { id: number; name: string; icon: string }) => {
                 option.push({
@@ -403,12 +405,20 @@ const productOptions = computed(() => {
                     imgSrc: opt.icon,
                 });
             });
+            // 判斷有尺寸時才觸發
+            if (index === 1) {
+                // 取得顏色對應尺寸的 option 資料
+                option = option.filter((item2: any) => {
+                    return productKeys.includes(`option-${currentOption.value[0]}-${item2.id}`);
+                });
+            }
             result.push({
                 name: item.name,
                 options: option,
             });
         });
     }
+    console.log("productOptions =>", result);
     return result;
 });
 // breadcrumbs
@@ -475,7 +485,7 @@ const getData = async () => {
     // 產品規格可多選，設定預設值
     if (product.is_single_variation === 0) {
         product.productOptions.forEach((item: any, idx: number) => {
-            currentColor.value[idx] = item.values[0].id;
+            currentOption.value[idx] = item.values[0].id;
         });
         optionChangePrice(true);
         optionChange(productOptions.value[0].options[0], 0);
@@ -527,16 +537,34 @@ const getData = async () => {
 
 // 切換商品選擇
 const optionChange = (opt: { id: any; text: string }, index: number) => {
-    currentColor.value[index] = opt.id;
+    currentOption.value[index] = opt.id;
     colorName.value = opt.text;
+    // 所有產品組合 id key
+    const productKeys = Object.keys(detailData.value.productVariations).map((key) => key);
+    const sizeData = detailData.value.productOptions.find((item2: any) => {
+        return item2.name === "尺寸";
+    });
+    // 判斷有尺寸資料觸發 且為選擇 顏色的事件才觸發
+    if (sizeData && index === 0) {
+        // 取得產品組合 id key 最後一個字串
+        let lastId: number | string = "";
+        productKeys.forEach((key: string) => {
+            productOptions.value[1].options.forEach((option: any) => {
+                if (option.id === Number(key[key.length - 1])) {
+                    lastId = Number(key[key.length - 1]);
+                }
+            });
+        });
+        currentOption.value[1] = Number(lastId);
+    }
     optionChangePrice();
 };
 const currentImage = computed(() => {
     let key = "option";
-    currentColor.value.forEach((item: string) => {
+    currentOption.value.forEach((item: string) => {
         key += `-${item}`;
     });
-    if (currentColor.value.length > 0) {
+    if (currentOption.value.length > 0) {
         const index = photos.value.findIndex((item) => item.imgSrc === detailData.value.productVariations[key].image);
         return index > -1 ? photos.value[index].imgSrc : photos.value[0].imgSrc;
     }
@@ -545,16 +573,16 @@ const currentImage = computed(() => {
 
 const currentItem = computed(() => {
     let key = "option";
-    currentColor.value.forEach((item: string) => {
+    currentOption.value.forEach((item: string) => {
         key += `-${item}`;
     });
-    return currentColor.value.length > 0 ? detailData.value.productVariations[key] : null;
+    return currentOption.value.length > 0 ? detailData.value.productVariations[key] : null;
 });
 
 // 切換選項變更圖片
 const optionChangePrice = (init: boolean = false) => {
     let key = "option";
-    currentColor.value.forEach((item: string) => {
+    currentOption.value.forEach((item: string) => {
         key += `-${item}`;
     });
 
