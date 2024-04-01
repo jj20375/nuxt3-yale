@@ -8,19 +8,28 @@
                 class="absolute object-cover w-full h-full"
                 :src="currentBgData[currentViewAngleData]"
             />
-            <div class="absolute z-10 w-full h-full">
+            <div
+                v-if="productData.door[currentViewAngleData]"
+                class="absolute z-10 w-full h-full"
+            >
                 <NuxtImg
                     class="relative object-cover w-full h-full"
                     :src="productData.door[currentViewAngleData]"
                 />
             </div>
-            <div class="absolute w-full h-full">
+            <div
+                v-if="productData.doorOut[currentViewAngleData]"
+                class="absolute w-full h-full"
+            >
                 <NuxtImg
                     class="object-cover w-full h-full"
                     :src="productData.doorOut[currentViewAngleData]"
                 />
             </div>
-            <div class="absolute z-20 w-full h-full">
+            <div
+                v-if="productData.lock[currentViewAngleData]"
+                class="absolute z-20 w-full h-full"
+            >
                 <NuxtImg
                     class="object-cover w-full h-full"
                     :src="productData.lock[currentViewAngleData]"
@@ -31,7 +40,7 @@
                 v-if="productData.tool1Data[currentViewAngleData]"
             >
                 <NuxtImg
-                    class="object-cover w-full h-full mt-10"
+                    class="object-cover w-full h-full"
                     :src="productData.tool1Data[currentViewAngleData]"
                 />
             </div>
