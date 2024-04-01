@@ -186,6 +186,15 @@
                     </div>
                 </div>
             </div>
+            <div v-if="addOnPurchaseDiscounts.length > 0" class="w-full xl:w-[950px] mx-auto">
+                <ClientOnly>
+                    <ProductAdditionalBuy
+                        ref="productAdditionalBuyRef"
+                        :additionalProducts="addOnPurchaseDiscounts"
+                        :productCount="count"
+                    />
+                </ClientOnly>
+            </div>
             <div
                 class="mt-[40px] md:mt-[80px]"
                 :class="isMobile ? 'container' : isLargePad ? '' : 'container'"
@@ -269,6 +278,9 @@ import ProductDetailCarousel from "~/views/template1/Product/components/ProductD
 // 相關產品幻燈片
 import ProductSameCarousel from "~/views/template1/Product/components/ProductSameCarousel.vue";
 import AddToShoppingCarDialog from "~/views/template1/components/AddToShoppingCarDialog.vue";
+
+// 加價購
+import ProductAdditionalBuy from "~/views/template1/Product/components/ProductAdditionalBuy.vue";
 
 /**
  * ProductListAPIInterface: 產品分頁 api 回應值
@@ -431,6 +443,8 @@ const breadcrumbs = ref([
 // 相關商品列表
 const sameProducts = ref<any>([]);
 
+const addOnPurchaseDiscounts = ref<any>([]);
+
 /**
  * 取得商品分類
  */
@@ -478,6 +492,28 @@ const getData = async () => {
                 is_favorite: item.is_favorite,
                 tags: item.tags,
                 is_single_variation: item.is_single_variation,
+            };
+        });
+    }
+
+    if (productDetail.value.addOnPurchaseDiscounts) {
+        addOnPurchaseDiscounts.value = productDetail.value.addOnPurchaseDiscounts.map((item:any) => {
+            return {
+                id: item.id,
+                model: item.model,
+                name: item.name,
+                shape: item.shape,
+                price: item.price,
+                market_price: item.market_price,
+                main_image: item.main_image,
+                is_favorite: item.is_favorite,
+                tags: item.tags,
+                is_single_variation: item.is_single_variation,
+                productVariations: item.productVariations,
+                productOptions: item.productOptions,
+                attributes: item.attributes,
+                content: item.content,
+                description: item.description,
             };
         });
     }
