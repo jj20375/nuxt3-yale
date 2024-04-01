@@ -657,6 +657,7 @@ const setCustomShoppingCarData = (datas: any) => {
     const result: ShoppingCarCustomInterface = {};
     datas.forEach((item: any) => {
         const service: any = [];
+        result.count = item.quantity;
         item.orderItems.forEach((item2: any, index: number) => {
             // 判斷是 門扇 的時候執行
             if (item2.productable.customProductType.id === CustomProductListIdEnum.door) {
@@ -667,7 +668,6 @@ const setCustomShoppingCarData = (datas: any) => {
                     size: door.size,
                 };
                 result.imgSrc = door.result.imgSrc;
-                result.count = item2.quantity;
             }
             // 判斷是 門框 的時候執行
             if (item2.productable.customProductType.id === CustomProductListIdEnum.doorOut) {
