@@ -14,11 +14,7 @@
                     :key="key"
                     class="flex gap-3 rounded-[8px] py-4 sm:py-[20px] px-5 sm:px-[32px] border border-gray-300 cursor-pointer relative"
                     :class="[currentTab === key ? 'shadow-[inset_0_0_0_1px_rgb(255,204,0)] border-yellow-600' : '']"
-                    @click="
-                        currentTab = key;
-                        selectProductIds = [];
-                        router.push({ name: route.name, query: { tab: key } });
-                    "
+                    @click="changeTab(key)"
                 >
                     <NuxtImg
                         class="w-[24px] aspect-square"
@@ -175,6 +171,19 @@ const tabs = computed(() => ({
 
 // 預設選擇 tab
 const currentTab = ref("type1");
+
+/**
+ * 更換 tab
+ */
+function changeTab(key: string) {
+    // 判斷同一個 tab 時 不執行任何動作
+    if (key === currentTab.value) {
+        return;
+    }
+    currentTab.value = key;
+    selectProductIds.value = [];
+    router.push({ name: route.name, query: { tab: key } });
+}
 
 // 預設購物車狀態
 const currentStep = ref(0);
