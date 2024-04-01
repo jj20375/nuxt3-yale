@@ -46,7 +46,8 @@ const breadcrumbs = ref([
 ]);
 
 // 表格資料
-const tableHeadData = ["訂單編號", "訂單日期", "數量", "訂單金額", "訂單狀態"];
+// todo 先隱藏 aaron
+const tableHeadData = ["訂單編號", "訂單日期", "訂單金額", "訂單狀態"];
 
 const pagination = ref<any>({
     page: 1,

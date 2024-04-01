@@ -272,6 +272,17 @@ const getCoupon = async (val: any) => {
         }
         const { data: couponDatas, status, error } = await $api().DiscountCalculateAPI(params);
         const couponData = (couponDatas.value as any).data;
+        if (couponData.coupon_discount_amount == 0) {
+            ElMessage({
+                type: "error",
+                message: '請確認優惠券使用條件',
+            });
+        } else {
+            ElMessage({
+                type: "success",
+                message: '優惠券使用成功',
+            });
+        }
         discountData.value.coupon_discount_amount = couponData.coupon_discount_amount;
         discountData.value.discount_amount = couponData.discount_amount;
     }
