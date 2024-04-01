@@ -268,8 +268,8 @@ async function getMessage(e: any) {
             userStore.setIsAuth(true);
             await shoppingCarStore.syncCart();
             await shoppingCarStore.syncCustomCart();
-            emit("onCloseDialog", false);
             await userStore.getUserProfile();
+            emit("onCloseDialog", false);
             if (route.name === "auth-login-slug") {
                 router.push({ name: "auth-panel-slug", params: { slug: "會員中心" } });
             } else {
