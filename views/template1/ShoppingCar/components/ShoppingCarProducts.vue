@@ -204,7 +204,7 @@ const selectProduct = (id: number) => {
 };
 
 const init = async () => {
-    await getUserShopping();
+    // await getUserShopping();
 
     // 設定購物車商品全選
     checkList.value = shoppingCar.value.map((item: any) => {

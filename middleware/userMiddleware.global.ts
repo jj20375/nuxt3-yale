@@ -57,7 +57,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
     // 預先加載初始化資料
     await getInitializationData();
 
-    if (token.value && !isAuth) {
+    if (token.value) {
         return userStore.getUserProfile();
     } else {
         if (process.client) {
