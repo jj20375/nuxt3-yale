@@ -270,7 +270,6 @@ async function getMessage(e: any) {
             await shoppingCarStore.syncCustomCart();
             await userStore.getUserProfile();
             if (route.name === "auth-login-slug" && !props.isDialog) {
-                alert(route.name);
                 router.push({ name: "auth-panel-slug", params: { slug: "會員中心" } });
             } else {
                 // 使用登入彈窗登入後重整畫面 重新同步購物車資訊
