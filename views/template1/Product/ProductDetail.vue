@@ -659,6 +659,17 @@ const downloadFile = (file: { url: string | URL | undefined }) => {
  * @param isGoToShoppingCarPage 判斷是點選結帳按鈕 不跳 alert 錯誤
  */
 const addToShoppingCar = (isGoToShoppingCarPage: boolean = false) => {
+    const productVariationable: { label: any; value: any }[] = [];
+    currentOption.value.forEach((item: any, index: string | number) => {
+        let value = "";
+        console.log(productOptions.value[index]);
+        value = productOptions.value[index].options.find((data: { id: any }) => data.id == item);
+        console.log(value);
+        productVariationable.push({
+            label: productOptions.value[index].name,
+            value: value.text,
+        });
+    });
     const input: ShoppingCarInterface = {
         id: detailData.value.product_id,
         productID: detailData.value.product_id,
@@ -670,6 +681,7 @@ const addToShoppingCar = (isGoToShoppingCarPage: boolean = false) => {
         product_variationable_id: currentItem.value ? currentItem.value.id : undefined,
         colorName: colorName.value ? colorName.value : undefined,
         stock: detailData.value.stock,
+        productVariationable: productVariationable,
     };
     console.log("isGoToShoppingCarPage =>", isGoToShoppingCarPage);
     shoppingCarStore

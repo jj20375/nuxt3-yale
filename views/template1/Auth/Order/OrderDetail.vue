@@ -407,7 +407,8 @@ const getData = async () => {
                     value: variation.product_option_value_name
                 }
             })
-            imgUrl = item.productable.other_images.find(img => img.includes(item.productVariationable.image))
+            const productVariationableImg = item.productable.other_images.find(img => img.includes(item.productVariationable.image))
+            imgUrl = productVariationableImg ? productVariationableImg : item.productable.main_image
         }
         orderData.value.products.push({
             name: item.productable.name,

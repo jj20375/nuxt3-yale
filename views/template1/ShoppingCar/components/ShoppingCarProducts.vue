@@ -49,13 +49,13 @@
                             <p class="text-[14px]">{{ item.value }}</p>
                         </div>
                     </template>
-                    <div
+                    <!-- <div
                         v-if="cart.colorName"
                         class="flex gap-4 text-gray-800 items-center mt-[12px]"
                     >
                         <p class="w-[40px] sm:w-[90px] text-[14px]">顏色</p>
                         <p class="text-[14px]">{{ cart.colorName }}</p>
-                    </div>
+                    </div> -->
                     <div class="flex gap-4 sm:gap-[18px] justify-end mt-[16px]">
                         <div class="flex flex-1 justify-center items-stretch sm:flex-initial w-[150px] sm:w-[150px] border border-gray-300 rounded-full">
                             <button
