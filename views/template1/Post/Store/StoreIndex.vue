@@ -193,11 +193,11 @@ async function init() {
     await getList({ per_page: pagination.value.pageSize, page: page, stronghold_category_id: route.params.id });
 }
 
-await init();
+// await init();
 onMounted(async () => {
     nextTick(async () => {
         if (process.client) {
-            // await init();
+            await init();
         }
     });
 });
