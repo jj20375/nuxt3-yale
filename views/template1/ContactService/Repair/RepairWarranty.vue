@@ -186,6 +186,7 @@ import { validateTWMobileNumber } from "~/service/validator";
 import { ElMessage, ElLoading } from "element-plus";
 import { ProductListAPIInterface } from "~/interface/product.d";
 const router = useRouter();
+const route = useRoute();
 
 const { $api, $utils } = useNuxtApp();
 
@@ -438,14 +439,14 @@ const rules = ref<any>({
 watch(
     () => form.value.phone,
     (newValue) => {
-        form.value.phone =  $utils().cellphoneFormat(newValue);
+        form.value.phone = $utils().cellphoneFormat(newValue);
     }
 );
 
 watch(
     () => form.value.customerPhone,
     (newValue) => {
-        form.value.customerPhone =  $utils().cellphoneFormat(newValue);
+        form.value.customerPhone = $utils().cellphoneFormat(newValue);
     }
 );
 
@@ -470,9 +471,9 @@ async function onSubmit() {
                 model: form.value.model,
                 quantity: form.value.quantity,
                 contact_name: form.value.name,
-                contact_phone: form.value.phone.replace(/-/g, ''),
+                contact_phone: form.value.phone.replace(/-/g, ""),
                 customer_name: form.value.customerName,
-                customer_phone: form.value.customerPhone.replace(/-/g, ''),
+                customer_phone: form.value.customerPhone.replace(/-/g, ""),
                 installation_or_delivery_address: form.value.customerAddress,
                 remarks: form.value.memo,
                 project_name: form.value.building,
@@ -507,15 +508,15 @@ async function onSubmit() {
 async function getList() {
     try {
         const params = {
-            code: 'warranty-registration'
+            code: "warranty-registration",
         };
         const { data } = await $api().RagicConfigAPI(params);
 
         const rows = (data.value as any).data;
         console.log("rows => ", rows);
 
-        const modelOptions = rows.model.options
-        const sales_purpose = rows.sales_purpose.options
+        const modelOptions = rows.model.options;
+        const sales_purpose = rows.sales_purpose.options;
 
         formDatas.value.registerDatas.find((item: { prop: string }) => item.prop === "model").options = [];
         modelOptions.forEach((model: string) => {
@@ -527,7 +528,7 @@ async function getList() {
                 });
         });
         formDatas.value.registerDatas.find((item: { prop: string }) => item.prop === "purpose").options = [];
-        sales_purpose.forEach((purpose: string ) => {
+        sales_purpose.forEach((purpose: string) => {
             formDatas.value.registerDatas
                 .find((item: { prop: string }) => item.prop === "purpose")
                 .options.push({
@@ -543,6 +544,7 @@ async function getList() {
 onMounted(async () => {
     nextTick(async () => {
         if (process.client) {
+            form.value.serial0 = route.query.serial;
             await getList();
         }
     });
