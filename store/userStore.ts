@@ -74,10 +74,10 @@ export const useUserStore = defineStore({
                         console.log("取得使用者資料失敗=>", error);
                         this.setUser({});
                         this.setIsAuth(false);
-                        ElMessage({
-                            type: "error",
-                            message: "取得使用者資料失敗",
-                        });
+                        // ElMessage({
+                        //     type: "error",
+                        //     message: "取得使用者資料失敗",
+                        // });
                         return;
                     }
                     if (data.value === null) {

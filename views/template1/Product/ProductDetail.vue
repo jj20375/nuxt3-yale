@@ -156,7 +156,8 @@
                                 結帳
                             </button>
                         </div>
-                        <div class="bg-gray-50 p-[30px] w-full rounded-xl mb-[20px]">
+                        <!-- todo 先隱藏 aaron -->
+                        <!-- <div class="bg-gray-50 p-[30px] w-full rounded-xl mb-[20px]">
                             <ul class="text-[16px]">
                                 <li
                                     class="mb-[6px]"
@@ -166,7 +167,7 @@
                                     {{ sale }}
                                 </li>
                             </ul>
-                        </div>
+                        </div> -->
                         <div>
                             <ul class="flex gap-4">
                                 <li

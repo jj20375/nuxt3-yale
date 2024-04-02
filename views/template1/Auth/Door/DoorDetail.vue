@@ -589,13 +589,13 @@ const paymentStatus = (status: string) => {
     return result;
 };
 
-const paymentMethod = (method: string) => {
+const paymentMethod = (data: any) => {
     let result = "";
-    if (method === "綠界") {
+    if (data.payment_gateway === "綠界") {
         result = "信用卡";
     }
-    if (method === "門市") {
-        result = "門市";
+    if (data.payment_gateway === "門市") {
+        result = `門市 (${data.stronghold.name})`;
     }
 
     return result;
@@ -631,9 +631,9 @@ const getData = async () => {
     orderData.value.price.totalPrice = Number(resProductDetail.value.orderPayments[0].amount) + Number(resProductDetail.value.orderPayments[1].amount)
     orderData.value.price.memo = resProductDetail.value.remark ? resProductDetail.value.remark : "無";
     orderData.value.orderStatus = $utils().orderStatus(resProductDetail.value.status);
-    orderData.value.payment[0].method = paymentMethod(resProductDetail.value.orderPayments[0].payment_gateway);
+    orderData.value.payment[0].method = paymentMethod(resProductDetail.value.orderPayments[0]);
     orderData.value.payment[0].orderStatus = paymentStatus(resProductDetail.value.orderPayments[0].status);
-    orderData.value.payment[1].method = paymentMethod(resProductDetail.value.orderPayments[1].payment_gateway);
+    orderData.value.payment[1].method = paymentMethod(resProductDetail.value.orderPayments[1]);
     orderData.value.payment[1].orderStatus = paymentStatus(resProductDetail.value.orderPayments[1].status);
     orderData.value.orderPayments = resProductDetail.value.orderPayments;
     orderData.value.timeline = [];
@@ -657,6 +657,7 @@ const setCustomShoppingCarData = (datas: any) => {
     const result: ShoppingCarCustomInterface = {};
     datas.forEach((item: any) => {
         const service: any = [];
+        result.count = item.quantity;
         item.orderItems.forEach((item2: any, index: number) => {
             // 判斷是 門扇 的時候執行
             if (item2.productable.customProductType.id === CustomProductListIdEnum.door) {
@@ -667,7 +668,6 @@ const setCustomShoppingCarData = (datas: any) => {
                     size: door.size,
                 };
                 result.imgSrc = door.result.imgSrc;
-                result.count = item2.quantity;
             }
             // 判斷是 門框 的時候執行
             if (item2.productable.customProductType.id === CustomProductListIdEnum.doorOut) {
