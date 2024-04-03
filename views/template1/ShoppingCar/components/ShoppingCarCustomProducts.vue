@@ -19,11 +19,9 @@
                 </div>
                 <div class="flex-1">
                     <div class="flex w-full text-gray-800 mb-[12px] gap-4">
-                        <h3 class="YaleSolisW-Bd font-medium text-[16px] sm:text-[18px] flex-1">訂製-{{ product.name
-                            }}</h3>
+                        <h3 class="YaleSolisW-Bd font-medium text-[16px] sm:text-[18px] flex-1">訂製-{{ product.name }}</h3>
                         <div class="flex flex-col items-end gap-2 cursor-pointer h-fit">
-                            <p class="hidden font-medium sm:block YaleSolisW-Bd">NT$
-                                {{ $utils().formatCurrency(product.singlePrice * product.count) }}</p>
+                            <p class="hidden font-medium sm:block YaleSolisW-Bd">NT$ {{ $utils().formatCurrency(product.singlePrice * product.count) }}</p>
                         </div>
                     </div>
                     <div class="flex items-start justify-between gap-4 mb-4">
@@ -76,11 +74,8 @@
                                             <div>{{ item.model }}</div>
                                         </div>
                                     </div>
-                                    <div v-if="item && ['currentTool1', 'currentTool2'].includes(key)">{{ item.title
-                                        }}-{{ item.style }}
-                                    </div>
-                                    <div
-                                        v-if="item && ['currentOther1', 'currentOther2', 'otherServices'].includes(key)">
+                                    <div v-if="item && ['currentTool1', 'currentTool2'].includes(key)">{{ item.title }}-{{ item.style }}</div>
+                                    <div v-if="item && ['currentOther1', 'currentOther2', 'otherServices'].includes(key)">
                                         <ul
                                             v-if="item"
                                             class="ml-2"
@@ -110,8 +105,7 @@
                         </button>
                     </div>
                     <div class="flex gap-4 sm:gap-[18px] justify-end">
-                        <div
-                            class="flex flex-1 sm:flex-initial justify-center items-stretch w-[150px] border border-gray-300 rounded-full">
+                        <div class="flex flex-1 sm:flex-initial justify-center items-stretch w-[150px] border border-gray-300 rounded-full">
                             <button
                                 class="flex items-center justify-center flex-1 h-auto cursor-pointer disabled:cursor-not-allowed"
                                 :disabled="product.count <= 1"
@@ -121,8 +115,7 @@
                                     <Minus />
                                 </el-icon>
                             </button>
-                            <div
-                                class="flex items-center justify-center w-[60px] sm:w-[80px] py-[4px] sm:py-[10px] h-full">
+                            <div class="flex items-center justify-center w-[60px] sm:w-[80px] py-[4px] sm:py-[10px] h-full">
                                 {{ product.count }}
                             </div>
                             <button
@@ -146,7 +139,8 @@
                             />
                         </button>
                     </div>
-                    <div class="sm:hidden mt-[16px] font-medium YaleSolisW-Bd text-[16px]">NT$
+                    <div class="sm:hidden mt-[16px] font-medium YaleSolisW-Bd text-[16px]">
+                        NT$
                         {{ $utils().formatCurrency(product.singlePrice * product.count) }}
                     </div>
                 </div>
@@ -163,8 +157,7 @@
 import { useShoppingCarStore } from "~/store/shoppingCarStore";
 import { useUserStore } from "~/store/userStore";
 import { ElMessage } from "element-plus";
-import ShoppingCarCustomProductDetail
-    from "~/views/template1/ShoppingCar/components/ShoppingCarCustomProductDetail.vue";
+import ShoppingCarCustomProductDetail from "~/views/template1/ShoppingCar/components/ShoppingCarCustomProductDetail.vue";
 
 const emit = defineEmits(["update:selectProductIds"]);
 
@@ -233,12 +226,12 @@ async function countReduce(index: number) {
             loading.value = true;
             const result = await shoppingCarStore.updateCustomCart({
                 cart_combination_id: shoppingCar.value[index].id,
-                quantity: shoppingCar.value[index].count
+                quantity: shoppingCar.value[index].count,
             });
             if (typeof result === "string") {
                 ElMessage({
                     type: "error",
-                    message: result
+                    message: result,
                 });
             }
             // 等待 1秒鐘再更新就好 以防快速點擊
@@ -269,12 +262,12 @@ async function countAdd(index: number) {
             loading.value = true;
             const result = await shoppingCarStore.updateCustomCart({
                 cart_combination_id: shoppingCar.value[index].id,
-                quantity: shoppingCar.value[index].count
+                quantity: shoppingCar.value[index].count,
             });
             if (typeof result === "string") {
                 ElMessage({
                     type: "error",
-                    message: result
+                    message: result,
                 });
             }
             // 等待 1秒鐘再更新就好 以防快速點擊
@@ -292,7 +285,7 @@ async function removeShoppingCar(index: number) {
     if (isAuth.value) {
         loading.value = true;
         const result = await shoppingCarStore.deleteCustomCart({
-            cart_combination_id: shoppingCar.value[index].id as number
+            cart_combination_id: shoppingCar.value[index].id as number,
         });
         loading.value = false;
         $shoppingCarService().removeCustomProductSingleShoppingCarProduct(index);
@@ -301,7 +294,7 @@ async function removeShoppingCar(index: number) {
         if (typeof result === "string") {
             ElMessage({
                 type: "error",
-                message: result
+                message: result,
             });
         }
     } else {
@@ -333,6 +326,16 @@ function init() {
         }
     }
 }
+
+watch(
+    () => shoppingCar.value,
+    (val) => {
+        // 設定購物車商品全選
+        checkList.value = shoppingCar.value.map((item: any) => item.id);
+        // 選中商品參數傳給母組件
+        emit("update:selectProductIds", checkList.value);
+    }
+);
 
 init();
 </script>

@@ -44,20 +44,18 @@
                         v-for="(item, index) in cart.productVariationable"
                         :key="index"
                     >
-                        <div
-                            class="flex gap-4 text-gray-800 items-center mt-[12px]"
-                        >
+                        <div class="flex gap-4 text-gray-800 items-center mt-[12px]">
                             <p class="w-[40px] sm:w-[90px] text-[14px]">{{ item.label }}</p>
                             <p class="text-[14px]">{{ item.value }}</p>
                         </div>
                     </template>
-                    <div
+                    <!-- <div
                         v-if="cart.colorName"
                         class="flex gap-4 text-gray-800 items-center mt-[12px]"
                     >
                         <p class="w-[40px] sm:w-[90px] text-[14px]">顏色</p>
                         <p class="text-[14px]">{{ cart.colorName }}</p>
-                    </div>
+                    </div> -->
                     <div class="flex gap-4 sm:gap-[18px] justify-end mt-[16px]">
                         <div class="flex flex-1 justify-center items-stretch sm:flex-initial w-[150px] sm:w-[150px] border border-gray-300 rounded-full">
                             <button
@@ -135,26 +133,27 @@ function countUpdate(index: number, cartId: number | null, productID: number, is
         product_variationable_id: product_variationable_id ? product_variationable_id : null,
     };
     shoppingCar.value[index].totalPrice = shoppingCar.value[index].price * shoppingCar.value[index].count;
-    
+
     // 防止連續點擊
     if (!loading.value) {
         loading.value = true;
         console.log("work loading", shoppingCar.value[index].count);
-        updateCart({ ...apiReq, quantity: shoppingCar.value[index].count }).then(() => {
-            emit("productCountUpdate");
-            loading.value = false;
-        })
-        .catch((err) => {
-            console.log("err", err);
-            if (err) {
-                ElMessage({
-                    type: "error",
-                    message: err.message,
-                });
+        updateCart({ ...apiReq, quantity: shoppingCar.value[index].count })
+            .then(() => {
+                emit("productCountUpdate");
                 loading.value = false;
-                return;
-            }
-        });
+            })
+            .catch((err) => {
+                console.log("err", err);
+                if (err) {
+                    ElMessage({
+                        type: "error",
+                        message: err.message,
+                    });
+                    loading.value = false;
+                    return;
+                }
+            });
     }
     // 等待 1秒鐘再更新就好 以防快速點擊
     // setTimeout(async () => {
@@ -205,7 +204,7 @@ const selectProduct = (id: number) => {
 };
 
 const init = async () => {
-    await getUserShopping();
+    // await getUserShopping();
 
     // 設定購物車商品全選
     checkList.value = shoppingCar.value.map((item: any) => {
@@ -214,6 +213,16 @@ const init = async () => {
     // 選中商品參數傳給母組件
     emit("update:selectProductIds", checkList.value);
 };
+
+watch(
+    () => shoppingCar.value,
+    (val) => {
+        // 設定購物車商品全選
+        checkList.value = shoppingCar.value.map((item: any) => item.id);
+        // 選中商品參數傳給母組件
+        emit("update:selectProductIds", checkList.value);
+    }
+);
 
 onMounted(() => {
     if (process.client) {

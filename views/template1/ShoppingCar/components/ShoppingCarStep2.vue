@@ -28,11 +28,12 @@
             ref="formInvoiceRef"
             v-model:form="formInvoice"
         />
-        <ShoppingCarStep2FormGift
+        <!-- todo 先隱藏 aaron -->
+        <!-- <ShoppingCarStep2FormGift
             :gifts="gifts"
             v-model:form="formGift"
             v-model:selectGiftIds="selectGiftIds"
-        />
+        /> -->
         <ShoppingCarStep2FormCustomProductRule
             v-model:showDialog="showDialogByCustomRule"
             :customRuleData="customRuleData"
@@ -332,6 +333,7 @@ const checkout = async () => {
         contact_city: formContactUser.value.city,
         contact_district: formContactUser.value.area,
         contact_address: formContactUser.value.address,
+        is_add_to_contact: formContactUser.value.saveContctUser,
         remark: formMain.value.note, // 備註
         payment_gateway: formPayment.value.paymentType,
         shipping_method: formLogistics.value.logistics,

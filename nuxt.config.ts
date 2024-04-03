@@ -91,6 +91,8 @@ export default defineNuxtConfig({
             infinitePaginationLimit: process.env.INFINITE_PAGINATION_LIMIT || "30",
             // 版本確認
             yaleVersion: process.env.VERSION,
+            // reCAPTCHA_SITE_KEY
+            reCAPTCHASITEKEY: process.env.VUE_APP_GOOGLE_reCAPTCHA_SITE_KEY,
         },
     },
 

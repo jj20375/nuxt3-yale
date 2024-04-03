@@ -23,6 +23,7 @@ export interface ReqCheckout {
     contact_city: string;
     contact_district: string;
     contact_address: string;
+    is_add_to_contact: boolean;
     remark: string;
     payment_gateway: string;
     shipping_method?: string;

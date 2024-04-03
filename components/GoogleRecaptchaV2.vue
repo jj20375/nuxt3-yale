@@ -1,5 +1,6 @@
 <script>
 import vueRecaptcha from "vue3-recaptcha2";
+
 export default {
     name: "GoogleReCaptchaV2",
     components: {
@@ -11,7 +12,8 @@ export default {
         },
     },
     setup(props, { emit }) {
-        const siteKey = process.env.VUE_APP_GOOGLE_reCAPTCHA_SITE_KEY;
+        const $config = useRuntimeConfig();
+        const siteKey = $config.public.reCAPTCHASITEKEY;
         const setlang = props.lang ? props.lang : "zh-TW";
 
         const refresh = () => {

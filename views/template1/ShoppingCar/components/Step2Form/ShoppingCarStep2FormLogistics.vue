@@ -27,7 +27,8 @@
                     </el-select>
                 </el-form-item>
             </div>
-            <p class="text-[15px] text-gray-500 mt-6">運費說明文字運費說明文字運費說明文字運費說明文字運費說明文字運費說明文字</p>
+            <!-- todo 先隱藏 aaron -->
+            <!-- <p class="text-[15px] text-gray-500 mt-6">運費說明文字運費說明文字運費說明文字運費說明文字運費說明文字運費說明文字</p> -->
         </el-form>
     </div>
 </template>

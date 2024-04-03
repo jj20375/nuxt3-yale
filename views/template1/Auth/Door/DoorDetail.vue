@@ -18,7 +18,7 @@
                 </NuxtLink>
                 <div class="flex justify-between items-end mt-6 sm:mt-9 mb-5 sm:mb-[30px]">
                     <h3 class="text-[24px] md:text-[32px]">訂單資訊</h3>
-                    <div class="flex gap-2 items-center h-fit cursor-pointer">
+                    <div class="flex items-center gap-2 cursor-pointer h-fit">
                         <NuxtImg
                             class="w-[20px] aspect-square object-cover"
                             src="/img/icons/auth/download.svg"
@@ -34,7 +34,7 @@
                     @orderRepay="handleRepay"
                 />
                 <div class="mt-8 sm:mt-12">
-                    <h4 class="font-bold mb-3">安裝資訊</h4>
+                    <h4 class="mb-3 font-bold">安裝資訊</h4>
                     <div class="border-b-[1px] border-gray-200 pb-5">
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-1 w-full 2xl:w-[85%] 3xl:w-[70%]">
                             <div
@@ -63,36 +63,20 @@
                             </div>
                         </div>
                     </div>
-                    <h4 class="font-bold mb-3 mt-5">付款明細</h4>
+                    <h4 class="mt-5 mb-3 font-bold">付款明細</h4>
                     <div class="border-b-[1px] border-gray-200 pb-5">
-                        <h5 class="font-bold mb-1">訂金</h5>
+                        <h5 class="mb-1 font-bold">訂金</h5>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-1 w-full 2xl:w-[85%] 3xl:w-[70%]">
-                            <div
-                                class="text-gray-700"
-                            >
-                                付款方式：{{ orderData?.payment[0]?.method }}
-                            </div>
-                            <div
-                                class="text-gray-700"
-                            >
-                                付款狀態：{{ orderData?.payment[0]?.orderStatus }}
-                            </div>
+                            <div class="text-gray-700">付款方式：{{ orderData?.payment[0]?.method }}</div>
+                            <div class="text-gray-700">付款狀態：{{ orderData?.payment[0]?.orderStatus }}</div>
                         </div>
-                        <h5 class="font-bold my-1">尾款</h5>
+                        <h5 class="my-1 font-bold">尾款</h5>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-1 w-full 2xl:w-[85%] 3xl:w-[70%]">
-                            <div
-                                class="text-gray-700"
-                            >
-                                付款方式：{{ orderData?.payment[1]?.method }}
-                            </div>
-                            <div
-                                class="text-gray-700"
-                            >
-                                付款狀態：{{ orderData?.payment[1]?.orderStatus }}
-                            </div>
+                            <div class="text-gray-700">付款方式：{{ orderData?.payment[1]?.method }}</div>
+                            <div class="text-gray-700">付款狀態：{{ orderData?.payment[1]?.orderStatus }}</div>
                         </div>
                     </div>
-                    <h4 class="font-bold mb-3 mt-5">發票資訊</h4>
+                    <h4 class="mt-5 mb-3 font-bold">發票資訊</h4>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-1 w-full 2xl:w-[85%] 3xl:w-[70%]">
                         <div
                             v-if="orderData?.receipt?.status"
@@ -143,7 +127,11 @@
                     />
                 </div>
                 <div>
-                    <OrderPrice :order="orderData.price" :status="orderData.orderStatus" :type="'combination'" />
+                    <OrderPrice
+                        :order="orderData.price"
+                        :status="orderData.orderStatus"
+                        :type="'combination'"
+                    />
                 </div>
                 <div
                     v-if="orderData?.orderStatus === '待付訂金' || orderData?.orderStatus === '已付訂金' || orderData?.orderStatus === '丈量派工中' || orderData?.orderStatus === '丈量完成' || orderData?.orderStatus === '待付尾款'"
@@ -208,7 +196,7 @@
             >
                 <h3 class="text-center text-gray-800 font-bold text-[24px] mb-4">取消訂單</h3>
                 <div class="text-center text-gray-800 text-[20px]">請撥打服務專線 {{ dialogRefundCustom.phone }}<br />取消此筆訂單</div>
-                <div class="flex gap-4 justify-center mt-6">
+                <div class="flex justify-center gap-4 mt-6">
                     <button
                         class="yellow-btn btn-sm"
                         @click="dialogRefundCustom.isVisible = false"
@@ -549,7 +537,7 @@ const handleRepay = async () => {
     if (orderData.value.orderStatus === "待付尾款") {
         dialogRepay.value = true;
     } else {
-        orderRepay()
+        orderRepay();
     }
 };
 
@@ -578,7 +566,7 @@ const orderRepay = async () => {
             // window.open(resData.redirect_url, "self");
         }
     }
-    loading.close()
+    loading.close();
 };
 
 const paymentStatus = (status: string) => {
@@ -589,13 +577,13 @@ const paymentStatus = (status: string) => {
     return result;
 };
 
-const paymentMethod = (method: string) => {
+const paymentMethod = (data: any) => {
     let result = "";
-    if (method === "綠界") {
+    if (data.payment_gateway === "綠界") {
         result = "信用卡";
     }
-    if (method === "門市") {
-        result = "門市";
+    if (data.payment_gateway === "門市") {
+        result = `門市 (${data.stronghold.name})`;
     }
 
     return result;
@@ -628,12 +616,12 @@ const getData = async () => {
     orderData.value.price.finalPayment = resProductDetail.value.orderPayments[1].amount;
     orderData.value.price.finalPayment_ratio = resProductDetail.value.orderPayments[1].amount_ratio;
     // orderData.value.price.totalPrice = resProductDetail.value.total_amount;
-    orderData.value.price.totalPrice = Number(resProductDetail.value.orderPayments[0].amount) + Number(resProductDetail.value.orderPayments[1].amount)
+    orderData.value.price.totalPrice = Number(resProductDetail.value.orderPayments[0].amount) + Number(resProductDetail.value.orderPayments[1].amount);
     orderData.value.price.memo = resProductDetail.value.remark ? resProductDetail.value.remark : "無";
     orderData.value.orderStatus = $utils().orderStatus(resProductDetail.value.status);
-    orderData.value.payment[0].method = paymentMethod(resProductDetail.value.orderPayments[0].payment_gateway);
+    orderData.value.payment[0].method = paymentMethod(resProductDetail.value.orderPayments[0]);
     orderData.value.payment[0].orderStatus = paymentStatus(resProductDetail.value.orderPayments[0].status);
-    orderData.value.payment[1].method = paymentMethod(resProductDetail.value.orderPayments[1].payment_gateway);
+    orderData.value.payment[1].method = paymentMethod(resProductDetail.value.orderPayments[1]);
     orderData.value.payment[1].orderStatus = paymentStatus(resProductDetail.value.orderPayments[1].status);
     orderData.value.orderPayments = resProductDetail.value.orderPayments;
     orderData.value.timeline = [];
@@ -657,6 +645,7 @@ const setCustomShoppingCarData = (datas: any) => {
     const result: ShoppingCarCustomInterface = {};
     datas.forEach((item: any) => {
         const service: any = [];
+        result.count = item.quantity;
         item.orderItems.forEach((item2: any, index: number) => {
             // 判斷是 門扇 的時候執行
             if (item2.productable.customProductType.id === CustomProductListIdEnum.door) {
@@ -667,7 +656,6 @@ const setCustomShoppingCarData = (datas: any) => {
                     size: door.size,
                 };
                 result.imgSrc = door.result.imgSrc;
-                result.count = item2.quantity;
             }
             // 判斷是 門框 的時候執行
             if (item2.productable.customProductType.id === CustomProductListIdEnum.doorOut) {
@@ -875,7 +863,6 @@ function setLocksData(data: any) {
             carousel: data.carousel_images.map((item: string, index: number) => ({ id: index + 1, imgSrc: item })),
             content: data.content,
         },
-        imgSrc: data.main_image,
         previewImgSrc: {
             front: data.front_image,
             backend: data.back_image,

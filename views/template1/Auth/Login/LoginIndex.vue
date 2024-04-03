@@ -110,6 +110,7 @@ import { useInitializationStore } from "~/store/initializationStore";
 import Cookies from "js-cookie";
 
 const { $api, $utils } = useNuxtApp();
+const route = useRoute();
 const userStore = useUserStore();
 const shoppingCarStore = useShoppingCarStore();
 const router = useRouter();
@@ -124,11 +125,7 @@ const props = defineProps({
         type: String,
         default: "mt-headerMb xl:mt-header border-t border-gray-300",
     },
-    // 判斷是否需要導頁
-    isNeedPageRouter: {
-        type: Boolean,
-        default: true,
-    },
+
     // 是否在彈窗內的樣式
     isDialog: {
         type: Boolean,
@@ -223,13 +220,13 @@ async function onSubmit() {
                     await shoppingCarStore.syncCart();
                     await shoppingCarStore.syncCustomCart();
                     await userStore.getUserProfile();
-                    emit("onCloseDialog", false);
-                    if (props.isNeedPageRouter) {
+                    if (route.name === "auth-login-slug" && !props.isDialog) {
                         router.push({ name: "auth-panel-slug", params: { slug: "會員中心" } });
                     } else {
                         // 使用登入彈窗登入後重整畫面 重新同步購物車資訊
-                        location.reload();
+                        // location.reload();
                     }
+                    emit("onCloseDialog", false);
                 } else {
                     ElMessage({
                         type: "error",
@@ -271,14 +268,14 @@ async function getMessage(e: any) {
             userStore.setIsAuth(true);
             await shoppingCarStore.syncCart();
             await shoppingCarStore.syncCustomCart();
-            emit("onCloseDialog", false);
             await userStore.getUserProfile();
-            if (props.isNeedPageRouter) {
+            if (route.name === "auth-login-slug" && !props.isDialog) {
                 router.push({ name: "auth-panel-slug", params: { slug: "會員中心" } });
             } else {
                 // 使用登入彈窗登入後重整畫面 重新同步購物車資訊
-                location.reload();
+                // location.reload();
             }
+            emit("onCloseDialog", false);
         }
         // router.push({ name: 'auth-login-sso-slug', params: { slug: '快速登入' } });
     }

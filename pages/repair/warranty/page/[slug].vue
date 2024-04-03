@@ -13,9 +13,9 @@
 </template>
 
 <script setup lang="ts">
-const AsyncComp = defineAsyncComponent(() => import("~/views/template1/Auth/Verification/VerificationIndex.vue"));
+const AsyncComp = defineAsyncComponent(() => import("~/views/template1/ContactService/Repair/RepairWarranty.vue"));
 definePageMeta({
-    middleware: ["auth-middleware"],
+    middleware: ["warranty-middleware"],
 });
 const pageLoading = ref(useState("loading"));
 onMounted(() => {
