@@ -2,7 +2,7 @@
  * ProductListAPIInterface: 產品分頁 api 回應值
  * ProductList: 產品分頁列表內容
  */
-import { ProductListAPIInterface } from "~/views/template1/Product/interface/Product.d";
+import { ProductListAPIInterface } from "~/interface/product.d";
 import { useFetchData } from "~/composables/fetch";
 
 export default () => {
