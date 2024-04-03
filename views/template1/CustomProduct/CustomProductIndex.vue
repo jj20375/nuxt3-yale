@@ -78,8 +78,10 @@
                                 :tabs="scenes"
                             />
                             <CustomProductPlan
+                                v-if="findPlans.customPlans.length > 0"
                                 class="mt-[30px]"
-                                v-model:currentPlan="currentPlan"
+                                :tabs="findPlans.customPlans"
+                                v-model:currentPlanId="currentPlanId"
                             />
                             <CustomProduct
                                 class="mt-[30px]"
@@ -352,6 +354,8 @@ import { useShoppingCarStore } from "~/store/shoppingCarStore";
 // user store
 import { useUserStore } from "~/store/userStore";
 
+const { getCustomProductList, customProductList, getCustomProductSceneList, scenes, plans } = useCustomProdutHook();
+
 const route = useRoute();
 const router = useRouter();
 
@@ -394,11 +398,25 @@ const stepMenuShow = ref({
 });
 
 // 預設選擇場景 id
-const currentBgId = ref("id1");
+const currentBgId = ref<number | string>("id1");
 // 預設選擇場景資料
 const currentBgData = ref<any>({});
 // 預設選擇方案
-const currentPlan = ref("id1");
+const currentPlanId = ref<number | null>(null);
+// 對應場景顯示方案
+const findPlans = computed(() => {
+    const findData = plans.value.find((item: any) => item.id === currentBgId.value);
+    if (findData) {
+        if (findData.customPlans.length === 0) {
+            currentPlanId.value = null;
+        } else {
+            currentPlanId.value = findData.customPlans[0].id;
+        }
+        return findData;
+    }
+    currentPlanId.value = null;
+    return { customPlans: [] };
+});
 // 預設選擇門的角度
 const currentAngle = ref("front");
 // 預覽視窗 dom 寬度 用來計算 正面｜背面｜半開顯示位置
@@ -736,11 +754,10 @@ const doorLimit = computed(() => {
     return _Min(stocks);
 });
 
-const { getCustomProductList, customProductList, getCustomProductSceneList, scenes } = useCustomProdutHook();
-
 async function init(id: number) {
     // 取得場景
     await getCustomProductSceneList();
+
     // 取得訂製門扇商品
     await getCustomProductList(id);
     currentBgId.value = Number(route.params.slug);

@@ -9,7 +9,10 @@
                 :class="currentTabId == tab.id ? 'shadow-[inset_0_0_0_1px_rgb(255,204,0)] border-yellow-600' : ''"
             >
                 <div class="flex items-center">
-                    <div class="mr-[12px]">
+                    <div
+                        v-if="tab.icon"
+                        class="mr-[12px]"
+                    >
                         <NuxtImg
                             class="w-[24px]"
                             :src="tab.icon"
@@ -45,38 +48,7 @@ const props = defineProps({
     tabs: {
         type: Array,
         default() {
-            return [
-                {
-                    id: 1,
-                    text: " 玄關門",
-                    icon: "/img/custom-product/custom-product-background-icon-1.svg",
-                    backgorundImg: "",
-                },
-                {
-                    id: 2,
-                    text: " 臥室門",
-                    icon: "/img/custom-product/custom-product-background-icon-2.svg",
-                    backgorundImg: "",
-                },
-                {
-                    id: 3,
-                    text: "廚房門",
-                    icon: "/img/custom-product/custom-product-background-icon-3.svg",
-                    backgorundImg: "",
-                },
-                {
-                    id: 4,
-                    text: "浴室門",
-                    icon: "/img/custom-product/custom-product-background-icon-4.svg",
-                    backgorundImg: "",
-                },
-                {
-                    id: 5,
-                    text: "陽台門",
-                    icon: "/img/custom-product/custom-product-background-icon-5.svg",
-                    backgorundImg: "",
-                },
-            ];
+            return [];
         },
     },
 });

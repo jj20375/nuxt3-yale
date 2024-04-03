@@ -1,7 +1,8 @@
 /**
  * CustomProductGetSceneInterface: 場景列表
+ * CustomProductPlans: 訂製門扇方案
  */
-import { CustomProductGetSceneInterface } from "@/interface/customProduct";
+import { CustomProductGetSceneInterface, CustomProductPlans } from "@/interface/customProduct";
 /**
  * CustomProductListIdEnum: 訂製門扇 id 對應分類
  * CustomProductListOptionEnum: 訂製門扇 產品選項
@@ -13,6 +14,8 @@ export function useCustomProdutHook() {
 
     // 場景資料
     const scenes = ref<CustomProductGetSceneInterface[]>([{ id: 0, name: "", icon: "", background_image: "" }]);
+    // 方案資料
+    const plans = ref<any>([]);
 
     /**
      * 取得訂製門扇場景資料
@@ -22,6 +25,7 @@ export function useCustomProdutHook() {
             const { data } = await $api().CustomProductGetSceneListAPI();
             if (data.value) {
                 scenes.value = [];
+                plans.value = [];
                 // scenes.value = data.value.data;
                 for (let i = 0; i < data.value.data.length; i++) {
                     scenes.value.push({
@@ -33,6 +37,7 @@ export function useCustomProdutHook() {
                         half: data.value.data[i].half_image,
                     });
                 }
+                plans.value = data.value.data;
             }
         } catch (err) {
             console.log("CustomProductGetSceneListAPI => ", err);
@@ -233,6 +238,7 @@ export function useCustomProdutHook() {
     return {
         getCustomProductSceneList,
         scenes,
+        plans,
         getCustomProductList,
         customProductList,
     };
