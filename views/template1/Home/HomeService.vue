@@ -23,7 +23,7 @@
                 </div>
             </article>
         </section>
-        <div class="relative bg-gray-100 ml-auto w-full relative top-0 right-0 h-[60px] md:h-[90px] xl:h-[120px]">
+        <div class="relative bg-gray-100 ml-auto w-full top-0 right-0 h-[60px] md:h-[90px] xl:h-[120px]">
             <div class="rounded-tr-[60px] md:rounded-tr-[90px] xl:rounded-tr-[120px] bg-white ml-auto w-full absolute top-0 right-0 h-[60px] md:h-[90px] xl:h-[120px]"></div>
         </div>
     </div>
@@ -31,15 +31,13 @@
 
 <script setup lang="ts">
 interface Props {
-    four_promises: {
+    four_promises?: {
         title: string;
         image: string;
     }[];
 }
 
-const props = withDefaults(defineProps<Props>(), {
-    four_promises: [],
-});
+const props = defineProps<Props>();
 
 const items = [
     {
@@ -63,13 +61,13 @@ const items = [
 
 <style lang="scss" scoped>
 .promise-card {
-    @apply relative aspect-square object-cover p-2 md:p-4 md:p-6 bg-white rounded-lg flex items-center justify-center top-0 transition-all duration-300;
+    @apply relative aspect-square object-cover p-2 md:p-6 bg-white rounded-lg flex items-center justify-center top-0 transition-all duration-300;
     @apply before:absolute before:top-0 before:left-0 before:rounded-lg before:w-full before:h-full before:opacity-0 before:-z-[1] before:bg-[linear-gradient(296deg,_#FFD500_0.13%,_#FFF1C4_99.63%)] before:transition-all before:duration-300;
     @include res(nb) {
         &:hover {
             @apply -top-2.5 drop-shadow-lg;
             &::before {
-                @apply opacity-100 transition-all transition-all duration-300;
+                @apply opacity-100 transition-all duration-300;
             }
         }
     }
