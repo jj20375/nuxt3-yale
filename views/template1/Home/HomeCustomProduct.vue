@@ -106,9 +106,7 @@ interface Props {
     };
 }
 
-const props = withDefaults(defineProps<Props>(), {
-    custom_door: {},
-});
+const props = defineProps<Props>();
 
 const isHover = ref({
     lock: false,

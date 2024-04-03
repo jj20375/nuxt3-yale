@@ -97,14 +97,17 @@ async function handleFavorite(id: any) {
     const params = { productId: id };
     const { data } = await $api().ProductFavoriteAPI(params);
     const message = (data.value as any).message;
-    const is_favorite = datas.value.find((item) => item.id === id).is_favorite;
+    const product = datas.value.find((item) => item.id === id);
+    const is_favorite = product ? product.is_favorite : false;
     const handleMessge = is_favorite ? "取消收藏" : "加入收藏";
     if (message === "請求成功") {
         ElMessage({
             type: "success",
             message: handleMessge,
         });
-        datas.value.find((item) => item.id === id).is_favorite = !is_favorite;
+        if (product) {
+            product.is_favorite = !is_favorite;
+        }
     } else {
         ElMessage({
             type: "error",

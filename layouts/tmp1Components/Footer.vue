@@ -1,6 +1,6 @@
 <template>
     <div class="z-[300] relative mt-auto">
-        <footer class="flex justify-center w-full text-white bg-gray-800">
+        <footer class="flex justify-center w-full text-white bg-gray-400">
             <div class="container">
                 <section class="mt-[56px] xl:mt-[100px]">
                     <ul class="grid grid-cols-2 xl:flex justify-between w-full gap-x-[24px] gap-y-[40px] xl:gap-[40px]">
