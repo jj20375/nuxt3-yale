@@ -860,7 +860,6 @@ watch(
                         model: lockData.model,
                         imgSrc: lockData.imgSrc,
                     };
-                    alert("work");
                 }
                 if (item.custom_product_type_id === CustomProductListIdEnum.handle) {
                     currentLockId.value = item.id;
@@ -876,7 +875,6 @@ watch(
                         model: handleData.model,
                         imgSrc: handleData.imgSrc,
                     };
-                    alert("work2");
                 }
                 if (item.custom_product_type_id === CustomProductListIdEnum.tool1) {
                     currentTool1Id.value = item.id;
