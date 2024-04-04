@@ -2,7 +2,7 @@
     <div>
         <h3 class="text-[16px] font-medium YaleSolisW-Bd">{{ title }}</h3>
         <el-checkbox-group
-            v-model="selectedProducts"
+            v-model="selectedProductIdsData"
             @change="selectProduct"
             :max="1"
         >
@@ -18,9 +18,8 @@
                         :label="product.id"
                         size="large"
                         class="flex-1"
-                    >{{ product.title }}
-                    </el-checkbox
-                    >
+                        >{{ product.title }}
+                    </el-checkbox>
                     <div class="absolute right-0">
                         <button
                             @click.prevent="
@@ -68,8 +67,7 @@
             append-to-body
         >
             <div class="w-3/4 mx-auto">
-                <h5 class="text-[20px] text-gray-800 YaleSolisW-Bd mb-[38px]">{{ currentDialogProduct.name
-                    }}-{{ currentDialogProduct.style }}</h5>
+                <h5 class="text-[20px] text-gray-800 YaleSolisW-Bd mb-[38px]">{{ currentDialogProduct.name }}-{{ currentDialogProduct.style }}</h5>
                 <CustomProductDailogCarousel
                     v-if="!$utils().isEmpty(currentDialogProduct.detailData.carousel)"
                     :photos="currentDialogProduct.detailData.carousel"
@@ -81,10 +79,10 @@
                 <div class="flex justify-center mt-[40px]">
                     <button
                         @click.prevent="
-                            selectedProducts[0] = currentDialogProduct.id;
+                            selectedProductIdsData[0] = currentDialogProduct.id;
                             closeDialog();
                         "
-                        :disabled="selectedProducts.includes(currentDialogProduct.id)"
+                        :disabled="selectedProductIdsData.includes(currentDialogProduct.id)"
                         class="yellow-btn btn-md btnDisabled"
                     >
                         加入選擇
@@ -114,6 +112,7 @@ interface Props {
         id: string;
     }[];
     title: string;
+    selectedProductIds: number[];
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -123,14 +122,15 @@ const props = withDefaults(defineProps<Props>(), {
             imgSrc: "/img/custom-product/demo/custom-product-door-demo-1.jpg",
             title: "品牌/ASSA ABLOY",
             style: "YDM3109A",
-            price: 2000
-        }
+            price: 2000,
+        },
     ],
     // 標題
-    title: "款式"
+    title: "款式",
+    selectedProductIds: [],
 });
 
-const selectedProducts = ref([]);
+const selectedProductIdsData = ref(props.selectedProductIds);
 
 /**
  * 選擇服務
@@ -146,7 +146,13 @@ function selectProduct(val: any) {
 watch(
     () => props.products,
     (val) => {
-        selectedProducts.value = [];
+        selectedProductIdsData.value = [];
+    }
+);
+watch(
+    () => props.selectedProductIds,
+    (val) => {
+        selectedProductIdsData.value = val;
     }
 );
 
@@ -166,7 +172,6 @@ function closeDialog() {
 </script>
 
 <style lang="scss" scoped>
-
 :deep(.el-checkbox-group) {
     @apply text-base leading-normal block #{!important};
 }
