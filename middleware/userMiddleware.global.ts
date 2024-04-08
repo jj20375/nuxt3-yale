@@ -19,7 +19,6 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
                 return;
             }
             const initialData = (data.value as any).data;
-
             initializationStore.initializationData = initialData;
 
             useHead({

@@ -886,9 +886,13 @@ watch(
                 }
                 if (item.custom_product_type_id === CustomProductListIdEnum.other1) {
                     currentOther1Ids.value[0] = item.id;
+                } else {
+                    currentOther1Ids.value = [];
                 }
                 if (item.custom_product_type_id === CustomProductListIdEnum.other2) {
                     currentOther2Ids.value[0] = item.id;
+                } else {
+                    currentOther2Ids.value = [];
                 }
             });
         }

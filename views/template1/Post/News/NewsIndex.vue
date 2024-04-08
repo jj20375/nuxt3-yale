@@ -66,12 +66,12 @@ async function getType() {
 
         const rows = (data.value as any).data;
 
-        rows.forEach((item: { name: any; id: any }) => {
+        rows.forEach((item: { name: any; id: any; seoSetting: any }) => {
             sidebar.value.push({
                 text: item.name,
                 id: item.id,
                 url: {
-                    params: { slug: "post", id: item.id },
+                    params: { slug: item.seoSetting.custom_url, id: item.id },
                     name: "news-slug-id",
                 },
             });
@@ -83,12 +83,12 @@ async function getType() {
             breadcrumbs.value.push({
                 name: "news-slug-id",
                 text: "最新消息",
-                params: { slug: "post", id: lastBreadcrumbs.id },
+                params: { slug: lastBreadcrumbs.seoSetting.custom_url, id: lastBreadcrumbs.id },
             });
             breadcrumbs.value.push({
                 name: "news-slug-id",
                 text: lastBreadcrumbs.name,
-                params: { slug: "post", id: lastBreadcrumbs.id },
+                params: { slug: lastBreadcrumbs.seoSetting.custom_url, id: lastBreadcrumbs.id },
             });
         }
     } catch (err) {
@@ -137,7 +137,7 @@ async function getList(params: { per_page: number; page: number; article_categor
 
         pagination.value.total = meta.total;
 
-        rows.forEach((item: { title: any; description: any; thumbnail: any; published_at: any; id: any; is_top: any }) => {
+        rows.forEach((item: { title: any; description: any; thumbnail: any; published_at: any; id: any; is_top: any; seoSetting: any }) => {
             datas.value.push({
                 title: item.title,
                 content: item.description,
@@ -146,7 +146,7 @@ async function getList(params: { per_page: number; page: number; article_categor
                 is_top: item.is_top,
                 url: {
                     name: "news-details-slug-id",
-                    params: { slug: item.id, id: item.id },
+                    params: { slug: item.seoSetting.custom_url, id: item.id },
                 },
             });
         });

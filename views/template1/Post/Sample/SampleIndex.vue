@@ -62,16 +62,15 @@ async function getType() {
     try {
         const { data } = await $api().ArticalTypeAPI({ type: "renovation" });
         sidebar.value = [];
-        console.log("home sampleType api => ", data.value);
 
         const rows = (data.value as any).data;
 
-        rows.forEach((item: { name: any; id: any }) => {
+        rows.forEach((item: { name: any; id: any; seoSetting: any }) => {
             sidebar.value.push({
                 text: item.name,
                 id: item.id,
                 url: {
-                    params: { slug: item.type, id: item.id },
+                    params: { slug: item.seoSetting.custom_url, id: item.id },
                     name: "sample-slug-id",
                 },
             });
@@ -83,12 +82,12 @@ async function getType() {
             breadcrumbs.value.push({
                 name: "sample-slug-id",
                 text: "裝修實績",
-                params: { slug: lastBreadcrumbs.type, id: lastBreadcrumbs.id },
+                params: { slug: lastBreadcrumbs.seoSetting.custom_url, id: lastBreadcrumbs.id },
             });
             breadcrumbs.value.push({
                 name: "sample-slug-id",
                 text: lastBreadcrumbs.name,
-                params: { slug: lastBreadcrumbs.type, id: lastBreadcrumbs.id },
+                params: { slug: lastBreadcrumbs.seoSetting.custom_url, id: lastBreadcrumbs.id },
             });
         }
     } catch (err) {
@@ -131,14 +130,13 @@ async function getList(params: { per_page: number; page: number; article_categor
         params["search_relations"] = "articleCategory.type:renovation";
         const { data } = await $api().ArticalListAPI(params);
         datas.value = [];
-        console.log("home sample api => ", data.value);
 
         const rows = (data.value as any).data.rows;
         const meta = (data.value as any).data.meta;
 
         pagination.value.total = meta.total;
 
-        rows.forEach((item: { title: any; description: any; thumbnail: any; published_at: any; id: any; is_top: any }) => {
+        rows.forEach((item: { title: any; description: any; thumbnail: any; published_at: any; id: any; is_top: any; seoSetting: any }) => {
             datas.value.push({
                 title: item.title,
                 content: item.description,
@@ -147,7 +145,7 @@ async function getList(params: { per_page: number; page: number; article_categor
                 is_top: item.is_top,
                 url: {
                     name: "sample-details-slug-id",
-                    params: { slug: route.params.slug, id: item.id },
+                    params: { slug: item.seoSetting.custom_url, id: item.id },
                 },
             });
         });

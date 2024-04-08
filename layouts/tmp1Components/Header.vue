@@ -230,45 +230,45 @@ watch(showMenu, (newVal) => {
 });
 
 // 裝修實績
-const renovation_categories: { id: any; imgSrc: any; text: any; url: { params: { slug: any }; query: { id: any }; name: string } }[] = [];
+const renovation_categories: { id: any; imgSrc: any; text: any; url: { params: { slug: any; id: any }; name: string } }[] = [];
 
-initializationData.value.site.renovation_categories.forEach((item: { id: any; image: any; name: any }) => {
+initializationData.value.site.renovation_categories.forEach((item: { id: any; image: any; name: any; seoSetting: any }) => {
     renovation_categories.push({
         id: item.id,
         imgSrc: item.image,
         text: item.name,
         url: {
-            params: { slug: "renovation", id: item.id },
+            params: { slug: item.seoSetting.custom_url, id: item.id },
             name: "sample-slug-id",
         },
     });
 });
 
 // 展示門市
-const stronghold_categories: { id: any; imgSrc: any; text: any; url: { params: { slug: any }; query: { id: any }; name: string } }[] = [];
+const stronghold_categories: { id: any; imgSrc: any; text: any; url: { params: { slug: any; id: any }; name: string } }[] = [];
 
-initializationData.value.site.stronghold_categories.forEach((item: { id: any; icon: any; name: any }) => {
+initializationData.value.site.stronghold_categories.forEach((item: { id: any; icon: any; name: any; seoSetting: any }) => {
     stronghold_categories.push({
         id: item.id,
         imgSrc: item.icon,
         text: item.name,
         url: {
-            params: { slug: item.sort_order, id: item.id },
+            params: { slug: item.seoSetting.custom_url, id: item.id },
             name: item.id === 2 ? "store-e-commerce-slug-id" : "store-slug-id",
         },
     });
 });
 
 // 產品資訊
-const product_categories: { id: any; imgSrc: any; text: any; url: { params: { slug: any }; query: { tag: any; category: any }; name: string } }[] = [];
+const product_categories: { id: any; imgSrc: any; text: any; url: { params: { slug: any; category: any; tag: any }; name: string } }[] = [];
 
-initializationData.value.site.product_categories.forEach((item: { id: any; menu_image: any; name: any }) => {
+initializationData.value.site.product_categories.forEach((item: { id: any; menu_image: any; name: any; seoSetting: any }) => {
     product_categories.push({
         id: item.id,
         imgSrc: item.menu_image,
         text: item.name,
         url: {
-            params: { slug: item.id, category: item.id, tag: item.id },
+            params: { slug: item.seoSetting.custom_url, category: item.id, tag: item.id },
             name: "product-slug-category-tag",
         },
     });

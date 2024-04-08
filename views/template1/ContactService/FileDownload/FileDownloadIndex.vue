@@ -31,7 +31,7 @@ import FileDownloadList from "~/views/template1/ContactService/FileDownload/comp
 const route = useRoute();
 const { $api } = useNuxtApp();
 
-const breadcrumbs = ref([
+const breadcrumbs = ref<any>([
     {
         name: "index",
         text: "首頁",
@@ -50,12 +50,12 @@ async function getType() {
 
         const rows = (data.value as any).data;
 
-        rows.forEach((item: { name: any; id: any }) => {
+        rows.forEach((item: { name: any; id: any; seoSetting: any }) => {
             sidebar.value.push({
                 text: item.name,
                 id: item.id,
                 url: {
-                    params: { slug: "download", id: item.id },
+                    params: { slug: item.seoSetting.custom_url, id: item.id },
                     name: "file-download-slug-id",
                 },
             });
@@ -67,17 +67,17 @@ async function getType() {
         breadcrumbs.value.push({
             name: "file-download-slug-id",
             text: "服務支援",
-            params: { slug: lastBreadcrumbs.name, id: lastBreadcrumbs.id },
+            params: { slug: lastBreadcrumbs.seoSetting.custom_url, id: lastBreadcrumbs.id },
         });
         breadcrumbs.value.push({
             name: "file-download-slug-id",
             text: "檔案下載",
-            params: { slug: "download", id: lastBreadcrumbs.id },
+            params: { slug: lastBreadcrumbs.seoSetting.custom_url, id: lastBreadcrumbs.id },
         });
         breadcrumbs.value.push({
             name: "file-download-slug-id",
             text: lastBreadcrumbs.name,
-            params: { slug: "download", id: lastBreadcrumbs.id },
+            params: { slug: lastBreadcrumbs.seoSetting.custom_url, id: lastBreadcrumbs.id },
         });
     } catch (err) {}
 }

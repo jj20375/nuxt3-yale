@@ -79,7 +79,7 @@ const router = useRouter();
 
 const { $api, $utils } = useNuxtApp();
 
-const breadcrumbs = ref([]);
+const breadcrumbs = ref<any>([]);
 
 const postData = ref<any>({
     id: "",
@@ -100,9 +100,7 @@ const pagination = ref<any>({
 async function getData(params: { articleId: any }, isChangePost: boolean) {
     try {
         const { data } = await $api().SampleDetailAPI(params);
-        console.log("home sample api => ", data.value);
         const detail = (data.value as any).data;
-
         postData.value = {
             id: detail.id,
             title: detail.title,
@@ -145,7 +143,7 @@ async function getData(params: { articleId: any }, isChangePost: boolean) {
                 url: {
                     name: route.name,
                     params: {
-                        slug: detail.previous_article.articleCategory.type,
+                        slug: detail.previous_article.seoSetting.custom_url,
                         id: detail.previous_article.id,
                     },
                 },
@@ -161,7 +159,7 @@ async function getData(params: { articleId: any }, isChangePost: boolean) {
                 url: {
                     name: route.name,
                     params: {
-                        slug: detail.next_article.articleCategory.type,
+                        slug: detail.next_article.seoSetting.custom_url,
                         id: detail.next_article.id,
                     },
                 },

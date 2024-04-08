@@ -42,7 +42,7 @@ const route = useRoute();
 
 const { $api } = useNuxtApp();
 
-const breadcrumbs = ref([
+const breadcrumbs = ref<any>([
     {
         name: "index",
         text: "首頁",
@@ -62,13 +62,13 @@ async function getType() {
 
         const rows = (data.value as any).data;
 
-        rows.forEach((item: { name: any; id: any }) => {
+        rows.forEach((item: { name: any; id: any; seoSetting: any }) => {
             if (item.id === 2) {
                 sidebar.value.push({
                     text: item.name,
                     id: item.id,
                     url: {
-                        params: { slug: item.name, id: item.id },
+                        params: { slug: item.seoSetting.custom_url, id: item.id },
                         name: "store-e-commerce-slug-id",
                     },
                 });
@@ -77,7 +77,7 @@ async function getType() {
                     text: item.name,
                     id: item.id,
                     url: {
-                        params: { slug: item.name, id: item.id },
+                        params: { slug: item.seoSetting.custom_url, id: item.id },
                         name: "store-slug-id",
                     },
                 });
@@ -90,14 +90,14 @@ async function getType() {
             breadcrumbs.value.push({
                 name: "store-e-commerce-slug-id",
                 text: "展售門市",
-                params: { slug: lastBreadcrumbs.name, id: lastBreadcrumbs.id },
+                params: { slug: lastBreadcrumbs.seoSetting.custom_url, id: lastBreadcrumbs.id },
             });
 
             breadcrumbs.value.push({
                 // id 2 等於電商通路樣板
                 name: lastBreadcrumbs.id == 2 ? "store-e-commerce-slug-id" : "store-slug-id",
                 text: lastBreadcrumbs.name,
-                params: { slug: lastBreadcrumbs.name, id: lastBreadcrumbs.id },
+                params: { slug: lastBreadcrumbs.seoSetting.custom_url, id: lastBreadcrumbs.id },
             });
         }
     } catch (err) {

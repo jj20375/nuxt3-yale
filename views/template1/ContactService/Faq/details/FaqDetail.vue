@@ -46,7 +46,7 @@ const route = useRoute();
 
 const { $api, $utils } = useNuxtApp();
 
-const breadcrumbs = ref([
+const breadcrumbs = ref<any>([
     {
         name: "index",
         text: "首頁",
@@ -69,12 +69,12 @@ async function getType() {
 
         const rows = (data.value as any).data;
 
-        rows.forEach((item: { name: any; id: any }) => {
+        rows.forEach((item: { name: any; id: any; seoSetting: any }) => {
             sidebar.value.push({
                 text: item.name,
                 id: item.id,
                 url: {
-                    params: { slug: item.name, id: item.id },
+                    params: { slug: item.seoSetting.custom_url, id: item.id },
                     name: "faq-slug-id",
                 },
             });
@@ -85,17 +85,17 @@ async function getType() {
         breadcrumbs.value.push({
             name: "faq-slug-id",
             text: "服務支援",
-            params: { slug: lastBreadcrumbs.name, id: lastBreadcrumbs.id },
+            params: { slug: lastBreadcrumbs.seoSetting.custom_url, id: lastBreadcrumbs.id },
         });
         breadcrumbs.value.push({
             name: "faq-slug-id",
             text: "服務中心",
-            params: { slug: lastBreadcrumbs.name, id: lastBreadcrumbs.id },
+            params: { slug: lastBreadcrumbs.seoSetting.custom_url, id: lastBreadcrumbs.id },
         });
         breadcrumbs.value.push({
             name: "faq-slug-id",
             text: lastBreadcrumbs.name,
-            params: { slug: lastBreadcrumbs.name, id: lastBreadcrumbs.id },
+            params: { slug: lastBreadcrumbs.seoSetting.custom_url, id: lastBreadcrumbs.id },
         });
     } catch (err) {}
 }
@@ -117,7 +117,7 @@ async function getDetail(params: { fqaId: any }) {
         breadcrumbs.value.push({
             name: "faq-details-slug-id-detail_id",
             text: detail.name,
-            params: { slug: detail.name, detail_id: detail.id },
+            params: { slug: detail.seoSetting.custom_url, detail_id: detail.id },
         });
     } catch (err) {}
 }
