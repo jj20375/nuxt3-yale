@@ -75,14 +75,14 @@
                                         </div>
                                     </div>
                                     <div v-if="item && ['currentTool1', 'currentTool2'].includes(key)">{{ item.title }}-{{ item.style }}</div>
-                                    <div v-if="item && ['currentOther1', 'currentOther2', 'otherServices'].includes(key)">
+                                    <div v-if="item && ['currentOther1', 'currentOther2', 'currentOther3', 'otherServices'].includes(key)">
                                         <ul
                                             v-if="item"
                                             class="ml-2"
                                         >
                                             <li
                                                 v-for="(item2, index2) in item.datas"
-                                                :class="!['currentOther1', 'currentOther2'].includes(key) ? 'list-disc' : '-ml-2'"
+                                                :class="!['currentOther1', 'currentOther2', 'currentOther3'].includes(key) ? 'list-disc' : '-ml-2'"
                                                 class="list-inside"
                                             >
                                                 {{ item2.name }}<span v-if="key !== 'otherServices'">-</span>
@@ -182,6 +182,9 @@ const shoppingCarDetail = computed(() =>
         }
         if (item.currentOther2) {
             obj.currentOther2 = item.currentOther2;
+        }
+        if (item.currentOther3) {
+            obj.currentOther3 = item.currentOther3;
         }
         if (item.otherServices) {
             obj.otherServices = item.otherServices;

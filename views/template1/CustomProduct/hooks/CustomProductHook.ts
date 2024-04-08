@@ -78,6 +78,9 @@ export function useCustomProdutHook() {
                 // 取得選配五金-門弓器取得
                 let other2Datas = data.value.data.find((item: any) => item.id === CustomProductListIdEnum.other2);
                 other2Datas = setToolData(other2Datas);
+                // 取得選配五金-輔助鎖取得
+                let other3Datas = data.value.data.find((item: any) => item.id === CustomProductListIdEnum.other3);
+                other3Datas = setToolData(other3Datas);
                 // 取得施作服務取得
                 let serviceDatas = data.value.data.find((item: any) => item.id === CustomProductListIdEnum.service);
                 serviceDatas = setServiceData(serviceDatas);
@@ -91,6 +94,7 @@ export function useCustomProdutHook() {
                     tool2Datas,
                     other1Datas,
                     other2Datas,
+                    other3Datas,
                     serviceDatas,
                 };
             }

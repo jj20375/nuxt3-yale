@@ -75,6 +75,7 @@
                             <CustomProductBackground
                                 v-model:currentBgId="currentBgId"
                                 v-model:currentBgData="currentBgData"
+                                :currentAngle="currentAngle"
                                 :tabs="scenes"
                             />
                             <CustomProductPlan
@@ -147,6 +148,7 @@
                                 :icon="['fas', 'chevron-up']"
                             />
                         </div>
+                        {{ lockCategory }}
                         <CustomProductLock
                             class="mb-[30px]"
                             v-show="stepMenuShow['step3'].show"
@@ -215,6 +217,14 @@
                                 v-model:selectedProductIds="currentOther2Ids"
                                 v-model:selectedProducts="currentOther2Datas"
                                 :products="other2Datas"
+                            />
+                            <CustomProductOtherChoose
+                                v-show="lockCategory === 'handle'"
+                                class="mt-[20px] mb-[16px]"
+                                title="輔助鎖"
+                                v-model:selectedProductIds="currentOther3Ids"
+                                v-model:selectedProducts="currentOther3Datas"
+                                :products="other3Datas"
                             />
                         </div>
                     </div>
@@ -422,7 +432,7 @@ const findPlans = computed(() => {
     return { customPlans: [] };
 });
 // 預設選擇門的角度
-const currentAngle = ref("front");
+const currentAngle = ref(route.query.angle ?? "front");
 // 預覽視窗 dom 寬度 用來計算 正面｜背面｜半開顯示位置
 const previewWidth = ref(0);
 const viewAngle = ref([
@@ -475,6 +485,10 @@ const currentOther1Datas = ref<any>([]);
 const currentOther2Ids = ref([""]);
 // 選擇選配區 門弓器資料
 const currentOther2Datas = ref<any>([]);
+// 選擇選配區 輔助鎖 ids
+const currentOther3Ids = ref([""]);
+// 選擇選配區 輔助鎖資料
+const currentOther3Datas = ref<any>([]);
 // 選擇得服務 ids
 const currentServiceIds = ref<any>([]);
 // 選擇得服務資料
@@ -499,6 +513,8 @@ const tool2Datas = ref<any>([]);
 const other1Datas = ref<any>([]);
 // 選配五金-門弓器
 const other2Datas = ref<any>([]);
+// 選配五金-輔助鎖
+const other3Datas = ref<any>([]);
 // 施作服務資料
 const serviceDatas = ref<any>([]);
 
@@ -638,6 +654,17 @@ async function addToShoppingCar() {
         });
         price = price + other2Price;
     }
+    // 判斷是否有選擇 選擇基本五金 輔助鎖
+    if (!$utils().isEmpty(currentOther3Datas.value)) {
+        data["currentOther3"] = { label: "輔助鎖", datas: currentOther3Datas.value };
+        let other3Price = 0;
+        other3Price = _SumBy(other3Datas.value, (item: any) => {
+            if (currentOther3Ids.value.includes(item.id)) {
+                return item.price;
+            }
+        });
+        price = price + other3Price;
+    }
     // 判斷是否有選擇 施作服務
     if (!$utils().isEmpty(currentServiceDatas.value)) {
         data["otherServices"] = { label: "額外施作服務", datas: currentServiceDatas.value };
@@ -708,6 +735,14 @@ const total = computed(() => {
             }
         });
     }
+    let other3Price = 0;
+    if (currentOther3Ids.value.length > 0) {
+        other3Price = _SumBy(other3Datas.value, (item: any) => {
+            if (currentOther3Ids.value.includes(item.id)) {
+                return item.price;
+            }
+        });
+    }
     let servicePrice = 0;
     if (currentServiceIds.value.length > 0) {
         servicePrice = _SumBy(serviceDatas.value, (item: any) => {
@@ -717,7 +752,7 @@ const total = computed(() => {
         });
     }
 
-    return (doorPrice + doorOutPrice + lockPrice + tool1Price + tool2Price + other1Price + other2Price + servicePrice) * count.value;
+    return (doorPrice + doorOutPrice + lockPrice + tool1Price + tool2Price + other1Price + other2Price + other3Price + servicePrice) * count.value;
 });
 // 訂金
 const deposit = computed(() => Math.round(total.value * 0.3));
@@ -753,8 +788,16 @@ const doorLimit = computed(() => {
             }
         }).stock;
     }
+    let other3Stock = null;
+    if (currentOther3Ids.value.length > 0) {
+        other3Stock = _MinBy(other3Datas.value, (item: any) => {
+            if (currentOther3Ids.value.includes(item.id)) {
+                return item.stock;
+            }
+        }).stock;
+    }
 
-    const stocks = [doorStock, doorOutStock, lockStock, tool1Stock, tool2Stock, other1Stock, other2Stock];
+    const stocks = [doorStock, doorOutStock, lockStock, tool1Stock, tool2Stock, other1Stock, other2Stock, other3Stock];
     return _Min(stocks);
 });
 
@@ -775,6 +818,7 @@ async function init(id: number) {
     tool2Datas.value = customProductList.value.tool2Datas;
     other1Datas.value = customProductList.value.other1Datas;
     other2Datas.value = customProductList.value.other2Datas;
+    other3Datas.value = customProductList.value.other3Datas;
     serviceDatas.value = customProductList.value.serviceDatas;
     if (doors.value && doors.value[0]) {
         lockCategory.value = "handle";
@@ -803,6 +847,7 @@ async function init(id: number) {
         currentTool2Data.value = tool2Datas.value[0];
         currentOther1Ids.value = [];
         currentOther2Ids.value = [];
+        currentOther3Ids.value = [];
         currentServiceIds.value = [];
 
         console.log("init currentLock.value => ", currentLock.value);
@@ -829,6 +874,17 @@ watch(
     }
 );
 
+// 判斷選擇電子鎖時須清空輔助鎖選項
+watch(
+    () => lockCategory.value,
+    (val) => {
+        if (val === "lock") {
+            currentOther3Ids.value = [];
+            currentOther3Datas.value = [];
+        }
+    }
+);
+
 watch(
     () => currentPlanId.value,
     (val) => {
@@ -849,7 +905,7 @@ watch(
                 if (item.custom_product_type_id === CustomProductListIdEnum.lock) {
                     currentLockId.value = item.id;
                     const lockData = locks.value.lock.find((item2: any) => item2.id === item.id);
-                    currentLock.vlaue = {
+                    currentLock.value = {
                         id: lockData.id,
                         style: lockData.style,
                         price: lockData.price,
@@ -864,7 +920,7 @@ watch(
                 if (item.custom_product_type_id === CustomProductListIdEnum.handle) {
                     currentLockId.value = item.id;
                     const handleData = locks.value.handle.find((item2: any) => item2.id === item.id);
-                    currentLock.vlaue = {
+                    currentLock.value = {
                         id: handleData.id,
                         style: handleData.style,
                         price: handleData.price,
@@ -893,6 +949,11 @@ watch(
                     currentOther2Ids.value[0] = item.id;
                 } else {
                     currentOther2Ids.value = [];
+                }
+                if (item.custom_product_type_id === CustomProductListIdEnum.other3) {
+                    currentOther3Ids.value[0] = item.id;
+                } else {
+                    currentOther3Ids.value = [];
                 }
             });
         }

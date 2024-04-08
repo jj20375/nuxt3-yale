@@ -20,6 +20,8 @@ export enum CustomProductListIdEnum {
     other2 = 8,
     // 施作服務
     service = 9,
+    // 輔助鎖
+    other3 = 10,
 }
 
 /**

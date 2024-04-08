@@ -249,6 +249,42 @@
             </div>
         </div>
         <div
+            v-if="products.currentOther3"
+            class="product-card p-5 border-gray-200 border-[1px] rounded-[8px] mt-5"
+        >
+            <h5 class="text-[18px] font-bold text-gray-800 mb-4">輔助鎖</h5>
+            <div class="flex flex-col gap-5 sm:flex-row">
+                <div class="flex-1 order-2 sm:order-1">
+                    <div class="grid gap-2 text-gray-700">
+                        <!-- <div class="w-[80px]">場景</div> -->
+                        <div class="w-[80px]">款式</div>
+                        <!-- <div>{{ products.name }}</div> -->
+                        <div class="flex flex-col gap-1">
+                            <div>{{ products.currentOther3.datas[0].name }}</div>
+                            <div>{{ products.currentOther3.datas[0].style }}</div>
+                        </div>
+                        <div
+                            v-if="products.currentOther3.datas[0].price > 0"
+                            class="flex-1 w-[80px]"
+                        >
+                            加購
+                        </div>
+                        <div
+                            v-if="products.currentOther3.datas[0].price > 0"
+                            class="flex flex-col gap-1"
+                        >
+                            NT${{ $utils().formatCurrency(products.currentOther3.datas[0].price) }}
+                        </div>
+                    </div>
+                </div>
+                <NuxtImg
+                    v-if="products.currentOther3.datas[0].imgSrc"
+                    class="w-[200px] aspect-square object-cover h-fit order-1 sm:order-2 mx-auto"
+                    :src="products.currentOther3.datas[0].imgSrc"
+                />
+            </div>
+        </div>
+        <div
             v-if="products.otherServices"
             class="p-5 mt-5 product-card"
         >

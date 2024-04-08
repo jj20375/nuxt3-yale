@@ -45,6 +45,11 @@ const props = defineProps({
         type: [String, Number],
         default: 1,
     },
+    // 當前角度
+    currentAngle: {
+        type: String,
+        default: "front",
+    },
     tabs: {
         type: Array,
         default() {
@@ -65,7 +70,7 @@ watch(
             "update:currentBgData",
             tabDatas.value.find((item) => item.id === val)
         );
-        router.push({ name: "custom-product-slug", params: { slug: val } });
+        router.push({ name: "custom-product-slug", params: { slug: val }, query: { angle: props.currentAngle } });
     }
 );
 
