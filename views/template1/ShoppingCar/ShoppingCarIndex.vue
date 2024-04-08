@@ -46,6 +46,9 @@
                         :goCheckoutStep3="goCheckoutStep3"
                     />
                 </keep-alive>
+                <ShoppingCarStep2FormGift
+                    @selectProduct="selectProduct"
+                />
                 <div
                     class="mt-12 lg:mt-0 w-full lg:w-[300px] xl:w-[400px]"
                     v-if="currentStep !== 2"
@@ -182,6 +185,7 @@ function changeTab(key: string) {
     }
     currentTab.value = key;
     selectProductIds.value = [];
+    shoppingCarStore.discount_gifts = []
     router.push({ name: route.name, query: { tab: key } });
 }
 
@@ -228,14 +232,20 @@ const couponRef = ref<any>(null);
 
 const getCoupon = async (val: any) => {
     console.log("getCoupon", val);
+    let params
     if (currentTab.value === "type2") {
-        return;
+        params = {
+            type: "combination",
+            cart_combinations: [],
+            coupon_code: val,
+        };
+    } else {
+        params = {
+            type: "normal",
+            cart_items: [],
+            coupon_code: val,
+        };
     }
-    const params = {
-        type: "normal",
-        cart_items: [],
-        coupon_code: val,
-    };
     if (!userStore.isAuth) {
         showLoginDialog.value = true;
         ElMessage({
@@ -255,7 +265,11 @@ const getCoupon = async (val: any) => {
         couponRef.value.formData.warningTXT = "請輸入優惠序號";
         couponRef.value.formData.showCheckWarning = true;
     } else {
-        params.cart_items = selectProductIds.value;
+        if (currentTab.value === "type2") {
+            params.cart_combinations = selectProductIds.value;
+        } else {
+            params.cart_items = selectProductIds.value;
+        }
         const { data, status: checkStatus, error: checkError } = await $api().DiscountCheckAPI(params);
         console.log(checkStatus);
         if (checkStatus.value !== "success") {
@@ -285,6 +299,7 @@ const getCoupon = async (val: any) => {
         }
         discountData.value.coupon_discount_amount = couponData.coupon_discount_amount;
         discountData.value.discount_amount = couponData.discount_amount;
+        shoppingCarStore.discount_gifts = couponData.discount_product_gifts
     }
 };
 
@@ -305,14 +320,15 @@ const discountCalculate = async () => {
         console.log(couponData);
         discountData.value.coupon_discount_amount = couponData.coupon_discount_amount;
         discountData.value.discount_amount = couponData.discount_amount;
+        shoppingCarStore.discount_gifts = couponData.discount_product_gifts
         loading.close();
     } catch {
+        shoppingCarStore.discount_gifts = []
         loading.close();
     }
 };
 
 const productCountUpdate = async () => {
-    console.log("gdsdgf");
     if (userStore.isAuth && currentTab.value === "type1" && selectProductIds.value.length > 0) {
         discountCalculate();
     } else {
@@ -322,8 +338,18 @@ const productCountUpdate = async () => {
 };
 
 const selectProduct = async (val: number[]) => {
-    console.log(val);
-    selectProductIds.value = val;
+    if (currentTab.value === "type2") {
+        selectProductIds.value = val;
+    } else {
+        const data: { id: number|null; productID: number; colorName?: string|undefined; product_variationable_id?: number|undefined; price: number; name: string; imgSrc: string; count: number; totalPrice: number; stock: number; productVariationable: number; }[] = []
+        shoppingCar.value.forEach(item => {
+            if ((item.is_add_on_purchase == 0 && val.includes(item.id)) || (item.is_add_on_purchase == 1 && val.includes(item.parent_id))) {
+                data.push(item)
+            }
+        })
+        selectProductIds.value = data.map(item => item.id);
+    }
+    console.log(selectProductIds.value)
     if (userStore.isAuth && currentTab.value === "type1" && selectProductIds.value.length > 0) {
         discountCalculate();
     } else {

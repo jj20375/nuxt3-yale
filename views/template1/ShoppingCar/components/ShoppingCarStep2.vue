@@ -28,12 +28,6 @@
             ref="formInvoiceRef"
             v-model:form="formInvoice"
         />
-        <!-- todo 先隱藏 aaron -->
-        <!-- <ShoppingCarStep2FormGift
-            :gifts="gifts"
-            v-model:form="formGift"
-            v-model:selectGiftIds="selectGiftIds"
-        /> -->
         <ShoppingCarStep2FormCustomProductRule
             v-model:showDialog="showDialogByCustomRule"
             :customRuleData="customRuleData"
@@ -118,8 +112,6 @@ import ShoppingCarStep2FormLogistics from "~/views/template1/ShoppingCar/compone
 import ShoppingCarStep2FormPayment from "~/views/template1/ShoppingCar/components/Step2Form/ShoppingCarStep2FormPayment.vue";
 // 發票
 import ShoppingCarStep2FormInvoice from "~/views/template1/ShoppingCar/components/Step2Form/ShoppingCarStep2FormInvoice.vue";
-// 滿額贈
-import ShoppingCarStep2FormGift from "~/views/template1/ShoppingCar/components/Step2Form/ShoppingCarStep2FormGift.vue";
 // 定型化契約彈窗
 import ShoppingCarStep2FormCustomProductRule from "~/views/template1/ShoppingCar/components/Step2Form/ShoppingCarStep2FormCustomProductRule.vue";
 // 預約丈量時間
@@ -148,6 +140,7 @@ const shoppingCarStore = useShoppingCarStore();
 const { user } = storeToRefs(userStore);
 const { shoppingCar } = storeToRefs(shoppingCarStore);
 const { shoppingCustomCar } = storeToRefs(shoppingCarStore);
+const { giftsDataSelect } = storeToRefs(shoppingCarStore);
 
 const { $api, $shoppingCarService } = useNuxtApp();
 const $config = useRuntimeConfig();
@@ -224,20 +217,6 @@ const formInvoice = ref({
     taxNumber: "", // 當 invoice_type 為 company 必填
 });
 
-// 贈品表單
-const formGift = ref([
-    {
-        id: "id1",
-        color: "red",
-        count: 1,
-    },
-    {
-        id: "id2",
-        color: "black",
-        count: 2,
-    },
-]);
-
 // 確認閱讀合約
 const formConfirm = ref({
     // 網站服務條款｜隱私權政策
@@ -245,55 +224,6 @@ const formConfirm = ref({
     // 確認閱讀定型化契約
     confirmCustomRule: false,
 });
-//
-
-// 滿額贈品
-const gifts = ref([
-    {
-        id: "id1",
-        name: "質感托特包-1",
-        colors: [
-            {
-                label: "紅色",
-                value: "red",
-            },
-            {
-                label: "黑色",
-                value: "black",
-            },
-        ],
-        // 商品價格
-        price: 150,
-        rule: {
-            // 需要多少錢才送
-            needPrice: 3000,
-            // 需付款金額
-            pay: 0,
-        },
-    },
-    {
-        id: "id2",
-        name: "質感托特包-2",
-        colors: [
-            {
-                label: "紅色",
-                value: "red",
-            },
-            {
-                label: "黑色",
-                value: "black",
-            },
-        ],
-        // 商品價格
-        price: 180,
-        rule: {
-            // 需要多少錢才送
-            needPrice: 3000,
-            // 需付款金額
-            pay: 0,
-        },
-    },
-]);
 
 // 贈品選中商品 id
 const selectGiftIds = ref<number | string[]>([]);
@@ -323,6 +253,21 @@ const initialVal = () => {
 // 結帳
 const checkout = async () => {
     const hostUrl = $config.public.hostURL;
+    const discount_gifts = <any>[]
+    giftsDataSelect.value.forEach((item: { is_single_variation: number; discount_id: any; count: any; id: any; spec: any; }) => {
+        if (item.is_single_variation == 0) {
+            discount_gifts.push({
+                discount_id: item.discount_id,
+                productable_id: item.id,
+                product_variationable_id: item.spec
+            })
+        } else {
+            discount_gifts.push({
+                discount_id: item.discount_id,
+                productable_id: item.id,
+            })
+        }
+    })
     const req: ReqCheckout = {
         type: props.currentTab === "type2" ? "combination" : "normal", // normal
         member_phone: formMain.value.phone,
@@ -338,6 +283,7 @@ const checkout = async () => {
         payment_gateway: formPayment.value.paymentType,
         shipping_method: formLogistics.value.logistics,
         cart_item_id: props.selectProductIds,
+        discount_gifts: discount_gifts,
         // 發票類型
         invoice_type: formInvoice.value.invoiceType,
         // 載具編號

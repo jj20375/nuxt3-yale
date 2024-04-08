@@ -139,5 +139,6 @@ export interface ReqValidatorMobileCarrierCode {
 export interface DiscountCalculate {
     type: string;
     coupon_code: string;
-    cart_items: string[];
+    cart_items?: string[];
+    cart_combinations?: string[];
 }

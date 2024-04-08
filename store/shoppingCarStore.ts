@@ -84,6 +84,8 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
                         colorName,
                         stock: i.productable.stock,
                         productVariationable: productVariationable,
+                        is_add_on_purchase: i.is_add_on_purchase,
+                        parent_id: i.parent_id,
                     };
                 });
                 if (process.client) {
@@ -409,6 +411,7 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
                         productable_id: data.productID,
                         quantity: data.count,
                         product_variationable_id: data.product_variationable_id,
+                        add_on_purchases: data.add_on_purchases,
                     };
                     const { error } = await $api().AddToCartAPI(apiReq);
                     if (error.value) {
@@ -619,6 +622,11 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
         }
     };
 
+    // 滿額贈商品
+    const discount_gifts = ref<any>([])
+
+    const giftsDataSelect = ref<any>([]);
+
     return {
         shoppingCar,
         shoppingCustomCar,
@@ -636,5 +644,7 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
         deleteCustomCart,
         syncCart,
         syncCustomCart,
+        discount_gifts,
+        giftsDataSelect
     };
 });

@@ -6,11 +6,13 @@
         >
             <div class="w-full xl:w-[950px] mx-auto">
                 <div class="flex flex-col md:flex-row gap-[28px] md:gap-[60px] xl:gap-[120px]">
-                    <NuxtImg
-                        v-if="detailData.main_image"
-                        class="aspect-square object-cover"
-                        :src="detailData.main_image"
-                    />
+                    <div class="shrink-0 grow-0 md:basis-[50%] xl:basis-[430px] md:w-[50%] xl:w-[430px]">
+                        <NuxtImg
+                            v-if="detailData.main_image"
+                            class="w-[430px]"
+                            :src="detailData.main_image"
+                        />
+                    </div>
                     <div
                         class="flex flex-col"
                         :class="isMobile ? 'container' : ''"

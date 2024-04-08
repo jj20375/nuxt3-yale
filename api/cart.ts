@@ -31,6 +31,7 @@ export interface ReqCheckout {
     carrier_code?: string;
     donation_code?: string;
     tax_number?: string;
+    discount_gifts?: any;
     // 一般商品結帳購物車 id
     cart_item_id?: number[];
     // 訂製門扇結帳購物車 id
@@ -55,6 +56,12 @@ export interface ReqCustomCar {
         product_variationable_id?: number;
         // 數量
         quantity: number;
+        // 加價購商品
+        add_on_purchases: {
+            discount_id: number;
+            productable_id: number;
+            quantity: number;
+        }[];
     }[];
     // 數量
     quantity: number;

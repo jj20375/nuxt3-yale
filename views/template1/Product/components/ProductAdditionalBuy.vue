@@ -15,7 +15,7 @@
                 >
                     <div class="relative flex items-center h-full">
                         <el-checkbox
-                            :label="product.id"
+                            :label="product.discount_id"
                             size="large"
                             class="flex-1 mx-3"
                         >
@@ -74,7 +74,7 @@
             center
             align-center
             append-to-
-            fullscreen
+            width="1080px"
             v-model="showDetail"
         >
             <productAdditionalBuyDetail
@@ -156,13 +156,16 @@ addSelect.value = props.additionalProducts.map((item:any) => {
     }
 
     return { 
+        id: item.id,
+        discount_id: item.discount_id,
         count: 1,
         spec: spec,
         specOPT: specOPT,
         price: price,
         stock: stock,
         max: props.productCount > stock ? stock : props.productCount,
-        imgUrl: imgUrl
+        imgUrl: imgUrl,
+        is_single_variation: item.is_single_variation
     };
 });
 
@@ -194,6 +197,10 @@ const handleDetailData = (index: string|number) => {
     additionalProductsDetail.value.price = addSelect.value[index].price
 }
 
+defineExpose({
+    addSelect,
+    selectedAdditionalProducts,
+})
 </script>
 
 <style scoped lang="scss"></style>

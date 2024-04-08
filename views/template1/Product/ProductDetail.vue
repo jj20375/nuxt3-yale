@@ -501,6 +501,7 @@ const getData = async () => {
         addOnPurchaseDiscounts.value = productDetail.value.addOnPurchaseDiscounts.map((item:any) => {
             return {
                 id: item.id,
+                discount_id: item.discount_id,
                 model: item.model,
                 name: item.name,
                 shape: item.shape,
@@ -654,18 +655,35 @@ const countAdd = () => {
 const downloadFile = (file: { url: string | URL | undefined }) => {
     window.open(file.url, "_blank");
 };
-
+const productAdditionalBuyRef = ref<any>(null)
 /**
  * 加入購物車
  * @param isGoToShoppingCarPage 判斷是點選結帳按鈕 不跳 alert 錯誤
  */
 const addToShoppingCar = (isGoToShoppingCarPage: boolean = false) => {
+    const add_on_purchases: { discount_id: any; }[] = []
+    const selectAddData = productAdditionalBuyRef.value.addSelect.filter((item: { id: any; }) => productAdditionalBuyRef.value.selectedAdditionalProducts.includes(item.discount_id))
+    selectAddData.forEach((item: { discount_id: any; }) => {
+        console.log(item.discount_id)
+        if (item.is_single_variation == 0) {
+            add_on_purchases.push({
+                discount_id: item.discount_id,
+                quantity: item.count,
+                productable_id: item.id,
+                product_variationable_id: item.spec
+            })
+        } else {
+            add_on_purchases.push({
+                discount_id: item.discount_id,
+                quantity: item.count,
+                productable_id: item.id,
+            })
+        }
+    })
     const productVariationable: { label: any; value: any }[] = [];
     currentOption.value.forEach((item: any, index: string | number) => {
         let value = "";
-        console.log(productOptions.value[index]);
         value = productOptions.value[index].options.find((data: { id: any }) => data.id == item);
-        console.log(value);
         productVariationable.push({
             label: productOptions.value[index].name,
             value: value.text,
@@ -683,6 +701,7 @@ const addToShoppingCar = (isGoToShoppingCarPage: boolean = false) => {
         colorName: colorName.value ? colorName.value : undefined,
         stock: detailData.value.stock,
         productVariationable: productVariationable,
+        add_on_purchases: add_on_purchases
     };
     console.log("isGoToShoppingCarPage =>", isGoToShoppingCarPage);
     shoppingCarStore

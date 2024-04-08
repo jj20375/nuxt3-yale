@@ -20,6 +20,7 @@
         </div>
         <!-- todo 先隱藏 aaron -->
         <ShoppingCarSales v-if="currentTab === 'type1'" />
+        <ShoppingCarStep2FormGift />
         <div class="flex">
             <NuxtLink
                 v-if="currentTab === 'type1'"
@@ -54,6 +55,8 @@ import ShoppingCarProducts from "~/views/template1/ShoppingCar/components/Shoppi
 import ShoppingCarCustomProducts from "~/views/template1/ShoppingCar/components/ShoppingCarCustomProducts.vue";
 // 折扣優惠
 import ShoppingCarSales from "~/views/template1/ShoppingCar/components/ShoppingCarSales.vue";
+// 滿額贈
+import ShoppingCarStep2FormGift from "~/views/template1/ShoppingCar/components/Step2Form/ShoppingCarStep2FormGift.vue";
 
 const route = useRoute();
 const emit = defineEmits(["selectProduct", "productCountUpdate"]);
