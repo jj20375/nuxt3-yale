@@ -32,7 +32,7 @@ const route = useRoute();
 
 const { $api } = useNuxtApp();
 
-const breadcrumbs = ref([
+const breadcrumbs = ref<any>([
     {
         name: "index",
         text: "首頁",
@@ -52,12 +52,12 @@ async function getType() {
 
         const rows = (data.value as any).data;
 
-        rows.forEach((item: { name: any; id: any }) => {
+        rows.forEach((item: { name: any; id: any; seoSetting: any }) => {
             sidebar.value.push({
                 text: item.name,
                 id: item.id,
                 url: {
-                    params: { slug: "service", id: item.id },
+                    params: { slug: item.seoSetting.custom_url, id: item.id },
                     name: "faq-slug-id",
                 },
             });
@@ -67,18 +67,18 @@ async function getType() {
         breadcrumbs.value.push({
             name: "faq-slug-id",
             text: "服務支援",
-            params: { slug: "service", id: lastBreadcrumbs.id },
+            params: { slug: lastBreadcrumbs.seoSetting.custom_url, id: lastBreadcrumbs.id },
         });
         breadcrumbs.value.push({
             name: "faq-slug-id",
             text: "服務中心",
-            params: { slug: "service", id: lastBreadcrumbs.id },
+            params: { slug: lastBreadcrumbs.seoSetting.custom_url, id: lastBreadcrumbs.id },
         });
 
         breadcrumbs.value.push({
             name: "faq-slug-id",
             text: lastBreadcrumbs.name,
-            params: { slug: "service", id: lastBreadcrumbs.id },
+            params: { slug: lastBreadcrumbs.seoSetting.custom_url, id: lastBreadcrumbs.id },
         });
     } catch (err) {}
 }
@@ -104,12 +104,12 @@ async function getList(params: { fqa_category_id: any }) {
 
         const rows = (data.value as any).data;
 
-        rows.forEach((item: { id: any; name: any; fqa_category: any }) => {
+        rows.forEach((item: { id: any; name: any; fqa_category: any; seoSetting: any }) => {
             datas.value.push({
                 text: item.name,
                 url: {
                     name: "faq-details-slug-id-detail_id",
-                    params: { slug: item.fqa_category.name, id: route.params.id, detail_id: item.id },
+                    params: { slug: item.seoSetting.custom_url, id: route.params.id, detail_id: item.id },
                 },
             });
         });
