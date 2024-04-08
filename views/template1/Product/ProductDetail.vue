@@ -729,17 +729,17 @@ const handleDetailFavorite = async () => {
             const params = { productId: detailData.value.product_id };
             const { data } = await $api().ProductFavoriteAPI(params);
             const message = (data.value as any).message;
-            const handleMessge = is_favorite.value ? "取消收藏" : "加入收藏";
+            const handleMessage = is_favorite.value ? "取消收藏" : "加入收藏";
             if (message === "請求成功") {
                 ElMessage({
                     type: "success",
-                    message: handleMessge,
+                    message: handleMessage,
                 });
                 is_favorite.value = !is_favorite.value;
             } else {
                 ElMessage({
                     type: "error",
-                    message: handleMessge + "失敗",
+                    message: handleMessage + "失敗",
                 });
             }
         } catch (err) {
@@ -762,14 +762,14 @@ const handleFavorite = async (id: any) => {
     const message = (data.value as any).message;
     const item = sameProducts.value.find((item: ProductCarInterface) => item.id === id);
     const is_favorite = item?.is_favorite ? item?.is_favorite : false;
-    const handleMessge = is_favorite ? "取消收藏" : "加入收藏";
+    const handleMessage = is_favorite ? "取消收藏" : "加入收藏";
 
     if (message === "請求成功" && item) {
         item.is_favorite = !is_favorite;
     } else {
         ElMessage({
             type: "error",
-            message: handleMessge + "失敗",
+            message: handleMessage + "失敗",
         });
     }
 };

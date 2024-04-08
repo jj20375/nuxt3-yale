@@ -36,6 +36,7 @@
                     </div>
                 </div>
                 <NuxtImg
+                    v-if="products.imgSrc"
                     class="w-[200px] aspect-square object-cover h-fit order-1 sm:order-2 mx-auto"
                     :src="products.imgSrc"
                 />
@@ -61,6 +62,7 @@
                     </div>
                 </div>
                 <NuxtImg
+                    v-if="products.doorOut.imgSrc"
                     class="w-[200px] aspect-square object-cover h-fit order-1 sm:order-2 mx-auto"
                     :src="products.doorOut.imgSrc"
                 />
@@ -96,6 +98,7 @@
                     </div>
                 </div>
                 <NuxtImg
+                    v-if="products.lock.imgSrc"
                     class="w-[200px] aspect-square object-cover h-fit order-1 sm:order-2 mx-auto"
                     :src="products.lock.imgSrc"
                 />
@@ -131,6 +134,7 @@
                     </div>
                 </div>
                 <NuxtImg
+                    v-if="products.currentTool1.imgSrc"
                     class="w-[200px] aspect-square object-cover h-fit order-1 sm:order-2 mx-auto"
                     :src="products.currentTool1.imgSrc"
                 />
@@ -166,6 +170,7 @@
                     </div>
                 </div>
                 <NuxtImg
+                    v-if="products.currentTool2.imgSrc"
                     class="w-[200px] aspect-square object-cover h-fit order-1 sm:order-2 mx-auto"
                     :src="products.currentTool2.imgSrc"
                 />
@@ -201,6 +206,7 @@
                     </div>
                 </div>
                 <NuxtImg
+                    v-if="products.currentOther1.datas[0].imgSrc"
                     class="w-[200px] aspect-square object-cover h-fit order-1 sm:order-2 mx-auto"
                     :src="products.currentOther1.datas[0].imgSrc"
                 />
@@ -236,6 +242,7 @@
                     </div>
                 </div>
                 <NuxtImg
+                    v-if="products.currentOther2.datas[0].imgSrc"
                     class="w-[200px] aspect-square object-cover h-fit order-1 sm:order-2 mx-auto"
                     :src="products.currentOther2.datas[0].imgSrc"
                 />

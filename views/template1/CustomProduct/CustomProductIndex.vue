@@ -78,8 +78,10 @@
                                 :tabs="scenes"
                             />
                             <CustomProductPlan
+                                v-if="findPlans.customPlans.length > 0"
                                 class="mt-[30px]"
-                                v-model:currentPlan="currentPlan"
+                                :tabs="findPlans.customPlans"
+                                v-model:currentPlanId="currentPlanId"
                             />
                             <CustomProduct
                                 class="mt-[30px]"
@@ -351,6 +353,12 @@ import { useCustomProdutHook } from "./hooks/CustomProductHook";
 import { useShoppingCarStore } from "~/store/shoppingCarStore";
 // user store
 import { useUserStore } from "~/store/userStore";
+/**
+ * CustomProductListIdEnum: 訂製門扇 id 對應分類
+ */
+import { CustomProductListIdEnum } from "@/enums/customProduct.enum";
+
+const { getCustomProductList, customProductList, getCustomProductSceneList, scenes, plans } = useCustomProdutHook();
 
 const route = useRoute();
 const router = useRouter();
@@ -394,11 +402,25 @@ const stepMenuShow = ref({
 });
 
 // 預設選擇場景 id
-const currentBgId = ref("id1");
+const currentBgId = ref<number | string>("id1");
 // 預設選擇場景資料
 const currentBgData = ref<any>({});
 // 預設選擇方案
-const currentPlan = ref("id1");
+const currentPlanId = ref<number | null>(null);
+// 對應場景顯示方案
+const findPlans = computed(() => {
+    const findData = plans.value.find((item: any) => item.id === currentBgId.value);
+    if (findData) {
+        if (findData.customPlans.length === 0) {
+            currentPlanId.value = null;
+        } else {
+            currentPlanId.value = findData.customPlans[0].id;
+        }
+        return findData;
+    }
+    currentPlanId.value = null;
+    return { customPlans: [] };
+});
 // 預設選擇門的角度
 const currentAngle = ref("front");
 // 預覽視窗 dom 寬度 用來計算 正面｜背面｜半開顯示位置
@@ -736,11 +758,10 @@ const doorLimit = computed(() => {
     return _Min(stocks);
 });
 
-const { getCustomProductList, customProductList, getCustomProductSceneList, scenes } = useCustomProdutHook();
-
 async function init(id: number) {
     // 取得場景
     await getCustomProductSceneList();
+
     // 取得訂製門扇商品
     await getCustomProductList(id);
     currentBgId.value = Number(route.params.slug);
@@ -774,6 +795,7 @@ async function init(id: number) {
             shape: locks.value.handle[0].shape,
             stock: locks.value.handle[0].stock,
             model: locks.value.handle[0].model,
+            imgSrc: locks.value.handle[0].imgSrc,
         };
         currentTool1Id.value = tool1Datas.value[0].id;
         currentTool1Data.value = tool1Datas.value[0];
@@ -804,6 +826,73 @@ watch(
     (val) => {
         currentDoorColorId.value = doors.value.find((item: any) => item.id === val).colors[0].id;
         currentDoorSizeId.value = doors.value.find((item: any) => item.id === val).sizes[0].id;
+    }
+);
+
+watch(
+    () => currentPlanId.value,
+    (val) => {
+        const usePlan = findPlans.value.customPlans.find((item: any) => item.id === val);
+        if (usePlan) {
+            usePlan.CustomPlanProducts.forEach((item: any) => {
+                if (item.custom_product_type_id === CustomProductListIdEnum.door) {
+                    currentDoorId.value = item.id;
+                    currentDoorData.value = doors.value.find((item2: any) => item2.id === item.id);
+                    currentDoorColorId.value = doors.value.find((item2: any) => item2.id === item.id).colors[0].id;
+                    currentDoorSizeId.value = doors.value.find((item2: any) => item2.id === item.id).sizes[0].id;
+                }
+                if (item.custom_product_type_id === CustomProductListIdEnum.doorOut) {
+                    currentDoorOutId.value = item.id;
+                    currentDoorOutData.value = doorsOut.value.find((item2: any) => item2.id === item.id);
+                    currentDoorOutColorId.value = doorsOut.value.find((item2: any) => item2.id === item.id).colors[0].id;
+                }
+                if (item.custom_product_type_id === CustomProductListIdEnum.lock) {
+                    currentLockId.value = item.id;
+                    const lockData = locks.value.lock.find((item2: any) => item2.id === item.id);
+                    currentLock.vlaue = {
+                        id: lockData.id,
+                        style: lockData.style,
+                        price: lockData.price,
+                        detailData: lockData.detailData,
+                        name: lockData.name,
+                        shape: lockData.shape,
+                        stock: lockData.stock,
+                        model: lockData.model,
+                        imgSrc: lockData.imgSrc,
+                    };
+                }
+                if (item.custom_product_type_id === CustomProductListIdEnum.handle) {
+                    currentLockId.value = item.id;
+                    const handleData = locks.value.handle.find((item2: any) => item2.id === item.id);
+                    currentLock.vlaue = {
+                        id: handleData.id,
+                        style: handleData.style,
+                        price: handleData.price,
+                        detailData: handleData.detailData,
+                        name: handleData.name,
+                        shape: handleData.shape,
+                        stock: handleData.stock,
+                        model: handleData.model,
+                        imgSrc: handleData.imgSrc,
+                    };
+                }
+                if (item.custom_product_type_id === CustomProductListIdEnum.tool1) {
+                    currentTool1Id.value = item.id;
+                    currentTool1Data.value = tool1Datas.value.find((item2: any) => item2.id === item.id);
+                }
+                if (item.custom_product_type_id === CustomProductListIdEnum.tool2) {
+                    currentTool2Id.value = item.id;
+                    currentTool2Data.value = tool2Datas.value.find((item2: any) => item2.id === item.id);
+                }
+                if (item.custom_product_type_id === CustomProductListIdEnum.other1) {
+                    currentOther1Ids.value[0] = item.id;
+                }
+                if (item.custom_product_type_id === CustomProductListIdEnum.other2) {
+                    currentOther2Ids.value[0] = item.id;
+                }
+            });
+        }
+        console.log("findPlans.value =>", usePlan);
     }
 );
 </script>
