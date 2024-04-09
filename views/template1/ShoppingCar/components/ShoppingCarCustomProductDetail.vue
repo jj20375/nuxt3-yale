@@ -180,7 +180,7 @@
             v-if="products.currentOther1"
             class="product-card p-5 border-gray-200 border-[1px] rounded-[8px] mt-5"
         >
-            <h5 class="text-[18px] font-bold text-gray-800 mb-4">下將壓條</h5>
+            <h5 class="text-[18px] font-bold text-gray-800 mb-4">下降壓條</h5>
             <div class="flex flex-col gap-5 sm:flex-row">
                 <div class="flex-1 order-2 sm:order-1">
                     <div class="grid gap-2 text-gray-700">
