@@ -193,6 +193,14 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
                         datas: [data],
                     };
                 }
+                // 判斷是 門弓器 的時候執行
+                if (item2.productable.customProductType.id === CustomProductListIdEnum.other3) {
+                    const data = setToolData(item2.productable);
+                    result["currentOther3"] = {
+                        label: "輔助鎖",
+                        datas: [data],
+                    };
+                }
                 // 判斷是 施作服務 的時候執行
                 if (item2.productable.customProductType.id === CustomProductListIdEnum.service) {
                     const data = setServiceData(item2.productable);
@@ -473,6 +481,14 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
                     });
                 });
             }
+            if (!$utils().isEmpty(data["currentOther3"])) {
+                data["currentOther3"]?.datas.forEach((item: any) => {
+                    setCustomCarDatas.items.push({
+                        productable_id: item.id,
+                        quantity: 1,
+                    });
+                });
+            }
             if (!$utils().isEmpty(data["otherServices"])) {
                 data["otherServices"]?.datas.forEach((item: any) => {
                     setCustomCarDatas.items.push({
@@ -538,7 +554,7 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
      * @param data
      * @returns
      */
-    const updateCustomCart = async (data: ReqUpdateCustomCart, ReqDeleteCustomCart) => {
+    const updateCustomCart = async (data: ReqUpdateCustomCart) => {
         try {
             const { error } = await $api().UpdateCustomCartAPI(data);
             if (error.value) {
