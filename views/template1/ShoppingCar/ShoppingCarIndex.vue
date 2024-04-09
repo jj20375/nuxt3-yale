@@ -257,7 +257,6 @@ const getCoupon = async (val: any) => {
     } else {
         params.cart_items = selectProductIds.value;
         const { data, status: checkStatus, error: checkError } = await $api().DiscountCheckAPI(params);
-        console.log(checkStatus);
         if (checkStatus.value !== "success") {
             ElMessage({
                 type: "error",
@@ -275,12 +274,12 @@ const getCoupon = async (val: any) => {
         if (couponData.coupon_discount_amount == 0) {
             ElMessage({
                 type: "error",
-                message: '請確認優惠券使用條件',
+                message: "請確認優惠券使用條件",
             });
         } else {
             ElMessage({
                 type: "success",
-                message: '優惠券使用成功',
+                message: "優惠券使用成功",
             });
         }
         discountData.value.coupon_discount_amount = couponData.coupon_discount_amount;
@@ -312,7 +311,6 @@ const discountCalculate = async () => {
 };
 
 const productCountUpdate = async () => {
-    console.log("gdsdgf");
     if (userStore.isAuth && currentTab.value === "type1" && selectProductIds.value.length > 0) {
         discountCalculate();
     } else {
@@ -322,7 +320,6 @@ const productCountUpdate = async () => {
 };
 
 const selectProduct = async (val: number[]) => {
-    console.log(val);
     selectProductIds.value = val;
     if (userStore.isAuth && currentTab.value === "type1" && selectProductIds.value.length > 0) {
         discountCalculate();
@@ -343,6 +340,13 @@ const goStepCheckout = () => {
     if (userStore.isAuth) {
         currentStep.value = 1;
         showComponent.value = ShoppingCarStep2;
+
+        shoppingCustomCar.value.forEach(async (item: any) => {
+            await shoppingCarStore.updateCustomCart({
+                cart_combination_id: item.id,
+                quantity: item.count,
+            });
+        });
     } else {
         showLoginDialog.value = true;
         ElMessage({

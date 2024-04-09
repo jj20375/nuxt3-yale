@@ -393,14 +393,14 @@ const rightIcons = computed(() => {
     let userUrl = {
         name: "auth-panel-slug",
         params: {
-            slug: "會員中心",
+            slug: "user-panel",
         },
     };
     if (!isAuth.value) {
         userUrl = {
             name: "auth-login-slug",
             params: {
-                slug: "會員登入",
+                slug: "user-login",
             },
         };
     }
@@ -414,7 +414,7 @@ const rightIcons = computed(() => {
             url: {
                 name: "shopping-car-slug",
                 params: {
-                    slug: "一般商品購物車",
+                    slug: "normal",
                 },
                 query: {
                     tab: "type1",

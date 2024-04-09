@@ -240,9 +240,9 @@ async function countReduce(index: number) {
             // 等待 1秒鐘再更新就好 以防快速點擊
             setTimeout(async () => {
                 loading.value = false;
-            }, 1000);
+            }, 200);
         }
-    }, 1000);
+    }, 200);
 }
 
 /**
@@ -276,9 +276,9 @@ async function countAdd(index: number) {
             // 等待 1秒鐘再更新就好 以防快速點擊
             setTimeout(async () => {
                 loading.value = false;
-            }, 1000);
+            }, 200);
         }
-    }, 1000);
+    }, 200);
 }
 
 /**

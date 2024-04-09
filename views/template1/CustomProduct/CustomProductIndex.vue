@@ -568,7 +568,7 @@ const customPreviewData = computed(() => {
     if ($utils().isEmpty(currentDoorId.value)) {
         return {};
     }
-    return {
+    const result: any = {
         // 門扇
         door: doors.value.find((item: any) => item.id === currentDoorId.value).previewImgSrc[`option-${currentDoorColorId.value}-${currentDoorSizeId.value}`],
         // 門把
@@ -577,7 +577,14 @@ const customPreviewData = computed(() => {
         lock: locks.value[lockCategory.value].find((item: any) => item.id === currentLock.value.id).previewImgSrc,
         // 掛門
         tool1Data: tool1Datas.value.find((item: any) => item.id === currentTool1Data.value.id).previewImgSrc,
+        // 輔助鎖
+        other3Data: {},
     };
+    // 判斷是否有選擇輔助鎖
+    if (currentOther3Datas.value.length > 0) {
+        result.other3Data = other3Datas.value.find((item: any) => item.id === currentOther3Datas.value[0].id).previewImgSrc;
+    }
+    return result;
 });
 
 // 手機版是否顯示門扇角度選項
@@ -942,18 +949,24 @@ watch(
                 }
                 if (item.custom_product_type_id === CustomProductListIdEnum.other1) {
                     currentOther1Ids.value[0] = item.id;
+                    currentOther1Datas.value[0] = other1Datas.value.find((item2: any) => item2.id === item.id);
                 } else {
                     currentOther1Ids.value = [];
+                    currentOther1Datas.value = [];
                 }
                 if (item.custom_product_type_id === CustomProductListIdEnum.other2) {
                     currentOther2Ids.value[0] = item.id;
+                    currentOther2Datas.value[0] = other2Datas.value.find((item2: any) => item2.id === item.id);
                 } else {
                     currentOther2Ids.value = [];
+                    currentOther2Datas.value = [];
                 }
                 if (item.custom_product_type_id === CustomProductListIdEnum.other3) {
                     currentOther3Ids.value[0] = item.id;
+                    currentOther3Datas.value[0] = other3Datas.value.find((item2: any) => item2.id === item.id);
                 } else {
                     currentOther3Ids.value = [];
+                    currentOther3Datas.value = [];
                 }
             });
         }

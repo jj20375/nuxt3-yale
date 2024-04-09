@@ -117,6 +117,7 @@ const router = useRouter();
 const formRefDom = ref<any>();
 const initializationStore = useInitializationStore();
 const $config = useRuntimeConfig();
+const isAuth = computed(() => userStore.isAuth);
 
 const emit = defineEmits(["onCloseDialog"]);
 
@@ -220,12 +221,6 @@ async function onSubmit() {
                     await shoppingCarStore.syncCart();
                     await shoppingCarStore.syncCustomCart();
                     await userStore.getUserProfile();
-                    if (route.name === "auth-login-slug" && !props.isDialog) {
-                        router.push({ name: "auth-panel-slug", params: { slug: "會員中心" } });
-                    } else {
-                        // 使用登入彈窗登入後重整畫面 重新同步購物車資訊
-                        // location.reload();
-                    }
                     emit("onCloseDialog", false);
                 } else {
                     ElMessage({
@@ -263,19 +258,20 @@ async function getMessage(e: any) {
             userStore.ssoLogingData = SSOLoginData;
             router.push({ name: "auth-login-sso-slug", params: { slug: "快速登入" } });
         } else {
+            const loading = ElLoading.service({
+                lock: true,
+                text: "登入中...",
+                background: "rgba(0, 0, 0, 0.7)",
+            });
             const token = SSOLoginData.token;
             Cookies.set("token", token);
             userStore.setIsAuth(true);
             await shoppingCarStore.syncCart();
             await shoppingCarStore.syncCustomCart();
             await userStore.getUserProfile();
-            if (route.name === "auth-login-slug" && !props.isDialog) {
-                router.push({ name: "auth-panel-slug", params: { slug: "會員中心" } });
-            } else {
-                // 使用登入彈窗登入後重整畫面 重新同步購物車資訊
-                // location.reload();
-            }
+
             emit("onCloseDialog", false);
+            loading.close();
         }
         // router.push({ name: 'auth-login-sso-slug', params: { slug: '快速登入' } });
     }
@@ -285,6 +281,15 @@ if (Cookies.get("saveInfo") === "true") {
     form.value.saveInfo = Cookies.get("saveInfo") === "true";
     form.value.email = Cookies.get("loginEmail");
 }
+
+watch(
+    () => isAuth.value,
+    (val) => {
+        if (val && route.name === "auth-login-slug") {
+            router.push({ name: "auth-panel-slug", params: { slug: "user-panel" } });
+        }
+    }
+);
 
 onMounted(async () => {
     nextTick(async () => {
