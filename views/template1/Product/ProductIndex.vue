@@ -45,12 +45,12 @@
                 <div class="-mx-6 sm:mx-0 flex flex-col xl:flex-row items-center mb-[40px] sm:mt-[32px] gap-4 md:gap-[40px]">
                     <NuxtImg
                         v-if="productTypeDetail.media"
-                        class="w-full md:w-[400px] shrink-0 h-fit aspect-[16/9] object-cover"
+                        class="w-full md:w-[400px] shrink-0 h-fit object-contain"
                         :src="productTypeDetail.media"
                     />
                     <div class="px-6 sm:px-0">
                         <h2 class="YaleSolisW-Bd text-[24px] font-medium">{{ productTypeDetail.name }}</h2>
-                        <p class="mt-[8px] md:mt-[16px] text-[16px]">{{ productTypeDetail.description }}</p>
+                        <p class="mt-[8px] md:mt-[16px] text-[16px] whitespace-pre-line">{{ productTypeDetail.description }}</p>
                     </div>
                 </div>
                 <div class="flex flex-col md:flex-row justify-end mb-[24px] gap-[30px]">
@@ -287,6 +287,7 @@ async function getTypeDetail() {
             name: rows.name,
             is_compare: rows.is_compare,
             compare_id: rows.compare_id,
+            seoSetting: rows.seoSetting,
         };
 
         useSeoMeta({
@@ -394,16 +395,17 @@ async function handleFavorite(id: any) {
  * 前往規格比較
  */
 function goToCompare(data: any) {
+    const slug = data.seoSetting?.custom_url ? data.seoSetting?.custom_url : `${data.name}比較`
     const setBreadcrumbs = [
         ...breadcrumbs.value,
         {
             name: "product-compare-slug-compareId-productId",
             text: `${data.name}比較`,
-            params: { slug: `${data.name}比較`, compareId: data.compare_id },
+            params: { slug: slug, compareId: data.compare_id },
         },
     ];
     $utils().saveBreadcrumbsData(JSON.stringify(setBreadcrumbs));
-    router.push({ name: "product-compare-slug-compareId-productId", params: { slug: `${data.name}比較`, compareId: data.compare_id } });
+    router.push({ name: "product-compare-slug-compareId-productId", params: { slug: slug, compareId: data.compare_id } });
 }
 
 /**

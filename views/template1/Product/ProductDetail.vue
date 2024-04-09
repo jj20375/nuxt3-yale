@@ -72,7 +72,7 @@
                             <p class="text-gray-500 text-[20px] font-light line-through">NT${{ $utils().formatCurrency(detailData.market_price) }}</p>
                             <p class="text-gray-800 text-[20px] font-medium YaleSolisW-Bd">NT${{ $utils().formatCurrency(detailData.price) }}</p>
                         </div>
-                        <div class="mt-[16px] text-gray-900 list-disc list-inside text-[16px] mb-1">
+                        <div class="mt-[16px] text-gray-900 list-disc list-inside text-[16px] mb-1 whitespace-pre-line">
                             {{ detailData.description }}
                         </div>
                         <div
