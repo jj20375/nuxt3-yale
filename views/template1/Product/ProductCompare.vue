@@ -8,7 +8,7 @@
         <div class="bg-gray-50">
             <div class="flex justify-center">
                 <div class="container text-center">
-                    <h1 class="text-[32px] font-medium YaleSolisW-Bd mt-[58px]">{{ route.params.slug }}</h1>
+                    <h1 class="text-[32px] font-medium YaleSolisW-Bd mt-[58px]">{{ productTypeDetail.name }}比較</h1>
                     <p class="text-[16px] mt-[13px]">請選擇產品進行規格比較</p>
                     <div class="mt-[20px]">
                         <button
@@ -116,7 +116,35 @@ function selectProduct(val: { id: string | number; model: any; name: any; shape:
         productCompareStore.compareStore[index] = datas.value.find((data) => data.id === item);
     });
 }
+const productTypeDetail = ref<any>({
+    media: "",
+    description: "",
+    name: "",
+});
+/**
+ * 取得商品分類詳情
+ */
+ async function getTypeDetail() {
+    try {
+        const params = { productCategoryId: route.params.compareId };
+        const { data } = await $api().ProductTypeDetailAPI(params);
+        console.log("home getTypeDetail api => ", data.value);
 
+        const rows = (data.value as any).data;
+        console.log(rows);
+
+        productTypeDetail.value = {
+            media: rows.media,
+            description: rows.description,
+            name: rows.name,
+            is_compare: rows.is_compare,
+            compare_id: rows.compare_id,
+        };
+    } catch (err) {
+        console.log("HomeSampleAPI => ", err);
+    }
+}
+getTypeDetail()
 // 商品列表
 const datas = ref<ProductCompareList[]>([]);
 

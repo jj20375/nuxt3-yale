@@ -8,7 +8,7 @@
         <div class="text-center bg-gray-50">
             <div class="container min-h-[200px] flex flex-col xl:flex-row justify-center xl:justify-start items-center gap-4 xl:gap-0">
                 <div class="hidden xl:block w-[164px]"></div>
-                <h1 class="text-[32px] font-medium YaleSolisW-Bd xl:flex-1">{{ route.params.slug }}</h1>
+                <h1 class="text-[32px] font-medium YaleSolisW-Bd xl:flex-1">{{ productTypeDetail.name }}比較</h1>
                 <div class="flex flex-col items-center w-full gap-4 xl:flex-row xl:gap-0 xl:w-auto">
                     <div class="xl:mr-[20px]">
                         <NuxtLink :to="{ name: 'product-compare-slug-compareId-productId', params: { slug: route.params.slug, compareId: route.params.compareId } }">
@@ -53,7 +53,11 @@ import { useProductCompareStore } from "~/store/productCompareStore";
 import type { ProductListAPIInterface, ProductCompareList, ProductInterface } from "~/interface/product";
 import IconLine from "assets/img/icons/medias/icon-black-3.svg";
 import IconFacebook from "assets/img/icons/medias/icon-black-1.svg";
+import { useInitializationStore } from "~/store/initializationStore";
 
+const { initializationData } = useInitializationStore();
+
+const $config = useRuntimeConfig();
 const { $api, $utils } = useNuxtApp();
 const route = useRoute();
 const productCompareStore = useProductCompareStore();
@@ -70,8 +74,13 @@ const breadcrumbs = computed(() => [
         text: "首頁",
     },
     {
+        name: "product-compare-slug-compareId-productId",
+        text: `${productTypeDetail.value.name}比較選擇`,
+        params: { slug: route.params.slug, compareId: route.params.compareId },
+    },
+    {
         name: "product-compare-difference-slug-compareId",
-        text: `${route.params.slug}`,
+        text: `${productTypeDetail.value.name}比較`,
         params: { compareId: route.params.compareId },
     },
 ]);
@@ -128,6 +137,46 @@ async function getList(params: { product_type_id: string }) {
         console.log("HomeSampleAPI => ", err);
     }
 }
+const productTypeDetail = ref<any>({
+    media: "",
+    description: "",
+    name: "",
+});
+/**
+ * 取得商品分類詳情
+ */
+async function getTypeDetail() {
+    try {
+        const params = { productCategoryId: route.params.compareId };
+        const { data } = await $api().ProductTypeDetailAPI(params);
+        console.log("home getTypeDetail api => ", data.value);
+
+        const rows = (data.value as any).data;
+        console.log(rows);
+
+        productTypeDetail.value = {
+            media: rows.media,
+            description: rows.description,
+            name: rows.name,
+            is_compare: rows.is_compare,
+            compare_id: rows.compare_id,
+            seoSetting: rows.seoSetting
+        };
+        console.log(productTypeDetail.value)
+
+        useSeoMeta({
+            title: rows.seoSetting.title ? rows.seoSetting.title : initializationData.site.meta_title,
+            description: rows.seoSetting.description ? rows.seoSetting.description : initializationData.site.meta_description,
+            ogTitle: rows.seoSetting.title,
+            ogDescription: rows.seoSetting.description,
+            ogUrl: () => `${window.location.origin}/product/${rows.seoSetting.custom_url}`,
+            keywords: rows.seoSetting.keywords.join(),
+        });
+    } catch (err) {
+        console.log("HomeSampleAPI => ", err);
+    }
+}
+getTypeDetail()
 
 function getShareData() {
     if (route.params.selectItem && JSON.parse(route.params.selectItem)) {
@@ -178,6 +227,35 @@ const columns = computed(() => {
 });
 
 // 分享
+useHead({
+    title: initializationData.site.meta_title,
+    meta: [
+        {
+            hid: "description",
+            name: "description",
+            content: productTypeDetail.value.seoSetting?.description ? productTypeDetail.value.seoSetting?.description : productTypeDetail.value.description,
+        },
+        { name: "keywords", content: productTypeDetail.value.seoSetting?.keywords },
+        { hid: "og:url", property: "og:url", content: `${$config.public.hostURL}/product/compare/difference/${productTypeDetail.value.seoSetting?.custom_url ? productTypeDetail.value.seoSetting?.custom_url : productTypeDetail.value.name}/${productTypeDetail.value.id}` },
+        { hid: "og:type", property: "og:type", content: "website" },
+        {
+            hid: "og:title",
+            property: "og:title",
+            content: initializationData.site.site_name + "|" + (productTypeDetail.value.seoSetting?.title ? productTypeDetail.value.seoSetting?.title : productTypeDetail.value.name),
+        },
+        {
+            hid: "og:description",
+            property: "og:description",
+            content: productTypeDetail.value.seoSetting?.description ? productTypeDetail.value.seoSetting?.description : productTypeDetail.value.description,
+        },
+        {
+            hid: "og:image",
+            property: "og:image",
+            content: productTypeDetail.value.main_image,
+        },
+    ],
+});
+const ogUrl = ref<any>(null);
 function socialShare(type: string) {
     const selectItems: string[] = [];
     products.value.forEach((item: { id: string }) => {
@@ -187,6 +265,9 @@ function socialShare(type: string) {
         }
     });
     let path = window.location.origin + route.path;
+    if (ogUrl.value) {
+        path = ogUrl.value;
+    }
     path = encodeURIComponent(path + `&selectItem=${JSON.stringify(selectItems)}`);
     if (type === "line") {
         const url = "https://social-plugins.line.me/lineit/share?url=" + path;
