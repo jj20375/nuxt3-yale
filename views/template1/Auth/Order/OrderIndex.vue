@@ -46,8 +46,7 @@ const breadcrumbs = ref([
 ]);
 
 // 表格資料
-// todo 先隱藏 aaron
-const tableHeadData = ["訂單編號", "訂單日期", "訂單金額", "訂單狀態"];
+const tableHeadData = ["訂單編號", "訂單日期", "數量", "訂單金額", "訂單狀態"];
 
 const pagination = ref<any>({
     page: 1,
@@ -76,11 +75,11 @@ async function getList(params: { per_page: number; page: number; type: string; o
         const meta = (data.value as any).data.meta;
 
         tableBodyData.value = [];
-        rows.forEach((item: { order_no: any; created_at: any; total_amount: any; status: any; id: any }) => {
+        rows.forEach((item: { order_no: any; created_at: any; total_amount: any; status: any; id: any, quantity: any }) => {
             tableBodyData.value.push({
                 number: item.order_no,
                 date: item.created_at,
-                quantity: "10",
+                quantity: item.quantity,
                 price: item.total_amount,
                 status: $utils().orderStatus(item.status),
                 url: {

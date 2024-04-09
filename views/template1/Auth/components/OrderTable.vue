@@ -21,12 +21,11 @@
                             {{ item.date }}
                         </NuxtLink>
                     </td>
-                    <!-- todo 先隱藏 aaron -->
-                    <!-- <td class="min-w-[40px]">
+                    <td class="min-w-[40px]">
                         <NuxtLink :to="item.url">
                             {{ item.quantity }}
                         </NuxtLink>
-                    </td> -->
+                    </td>
                     <td class="min-w-[100px]">
                         <NuxtLink :to="item.url">
                             NT$ {{ $utils().formatCurrency(item.price) }}
