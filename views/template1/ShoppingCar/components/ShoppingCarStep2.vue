@@ -323,6 +323,8 @@ const initialVal = () => {
 // 結帳
 const checkout = async () => {
     const hostUrl = $config.public.hostURL;
+    // 判斷要不要加入聯繫人
+    const is_add_to_contact = formContactUser.value.saveContctUser && !formContactUserRef.value.contact_exist
     const req: ReqCheckout = {
         type: props.currentTab === "type2" ? "combination" : "normal", // normal
         member_phone: formMain.value.phone,
@@ -333,7 +335,7 @@ const checkout = async () => {
         contact_city: formContactUser.value.city,
         contact_district: formContactUser.value.area,
         contact_address: formContactUser.value.address,
-        is_add_to_contact: formContactUser.value.saveContctUser,
+        is_add_to_contact: is_add_to_contact,
         remark: formMain.value.note, // 備註
         payment_gateway: formPayment.value.paymentType,
         shipping_method: formLogistics.value.logistics,
