@@ -79,7 +79,7 @@
                 <div class="flex justify-center mt-[40px]">
                     <button
                         @click.prevent="
-                            selectedProductIdsData[0] = currentDialogProduct.id;
+                            addToCar();
                             closeDialog();
                         "
                         :disabled="selectedProductIdsData.includes(currentDialogProduct.id)"
@@ -161,6 +161,12 @@ const showDialog = ref(false);
 
 // 彈窗顯示資料
 const currentDialogProduct = ref<any>({});
+
+// 彈窗加入選擇
+function addToCar() {
+    selectedProductIdsData.value[0] = currentDialogProduct.value.id;
+    emit("update:selectedProducts", [currentDialogProduct.value]);
+}
 
 /**
  * 關閉彈窗

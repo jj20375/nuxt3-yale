@@ -148,7 +148,6 @@
                                 :icon="['fas', 'chevron-up']"
                             />
                         </div>
-                        {{ lockCategory }}
                         <CustomProductLock
                             class="mb-[30px]"
                             v-show="stepMenuShow['step3'].show"
