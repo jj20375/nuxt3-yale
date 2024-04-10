@@ -73,18 +73,19 @@
                             </div>
                         </div>
                         <div class="mt-2" v-if="item && ['currentTool1', 'currentTool2'].includes(key)">{{ item.title }}-{{ item.style }}</div>
-                        <div class="mt-2" v-if="item && ['currentOther1', 'currentOther2', 'otherServices'].includes(key)">
+                        <div class="mt-2" v-if="item && ['currentOther1', 'currentOther2', 'currentOther3', 'otherServices'].includes(key)">
                             <ul
                                 v-if="item"
                                 class="ml-2"
                             >
                                 <li
                                     v-for="(item2, index2) in item.datas"
-                                    :class="!['currentOther1', 'currentOther2'].includes(key) ? 'list-disc' : '-ml-2'"
+                                    :class="!['currentOther1', 'currentOther2', 'currentOther3'].includes(key) ? 'list-disc' : '-ml-2'"
                                     class="list-inside"
                                 >
-                                    {{ item2.name }}<span v-if="key !== 'otherServices'">-</span>
-                                    {{ item2.style }}
+                                    {{ item2.name }}<span v-if="!['otherServices', 'currentOther3'].includes(key)">-</span>
+                                    <span v-if="key !== 'currentOther3'">{{ item2.title }}</span>
+                                    <span v-else="key !== 'otherServices'">{{ item2.style }}</span>
                                 </li>
                             </ul>
                         </div>
