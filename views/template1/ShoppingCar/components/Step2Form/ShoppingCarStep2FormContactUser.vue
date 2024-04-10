@@ -289,6 +289,18 @@ const setContactUserData = async (id: number) => {
     formData.value.address = user.address;
 };
 
+const contact_exist = computed(() => {
+    let result = false
+    const address = props.form.city + props.form.area + props.form.address
+    contactUsers.value.forEach((item: { full_address: string; name: any; phone: any; }) => {
+        if (item.name === props.form.name && item.phone === props.form.phone && item.full_address.split(' ')[1] === address) {
+            result = true
+        }
+    })
+
+    return result
+});
+
 watch(
     () => formData.value.city,
     (val) => {
@@ -324,6 +336,7 @@ const validForm = async () => {
 
 defineExpose({
     validForm,
+    contact_exist
 });
 </script>
 

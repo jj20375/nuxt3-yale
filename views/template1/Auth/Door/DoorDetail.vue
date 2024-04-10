@@ -714,6 +714,14 @@ const setCustomShoppingCarData = (datas: any) => {
                     datas: [data],
                 };
             }
+            // 判斷是 輔助鎖 的時候執行
+            if (item2.productable.customProductType.id === CustomProductListIdEnum.other3) {
+                const data = setToolData(item2.productable);
+                result["currentOther3"] = {
+                    label: "輔助鎖",
+                    datas: [data],
+                };
+            }
             // 判斷是 施作服務 的時候執行
             if (item2.productable.customProductType.id === CustomProductListIdEnum.service) {
                 const data = setServiceData(item2.productable);
