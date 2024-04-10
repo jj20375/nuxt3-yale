@@ -416,6 +416,8 @@ const getData = async () => {
             productVariationable: productVariationable,
             quantity: item.quantity,
             imgUrl: imgUrl,
+            is_add_on_purchase: item.is_add_on_purchase,
+            is_discount_gift: item.is_discount_gift,
         });
     });
     orderData.value.orderPayments = resProductDetail.value.orderPayments

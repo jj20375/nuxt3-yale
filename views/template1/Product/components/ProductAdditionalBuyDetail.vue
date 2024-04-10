@@ -45,9 +45,9 @@
                     ></div>
                 </div>
                 <div
-                    class="flex flex-col xl:grid grid-cols-2 gap-12 xl:gap-[80px] mt-[24px] md:mt-[60px]"
+                    class="flex flex-col xl:grid gap-12 xl:gap-[80px] mt-[24px] md:mt-[60px]"
                 >
-                    <div>
+                    <div class="w-1/2 mx-auto">
                         <h5 class="text-[18px] font-medium YaleSolisW-Bd text-gray-800 mb-[20px]">產品規格內容</h5>
                         <div
                             v-for="(attr, key) in detailData.attributes"

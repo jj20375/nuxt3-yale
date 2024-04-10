@@ -41,14 +41,13 @@
                         :is="showComponent"
                         v-model:currentTab="currentTab"
                         v-model:selectProductIds="selectProductIds"
+                        v-model:couponCode="couponCode"
                         @selectProduct="selectProduct"
                         @productCountUpdate="productCountUpdate"
                         :goCheckoutStep3="goCheckoutStep3"
                     />
                 </keep-alive>
-                <ShoppingCarStep2FormGift
-                    @selectProduct="selectProduct"
-                />
+                <ShoppingCarStep2FormGift/>
                 <div
                     class="mt-12 lg:mt-0 w-full lg:w-[300px] xl:w-[400px]"
                     v-if="currentStep !== 2"
@@ -229,6 +228,7 @@ const discountData = ref<any>({
 });
 
 const couponRef = ref<any>(null);
+const couponCode = ref(null)
 
 const getCoupon = async (val: any) => {
     console.log("getCoupon", val);
@@ -252,16 +252,19 @@ const getCoupon = async (val: any) => {
             type: "error",
             message: "請先登入",
         });
+        couponCode.value = null
     } else if (selectProductIds.value.length === 0) {
         ElMessage({
             type: "error",
             message: "請先選擇商品",
         });
+        couponCode.value = null
     } else if (couponRef.value.formData.coupon === "") {
         ElMessage({
             type: "error",
             message: "請輸入優惠序號",
         });
+        couponCode.value = null
         couponRef.value.formData.warningTXT = "請輸入優惠序號";
         couponRef.value.formData.showCheckWarning = true;
     } else {
@@ -276,10 +279,12 @@ const getCoupon = async (val: any) => {
                 type: "error",
                 message: (checkError.value as any).data.message,
             });
+            couponCode.value = null
             couponRef.value.formData.coupon = "";
             couponRef.value.formData.warningTXT = (checkError.value as any).data.message;
             couponRef.value.formData.showCheckWarning = true;
         } else {
+            couponCode.value = couponRef.value.formData.coupon
             couponRef.value.formData.warningTXT = "";
             couponRef.value.formData.showCheckWarning = false;
         }
@@ -290,11 +295,13 @@ const getCoupon = async (val: any) => {
                 type: "error",
                 message: "請確認優惠券使用條件",
             });
+            couponCode.value = null
         } else {
             ElMessage({
                 type: "success",
                 message: "優惠券使用成功",
             });
+            couponCode.value = couponRef.value.formData.coupon
         }
         discountData.value.coupon_discount_amount = couponData.coupon_discount_amount;
         discountData.value.discount_amount = couponData.discount_amount;
@@ -333,6 +340,7 @@ const productCountUpdate = async () => {
     } else {
         discountData.value.coupon_discount_amount = 0;
         discountData.value.discount_amount = 0;
+        shoppingCarStore.discount_gifts = []
     }
 };
 
@@ -342,7 +350,7 @@ const selectProduct = async (val: number[]) => {
     } else {
         const data: { id: number|null; productID: number; colorName?: string|undefined; product_variationable_id?: number|undefined; price: number; name: string; imgSrc: string; count: number; totalPrice: number; stock: number; productVariationable: number; }[] = []
         shoppingCar.value.forEach(item => {
-            if ((item.is_add_on_purchase == 0 && val.includes(item.id)) || (item.is_add_on_purchase == 1 && val.includes(item.parent_id))) {
+            if ((item.is_add_on_purchase == 0 && val.includes(item.id)) || (item.is_add_on_purchase == 1 && val.includes(item.parent_id) && val.includes(item.id))) {
                 data.push(item)
             }
         })
@@ -354,6 +362,7 @@ const selectProduct = async (val: number[]) => {
     } else {
         discountData.value.coupon_discount_amount = 0;
         discountData.value.discount_amount = 0;
+        shoppingCarStore.discount_gifts = []
     }
 };
 // go step2

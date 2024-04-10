@@ -120,6 +120,7 @@ import ShoppingCarStep2FormMeasureTheSize from "~/views/template1/ShoppingCar/co
 import { useUserStore } from "~/store/userStore";
 import { ReqCheckout } from "~/api/cart";
 import { useShoppingCarStore } from "~/store/shoppingCarStore";
+import { ElMessage, ElMessageBox } from "element-plus";
 
 defineExpose({
     validTest,
@@ -150,12 +151,14 @@ interface Props {
     currentTab: string;
     selectProductIds: number[];
     goCheckoutStep3: boolean;
+    couponCode: boolean|null;
 }
 
 const props: Props = withDefaults(defineProps<Props>(), {
     currentTab: "",
     selectProductIds: () => [],
     goCheckoutStep3: false,
+    couponCode: null,
 });
 
 // 顯示定型化契約彈窗
@@ -294,6 +297,8 @@ const checkout = async () => {
         donation_code: formInvoice.value.invoiceType === "donation" ? formInvoice.value.donationCode : undefined,
         // 統一編號
         tax_number: formInvoice.value.invoiceType === "company" ? formInvoice.value.taxNumber : undefined,
+        // 優惠券
+        coupon_code: props.couponCode ? props.couponCode : undefined,
         redirect_url: props.currentTab === "type2" ? `${hostUrl}/order/combination` : `${hostUrl}/order/normal`,
     };
     // 訂製門扇需傳送參數
@@ -357,6 +362,10 @@ async function validTest() {
         const validPaymentForm = await formPaymentRef.value.$.exposed.validForm();
         const validInvoiceForm = await formInvoiceRef.value.$.exposed.validForm();
         if (!formConfirm.value.confirmRule) {
+            ElMessage({
+                type: "error",
+                message: "尚有欄位未填",
+            });
             showCheckWarning.value = true;
             return;
         } else {
@@ -372,6 +381,10 @@ async function validTest() {
         const validPaymentForm = await formPaymentRef.value.$.exposed.validForm();
         const validMeasureTheSizeForm = await formMeasureTheSizeRef.value.$.exposed.validForm();
         if (!formConfirm.value.confirmCustomRule || !formConfirm.value.confirmRule) {
+            ElMessage({
+                type: "error",
+                message: "尚有欄位未填",
+            });
             showCheckWarning.value = true;
             return;
         } else {

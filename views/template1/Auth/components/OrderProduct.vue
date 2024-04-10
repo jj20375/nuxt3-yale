@@ -10,6 +10,20 @@
             :src="product.imgUrl"
         />
         <div class="flex-1">
+            <div class="flex gap-2 mb-4">
+                <div
+                    v-if="product.is_add_on_purchase == 1"
+                    class="bg-yellow-500 text-[12px] px-2 py-1 rounded-md"
+                >
+                    加價購
+                </div>
+                <div
+                    v-if="product.is_discount_gift == 1"
+                    class="bg-pink-400 text-[12px] px-2 py-1 rounded-md"
+                >
+                    滿額贈
+                </div>
+            </div>
             <h5 class="text-[18px] font-bold mb-4 YaleSolisW-Bd">{{ product.name }}</h5>
             <div class="flex flex-col gap-3">
                 <template

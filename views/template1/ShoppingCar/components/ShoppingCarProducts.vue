@@ -190,6 +190,10 @@ function removeShoppingCar(id: number | null, productID: number, product_variati
         product_variationable_id: product_variationable_id ? product_variationable_id : null,
     };
     deleteCart(req);
+    console.log(id)
+    checkList.value = checkList.value.filter(item => item !== id)
+    console.log(checkList.value)
+    emit("update:selectProductIds", checkList.value);
 }
 
 /**'
@@ -214,16 +218,6 @@ const init = async () => {
     // 選中商品參數傳給母組件
     emit("update:selectProductIds", checkList.value);
 };
-
-watch(
-    () => shoppingCar.value,
-    (val) => {
-        // 設定購物車商品全選
-        checkList.value = shoppingCar.value.map((item: any) => item.id);
-        // 選中商品參數傳給母組件
-        emit("update:selectProductIds", checkList.value);
-    }
-);
 
 onMounted(() => {
     if (process.client) {
