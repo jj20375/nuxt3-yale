@@ -47,7 +47,8 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
             const { data }: any = await $api().GetNormalCartAPI();
             if (data.value) {
                 shoppingCar.value = data.value.data.cartItems.map((i) => {
-                    const price = i.productVariationable ? i.productVariationable.price : i.productable.price;
+                    const price = i.price;
+                    const market_price = i.original_price;
                     // 設置顏色名稱
                     let colorIndex = -1;
                     let colorName = undefined;
@@ -76,6 +77,7 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
                         id: i.id,
                         productID: i.productable.id,
                         price,
+                        market_price,
                         name: i.productable.name,
                         imgSrc,
                         count: i.quantity,

@@ -120,6 +120,7 @@ addSelect.value = props.additionalProducts.map((item:any) => {
     let imgUrl = item.main_image
     let price = item.price
     let stock = item.stock
+    let market_price = item.market_price
     if (item.is_single_variation == 1) {
         specOPT.push({
             label: '單一規格',
@@ -144,11 +145,13 @@ addSelect.value = props.additionalProducts.map((item:any) => {
                 value: item.productVariations[key].id,
                 imgUrl: item.productVariations[key].image,
                 stock: item.productVariations[key].stock,
-                price: item.productVariations[key].price
+                price: item.productVariations[key].price,
+                market_price: item.productVariations[key].marketPrice,
             })
             if (keyIndex == 0) {
                 spec = item.productVariations[key].id
                 price = item.productVariations[key].price
+                market_price = item.productVariations[key].marketPrice
                 imgUrl = item.productVariations[key].image
                 stock = item.productVariations[key].stock
             }
@@ -162,6 +165,7 @@ addSelect.value = props.additionalProducts.map((item:any) => {
         spec: spec,
         specOPT: specOPT,
         price: price,
+        market_price: market_price,
         stock: stock,
         max: props.productCount > stock ? stock : props.productCount,
         imgUrl: imgUrl,
@@ -173,6 +177,7 @@ const specChange = (value: any, index: string|number) => {
     const select = addSelect.value[index].specOPT.find((item: { value: any; }) => item.value == value)
     addSelect.value[index].imgUrl = select.imgUrl
     addSelect.value[index].price = select.price
+    addSelect.value[index].market_price = select.market_price
 }
 
 // const maxStock
@@ -195,6 +200,7 @@ const handleDetailData = (index: string|number) => {
     additionalProductsDetail.value.main_image = addSelect.value[index].imgUrl
     console.log('addSelect[index]', addSelect.value[index])
     additionalProductsDetail.value.price = addSelect.value[index].price
+    additionalProductsDetail.value.market_price = addSelect.value[index].market_price
 }
 
 defineExpose({

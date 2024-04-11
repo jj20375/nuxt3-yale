@@ -16,6 +16,7 @@
                         :key="cart.productID"
                         :label="cart.id"
                     />
+                    <div class="w-[18px]" v-else></div>
                     <NuxtImg
                         class="w-[100px] h-[100px] sm:w-[140px] sm:h-[140px] lg:w-[180px] lg:h-[180px] aspect-square object-cover cursor-pointer"
                         v-if="cart.imgSrc"
@@ -38,8 +39,20 @@
                             })
                         "
                     >
-                        <h3 class="YaleSolisW-Bd font-medium text-[16px] sm:text-[18px]">{{ cart.name }}</h3>
-                        <p class="hidden sm:block font-medium YaleSolisW-Bd text-[18px] whitespace-nowrap">NT$ {{ $utils().formatCurrency(cart.totalPrice) }}</p>
+                        <div>
+                            <div
+                                v-if="cart.is_add_on_purchase == 1"
+                                class="inline-block mb-2 bg-yellow-500 text-[12px] px-2 py-1 rounded-md"
+                            >
+                                加價購
+                            </div>
+                            <h3 class="YaleSolisW-Bd font-medium text-[16px] sm:text-[18px]">{{ cart.name }}</h3>
+                        </div>
+                        <p v-if="cart.is_add_on_purchase == 0" class="hidden sm:block font-medium YaleSolisW-Bd text-[18px] whitespace-nowrap">NT$ {{ $utils().formatCurrency(cart.totalPrice) }}</p>
+                        <div v-else class="flex mt-[8px] gap-[12px]">
+                            <div  class="hidden sm:block font-medium YaleSolisW-Bd text-[18px] whitespace-nowrap line-through">NT${{ $utils().formatCurrency(cart.market_price) }}</div>
+                            <p class="hidden text-pink-900 sm:block font-medium YaleSolisW-Bd text-[18px] whitespace-nowrap">加購價 NT$ {{ $utils().formatCurrency(cart.totalPrice) }}</p>
+                        </div>
                     </div>
                     <template
                         v-for="(item, index) in cart.productVariationable"
@@ -88,7 +101,10 @@
                     >
                         庫存數量只剩下{{ cart.stock }}
                     </div>
-                    <div class="sm:hidden mt-[16px] font-medium YaleSolisW-Bd text-[16px]">NT$ {{ $utils().formatCurrency(cart.totalPrice) }}</div>
+                    <div class="flex mt-[8px] gap-[12px]">
+                        <div class="sm:hidden mt-[16px] font-medium YaleSolisW-Bd text-[16px] line-through">NT${{ $utils().formatCurrency(cart.market_price) }}</div>
+                        <div class="sm:hidden mt-[16px] font-medium YaleSolisW-Bd text-[16px]">NT$ {{ $utils().formatCurrency(cart.totalPrice) }}</div>
+                    </div>
                 </div>
             </div>
         </el-checkbox-group>
