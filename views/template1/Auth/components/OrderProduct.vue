@@ -24,7 +24,12 @@
                     滿額贈
                 </div>
             </div>
-            <h5 class="text-[18px] font-bold mb-4 YaleSolisW-Bd">{{ product.name }}</h5>
+            <div
+                class="flex justify-between w-full gap-4 text-gray-800 cursor-pointer"
+            >
+                <h5 class="text-[18px] font-bold mb-4 YaleSolisW-Bd">{{ product.name }}</h5>
+                <p class="hidden sm:block font-medium YaleSolisW-Bd text-[18px] whitespace-nowrap">NT$ {{ $utils().formatCurrency(product.totalPrice) }}</p>
+            </div>
             <div class="flex flex-col gap-3">
                 <template
                     v-for="(item, index) in product.productVariationable"
