@@ -14,14 +14,14 @@
             <div class="flex-1 mt-[36px] sm:mt-0">
                 <h2 class="sm:text-[24px] text-[18px] font-medium YaleSolisW-Bd mb-[12px] sm:mb-[20px]">檔案下載</h2>
                 <div
-                    v-for="(item, index) in props.files"
+                    v-for="(item, index) in props.files.items"
                     :key="index"
                 >
                     <button
-                        @click="download(item)"
+                        @click="download(item.image)"
                         class="text-blue-500 underline cursor-pointer underline-offset-2 hover:no-underline"
                     >
-                        Yale Home 產品DM
+                        {{item.title}}
                     </button>
                 </div>
             </div>

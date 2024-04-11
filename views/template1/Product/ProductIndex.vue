@@ -45,7 +45,7 @@
                 <div class="-mx-6 sm:mx-0 flex flex-col xl:flex-row items-center mb-[40px] sm:mt-[32px] gap-4 md:gap-[40px]">
                     <NuxtImg
                         v-if="productTypeDetail.media"
-                        class="w-full md:w-[400px] shrink-0 h-fit object-contain"
+                        class="w-full md:w-[400px] shrink-0 h-fit object-contain rounded-2xl"
                         :src="productTypeDetail.media"
                     />
                     <div class="px-6 sm:px-0">
