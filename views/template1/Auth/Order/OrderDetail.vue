@@ -341,7 +341,7 @@ const orderData = ref({
                 discountPrice: -500,
             },
         ],
-        coupon: -1000,
+        coupon: 0,
         totalPrice: 43399,
         memo: "備註內容備註內容備註內容備註內容備註內容備註內容備註內容備註內容備註內容備註內容備註內容備註內容",
     },
@@ -441,6 +441,17 @@ const getData = async () => {
     orderData.value.price.memo = resProductDetail.value.remark ? resProductDetail.value.remark : "無";
     orderData.value.orderStatus = $utils().orderStatus(resProductDetail.value.status);
     orderData.value.payment.orderStatus = paymentStatus(resProductDetail.value.orderPayments);
+
+    const coupon = resProductDetail.value.orderDiscounts.find((item: { type: string; }) => item.type === 'coupon')
+    orderData.value.price.coupon = coupon ? -coupon.amount : 0
+    const event = resProductDetail.value.orderDiscounts.filter((item: { type: string; }) => item.type !== 'coupon')
+    orderData.value.price.event = []
+    event.forEach(item => {
+        orderData.value.price.event.push({
+            name: item.name,
+            discountPrice: -item.amount,
+        })
+    })
 };
 
 /**

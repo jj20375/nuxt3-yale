@@ -1,6 +1,5 @@
 <template>
-    <!-- todo 先隱藏 aaron -->
-    <!-- <div class="flex flex-col gap-2 pt-[30px] pb-5 border-b-[1px] border-gray-200">
+    <div class="flex flex-col gap-2 pt-[30px] pb-5 border-b-[1px] border-gray-200">
         <div class="flex justify-between text-sm text-gray-700">
             <div>運費</div>
             <div>NT$ {{ $utils().formatCurrency(order?.deliveryFee) }}</div>
@@ -9,11 +8,11 @@
             <div>活動折扣 ({{item?.name}})</div>
             <div>NT$ {{ $utils().formatCurrency(item?.discountPrice) }}</div>
         </div>
-        <div class="flex justify-between text-sm text-gray-700">
+        <div v-if="order.coupon !== 0" class="flex justify-between text-sm text-gray-700">
             <div>優惠卷折扣</div>
             <div>NT$ {{ $utils().formatCurrency(order?.coupon) }}</div>
         </div>
-    </div> -->
+    </div>
     <div class="flex items-center justify-between mt-5">
         <div class="text-[24px] font-bold">總計</div>
         <div class="flex items-center gap-2 YaleSolisW-Bd">NT$<span class="text-[24px]">{{ $utils().formatCurrency(order?.totalPrice) }}</span></div>
