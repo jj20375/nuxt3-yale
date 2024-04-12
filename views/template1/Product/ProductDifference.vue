@@ -179,9 +179,9 @@ async function getTypeDetail() {
 getTypeDetail()
 
 function getShareData() {
-    if (route.params.selectItem && JSON.parse(route.params.selectItem)) {
+    if (route.query.selectItem && JSON.parse(route.query.selectItem)) {
         productCompareStore.compareStoreReset();
-        const selectItems = JSON.parse(route.params.selectItem);
+        const selectItems = JSON.parse(route.query.selectItem);
         console.log(selectItems);
         selectItems.forEach((item: string | number, index: number) => {
             productCompareStore.compareStore[index] = datas.value.find((data) => data.id === item);
@@ -268,7 +268,7 @@ function socialShare(type: string) {
     if (ogUrl.value) {
         path = ogUrl.value;
     }
-    path = encodeURIComponent(path + `&selectItem=${JSON.stringify(selectItems)}`);
+    path = encodeURIComponent(path + `?selectItem=${JSON.stringify(selectItems)}`);
     if (type === "line") {
         const url = "https://social-plugins.line.me/lineit/share?url=" + path;
 
