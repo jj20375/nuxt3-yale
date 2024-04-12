@@ -58,11 +58,10 @@
                                     </el-select>
                                 </div>
                             </div>
-                            <div class="hidden lg:flex">
+                            <div class="block lg:flex">
                                 <p class="flex text-base justify-center ml-5 gap-3 line-through">NT${{ $utils().formatCurrency(addSelect[index].market_price) }}</p>
                                 <p class="flex text-pink-900 text-base justify-center ml-5 gap-3">NT${{ $utils().formatCurrency(addSelect[index].price) }}</p>
                             </div>
-                            <div class="flex lg:hidden text-base justify-center ml-5 gap-3">NT${{ addSelect[index].price }}</div>
                         </div>
                     </div>
                 </div>
