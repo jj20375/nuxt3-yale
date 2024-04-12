@@ -18,9 +18,8 @@
                 :icon="['fas', 'circle-notch']"
             />
         </div>
-        <!-- todo 先隱藏 aaron -->
-        <ShoppingCarSales v-if="currentTab === 'type1'" />
         <ShoppingCarStep2FormGift />
+        <ShoppingCarSales class="block lg:hidden mt-12" v-if="currentTab === 'type1'" />
         <div class="flex">
             <NuxtLink
                 v-if="currentTab === 'type1'"

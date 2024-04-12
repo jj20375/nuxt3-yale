@@ -2,10 +2,10 @@
     <div class="w-full mt-[36px] sm:mt-[80px] px-[24px] py-[6px] bg-gray-50 mx-auto rounded-t-[2px] sm:rounded-t-[4px] border-[1px] border-gray-200">
         <h5 class="font-semibold">加價購</h5>
     </div>
-    <div class="w-full px-[24px] py-[36px] bg-white mx-auto rounded-b-[12px] sm:rounded-b-[24px] border-[1px] border-gray-200">
+    <div class="w-full px-[24px] pb-[36px] bg-white mx-auto rounded-b-[12px] sm:rounded-b-[24px] border-[1px] border-gray-200">
         <div>
             <el-checkbox-group
-                class="flex flex-col grid-cols-2 gap-2 md:grid"
+                class="block"
                 v-model="selectedAdditionalProducts"
             >
                 <div
@@ -13,24 +13,24 @@
                     :key="index"
                     type="button"
                 >
-                    <div class="relative flex items-center h-full">
+                    <div class="relative flex items-center h-full mt-3">
                         <el-checkbox
                             :label="product.discount_id"
                             size="large"
-                            class="flex-1 mx-3"
+                            class="mx-3"
                         >
                             <br />
                         </el-checkbox>
                         <div @click="handleDetailData(index)" class="flex items-center h-full cursor-pointer">
                             <div class="flex justify-center mt-1 gap-3">
                                 <NuxtImg
-                                    class="w-[80px] aspect-square object-cover"
+                                    class="w-[150px] aspect-square object-cover"
                                     :src="addSelect[index].imgUrl"
                                 />
                             </div>
                             <div class="flex flex-col justify-between h-full">
                                 <div class="text-base">{{ product.name }}</div>
-                                <div class="flex">
+                                <div class="lg:flex">
                                     <el-select
                                         class="flex-3"
                                         v-model="addSelect[index].spec"
@@ -45,7 +45,7 @@
                                         ></el-option>
                                     </el-select>
                                     <el-select
-                                        class="flex-1 ml-2"
+                                        class="flex-1 md:ml-2 md:mt-0 mt-2"
                                         v-model="addSelect[index].count"
                                         placeholder="請選擇數量"
                                     >
@@ -58,7 +58,11 @@
                                     </el-select>
                                 </div>
                             </div>
-                            <div class="flex text-base justify-center ml-5 gap-3">${{ addSelect[index].price }}</div>
+                            <div class="hidden lg:flex">
+                                <p class="flex text-base justify-center ml-5 gap-3 line-through">NT${{ $utils().formatCurrency(addSelect[index].market_price) }}</p>
+                                <p class="flex text-pink-900 text-base justify-center ml-5 gap-3">NT${{ $utils().formatCurrency(addSelect[index].price) }}</p>
+                            </div>
+                            <div class="flex lg:hidden text-base justify-center ml-5 gap-3">NT${{ addSelect[index].price }}</div>
                         </div>
                     </div>
                 </div>
@@ -220,4 +224,22 @@ defineExpose({
 })
 </script>
 
-<style scoped lang="scss"></style>
+<style lang="scss" scoped>
+:deep(.el-checkbox) {
+    @apply w-[18px] h-[18px];
+    .el-checkbox__label {
+        @apply hidden #{!important};
+    }
+    .el-checkbox__inner {
+        @apply w-[18px] h-[18px] #{!important};
+        &:hover {
+            @apply border-yellow-600;
+        }
+    }
+    .is-checked {
+        .el-checkbox__inner {
+            @apply bg-yellow-600 border-yellow-600 after:h-[9px] after:left-[6px] after:top-[2px] #{!important};
+        }
+    }
+}
+</style>

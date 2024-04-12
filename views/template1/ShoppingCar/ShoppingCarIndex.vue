@@ -105,6 +105,7 @@
                                 {{ $utils().formatCurrency(Math.round(total * 0.3)) }}
                             </template>
                         </ShoppingCarBilling>
+                        <ShoppingCarSales class="hidden lg:block mt-12" v-if="currentStep == 0" />
                         <div
                             v-if="currentStep == 1"
                             class="cursor-pointer mt-[24px] flex"
@@ -137,6 +138,8 @@ import ShoppingCarStep3 from "~/views/template1/ShoppingCar/components/ShoppingC
 import ShoppingCarInputCoupon from "~/views/template1/ShoppingCar/components/ShoppingCarInputCoupon.vue";
 // 訂單金額
 import ShoppingCarBilling from "~/views/template1/ShoppingCar/components/ShoppingCarBilling.vue";
+// 折扣優惠
+import ShoppingCarSales from "~/views/template1/ShoppingCar/components/ShoppingCarSales.vue";
 import { useShoppingCarStore } from "~/store/shoppingCarStore";
 import { useUserStore } from "~/store/userStore";
 

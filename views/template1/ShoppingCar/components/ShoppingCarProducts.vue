@@ -101,9 +101,10 @@
                     >
                         庫存數量只剩下{{ cart.stock }}
                     </div>
-                    <div class="flex mt-[8px] gap-[12px]">
+                    <div v-if="cart.is_add_on_purchase == 0" class="text-sm:hidden mt-[16px] font-medium YaleSolisW-Bd text-[16px]">NT$ {{ $utils().formatCurrency(cart.totalPrice) }}</div>
+                    <div v-else class="flex mt-[8px] gap-[12px]">
                         <div class="sm:hidden mt-[16px] font-medium YaleSolisW-Bd text-[16px] line-through">NT${{ $utils().formatCurrency(cart.market_price) }}</div>
-                        <div class="sm:hidden mt-[16px] font-medium YaleSolisW-Bd text-[16px]">NT$ {{ $utils().formatCurrency(cart.totalPrice) }}</div>
+                        <div class="text-pink-900 sm:hidden mt-[16px] font-medium YaleSolisW-Bd text-[16px]">NT$ {{ $utils().formatCurrency(cart.totalPrice) }}</div>
                     </div>
                 </div>
             </div>
