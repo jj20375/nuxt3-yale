@@ -575,9 +575,9 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
             // 未登入
             shoppingCar.value = shoppingCar.value.filter((i) => {
                 if (data.product_variationable_id) {
-                    return i.productID !== data.productID || i.product_variationable_id !== data.product_variationable_id;
+                    return (i.productID !== data.productID && i.parent_id !== data.productID) || (i.product_variationable_id !== data.product_variationable_id && i.parent_id !== data.productID);
                 } else {
-                    return i.productID !== data.productID;
+                    return i.productID !== data.productID && i.parent_id !== data.productID;
                 }
             });
             $shoppingCarService().setShoppingCar(shoppingCar.value);

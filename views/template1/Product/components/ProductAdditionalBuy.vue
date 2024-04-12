@@ -117,10 +117,12 @@ const addSelect = ref<any>([]);
 addSelect.value = props.additionalProducts.map((item:any) => {
     const specOPT = []
     let spec = ''
+    let name = item.name
     let imgUrl = item.main_image
     let price = item.price
     let stock = item.stock
     let market_price = item.market_price
+    let productVariationable = null
     if (item.is_single_variation == 1) {
         specOPT.push({
             label: '單一規格',
@@ -131,6 +133,7 @@ addSelect.value = props.additionalProducts.map((item:any) => {
         console.log(item.productVariations)
         Object.keys(item.productVariations).forEach((key, keyIndex) => {
             let optionTXT = ''
+            productVariationable = []
             const variations = key.split('-')
             item.productOptions.forEach((variation: { values: any[]; }, index: number) => {
                 if (index == 0) {
@@ -138,6 +141,10 @@ addSelect.value = props.additionalProducts.map((item:any) => {
                 } else {
                     optionTXT += `, ${variation.values.find((item: { id: string; }) => item.id == variations[index + 1]).name}`
                 }
+                productVariationable.push({
+                    label: variation.name,
+                    value: variation.values.find((item: { id: string; }) => item.id == variations[index + 1]).name
+                })
             })
             console.log('optionTXT', optionTXT, key, item.productVariations[key].id)
             specOPT.push({
@@ -147,6 +154,7 @@ addSelect.value = props.additionalProducts.map((item:any) => {
                 stock: item.productVariations[key].stock,
                 price: item.productVariations[key].price,
                 market_price: item.productVariations[key].marketPrice,
+                productVariationable: productVariationable
             })
             if (keyIndex == 0) {
                 spec = item.productVariations[key].id
@@ -160,6 +168,7 @@ addSelect.value = props.additionalProducts.map((item:any) => {
 
     return { 
         id: item.id,
+        name,
         discount_id: item.discount_id,
         count: 1,
         spec: spec,
@@ -169,6 +178,7 @@ addSelect.value = props.additionalProducts.map((item:any) => {
         stock: stock,
         max: props.productCount > stock ? stock : props.productCount,
         imgUrl: imgUrl,
+        productVariationable: specOPT[0].productVariationable,
         is_single_variation: item.is_single_variation
     };
 });
@@ -178,6 +188,7 @@ const specChange = (value: any, index: string|number) => {
     addSelect.value[index].imgUrl = select.imgUrl
     addSelect.value[index].price = select.price
     addSelect.value[index].market_price = select.market_price
+    addSelect.value[index].productVariationable = select.productVariationable
 }
 
 // const maxStock
