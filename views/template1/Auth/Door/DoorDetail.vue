@@ -638,6 +638,16 @@ const getData = async () => {
             });
         });
 
+        const coupon = resProductDetail.value.orderDiscounts.find((item: { type: string; }) => item.type === 'coupon')
+        orderData.value.price.coupon = coupon ? -coupon.amount : 0
+        const event = resProductDetail.value.orderDiscounts.filter((item: { type: string; }) => item.type !== 'coupon')
+        orderData.value.price.event = []
+        event.forEach(item => {
+            orderData.value.price.event.push({
+                name: item.name,
+                discountPrice: -item.amount,
+            })
+        })
         setCustomShoppingCarData(resProductDetail.value.orderItems);
         emit("update:pageLoading", false);
     } catch (err: any) {

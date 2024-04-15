@@ -96,13 +96,13 @@
                                 v-if="currentStep == 0"
                                 #deposit
                             >
-                                {{ $utils().formatCurrency(Math.round(total * 0.3)) }}
+                                {{ $utils().formatCurrency(Math.round((total - discountData.discount_amount - discountData.coupon_discount_amount) * 0.3)) }}
                             </template>
                             <template
                                 v-if="currentStep == 1"
                                 #depositBig
                             >
-                                {{ $utils().formatCurrency(Math.round(total * 0.3)) }}
+                                {{ $utils().formatCurrency(Math.round((total - discountData.discount_amount - discountData.coupon_discount_amount) * 0.3)) }}
                             </template>
                         </ShoppingCarBilling>
                         <ShoppingCarSales class="hidden lg:block mt-12" v-if="currentStep == 0" />
@@ -319,11 +319,21 @@ const discountCalculate = async () => {
         background: "rgba(0, 0, 0, 0.5)",
     });
     try {
-        const params = {
-            type: "normal",
-            cart_items: selectProductIds.value,
-            coupon_code: couponRef.value.formData.coupon ? couponRef.value.formData.coupon : "nocoupon",
-        };
+        let params
+        if (currentTab.value === "type2") {
+            params = {
+                type: "combination",
+                cart_combinations: selectProductIds.value,
+                coupon_code: couponRef.value.formData.coupon ? couponRef.value.formData.coupon : "nocoupon",
+            };
+        } else {
+            params = {
+                type: "normal",
+                cart_items: selectProductIds.value,
+                coupon_code: couponRef.value.formData.coupon ? couponRef.value.formData.coupon : "nocoupon",
+            };
+        }
+
         const { data: couponDatas, status, error } = await $api().DiscountCalculateAPI(params);
         const couponData = (couponDatas.value as any).data;
         console.log(couponData);
@@ -338,7 +348,7 @@ const discountCalculate = async () => {
 };
 
 const productCountUpdate = async () => {
-    if (userStore.isAuth && currentTab.value === "type1" && selectProductIds.value.length > 0) {
+    if (userStore.isAuth && selectProductIds.value.length > 0) {
         discountCalculate();
     } else {
         discountData.value.coupon_discount_amount = 0;
@@ -360,7 +370,7 @@ const selectProduct = async (val: number[]) => {
         selectProductIds.value = data.map(item => item.id);
     }
     console.log(selectProductIds.value)
-    if (userStore.isAuth && currentTab.value === "type1" && selectProductIds.value.length > 0) {
+    if (userStore.isAuth && selectProductIds.value.length > 0) {
         discountCalculate();
     } else {
         discountData.value.coupon_discount_amount = 0;
