@@ -8,7 +8,7 @@
                 />
             </div>
         </div>
-        <component :is="AsyncComp"></component>
+        <component :is="AsyncComp" v-model:pageLoading="pageLoading"></component>
     </NuxtLayout>
 </template>
 
@@ -18,8 +18,9 @@ definePageMeta({
     middleware: ["auth-middleware"],
 });
 const pageLoading = ref(useState("loading"));
+pageLoading.value = true;
 onMounted(() => {
-    pageLoading.value = false;
+    // pageLoading.value = false;
 });
 onBeforeRouteLeave(() => {
     pageLoading.value = true;

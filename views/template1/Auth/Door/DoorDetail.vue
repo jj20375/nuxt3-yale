@@ -231,6 +231,7 @@ const { $api, $utils } = useNuxtApp();
 const $config = useRuntimeConfig();
 
 const route = useRoute();
+const router = useRouter();
 
 const breadcrumbs = ref([
     {
@@ -530,8 +531,8 @@ const dialogData = ref([
 
 const resProductDetail = ref<any>(null);
 
-const { data: resProductDetailData }: any = await $api().GetProductOrderDetailAPI({ orderId: route.params.id });
-resProductDetail.value = resProductDetailData;
+// const { data: resProductDetailData }: any = await $api().GetProductOrderDetailAPI({ orderId: route.params.id });
+// resProductDetail.value = resProductDetailData;
 
 const handleRepay = async () => {
     if (orderData.value.orderStatus === "待付尾款") {
@@ -592,48 +593,65 @@ const paymentMethod = (data: any) => {
 /**
  * 取得商品分類詳情
  */
+const emit = defineEmits(["update:pageLoading"]);
 const getData = async () => {
-    console.log("resProductDetail =>", resProductDetail);
-    orderData.value.orderId = resProductDetail.value.id;
-    orderData.value.orderNumber = resProductDetail.value.order_no;
-    breadcrumbs.value[3].text = resProductDetail.value.order_no;
-    breadcrumbs.value[3].params.id = resProductDetail.value.id;
-    orderData.value.info = {
-        contactName: resProductDetail.value.contact_name,
-        email: resProductDetail.value.contact_email,
-        phone: resProductDetail.value.contact_phone,
-        address: resProductDetail.value.contact_city + resProductDetail.value.contact_district + resProductDetail.value.contact_address,
-    };
-    orderData.value.receipt.type = resProductDetail.value.orderPayments[0].orderInvoice.type;
-    orderData.value.receipt.status = $utils().receiptStatus(resProductDetail.value.orderPayments[0].orderInvoice.status);
-    orderData.value.receipt.date = resProductDetail.value.orderPayments[0].orderInvoice.issued_at;
-    orderData.value.receipt.taxId = resProductDetail.value.orderPayments[0].orderInvoice.tax_number;
-    orderData.value.receipt.carrier_code = resProductDetail.value.orderPayments[0].orderInvoice.carrier_code;
-    orderData.value.receipt.number = resProductDetail.value.orderPayments[0].orderInvoice.invoice_no;
-    orderData.value.price.deposit = resProductDetail.value.orderPayments[0].amount;
-    orderData.value.price.deposit_ratio = resProductDetail.value.orderPayments[0].amount_ratio;
-    orderData.value.price.finalPayment_ori = resProductDetail.value.orderPayments[1].original_amount;
-    orderData.value.price.finalPayment = resProductDetail.value.orderPayments[1].amount;
-    orderData.value.price.finalPayment_ratio = resProductDetail.value.orderPayments[1].amount_ratio;
-    // orderData.value.price.totalPrice = resProductDetail.value.total_amount;
-    orderData.value.price.totalPrice = Number(resProductDetail.value.orderPayments[0].amount) + Number(resProductDetail.value.orderPayments[1].amount);
-    orderData.value.price.memo = resProductDetail.value.remark ? resProductDetail.value.remark : "無";
-    orderData.value.orderStatus = $utils().orderStatus(resProductDetail.value.status);
-    orderData.value.payment[0].method = paymentMethod(resProductDetail.value.orderPayments[0]);
-    orderData.value.payment[0].orderStatus = paymentStatus(resProductDetail.value.orderPayments[0].status);
-    orderData.value.payment[1].method = paymentMethod(resProductDetail.value.orderPayments[1]);
-    orderData.value.payment[1].orderStatus = paymentStatus(resProductDetail.value.orderPayments[1].status);
-    orderData.value.orderPayments = resProductDetail.value.orderPayments;
-    orderData.value.timeline = [];
-    resProductDetail.value.orderTimelines.forEach((item: { id: any; changed_at: moment.MomentInput; after_status: string }) => {
-        orderData.value.timeline.push({
-            date: moment(item.changed_at).format("YYYY-MM-DD"),
-            time: moment(item.changed_at).format("HH:mm"),
-            status: item.after_status,
+    try {
+        const { data: resProductDetailData }: any = await $api().GetProductOrderDetailAPI({ orderId: route.params.id });
+        resProductDetail.value = resProductDetailData;
+        console.log("resProductDetail =>", resProductDetail);
+        orderData.value.orderId = resProductDetail.value.id;
+        orderData.value.orderNumber = resProductDetail.value.order_no;
+        breadcrumbs.value[3].text = resProductDetail.value.order_no;
+        breadcrumbs.value[3].params.id = resProductDetail.value.id;
+        orderData.value.info = {
+            contactName: resProductDetail.value.contact_name,
+            email: resProductDetail.value.contact_email,
+            phone: resProductDetail.value.contact_phone,
+            address: resProductDetail.value.contact_city + resProductDetail.value.contact_district + resProductDetail.value.contact_address,
+        };
+        orderData.value.receipt.type = resProductDetail.value.orderPayments[0].orderInvoice.type;
+        orderData.value.receipt.status = $utils().receiptStatus(resProductDetail.value.orderPayments[0].orderInvoice.status);
+        orderData.value.receipt.date = resProductDetail.value.orderPayments[0].orderInvoice.issued_at;
+        orderData.value.receipt.taxId = resProductDetail.value.orderPayments[0].orderInvoice.tax_number;
+        orderData.value.receipt.carrier_code = resProductDetail.value.orderPayments[0].orderInvoice.carrier_code;
+        orderData.value.receipt.number = resProductDetail.value.orderPayments[0].orderInvoice.invoice_no;
+        orderData.value.price.deposit = resProductDetail.value.orderPayments[0].amount;
+        orderData.value.price.deposit_ratio = resProductDetail.value.orderPayments[0].amount_ratio;
+        orderData.value.price.finalPayment_ori = resProductDetail.value.orderPayments[1].original_amount;
+        orderData.value.price.finalPayment = resProductDetail.value.orderPayments[1].amount;
+        orderData.value.price.finalPayment_ratio = resProductDetail.value.orderPayments[1].amount_ratio;
+        // orderData.value.price.totalPrice = resProductDetail.value.total_amount;
+        orderData.value.price.totalPrice = Number(resProductDetail.value.orderPayments[0].amount) + Number(resProductDetail.value.orderPayments[1].amount);
+        orderData.value.price.memo = resProductDetail.value.remark ? resProductDetail.value.remark : "無";
+        orderData.value.orderStatus = $utils().orderStatus(resProductDetail.value.status);
+        orderData.value.payment[0].method = paymentMethod(resProductDetail.value.orderPayments[0]);
+        orderData.value.payment[0].orderStatus = paymentStatus(resProductDetail.value.orderPayments[0].status);
+        orderData.value.payment[1].method = paymentMethod(resProductDetail.value.orderPayments[1]);
+        orderData.value.payment[1].orderStatus = paymentStatus(resProductDetail.value.orderPayments[1].status);
+        orderData.value.orderPayments = resProductDetail.value.orderPayments;
+        orderData.value.timeline = [];
+        resProductDetail.value.orderTimelines.forEach((item: { id: any; changed_at: moment.MomentInput; after_status: string }) => {
+            orderData.value.timeline.push({
+                date: moment(item.changed_at).format("YYYY-MM-DD"),
+                time: moment(item.changed_at).format("HH:mm"),
+                status: item.after_status,
+            });
         });
-    });
 
-    setCustomShoppingCarData(resProductDetail.value.orderItems);
+        setCustomShoppingCarData(resProductDetail.value.orderItems);
+        emit("update:pageLoading", false);
+    } catch (err: any) {
+        console.log(err.response)
+        if (err.response) {
+            if (err.response.status === 404) {
+                ElMessage({
+                    type: "error",
+                    message: "找不到此商品訂單",
+                });
+                router.push({ name: "auth-door-slug", params: { slug: "一般商品-訂單記錄" } });
+            }
+        }
+    }
 };
 
 /**
