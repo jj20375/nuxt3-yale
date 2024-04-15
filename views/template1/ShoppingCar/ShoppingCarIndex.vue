@@ -386,6 +386,12 @@ const goStepCheckout = () => {
             message: "請先選擇商品",
         });
         return;
+    } else if ((total.value - discountData.value.discount_amount - discountData.value.coupon_discount_amount) < 0) {
+        ElMessage({
+            type: "error",
+            message: "金額計算錯誤，請聯繫客服處理",
+        });
+        return;
     }
     if (userStore.isAuth) {
         currentStep.value = 1;
