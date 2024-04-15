@@ -175,6 +175,7 @@ function addToShoppingCar(data: any) {
         count: 1,
         price: data.price,
         totalPrice: data.price * 1,
+        is_add_on_purchase: 0,
         stock: data.stock,
     };
     shoppingCarStore
