@@ -225,6 +225,14 @@ const selectProduct = (id: number) => {
     emit("update:selectProductIds", id);
 };
 
+watch(
+    () => isAuth.value,
+    async (newval, oldVal) => {
+        await getUserShopping();
+        await init()
+    }
+);
+
 const init = async () => {
     // await getUserShopping();
 
