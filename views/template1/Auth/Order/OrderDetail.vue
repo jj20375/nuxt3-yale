@@ -218,6 +218,7 @@ const { $api, $utils } = useNuxtApp();
 
 const showDownload = ref(false);
 const route = useRoute();
+const router = useRouter();
 const $config = useRuntimeConfig();
 
 const breadcrumbs = ref([
@@ -351,8 +352,8 @@ const orderData = ref({
 const orderDownloadHtmlRefDom = ref<any>(null);
     const resProductDetail = ref<any>(null)
 
-const { data: resProductDetailData }: any = await $api().GetProductOrderDetailAPI({ orderId: route.params.id });
-resProductDetail.value = resProductDetailData
+// const { data: resProductDetailData }: any = await $api().GetProductOrderDetailAPI({ orderId: route.params.id });
+// resProductDetail.value = resProductDetailData
 
 const orderRepay = async () => {
     const hostUrl = $config.public.hostURL;
@@ -383,76 +384,93 @@ const paymentStatus = (orderPayments:string) => {
 /**
  * 取得訂單詳情
  */
+ const emit = defineEmits(["update:pageLoading"]);
 const getData = async () => {
-    console.log("resProductDetail =>", resProductDetail);
-    orderData.value.orderId = resProductDetail.value.id;
-    orderData.value.orderNumber = resProductDetail.value.order_no;
-    breadcrumbs.value[3].text = resProductDetail.value.order_no;
-    breadcrumbs.value[3].params.slug = '訂單資訊';
-    breadcrumbs.value[3].params.id = resProductDetail.value.id;
-    orderData.value.info = {
-        contactName: resProductDetail.value.contact_name,
-        email: resProductDetail.value.contact_email,
-        phone: resProductDetail.value.contact_phone,
-        address: resProductDetail.value.contact_city + resProductDetail.value.contact_district + resProductDetail.value.contact_address,
-    };
-    orderData.value.products = [];
-    resProductDetail.value.orderItems.forEach((item: { productable: { name: any; attributes: { [x: string]: any } }; quantity: any; productVariationable:any; }) => {
-        let productVariationable = []
-        let imgUrl = item.productable.main_image
-        if (item.productVariationable) {
-            productVariationable = item.productVariationable?.values.map((variation: { product_option_name: any; product_option_value_name: any; }) => {
-                return {
-                    label: variation.product_option_name,
-                    value: variation.product_option_value_name
-                }
-            })
-            const productVariationableImg = item.productable.other_images.find(img => img.includes(item.productVariationable.image))
-            imgUrl = productVariationableImg ? productVariationableImg : item.productable.main_image
-        }
-        orderData.value.products.push({
-            name: item.productable.name,
-            price: "$" + $utils().formatCurrency(item.price),
-            totalPrice: item.total_amount,
-            productVariationable: productVariationable,
-            quantity: item.quantity,
-            imgUrl: imgUrl,
-            is_add_on_purchase: item.is_add_on_purchase,
-            is_discount_gift: item.is_discount_gift,
+    try {
+        const { data: resProductDetailData, status, error }: any = await $api().GetProductOrderDetailAPI({ orderId: route.params.id });
+        resProductDetail.value = resProductDetailData
+        console.log("resProductDetail =>", resProductDetail);
+        orderData.value.orderId = resProductDetail.value.id;
+        orderData.value.orderNumber = resProductDetail.value.order_no;
+        breadcrumbs.value[3].text = resProductDetail.value.order_no;
+        breadcrumbs.value[3].params.slug = '訂單資訊';
+        breadcrumbs.value[3].params.id = resProductDetail.value.id;
+        orderData.value.info = {
+            contactName: resProductDetail.value.contact_name,
+            email: resProductDetail.value.contact_email,
+            phone: resProductDetail.value.contact_phone,
+            address: resProductDetail.value.contact_city + resProductDetail.value.contact_district + resProductDetail.value.contact_address,
+        };
+        orderData.value.products = [];
+        resProductDetail.value.orderItems.forEach((item: { productable: { name: any; attributes: { [x: string]: any } }; quantity: any; productVariationable:any; }) => {
+            let productVariationable = []
+            let imgUrl = item.productable.main_image
+            if (item.productVariationable) {
+                productVariationable = item.productVariationable?.values.map((variation: { product_option_name: any; product_option_value_name: any; }) => {
+                    return {
+                        label: variation.product_option_name,
+                        value: variation.product_option_value_name
+                    }
+                })
+                const productVariationableImg = item.productable.other_images.find(img => img.includes(item.productVariationable.image))
+                imgUrl = productVariationableImg ? productVariationableImg : item.productable.main_image
+            }
+            orderData.value.products.push({
+                name: item.productable.name,
+                price: "$" + $utils().formatCurrency(item.price),
+                totalPrice: item.total_amount,
+                productVariationable: productVariationable,
+                quantity: item.quantity,
+                imgUrl: imgUrl,
+                is_add_on_purchase: item.is_add_on_purchase,
+                is_discount_gift: item.is_discount_gift,
+            });
         });
-    });
-    orderData.value.orderPayments = resProductDetail.value.orderPayments
-    orderData.value.timeline = [];
-    resProductDetail.value.orderTimelines.forEach((item: { id: any; changed_at: moment.MomentInput; after_status: string }) => {
-        orderData.value.timeline.push({
-            date: moment(item.changed_at).format("YYYY-MM-DD"),
-            time: moment(item.changed_at).format("HH:mm"),
-            status: item.after_status,
+        orderData.value.orderPayments = resProductDetail.value.orderPayments
+        orderData.value.timeline = [];
+        resProductDetail.value.orderTimelines.forEach((item: { id: any; changed_at: moment.MomentInput; after_status: string }) => {
+            orderData.value.timeline.push({
+                date: moment(item.changed_at).format("YYYY-MM-DD"),
+                time: moment(item.changed_at).format("HH:mm"),
+                status: item.after_status,
+            });
         });
-    });
-    orderData.value.receipt.type = resProductDetail.value.orderPayments[0].orderInvoice.type;
-    orderData.value.receipt.status = $utils().receiptStatus(resProductDetail.value.orderPayments[0].orderInvoice.status);
-    orderData.value.receipt.date = resProductDetail.value.orderPayments[0].orderInvoice.issued_at;
-    orderData.value.receipt.taxId = resProductDetail.value.orderPayments[0].orderInvoice.tax_number;
-    orderData.value.receipt.carrier_code = resProductDetail.value.orderPayments[0].orderInvoice.carrier_code;
-    orderData.value.receipt.donation_code = resProductDetail.value.orderPayments[0].orderInvoice.donation_code;
-    orderData.value.receipt.number = resProductDetail.value.orderPayments[0].orderInvoice.invoice_no;
-    orderData.value.price.totalPrice = resProductDetail.value.total_amount;
-    orderData.value.price.memo = resProductDetail.value.remark ? resProductDetail.value.remark : "無";
-    orderData.value.orderStatus = $utils().orderStatus(resProductDetail.value.status);
-    orderData.value.payment.orderStatus = paymentStatus(resProductDetail.value.orderPayments);
+        orderData.value.receipt.type = resProductDetail.value.orderPayments[0].orderInvoice.type;
+        orderData.value.receipt.status = $utils().receiptStatus(resProductDetail.value.orderPayments[0].orderInvoice.status);
+        orderData.value.receipt.date = resProductDetail.value.orderPayments[0].orderInvoice.issued_at;
+        orderData.value.receipt.taxId = resProductDetail.value.orderPayments[0].orderInvoice.tax_number;
+        orderData.value.receipt.carrier_code = resProductDetail.value.orderPayments[0].orderInvoice.carrier_code;
+        orderData.value.receipt.donation_code = resProductDetail.value.orderPayments[0].orderInvoice.donation_code;
+        orderData.value.receipt.number = resProductDetail.value.orderPayments[0].orderInvoice.invoice_no;
+        orderData.value.price.totalPrice = resProductDetail.value.total_amount;
+        orderData.value.price.memo = resProductDetail.value.remark ? resProductDetail.value.remark : "無";
+        orderData.value.orderStatus = $utils().orderStatus(resProductDetail.value.status);
+        orderData.value.payment.orderStatus = paymentStatus(resProductDetail.value.orderPayments);
 
-    const coupon = resProductDetail.value.orderDiscounts.find((item: { type: string; }) => item.type === 'coupon')
-    orderData.value.price.coupon = coupon ? -coupon.amount : 0
-    const event = resProductDetail.value.orderDiscounts.filter((item: { type: string; }) => item.type !== 'coupon')
-    orderData.value.price.event = []
-    event.forEach(item => {
-        orderData.value.price.event.push({
-            name: item.name,
-            discountPrice: -item.amount,
+        const coupon = resProductDetail.value.orderDiscounts.find((item: { type: string; }) => item.type === 'coupon')
+        orderData.value.price.coupon = coupon ? -coupon.amount : 0
+        const event = resProductDetail.value.orderDiscounts.filter((item: { type: string; }) => item.type !== 'coupon')
+        orderData.value.price.event = []
+        event.forEach(item => {
+            orderData.value.price.event.push({
+                name: item.name,
+                discountPrice: -item.amount,
+            })
         })
-    })
-};
+        emit("update:pageLoading", false);
+    } catch (err: any) {
+        console.log(err.response)
+        if (err.response) {
+            if (err.response.status === 404) {
+                ElMessage({
+                    type: "error",
+                    message: "找不到此商品訂單",
+                });
+                router.push({ name: "auth-order-slug", params: { slug: "一般商品-訂單記錄" } });
+            }
+        }
+    }
+}
 
 /**
  * 初始化
