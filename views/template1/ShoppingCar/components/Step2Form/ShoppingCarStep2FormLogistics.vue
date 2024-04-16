@@ -27,8 +27,7 @@
                     </el-select>
                 </el-form-item>
             </div>
-            <!-- todo 先隱藏 aaron -->
-            <!-- <p class="text-[15px] text-gray-500 mt-6">運費說明文字運費說明文字運費說明文字運費說明文字運費說明文字運費說明文字</p> -->
+            <div class="text-[15px] text-gray-500 mt-6" v-html="logisticsMemo"></div>
         </el-form>
     </div>
 </template>
@@ -68,6 +67,15 @@ const rules = ref<any>({
 // 配送選項
 const logisticsOptions = computed(() => {
     return (data.value as any)?.data;
+});
+
+const logisticsMemo = computed(() => {
+    let result = ''
+
+    if (logisticsOptions.value.find((item: { code: any; }) => item.code === formData.value.logistics)) {
+        result = logisticsOptions.value.find((item: { code: any; }) => item.code === formData.value.logistics)?.content
+    }
+    return result
 });
 
 const validForm = async () => {
