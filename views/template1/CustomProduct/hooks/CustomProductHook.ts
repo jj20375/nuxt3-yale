@@ -213,6 +213,8 @@ export function useCustomProdutHook() {
                     backend: item.back_image,
                     half: item.half_image,
                 },
+                // 選擇此商品時 不得選擇的商品 id
+                filterCategoryIds: item.customProductExcludeTypes,
             });
         });
         return result;

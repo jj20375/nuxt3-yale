@@ -4,6 +4,7 @@
         <el-checkbox-group
             v-model="selectedProductIdsData"
             @change="selectProduct"
+            :disabled="disabled"
             :max="1"
         >
             <div
@@ -97,6 +98,10 @@
 // 導入細節彈窗 幻燈片
 import CustomProductDailogCarousel from "~/views/template1/CustomProduct/components/CustomProductDailogCarousel.vue";
 
+defineExpose({
+    reset,
+});
+
 const { $utils } = useNuxtApp();
 
 const emit = defineEmits(["update:selectedProductIds", "update:selectedProducts"]);
@@ -113,6 +118,7 @@ interface Props {
     }[];
     title: string;
     selectedProductIds: number[];
+    disabled: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -128,6 +134,7 @@ const props = withDefaults(defineProps<Props>(), {
     // 標題
     title: "款式",
     selectedProductIds: [],
+    disabled: false,
 });
 
 const selectedProductIdsData = ref(props.selectedProductIds);
@@ -141,6 +148,12 @@ function selectProduct(val: any) {
         "update:selectedProducts",
         props.products.filter((item) => val.includes(item.id))
     );
+}
+
+function reset() {
+    selectedProductIdsData.value = [];
+    emit("update:selectedProductIds", []);
+    emit("update:selectedProducts", {});
 }
 
 watch(

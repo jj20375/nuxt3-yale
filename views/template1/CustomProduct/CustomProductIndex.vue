@@ -211,10 +211,12 @@
                                 :products="other1Datas"
                             />
                             <CustomProductOtherChoose
+                                ref="currentOther2RefDom"
                                 class="mt-[20px] mb-[16px]"
                                 title="門弓器"
                                 v-model:selectedProductIds="currentOther2Ids"
                                 v-model:selectedProducts="currentOther2Datas"
+                                :disabled="currentTool1Data.filterCategoryIds.includes(CustomProductListIdEnum.other2)"
                                 :products="other2Datas"
                             />
                             <CustomProductOtherChoose
@@ -480,6 +482,8 @@ const currentTool2Data = ref<any>({});
 const currentOther1Ids = ref([""]);
 // 選擇選配區 下將壓條資料
 const currentOther1Datas = ref<any>([]);
+// 選擇選配區 門弓器 ref dom
+const currentOther2RefDom = ref<any>(null);
 // 選擇選配區 門弓器 ids
 const currentOther2Ids = ref([""]);
 // 選擇選配區 門弓器資料
@@ -877,6 +881,27 @@ watch(
     (val) => {
         currentDoorColorId.value = doors.value.find((item: any) => item.id === val).colors[0].id;
         currentDoorSizeId.value = doors.value.find((item: any) => item.id === val).sizes[0].id;
+    }
+);
+
+watch(
+    () => currentTool1Data.value,
+    (val) => {
+        // 判斷有選擇 掛門時 如果不可選擇 門弓器則清空門弓器選項
+        if (val.filterCategoryIds.includes(CustomProductListIdEnum.other2)) {
+            currentOther2RefDom.value.reset();
+        }
+        console.log("currentTool1Data =>", val);
+    }
+);
+watch(
+    () => currentOther2Datas.value,
+    (val) => {
+        // 判斷有選擇 掛門時 如果不可選擇 門弓器則清空門弓器選項
+        if (currentTool1Data.value.filterCategoryIds.includes(CustomProductListIdEnum.other2)) {
+            currentOther2RefDom.value.reset();
+        }
+        console.log("currentOther2Datas.value =>", val);
     }
 );
 
