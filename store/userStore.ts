@@ -129,7 +129,8 @@ export const useUserStore = defineStore({
                 $shoppingCarService().removeCustomProductShoppingCar();
                 // 清空一般商品購物車
                 $shoppingCarService().removeShoppingCar();
-                window.location.href = $config.public.hostURL;
+                router.push({ name: 'auth-login-slug', params: { slug: '會員登入' } });
+                // window.location.href = $config.public.hostURL;
             }
         },
     },

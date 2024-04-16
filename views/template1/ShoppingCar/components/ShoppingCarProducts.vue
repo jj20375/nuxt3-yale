@@ -50,7 +50,7 @@
                         </div>
                         <p v-if="cart.is_add_on_purchase == 0" class="hidden sm:block font-medium YaleSolisW-Bd text-[18px] whitespace-nowrap">NT$ {{ $utils().formatCurrency(cart.totalPrice) }}</p>
                         <div v-else class="flex mt-[8px] gap-[12px]">
-                            <div  class="hidden sm:block font-medium YaleSolisW-Bd text-[18px] whitespace-nowrap line-through">NT${{ $utils().formatCurrency(cart.market_price) }}</div>
+                            <div  class="hidden sm:block font-medium YaleSolisW-Bd text-[18px] whitespace-nowrap line-through">NT${{ $utils().formatCurrency(cart.market_price_total) }}</div>
                             <p class="hidden text-pink-900 sm:block font-medium YaleSolisW-Bd text-[18px] whitespace-nowrap">加購價 NT$ {{ $utils().formatCurrency(cart.totalPrice) }}</p>
                         </div>
                     </div>
@@ -103,7 +103,7 @@
                     </div>
                     <div v-if="cart.is_add_on_purchase == 0" class="sm:hidden mt-[16px] font-medium YaleSolisW-Bd text-[16px]">NT$ {{ $utils().formatCurrency(cart.totalPrice) }}</div>
                     <div v-else class="flex mt-[8px] gap-[12px]">
-                        <div class="sm:hidden mt-[16px] font-medium YaleSolisW-Bd text-[16px] line-through">NT${{ $utils().formatCurrency(cart.market_price) }}</div>
+                        <div class="sm:hidden mt-[16px] font-medium YaleSolisW-Bd text-[16px] line-through">NT${{ $utils().formatCurrency(cart.market_price_total) }}</div>
                         <div class="text-pink-900 sm:hidden mt-[16px] font-medium YaleSolisW-Bd text-[16px]">NT$ {{ $utils().formatCurrency(cart.totalPrice) }}</div>
                     </div>
                 </div>

@@ -49,6 +49,7 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
                 shoppingCar.value = data.value.data.cartItems.map((i) => {
                     const price = i.price;
                     const market_price = i.original_price;
+                    const market_price_total = i.original_price * i.quantity;
                     // 設置顏色名稱
                     let colorIndex = -1;
                     let colorName = undefined;
@@ -78,6 +79,7 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
                         productID: i.productable.id,
                         price,
                         market_price,
+                        market_price_total,
                         name: i.productable.name,
                         imgSrc,
                         count: i.quantity,

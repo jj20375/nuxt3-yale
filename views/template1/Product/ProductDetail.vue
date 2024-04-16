@@ -718,6 +718,7 @@ const addToShoppingCar = (isGoToShoppingCarPage: boolean = false) => {
                         count: item.count,
                         price: item.price,
                         market_price: Number(item.market_price),
+                        market_price_total: Number(item.market_price) * item.count,
                         totalPrice: Number(item.price) * item.count,
                         product_variationable_id: item.is_single_variation == 0 ? item.spec : null,
                         stock: item.stock,
