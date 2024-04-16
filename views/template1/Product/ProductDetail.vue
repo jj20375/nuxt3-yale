@@ -146,7 +146,7 @@
                                 class="w-full transparent-btn"
                                 disabled
                             >
-                                補貨中，貨到通知
+                                補貨中
                             </button>
                             <button
                                 @click="goToShoppingCar"

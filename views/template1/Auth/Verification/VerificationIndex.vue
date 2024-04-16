@@ -23,7 +23,12 @@
                 </div>
                 <div class="mt-12 text-center">沒有在收件夾中找到認證信件？請先確認您的垃圾郵件。</div>
                 <div class="mt-3 text-center">
-                    <NuxtLink :to="{ name: 'auth-login-slug', params: { slug: '會員登入' } }"> 登入其他帳號 </NuxtLink>
+                    <NuxtLink
+                        @click="logout"
+                        :to="{ name: 'auth-login-slug', params: { slug: '會員登入' } }"
+                    >
+                        登入其他帳號
+                    </NuxtLink>
                 </div>
             </div>
         </div>
@@ -44,6 +49,10 @@ const userData = ref({
     email: "ABC@gmail.com",
     verification: false, // 是否為驗證失敗導過來的
 });
+
+function logout() {
+    userStore.logOutUser();
+}
 
 const resendVerification = async () => {
     const params = {

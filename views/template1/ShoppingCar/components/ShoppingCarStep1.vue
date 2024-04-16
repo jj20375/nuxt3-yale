@@ -19,7 +19,7 @@
             />
         </div>
         <ShoppingCarStep2FormGift />
-        <ShoppingCarSales class="block lg:hidden mt-12" v-if="currentTab === 'type1'" />
+        <ShoppingCarSales :event="discountData.event" class="block lg:hidden mt-12" v-if="currentTab === 'type1'" />
         <div class="flex">
             <NuxtLink
                 v-if="currentTab === 'type1'"
@@ -59,12 +59,24 @@ import ShoppingCarStep2FormGift from "~/views/template1/ShoppingCar/components/S
 
 const route = useRoute();
 const emit = defineEmits(["selectProduct", "productCountUpdate"]);
+interface Props {
+    currentTab: string;
+    discountData: {
+        original_amount: string;
+        after_discount_amount: string;
+        coupon_discount_amount: string;
+        event: any[];
+    }
+}
 
-const props = defineProps({
-    currentTab: {
-        type: String,
-        default: "type1",
-    },
+const props = withDefaults(defineProps<Props>(), {
+    currentTab: "type1",
+    discountData: {
+        original_amount: 0,
+        after_discount_amount: 0,
+        coupon_discount_amount: 0,
+        event: []
+    }
 });
 
 // 購物車選中商品 id

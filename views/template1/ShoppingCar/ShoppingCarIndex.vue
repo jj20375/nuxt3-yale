@@ -45,6 +45,7 @@
                         @selectProduct="selectProduct"
                         @productCountUpdate="productCountUpdate"
                         :goCheckoutStep3="goCheckoutStep3"
+                        :discountData="discountData"
                     />
                 </keep-alive>
                 <ShoppingCarStep2FormGift/>
@@ -105,7 +106,7 @@
                                 {{ $utils().formatCurrency(Math.round((total - discountData.discount_amount - discountData.coupon_discount_amount) * 0.3)) }}
                             </template>
                         </ShoppingCarBilling>
-                        <ShoppingCarSales class="hidden lg:block mt-12" v-if="currentStep == 0" />
+                        <ShoppingCarSales :event="discountData.event" class="hidden lg:block mt-12" v-if="currentStep == 0" />
                         <div
                             v-if="currentStep == 1"
                             class="cursor-pointer mt-[24px] flex"
@@ -256,6 +257,12 @@ const getCoupon = async (val: any) => {
             message: "請先登入",
         });
         couponCode.value = null
+    } else if (!userStore.user.is_verified) {
+        ElMessage({
+            type: "error",
+            message: "會員尚未完成驗證",
+        });
+        couponCode.value = null
     } else if (selectProductIds.value.length === 0) {
         ElMessage({
             type: "error",
@@ -308,6 +315,7 @@ const getCoupon = async (val: any) => {
         }
         discountData.value.coupon_discount_amount = couponData.coupon_discount_amount;
         discountData.value.discount_amount = couponData.discount_amount;
+        discountData.value.event = couponData.discounts;
         shoppingCarStore.discount_gifts = couponData.discount_product_gifts
     }
 };
@@ -340,6 +348,7 @@ const discountCalculate = async () => {
         discountData.value.coupon_discount_amount = couponData.coupon_discount_amount;
         discountData.value.discount_amount = couponData.discount_amount;
         shoppingCarStore.discount_gifts = couponData.discount_product_gifts
+        discountData.value.event = couponData.discounts;
         loading.close();
     } catch {
         shoppingCarStore.discount_gifts = []
@@ -348,7 +357,7 @@ const discountCalculate = async () => {
 };
 
 const productCountUpdate = async () => {
-    if (userStore.isAuth && selectProductIds.value.length > 0) {
+    if (userStore.isAuth && userStore.user.is_verified && selectProductIds.value.length > 0) {
         discountCalculate();
     } else {
         discountData.value.coupon_discount_amount = 0;
@@ -370,12 +379,13 @@ const selectProduct = async (val: number[]) => {
         selectProductIds.value = data.map(item => item.id);
     }
     console.log(selectProductIds.value)
-    if (userStore.isAuth && selectProductIds.value.length > 0) {
+    if (userStore.isAuth && userStore.user.is_verified && selectProductIds.value.length > 0) {
         discountCalculate();
     } else {
         discountData.value.coupon_discount_amount = 0;
         discountData.value.discount_amount = 0;
         shoppingCarStore.discount_gifts = []
+        discountData.value.event = []
     }
 };
 // go step2
@@ -389,11 +399,11 @@ const goStepCheckout = () => {
     } else if ((total.value - discountData.value.discount_amount - discountData.value.coupon_discount_amount) < 0) {
         ElMessage({
             type: "error",
-            message: "金額計算錯誤，請聯繫客服處理",
+            message: "結帳金額有誤，請聯繫客服處理",
         });
         return;
     }
-    if (userStore.isAuth) {
+    if (userStore.isAuth && userStore.user.is_verified) {
         currentStep.value = 1;
         showComponent.value = ShoppingCarStep2;
 
@@ -403,11 +413,16 @@ const goStepCheckout = () => {
                 quantity: item.count,
             });
         });
-    } else {
+    } else if (!userStore.isAuth) {
         showLoginDialog.value = true;
         ElMessage({
             type: "error",
             message: "請先登入",
+        });
+    } else if (!userStore.user.is_verified) {
+        ElMessage({
+            type: "error",
+            message: "會員尚未完成驗證",
         });
     }
 };

@@ -24,6 +24,7 @@
                 <div class="mt-12 text-center">沒有在收件夾中找到認證信件？請先確認您的垃圾郵件。</div>
                 <div class="text-center mt-3">
                     <NuxtLink
+                        @click="logout"
                         :to="{ name: 'auth-login-slug', params: { slug: '會員登入' } }"
                     >
                         登入其他帳號
@@ -35,9 +36,11 @@
 </template>
 <script setup lang="ts">
 import VerificationButton from "~/views/template1/Auth/components/VerificationButton.vue";
+import { useUserStore } from "~/store/userStore";
 import { ElMessage } from "element-plus";
 const router = useRouter();
 const { $api } = useNuxtApp();
+const userStore = useUserStore();
 
 // 會員資料
 const userData = ref({
@@ -45,6 +48,10 @@ const userData = ref({
     email: "ABC@gmail.com",
     verification: false, // 是否為驗證失敗導過來的
 });
+
+function logout() {
+    userStore.logOutUser();
+}
 
 const resendVerification = async () => {
     const params = {
