@@ -894,16 +894,16 @@ watch(
         console.log("currentTool1Data =>", val);
     }
 );
-watch(
-    () => currentOther2Datas.value,
-    (val) => {
-        // 判斷有選擇 掛門時 如果不可選擇 門弓器則清空門弓器選項
-        if (currentTool1Data.value.filterCategoryIds.includes(CustomProductListIdEnum.other2)) {
-            currentOther2RefDom.value.reset();
-        }
-        console.log("currentOther2Datas.value =>", val);
-    }
-);
+// watch(
+//     () => currentOther2Datas.value,
+//     (val) => {
+//         // 判斷有選擇 掛門時 如果不可選擇 門弓器則清空門弓器選項
+//         if (currentTool1Data.value.filterCategoryIds.includes(CustomProductListIdEnum.other2)) {
+//             currentOther2RefDom.value.reset();
+//         }
+//         console.log("currentOther2Datas.value =>", val);
+//     }
+// );
 
 // 判斷選擇電子鎖時須清空輔助鎖選項
 watch(
