@@ -218,7 +218,7 @@ const formDatas = ref<any>([
     },
     {
         prop: "email",
-        label: "電子信箱",
+        label: "帳號(電子信箱)",
         placeholder: "",
         style: "input",
         space: 1,

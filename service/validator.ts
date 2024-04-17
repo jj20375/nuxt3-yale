@@ -150,8 +150,39 @@ export const validateNaturalPerson = (rule: InternalRuleItem, value: string, cal
 //驗證checkbox為必選
 export const validateSingleCheckbox = (rule: InternalRuleItem, value: string, callback: (error?: string | Error) => void) => {
     if (value === false) {
-      callback(new Error());
+        callback(new Error());
     } else {
-      callback();
+        callback();
     }
-  };
+};
+
+  // 驗證統一編號
+const taxidCheck = (value: string) => {
+    const digits = value.toString().split('').map(Number);
+    const multipliers = [1, 2, 1, 2, 1, 2, 4, 1];
+    let sum = 0;
+
+    for (var i = 0; i < 8; i++) {
+        let product = digits[i] * multipliers[i];
+        if (Number(product) > 9) {
+            const tenDigit = parseInt((product % 100)/10)
+            const digit = parseInt(product % 10)
+            product = tenDigit + digit
+        }
+        sum += product;
+    }
+
+    return sum % 5 === 0;
+}
+
+export const validateCompanyIDVal = (rule: InternalRuleItem, value: string, callback: (error?: string | Error) => void) => {
+    if (value) {
+        if (!taxidCheck(value)) {
+        callback(new Error());
+        } else {
+        callback();
+        }
+    } else {
+        callback();
+    }
+};

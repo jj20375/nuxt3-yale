@@ -53,7 +53,7 @@
 
 <script setup lang="ts">
 import { FormInstance } from "element-plus";
-import { validateDonationCode, validateMobileCarrier, validateNaturalPerson } from "~/service/validator";
+import { validateDonationCode, validateMobileCarrier, validateNaturalPerson, validateCompanyIDVal } from "~/service/validator";
 
 const emit = defineEmits(["update:form"]);
 const formRefDom = ref<FormInstance>();
@@ -157,6 +157,12 @@ const rules = computed(() => {
                 required: true,
                 message: "請輸入",
                 trigger: ["change", "blur"],
+            },
+            {
+                required: true,
+                validator: validateCompanyIDVal,
+                trigger: ["change", "blur"],
+                message: "格式不正確",
             },
         ],
     };

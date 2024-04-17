@@ -318,7 +318,7 @@ const formDatas = ref<any>({
             span: 2,
         },
     ],
-    serialDatas: Array.from({ length: 2 }, (v, i) => ({
+    serialDatas: Array.from({ length: 1 }, (v, i) => ({
         prop: `serial${i}`,
         label: "序號",
         placeholder: "請輸入",
