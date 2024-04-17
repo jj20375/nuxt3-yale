@@ -61,10 +61,11 @@ export const useUserStore = defineStore({
 
         // 取得使用者資料
         async getUserProfile() {
-            const { $api }: any = useNuxtApp();
+            const { $api, $shoppingCarService, $utils }: any = useNuxtApp();
             const shoppingCarStore = useShoppingCarStore();
 
-            if (Cookies.get("token")) {
+            // 判斷有使用者資料時 無需請求
+            if (Cookies.get("token") && $utils().isEmpty(this.user)) {
                 try {
                     this.loading = true;
                     const { data, error }: { data: any; error: any } = await $api().GetUserProfileAPI();
@@ -85,8 +86,17 @@ export const useUserStore = defineStore({
                     }
                     this.setUser(data.value.data);
                     this.setIsAuth(true);
-                    await shoppingCarStore.getUserShopping();
-                    await shoppingCarStore.getUserCustomShoppingCar();
+                    const shoppingCar = $shoppingCarService().getShoppingCar();
+                    const customProductShoppingCar = $shoppingCarService().getCustomProductShoppingCar();
+
+                    // 判斷購物車有資料時無需請求
+                    if (!shoppingCar) {
+                        await shoppingCarStore.getUserShopping();
+                    }
+                    // 判斷訂製商品購物車有資料時無需請求
+                    if (!customProductShoppingCar) {
+                        await shoppingCarStore.getUserCustomShoppingCar();
+                    }
                     // shoppingCarStore.syncCustomCart();
                 } catch (err) {
                     this.removeLoginData();
@@ -129,7 +139,7 @@ export const useUserStore = defineStore({
                 $shoppingCarService().removeCustomProductShoppingCar();
                 // 清空一般商品購物車
                 $shoppingCarService().removeShoppingCar();
-                router.push({ name: 'auth-login-slug', params: { slug: '會員登入' } });
+                router.push({ name: "auth-login-slug", params: { slug: "會員登入" } });
                 // window.location.href = $config.public.hostURL;
             }
         },
