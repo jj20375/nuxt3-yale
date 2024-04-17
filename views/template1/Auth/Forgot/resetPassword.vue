@@ -1,7 +1,7 @@
 <template>
-    <section class="mt-headerMb xl:mt-header pb-[60px] bg-gray-50">
-        <div class="container overflow-auto">
-            <div class="w-full lg:w-[620px] mt-[36px] sm:mt-[60px] py-[60px] px-[60px] bg-white mx-auto rounded-[24px] border-[1px] border-gray-200">
+    <section class="mt-headerMb xl:mt-header border-t border-gray-300 py-[60px] bg-gray-50">
+        <div class="container">
+            <div class="w-full xl:w-3/4 py-[32px] sm:py-[60px] px-[24px] sm:px-[60px] bg-white mx-auto rounded-[24px] border-[1px] border-gray-200">
                 <h3 class="font-medium YaleSolisW-Bd text-[28px] mb-8">重設密碼</h3>
                 <el-form
                     class="custom-form"
@@ -27,11 +27,11 @@
                                 ></el-input>
                             </el-form-item>
                         </div>
-                        <div class="flex mt-4 gap-4 justify-center">
+                        <div class="grid grid-cols-2 md:flex gap-4 justify-center mt-6">
                             <NuxtLink :to="{ name: 'auth-panel-slug', params: { slug: '會員中心' } }">
-                                <button class="transparent-btn btn-md">返回</button>
+                                <button class="transparent-btn" :class="isPad ? 'btn-fit w-full':'btn-md'">返回</button>
                             </NuxtLink>
-                            <button @click.prevent="onSubmit" class="yellow-btn btn-md">送出</button>
+                            <button @click.prevent="onSubmit" class="yellow-btn" :class="isPad ? 'btn-fit w-full':'btn-md'">送出</button>
                         </div>
                     </div>
                 </el-form>
@@ -44,6 +44,7 @@ import { InternalRuleItem } from "async-validator/dist-types/interface";
 import { validatePassword } from "~/service/validator";
 import { ElMessage, ElLoading } from "element-plus";
 const { $api } = useNuxtApp();
+const { isPad } = useWindowResize();
 const router = useRouter();
 
 const route = useRoute();
