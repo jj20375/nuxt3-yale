@@ -238,7 +238,7 @@ const formDatas = ref<any>([
     {
         prop: "birthday",
         label: "生日",
-        placeholder: "請選擇日期",
+        placeholder: "請選擇日期 或 輸入YYYY-MM-DD",
         style: "datepicker",
     },
     {
