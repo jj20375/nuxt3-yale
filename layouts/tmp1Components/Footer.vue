@@ -157,8 +157,8 @@ const footerDatas = ref({
             {
                 text: "服務中心",
                 url: {
-                    name: "faq-slug-id",
-                    params: { slug: "服務中心", id: "1" },
+                    name: "faq-page-slug",
+                    params: { slug: "faq" },
                 },
             },
             {

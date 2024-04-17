@@ -336,8 +336,8 @@ const menus = ref<any>({
                 text: "服務中心",
                 imgSrc: "/img/menu/service/menu-service-icon-1.svg",
                 url: {
-                    name: "faq-slug-id",
-                    params: { slug: "service", id: "1" },
+                    name: "faq-page-slug",
+                    params: { slug: "faq" },
                 },
             },
             {
