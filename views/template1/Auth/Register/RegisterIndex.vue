@@ -445,6 +445,13 @@ const rules = ref<any>({
     ],
 });
 
+if (userStore.ssoLogingData) {
+    const SSOLoginData = userStore.ssoLogingData;
+    if (SSOLoginData.provider === "google") {
+        form.value.email = SSOLoginData.user.email
+    }
+}
+
 async function onSubmit() {
     formRefDom.value.validate(async (valid: any) => {
         if (!valid) {

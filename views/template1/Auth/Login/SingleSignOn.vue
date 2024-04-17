@@ -156,6 +156,13 @@ const memberData = computed(() => {
     return data;
 });
 
+if (userStore.ssoLogingData) {
+    const SSOLoginData = userStore.ssoLogingData;
+    if (SSOLoginData.provider === "google") {
+        form.value.email = SSOLoginData.user.email
+    }
+}
+
 // 社群圖片資料
 const socialData = ref([
     {
