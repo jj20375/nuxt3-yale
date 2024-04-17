@@ -348,7 +348,7 @@
 <script setup lang="ts">
 import BannerLayout from "~/views/template1/layouts/BannerLayout.vue";
 import Breadcrumb from "~/views/template1/components/Breadcrumb.vue";
-import { validateTWMobileNumber, validatePhotoArrayLength } from "~/service/validator";
+import { validateTWMobileNumber, validatePhotoArrayLength, validateTelephoneNumber } from "~/service/validator";
 import { useInitializationStore } from "~/store/initializationStore";
 import ContactWebFileUpload from "~/views/template1/ContactService/ContactWe/components/ContactWebFileUpload.vue";
 import GoogleReCaptchaV2 from "~/components/GoogleRecaptchaV2.vue";
@@ -586,6 +586,13 @@ const rules = ref<any>({
         {
             required: true,
             validator: validateTWMobileNumber,
+            trigger: ["change", "blur"],
+            message: "格式不正確",
+        },
+    ],
+    telephone: [
+        {
+            validator: validateTelephoneNumber,
             trigger: ["change", "blur"],
             message: "格式不正確",
         },

@@ -301,7 +301,7 @@ import GoogleReCaptchaV2 from "~/components/GoogleRecaptchaV2.vue";
 import { ElMessage } from "element-plus";
 import FileUpload from "~/views/template1/ContactService/ContactWe/components/ContactWebFileUpload.vue";
 import VideoUpload from "~/views/template1/ContactService/Repair/components/VideoUpload.vue";
-import { validateTWMobileNumber } from "~/service/validator";
+import { validateTWMobileNumber, validateTelephoneNumber } from "~/service/validator";
 import { ProductListAPIInterface } from "~/interface/product.d";
 
 const { $api, $utils } = useNuxtApp();
@@ -578,6 +578,13 @@ const rules = ref<any>({
         {
             required: true,
             validator: validateTWMobileNumber,
+            trigger: ["change", "blur"],
+            message: "格式不正確",
+        },
+    ],
+    telephone: [
+        {
+            validator: validateTelephoneNumber,
             trigger: ["change", "blur"],
             message: "格式不正確",
         },

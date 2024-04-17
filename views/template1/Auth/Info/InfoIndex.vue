@@ -91,7 +91,7 @@
 </template>
 <script setup lang="ts">
 import Breadcrumb from "~/views/template1/components/Breadcrumb.vue";
-import { validateTWMobileNumber } from "~/service/validator";
+import { validateTWMobileNumber, validateTelephoneNumber } from "~/service/validator";
 import { ElMessage, ElLoading } from "element-plus";
 import { useUserStore } from "~/store/userStore";
 import { storeToRefs } from "pinia";
@@ -207,6 +207,13 @@ const rules = ref<any>({
         {
             required: true,
             validator: validateTWMobileNumber,
+            trigger: ["change", "blur"],
+            message: "格式不正確",
+        },
+    ],
+    telephone: [
+        {
+            validator: validateTelephoneNumber,
             trigger: ["change", "blur"],
             message: "格式不正確",
         },

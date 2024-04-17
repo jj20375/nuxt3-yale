@@ -161,7 +161,7 @@
 <script setup lang="ts">
 import { useInitializationStore } from "~/store/initializationStore";
 import { InternalRuleItem } from "async-validator/dist-types/interface";
-import { validateEmail, validateTWMobileNumber, validatePassword, validateSingleCheckbox } from "~/service/validator";
+import { validateEmail, validateTWMobileNumber, validatePassword, validateSingleCheckbox, validateTelephoneNumber } from "~/service/validator";
 import { ElMessage, ElLoading } from "element-plus";
 import { useUserStore } from "~/store/userStore";
 import { useShoppingCarStore } from "~/store/shoppingCarStore";
@@ -357,6 +357,13 @@ const rules = ref<any>({
         {
             required: true,
             validator: validateTWMobileNumber,
+            trigger: ["change", "blur"],
+            message: "格式不正確",
+        },
+    ],
+    telephone: [
+        {
+            validator: validateTelephoneNumber,
             trigger: ["change", "blur"],
             message: "格式不正確",
         },

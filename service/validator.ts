@@ -1,6 +1,7 @@
 import { InternalRuleItem } from "async-validator/dist-types/interface";
 import { getNumberType, isValidPhoneNumber } from "libphonenumber-js";
 import parseMobile from "libphonenumber-js/mobile";
+import { parsePhoneNumber } from "awesome-phonenumber";
 
 //密碼驗證
 export const validatePassword = (rule: InternalRuleItem, value: string, callback: (error?: string | Error) => void) => {
@@ -38,6 +39,24 @@ export const validateTWMobileNumber = (rule: InternalRuleItem, value: string, ca
         } else {
             callback(new Error());
         }
+    } else {
+        callback();
+    }
+};
+
+//台灣電話號碼驗證
+export const validateTelephoneNumber = (
+    rule: InternalRuleItem,
+    value: string,
+    callback: (error?: string | Error) => void
+) => {
+    if (value) {
+    const pn = parsePhoneNumber(value, { regionCode: "TW" });
+    if (!pn.typeIsMobile && pn.valid) {
+        callback();
+    } else {
+        callback(new Error());
+    }
     } else {
         callback();
     }
