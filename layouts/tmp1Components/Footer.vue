@@ -124,7 +124,7 @@ const product_categories: { id: any; imgSrc: any; text: any; url: { params: { sl
         text: "訂製您的專屬門扇",
         url: {
             name: "custom-product-slug",
-            params: { slug: "耶魯訂製門扇" },
+            params: { slug: "1" },
         },
     },
 ];
@@ -219,7 +219,7 @@ const footerDatas = ref({
                 text: "Yale Home App",
                 url: {
                     name: "yale-home-app-slug",
-                    params: { slug: "Yale-Home-App下載" }
+                    params: { slug: "Yale-Home-App下載" },
                 },
             },
         ],
