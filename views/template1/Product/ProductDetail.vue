@@ -243,7 +243,7 @@
                             v-for="(item, index) in detailData.documents"
                             :key="index"
                         >
-                            <div class="flex items-center gap-2 underline underline-offset-2 group-hover:no-underline">
+                            <div v-if="item.path" class="flex items-center gap-2 underline underline-offset-2 group-hover:no-underline">
                                 <el-icon><Document /></el-icon>
                                 {{ item.name }}
                             </div>
@@ -707,7 +707,9 @@ const addToShoppingCar = (isGoToShoppingCarPage: boolean = false) => {
     shoppingCarStore
         .addToCart(input)
         .then(() => {
-            showDialog.value = true;
+            if (!isGoToShoppingCarPage) {
+                showDialog.value = true;
+            }
             if (!isAuth.value) {
                 selectAddData.forEach((item: { is_single_variation: number; discount_id: any; count: number; id: any; spec: any; name: any; imgUrl: any; price: any; stock: any; }) => {
                     const addInput: ShoppingCarInterface = {
