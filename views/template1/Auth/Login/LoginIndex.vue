@@ -293,7 +293,9 @@ watch(
 onMounted(async () => {
     nextTick(async () => {
         if (process.client) {
-            window.addEventListener("message", getMessage, false);
+            window.onmessage = function (e) {
+                getMessage(e)
+            }
         }
     });
 });
