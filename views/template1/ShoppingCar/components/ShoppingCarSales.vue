@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-gray-50 p-4 sm:p-[30px] rounded-[8px] mb-6 sm:mb-[30px]">
+    <div v-if="props.event.length > 0" class="bg-gray-50 p-4 sm:p-[30px] rounded-[8px] mb-6 sm:mb-[30px]">
         <div class="leading-8" v-html="saleDatas"></div>
     </div>
 </template>

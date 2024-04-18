@@ -361,13 +361,18 @@ async function validTest() {
         const validLogisticsForm = await formLogisticsRef.value.$.exposed.validForm();
         const validPaymentForm = await formPaymentRef.value.$.exposed.validForm();
         const validInvoiceForm = await formInvoiceRef.value.$.exposed.validForm();
-        if (!formConfirm.value.confirmRule) {
+        if (!(validUserForm && validContactUserForm && validLogisticsForm && validPaymentForm && validInvoiceForm)) {
             ElMessage({
                 type: "error",
                 message: "尚有欄位未填",
             });
-            showCheckWarning.value = true;
             return;
+        } else if (!formConfirm.value.confirmRule) {
+            ElMessage({
+                type: "error",
+                message: "請勾選同意",
+            });
+            showCheckWarning.value = true;
         } else {
             showCheckWarning.value = false;
         }

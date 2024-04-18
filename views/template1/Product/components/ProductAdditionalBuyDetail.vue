@@ -48,15 +48,15 @@
                 <div
                     class="flex flex-col xl:grid gap-12 xl:gap-[80px] mt-[24px] md:mt-[60px]"
                 >
-                    <div class="w-1/2 mx-auto">
+                    <div class="mx-auto">
                         <h5 class="text-[18px] font-medium YaleSolisW-Bd text-gray-800 mb-[20px]">產品規格內容</h5>
                         <div
                             v-for="(attr, key) in detailData.attributes"
                             :key="key"
                             class="flex border-b border-gray-100 text-[15px] py-[8px]"
                         >
-                            <div class="flex-1">{{ key }}</div>
-                            <div class="flex-1">{{ attr }}</div>
+                            <div class="flex-1 break-all">{{ key }}</div>
+                            <div class="flex-1 break-all">{{ attr }}</div>
                         </div>
                     </div>
                 </div>

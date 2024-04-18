@@ -349,6 +349,7 @@ const discountCalculate = async () => {
         discountData.value.discount_amount = couponData.discount_amount;
         shoppingCarStore.discount_gifts = couponData.discount_product_gifts
         discountData.value.event = couponData.discounts;
+        couponCode.value = couponRef.value.formData.coupon
         loading.close();
     } catch {
         shoppingCarStore.discount_gifts = []
