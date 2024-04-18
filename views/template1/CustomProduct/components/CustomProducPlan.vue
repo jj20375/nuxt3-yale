@@ -22,7 +22,7 @@
 </template>
 
 <script lang="ts" setup>
-const emit = defineEmits(["update:currentPlanId"]);
+const emit = defineEmits(["onChangeCurrentPlanId"]);
 
 const props = defineProps({
     currentPlanId: {
@@ -42,7 +42,7 @@ const currentPlanIdData = ref(props.currentPlanId);
 watch(
     () => currentPlanIdData.value,
     (val) => {
-        emit("update:currentPlanId", val);
+        emit("onChangeCurrentPlanId", val);
     }
 );
 </script>

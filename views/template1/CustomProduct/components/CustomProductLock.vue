@@ -122,16 +122,34 @@ const props = defineProps({
     },
 });
 
-const lockCategories = ref([
-    {
-        text: "水平把手",
-        value: "handle",
-    },
-    {
-        text: "智慧電子鎖",
-        value: "lock",
-    },
-]);
+const lockCategories = computed(() => {
+    if (props.locks.handle.length === 0) {
+        return [
+            {
+                text: "智慧電子鎖",
+                value: "lock",
+            },
+        ];
+    }
+    if (props.locks.lock.length === 0) {
+        return [
+            {
+                text: "水平把手",
+                value: "handle",
+            },
+        ];
+    }
+    return [
+        {
+            text: "水平把手",
+            value: "handle",
+        },
+        {
+            text: "智慧電子鎖",
+            value: "lock",
+        },
+    ];
+});
 
 // 選中鎖的分類
 const lockCategoryData = ref(props.lockCategory);
