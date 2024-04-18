@@ -30,9 +30,9 @@
                         </div>
                         <div class="grid grid-cols-2 md:flex gap-4 justify-center mt-6">
                             <NuxtLink :to="{ name: 'auth-login-slug', params: { slug: '會員登入' } }">
-                                <button class="transparent-btn" :class="isMobile ? 'w-full' : 'btn-md'">返回登入頁</button>
+                                <button class="transparent-btn" :class="isPad ? 'btn-fit w-full':'btn-md'">返回登入頁</button>
                             </NuxtLink>
-                            <button @click.prevent="onSubmit" class="yellow-btn" :class="isMobile ? '' : 'btn-md'">確認送出</button>
+                            <button @click.prevent="onSubmit" class="yellow-btn" :class="isPad ? 'btn-fit w-full':'btn-md'">確認送出</button>
                         </div>
                     </div>
                 </el-form>
@@ -45,7 +45,7 @@ import { validateEmail } from "~/service/validator";
 import { ElMessage, ElLoading } from "element-plus";
 const { $api } = useNuxtApp();
 const router = useRouter();
-const { isMobile } = useWindowResize();
+const { isPad } = useWindowResize();
 const formRefDom = ref<any>();
 
 const form = ref<any>({

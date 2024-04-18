@@ -53,8 +53,11 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
             console.log("GetInitializationDatasAPI err =>", err);
         }
     }
-    // 預先加載初始化資料
-    await getInitializationData();
+    // 判斷有值時 不請求
+    if (!initializationStore.initializationData) {
+        // 預先加載初始化資料
+        await getInitializationData();
+    }
 
     if (token.value) {
         return userStore.getUserProfile();

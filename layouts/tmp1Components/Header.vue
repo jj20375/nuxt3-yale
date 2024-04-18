@@ -184,6 +184,7 @@ import { useInitializationStore } from "~/store/initializationStore";
 import { useUserStore } from "~/store/userStore";
 import { useShoppingCarStore } from "~/store/shoppingCarStore";
 import { storeToRefs } from "pinia";
+const { $shoppingCarService } = useNuxtApp();
 const $config = useRuntimeConfig();
 const router = useRouter();
 const route = useRoute();
@@ -492,6 +493,10 @@ function handleGlobalClick(event: MouseEvent) {
 }
 
 onMounted(() => {
+    if (process.client) {
+        shoppingCarStore.setShoppingCar($shoppingCarService().getShoppingCar() ?? []);
+        shoppingCarStore.setShoppingCustomCar($shoppingCarService().getCustomProductShoppingCar() ?? []);
+    }
     window.addEventListener("click", handleGlobalClick);
 });
 

@@ -430,6 +430,8 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
                         reject(error.value.data.message);
                     } else {
                         shoppingCar.value.push(data);
+                        $shoppingCarService().setShoppingCar(shoppingCar.value);
+
                         resolve(true);
                     }
                 }
@@ -643,7 +645,7 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
     };
 
     // 滿額贈商品
-    const discount_gifts = ref<any>([])
+    const discount_gifts = ref<any>([]);
 
     const giftsDataSelect = ref<any>([]);
 
@@ -665,6 +667,6 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
         syncCart,
         syncCustomCart,
         discount_gifts,
-        giftsDataSelect
+        giftsDataSelect,
     };
 });
