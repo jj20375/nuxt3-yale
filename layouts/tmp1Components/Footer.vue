@@ -226,32 +226,44 @@ const footerDatas = ref({
     },
 });
 
-const contact = ref({
-    icons: [
-        {
-            iconName: shallowRef(IconFacebook),
+const contact = computed(() => {
+    const arr = []
+
+    if (initializationData.value.site.social_facebook) {
+        arr.push({
+            iconName: IconFacebook,
             alt: "耶魯電子鎖粉絲專頁",
             url: initializationData.value.site.social_facebook,
-        },
-        {
-            iconName: shallowRef(IconLine),
+        })
+    }
+    if (initializationData.value.site.social_line) {
+        arr.push({
+            iconName: IconLine,
             alt: "耶魯電子鎖LINE",
             url: initializationData.value.site.social_line,
-        },
-        {
-            iconName: shallowRef(IconInstagram),
+        })
+    }
+    if (initializationData.value.site.social_instagram) {
+        arr.push({
+            iconName: IconInstagram,
             alt: "耶魯電子鎖IG",
             url: initializationData.value.site.social_instagram,
-        },
-        {
-            iconName: shallowRef(IconYoutube),
+        })
+    }
+    if (initializationData.value.site.social_youtube) {
+        arr.push({
+            iconName: IconYoutube,
             alt: "耶魯電子鎖Youtube",
             url: initializationData.value.site.social_youtube,
-        },
-    ],
-    name: initializationData.value.site.site_name,
-    phone: initializationData.value.site.contact_phone,
-});
+        })
+    }
+
+    return {
+        icons: arr,
+        name: initializationData.value.site.site_name,
+        phone: initializationData.value.site.contact_phone,
+    }
+})
 
 function toSocialMedia(socialMedia: { url: string | URL | undefined }) {
     if (socialMedia.url) {

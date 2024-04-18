@@ -77,24 +77,36 @@ const breadcrumbs = ref([
 ]);
 
 // 社群資料
-const socialMedia = ref([
-    {
-        name: shallowRef(IconFacebook),
-        url: initializationData.value.site.social_facebook,
-    },
-    {
-        name: shallowRef(IconLine),
-        url: initializationData.value.site.social_line,
-    },
-    {
-        name: shallowRef(IconInstagram),
-        url: initializationData.value.site.social_instagram,
-    },
-    {
-        name: shallowRef(IconYoutube),
-        url: initializationData.value.site.social_youtube,
-    },
-]);
+const socialMedia = computed(() => {
+    const arr = []
+
+    if (initializationData.value.site.social_facebook) {
+        arr.push({
+            name: IconFacebook,
+            url: initializationData.value.site.social_facebook,
+        })
+    }
+    if (initializationData.value.site.social_line) {
+        arr.push({
+            name: IconLine,
+            url: initializationData.value.site.social_line,
+        })
+    }
+    if (initializationData.value.site.social_instagram) {
+        arr.push({
+            name: IconInstagram,
+            url: initializationData.value.site.social_instagram,
+        })
+    }
+    if (initializationData.value.site.social_youtube) {
+        arr.push({
+            name: IconYoutube,
+            url: initializationData.value.site.social_youtube,
+        })
+    }
+
+    return arr
+})
 
 function toSocialMedia(socialMedia: { url: string | URL | undefined }) {
     if (socialMedia.url) {
