@@ -41,7 +41,7 @@
                             class="h-fit flex gap-[12px] justify-center"
                         >
                             <li
-                                @click="currentAngle = angle.value"
+                                @click="AngleChange(angle)"
                                 class="rounded-full px-[20px] py-[8px] text-white cursor-pointer"
                                 :class="[currentAngle === angle.value ? 'bg-gray-800' : 'bg-gray-350']"
                                 v-for="(angle, index) in viewAngle"
@@ -595,6 +595,11 @@ const showOptions = ref<boolean>(false);
 
 function toggleOptions() {
     showOptions.value = !showOptions.value;
+}
+
+function AngleChange(angle: { value: string[]; }) {
+    currentAngle.value = angle.value
+    showOptions.value = false;
 }
 
 async function openShoppingCarDialog() {
