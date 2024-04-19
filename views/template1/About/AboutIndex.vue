@@ -49,7 +49,8 @@
                         >
                             <NuxtImg
                                 @click="brandLink(item.link)"
-                                class="w-full aspect-[1/1] object-contain cursor-pointer"
+                                class="w-full aspect-[1/1] object-contain"
+                                :class="item.link ? 'cursor-pointer' : ''"
                                 :src="item.image"
                             />
                         </SwiperSlide>
