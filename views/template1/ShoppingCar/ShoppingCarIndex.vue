@@ -90,7 +90,7 @@
                             </template>
                             <template #total>
                                 <span>
-                                    {{ $utils().formatCurrency(total - discountData.discount_amount - discountData.coupon_discount_amount) }}
+                                    {{ $utils().formatCurrency(total - discountData.discount_amount - discountData.coupon_discount_amount + shoppingCarStore.shippingFee) }}
                                 </span>
                             </template>
                             <template

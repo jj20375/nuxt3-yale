@@ -17,6 +17,10 @@
             <span class="flex-1">優惠券折扣</span>
             <span>-NT$ {{ $utils().formatCurrency(discountData.coupon_discount_amount) }}</span>
         </div>
+        <div v-if="userStore.isAuth" class="flex text-gray-800 text-[14px] mt-[4px]">
+            <span class="flex-1">運費</span>
+            <span>NT$ {{ $utils().formatCurrency(shippingFee) }}</span>
+        </div>
         <slot name="other"></slot>
         <div class="my-[20px] border-gray-300 border-b h-[1px] w-full"></div>
         <div
@@ -92,6 +96,8 @@ const shoppingCarStore = useShoppingCarStore();
 const shoppingCar = computed(() => shoppingCarStore.shoppingCar);
 // 一般購物車資料
 const shoppingCustomCar = computed(() => shoppingCarStore.shoppingCustomCar);
+// 運費
+const shippingFee = computed(() => shoppingCarStore.shippingFee);
 
 // 總價
 const total = computed(() => {

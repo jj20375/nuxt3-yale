@@ -15,6 +15,7 @@
                 >
                     <el-select
                         v-model="formData.logistics"
+                        @change="logisticsChange"
                         class="w-full"
                         placeholder="請選擇"
                     >
@@ -34,10 +35,13 @@
 
 <script setup lang="ts">
 import { FormInstance } from "element-plus";
+import { useShoppingCarStore } from "~/store/shoppingCarStore";
 const emit = defineEmits(["update:form"]);
 const { $api } = useNuxtApp();
 
 const formRefDom = ref<FormInstance>();
+const shoppingCarStore = useShoppingCarStore();
+
 const { data } = await $api().GetShippingMethodApi();
 
 const props = defineProps({
@@ -68,6 +72,12 @@ const rules = ref<any>({
 const logisticsOptions = computed(() => {
     return (data.value as any)?.data;
 });
+
+const logisticsChange = () => {
+    if (logisticsOptions.value.find((item: { code: any; }) => item.code === formData.value.logistics)) {
+        shoppingCarStore.shippingFee = logisticsOptions.value.find((item: { code: any; }) => item.code === formData.value.logistics)?.price
+    }
+}
 
 const logisticsMemo = computed(() => {
     let result = ''
