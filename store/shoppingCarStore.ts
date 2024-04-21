@@ -648,6 +648,7 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
     const discount_gifts = ref<any>([]);
 
     const giftsDataSelect = ref<any>([]);
+    const shippingFee = ref<any>(0);
 
     return {
         shoppingCar,
@@ -668,5 +669,6 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
         syncCustomCart,
         discount_gifts,
         giftsDataSelect,
+        shippingFee
     };
 });

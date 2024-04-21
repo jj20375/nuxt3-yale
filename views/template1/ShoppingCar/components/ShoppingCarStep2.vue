@@ -197,6 +197,7 @@ const formContactUser = ref({
 const formLogistics = ref({
     // 配送方式
     logistics: "",
+    fee: 0
 });
 
 // 付款方式

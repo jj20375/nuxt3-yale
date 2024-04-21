@@ -179,4 +179,5 @@ async function getAppData() {
 }
 
 await getPageData();
+await getAppData()
 </script>
