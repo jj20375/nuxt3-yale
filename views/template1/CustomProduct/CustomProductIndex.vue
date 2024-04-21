@@ -715,7 +715,9 @@ async function addToShoppingCar() {
 const total = computed(() => {
     let doorPrice = 0;
     if (!$utils().isEmpty(currentDoorColorId.value) && !$utils().isEmpty(currentDoorSizeId.value)) {
-        doorPrice = currentDoorData.value.price[`option-${currentDoorColorId.value}-${currentDoorSizeId.value}`];
+        if (currentDoorData.value) {
+            doorPrice = currentDoorData.value.price[`option-${currentDoorColorId.value}-${currentDoorSizeId.value}`];
+        }
     }
     let doorOutPrice = 0;
 
@@ -768,7 +770,9 @@ const deposit = computed(() => Math.round(total.value * 0.3));
 const doorLimit = computed(() => {
     let doorStock = 0;
     if (!$utils().isEmpty(currentDoorColorId.value) && !$utils().isEmpty(currentDoorSizeId.value)) {
-        doorStock = currentDoorData.value.stock[`option-${currentDoorColorId.value}-${currentDoorSizeId.value}`];
+        if (currentDoorData.value) {
+            doorStock = currentDoorData.value.stock[`option-${currentDoorColorId.value}-${currentDoorSizeId.value}`];
+        }
     }
 
     let doorOutStock = 0;
@@ -844,8 +848,12 @@ function changePlan(id: number) {
                 if (item.custom_product_type_id === CustomProductListIdEnum.door) {
                     currentDoorId.value = item.id;
                     currentDoorData.value = doors.value.find((item2: any) => item2.id === item.id);
-                    currentDoorColorId.value = doors.value.find((item2: any) => item2.id === item.id).colors[0].id;
-                    currentDoorSizeId.value = doors.value.find((item2: any) => item2.id === item.id).sizes[0].id;
+                    if (doors.value.find((item2: any) => item2.id === item.id)) {
+                        currentDoorColorId.value = doors.value.find((item2: any) => item2.id === item.id).colors[0].id;
+                    }
+                    if (doors.value.find((item2: any) => item2.id === item.id)) {
+                        currentDoorSizeId.value = doors.value.find((item2: any) => item2.id === item.id).sizes[0].id;
+                    }
                 }
                 if (item.custom_product_type_id === CustomProductListIdEnum.doorOut) {
                     currentDoorOutId.value = item.id;
