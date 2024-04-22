@@ -1,5 +1,5 @@
 <template>
-    <section class="mt-headerMb xl:mt-header">
+    <section id="print" class="mt-headerMb xl:mt-header">
         <nav class="border-t border-gray-300 border-b py-[16px] bg-white">
             <div class="container">
                 <ClientOnly> <Breadcrumb :menus="breadcrumbs" /></ClientOnly>
@@ -201,6 +201,13 @@
                 />
             </el-dialog>
         </client-only>
+        <client-only>
+            <orderDetailPdf
+                v-model="showDownload"
+                :orderData="orderData"
+                ref="orderDownloadHtmlRefDom"
+            />
+        </client-only>
     </section>
 </template>
 <script setup lang="ts">
@@ -211,6 +218,7 @@ import RecordProduct from "~/views/template1/Auth/components/OrderProduct.vue";
 import OrderPrice from "~/views/template1/Auth/components/OrderPrice.vue";
 // 訂單下載 html
 import OrderDownloadHtml from "~/views/template1/Auth/Order/components/OrderDownloadHtml.vue";
+import orderDetailPdf from "~/views/template1/Auth/Order/components/orderDetailPdf.vue";
 
 import moment from "moment";
 
@@ -480,10 +488,49 @@ async function init() {
 }
 
 function downloadPdf() {
-    showDownload.value = true;
-    setTimeout(() => {
-        orderDownloadHtmlRefDom.value.downloadPdf();
-    }, 1000);
+    const iframeEL=document.querySelector('.target-el-iframe');
+    if(iframeEL){
+        iframeEL.remove();
+    }
+    //目标元素
+    const info=document.querySelector('.print');
+    //创建iframe
+    const iframeEl= document.createElement('iframe');
+    iframeEl.classList.add('target-el-iframe')
+    iframeEl.setAttribute('style','display: none')
+
+    //添加到页面
+    document.body.appendChild(iframeEl)
+    const doc = iframeEl.contentWindow.document
+    doc.write('<div class="print-iframe">' + info.innerHTML + '</div>')
+    doc.write('<style>@page{size:auto;margin: 0.5cm 1cm 0cm 1cm;}</style>')
+    doc.close()
+    //引入第三方样式文件
+    const link1 = doc.createElement('link');
+    link1.rel = 'stylesheet';
+    link1.href = 'https://fonts.googleapis.com';
+
+    const link2 = doc.createElement('link');
+    link2.rel = 'stylesheet';
+    link2.href = 'https://fonts.gstatic.com';
+
+    const link3 = doc.createElement('link');
+    link3.rel = 'stylesheet';
+    link3.href = 'https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100..900&display=swap';
+
+    const link = doc.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = '/css/print.css';
+    
+    // doc.head.appendChild(link);
+
+    doc.head.appendChild(link);
+    console.log(iframeEl.contentWindow)
+      //打印
+    iframeEl.onload = () => {
+        iframeEl.contentWindow.print()
+    }
+    
 }
 
 onMounted(async () => {
