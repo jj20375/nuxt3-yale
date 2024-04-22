@@ -431,6 +431,7 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
                     } else {
                         shoppingCar.value.push(data);
                         $shoppingCarService().setShoppingCar(shoppingCar.value);
+                        getUserShopping();
 
                         resolve(true);
                     }
