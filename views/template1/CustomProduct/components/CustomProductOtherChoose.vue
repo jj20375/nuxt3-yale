@@ -83,7 +83,7 @@
                             addToCar();
                             closeDialog();
                         "
-                        :disabled="selectedProductIdsData.includes(currentDialogProduct.id)"
+                        :disabled="selectedProductIdsData.includes(currentDialogProduct.id) || disabled"
                         class="yellow-btn btn-md btnDisabled"
                     >
                         加入選擇

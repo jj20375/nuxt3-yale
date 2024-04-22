@@ -73,7 +73,8 @@
                         </div>
                         <div v-show="stepMenuShow['step1'].show">
                             <CustomProductBackground
-                                v-model:currentBgId="currentBgId"
+                                :currentBgId="currentBgId"
+                                @onChangeCurrentBgId="changeCurrentBgId"
                                 v-model:currentBgData="currentBgData"
                                 :currentAngle="currentAngle"
                                 :tabs="scenes"
@@ -82,7 +83,8 @@
                                 v-if="findPlans.customPlans.length > 0"
                                 class="mt-[30px]"
                                 :tabs="findPlans.customPlans"
-                                v-model:currentPlanId="currentPlanId"
+                                :currentPlanId="currentPlanId"
+                                @onChangeCurrentPlanId="changePlan"
                             />
                             <CustomProduct
                                 class="mt-[30px]"
@@ -204,6 +206,7 @@
                         </div>
                         <div v-show="stepMenuShow['step5'].show">
                             <CustomProductOtherChoose
+                                v-if="other1Datas.length > 0"
                                 class="mt-[30px]"
                                 title="下降壓條"
                                 v-model:selectedProductIds="currentOther1Ids"
@@ -211,6 +214,7 @@
                                 :products="other1Datas"
                             />
                             <CustomProductOtherChoose
+                                v-if="other2Datas.length > 0"
                                 ref="currentOther2RefDom"
                                 class="mt-[20px] mb-[16px]"
                                 title="門弓器"
@@ -329,7 +333,7 @@
 </template>
 
 <script setup lang="ts">
-import { ElMessage } from "element-plus";
+import { ElMessage, ElLoading } from "element-plus";
 import { v4 as uuidv4 } from "uuid";
 import type { ShoppingCarCustomInterface, CustomCarItem } from "~/interface/shoppingCar";
 // 預覽圖片
@@ -419,19 +423,7 @@ const currentBgData = ref<any>({});
 // 預設選擇方案
 const currentPlanId = ref<number | null>(null);
 // 對應場景顯示方案
-const findPlans = computed(() => {
-    const findData = plans.value.find((item: any) => item.id === currentBgId.value);
-    if (findData) {
-        if (findData.customPlans.length === 0) {
-            currentPlanId.value = null;
-        } else {
-            currentPlanId.value = findData.customPlans[0].id;
-        }
-        return findData;
-    }
-    currentPlanId.value = null;
-    return { customPlans: [] };
-});
+const findPlans = ref({ customPlans: [] });
 // 預設選擇門的角度
 const currentAngle = ref(route.query.angle ?? "front");
 // 預覽視窗 dom 寬度 用來計算 正面｜背面｜半開顯示位置
@@ -597,8 +589,8 @@ function toggleOptions() {
     showOptions.value = !showOptions.value;
 }
 
-function AngleChange(angle: { value: string[]; }) {
-    currentAngle.value = angle.value
+function AngleChange(angle: { value: string[] }) {
+    currentAngle.value = angle.value;
     showOptions.value = false;
 }
 
@@ -723,7 +715,9 @@ async function addToShoppingCar() {
 const total = computed(() => {
     let doorPrice = 0;
     if (!$utils().isEmpty(currentDoorColorId.value) && !$utils().isEmpty(currentDoorSizeId.value)) {
-        doorPrice = currentDoorData.value.price[`option-${currentDoorColorId.value}-${currentDoorSizeId.value}`];
+        if (currentDoorData.value) {
+            doorPrice = currentDoorData.value.price[`option-${currentDoorColorId.value}-${currentDoorSizeId.value}`];
+        }
     }
     let doorOutPrice = 0;
 
@@ -776,7 +770,9 @@ const deposit = computed(() => Math.round(total.value * 0.3));
 const doorLimit = computed(() => {
     let doorStock = 0;
     if (!$utils().isEmpty(currentDoorColorId.value) && !$utils().isEmpty(currentDoorSizeId.value)) {
-        doorStock = currentDoorData.value.stock[`option-${currentDoorColorId.value}-${currentDoorSizeId.value}`];
+        if (currentDoorData.value) {
+            doorStock = currentDoorData.value.stock[`option-${currentDoorColorId.value}-${currentDoorSizeId.value}`];
+        }
     }
 
     let doorOutStock = 0;
@@ -815,11 +811,135 @@ const doorLimit = computed(() => {
     const stocks = [doorStock, doorOutStock, lockStock, tool1Stock, tool2Stock, other1Stock, other2Stock, other3Stock];
     return _Min(stocks);
 });
+/**
+ * 更換場景事件
+ * @param id 場景 id
+ */
+function changeCurrentBgId(id: number) {
+    currentBgId.value = id;
+    const findData = plans.value.find((item: any) => item.id === currentBgId.value);
+    if (findData) {
+        if (findData.customPlans.length === 0) {
+            currentPlanId.value = null;
+        } else {
+            currentPlanId.value = findData.customPlans[0].id;
+        }
+        findPlans.value = findData;
+    } else {
+        findPlans.value = { customPlans: [] };
+        currentPlanId.value = null;
+    }
+    if (currentPlanId.value) {
+        changePlan(currentPlanId.value);
+    }
+}
+
+/**
+ * 更換方案事件
+ * @param id 方案 id
+ */
+function changePlan(id: number) {
+    currentPlanId.value = id;
+
+    if (findPlans.value) {
+        const usePlan: any = findPlans.value.customPlans.find((item: any) => item.id === id);
+        if (usePlan) {
+            usePlan.CustomPlanProducts.forEach((item: any) => {
+                if (item.custom_product_type_id === CustomProductListIdEnum.door) {
+                    currentDoorId.value = item.id;
+                    currentDoorData.value = doors.value.find((item2: any) => item2.id === item.id);
+                    if (doors.value.find((item2: any) => item2.id === item.id)) {
+                        currentDoorColorId.value = doors.value.find((item2: any) => item2.id === item.id).colors[0].id;
+                    }
+                    if (doors.value.find((item2: any) => item2.id === item.id)) {
+                        currentDoorSizeId.value = doors.value.find((item2: any) => item2.id === item.id).sizes[0].id;
+                    }
+                }
+                if (item.custom_product_type_id === CustomProductListIdEnum.doorOut) {
+                    currentDoorOutId.value = item.id;
+                    currentDoorOutData.value = doorsOut.value.find((item2: any) => item2.id === item.id);
+                    currentDoorOutColorId.value = doorsOut.value.find((item2: any) => item2.id === item.id).colors[0].id;
+                }
+                if (item.custom_product_type_id === CustomProductListIdEnum.lock) {
+                    currentLockId.value = item.id;
+                    const lockData = locks.value.lock.find((item2: any) => item2.id === item.id);
+                    currentLock.value = {
+                        id: lockData.id,
+                        style: lockData.style,
+                        price: lockData.price,
+                        detailData: lockData.detailData,
+                        name: lockData.name,
+                        shape: lockData.shape,
+                        stock: lockData.stock,
+                        model: lockData.model,
+                        imgSrc: lockData.imgSrc,
+                    };
+                }
+                if (item.custom_product_type_id === CustomProductListIdEnum.handle) {
+                    currentLockId.value = item.id;
+                    const handleData = locks.value.handle.find((item2: any) => item2.id === item.id);
+                    if (handleData) {
+                        currentLock.value = {
+                            id: handleData.id,
+                            style: handleData.style,
+                            price: handleData.price,
+                            detailData: handleData.detailData,
+                            name: handleData.name,
+                            shape: handleData.shape,
+                            stock: handleData.stock,
+                            model: handleData.model,
+                            imgSrc: handleData.imgSrc,
+                        };
+                    } else {
+                        currentLock.value = {};
+                    }
+                }
+                if (item.custom_product_type_id === CustomProductListIdEnum.tool1) {
+                    currentTool1Id.value = item.id;
+                    currentTool1Data.value = tool1Datas.value.find((item2: any) => item2.id === item.id);
+                }
+                if (item.custom_product_type_id === CustomProductListIdEnum.tool2) {
+                    currentTool2Id.value = item.id;
+                    currentTool2Data.value = tool2Datas.value.find((item2: any) => item2.id === item.id);
+                }
+                if (item.custom_product_type_id === CustomProductListIdEnum.other1) {
+                    currentOther1Ids.value[0] = item.id;
+                    currentOther1Datas.value[0] = other1Datas.value.find((item2: any) => item2.id === item.id);
+                } else {
+                    currentOther1Ids.value = [];
+                    currentOther1Datas.value = [];
+                }
+                if (item.custom_product_type_id === CustomProductListIdEnum.other2) {
+                    currentOther2Ids.value[0] = item.id;
+                    currentOther2Datas.value[0] = other2Datas.value.find((item2: any) => item2.id === item.id);
+                } else {
+                    currentOther2Ids.value = [];
+                    currentOther2Datas.value = [];
+                }
+                if (item.custom_product_type_id === CustomProductListIdEnum.other3) {
+                    currentOther3Ids.value[0] = item.id;
+                    currentOther3Datas.value[0] = other3Datas.value.find((item2: any) => item2.id === item.id);
+                } else {
+                    currentOther3Ids.value = [];
+                    currentOther3Datas.value = [];
+                }
+            });
+        }
+        console.log("findPlans.value =>", usePlan);
+    }
+}
 
 async function init(id: number) {
+    let loading: any = null;
+    if (process.client) {
+        loading = ElLoading.service({
+            lock: true,
+            text: "載入中...",
+            background: "rgba(0, 0, 0, 0.7)",
+        });
+    }
     // 取得場景
     await getCustomProductSceneList();
-
     // 取得訂製門扇商品
     await getCustomProductList(id);
     currentBgId.value = Number(route.params.slug);
@@ -867,9 +987,10 @@ async function init(id: number) {
 
         console.log("init currentLock.value => ", currentLock.value);
     }
+    if (process.client) {
+        loading.close();
+    }
 }
-
-// await init();
 
 await init(Number(route.params.slug));
 
@@ -877,7 +998,6 @@ watch(
     () => route.params.slug,
     async (val) => {
         console.log("val currentBgId =>", val);
-        await init(Number(val));
     }
 );
 
@@ -893,22 +1013,14 @@ watch(
     () => currentTool1Data.value,
     (val) => {
         // 判斷有選擇 掛門時 如果不可選擇 門弓器則清空門弓器選項
-        if (val.filterCategoryIds.includes(CustomProductListIdEnum.other2)) {
-            currentOther2RefDom.value.reset();
+        if (val && val.filterCategoryIds.includes(CustomProductListIdEnum.other2)) {
+            if (currentOther2RefDom.value) {
+                currentOther2RefDom.value.reset();
+            }
         }
         console.log("currentTool1Data =>", val);
     }
 );
-// watch(
-//     () => currentOther2Datas.value,
-//     (val) => {
-//         // 判斷有選擇 掛門時 如果不可選擇 門弓器則清空門弓器選項
-//         if (currentTool1Data.value.filterCategoryIds.includes(CustomProductListIdEnum.other2)) {
-//             currentOther2RefDom.value.reset();
-//         }
-//         console.log("currentOther2Datas.value =>", val);
-//     }
-// );
 
 // 判斷選擇電子鎖時須清空輔助鎖選項
 watch(
@@ -918,88 +1030,6 @@ watch(
             currentOther3Ids.value = [];
             currentOther3Datas.value = [];
         }
-    }
-);
-
-watch(
-    () => currentPlanId.value,
-    (val) => {
-        const usePlan = findPlans.value.customPlans.find((item: any) => item.id === val);
-        if (usePlan) {
-            usePlan.CustomPlanProducts.forEach((item: any) => {
-                if (item.custom_product_type_id === CustomProductListIdEnum.door) {
-                    currentDoorId.value = item.id;
-                    currentDoorData.value = doors.value.find((item2: any) => item2.id === item.id);
-                    currentDoorColorId.value = doors.value.find((item2: any) => item2.id === item.id).colors[0].id;
-                    currentDoorSizeId.value = doors.value.find((item2: any) => item2.id === item.id).sizes[0].id;
-                }
-                if (item.custom_product_type_id === CustomProductListIdEnum.doorOut) {
-                    currentDoorOutId.value = item.id;
-                    currentDoorOutData.value = doorsOut.value.find((item2: any) => item2.id === item.id);
-                    currentDoorOutColorId.value = doorsOut.value.find((item2: any) => item2.id === item.id).colors[0].id;
-                }
-                if (item.custom_product_type_id === CustomProductListIdEnum.lock) {
-                    currentLockId.value = item.id;
-                    const lockData = locks.value.lock.find((item2: any) => item2.id === item.id);
-                    currentLock.value = {
-                        id: lockData.id,
-                        style: lockData.style,
-                        price: lockData.price,
-                        detailData: lockData.detailData,
-                        name: lockData.name,
-                        shape: lockData.shape,
-                        stock: lockData.stock,
-                        model: lockData.model,
-                        imgSrc: lockData.imgSrc,
-                    };
-                }
-                if (item.custom_product_type_id === CustomProductListIdEnum.handle) {
-                    currentLockId.value = item.id;
-                    const handleData = locks.value.handle.find((item2: any) => item2.id === item.id);
-                    currentLock.value = {
-                        id: handleData.id,
-                        style: handleData.style,
-                        price: handleData.price,
-                        detailData: handleData.detailData,
-                        name: handleData.name,
-                        shape: handleData.shape,
-                        stock: handleData.stock,
-                        model: handleData.model,
-                        imgSrc: handleData.imgSrc,
-                    };
-                }
-                if (item.custom_product_type_id === CustomProductListIdEnum.tool1) {
-                    currentTool1Id.value = item.id;
-                    currentTool1Data.value = tool1Datas.value.find((item2: any) => item2.id === item.id);
-                }
-                if (item.custom_product_type_id === CustomProductListIdEnum.tool2) {
-                    currentTool2Id.value = item.id;
-                    currentTool2Data.value = tool2Datas.value.find((item2: any) => item2.id === item.id);
-                }
-                if (item.custom_product_type_id === CustomProductListIdEnum.other1) {
-                    currentOther1Ids.value[0] = item.id;
-                    currentOther1Datas.value[0] = other1Datas.value.find((item2: any) => item2.id === item.id);
-                } else {
-                    currentOther1Ids.value = [];
-                    currentOther1Datas.value = [];
-                }
-                if (item.custom_product_type_id === CustomProductListIdEnum.other2) {
-                    currentOther2Ids.value[0] = item.id;
-                    currentOther2Datas.value[0] = other2Datas.value.find((item2: any) => item2.id === item.id);
-                } else {
-                    currentOther2Ids.value = [];
-                    currentOther2Datas.value = [];
-                }
-                if (item.custom_product_type_id === CustomProductListIdEnum.other3) {
-                    currentOther3Ids.value[0] = item.id;
-                    currentOther3Datas.value[0] = other3Datas.value.find((item2: any) => item2.id === item.id);
-                } else {
-                    currentOther3Ids.value = [];
-                    currentOther3Datas.value = [];
-                }
-            });
-        }
-        console.log("findPlans.value =>", usePlan);
     }
 );
 </script>
