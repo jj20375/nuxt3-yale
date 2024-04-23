@@ -74,7 +74,7 @@
                         <div class="flex flex-1 justify-center items-stretch sm:flex-initial w-[150px] sm:w-[150px] border border-gray-300 rounded-full">
                             <button
                                 class="flex items-center text-[16px] justify-center flex-1 h-auto cursor-pointer disabled:cursor-not-allowed"
-                                :disabled="cart.count <= 1 || loading || cart.is_add_on_purchase == 1"
+                                :disabled="cart.count <= 1 || loading"
                                 @click.prevent="countUpdate(index, cart.id, cart.productID, false, cart.product_variationable_id)"
                             >
                                 <el-icon><Minus /></el-icon>
@@ -82,7 +82,7 @@
                             <div class="flex items-center justify-center w-[60px] sm:w-[80px] py-[4px] sm:py-[10px] h-full">{{ cart.count }}</div>
                             <button
                                 class="flex items-center text-[16px] justify-center flex-1 h-auto cursor-pointer disabled:cursor-not-allowed"
-                                :disabled="cart.stock <= cart.count || loading || cart.is_add_on_purchase == 1"
+                                :disabled="cart.stock <= cart.count || loading || (cart.max <= cart.count && cart.is_add_on_purchase == 1)"
                                 @click.prevent="countUpdate(index, cart.id, cart.productID, true, cart.product_variationable_id)"
                             >
                                 <el-icon><Plus /></el-icon>
@@ -145,6 +145,20 @@ function countUpdate(index: number, cartId: number | null, productID: number, is
     } else {
         shoppingCar.value[index].count--;
     }
+
+    console.log(cartId)
+
+    shoppingCar.value.map((item, index2) => {
+        console.log(item.parent_id, cartId)
+        if (item.is_add_on_purchase == 1 && item.parent_id == cartId) {
+            item.max = shoppingCar.value[index].count
+            if (item.count > shoppingCar.value[index].count) {
+                item.count = shoppingCar.value[index].count
+            }
+            item.totalPrice = item.price * item.count;
+        }
+        // countUpdate(index2, item.id, item.productID, true, item.product_variationable_id)
+    })
     const apiReq = {
         cart_item_id: cartId ? cartId : 0,
         productID,

@@ -50,6 +50,8 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
                     const price = i.price;
                     const market_price = i.original_price;
                     const market_price_total = i.original_price * i.quantity;
+                    let max = 1
+                    let stock = i.productVariationable ? i.productVariationable.stock : i.productable.stock
                     // 設置顏色名稱
                     let colorIndex = -1;
                     let colorName = undefined;
@@ -73,6 +75,11 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
                         });
                         imgSrc = i.productVariationable.image ? i.productable.other_images.find((img) => img.includes(i.productVariationable.image)) : imgSrc;
                     }
+                    if (i.is_add_on_purchase == 1) {
+                        console.log(data.value.data.cartItems)
+                        console.log(data.value.data.cartItems.find(item => item.id == i.parent_id))
+                        max = data.value.data.cartItems.find(item => item.id == i.parent_id)?.quantity
+                    }
                     console.log("GetNormalCartAPI =>", i);
                     return {
                         id: i.id,
@@ -86,7 +93,8 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
                         totalPrice: Number(price) * i.quantity,
                         product_variationable_id: i.productVariationable ? i.productVariationable.id : undefined,
                         colorName,
-                        stock: i.productable.stock,
+                        stock: stock,
+                        max: max,
                         productVariationable: productVariationable,
                         is_add_on_purchase: i.is_add_on_purchase,
                         parent_id: i.parent_id,
