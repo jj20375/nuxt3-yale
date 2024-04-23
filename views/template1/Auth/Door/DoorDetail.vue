@@ -23,7 +23,7 @@
                             class="w-[20px] aspect-square object-cover"
                             src="/img/icons/auth/download.svg"
                         />
-                        <span>下載訂購單</span>
+                        <span @click="downloadPdf()">下載訂購單</span>
                     </div>
                 </div>
                 <RecordTimeline
@@ -206,6 +206,13 @@
                 </div>
             </el-dialog>
         </client-only>
+        <client-only>
+            <doorDetailPdf
+                v-model="showDownload"
+                :orderData="orderData"
+                ref="orderDownloadHtmlRefDom"
+            />
+        </client-only>
     </section>
 </template>
 <script setup lang="ts">
@@ -215,6 +222,9 @@ import RecordTimeline from "~/views/template1/Auth/components/OrderTimeline.vue"
 import RecordProduct from "~/views/template1/Auth/components/doorProduct.vue";
 import OrderPrice from "~/views/template1/Auth/components/OrderPrice.vue";
 import type { ShoppingCarCustomInterface } from "~/interface/shoppingCar";
+// 訂單下載 html
+import doorDetailPdf from "~/views/template1/Auth/Door/component/doorDetailPdf.vue";
+import orderDetailPdf from "~/views/template1/Auth/Order/components/orderDetailPdf.vue";
 import moment from "moment";
 /**
  * CustomProductListIdEnum: 訂製門扇 id 對應分類
@@ -230,6 +240,8 @@ const initializationStore = useInitializationStore();
 const { $api, $utils } = useNuxtApp();
 const $config = useRuntimeConfig();
 
+const showDownload = ref(false);
+const orderDownloadHtmlRefDom = ref<any>(null);
 const route = useRoute();
 const router = useRouter();
 
@@ -951,6 +963,51 @@ function setServiceData(data: any) {
  */
 async function init() {
     await getData();
+}
+
+function downloadPdf() {
+    const iframeEL=document.querySelector('.target-el-iframe');
+    if(iframeEL){
+        iframeEL.remove();
+    }
+    //目標元素
+    const info=document.querySelector('.print');
+    //創建iframe
+    const iframeEl= document.createElement('iframe');
+    iframeEl.classList.add('target-el-iframe')
+    iframeEl.setAttribute('style','display: none')
+
+    //添加到頁面
+    document.body.appendChild(iframeEl)
+    const doc = iframeEl.contentWindow.document
+    doc.write('<div class="print-iframe">' + info.innerHTML + '</div>')
+    doc.write('<style>@page{size:auto;margin: 0.5cm 1cm 0cm 1cm;}</style>')
+    doc.close()
+    //引用第三方樣式
+    const link1 = doc.createElement('link');
+    link1.rel = 'stylesheet';
+    link1.href = 'https://fonts.googleapis.com';
+
+    const link2 = doc.createElement('link');
+    link2.rel = 'stylesheet';
+    link2.href = 'https://fonts.gstatic.com';
+
+    const link3 = doc.createElement('link');
+    link3.rel = 'stylesheet';
+    link3.href = 'https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100..900&display=swap';
+
+    const link = doc.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = '/css/print.css';
+    
+    // doc.head.appendChild(link);
+
+    doc.head.appendChild(link);
+    console.log(iframeEl.contentWindow)
+      //打印
+    iframeEl.onload = () => {
+        iframeEl.contentWindow.print()
+    }
 }
 
 onMounted(async () => {
