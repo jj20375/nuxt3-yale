@@ -19,7 +19,7 @@ export default () => {
          * 取得訂製商品列表
          */
         CustomProductGetListAPI(params: { search_relations: string }) {
-            return useMyFetch(`${apiUrl}/custom-product`, { method: "get", params });
+            return useMyFetch(`${apiUrl}/custom-product`, { method: "get", query: { order_by: 'sort', order_direction: 'asc', ...params } });
         },
     };
 };
