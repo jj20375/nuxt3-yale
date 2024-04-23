@@ -77,42 +77,82 @@
                         </div>
                     </div>
                     <h4 class="mt-5 mb-3 font-bold">發票資訊</h4>
+                    <h5 class="mb-1 font-bold">訂金</h5>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-1 w-full 2xl:w-[85%] 3xl:w-[70%]">
                         <div
-                            v-if="orderData?.receipt?.status"
+                            v-if="orderData?.receipt[0]?.status"
                             class="text-gray-700"
                         >
-                            發票狀態：{{ orderData?.receipt?.status }}
+                            發票狀態：{{ orderData?.receipt[0]?.status }}
                         </div>
                         <div
-                            v-if="orderData?.receipt?.type"
+                            v-if="orderData?.receipt[0]?.type"
                             class="text-gray-700"
                         >
-                            發票類型：{{ orderData?.receipt?.type }}
+                            發票類型：{{ orderData?.receipt[0]?.type }}
                         </div>
                         <div
-                            v-if="orderData?.receipt?.date"
+                            v-if="orderData?.receipt[0]?.date"
                             class="text-gray-700"
                         >
-                            開立日期：{{ orderData?.receipt?.date }}
+                            開立日期：{{ orderData?.receipt[0]?.date }}
                         </div>
                         <div
-                            v-if="orderData?.receipt?.carrier_code"
+                            v-if="orderData?.receipt[0]?.carrier_code"
                             class="text-gray-700"
                         >
-                            電子載具：{{ orderData?.receipt?.carrier_code }}
+                            電子載具：{{ orderData?.receipt[0]?.carrier_code }}
                         </div>
                         <div
-                            v-if="orderData?.receipt?.taxId"
+                            v-if="orderData?.receipt[0]?.taxId"
                             class="text-gray-700"
                         >
-                            統編：{{ orderData?.receipt?.taxId }}
+                            統編：{{ orderData?.receipt[0]?.taxId }}
                         </div>
                         <div
-                            v-if="orderData?.receipt?.number"
+                            v-if="orderData?.receipt[0]?.number"
                             class="text-gray-700"
                         >
-                            發票號碼：{{ orderData?.receipt?.number }}
+                            發票號碼：{{ orderData?.receipt[0]?.number }}
+                        </div>
+                    </div>
+                    <h5 class="my-1 font-bold">尾款</h5>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-1 w-full 2xl:w-[85%] 3xl:w-[70%]">
+                        <div
+                            v-if="orderData?.receipt[1]?.status"
+                            class="text-gray-700"
+                        >
+                            發票狀態：{{ orderData?.receipt[1]?.status }}
+                        </div>
+                        <div
+                            v-if="orderData?.receipt[1]?.type"
+                            class="text-gray-700"
+                        >
+                            發票類型：{{ orderData?.receipt[1]?.type }}
+                        </div>
+                        <div
+                            v-if="orderData?.receipt[1]?.date"
+                            class="text-gray-700"
+                        >
+                            開立日期：{{ orderData?.receipt[1]?.date }}
+                        </div>
+                        <div
+                            v-if="orderData?.receipt[1]?.carrier_code"
+                            class="text-gray-700"
+                        >
+                            電子載具：{{ orderData?.receipt[1]?.carrier_code }}
+                        </div>
+                        <div
+                            v-if="orderData?.receipt[1]?.taxId"
+                            class="text-gray-700"
+                        >
+                            統編：{{ orderData?.receipt[1]?.taxId }}
+                        </div>
+                        <div
+                            v-if="orderData?.receipt[1]?.number"
+                            class="text-gray-700"
+                        >
+                            發票號碼：{{ orderData?.receipt[1]?.number }}
                         </div>
                     </div>
                 </div>
@@ -346,14 +386,24 @@ const orderData = ref({
     ],
     orderStatus: "",
     orderPayments: [],
-    receipt: {
-        status: "未開立",
-        type: "公司戶發票",
-        date: "2022-06-11",
-        taxId: "54567354",
-        carrier_code: "",
-        number: "XG-345345123",
-    },
+    receipt: [
+        {
+            status: "未開立",
+            type: "公司戶發票",
+            date: "2022-06-11",
+            taxId: "54567354",
+            carrier_code: "",
+            number: "XG-345345123",
+        },
+        {
+            status: "未開立",
+            type: "公司戶發票",
+            date: "2022-06-11",
+            taxId: "54567354",
+            carrier_code: "",
+            number: "XG-345345123",
+        },
+    ],
     products: [
         {
             name: "YDM 7216A 指紋卡片密碼鑰匙四合一",
@@ -621,12 +671,18 @@ const getData = async () => {
             phone: resProductDetail.value.contact_phone,
             address: resProductDetail.value.contact_city + resProductDetail.value.contact_district + resProductDetail.value.contact_address,
         };
-        orderData.value.receipt.type = resProductDetail.value.orderPayments[0].orderInvoice.type;
-        orderData.value.receipt.status = $utils().receiptStatus(resProductDetail.value.orderPayments[0].orderInvoice.status);
-        orderData.value.receipt.date = resProductDetail.value.orderPayments[0].orderInvoice.issued_at;
-        orderData.value.receipt.taxId = resProductDetail.value.orderPayments[0].orderInvoice.tax_number;
-        orderData.value.receipt.carrier_code = resProductDetail.value.orderPayments[0].orderInvoice.carrier_code;
-        orderData.value.receipt.number = resProductDetail.value.orderPayments[0].orderInvoice.invoice_no;
+        orderData.value.receipt[0].type = resProductDetail.value.orderPayments[0].orderInvoice.type;
+        orderData.value.receipt[0].status = $utils().receiptStatus(resProductDetail.value.orderPayments[0].orderInvoice.status);
+        orderData.value.receipt[0].date = resProductDetail.value.orderPayments[0].orderInvoice.issued_at;
+        orderData.value.receipt[0].taxId = resProductDetail.value.orderPayments[0].orderInvoice.tax_number;
+        orderData.value.receipt[0].carrier_code = resProductDetail.value.orderPayments[0].orderInvoice.carrier_code;
+        orderData.value.receipt[0].number = resProductDetail.value.orderPayments[0].orderInvoice.invoice_no;
+        orderData.value.receipt[1].type = resProductDetail.value.orderPayments[1].orderInvoice.type;
+        orderData.value.receipt[1].status = $utils().receiptStatus(resProductDetail.value.orderPayments[1].orderInvoice.status);
+        orderData.value.receipt[1].date = resProductDetail.value.orderPayments[1].orderInvoice.issued_at;
+        orderData.value.receipt[1].taxId = resProductDetail.value.orderPayments[1].orderInvoice.tax_number;
+        orderData.value.receipt[1].carrier_code = resProductDetail.value.orderPayments[1].orderInvoice.carrier_code;
+        orderData.value.receipt[1].number = resProductDetail.value.orderPayments[1].orderInvoice.invoice_no;
         orderData.value.price.deposit = resProductDetail.value.orderPayments[0].amount;
         orderData.value.price.deposit_ratio = resProductDetail.value.orderPayments[0].amount_ratio;
         orderData.value.price.finalPayment_ori = resProductDetail.value.orderPayments[1].original_amount;

@@ -35,12 +35,18 @@
         </div>
         <div class="divider"></div>
         <div>
-            <div class="text-bold mb-2">發票資訊</div>
-            <div class="text-sm text-dark">發票狀態：{{ props.orderData.receipt.status }}</div>
-            <div class="text-sm text-dark">開立日期：{{ props.orderData.receipt.date }}</div>
-            <div class="text-sm text-dark">發票類型：{{ props.orderData.receipt.type }}</div>
-            <div class="text-sm text-dark">統編：{{ props.orderData.receipt.taxId }}</div>
-            <div class="text-sm text-dark">發票號碼：{{ props.orderData.receipt.number }}</div>
+            <div class="text-bold mb-2">發票資訊(訂金)</div>
+            <div class="text-sm text-dark">發票狀態：{{ props.orderData.receipt[0].status }}</div>
+            <div class="text-sm text-dark">開立日期：{{ props.orderData.receipt[0].date }}</div>
+            <div class="text-sm text-dark">發票類型：{{ props.orderData.receipt[0].type }}</div>
+            <div class="text-sm text-dark">統編：{{ props.orderData.receipt[0].taxId }}</div>
+            <div class="text-sm text-dark mb-2">發票號碼：{{ props.orderData.receipt[0].number }}</div>
+            <div class="text-bold mb-2">發票資訊(尾款)</div>
+            <div class="text-sm text-dark">發票狀態：{{ props.orderData.receipt[1].status }}</div>
+            <div class="text-sm text-dark">開立日期：{{ props.orderData.receipt[1].date }}</div>
+            <div class="text-sm text-dark">發票類型：{{ props.orderData.receipt[1].type }}</div>
+            <div class="text-sm text-dark">統編：{{ props.orderData.receipt[1].taxId }}</div>
+            <div class="text-sm text-dark">發票號碼：{{ props.orderData.receipt[1].number }}</div>
         </div>
         <div class="divider"></div>
         <div
@@ -151,9 +157,32 @@
 
         <div class="divider mt-3 mb-3"></div>
         <div>
-            <div class="d-inline-block text-xl text-bold">總計</div>
+            <div class="d-inline-block text-xl text-bold">預估總計</div>
             <div class="d-inline-block text-xl text-bold float-right">NT$ {{ $utils().formatCurrency(props.orderData.price.totalPrice) }}</div>
         </div>
+        <div
+            class="text-gray-600 text-[14px] flex mt-[4px]"
+        >
+            <div class="d-inline-block">訂金(總價{{props.orderData.price.deposit_ratio}}%)</div>
+            <!-- 訂金 -->
+            <div class="d-inline-block float-right">NT$ {{ $utils().formatCurrency(props.orderData.price.deposit) }}</div>
+        </div>
+        <div
+            class="text-gray-600 text-[14px] flex mt-[4px]"
+        >
+            <div class="d-inline-block">尾款(預估總價{{props.orderData.price.finalPayment_ratio}}%)</div>
+            <!-- 訂金 -->
+            <div class="d-inline-block float-right">NT$ {{ $utils().formatCurrency(props.orderData.price.finalPayment_ori) }}</div>
+        </div>
+        <div
+            v-if="props.orderData.orderStatus === '丈量完成' || props.orderData.orderStatus === '待付尾款' || props.orderData.orderStatus === '已付尾款' || props.orderData.orderStatus === '門扇製作完成' || props.orderData.orderStatus === '安裝派工中' || props.orderData.orderStatus === '安裝完成'"
+            class="text-gray-600 text-[14px] flex mt-[4px]"
+        >
+            <div class="d-inline-block">實際尾款</div>
+            <!-- 訂金 -->
+            <div class="d-inline-block float-right">NT$  {{ $utils().formatCurrency(props.orderData.price.finalPayment) }}</div>
+        </div>
+        
         <div class="mt-3">
             <div class="text-sm">備註</div>
             <div class="text-sm">{{ props.orderData.price.memo }}</div>
