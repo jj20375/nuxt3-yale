@@ -1,5 +1,5 @@
 <template>
-    <section id="print" class="mt-headerMb xl:mt-header">
+    <section class="mt-headerMb xl:mt-header">
         <nav class="border-t border-gray-300 border-b py-[16px] bg-white">
             <div class="container">
                 <ClientOnly> <Breadcrumb :menus="breadcrumbs" /></ClientOnly>
@@ -183,25 +183,6 @@
             </el-dialog>
         </client-only>
         <client-only>
-            <el-dialog
-                class="custom-dialog"
-                close-on-click-modal
-                lock-scroll
-                show-close
-                center
-                align-center
-                append-to-
-                fullscreen
-                v-model="showDownload"
-            >
-                <OrderDownloadHtml
-                    v-show="showDownload"
-                    :orderData="orderData"
-                    ref="orderDownloadHtmlRefDom"
-                />
-            </el-dialog>
-        </client-only>
-        <client-only>
             <orderDetailPdf
                 v-model="showDownload"
                 :orderData="orderData"
@@ -217,7 +198,6 @@ import RecordTimeline from "~/views/template1/Auth/components/OrderTimeline.vue"
 import RecordProduct from "~/views/template1/Auth/components/OrderProduct.vue";
 import OrderPrice from "~/views/template1/Auth/components/OrderPrice.vue";
 // 訂單下載 html
-import OrderDownloadHtml from "~/views/template1/Auth/Order/components/OrderDownloadHtml.vue";
 import orderDetailPdf from "~/views/template1/Auth/Order/components/orderDetailPdf.vue";
 
 import moment from "moment";
@@ -493,20 +473,20 @@ function downloadPdf() {
     if(iframeEL){
         iframeEL.remove();
     }
-    //目标元素
+    //目標元素
     const info=document.querySelector('.print');
-    //创建iframe
+    //創建iframe
     const iframeEl= document.createElement('iframe');
     iframeEl.classList.add('target-el-iframe')
     iframeEl.setAttribute('style','display: none')
 
-    //添加到页面
+    //添加到頁面
     document.body.appendChild(iframeEl)
     const doc = iframeEl.contentWindow.document
     doc.write('<div class="print-iframe">' + info.innerHTML + '</div>')
     doc.write('<style>@page{size:auto;margin: 0.5cm 1cm 0cm 1cm;}</style>')
     doc.close()
-    //引入第三方样式文件
+    //引用第三方樣式
     const link1 = doc.createElement('link');
     link1.rel = 'stylesheet';
     link1.href = 'https://fonts.googleapis.com';
@@ -531,7 +511,6 @@ function downloadPdf() {
     iframeEl.onload = () => {
         iframeEl.contentWindow.print()
     }
-    
 }
 
 onMounted(async () => {

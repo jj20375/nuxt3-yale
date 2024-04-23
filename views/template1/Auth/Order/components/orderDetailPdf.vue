@@ -1,5 +1,5 @@
 <template>
-    <div class=" page-container print">
+    <div class="hidden page-container print">
         <div class="mb-5">
             <div class="d-inline-block">
                 <span class="page-logo ms-5">
