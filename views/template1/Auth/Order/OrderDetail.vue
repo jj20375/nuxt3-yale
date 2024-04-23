@@ -457,6 +457,7 @@ const getData = async () => {
 
         const coupon = resProductDetail.value.orderDiscounts.find((item: { type: string; }) => item.type === 'coupon')
         orderData.value.price.coupon = coupon ? -coupon.amount : 0
+        orderData.value.price.deliveryFee = resProductDetail.value.shipping ? resProductDetail.value.shipping.amount : 0
         const event = resProductDetail.value.orderDiscounts.filter((item: { type: string; }) => item.type !== 'coupon')
         orderData.value.price.event = []
         event.forEach(item => {

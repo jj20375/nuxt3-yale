@@ -179,12 +179,12 @@ async function getTypeDetail() {
 getTypeDetail()
 
 function getShareData() {
-    if (route.query.selectItem && JSON.parse(route.query.selectItem)) {
+    if (route.query.selectItem) {
         productCompareStore.compareStoreReset();
-        const selectItems = JSON.parse(route.query.selectItem);
-        console.log(selectItems);
+        const selectItems = route.query.selectItem.split(",")
+        
         selectItems.forEach((item: string | number, index: number) => {
-            productCompareStore.compareStore[index] = datas.value.find((data) => data.id === item);
+            productCompareStore.compareStore[index] = datas.value.find((data) => data.id == item);
         });
     }
 }
@@ -268,7 +268,7 @@ function socialShare(type: string) {
     if (ogUrl.value) {
         path = ogUrl.value;
     }
-    path = encodeURIComponent(path + `?selectItem=${JSON.stringify(selectItems)}`);
+    path = encodeURIComponent(path + `?selectItem=${selectItems.join()}`);
     if (type === "line") {
         const url = "https://social-plugins.line.me/lineit/share?url=" + path;
 

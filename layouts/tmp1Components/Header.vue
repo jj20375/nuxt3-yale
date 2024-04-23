@@ -28,8 +28,8 @@
                         :to="{ name: 'index' }"
                     >
                         <NuxtImg
-                            class="h-[48px] w-[48px] xl:w-[66px] mx-auto transition-all duration-300"
-                            :class="isMenuFixed ? 'xl:h-[56px]' : 'xl:h-[66px]'"
+                            class="h-[48px] w-[48px] mx-auto transition-all duration-300"
+                            :class="isMenuFixed ? 'xl:h-[56px] xl:w-[56px]' : 'xl:h-[66px] xl:w-[66px]'"
                             :src="initializationData.site.site_logo"
                             :alt="$config.public.webSite"
                         />

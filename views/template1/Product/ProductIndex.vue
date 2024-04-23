@@ -143,6 +143,14 @@ const breadcrumbs = ref([
 
 const sortOptions = ref([
     {
+        label: "預設",
+        value: {
+            label: "預設",
+            order_by: "sort",
+            order_direction: "asc",
+        },
+    },
+    {
         label: "上架時間新至舊",
         value: {
             label: "上架時間新至舊",
@@ -316,9 +324,9 @@ const handlePageChange = (val: any) => {
 const datas = ref<ProductList[]>([]);
 
 const sortBy = ref({
-    label: "上架時間新至舊",
-    order_by: "created_at",
-    order_direction: "desc",
+    label: "預設",
+    order_by: "sort",
+    order_direction: "asc",
 });
 
 /**

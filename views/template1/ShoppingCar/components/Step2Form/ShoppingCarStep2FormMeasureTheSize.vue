@@ -91,7 +91,7 @@ async function getMeasuring({ startDate, endDate }: { startDate: string; endDate
  * @param time
  */
 function disabledDate(time: any) {
-    return !availableDates.value.includes(moment(time).format("YYYY-MM-DD"));
+    return !availableDates.value.includes(moment(time).format("YYYY-MM-DD")) || time.getTime() < moment().subtract(1, "days");;
 }
 
 /**
