@@ -13,7 +13,7 @@ export default () => {
          * @returns
          */
         CustomProductGetSceneListAPI() {
-            return useMyFetch<CustomProductGetSceneListAPIInterface>(`${apiUrl}/custom-scene`, { method: "get" });
+            return useMyFetch<CustomProductGetSceneListAPIInterface>(`${apiUrl}/custom-scene`, { method: "get", query: { order_by: 'sort_order', order_direction: 'asc'} });
         },
         /**
          * 取得訂製商品列表
