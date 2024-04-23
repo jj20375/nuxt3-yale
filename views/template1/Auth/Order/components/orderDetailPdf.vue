@@ -56,6 +56,10 @@
                 <div class="text-bold">{{ product.title }}</div>
                 <table class="page-table">
                     <tbody>
+                        <tr v-for="(item, index) in product.productVariationable" :key="index">
+                            <td>{{item.label}}</td>
+                            <td>{{ item.value }}</td>
+                        </tr>
                         <tr>
                             <td>數量</td>
                             <td>{{ product.quantity }}</td>
@@ -63,62 +67,12 @@
                     </tbody>
                 </table>
                 <div style="display: flex; align-items: center; gap: 10px">
-                    <div style="border: 1px solid var(--Neutral-2-Dark, #575658); padding: 2px 6px; color: var(--Neutral-2-Dark, #575658); font-size: 12px; font-style: normal; font-weight: 400; line-height: 150%; /* 13.5px */ letter-spacing: 0.27px"></div>
+                    <div v-if="product.is_add_on_purchase == 1" style="border: 1px solid var(--Neutral-2-Dark, #575658); padding: 2px 6px; color: var(--Neutral-2-Dark, #575658); font-size: 12px; font-style: normal; font-weight: 400; line-height: 150%; /* 13.5px */ letter-spacing: 0.27px">加價購</div>
+                    <div v-if="product.is_discount_gift == 1" style="border: 1px solid var(--Neutral-2-Dark, #575658); padding: 2px 6px; color: var(--Neutral-2-Dark, #575658); font-size: 12px; font-style: normal; font-weight: 400; line-height: 150%; /* 13.5px */ letter-spacing: 0.27px">滿額贈</div>
                 </div>
             </div>
+            <div class="divider"></div>
         </div>
-        <!-- <div class="d-block">
-            <div class="d-inline-block">
-                <img
-                    class="product-image"
-                    src="http://admin.yaletaiwan.com/storage/products/01HNCH6BWZXNQCVVTAB4DV6847.webp"
-                />
-            </div>
-            <div
-                class="d-inline-block ms-8"
-                style="width: calc(100% - 150px); vertical-align: top"
-            >
-                <div class="text-bold">YSEM / 250 / EG1 認證密碼鑰匙保險箱</div>
-                <table class="page-table">
-                    <tbody>
-                        <tr>
-                            <td>數量</td>
-                            <td>1</td>
-                        </tr>
-                    </tbody>
-                </table>
-                <div style="display: flex; align-items: center; gap: 10px">
-                    <div style="border: 1px solid var(--Neutral-2-Dark, #575658); padding: 2px 6px; color: var(--Neutral-2-Dark, #575658); font-size: 12px; font-style: normal; font-weight: 400; line-height: 150%; /* 13.5px */ letter-spacing: 0.27px"></div>
-                </div>
-            </div>
-        </div> -->
-        <!-- <div class="divider"></div> -->
-        <!-- <div class="d-block">
-            <div class="d-inline-block">
-                <img
-                    class="product-image"
-                    src="http://admin.yaletaiwan.com/storage/products/01HNC6KYV2J5600WRM66TQAE2X.webp"
-                />
-            </div>
-            <div
-                class="d-inline-block ms-8"
-                style="width: calc(100% - 150px); vertical-align: top"
-            >
-                <div class="text-bold">YDM 7220 指紋卡片密碼鑰匙 頂規抗菌款五合一</div>
-                <table class="page-table">
-                    <tbody>
-                        <tr>
-                            <td>數量</td>
-                            <td>1</td>
-                        </tr>
-                    </tbody>
-                </table>
-                <div style="display: flex; align-items: center; gap: 10px">
-                    <div style="border: 1px solid var(--Neutral-2-Dark, #575658); padding: 2px 6px; color: var(--Neutral-2-Dark, #575658); font-size: 12px; font-style: normal; font-weight: 400; line-height: 150%; /* 13.5px */ letter-spacing: 0.27px">滿額贈</div>
-                </div>
-            </div>
-        </div> -->
-        <div class="divider"></div>
         <div>
             <div class="d-inline-block text-sm text-dark">運費</div>
             <div class="d-inline-block text-sm text-dark float-right">NT$ {{ $utils().formatCurrency(props.orderData.price.deliveryFee) }}</div>
