@@ -2,8 +2,8 @@
     <section class="mt-headerMb xl:mt-header py-[36px] sm:py-[60px] bg-gray-50 border-t border-gray-300">
         <div class="container">
             <div class="w-full xl:w-3/4 px-[24px] py-[36px] sm:p-[60px] bg-white mx-auto rounded-[24px] border-[1px] border-gray-200">
-                <h3 class="text-[24px] font-bold mb-6">快速登入</h3>
-                <p>歡迎使用FB、Google、Line帳號快速登入，設定完成後可直接使用FB、Google、Line帳號登入</p>
+                <h3 class="text-[24px] font-bold mb-6">社群登入</h3>
+                <p>歡迎使用FB、Google、Line帳號快速登入，連結YALE網站會員帳號，設定完成後可直接使用社群帳號登入</p>
                 <div class="border-gray-200 border-b-[1px] my-[30px]"></div>
                 <el-form
                     class="custom-form"
@@ -19,19 +19,16 @@
                                 size="large"
                                 border
                             >
-                                <div>我已是Yale會員</div>
+                                <div>我已是Yale會員(登入即完成設定)</div>
                             </el-radio>
-                            <div class="px-4 sm:px-[48px] py-5 w-full xl:w-3/4 flex flex-col gap-6">
-                                <div class="flex flex-col gap-1 sm:flex-row sm:items-center sm:gap-3">
-                                    <div class="text-[15px] text-gray-700 mr-3">連結帳號</div>
-                                    <div class="flex items-center gap-3">
-                                        <NuxtImg
-                                            class="relative object-cover w-6 h-fit aspect-square"
-                                            :src="socialIconPath"
-                                        />
-                                        <div class="text-[15px] text-gray-700">{{ memberData.email }}</div>
-                                    </div>
-                                </div>
+                            <el-radio
+                                :label="false"
+                                size="large"
+                                border
+                            >
+                                <div>我還不是Yale會員，我要同時成為新會員</div>
+                            </el-radio>
+                            <div v-if="form.isMember" class="px-4 sm:px-[48px] py-5 w-full xl:w-3/4 flex flex-col gap-6">
                                 <el-form-item
                                     prop="email"
                                     label="帳號"
@@ -56,34 +53,15 @@
                                     <div class="text-[15px]">忘記密碼?</div>
                                 </NuxtLink>
                             </div>
-                            <el-radio
-                                :label="false"
-                                size="large"
-                                border
-                            >
-                                <div>我還不是Yale會員，我要同時成為新會員</div>
-                            </el-radio>
-                            <div class="px-4 sm:px-[48px] py-5 w-full xl:w-3/4 flex flex-col gap-6">
-                                <div class="flex flex-col gap-1 sm:flex-row sm:items-center sm:gap-3">
-                                    <div class="text-[15px] text-gray-700 mr-3">連結帳號</div>
-                                    <div class="flex items-center gap-3">
-                                        <NuxtImg
-                                            class="relative object-cover w-6 h-fit aspect-square"
-                                            :src="socialIconPath"
-                                        />
-                                        <div class="text-[15px] text-gray-700">{{ memberData.email }}</div>
-                                    </div>
-                                </div>
-                            </div>
                         </el-radio-group>
                     </el-form-item>
-                    <div class="flex justify-center mt-4">
+                    <div v-if="form.isMember !== null" class="flex justify-center mt-4">
                         <!--  選擇我已是會員需導到進入登入頁前的頁面，選擇我還不是會員需導到會員註冊的頁面    -->
                         <button
                             @click.prevent="onSubmit"
                             class="yellow-btn btn-md"
                         >
-                            確認送出
+                            {{form.isMember ? '綁定原帳號' : '註冊新會員'}}
                         </button>
                     </div>
                 </el-form>
@@ -107,7 +85,7 @@ const shoppingCarStore = useShoppingCarStore();
 const formRefDom = ref<any>();
 
 const form = ref<any>({
-    isMember: true,
+    isMember: null,
     email: "",
     password: "",
 });
@@ -258,7 +236,7 @@ onBeforeRouteLeave((to, from, next) => {
     .el-radio-group {
         @apply w-full;
         .el-radio {
-            @apply w-full font-normal mr-0 border-0 bg-gray-50 rounded-[8px] whitespace-normal;
+            @apply w-full font-normal mr-0 border-0 rounded-[8px] whitespace-normal;
             &.el-radio--large {
                 @apply px-4 py-8 sm:py-6 leading-6;
             }
