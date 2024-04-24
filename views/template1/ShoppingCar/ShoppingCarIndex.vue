@@ -323,7 +323,7 @@ const getCoupon = async (val: any) => {
 const discountCalculate = async () => {
     const loading = ElLoading.service({
         lock: false,
-        text: "計算價格中...",
+        text: "",
         background: "rgba(0, 0, 0, 0.5)",
     });
     try {
