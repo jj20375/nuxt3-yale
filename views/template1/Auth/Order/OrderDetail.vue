@@ -32,6 +32,9 @@
                     :status="orderData.orderStatus"
                     @orderRepay="orderRepay"
                 />
+                <div class="mt-4 text-red-500">
+                    預約安裝提醒：完成收貨時，請記得於線上完成預約安裝登記或是撥打售服專線 0800-31-4109，將有專人盡速爲您服務。
+                </div>
                 <div class="mt-8 sm:mt-12">
                     <h4 class="mb-3 font-bold">配送資訊</h4>
                     <div class="border-b-[1px] border-gray-200 pb-5">
