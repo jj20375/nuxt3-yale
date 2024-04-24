@@ -154,8 +154,32 @@ function countUpdate(index: number, cartId: number | null, productID: number, is
             item.max = shoppingCar.value[index].count
             if (item.count > shoppingCar.value[index].count) {
                 item.count = shoppingCar.value[index].count
+                console.log(item)
+                const apiReq = {
+                    cart_item_id: item.id,
+                    productID: item.productID,
+                    product_variationable_id: item.product_variationable_id ? item.product_variationable_id : null,
+                };
+                updateCart({ ...apiReq, quantity: item.count })
+                .then(() => {
+                    emit("productCountUpdate");
+                    loading.value = false;
+                })
+                .catch((err) => {
+                    console.log("err", err);
+                    if (err) {
+                        ElMessage({
+                            type: "error",
+                            message: err.message,
+                        });
+                        loading.value = false;
+                        return;
+                    }
+                });
             }
             item.totalPrice = item.price * item.count;
+            console.log('item.market_price', item.market_price, item.count)
+            item.market_price_total = item.market_price * item.count;
         }
         // countUpdate(index2, item.id, item.productID, true, item.product_variationable_id)
     })
@@ -165,6 +189,7 @@ function countUpdate(index: number, cartId: number | null, productID: number, is
         product_variationable_id: product_variationable_id ? product_variationable_id : null,
     };
     shoppingCar.value[index].totalPrice = shoppingCar.value[index].price * shoppingCar.value[index].count;
+    shoppingCar.value[index].market_price_total = shoppingCar.value[index].market_price * shoppingCar.value[index].count;
 
     // 防止連續點擊
     if (!loading.value) {
