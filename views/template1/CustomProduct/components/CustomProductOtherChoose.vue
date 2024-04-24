@@ -68,7 +68,7 @@
             append-to-body
         >
             <div class="w-3/4 mx-auto">
-                <h5 class="text-[20px] text-gray-800 YaleSolisW-Bd mb-[38px]">{{ currentDialogProduct.name }}-{{ currentDialogProduct.style }}</h5>
+                <h5 class="text-[20px] text-gray-800 YaleSolisW-Bd mb-[38px]">{{ currentDialogProduct.name !== "null" ? currentDialogProduct.name + "-" : "" }}{{ currentDialogProduct.style }}</h5>
                 <CustomProductDailogCarousel
                     v-if="!$utils().isEmpty(currentDialogProduct.detailData.carousel)"
                     :photos="currentDialogProduct.detailData.carousel"

@@ -85,7 +85,7 @@
             append-to-body
         >
             <div class="w-full mx-auto xl:w-3/4">
-                <h5 class="text-[20px] text-gray-800 YaleSolisW-Bd mt-[20px] sm:mt-0 mb-[15px] sm:mb-[30px]">{{ currentDialogProduct.name }}-{{ currentDialogProduct.style }}</h5>
+                <h5 class="text-[20px] text-gray-800 YaleSolisW-Bd mt-[20px] sm:mt-0 mb-[15px] sm:mb-[30px]">{{ currentDialogProduct.name !== "null" ? currentDialogProduct.name + "-" : "" }}{{ currentDialogProduct.style }}</h5>
                 <CustomProductDailogCarousel
                     ref="customProductDialogCarousel"
                     v-if="!$utils().isEmpty(currentDialogProduct.detailData.carousel)"
