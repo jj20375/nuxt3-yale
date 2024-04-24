@@ -4,8 +4,7 @@
             <span class="flex-1">小計</span>
             <span>NT$ {{ $utils().formatCurrency(total) }}</span>
         </div>
-        <!-- todo 先隱藏 aaron -->
-        <div v-if="userStore.isAuth && discountData.event?.length > 0" v-for="(item, index) in discountData.event" :key="index" class="flex text-gray-800 text-[14px] mb-[4px]">
+        <div v-if="userStore.isAuth && discountData.event?.length > 0" v-for="(item, index) in discountData.event.filter(item => item.type !== 'coupon')" :key="index" class="flex text-gray-800 text-[14px] mb-[4px]">
             <span class="flex-1">活動折扣({{ item.name }})</span>
             <span>-NT$ {{ $utils().formatCurrency(item.amount) }}</span>
         </div>
@@ -15,6 +14,7 @@
         </div>
         <div v-if="userStore.isAuth" class="flex text-gray-800 text-[14px]">
             <span class="flex-1">優惠券折扣</span>
+            <!-- <span v-if="discountData.event.find(item => item.type === 'coupon')">({{ discountData.event.find(item => item.type === 'coupon').name }})</span> -->
             <span>-NT$ {{ $utils().formatCurrency(discountData.coupon_discount_amount) }}</span>
         </div>
         <div v-if="userStore.isAuth" class="flex text-gray-800 text-[14px] mt-[4px]">

@@ -315,7 +315,7 @@ const getCoupon = async (val: any) => {
         }
         discountData.value.coupon_discount_amount = couponData.coupon_discount_amount;
         discountData.value.discount_amount = couponData.discount_amount;
-        discountData.value.event = couponData.discounts.filter(item => item.type !== 'coupon');
+        discountData.value.event = couponData.discounts
         shoppingCarStore.discount_gifts = couponData.discount_product_gifts
     }
 };
@@ -348,7 +348,7 @@ const discountCalculate = async () => {
         discountData.value.coupon_discount_amount = couponData.coupon_discount_amount;
         discountData.value.discount_amount = couponData.discount_amount;
         shoppingCarStore.discount_gifts = couponData.discount_product_gifts
-        discountData.value.event = couponData.discounts.filter(item => item.type !== 'coupon');
+        discountData.value.event = couponData.discounts
         couponCode.value = couponRef.value.formData.coupon
         loading.close();
     } catch {
