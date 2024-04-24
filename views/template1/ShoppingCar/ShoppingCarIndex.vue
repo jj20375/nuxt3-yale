@@ -48,7 +48,7 @@
                         :discountData="discountData"
                     />
                 </keep-alive>
-                <ShoppingCarStep2FormGift/>
+                <ShoppingCarStep2FormGift />
                 <div
                     class="mt-12 lg:mt-0 w-full lg:w-[300px] xl:w-[400px]"
                     v-if="currentStep !== 2"
@@ -106,7 +106,11 @@
                                 {{ $utils().formatCurrency(Math.round((total - discountData.discount_amount - discountData.coupon_discount_amount) * 0.3)) }}
                             </template>
                         </ShoppingCarBilling>
-                        <ShoppingCarSales :event="discountData.event" class="hidden lg:block mt-12" v-if="currentStep == 0" />
+                        <ShoppingCarSales
+                            :event="discountData.event"
+                            class="hidden mt-12 lg:block"
+                            v-if="currentStep == 0"
+                        />
                         <div
                             v-if="currentStep == 1"
                             class="cursor-pointer mt-[24px] flex"
@@ -188,7 +192,7 @@ function changeTab(key: string) {
     }
     currentTab.value = key;
     selectProductIds.value = [];
-    shoppingCarStore.discount_gifts = []
+    shoppingCarStore.discount_gifts = [];
     router.push({ name: route.name, query: { tab: key } });
 }
 
@@ -232,11 +236,11 @@ const discountData = ref<any>({
 });
 
 const couponRef = ref<any>(null);
-const couponCode = ref(null)
+const couponCode = ref(null);
 
 const getCoupon = async (val: any) => {
     console.log("getCoupon", val);
-    let params
+    let params;
     if (currentTab.value === "type2") {
         params = {
             type: "combination",
@@ -256,25 +260,25 @@ const getCoupon = async (val: any) => {
             type: "error",
             message: "請先登入",
         });
-        couponCode.value = null
+        couponCode.value = null;
     } else if (!userStore.user.is_verified) {
         ElMessage({
             type: "error",
             message: "會員尚未完成驗證",
         });
-        couponCode.value = null
+        couponCode.value = null;
     } else if (selectProductIds.value.length === 0) {
         ElMessage({
             type: "error",
             message: "請先選擇商品",
         });
-        couponCode.value = null
+        couponCode.value = null;
     } else if (couponRef.value.formData.coupon === "") {
         ElMessage({
             type: "error",
             message: "請輸入優惠序號",
         });
-        couponCode.value = null
+        couponCode.value = null;
         couponRef.value.formData.warningTXT = "請輸入優惠序號";
         couponRef.value.formData.showCheckWarning = true;
     } else {
@@ -289,12 +293,12 @@ const getCoupon = async (val: any) => {
                 type: "error",
                 message: (checkError.value as any).data.message,
             });
-            couponCode.value = null
+            couponCode.value = null;
             couponRef.value.formData.coupon = "";
             couponRef.value.formData.warningTXT = (checkError.value as any).data.message;
             couponRef.value.formData.showCheckWarning = true;
         } else {
-            couponCode.value = couponRef.value.formData.coupon
+            couponCode.value = couponRef.value.formData.coupon;
             couponRef.value.formData.warningTXT = "";
             couponRef.value.formData.showCheckWarning = false;
         }
@@ -305,18 +309,18 @@ const getCoupon = async (val: any) => {
                 type: "error",
                 message: "請確認優惠券使用條件",
             });
-            couponCode.value = null
+            couponCode.value = null;
         } else {
             ElMessage({
                 type: "success",
                 message: "優惠券使用成功",
             });
-            couponCode.value = couponRef.value.formData.coupon
+            couponCode.value = couponRef.value.formData.coupon;
         }
         discountData.value.coupon_discount_amount = couponData.coupon_discount_amount;
         discountData.value.discount_amount = couponData.discount_amount;
-        discountData.value.event = couponData.discounts
-        shoppingCarStore.discount_gifts = couponData.discount_product_gifts
+        discountData.value.event = couponData.discounts;
+        shoppingCarStore.discount_gifts = couponData.discount_product_gifts;
     }
 };
 
@@ -327,7 +331,7 @@ const discountCalculate = async () => {
         background: "rgba(0, 0, 0, 0.5)",
     });
     try {
-        let params
+        let params;
         if (currentTab.value === "type2") {
             params = {
                 type: "combination",
@@ -347,12 +351,12 @@ const discountCalculate = async () => {
         console.log(couponData);
         discountData.value.coupon_discount_amount = couponData.coupon_discount_amount;
         discountData.value.discount_amount = couponData.discount_amount;
-        shoppingCarStore.discount_gifts = couponData.discount_product_gifts
-        discountData.value.event = couponData.discounts
-        couponCode.value = couponRef.value.formData.coupon
+        shoppingCarStore.discount_gifts = couponData.discount_product_gifts;
+        discountData.value.event = couponData.discounts;
+        couponCode.value = couponRef.value.formData.coupon;
         loading.close();
     } catch {
-        shoppingCarStore.discount_gifts = []
+        shoppingCarStore.discount_gifts = [];
         loading.close();
     }
 };
@@ -363,7 +367,7 @@ const productCountUpdate = async () => {
     } else {
         discountData.value.coupon_discount_amount = 0;
         discountData.value.discount_amount = 0;
-        shoppingCarStore.discount_gifts = []
+        shoppingCarStore.discount_gifts = [];
     }
 };
 
@@ -371,22 +375,22 @@ const selectProduct = async (val: number[]) => {
     if (currentTab.value === "type2") {
         selectProductIds.value = val;
     } else {
-        const data: { id: number|null; productID: number; colorName?: string|undefined; product_variationable_id?: number|undefined; price: number; name: string; imgSrc: string; count: number; totalPrice: number; stock: number; productVariationable: number; }[] = []
-        shoppingCar.value.forEach(item => {
+        const data: { id: number | null; productID: number; colorName?: string | undefined; product_variationable_id?: number | undefined; price: number; name: string; imgSrc: string; count: number; totalPrice: number; stock: number; productVariationable: number }[] = [];
+        shoppingCar.value.forEach((item) => {
             if ((item.is_add_on_purchase == 0 && val.includes(item.id)) || (item.is_add_on_purchase == 1 && val.includes(item.parent_id) && val.includes(item.id))) {
-                data.push(item)
+                data.push(item);
             }
-        })
-        selectProductIds.value = data.map(item => item.id);
+        });
+        selectProductIds.value = data.map((item) => item.id);
     }
-    console.log(selectProductIds.value)
+    console.log(selectProductIds.value);
     if (userStore.isAuth && userStore.user.is_verified && selectProductIds.value.length > 0) {
         discountCalculate();
     } else {
         discountData.value.coupon_discount_amount = 0;
         discountData.value.discount_amount = 0;
-        shoppingCarStore.discount_gifts = []
-        discountData.value.event = []
+        shoppingCarStore.discount_gifts = [];
+        discountData.value.event = [];
     }
 };
 // go step2
@@ -397,7 +401,7 @@ const goStepCheckout = () => {
             message: "請先選擇商品",
         });
         return;
-    } else if ((total.value - discountData.value.discount_amount - discountData.value.coupon_discount_amount) < 0) {
+    } else if (total.value - discountData.value.discount_amount - discountData.value.coupon_discount_amount < 0) {
         ElMessage({
             type: "error",
             message: "結帳金額有誤，請聯繫客服處理",

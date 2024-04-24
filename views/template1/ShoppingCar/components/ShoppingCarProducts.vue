@@ -16,7 +16,10 @@
                         :key="cart.productID"
                         :label="cart.id"
                     />
-                    <div class="w-[18px]" v-else></div>
+                    <div
+                        class="w-[18px]"
+                        v-else
+                    ></div>
                     <NuxtImg
                         class="w-[100px] h-[100px] sm:w-[140px] sm:h-[140px] lg:w-[180px] lg:h-[180px] aspect-square object-cover cursor-pointer"
                         v-if="cart.imgSrc"
@@ -48,9 +51,17 @@
                             </div>
                             <h3 class="YaleSolisW-Bd font-medium text-[16px] sm:text-[18px]">{{ cart.name }}</h3>
                         </div>
-                        <p v-if="cart.is_add_on_purchase == 0" class="hidden sm:block font-medium YaleSolisW-Bd text-[18px] whitespace-nowrap">NT$ {{ $utils().formatCurrency(cart.totalPrice) }}</p>
-                        <div v-else class="flex mt-[8px] gap-[12px]">
-                            <div  class="hidden sm:block font-medium YaleSolisW-Bd text-[18px] whitespace-nowrap line-through">NT${{ $utils().formatCurrency(cart.market_price_total) }}</div>
+                        <p
+                            v-if="cart.is_add_on_purchase == 0"
+                            class="hidden sm:block font-medium YaleSolisW-Bd text-[18px] whitespace-nowrap"
+                        >
+                            NT$ {{ $utils().formatCurrency(cart.totalPrice) }}
+                        </p>
+                        <div
+                            v-else
+                            class="flex mt-[8px] gap-[12px]"
+                        >
+                            <div class="hidden sm:block font-medium YaleSolisW-Bd text-[18px] whitespace-nowrap line-through">NT${{ $utils().formatCurrency(cart.market_price_total) }}</div>
                             <p class="hidden text-pink-900 sm:block font-medium YaleSolisW-Bd text-[18px] whitespace-nowrap">加購價 NT$ {{ $utils().formatCurrency(cart.totalPrice) }}</p>
                         </div>
                     </div>
@@ -101,8 +112,16 @@
                     >
                         庫存數量只剩下{{ cart.stock }}
                     </div>
-                    <div v-if="cart.is_add_on_purchase == 0" class="sm:hidden mt-[16px] font-medium YaleSolisW-Bd text-[16px]">NT$ {{ $utils().formatCurrency(cart.totalPrice) }}</div>
-                    <div v-else class="flex mt-[8px] gap-[12px]">
+                    <div
+                        v-if="cart.is_add_on_purchase == 0"
+                        class="sm:hidden mt-[16px] font-medium YaleSolisW-Bd text-[16px]"
+                    >
+                        NT$ {{ $utils().formatCurrency(cart.totalPrice) }}
+                    </div>
+                    <div
+                        v-else
+                        class="flex mt-[8px] gap-[12px]"
+                    >
                         <div class="sm:hidden mt-[16px] font-medium YaleSolisW-Bd text-[16px] line-through">NT${{ $utils().formatCurrency(cart.market_price_total) }}</div>
                         <div class="text-pink-900 sm:hidden mt-[16px] font-medium YaleSolisW-Bd text-[16px]">NT$ {{ $utils().formatCurrency(cart.totalPrice) }}</div>
                     </div>
@@ -146,43 +165,43 @@ function countUpdate(index: number, cartId: number | null, productID: number, is
         shoppingCar.value[index].count--;
     }
 
-    console.log(cartId)
+    console.log(cartId);
 
     shoppingCar.value.map((item, index2) => {
-        console.log(item.parent_id, cartId)
+        console.log(item.parent_id, cartId);
         if (item.is_add_on_purchase == 1 && item.parent_id == cartId) {
-            item.max = shoppingCar.value[index].count
+            item.max = shoppingCar.value[index].count;
             if (item.count > shoppingCar.value[index].count) {
-                item.count = shoppingCar.value[index].count
-                console.log(item)
+                item.count = shoppingCar.value[index].count;
+                console.log(item);
                 const apiReq = {
                     cart_item_id: item.id,
                     productID: item.productID,
                     product_variationable_id: item.product_variationable_id ? item.product_variationable_id : null,
                 };
                 updateCart({ ...apiReq, quantity: item.count })
-                .then(() => {
-                    emit("productCountUpdate");
-                    loading.value = false;
-                })
-                .catch((err) => {
-                    console.log("err", err);
-                    if (err) {
-                        ElMessage({
-                            type: "error",
-                            message: err.message,
-                        });
+                    .then(() => {
+                        emit("productCountUpdate");
                         loading.value = false;
-                        return;
-                    }
-                });
+                    })
+                    .catch((err) => {
+                        console.log("err", err);
+                        if (err) {
+                            ElMessage({
+                                type: "error",
+                                message: err.message,
+                            });
+                            loading.value = false;
+                            return;
+                        }
+                    });
             }
             item.totalPrice = item.price * item.count;
-            console.log('item.market_price', item.market_price, item.count)
+            console.log("item.market_price", item.market_price, item.count);
             item.market_price_total = item.market_price * item.count;
         }
         // countUpdate(index2, item.id, item.productID, true, item.product_variationable_id)
-    })
+    });
     const apiReq = {
         cart_item_id: cartId ? cartId : 0,
         productID,
@@ -246,9 +265,9 @@ function removeShoppingCar(id: number | null, productID: number, product_variati
         product_variationable_id: product_variationable_id ? product_variationable_id : null,
     };
     deleteCart(req);
-    console.log(id)
-    checkList.value = checkList.value.filter(item => item !== id)
-    console.log(checkList.value)
+    console.log(id);
+    checkList.value = checkList.value.filter((item) => item !== id);
+    console.log(checkList.value);
     emit("update:selectProductIds", checkList.value);
 }
 
@@ -268,12 +287,18 @@ watch(
     () => isAuth.value,
     async (newval, oldVal) => {
         await getUserShopping();
-        await init()
+        await init();
+    }
+);
+watch(
+    () => shoppingCar.value,
+    () => {
+        init();
     }
 );
 
 const init = async () => {
-    // await getUserShopping();
+    await getUserShopping();
 
     // 設定購物車商品全選
     checkList.value = shoppingCar.value.map((item: any) => {

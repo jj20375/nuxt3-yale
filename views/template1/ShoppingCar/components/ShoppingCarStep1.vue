@@ -19,7 +19,11 @@
             />
         </div>
         <ShoppingCarStep2FormGift />
-        <ShoppingCarSales :event="discountData.event" class="block lg:hidden mt-12" v-if="currentTab === 'type1'" />
+        <ShoppingCarSales
+            :event="discountData.event"
+            class="block mt-12 lg:hidden"
+            v-if="currentTab === 'type1'"
+        />
         <div class="flex">
             <NuxtLink
                 v-if="currentTab === 'type1'"
@@ -58,7 +62,7 @@ import ShoppingCarSales from "~/views/template1/ShoppingCar/components/ShoppingC
 import ShoppingCarStep2FormGift from "~/views/template1/ShoppingCar/components/Step2Form/ShoppingCarStep2FormGift.vue";
 
 const route = useRoute();
-const emit = defineEmits(["selectProduct", "productCountUpdate"]);
+const emit = defineEmits(["update:selectProductIds", "productCountUpdate"]);
 interface Props {
     currentTab: string;
     discountData: {
@@ -66,7 +70,7 @@ interface Props {
         after_discount_amount: string;
         coupon_discount_amount: string;
         event: any[];
-    }
+    };
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -75,8 +79,8 @@ const props = withDefaults(defineProps<Props>(), {
         original_amount: 0,
         after_discount_amount: 0,
         coupon_discount_amount: 0,
-        event: []
-    }
+        event: [],
+    },
 });
 
 // 購物車選中商品 id
@@ -85,7 +89,7 @@ const selectProductIds = ref<number[]>([]);
 watch(
     () => selectProductIds.value,
     (val) => {
-        emit("selectProduct", val);
+        emit("update:selectProductIds", val);
     }
 );
 
@@ -93,7 +97,7 @@ watch(
     () => props.currentTab,
     (val) => {
         selectProductIds.value = [];
-        emit("selectProduct", []);
+        emit("update:selectProductIds", []);
     }
 );
 

@@ -69,7 +69,12 @@
                         </div>
                         <h2 class="mt-[8px] text-[16px] YaleSolisW-Bd font-medium text-gray-400">{{ detailData.name }}</h2>
                         <div class="flex mt-[8px] gap-[12px]">
-                            <p v-if="detailData.market_price > 0" class="text-gray-500 text-[20px] font-light line-through">NT${{ $utils().formatCurrency(detailData.market_price) }}</p>
+                            <p
+                                v-if="detailData.market_price > 0"
+                                class="text-gray-500 text-[20px] font-light line-through"
+                            >
+                                NT${{ $utils().formatCurrency(detailData.market_price) }}
+                            </p>
                             <p class="text-gray-800 text-[20px] font-medium YaleSolisW-Bd">NT${{ $utils().formatCurrency(detailData.price) }}</p>
                         </div>
                         <div class="mt-[16px] text-gray-900 list-disc list-inside text-[16px] mb-1 whitespace-pre-line">
@@ -187,7 +192,10 @@
                     </div>
                 </div>
             </div>
-            <div v-if="addOnPurchaseDiscounts.length > 0" class="w-full xl:w-[950px] mx-auto">
+            <div
+                v-if="addOnPurchaseDiscounts.length > 0"
+                class="w-full xl:w-[950px] mx-auto"
+            >
                 <ClientOnly>
                     <ProductAdditionalBuy
                         ref="productAdditionalBuyRef"
@@ -243,7 +251,10 @@
                             v-for="(item, index) in detailData.documents"
                             :key="index"
                         >
-                            <div v-if="item.path" class="flex items-center gap-2 underline underline-offset-2 group-hover:no-underline">
+                            <div
+                                v-if="item.path"
+                                class="flex items-center gap-2 underline underline-offset-2 group-hover:no-underline"
+                            >
                                 <el-icon><Document /></el-icon>
                                 {{ item.name }}
                             </div>
@@ -319,7 +330,7 @@ const route = useRoute();
 const router = useRouter();
 
 const userStore = useUserStore();
-const { isAuth } = storeToRefs(userStore);
+const isAuth = computed(() => userStore.isAuth);
 
 const shoppingCarStore = useShoppingCarStore();
 
@@ -498,7 +509,7 @@ const getData = async () => {
     }
 
     if (productDetail.value.addOnPurchaseDiscounts) {
-        addOnPurchaseDiscounts.value = productDetail.value.addOnPurchaseDiscounts.map((item:any) => {
+        addOnPurchaseDiscounts.value = productDetail.value.addOnPurchaseDiscounts.map((item: any) => {
             return {
                 id: item.id,
                 discount_id: item.discount_id,
@@ -655,30 +666,30 @@ const countAdd = () => {
 const downloadFile = (file: { url: string | URL | undefined }) => {
     window.open(file.url, "_blank");
 };
-const productAdditionalBuyRef = ref<any>(null)
+const productAdditionalBuyRef = ref<any>(null);
 /**
  * 加入購物車
  * @param isGoToShoppingCarPage 判斷是點選結帳按鈕 不跳 alert 錯誤
  */
 const addToShoppingCar = (isGoToShoppingCarPage: boolean = false) => {
-    const add_on_purchases: { discount_id: any; }[] = []
-    const selectAddData = productAdditionalBuyRef.value.addSelect.filter((item: { id: any; }) => productAdditionalBuyRef.value.selectedAdditionalProducts.includes(item.discount_id))
-    selectAddData.forEach((item: { is_single_variation: number; discount_id: any; count: number; id: any; spec: any; name: any; imgUrl: any; price: any; stock: any; }) => {
+    const add_on_purchases: { discount_id: any }[] = [];
+    const selectAddData = productAdditionalBuyRef.value.addSelect.filter((item: { id: any }) => productAdditionalBuyRef.value.selectedAdditionalProducts.includes(item.discount_id));
+    selectAddData.forEach((item: { is_single_variation: number; discount_id: any; count: number; id: any; spec: any; name: any; imgUrl: any; price: any; stock: any }) => {
         if (item.is_single_variation == 0) {
             add_on_purchases.push({
                 discount_id: item.discount_id,
                 quantity: item.count,
                 productable_id: item.id,
-                product_variationable_id: item.spec
-            })
+                product_variationable_id: item.spec,
+            });
         } else {
             add_on_purchases.push({
                 discount_id: item.discount_id,
                 quantity: item.count,
                 productable_id: item.id,
-            })
+            });
         }
-    })
+    });
     const productVariationable: { label: any; value: any }[] = [];
     currentOption.value.forEach((item: any, index: string | number) => {
         let value = "";
@@ -701,9 +712,8 @@ const addToShoppingCar = (isGoToShoppingCarPage: boolean = false) => {
         stock: detailData.value.stock,
         productVariationable: productVariationable,
         is_add_on_purchase: 0,
-        add_on_purchases: add_on_purchases
+        add_on_purchases: add_on_purchases,
     };
-    console.log("isGoToShoppingCarPage =>", isGoToShoppingCarPage);
     shoppingCarStore
         .addToCart(input)
         .then(() => {
@@ -711,7 +721,7 @@ const addToShoppingCar = (isGoToShoppingCarPage: boolean = false) => {
                 showDialog.value = true;
             }
             if (!isAuth.value) {
-                selectAddData.forEach((item: { is_single_variation: number; discount_id: any; count: number; id: any; spec: any; name: any; imgUrl: any; price: any; stock: any; }) => {
+                selectAddData.forEach((item: { is_single_variation: number; discount_id: any; count: number; id: any; spec: any; name: any; imgUrl: any; price: any; stock: any }) => {
                     const addInput: ShoppingCarInterface = {
                         id: item.discount_id,
                         productID: item.id,
@@ -726,11 +736,11 @@ const addToShoppingCar = (isGoToShoppingCarPage: boolean = false) => {
                         stock: item.stock,
                         parent_id: detailData.value.product_id,
                         productVariationable: item.productVariationable,
-                        is_add_on_purchase: 1
+                        is_add_on_purchase: 1,
                     };
-                    console.log(addInput)
-                    shoppingCarStore.addToCart(addInput)
-                })
+                    console.log(addInput);
+                    shoppingCarStore.addToCart(addInput);
+                });
             }
         })
         .catch((err) => {
@@ -751,11 +761,11 @@ const addToShoppingCar = (isGoToShoppingCarPage: boolean = false) => {
 /**
  * 導頁至購物車
  */
-function goToShoppingCar() {
+async function goToShoppingCar() {
     addToShoppingCar(true);
     router.push({
         name: "shopping-car-slug",
-        params: { slug: "一般商品購物車" },
+        params: { slug: "normal" },
         query: {
             tab: "type1",
         },
