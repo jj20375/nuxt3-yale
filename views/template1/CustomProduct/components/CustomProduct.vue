@@ -225,7 +225,7 @@ function closeDialog() {
 onMounted(() => {
     emit("update:currentProductId", props.currentProductId);
     emit(
-        "update:currentProductIdData",
+        "update:currentProductData",
         props.products.find((item) => item.id === props.currentProductId)
     );
 });

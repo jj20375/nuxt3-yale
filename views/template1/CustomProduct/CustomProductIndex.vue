@@ -815,7 +815,8 @@ const doorLimit = computed(() => {
  * 更換場景事件
  * @param id 場景 id
  */
-function changeCurrentBgId(id: number) {
+async function changeCurrentBgId(id: number) {
+    await init(id);
     currentBgId.value = id;
     const findData = plans.value.find((item: any) => item.id === currentBgId.value);
     if (findData) {
@@ -829,6 +830,7 @@ function changeCurrentBgId(id: number) {
         findPlans.value = { customPlans: [] };
         currentPlanId.value = null;
     }
+    console.log("currentPlanId =>", currentPlanId.value);
     if (currentPlanId.value) {
         changePlan(currentPlanId.value);
     }
@@ -846,6 +848,7 @@ function changePlan(id: number) {
         if (usePlan) {
             usePlan.CustomPlanProducts.forEach((item: any) => {
                 if (item.custom_product_type_id === CustomProductListIdEnum.door) {
+                    console.log("item.custom_product_type_id =>", item);
                     currentDoorId.value = item.id;
                     currentDoorData.value = doors.value.find((item2: any) => item2.id === item.id);
                     if (doors.value.find((item2: any) => item2.id === item.id)) {
@@ -929,7 +932,7 @@ function changePlan(id: number) {
     }
 }
 
-async function init(id: number) {
+async function init(id: number | null = null) {
     let loading: any = null;
     if (process.client) {
         loading = ElLoading.service({
@@ -941,8 +944,12 @@ async function init(id: number) {
     // 取得場景
     await getCustomProductSceneList();
     // 取得訂製門扇商品
-    await getCustomProductList(id);
-    currentBgId.value = Number(route.params.slug);
+    if (!id) {
+        await getCustomProductList(scenes.value[0].id);
+    } else {
+        await getCustomProductList(id);
+    }
+    currentBgId.value = scenes.value[0].id;
     doors.value = customProductList.value.doors;
     doorsOut.value = customProductList.value.doorsOut;
     locks.value = {
@@ -992,7 +999,7 @@ async function init(id: number) {
     }
 }
 
-await init(Number(route.params.slug));
+await init();
 
 watch(
     () => route.params.slug,

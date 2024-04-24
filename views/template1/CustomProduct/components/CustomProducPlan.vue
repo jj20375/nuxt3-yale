@@ -40,6 +40,13 @@ const props = defineProps({
 const currentPlanIdData = ref(props.currentPlanId);
 
 watch(
+    () => props.currentPlanId,
+    (val) => {
+        currentPlanIdData.value = val;
+        emit("onChangeCurrentPlanId", val);
+    }
+);
+watch(
     () => currentPlanIdData.value,
     (val) => {
         emit("onChangeCurrentPlanId", val);
