@@ -290,12 +290,6 @@ watch(
         await init();
     }
 );
-watch(
-    () => shoppingCar.value,
-    () => {
-        init();
-    }
-);
 
 const init = async () => {
     await getUserShopping();
