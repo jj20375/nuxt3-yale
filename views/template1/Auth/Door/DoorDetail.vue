@@ -738,11 +738,11 @@ const getData = async () => {
  */
 const setCustomShoppingCarData = (datas: any) => {
     const arr: ShoppingCarCustomInterface[] = [];
-    const result: ShoppingCarCustomInterface = {};
     datas.forEach((item: any) => {
-        const service: any = [];
+        const result: ShoppingCarCustomInterface = {};
         result.count = item.quantity;
         item.orderItems.forEach((item2: any, index: number) => {
+            const service: any = [];
             // 判斷是 門扇 的時候執行
             if (item2.productable.customProductType.id === CustomProductListIdEnum.door) {
                 const door = setDoorData(item2.productable, item2.productVariationable.values, item2.productVariationable.stock);
@@ -796,6 +796,7 @@ const setCustomShoppingCarData = (datas: any) => {
             }
             // 判斷是 下降壓條 的時候執行
             if (item2.productable.customProductType.id === CustomProductListIdEnum.other1) {
+                console.log(item2)
                 const data = setToolData(item2.productable);
                 result["currentOther1"] = {
                     label: "下降壓條",
@@ -826,10 +827,10 @@ const setCustomShoppingCarData = (datas: any) => {
                     label: "額外施作服務",
                 };
             }
+            if (result["otherServices"]) {
+                result["otherServices"].datas = service;
+            }
         });
-        if (result["otherServices"]) {
-            result["otherServices"].datas = service;
-        }
 
         // 門扇 庫存數量
         const doorStock = result.doorGroup.door.doorLimit;
@@ -984,7 +985,8 @@ function setToolData(data: any) {
         id: data.id,
         style: data.model,
         title: data.name,
-        name: data.brand,
+        brand: data.brand,
+        name: data.name,
         imgSrc: data.main_image,
         stock: data.stock,
         price: Number(data.price),

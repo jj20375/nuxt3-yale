@@ -134,10 +134,10 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
      */
     const setCustomShoppingCarData = (datas: any) => {
         const arr: ShoppingCarCustomInterface[] = [];
-        const result: ShoppingCarCustomInterface = {};
         datas.forEach((item: any) => {
-            const service: any = [];
+            const result: ShoppingCarCustomInterface = {};
             item.cartItems.forEach((item2: any, index: number) => {
+                const service: any = [];
                 // 判斷是 門扇 的時候執行
                 if (item2.productable.customProductType.id === CustomProductListIdEnum.door) {
                     const door = setDoorData(item2.productable, item2.productVariationable.values, item2.productVariationable.stock);
@@ -221,10 +221,10 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
                         label: "額外施作服務",
                     };
                 }
+                if (result["otherServices"]) {
+                    result["otherServices"].datas = service;
+                }
             });
-            if (result["otherServices"]) {
-                result["otherServices"].datas = service;
-            }
 
             // 門扇 庫存數量
             const doorStock = result.doorGroup.door.doorLimit;
@@ -380,7 +380,8 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
             id: data.id,
             style: data.model,
             title: data.name,
-            name: data.brand,
+            brand: data.brand,
+            name: data.name,
             imgSrc: data.main_image,
             stock: data.stock,
             price: Number(data.price),

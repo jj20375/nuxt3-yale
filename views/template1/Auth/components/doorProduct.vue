@@ -83,9 +83,8 @@
                                     :class="!['currentOther1', 'currentOther2', 'currentOther3'].includes(key) ? 'list-disc' : '-ml-2'"
                                     class="list-inside"
                                 >
-                                    {{ item2.name }}<span v-if="!['otherServices', 'currentOther3'].includes(key)">-</span>
-                                    <span v-if="key == 'currentOther3'">{{ item2.title }}</span>
-                                    <span v-else-if="key !== 'otherServices'">{{ item2.style }}</span>
+                                    {{ item2.name }}<span v-if="!['otherServices'].includes(key)">-</span>
+                                    <span v-if="key !== 'otherServices'">{{ item2.style }}</span>
                                 </li>
                             </ul>
                         </div>
