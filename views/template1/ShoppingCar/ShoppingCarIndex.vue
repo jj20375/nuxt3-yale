@@ -371,6 +371,20 @@ const productCountUpdate = async () => {
     }
 };
 
+watch(
+    () => selectProductIds.value,
+    (val) => {
+        if (userStore.isAuth && userStore.user.is_verified && selectProductIds.value.length > 0) {
+            discountCalculate();
+        } else {
+            discountData.value.coupon_discount_amount = 0;
+            discountData.value.discount_amount = 0;
+            shoppingCarStore.discount_gifts = [];
+            discountData.value.event = [];
+        }
+    }
+);
+
 const selectProduct = async (val: number[]) => {
     if (currentTab.value === "type2") {
         selectProductIds.value = val;
