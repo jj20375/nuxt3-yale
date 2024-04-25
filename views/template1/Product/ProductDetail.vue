@@ -671,7 +671,7 @@ const productAdditionalBuyRef = ref<any>(null);
  * 加入購物車
  * @param isGoToShoppingCarPage 判斷是點選結帳按鈕 不跳 alert 錯誤
  */
-const addToShoppingCar = (isGoToShoppingCarPage: boolean = false) => {
+const addToShoppingCar = async (isGoToShoppingCarPage: boolean = false) => {
     const add_on_purchases: { discount_id: any }[] = [];
     const selectAddData = productAdditionalBuyRef.value.addSelect.filter((item: { id: any }) => productAdditionalBuyRef.value.selectedAdditionalProducts.includes(item.discount_id));
     selectAddData.forEach((item: { is_single_variation: number; discount_id: any; count: number; id: any; spec: any; name: any; imgUrl: any; price: any; stock: any }) => {
@@ -762,7 +762,7 @@ const addToShoppingCar = (isGoToShoppingCarPage: boolean = false) => {
  * 導頁至購物車
  */
 async function goToShoppingCar() {
-    addToShoppingCar(true);
+    await addToShoppingCar(true);
     router.push({
         name: "shopping-car-slug",
         params: { slug: "normal" },

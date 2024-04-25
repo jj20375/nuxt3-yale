@@ -291,16 +291,6 @@ watch(
     }
 );
 
-const shoppingCarTemp = computed(() => {
-    return JSON.stringify(shoppingCar.value)
-})
-watch(
-    () => shoppingCarTemp,
-    () => {
-        init();
-    }
-);
-
 const init = async () => {
     await getUserShopping();
 
