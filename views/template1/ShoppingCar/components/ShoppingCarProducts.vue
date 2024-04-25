@@ -290,8 +290,12 @@ watch(
         await init();
     }
 );
+
+const shoppingCarTemp = computed(() => {
+    return JSON.stringify(shoppingCar.value)
+})
 watch(
-    () => shoppingCar.value,
+    () => shoppingCarTemp,
     () => {
         init();
     }
