@@ -16,7 +16,7 @@
                             class="w-[100px] sm:w-[120px] mx-auto"
                             :src="initializationData?.site.site_logo"
                         />
-                        <p class="text-[20px] mt-[24px] sm:mt-[40px] YaleSolisW-Bd font-medium">{{ initializationData?.site.meta_title }}</p>
+                        <p class="text-[20px] mt-[24px] sm:mt-[40px] YaleSolisW-Bd font-medium">{{ initializationData?.site.site_name }}</p>
                         <p class="text-[16px] mt-[12px]"><a :href="`tel:${initializationData?.site.contact_phone}`">{{ initializationData?.site.contact_phone }}</a></p>
                         <p class="text-[16px] mt-[4px]"><a :href="`mailto:${initializationData?.site.contact_email}`">{{ initializationData?.site.contact_email }}</a></p>
                         <ul class="flex justify-center mt-[40px]">
