@@ -332,6 +332,10 @@ export const receiptStatus = (status: string) => {
             return "已開立";
         case "cancelled":
             return "已作廢";
+        case "issued_failed":
+            return "開立失敗";
+        case "cancelled_failed":
+            return "作廢失敗";
         default:
             return "";
     }

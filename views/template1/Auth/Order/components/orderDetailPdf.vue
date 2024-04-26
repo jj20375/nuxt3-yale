@@ -53,7 +53,11 @@
                 class="d-inline-block ms-8"
                 style="width: calc(100% - 150px); vertical-align: top"
             >
-                <div class="text-bold">{{ product.title }}</div>
+                <div style="display: flex; align-items: center; gap: 10px">
+                    <div v-if="product.is_add_on_purchase == 1" style="border: 1px solid var(--Neutral-2-Dark, #575658); padding: 2px 6px; color: var(--Neutral-2-Dark, #575658); font-size: 12px; font-style: normal; font-weight: 400; line-height: 150%; /* 13.5px */ letter-spacing: 0.27px">加價購</div>
+                    <div v-if="product.is_discount_gift == 1" style="border: 1px solid var(--Neutral-2-Dark, #575658); padding: 2px 6px; color: var(--Neutral-2-Dark, #575658); font-size: 12px; font-style: normal; font-weight: 400; line-height: 150%; /* 13.5px */ letter-spacing: 0.27px">滿額贈</div>
+                    <div class="text-bold">{{ product.name }}</div>
+                </div>
                 <table class="page-table">
                     <tbody>
                         <tr v-for="(item, index) in product.productVariationable" :key="index">
@@ -66,10 +70,6 @@
                         </tr>
                     </tbody>
                 </table>
-                <div style="display: flex; align-items: center; gap: 10px">
-                    <div v-if="product.is_add_on_purchase == 1" style="border: 1px solid var(--Neutral-2-Dark, #575658); padding: 2px 6px; color: var(--Neutral-2-Dark, #575658); font-size: 12px; font-style: normal; font-weight: 400; line-height: 150%; /* 13.5px */ letter-spacing: 0.27px">加價購</div>
-                    <div v-if="product.is_discount_gift == 1" style="border: 1px solid var(--Neutral-2-Dark, #575658); padding: 2px 6px; color: var(--Neutral-2-Dark, #575658); font-size: 12px; font-style: normal; font-weight: 400; line-height: 150%; /* 13.5px */ letter-spacing: 0.27px">滿額贈</div>
-                </div>
             </div>
             <div class="divider"></div>
         </div>
