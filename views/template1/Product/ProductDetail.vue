@@ -737,6 +737,7 @@ const addToShoppingCar = async (isGoToShoppingCarPage: boolean = false) => {
                         parent_id: detailData.value.product_id,
                         productVariationable: item.productVariationable,
                         is_add_on_purchase: 1,
+                        max: count.value
                     };
                     console.log(addInput);
                     shoppingCarStore.addToCart(addInput);
