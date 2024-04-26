@@ -57,9 +57,14 @@
                     <div v-if="product.is_add_on_purchase == 1" style="border: 1px solid var(--Neutral-2-Dark, #575658); padding: 2px 6px; color: var(--Neutral-2-Dark, #575658); font-size: 12px; font-style: normal; font-weight: 400; line-height: 150%; /* 13.5px */ letter-spacing: 0.27px">加價購</div>
                     <div v-if="product.is_discount_gift == 1" style="border: 1px solid var(--Neutral-2-Dark, #575658); padding: 2px 6px; color: var(--Neutral-2-Dark, #575658); font-size: 12px; font-style: normal; font-weight: 400; line-height: 150%; /* 13.5px */ letter-spacing: 0.27px">滿額贈</div>
                     <div class="text-bold">{{ product.name }}</div>
+                    <div class="text-bold ms-auto">NT${{ $utils().formatCurrency(product.totalPrice) }}</div>
                 </div>
                 <table class="page-table">
                     <tbody>
+                        <tr>
+                            <td>型號</td>
+                            <td>{{ product.model }}</td>
+                        </tr>
                         <tr v-for="(item, index) in product.productVariationable" :key="index">
                             <td>{{item.label}}</td>
                             <td>{{ item.value }}</td>

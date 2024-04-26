@@ -408,6 +408,7 @@ const getData = async () => {
             }
             orderData.value.products.push({
                 name: item.productable.name,
+                model: item.productable.model,
                 price: "$" + $utils().formatCurrency(item.price),
                 totalPrice: item.total_amount,
                 productVariationable: productVariationable,
