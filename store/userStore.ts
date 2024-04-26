@@ -104,6 +104,51 @@ export const useUserStore = defineStore({
                 }
             }
         },
+        // 重新取得使用者資料
+        async reGetUserProfile() {
+            const { $api, $shoppingCarService, $utils }: any = useNuxtApp();
+            const shoppingCarStore = useShoppingCarStore();
+
+            // 判斷有使用者資料時 無需請求
+            if (Cookies.get("token")) {
+                try {
+                    this.loading = true;
+                    const { data, error }: { data: any; error: any } = await $api().GetUserProfileAPI();
+                    this.loading = false;
+                    // 判斷 api 錯誤
+                    if (error.value) {
+                        console.log("取得使用者資料失敗=>", error);
+                        this.setUser({});
+                        this.setIsAuth(false);
+                        // ElMessage({
+                        //     type: "error",
+                        //     message: "取得使用者資料失敗",
+                        // });
+                        return;
+                    }
+                    if (data.value === null) {
+                        data.value = {};
+                    }
+                    this.setUser(data.value.data);
+                    this.setIsAuth(true);
+                    const shoppingCar = $shoppingCarService().getShoppingCar();
+                    const customProductShoppingCar = $shoppingCarService().getCustomProductShoppingCar();
+
+                    // 判斷購物車有資料時無需請求
+                    if (!shoppingCar) {
+                        await shoppingCarStore.getUserShopping();
+                    }
+                    // 判斷訂製商品購物車有資料時無需請求
+                    if (!customProductShoppingCar) {
+                        await shoppingCarStore.getUserCustomShoppingCar();
+                    }
+                    // shoppingCarStore.syncCustomCart();
+                } catch (err) {
+                    this.removeLoginData();
+                    console.log("GetUserProfileAPI => ", err);
+                }
+            }
+        },
         // 登出使用者
         async logOutUser(userId: string | null) {
             const { $api }: any = useNuxtApp();

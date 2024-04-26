@@ -24,5 +24,5 @@
 import { Vue3Lottie } from "vue3-lottie";
 import { useUserStore } from "~/store/userStore";
 const userStore = useUserStore();
-userStore.getUserProfile();
+userStore.reGetUserProfile();
 </script>

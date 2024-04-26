@@ -196,7 +196,7 @@ async function signin() {
                     await shoppingCarStore.syncCart();
                     await shoppingCarStore.syncCustomCart();
 
-                    userStore.getUserProfile();
+                    userStore.reGetUserProfile();
                     router.push({ name: "auth-panel-slug", params: { slug: "會員中心" } });
                 } else {
                     ElMessage({

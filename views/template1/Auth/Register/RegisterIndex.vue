@@ -530,7 +530,7 @@ async function login(form: { email: string; password: string }) {
             await shoppingCarStore.syncCustomCart();
 
             // 取得使用者資料
-            await userStore.getUserProfile();
+            await userStore.reGetUserProfile();
         } else {
             ElMessage({
                 type: "error",

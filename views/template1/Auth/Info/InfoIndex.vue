@@ -255,7 +255,7 @@ async function onSubmit() {
                         type: "success",
                         message: `修改成功`,
                     });
-                    userStore.getUserProfile();
+                    userStore.reGetUserProfile();
                 } else {
                     ElMessage({
                         type: "error",

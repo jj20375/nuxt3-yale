@@ -220,7 +220,7 @@ async function onSubmit() {
                     userStore.setIsAuth(true);
                     await shoppingCarStore.syncCart();
                     await shoppingCarStore.syncCustomCart();
-                    await userStore.getUserProfile();
+                    await userStore.reGetUserProfile();
                     emit("onCloseDialog", false);
                 } else {
                     ElMessage({
@@ -267,7 +267,7 @@ async function getMessage(e: any) {
             userStore.setIsAuth(true);
             await shoppingCarStore.syncCart();
             await shoppingCarStore.syncCustomCart();
-            await userStore.getUserProfile();
+            await userStore.reGetUserProfile();
 
             emit("onCloseDialog", false);
             loading.close();
