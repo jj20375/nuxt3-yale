@@ -691,7 +691,7 @@ async function addToShoppingCar() {
     try {
         if (isAuth.value) {
             // 加入訂製門扇 api
-            await shoppingCarStore.addToCustomCart(data, count.value);
+            await shoppingCarStore.addToCustomCart(data, count.value, currentBgData.value.text);
         } else {
             if (process.client) {
                 // 加入 訂製門扇購物車

@@ -64,7 +64,7 @@
                 class="d-inline-block ms-8"
                 style="width: calc(100% - 150px); vertical-align: top"
             >
-                <div class="text-bold">{{product.name}}</div>
+                <div class="text-bold">{{product.custom_scene}}</div>
                 <table class="page-table">
                     <tbody>
                         <tr

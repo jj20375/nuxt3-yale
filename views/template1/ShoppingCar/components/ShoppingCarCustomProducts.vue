@@ -19,7 +19,7 @@
                 </div>
                 <div class="flex-1">
                     <div class="flex w-full text-gray-800 mb-[12px] gap-4">
-                        <h3 class="YaleSolisW-Bd font-medium text-[16px] sm:text-[18px] flex-1">訂製-{{ product.name }}</h3>
+                        <h3 class="YaleSolisW-Bd font-medium text-[16px] sm:text-[18px] flex-1">訂製-{{ product.custom_scene }}</h3>
                         <div class="flex flex-col items-end gap-2 cursor-pointer h-fit">
                             <p class="hidden font-medium sm:block YaleSolisW-Bd">NT$ {{ $utils().formatCurrency(product.singlePrice * product.count) }}</p>
                         </div>

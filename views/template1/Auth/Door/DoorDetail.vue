@@ -862,6 +862,7 @@ const setCustomShoppingCarData = (datas: any) => {
             doorLimit: _Min(stocks),
             ...result,
             name: result.doorGroup.door.title,
+            custom_scene: item.custom_scene,
         });
     });
     orderData.value.products = arr;

@@ -10,7 +10,7 @@
             :src="product.imgSrc"
         />
         <div class="flex-1">
-            <h5 class="text-[18px] font-bold mb-4 YaleSolisW-Bd">{{ product.name }}</h5>
+            <h5 class="text-[18px] font-bold mb-4 YaleSolisW-Bd">{{ product.custom_scene }}</h5>
             <template v-if="isDoor && isMobile">
                 <div class="flex items-center justify-end gap-2 mb-8 cursor-pointer h-fit">
                     <NuxtImg

@@ -256,6 +256,7 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
                 doorLimit: _Min(stocks),
                 ...result,
                 name: result.doorGroup.door.title,
+                custom_scene: item.custom_scene,
             });
         });
         console.log("arr =>", arr);
