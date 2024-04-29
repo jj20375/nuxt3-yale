@@ -5,7 +5,7 @@
             ref="layoutRef"
             :class="customClass"
         >
-            <Header />
+            <Header v-if="!initializationStore.initializationData.site.maintenance_mode" />
             <!-- test layout2
         <el-button
             type="primary"
@@ -14,7 +14,7 @@
         >
         <el-button type="primary">Primary</el-button> -->
             <slot />
-            <Footer v-if="showFooter" />
+            <Footer v-if="showFooter && !initializationStore.initializationData.site.maintenance_mode" />
         </div>
     </div>
 </template>

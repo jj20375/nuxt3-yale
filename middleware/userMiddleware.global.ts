@@ -20,6 +20,13 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
             }
             const initialData = (data.value as any).data;
             initializationStore.initializationData = initialData;
+            if (initializationStore.initializationData.site.maintenance_mode) {
+                if (to.name !== 'maintenance') {
+                    return navigateTo(
+                        "/maintenance", { external: true}
+                    );
+                }
+            }
 
             useHead({
                 title: initializationStore.initializationData.site.meta_title,
@@ -54,10 +61,13 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
         }
     }
     // 判斷有值時 不請求
-    if (!initializationStore.initializationData) {
-        // 預先加載初始化資料
-        await getInitializationData();
-    }
+    await getInitializationData();
+    // if (!initializationStore.initializationData) {
+    //     // 預先加載初始化資料
+    //     await getInitializationData();
+    // } else {
+    //     console.log(initializationStore.initializationData)
+    // }
 
     if (token.value) {
         return userStore.getUserProfile();
