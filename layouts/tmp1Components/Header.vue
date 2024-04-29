@@ -42,7 +42,7 @@
                     :key="key"
                 >
                     <div
-                        v-if="menu.submenus.length > 0"
+                        v-if="menu.submenus.length > 0 && key !== 'menu9'"
                         @mouseover="isLargePad ? null : changeMenu(key)"
                         @mouseleave="closeMenu"
                         @click="isLargePad ? toggleMenu(key) : null"
@@ -115,6 +115,124 @@
                             </Vue3SlideUpDown>
                         </div>
                     </div>
+                    <div
+                        v-else-if="key === 'menu9'"
+                        id="menu9"
+                    >
+                        <el-dropdown
+                            ref="dropdownOtherRefDom"
+                            trigger="click"
+                            :hide-on-click="false"
+                            popper-class="otherMenu-el-dropdwon"
+                        >
+                            <span class="el-dropdown-link">
+                                {{ menu.title }}
+                                <el-icon
+                                    class="el-icon--right"
+                                    :class="menuStatus[key] ? 'rotate-180' : 'rotate-0'"
+                                >
+                                    <arrow-down />
+                                </el-icon>
+                            </span>
+                            <template #dropdown>
+                                <el-dropdown-menu>
+                                    <el-dropdown-item
+                                        :command="submenu.id"
+                                        v-for="(submenu, subIndex) in menu.submenus"
+                                        :key="subIndex"
+                                        class="submenu-item"
+                                    >
+                                        <div
+                                            v-if="submenu.submenus.length === 0"
+                                            @click="otherMenuParentRouter(submenu.url)"
+                                            class="text-base text-gray-800 xl:px-3 2xl:px-4 3xl:px-5"
+                                        >
+                                            {{ submenu.text }}
+                                        </div>
+                                        <div
+                                            v-else
+                                            @mouseover="isLargePad ? null : changeMenu(submenu.id)"
+                                            @mouseleave="closeMenu"
+                                            @click="isLargePad ? toggleMenu(submenu.id) : null"
+                                            class="text-base text-gray-800 transition-all duration-300 cursor-pointer xl:px-3 2xl:px-4 3xl:px-5 hover:text-gray-500"
+                                            :class="isMenuFixed ? 'xl:py-[23px]' : 'xl:py-[33px]'"
+                                        >
+                                            {{ submenu.text }}
+                                            <div
+                                                v-if="!isLargePad"
+                                                class="absolute left-0 z-50 w-full bg-white"
+                                                :class="isMenuFixed ? 'top-[66px]' : 'top-[86px]'"
+                                            >
+                                                <div
+                                                    v-if="currentMenu === submenu.id && showSubMenu"
+                                                    class="border-t border-gray-300 shadow-header md:h-[300px]"
+                                                >
+                                                    <ul
+                                                        class="container flex items-center justify-center min-h-[300px] flex-wrap text-center"
+                                                        :class="[submenu.marginSize, isMenuFixed ? 'py-[40px]' : 'py-[60px]']"
+                                                    >
+                                                        <li
+                                                            v-for="(submenu2, subIndex2) in submenu.submenus"
+                                                            :key="subIndex2"
+                                                            class="submenu-item"
+                                                            :class="[submenu.key === 'menu5' || submenu.key === 'menu7' ? 'hover-scale' : submenu.key === 'menu6' ? 'hover-shadow' : submenu.key === 'menu4' ? 'hover-fade' : '']"
+                                                        >
+                                                            <NuxtLink :to="submenu2.url">
+                                                                <div class="image-wrap">
+                                                                    <NuxtImg
+                                                                        :class="submenu.key !== 'menu4' ? 'w-[120px] aspect-square object-cover' : 'w-[400px] aspect-[20/9] rounded-xl object-cover'"
+                                                                        :src="submenu2.imgSrc"
+                                                                    />
+                                                                </div>
+                                                                <div class="mt-[20px]">{{ submenu2.text }}</div>
+                                                            </NuxtLink>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div v-else>
+                                                <Vue3SlideUpDown
+                                                    v-model="menuStatus[submenu.key]"
+                                                    :duration="300"
+                                                >
+                                                    <div class="bg-gray-100 submenu-list">
+                                                        <ul class="py-[12px] text-center duration-300 delay-150 transition-all">
+                                                            <li
+                                                                v-for="(submenu2, subIndex2) in submenu.submenus"
+                                                                :key="subIndex2"
+                                                                class="py-[12px]"
+                                                            >
+                                                                <NuxtLink :to="submenu2.url">
+                                                                    <div>{{ submenu2.text }}</div>
+                                                                </NuxtLink>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </Vue3SlideUpDown>
+                                            </div>
+                                        </div>
+
+                                        <!-- <ul v-else>
+                                            <li></li>
+                                        </ul> -->
+                                    </el-dropdown-item>
+                                </el-dropdown-menu>
+                            </template>
+                        </el-dropdown>
+                        <!-- <div class="flex justify-center py-5 xl:py-0">
+                            {{ menu.title }}
+                            <div
+                                class="ml-3 transition-all duration-300 xl:ml-0"
+                                :class="menuStatus[key] ? 'rotate-180' : 'rotate-0'"
+                            >
+                                <font-awesome-icon
+                                    v-if="isLargePad"
+                                    class=""
+                                    :icon="['fas', 'chevron-down']"
+                                />
+                            </div>
+                        </div> -->
+                    </div>
                     <div v-else>
                         <div
                             class="relative py-5 text-gray-800 transition-all duration-300 cursor-pointer xl:px-3 2xl:px-5 hover:text-gray-500"
@@ -123,7 +241,7 @@
                         >
                             <template v-if="key === 'menu1'">
                                 <div class="flex items-center justify-center text-center xl:justify-start">
-                                    <div class="title">{{ menu.title }}</div>
+                                    <div class="font-bold title">{{ menu.title }}</div>
                                     <div class="image-wrap">
                                         <NuxtImg src="/img/icons/door.svg" />
                                     </div>
@@ -184,6 +302,8 @@ import { useInitializationStore } from "~/store/initializationStore";
 import { useUserStore } from "~/store/userStore";
 import { useShoppingCarStore } from "~/store/shoppingCarStore";
 import { storeToRefs } from "pinia";
+import type { DropdownInstance } from "element-plus";
+
 const { $shoppingCarService } = useNuxtApp();
 const $config = useRuntimeConfig();
 const router = useRouter();
@@ -193,6 +313,7 @@ const initializationStore = useInitializationStore();
 const userStore = useUserStore();
 const shoppingCarStore = useShoppingCarStore();
 
+const dropdownOtherRefDom = ref<DropdownInstance>();
 const { isAuth } = storeToRefs(userStore);
 // 一般商品購物車
 const { shoppingCar } = storeToRefs(shoppingCarStore);
@@ -313,7 +434,7 @@ const menus = ref<any>({
         title: "展售門市",
         url: {
             name: "store-slug-id",
-            params: { slug: "展售門市", id: "id1" },
+            params: { slug: "stores", id: "id1" },
         },
         marginSize: "gap-x-[80px] gap-y-[20px]",
         submenus: stronghold_categories,
@@ -322,7 +443,7 @@ const menus = ref<any>({
         title: "裝修實績",
         url: {
             name: "sample-slug-id",
-            params: { slug: "裝修實績", id: "1" },
+            params: { slug: "samples", id: "1" },
         },
         marginSize: "gap-x-[40px] gap-y-[20px]",
         submenus: renovation_categories,
@@ -387,6 +508,54 @@ const menus = ref<any>({
         },
         submenus: [],
     },
+    menu9: {
+        title: "其它",
+        url: {},
+        submenus: [
+            {
+                id: "id1",
+                text: "關於我們",
+                key: "menu2",
+                url: {
+                    name: "about-slug",
+                    params: { slug: "1" },
+                },
+                submenus: [],
+            },
+            {
+                id: "id2",
+                text: "最新消息",
+                key: "menu3",
+                url: {
+                    name: "news-slug-id",
+                    params: { slug: "post", id: "4" },
+                },
+                submenus: [],
+            },
+            {
+                id: "id3",
+                text: "裝修實績",
+                key: "menu4",
+                url: {
+                    name: "sample-slug-id",
+                    params: { slug: "sample", id: "1" },
+                },
+                marginSize: "gap-x-[40px] gap-y-[20px]",
+                submenus: renovation_categories,
+            },
+            {
+                id: "id4",
+                text: "展售門市",
+                key: "menu5",
+                url: {
+                    name: "store-slug-id",
+                    params: { slug: "stores", id: "id1" },
+                },
+                marginSize: "gap-x-[80px] gap-y-[20px]",
+                submenus: stronghold_categories,
+            },
+        ],
+    },
 });
 
 // 右側 icon
@@ -428,35 +597,35 @@ const rightIcons = computed(() => {
 
 // 社群資料
 const socialMedia = computed(() => {
-    const arr = []
+    const arr = [];
 
     if (initializationData.value.site.social_facebook) {
         arr.push({
             name: IconFacebook,
             url: initializationData.value.site.social_facebook,
-        })
+        });
     }
     if (initializationData.value.site.social_line) {
         arr.push({
             name: IconLine,
             url: initializationData.value.site.social_line,
-        })
+        });
     }
     if (initializationData.value.site.social_instagram) {
         arr.push({
             name: IconInstagram,
             url: initializationData.value.site.social_instagram,
-        })
+        });
     }
     if (initializationData.value.site.social_youtube) {
         arr.push({
             name: IconYoutube,
             url: initializationData.value.site.social_youtube,
-        })
+        });
     }
 
-    return arr
-})
+    return arr;
+});
 
 function toSocialMedia(socialMedia: { url: string | URL | undefined }) {
     if (socialMedia.url) {
@@ -504,6 +673,13 @@ function handleGlobalClick(event: MouseEvent) {
     }
 }
 
+/**
+ * 其他選項按鈕上層選單
+ */
+function otherMenuParentRouter(routerOption: any) {
+    router.push(routerOption);
+}
+
 onMounted(() => {
     if (process.client) {
         shoppingCarStore.setShoppingCar($shoppingCarService().getShoppingCar() ?? []);
@@ -517,6 +693,23 @@ onBeforeUnmount(() => {
 });
 </script>
 
+<style lang="scss">
+.otherMenu-el-dropdwon {
+    @apply 2xl:w-[1200px] w-full;
+    .el-dropdown-menu {
+        @apply 2xl:flex block 2xl:text-left text-center;
+    }
+    .el-dropdown-menu__item {
+        @apply 2xl:flex block;
+    }
+    .el-scrollbar {
+        @apply overflow-visible;
+    }
+    .el-scrollbar__wrap {
+        @apply overflow-visible;
+    }
+}
+</style>
 <style lang="scss" scoped>
 :deep {
     .el-dropdown {
