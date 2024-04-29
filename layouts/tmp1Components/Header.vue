@@ -116,13 +116,12 @@
                         </div>
                     </div>
                     <div
-                        v-else-if="key === 'menu9'"
+                        v-else-if="key === 'menu9' && !isLargePad"
                         id="menu9"
                     >
                         <el-dropdown
                             ref="dropdownOtherRefDom"
                             trigger="click"
-                            :hide-on-click="false"
                             popper-class="otherMenu-el-dropdwon"
                         >
                             <span class="el-dropdown-link">
@@ -159,7 +158,6 @@
                                         >
                                             {{ submenu.text }}
                                             <div
-                                                v-if="!isLargePad"
                                                 class="absolute left-0 z-50 w-full bg-white"
                                                 :class="isMenuFixed ? 'top-[66px]' : 'top-[86px]'"
                                             >
@@ -190,31 +188,7 @@
                                                     </ul>
                                                 </div>
                                             </div>
-                                            <div v-else>
-                                                <Vue3SlideUpDown
-                                                    v-model="menuStatus[submenu.key]"
-                                                    :duration="300"
-                                                >
-                                                    <div class="bg-gray-100 submenu-list">
-                                                        <ul class="py-[12px] text-center duration-300 delay-150 transition-all">
-                                                            <li
-                                                                v-for="(submenu2, subIndex2) in submenu.submenus"
-                                                                :key="subIndex2"
-                                                                class="py-[12px]"
-                                                            >
-                                                                <NuxtLink :to="submenu2.url">
-                                                                    <div>{{ submenu2.text }}</div>
-                                                                </NuxtLink>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </Vue3SlideUpDown>
-                                            </div>
                                         </div>
-
-                                        <!-- <ul v-else>
-                                            <li></li>
-                                        </ul> -->
                                     </el-dropdown-item>
                                 </el-dropdown-menu>
                             </template>
@@ -233,7 +207,7 @@
                             </div>
                         </div> -->
                     </div>
-                    <div v-else>
+                    <div v-else-if="key !== 'menu9'">
                         <div
                             class="relative py-5 text-gray-800 transition-all duration-300 cursor-pointer xl:px-3 2xl:px-5 hover:text-gray-500"
                             :class="[key === 'menu1' ? 'has-door' : '', isMenuFixed ? 'xl:py-[23px]' : 'xl:py-[33px]']"
@@ -695,7 +669,7 @@ onBeforeUnmount(() => {
 
 <style lang="scss">
 .otherMenu-el-dropdwon {
-    @apply 2xl:w-[1200px] w-full;
+    @apply 2xl:w-[1200px] w-[300px];
     .el-dropdown-menu {
         @apply 2xl:flex block 2xl:text-left text-center;
     }
