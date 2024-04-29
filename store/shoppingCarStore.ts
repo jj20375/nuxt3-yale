@@ -454,11 +454,12 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
     /**
      * 新增 訂製門扇購物車
      */
-    const addToCustomCart = (data: ShoppingCarCustomInterface, count: number) => {
+    const addToCustomCart = (data: ShoppingCarCustomInterface, count: number, custom_scene: string) => {
         return new Promise(async (resolve, reject) => {
             const setCustomCarDatas: CustomCarItem = {
                 items: [],
                 quantity: count,
+                custom_scene: custom_scene
             };
             setCustomCarDatas.items.push({
                 productable_id: data.doorGroup.door.id,
@@ -649,7 +650,7 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
         const shoppinCar = $shoppingCarService().getCustomProductShoppingCar();
         if (!$utils().isEmpty(shoppinCar)) {
             shoppinCar.forEach(async (item: ShoppingCarCustomInterface, index: number) => {
-                await addToCustomCart(item, item.count);
+                await addToCustomCart(item, item.count, item.custom_scene);
                 $shoppingCarService().removeSingleShoppingCarProduct(index);
             });
         }

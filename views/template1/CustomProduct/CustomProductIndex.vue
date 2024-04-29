@@ -606,6 +606,7 @@ async function addToShoppingCar() {
     const data: ShoppingCarCustomInterface = {
         id: uuidv4(),
         name: currentBgData.value.text,
+        custom_scene: currentBgData.value.text,
         imgSrc: currentDoorData.value.imgSrc,
         count: count.value,
 
