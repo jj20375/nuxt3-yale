@@ -21,10 +21,8 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
             const initialData = (data.value as any).data;
             initializationStore.initializationData = initialData;
             if (initializationStore.initializationData.site.maintenance_mode) {
-                if (to.name !== 'maintenance') {
-                    return navigateTo(
-                        "/maintenance", { external: true}
-                    );
+                if (to.name !== "maintenance") {
+                    return navigateTo("/maintenance", { external: true });
                 }
             }
 

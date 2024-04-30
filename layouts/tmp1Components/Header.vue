@@ -42,7 +42,7 @@
                     :key="key"
                 >
                     <div
-                        v-if="menu.submenus.length > 0 && key !== 'menu9'"
+                        v-if="menu.submenus.length > 0"
                         @mouseover="isLargePad ? null : changeMenu(key)"
                         @mouseleave="closeMenu"
                         @click="isLargePad ? toggleMenu(key) : null"
@@ -79,7 +79,7 @@
                                         v-for="(submenu, subIndex) in menu.submenus"
                                         :key="subIndex"
                                         class="submenu-item"
-                                        :class="[key === 'menu5' || key === 'menu7' ? 'hover-scale' : key === 'menu6' ? 'hover-shadow' : key === 'menu4' ? 'hover-fade' : '']"
+                                        :class="[key === 'menu5' || key === 'menu7' || key === 'menu9' ? 'hover-scale' : key === 'menu6' ? 'hover-shadow' : key === 'menu4' ? 'hover-fade' : '']"
                                     >
                                         <NuxtLink :to="submenu.url">
                                             <div class="image-wrap">
@@ -115,7 +115,7 @@
                             </Vue3SlideUpDown>
                         </div>
                     </div>
-                    <div
+                    <!-- <div
                         v-else-if="key === 'menu9' && !isLargePad"
                         id="menu9"
                     >
@@ -193,7 +193,7 @@
                                 </el-dropdown-menu>
                             </template>
                         </el-dropdown>
-                        <!-- <div class="flex justify-center py-5 xl:py-0">
+                        <div class="flex justify-center py-5 xl:py-0">
                             {{ menu.title }}
                             <div
                                 class="ml-3 transition-all duration-300 xl:ml-0"
@@ -205,9 +205,9 @@
                                     :icon="['fas', 'chevron-down']"
                                 />
                             </div>
-                        </div> -->
-                    </div>
-                    <div v-else-if="key !== 'menu9'">
+                        </div>
+                    </div> -->
+                    <div v-else>
                         <div
                             class="relative py-5 text-gray-800 transition-all duration-300 cursor-pointer xl:px-3 2xl:px-5 hover:text-gray-500"
                             :class="[key === 'menu1' ? 'has-door' : '', isMenuFixed ? 'xl:py-[23px]' : 'xl:py-[33px]']"
@@ -302,6 +302,7 @@ import IconLine from "~/assets/img/icons/medias/icon-black-3.svg";
 import IconYoutube from "~/assets/img/icons/medias/icon-black-4.svg";
 import IconMenu from "~/assets/img/icons/menu.svg";
 
+const { $api } = useNuxtApp();
 const { isLargePad, isDesktop } = useWindowResize();
 
 // 手機版時判斷是否顯示選單
@@ -370,6 +371,60 @@ initializationData.value.site.product_categories.forEach((item: { id: any; menu_
     });
 });
 
+// 最新消息文章分類
+const newsTypes = ref<any>([]);
+/**
+ * 取得裝修實績分類
+ */
+async function getNewsType() {
+    try {
+        const { data } = await $api().ArticalTypeAPI({ type: "news" });
+        console.log("home sampleType api 123 => ", data.value);
+
+        const rows = (data.value as any).data;
+
+        rows.forEach((item: { name: any; id: any; seoSetting: any }) => {
+            newsTypes.value.push({
+                text: item.name,
+                id: item.id,
+                url: {
+                    params: { slug: item.seoSetting.custom_url, id: item.id },
+                    name: "news-slug-id",
+                },
+            });
+        });
+    } catch (err) {}
+}
+await getNewsType();
+
+// 裝修時機文章分類
+const sampleTypes = ref<any>([]);
+/**
+ * 取得裝修實績分類
+ */
+async function getSampleType() {
+    try {
+        const { data } = await $api().ArticalTypeAPI({ type: "renovation" });
+
+        const rows = (data.value as any).data;
+
+        rows.forEach((item: { name: any; id: any; seoSetting: any }) => {
+            sampleTypes.value.push({
+                text: item.name,
+                id: item.id,
+                url: {
+                    params: { slug: item.seoSetting.custom_url, id: item.id },
+                    name: "sample-slug-id",
+                },
+            });
+        });
+        console.log("sampleTypes.value =>", sampleTypes.value);
+    } catch (err) {
+        console.log("getSampleType err =>", err);
+    }
+}
+await getSampleType();
+
 const menus = ref<any>({
     menu1: {
         title: "訂製您的專屬門扇",
@@ -379,22 +434,22 @@ const menus = ref<any>({
         },
         submenus: [],
     },
-    menu2: {
-        title: "關於我們",
-        url: {
-            name: "about-slug",
-            params: { slug: "1" },
-        },
-        submenus: [],
-    },
-    menu3: {
-        title: "最新消息",
-        url: {
-            name: "news-slug-id",
-            params: { slug: "post", id: "4" },
-        },
-        submenus: [],
-    },
+    // menu2: {
+    //     title: "關於我們",
+    //     url: {
+    //         name: "about-slug",
+    //         params: { slug: "1" },
+    //     },
+    //     submenus: [],
+    // },
+    // menu3: {
+    //     title: "最新消息",
+    //     url: {
+    //         name: "news-slug-id",
+    //         params: { slug: "post", id: "4" },
+    //     },
+    //     submenus: [],
+    // },
     menu6: {
         title: "產品資訊",
         url: {
@@ -404,24 +459,24 @@ const menus = ref<any>({
         marginSize: "gap-x-[40px] gap-y-[20px]",
         submenus: product_categories,
     },
-    menu5: {
-        title: "展售門市",
-        url: {
-            name: "store-slug-id",
-            params: { slug: "stores", id: "id1" },
-        },
-        marginSize: "gap-x-[80px] gap-y-[20px]",
-        submenus: stronghold_categories,
-    },
-    menu4: {
-        title: "裝修實績",
-        url: {
-            name: "sample-slug-id",
-            params: { slug: "samples", id: "1" },
-        },
-        marginSize: "gap-x-[40px] gap-y-[20px]",
-        submenus: renovation_categories,
-    },
+    // menu5: {
+    //     title: "展售門市",
+    //     url: {
+    //         name: "store-slug-id",
+    //         params: { slug: "stores", id: "id1" },
+    //     },
+    //     marginSize: "gap-x-[80px] gap-y-[20px]",
+    //     submenus: stronghold_categories,
+    // },
+    // menu4: {
+    //     title: "裝修實績",
+    //     url: {
+    //         name: "sample-slug-id",
+    //         params: { slug: "samples", id: "1" },
+    //     },
+    //     marginSize: "gap-x-[40px] gap-y-[20px]",
+    //     submenus: renovation_categories,
+    // },
     menu7: {
         title: "服務支援",
         url: {},
@@ -484,12 +539,13 @@ const menus = ref<any>({
     },
     menu9: {
         title: "其它",
+        marginSize: "gap-x-[80px] gap-y-[20px]",
         url: {},
         submenus: [
             {
-                id: "id1",
+                id: 1,
                 text: "關於我們",
-                key: "menu2",
+                imgSrc: "/img/menu/service/menu-service-icon-1.svg",
                 url: {
                     name: "about-slug",
                     params: { slug: "1" },
@@ -497,36 +553,30 @@ const menus = ref<any>({
                 submenus: [],
             },
             {
-                id: "id2",
+                id: 1,
                 text: "最新消息",
-                key: "menu3",
-                url: {
-                    name: "news-slug-id",
-                    params: { slug: "post", id: "4" },
-                },
+                imgSrc: "/img/menu/service/menu-service-icon-1.svg",
+                url: newsTypes.value[0].url,
                 submenus: [],
             },
             {
-                id: "id3",
+                id: 1,
                 text: "裝修實績",
-                key: "menu4",
-                url: {
-                    name: "sample-slug-id",
-                    params: { slug: "sample", id: "1" },
-                },
+                imgSrc: "/img/menu/service/menu-service-icon-1.svg",
+                url: sampleTypes.value[0].url,
                 marginSize: "gap-x-[40px] gap-y-[20px]",
-                submenus: renovation_categories,
+                submenus: [],
             },
             {
-                id: "id4",
+                id: 1,
                 text: "展售門市",
-                key: "menu5",
+                imgSrc: "/img/menu/service/menu-service-icon-1.svg",
                 url: {
                     name: "store-slug-id",
-                    params: { slug: "stores", id: "id1" },
+                    params: { slug: "stores", id: 1 },
                 },
                 marginSize: "gap-x-[80px] gap-y-[20px]",
-                submenus: stronghold_categories,
+                submenus: [],
             },
         ],
     },
