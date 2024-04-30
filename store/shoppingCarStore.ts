@@ -418,10 +418,10 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
      * @returns
      */
     const addToCart = (data: ShoppingCarInterface) => {
+        console.log(data)
         return new Promise(async (resolve, reject) => {
-            const item = shoppingCar.value.find((i) => i.productID === data.productID && i.product_variationable_id === data.product_variationable_id);
-
-            if (!item) {
+            const repeatItem = shoppingCar.value.find((i) => i.productID === data.productID && i.product_variationable_id === data.product_variationable_id && i.parent_id === data.parent_id);
+            if (!repeatItem) {
                 if (!isAuth.value) {
                     // 未登入時
                     shoppingCar.value.push(data);
@@ -445,6 +445,30 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
 
                         resolve(true);
                     }
+                }
+            } else {
+                if (!isAuth.value) {
+                    // 未登入時
+                    repeatItem.count += data.count
+                    $shoppingCarService().setShoppingCar(shoppingCar.value);
+                    resolve(true);
+                } else {
+                    // 同步api
+                    console.log(repeatItem)
+                    const params = [{
+                        add_on_purchases: data.add_on_purchases,
+                        productable_id: data.productID,
+                        product_variationable_id: data.product_variationable_id,
+                        // 數量
+                        quantity: data.count,
+                    }]
+
+                    console.log(params)
+
+                    await $api().SyncCartApi({ items: params }).then(() => {
+                        getUserShopping();
+                    })
+                    resolve(true);
                 }
             }
             reject("已重複加入購物車");
@@ -624,15 +648,18 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
     };
     // 同步購物車
     const syncCart = async () => {
-        const temp = getShoppingCar();
+        const temp = getShoppingCar().filter((item: { is_add_on_purchase: number; }) => item.is_add_on_purchase == 0);
         const data = temp
             ? temp.map((i: any) => {
-                  return {
-                      productable_id: i.productID,
-                      // 數量
-                      quantity: i.count,
-                      product_variationable_id: i.product_variationable_id,
-                  };
+                if (i.is_add_on_purchase == 0) {
+                    return {
+                        add_on_purchases: i.add_on_purchases,
+                        productable_id: i.productID,
+                        // 數量
+                        quantity: i.count,
+                        product_variationable_id: i.product_variationable_id,
+                    };
+                }
               })
             : [];
 

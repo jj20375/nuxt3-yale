@@ -151,8 +151,8 @@
             <div class="d-inline-block text-sm text-dark float-right">NT$ {{ $utils().formatCurrency(item?.discountPrice) }}</div>
         </div>
         <div v-if="props.orderData.price.coupon !== 0">
-            <div>優惠卷折扣</div>
-            <div>NT$ {{ $utils().formatCurrency(props.orderData.price?.coupon) }}</div>
+            <div class="d-inline-block text-sm text-dark">優惠卷折扣</div>
+            <div class="d-inline-block text-sm text-dark float-right">NT$ {{ $utils().formatCurrency(props.orderData.price?.coupon) }}</div>
         </div>
 
         <div class="divider mt-3 mb-3"></div>

@@ -1,5 +1,5 @@
 <template>
-    <section class="relative xl:flex items-center justify-center rounded-bl-[60px] xl:rounded-bl-[120px] xl:min-h-screen py-[48px] md:py-[90px] xl:py-[120px]">
+    <section class="relative xl:flex items-center justify-center rounded-bl-[60px] xl:rounded-bl-[120px] xl:min-h-screen py-[48px] pt-[72px] md:py-[90px] xl:py-[120px]">
         <h3 class="relative hidden md:block xl:hidden text-white text-center text-[32px] sm:text-[48px] xl:text-[66px] font-medium YaleSolisW-Bd leading-none z-[1]">CUSTOMIZED</h3>
         <h5 class="relative hidden md:block xl:hidden text-gray-800 text-center xl:text-start text-[32px] mt-[14px] mb-[24px] font-medium YaleSolisW-Bd leading-[50px] tracking-wide z-[1]">{{ custom_door.title }}</h5>
         <NuxtImg

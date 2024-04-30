@@ -673,23 +673,25 @@ const productAdditionalBuyRef = ref<any>(null);
  */
 const addToShoppingCar = async (isGoToShoppingCarPage: boolean = false) => {
     const add_on_purchases: { discount_id: any }[] = [];
-    const selectAddData = productAdditionalBuyRef.value.addSelect.filter((item: { id: any }) => productAdditionalBuyRef.value.selectedAdditionalProducts.includes(item.discount_id));
-    selectAddData.forEach((item: { is_single_variation: number; discount_id: any; count: number; id: any; spec: any; name: any; imgUrl: any; price: any; stock: any }) => {
-        if (item.is_single_variation == 0) {
-            add_on_purchases.push({
-                discount_id: item.discount_id,
-                quantity: item.count,
-                productable_id: item.id,
-                product_variationable_id: item.spec,
-            });
-        } else {
-            add_on_purchases.push({
-                discount_id: item.discount_id,
-                quantity: item.count,
-                productable_id: item.id,
-            });
-        }
-    });
+    if (addOnPurchaseDiscounts.length > 0) {
+        const selectAddData = productAdditionalBuyRef.value.addSelect.filter((item: { id: any }) => productAdditionalBuyRef.value.selectedAdditionalProducts.includes(item.discount_id));
+        selectAddData.forEach((item: { is_single_variation: number; discount_id: any; count: number; id: any; spec: any; name: any; imgUrl: any; price: any; stock: any }) => {
+            if (item.is_single_variation == 0) {
+                add_on_purchases.push({
+                    discount_id: item.discount_id,
+                    quantity: item.count,
+                    productable_id: item.id,
+                    product_variationable_id: item.spec,
+                });
+            } else {
+                add_on_purchases.push({
+                    discount_id: item.discount_id,
+                    quantity: item.count,
+                    productable_id: item.id,
+                });
+            }
+        });
+    }
     const productVariationable: { label: any; value: any }[] = [];
     currentOption.value.forEach((item: any, index: string | number) => {
         let value = "";
@@ -702,6 +704,7 @@ const addToShoppingCar = async (isGoToShoppingCarPage: boolean = false) => {
     const input: ShoppingCarInterface = {
         id: detailData.value.product_id,
         productID: detailData.value.product_id,
+        parent_id: null,
         name: detailData.value.name,
         imgSrc: currentImage.value,
         count: count.value,
@@ -724,6 +727,7 @@ const addToShoppingCar = async (isGoToShoppingCarPage: boolean = false) => {
                 selectAddData.forEach((item: { is_single_variation: number; discount_id: any; count: number; id: any; spec: any; name: any; imgUrl: any; price: any; stock: any }) => {
                     const addInput: ShoppingCarInterface = {
                         id: item.discount_id,
+                        parent_id: detailData.value.product_id,
                         productID: item.id,
                         name: item.name,
                         imgSrc: item.imgUrl,
