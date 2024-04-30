@@ -673,8 +673,9 @@ const productAdditionalBuyRef = ref<any>(null);
  */
 const addToShoppingCar = async (isGoToShoppingCarPage: boolean = false) => {
     const add_on_purchases: { discount_id: any }[] = [];
-    if (addOnPurchaseDiscounts.length > 0) {
-        const selectAddData = productAdditionalBuyRef.value.addSelect.filter((item: { id: any }) => productAdditionalBuyRef.value.selectedAdditionalProducts.includes(item.discount_id));
+    let selectAddData = []
+    if (addOnPurchaseDiscounts.value.length > 0) {
+        selectAddData = productAdditionalBuyRef.value.addSelect.filter((item: { id: any }) => productAdditionalBuyRef.value.selectedAdditionalProducts.includes(item.discount_id));
         selectAddData.forEach((item: { is_single_variation: number; discount_id: any; count: number; id: any; spec: any; name: any; imgUrl: any; price: any; stock: any }) => {
             if (item.is_single_variation == 0) {
                 add_on_purchases.push({
