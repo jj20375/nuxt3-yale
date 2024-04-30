@@ -1,9 +1,9 @@
 <template>
     <div class="min-h-screen">
-        <TopBanner :carousel="schema.carousel" />
-        <HomeVideo :videoUrl="schema.video" />
         <HomeCustomProduct :custom_door="schema.custom_door" />
-        <HomeSample />
+        <TopBanner :carousel="schema.carousel" />
+        <HomeVideo v-if="schema.video" :videoUrl="schema.video" />
+        <!-- <HomeSample /> -->
         <HomeProduct />
         <HomeApp :yale_home_app="schema.yale_home_app" />
         <HomeService :four_promises="schema.four_promises" />
@@ -32,7 +32,7 @@ const { $api } = useNuxtApp();
 const schema = ref<any>({
     carousel: [],
     custom_door: [],
-    video: "/video/homeVideo.mp4",
+    video: null,
     four_promises: [],
     yale_home_app: {},
 });
@@ -45,7 +45,7 @@ async function getPageData() {
 
         const pageData = (data.value as any).data.schema;
         schema.value.four_promises = pageData.four_promises;
-        schema.value.video = pageData.video ? pageData.video : "/video/homeVideo.mp4";
+        schema.value.video = pageData.video ? pageData.video : null;
         schema.value.carousel = pageData.carousel;
         schema.value.custom_door = pageData.custom_door;
         schema.value.yale_home_app = pageData.yale_home_app;
