@@ -24,7 +24,7 @@
                     :class="isMenuFixed ? 'xl:py-[4px]' : 'xl:py-[10px]'"
                 >
                     <NuxtLink
-                        class="block mx-auto w-fit"
+                        class="block mx-auto w-[66px]"
                         :to="{ name: 'index' }"
                     >
                         <NuxtImg
