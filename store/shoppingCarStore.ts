@@ -648,7 +648,7 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
     };
     // 同步購物車
     const syncCart = async () => {
-        const temp = getShoppingCar().filter((item: { is_add_on_purchase: number; }) => item.is_add_on_purchase == 0);
+        const temp = getShoppingCar() ? getShoppingCar().filter((item: { is_add_on_purchase: number; }) => item.is_add_on_purchase == 0) : getShoppingCar();
         const data = temp
             ? temp.map((i: any) => {
                 if (i.is_add_on_purchase == 0) {
