@@ -162,7 +162,7 @@
                             </button>
                         </div>
                         <!-- todo 先隱藏 aaron -->
-                        <!-- <div class="bg-gray-50 p-[30px] w-full rounded-xl mb-[20px]">
+                        <div v-if="salesDetail.length > 0" class="bg-gray-50 p-[30px] w-full rounded-xl mb-[20px]">
                             <ul class="text-[16px]">
                                 <li
                                     class="mb-[6px]"
@@ -172,7 +172,7 @@
                                     {{ sale }}
                                 </li>
                             </ul>
-                        </div> -->
+                        </div>
                         <div>
                             <ul class="flex gap-4">
                                 <li
@@ -343,7 +343,7 @@ const colorName = ref("");
 // 詳細介紹 產品規格 tab
 const tabs = ["詳細介紹", "產品規格"];
 // 折扣文案
-const salesDetail = ref(["[活動] 滿 NT$1,700 折 NT$560", "[活動] 歡慶十週年，滿 NT$1,700 打 8 折", "[活動] 全站滿千免運"]);
+const salesDetail = ref([]);
 // 數量
 const count = ref(1);
 // 判斷是否顯示彈窗
@@ -539,6 +539,11 @@ const getData = async () => {
         optionChangePrice(true);
         optionChange(productOptions.value[0].options[0], 0);
     }
+
+    salesDetail.value = []
+    productDetail.value.discounts.forEach((item: { name: any; }) => {
+        salesDetail.value.push(`[活動] ${item.name}`)
+    })
 
     if (productDetail.value) {
         console.log("productDetail.value.main_image =>", productDetail.value.main_image);

@@ -386,7 +386,7 @@ async function validTest() {
         const validContactUserForm = await formContactUserRef.value.$.exposed.validForm();
         const validPaymentForm = await formPaymentRef.value.$.exposed.validForm();
         const validMeasureTheSizeForm = await formMeasureTheSizeRef.value.$.exposed.validForm();
-        if (!formConfirm.value.confirmCustomRule || !formConfirm.value.confirmRule) {
+        if (!(formConfirm.value.confirmCustomRule && formConfirm.value.confirmRule && validUserForm && validContactUserForm)) {
             ElMessage({
                 type: "error",
                 message: "尚有欄位未填",
