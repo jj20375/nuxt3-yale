@@ -448,9 +448,16 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
                 }
             } else {
                 if (!isAuth.value) {
+                    const req = {
+                        cart_item_id: repeatItem.id,
+                        productID: repeatItem.productID,
+                        product_variationable_id: repeatItem.product_variationable_id ? repeatItem.product_variationable_id : null,
+                    };
                     // 未登入時
-                    repeatItem.count += data.count
+                    deleteCart(req)
+                    // repeatItem.count += data.count
                     $shoppingCarService().setShoppingCar(shoppingCar.value);
+                    addToCart(data)
                     resolve(true);
                 } else {
                     // 同步api
@@ -615,9 +622,9 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
             // 未登入
             shoppingCar.value = shoppingCar.value.filter((i) => {
                 if (data.product_variationable_id) {
-                    return (i.productID !== data.productID && i.parent_id !== data.productID) || (i.product_variationable_id !== data.product_variationable_id && i.parent_id !== data.productID);
+                    return (i.productID != data.productID && i.parent_id != data.productID) || (i.product_variationable_id != data.product_variationable_id && i.parent_id != data.productID);
                 } else {
-                    return i.productID !== data.productID && i.parent_id !== data.productID;
+                    return i.productID != data.productID && i.parent_id != data.productID;
                 }
             });
             $shoppingCarService().setShoppingCar(shoppingCar.value);
