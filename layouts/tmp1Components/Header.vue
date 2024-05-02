@@ -545,7 +545,7 @@ const menus = ref<any>({
             {
                 id: 1,
                 text: "關於我們",
-                imgSrc: "/img/menu/service/menu-service-icon-1.svg",
+                imgSrc: "/img/menu/other/menu-other-icon-1.svg",
                 url: {
                     name: "about-slug",
                     params: { slug: "1" },
@@ -555,14 +555,14 @@ const menus = ref<any>({
             {
                 id: 1,
                 text: "最新消息",
-                imgSrc: "/img/menu/service/menu-service-icon-1.svg",
+                imgSrc: "/img/menu/other/menu-other-icon-2.svg",
                 url: newsTypes.value[0].url,
                 submenus: [],
             },
             {
                 id: 1,
                 text: "裝修實績",
-                imgSrc: "/img/menu/service/menu-service-icon-1.svg",
+                imgSrc: "/img/menu/other/menu-other-icon-3.svg",
                 url: sampleTypes.value[0].url,
                 marginSize: "gap-x-[40px] gap-y-[20px]",
                 submenus: [],
@@ -570,7 +570,7 @@ const menus = ref<any>({
             {
                 id: 1,
                 text: "展售門市",
-                imgSrc: "/img/menu/service/menu-service-icon-1.svg",
+                imgSrc: "/img/menu/other/menu-other-icon-4.svg",
                 url: {
                     name: "store-slug-id",
                     params: { slug: "stores", id: 1 },
