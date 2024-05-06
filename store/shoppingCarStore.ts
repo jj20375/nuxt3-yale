@@ -418,10 +418,10 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
      * @returns
      */
     const addToCart = (data: ShoppingCarInterface) => {
+        console.log(data)
         return new Promise(async (resolve, reject) => {
-            const item = shoppingCar.value.find((i) => i.productID === data.productID && i.product_variationable_id === data.product_variationable_id);
-
-            if (!item) {
+            const repeatItem = shoppingCar.value.find((i) => i.productID === data.productID && i.product_variationable_id === data.product_variationable_id && i.parent_id === data.parent_id);
+            if (!repeatItem) {
                 if (!isAuth.value) {
                     // 未登入時
                     shoppingCar.value.push(data);
@@ -446,6 +446,37 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
                         resolve(true);
                     }
                 }
+            } else {
+                if (!isAuth.value) {
+                    const req = {
+                        cart_item_id: repeatItem.id,
+                        productID: repeatItem.productID,
+                        product_variationable_id: repeatItem.product_variationable_id ? repeatItem.product_variationable_id : null,
+                    };
+                    // 未登入時
+                    deleteCart(req)
+                    // repeatItem.count += data.count
+                    $shoppingCarService().setShoppingCar(shoppingCar.value);
+                    addToCart(data)
+                    resolve(true);
+                } else {
+                    // 同步api
+                    console.log(repeatItem)
+                    const params = [{
+                        add_on_purchases: data.add_on_purchases,
+                        productable_id: data.productID,
+                        product_variationable_id: data.product_variationable_id,
+                        // 數量
+                        quantity: data.count,
+                    }]
+
+                    console.log(params)
+
+                    await $api().SyncCartApi({ items: params }).then(() => {
+                        getUserShopping();
+                    })
+                    resolve(true);
+                }
             }
             reject("已重複加入購物車");
         });
@@ -454,11 +485,12 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
     /**
      * 新增 訂製門扇購物車
      */
-    const addToCustomCart = (data: ShoppingCarCustomInterface, count: number) => {
+    const addToCustomCart = (data: ShoppingCarCustomInterface, count: number, custom_scene: string) => {
         return new Promise(async (resolve, reject) => {
             const setCustomCarDatas: CustomCarItem = {
                 items: [],
                 quantity: count,
+                custom_scene: custom_scene
             };
             setCustomCarDatas.items.push({
                 productable_id: data.doorGroup.door.id,
@@ -590,9 +622,9 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
             // 未登入
             shoppingCar.value = shoppingCar.value.filter((i) => {
                 if (data.product_variationable_id) {
-                    return (i.productID !== data.productID && i.parent_id !== data.productID) || (i.product_variationable_id !== data.product_variationable_id && i.parent_id !== data.productID);
+                    return (i.productID != data.productID && i.parent_id != data.productID) || (i.product_variationable_id != data.product_variationable_id && i.parent_id != data.productID);
                 } else {
-                    return i.productID !== data.productID && i.parent_id !== data.productID;
+                    return i.productID != data.productID && i.parent_id != data.productID;
                 }
             });
             $shoppingCarService().setShoppingCar(shoppingCar.value);
@@ -623,15 +655,18 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
     };
     // 同步購物車
     const syncCart = async () => {
-        const temp = getShoppingCar();
+        const temp = getShoppingCar() ? getShoppingCar().filter((item: { is_add_on_purchase: number; }) => item.is_add_on_purchase == 0) : getShoppingCar();
         const data = temp
             ? temp.map((i: any) => {
-                  return {
-                      productable_id: i.productID,
-                      // 數量
-                      quantity: i.count,
-                      product_variationable_id: i.product_variationable_id,
-                  };
+                if (i.is_add_on_purchase == 0) {
+                    return {
+                        add_on_purchases: i.add_on_purchases,
+                        productable_id: i.productID,
+                        // 數量
+                        quantity: i.count,
+                        product_variationable_id: i.product_variationable_id,
+                    };
+                }
               })
             : [];
 
@@ -649,7 +684,7 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
         const shoppinCar = $shoppingCarService().getCustomProductShoppingCar();
         if (!$utils().isEmpty(shoppinCar)) {
             shoppinCar.forEach(async (item: ShoppingCarCustomInterface, index: number) => {
-                await addToCustomCart(item, item.count);
+                await addToCustomCart(item, item.count, item.custom_scene);
                 $shoppingCarService().removeSingleShoppingCarProduct(index);
             });
         }

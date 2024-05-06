@@ -173,6 +173,8 @@ function addToShoppingCar(data: any) {
     }
     const input: ShoppingCarInterface = {
         id: data.id,
+        parent_id: null,
+        add_on_purchases: [],
         productID: data.id,
         name: data.name,
         imgSrc: data.main_image,

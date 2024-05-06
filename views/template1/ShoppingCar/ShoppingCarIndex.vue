@@ -90,7 +90,7 @@
                             </template>
                             <template #total>
                                 <span>
-                                    {{ $utils().formatCurrency(total - discountData.discount_amount - discountData.coupon_discount_amount + shoppingCarStore.shippingFee) }}
+                                    {{ $utils().formatCurrency(total - discountData.discount_amount - discountData.coupon_discount_amount + shippingFee) }}
                                 </span>
                             </template>
                             <template
@@ -211,6 +211,15 @@ const checkStockLimit = computed(() => {
 const componentRef = ref<any>(null);
 const showComponent = shallowRef<any>(ShoppingCarStep1);
 
+// 運費
+const shippingFee = computed(() => {
+    if (currentStep.value == 0) {
+        return 0
+    } else {
+        return shoppingCarStore.shippingFee
+    }
+});
+
 // 總價
 const total = computed(() => {
     if (currentTab.value === "type1") {
@@ -240,6 +249,7 @@ const couponCode = ref(null);
 
 const getCoupon = async (val: any) => {
     console.log("getCoupon", val);
+    await userStore.reGetUserProfile();
     let params;
     if (currentTab.value === "type2") {
         params = {
@@ -304,18 +314,20 @@ const getCoupon = async (val: any) => {
         }
         const { data: couponDatas, status, error } = await $api().DiscountCalculateAPI(params);
         const couponData = (couponDatas.value as any).data;
-        if (couponData.coupon_discount_amount == 0) {
-            ElMessage({
-                type: "error",
-                message: "請確認優惠券使用條件",
-            });
-            couponCode.value = null;
-        } else {
-            ElMessage({
-                type: "success",
-                message: "優惠券使用成功",
-            });
-            couponCode.value = couponRef.value.formData.coupon;
+        if (checkStatus.value === 'success') {
+            if (couponData.coupon_discount_amount == 0) {
+                ElMessage({
+                    type: "error",
+                    message: "請確認優惠券使用條件",
+                });
+                couponCode.value = null;
+            } else {
+                ElMessage({
+                    type: "success",
+                    message: "優惠券使用成功",
+                });
+                couponCode.value = couponRef.value.formData.coupon;
+            }
         }
         discountData.value.coupon_discount_amount = couponData.coupon_discount_amount;
         discountData.value.discount_amount = couponData.discount_amount;
@@ -408,7 +420,8 @@ const selectProduct = async (val: number[]) => {
     }
 };
 // go step2
-const goStepCheckout = () => {
+const goStepCheckout = async () => {
+    await userStore.reGetUserProfile();
     if (selectProductIds.value.length === 0) {
         ElMessage({
             type: "error",

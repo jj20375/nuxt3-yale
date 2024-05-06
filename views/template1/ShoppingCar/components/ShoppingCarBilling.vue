@@ -17,7 +17,7 @@
             <!-- <span v-if="discountData.event.find(item => item.type === 'coupon')">({{ discountData.event.find(item => item.type === 'coupon').name }})</span> -->
             <span>-NT$ {{ $utils().formatCurrency(discountData.coupon_discount_amount) }}</span>
         </div>
-        <div v-if="userStore.isAuth" class="flex text-gray-800 text-[14px] mt-[4px]">
+        <div v-if="userStore.isAuth && currentTab === 'type1' && currentStep !== 0" class="flex text-gray-800 text-[14px] mt-[4px]">
             <span class="flex-1">運費</span>
             <span>NT$ {{ $utils().formatCurrency(shippingFee) }}</span>
         </div>

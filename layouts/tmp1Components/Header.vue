@@ -24,7 +24,7 @@
                     :class="isMenuFixed ? 'xl:py-[4px]' : 'xl:py-[10px]'"
                 >
                     <NuxtLink
-                        class="block mx-auto w-fit"
+                        class="block mx-auto w-[66px]"
                         :to="{ name: 'index' }"
                     >
                         <NuxtImg
@@ -79,7 +79,7 @@
                                         v-for="(submenu, subIndex) in menu.submenus"
                                         :key="subIndex"
                                         class="submenu-item"
-                                        :class="[key === 'menu5' || key === 'menu7' ? 'hover-scale' : key === 'menu6' ? 'hover-shadow' : key === 'menu4' ? 'hover-fade' : '']"
+                                        :class="[key === 'menu5' || key === 'menu7' || key === 'menu9' ? 'hover-scale' : key === 'menu6' ? 'hover-shadow' : key === 'menu4' ? 'hover-fade' : '']"
                                     >
                                         <NuxtLink :to="submenu.url">
                                             <div class="image-wrap">
@@ -115,6 +115,98 @@
                             </Vue3SlideUpDown>
                         </div>
                     </div>
+                    <!-- <div
+                        v-else-if="key === 'menu9' && !isLargePad"
+                        id="menu9"
+                    >
+                        <el-dropdown
+                            ref="dropdownOtherRefDom"
+                            trigger="click"
+                            popper-class="otherMenu-el-dropdwon"
+                        >
+                            <span class="el-dropdown-link">
+                                {{ menu.title }}
+                                <el-icon
+                                    class="el-icon--right"
+                                    :class="menuStatus[key] ? 'rotate-180' : 'rotate-0'"
+                                >
+                                    <arrow-down />
+                                </el-icon>
+                            </span>
+                            <template #dropdown>
+                                <el-dropdown-menu>
+                                    <el-dropdown-item
+                                        :command="submenu.id"
+                                        v-for="(submenu, subIndex) in menu.submenus"
+                                        :key="subIndex"
+                                        class="submenu-item"
+                                    >
+                                        <div
+                                            v-if="submenu.submenus.length === 0"
+                                            @click="otherMenuParentRouter(submenu.url)"
+                                            class="text-base text-gray-800 xl:px-3 2xl:px-4 3xl:px-5"
+                                        >
+                                            {{ submenu.text }}
+                                        </div>
+                                        <div
+                                            v-else
+                                            @mouseover="isLargePad ? null : changeMenu(submenu.id)"
+                                            @mouseleave="closeMenu"
+                                            @click="isLargePad ? toggleMenu(submenu.id) : null"
+                                            class="text-base text-gray-800 transition-all duration-300 cursor-pointer xl:px-3 2xl:px-4 3xl:px-5 hover:text-gray-500"
+                                            :class="isMenuFixed ? 'xl:py-[23px]' : 'xl:py-[33px]'"
+                                        >
+                                            {{ submenu.text }}
+                                            <div
+                                                class="absolute left-0 z-50 w-full bg-white"
+                                                :class="isMenuFixed ? 'top-[66px]' : 'top-[86px]'"
+                                            >
+                                                <div
+                                                    v-if="currentMenu === submenu.id && showSubMenu"
+                                                    class="border-t border-gray-300 shadow-header md:h-[300px]"
+                                                >
+                                                    <ul
+                                                        class="container flex items-center justify-center min-h-[300px] flex-wrap text-center"
+                                                        :class="[submenu.marginSize, isMenuFixed ? 'py-[40px]' : 'py-[60px]']"
+                                                    >
+                                                        <li
+                                                            v-for="(submenu2, subIndex2) in submenu.submenus"
+                                                            :key="subIndex2"
+                                                            class="submenu-item"
+                                                            :class="[submenu.key === 'menu5' || submenu.key === 'menu7' ? 'hover-scale' : submenu.key === 'menu6' ? 'hover-shadow' : submenu.key === 'menu4' ? 'hover-fade' : '']"
+                                                        >
+                                                            <NuxtLink :to="submenu2.url">
+                                                                <div class="image-wrap">
+                                                                    <NuxtImg
+                                                                        :class="submenu.key !== 'menu4' ? 'w-[120px] aspect-square object-cover' : 'w-[400px] aspect-[20/9] rounded-xl object-cover'"
+                                                                        :src="submenu2.imgSrc"
+                                                                    />
+                                                                </div>
+                                                                <div class="mt-[20px]">{{ submenu2.text }}</div>
+                                                            </NuxtLink>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </el-dropdown-item>
+                                </el-dropdown-menu>
+                            </template>
+                        </el-dropdown>
+                        <div class="flex justify-center py-5 xl:py-0">
+                            {{ menu.title }}
+                            <div
+                                class="ml-3 transition-all duration-300 xl:ml-0"
+                                :class="menuStatus[key] ? 'rotate-180' : 'rotate-0'"
+                            >
+                                <font-awesome-icon
+                                    v-if="isLargePad"
+                                    class=""
+                                    :icon="['fas', 'chevron-down']"
+                                />
+                            </div>
+                        </div>
+                    </div> -->
                     <div v-else>
                         <div
                             class="relative py-5 text-gray-800 transition-all duration-300 cursor-pointer xl:px-3 2xl:px-5 hover:text-gray-500"
@@ -123,7 +215,7 @@
                         >
                             <template v-if="key === 'menu1'">
                                 <div class="flex items-center justify-center text-center xl:justify-start">
-                                    <div class="title">{{ menu.title }}</div>
+                                    <div class="font-bold title">{{ menu.title }}</div>
                                     <div class="image-wrap">
                                         <NuxtImg src="/img/icons/door.svg" />
                                     </div>
@@ -184,6 +276,8 @@ import { useInitializationStore } from "~/store/initializationStore";
 import { useUserStore } from "~/store/userStore";
 import { useShoppingCarStore } from "~/store/shoppingCarStore";
 import { storeToRefs } from "pinia";
+import type { DropdownInstance } from "element-plus";
+
 const { $shoppingCarService } = useNuxtApp();
 const $config = useRuntimeConfig();
 const router = useRouter();
@@ -193,6 +287,7 @@ const initializationStore = useInitializationStore();
 const userStore = useUserStore();
 const shoppingCarStore = useShoppingCarStore();
 
+const dropdownOtherRefDom = ref<DropdownInstance>();
 const { isAuth } = storeToRefs(userStore);
 // 一般商品購物車
 const { shoppingCar } = storeToRefs(shoppingCarStore);
@@ -207,6 +302,7 @@ import IconLine from "~/assets/img/icons/medias/icon-black-3.svg";
 import IconYoutube from "~/assets/img/icons/medias/icon-black-4.svg";
 import IconMenu from "~/assets/img/icons/menu.svg";
 
+const { $api } = useNuxtApp();
 const { isLargePad, isDesktop } = useWindowResize();
 
 // 手機版時判斷是否顯示選單
@@ -275,6 +371,60 @@ initializationData.value.site.product_categories.forEach((item: { id: any; menu_
     });
 });
 
+// 最新消息文章分類
+const newsTypes = ref<any>([]);
+/**
+ * 取得裝修實績分類
+ */
+async function getNewsType() {
+    try {
+        const { data } = await $api().ArticalTypeAPI({ type: "news" });
+        console.log("home sampleType api 123 => ", data.value);
+
+        const rows = (data.value as any).data;
+
+        rows.forEach((item: { name: any; id: any; seoSetting: any }) => {
+            newsTypes.value.push({
+                text: item.name,
+                id: item.id,
+                url: {
+                    params: { slug: item.seoSetting.custom_url, id: item.id },
+                    name: "news-slug-id",
+                },
+            });
+        });
+    } catch (err) {}
+}
+await getNewsType();
+
+// 裝修時機文章分類
+const sampleTypes = ref<any>([]);
+/**
+ * 取得裝修實績分類
+ */
+async function getSampleType() {
+    try {
+        const { data } = await $api().ArticalTypeAPI({ type: "renovation" });
+
+        const rows = (data.value as any).data;
+
+        rows.forEach((item: { name: any; id: any; seoSetting: any }) => {
+            sampleTypes.value.push({
+                text: item.name,
+                id: item.id,
+                url: {
+                    params: { slug: item.seoSetting.custom_url, id: item.id },
+                    name: "sample-slug-id",
+                },
+            });
+        });
+        console.log("sampleTypes.value =>", sampleTypes.value);
+    } catch (err) {
+        console.log("getSampleType err =>", err);
+    }
+}
+await getSampleType();
+
 const menus = ref<any>({
     menu1: {
         title: "訂製您的專屬門扇",
@@ -284,22 +434,22 @@ const menus = ref<any>({
         },
         submenus: [],
     },
-    menu2: {
-        title: "關於我們",
-        url: {
-            name: "about-slug",
-            params: { slug: "1" },
-        },
-        submenus: [],
-    },
-    menu3: {
-        title: "最新消息",
-        url: {
-            name: "news-slug-id",
-            params: { slug: "post", id: "4" },
-        },
-        submenus: [],
-    },
+    // menu2: {
+    //     title: "關於我們",
+    //     url: {
+    //         name: "about-slug",
+    //         params: { slug: "1" },
+    //     },
+    //     submenus: [],
+    // },
+    // menu3: {
+    //     title: "最新消息",
+    //     url: {
+    //         name: "news-slug-id",
+    //         params: { slug: "post", id: "4" },
+    //     },
+    //     submenus: [],
+    // },
     menu6: {
         title: "產品資訊",
         url: {
@@ -309,24 +459,24 @@ const menus = ref<any>({
         marginSize: "gap-x-[40px] gap-y-[20px]",
         submenus: product_categories,
     },
-    menu5: {
-        title: "展售門市",
-        url: {
-            name: "store-slug-id",
-            params: { slug: "展售門市", id: "id1" },
-        },
-        marginSize: "gap-x-[80px] gap-y-[20px]",
-        submenus: stronghold_categories,
-    },
-    menu4: {
-        title: "裝修實績",
-        url: {
-            name: "sample-slug-id",
-            params: { slug: "裝修實績", id: "1" },
-        },
-        marginSize: "gap-x-[40px] gap-y-[20px]",
-        submenus: renovation_categories,
-    },
+    // menu5: {
+    //     title: "展售門市",
+    //     url: {
+    //         name: "store-slug-id",
+    //         params: { slug: "stores", id: "id1" },
+    //     },
+    //     marginSize: "gap-x-[80px] gap-y-[20px]",
+    //     submenus: stronghold_categories,
+    // },
+    // menu4: {
+    //     title: "裝修實績",
+    //     url: {
+    //         name: "sample-slug-id",
+    //         params: { slug: "samples", id: "1" },
+    //     },
+    //     marginSize: "gap-x-[40px] gap-y-[20px]",
+    //     submenus: renovation_categories,
+    // },
     menu7: {
         title: "服務支援",
         url: {},
@@ -387,6 +537,49 @@ const menus = ref<any>({
         },
         submenus: [],
     },
+    menu9: {
+        title: "其它",
+        marginSize: "gap-x-[80px] gap-y-[20px]",
+        url: {},
+        submenus: [
+            {
+                id: 1,
+                text: "關於我們",
+                imgSrc: "/img/menu/other/menu-other-icon-1.svg",
+                url: {
+                    name: "about-slug",
+                    params: { slug: "1" },
+                },
+                submenus: [],
+            },
+            {
+                id: 1,
+                text: "最新消息",
+                imgSrc: "/img/menu/other/menu-other-icon-2.svg",
+                url: newsTypes.value[0].url,
+                submenus: [],
+            },
+            {
+                id: 1,
+                text: "裝修實績",
+                imgSrc: "/img/menu/other/menu-other-icon-3.svg",
+                url: sampleTypes.value[0].url,
+                marginSize: "gap-x-[40px] gap-y-[20px]",
+                submenus: [],
+            },
+            {
+                id: 1,
+                text: "展售門市",
+                imgSrc: "/img/menu/other/menu-other-icon-4.svg",
+                url: {
+                    name: "store-slug-id",
+                    params: { slug: "stores", id: 1 },
+                },
+                marginSize: "gap-x-[80px] gap-y-[20px]",
+                submenus: [],
+            },
+        ],
+    },
 });
 
 // 右側 icon
@@ -428,35 +621,35 @@ const rightIcons = computed(() => {
 
 // 社群資料
 const socialMedia = computed(() => {
-    const arr = []
+    const arr = [];
 
     if (initializationData.value.site.social_facebook) {
         arr.push({
             name: IconFacebook,
             url: initializationData.value.site.social_facebook,
-        })
+        });
     }
     if (initializationData.value.site.social_line) {
         arr.push({
             name: IconLine,
             url: initializationData.value.site.social_line,
-        })
+        });
     }
     if (initializationData.value.site.social_instagram) {
         arr.push({
             name: IconInstagram,
             url: initializationData.value.site.social_instagram,
-        })
+        });
     }
     if (initializationData.value.site.social_youtube) {
         arr.push({
             name: IconYoutube,
             url: initializationData.value.site.social_youtube,
-        })
+        });
     }
 
-    return arr
-})
+    return arr;
+});
 
 function toSocialMedia(socialMedia: { url: string | URL | undefined }) {
     if (socialMedia.url) {
@@ -504,6 +697,13 @@ function handleGlobalClick(event: MouseEvent) {
     }
 }
 
+/**
+ * 其他選項按鈕上層選單
+ */
+function otherMenuParentRouter(routerOption: any) {
+    router.push(routerOption);
+}
+
 onMounted(() => {
     if (process.client) {
         shoppingCarStore.setShoppingCar($shoppingCarService().getShoppingCar() ?? []);
@@ -517,6 +717,23 @@ onBeforeUnmount(() => {
 });
 </script>
 
+<style lang="scss">
+.otherMenu-el-dropdwon {
+    @apply 2xl:w-[1200px] w-[300px];
+    .el-dropdown-menu {
+        @apply 2xl:flex block 2xl:text-left text-center;
+    }
+    .el-dropdown-menu__item {
+        @apply 2xl:flex block;
+    }
+    .el-scrollbar {
+        @apply overflow-visible;
+    }
+    .el-scrollbar__wrap {
+        @apply overflow-visible;
+    }
+}
+</style>
 <style lang="scss" scoped>
 :deep {
     .el-dropdown {

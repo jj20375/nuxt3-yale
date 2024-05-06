@@ -162,7 +162,7 @@
                             </button>
                         </div>
                         <!-- todo 先隱藏 aaron -->
-                        <!-- <div class="bg-gray-50 p-[30px] w-full rounded-xl mb-[20px]">
+                        <div v-if="salesDetail.length > 0" class="bg-gray-50 p-[30px] w-full rounded-xl mb-[20px]">
                             <ul class="text-[16px]">
                                 <li
                                     class="mb-[6px]"
@@ -172,7 +172,7 @@
                                     {{ sale }}
                                 </li>
                             </ul>
-                        </div> -->
+                        </div>
                         <div>
                             <ul class="flex gap-4">
                                 <li
@@ -343,7 +343,7 @@ const colorName = ref("");
 // 詳細介紹 產品規格 tab
 const tabs = ["詳細介紹", "產品規格"];
 // 折扣文案
-const salesDetail = ref(["[活動] 滿 NT$1,700 折 NT$560", "[活動] 歡慶十週年，滿 NT$1,700 打 8 折", "[活動] 全站滿千免運"]);
+const salesDetail = ref([]);
 // 數量
 const count = ref(1);
 // 判斷是否顯示彈窗
@@ -540,6 +540,11 @@ const getData = async () => {
         optionChange(productOptions.value[0].options[0], 0);
     }
 
+    salesDetail.value = []
+    productDetail.value.discounts.forEach((item: { name: any; }) => {
+        salesDetail.value.push(`[活動] ${item.name}`)
+    })
+
     if (productDetail.value) {
         console.log("productDetail.value.main_image =>", productDetail.value.main_image);
         ogUrl.value = `${$config.public.hostURL}/product/detail/${productDetail.value.seoSetting.custom_url ? productDetail.value.seoSetting.custom_url : productDetail.value.name}/${productDetail.value.id}`;
@@ -673,23 +678,26 @@ const productAdditionalBuyRef = ref<any>(null);
  */
 const addToShoppingCar = async (isGoToShoppingCarPage: boolean = false) => {
     const add_on_purchases: { discount_id: any }[] = [];
-    const selectAddData = productAdditionalBuyRef.value.addSelect.filter((item: { id: any }) => productAdditionalBuyRef.value.selectedAdditionalProducts.includes(item.discount_id));
-    selectAddData.forEach((item: { is_single_variation: number; discount_id: any; count: number; id: any; spec: any; name: any; imgUrl: any; price: any; stock: any }) => {
-        if (item.is_single_variation == 0) {
-            add_on_purchases.push({
-                discount_id: item.discount_id,
-                quantity: item.count,
-                productable_id: item.id,
-                product_variationable_id: item.spec,
-            });
-        } else {
-            add_on_purchases.push({
-                discount_id: item.discount_id,
-                quantity: item.count,
-                productable_id: item.id,
-            });
-        }
-    });
+    let selectAddData = []
+    if (addOnPurchaseDiscounts.value.length > 0) {
+        selectAddData = productAdditionalBuyRef.value.addSelect.filter((item: { id: any }) => productAdditionalBuyRef.value.selectedAdditionalProducts.includes(item.discount_id));
+        selectAddData.forEach((item: { is_single_variation: number; discount_id: any; count: number; id: any; spec: any; name: any; imgUrl: any; price: any; stock: any }) => {
+            if (item.is_single_variation == 0) {
+                add_on_purchases.push({
+                    discount_id: item.discount_id,
+                    quantity: item.count,
+                    productable_id: item.id,
+                    product_variationable_id: item.spec,
+                });
+            } else {
+                add_on_purchases.push({
+                    discount_id: item.discount_id,
+                    quantity: item.count,
+                    productable_id: item.id,
+                });
+            }
+        });
+    }
     const productVariationable: { label: any; value: any }[] = [];
     currentOption.value.forEach((item: any, index: string | number) => {
         let value = "";
@@ -702,6 +710,7 @@ const addToShoppingCar = async (isGoToShoppingCarPage: boolean = false) => {
     const input: ShoppingCarInterface = {
         id: detailData.value.product_id,
         productID: detailData.value.product_id,
+        parent_id: null,
         name: detailData.value.name,
         imgSrc: currentImage.value,
         count: count.value,
@@ -724,6 +733,7 @@ const addToShoppingCar = async (isGoToShoppingCarPage: boolean = false) => {
                 selectAddData.forEach((item: { is_single_variation: number; discount_id: any; count: number; id: any; spec: any; name: any; imgUrl: any; price: any; stock: any }) => {
                     const addInput: ShoppingCarInterface = {
                         id: item.discount_id,
+                        parent_id: detailData.value.product_id,
                         productID: item.id,
                         name: item.name,
                         imgSrc: item.imgUrl,

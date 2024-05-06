@@ -1,9 +1,9 @@
 <template>
-    <section class="relative xl:flex items-center justify-center rounded-bl-[60px] xl:rounded-bl-[120px] xl:min-h-screen py-[48px] md:py-[90px] xl:py-[120px]">
+    <section class="relative xl:flex items-center justify-center xl:min-h-screen py-[48px] pt-[72px] md:py-[90px] xl:py-[120px]">
         <h3 class="relative hidden md:block xl:hidden text-white text-center text-[32px] sm:text-[48px] xl:text-[66px] font-medium YaleSolisW-Bd leading-none z-[1]">CUSTOMIZED</h3>
         <h5 class="relative hidden md:block xl:hidden text-gray-800 text-center xl:text-start text-[32px] mt-[14px] mb-[24px] font-medium YaleSolisW-Bd leading-[50px] tracking-wide z-[1]">{{ custom_door.title }}</h5>
         <NuxtImg
-            class="absolute w-full h-full top-0 left-0 object-cover rounded-bl-[60px] xl:rounded-bl-[120px]"
+            class="absolute w-full h-full top-0 left-0 object-cover"
             src="/img/home/custom/section-bg.jpg"
         />
         <main class="container relative flex flex-col md:flex-row xl:items-center justify-center xl:justify-between md:gap-6 item">
