@@ -20,6 +20,7 @@
                 :class="isDesktop ? '' : showMenu ? 'py-4 nav-bar-mb' : ''"
             >
                 <li
+                    v-if="initializationData.site.site_logo"
                     class="fixed xl:relative xl:mr-4 2xl:mr-6 3xl:mr-14 w-full xl:w-fit top-0 left-0 z-[1] xl:bg-transparent py-[8px] transition-all duration-300"
                     :class="isMenuFixed ? 'xl:py-[4px]' : 'xl:py-[10px]'"
                 >
@@ -82,7 +83,10 @@
                                         :class="[key === 'menu5' || key === 'menu7' || key === 'menu9' ? 'hover-scale' : key === 'menu6' ? 'hover-shadow' : key === 'menu4' ? 'hover-fade' : '']"
                                     >
                                         <NuxtLink :to="submenu.url">
-                                            <div class="image-wrap">
+                                            <div
+                                                v-if="submenu.imgSrc"
+                                                class="image-wrap"
+                                            >
                                                 <NuxtImg
                                                     :class="key !== 'menu4' ? 'w-[120px] aspect-square object-cover' : 'w-[400px] aspect-[20/9] rounded-xl object-cover'"
                                                     :src="submenu.imgSrc"
@@ -329,47 +333,53 @@ watch(showMenu, (newVal) => {
 // 裝修實績
 const renovation_categories: { id: any; imgSrc: any; text: any; url: { params: { slug: any; id: any }; name: string } }[] = [];
 
-initializationData.value.site.renovation_categories.forEach((item: { id: any; image: any; name: any; seoSetting: any }) => {
-    renovation_categories.push({
-        id: item.id,
-        imgSrc: item.image,
-        text: item.name,
-        url: {
-            params: { slug: item.seoSetting.custom_url, id: item.id },
-            name: "sample-slug-id",
-        },
+if (initializationData.value.site) {
+    initializationData.value.site.renovation_categories.forEach((item: { id: any; image: any; name: any; seoSetting: any }) => {
+        renovation_categories.push({
+            id: item.id,
+            imgSrc: item.image,
+            text: item.name,
+            url: {
+                params: { slug: item.seoSetting.custom_url, id: item.id },
+                name: "sample-slug-id",
+            },
+        });
     });
-});
+}
 
 // 展示門市
 const stronghold_categories: { id: any; imgSrc: any; text: any; url: { params: { slug: any; id: any }; name: string } }[] = [];
 
-initializationData.value.site.stronghold_categories.forEach((item: { id: any; icon: any; name: any; seoSetting: any }) => {
-    stronghold_categories.push({
-        id: item.id,
-        imgSrc: item.icon,
-        text: item.name,
-        url: {
-            params: { slug: item.seoSetting.custom_url, id: item.id },
-            name: item.id === 2 ? "store-e-commerce-slug-id" : "store-slug-id",
-        },
+if (initializationData.value.site) {
+    initializationData.value.site.stronghold_categories.forEach((item: { id: any; icon: any; name: any; seoSetting: any }) => {
+        stronghold_categories.push({
+            id: item.id,
+            imgSrc: item.icon,
+            text: item.name,
+            url: {
+                params: { slug: item.seoSetting.custom_url, id: item.id },
+                name: item.id === 2 ? "store-e-commerce-slug-id" : "store-slug-id",
+            },
+        });
     });
-});
+}
 
 // 產品資訊
 const product_categories: { id: any; imgSrc: any; text: any; url: { params: { slug: any; category: any; tag: any }; name: string } }[] = [];
 
-initializationData.value.site.product_categories.forEach((item: { id: any; menu_image: any; name: any; seoSetting: any }) => {
-    product_categories.push({
-        id: item.id,
-        imgSrc: item.menu_image,
-        text: item.name,
-        url: {
-            params: { slug: item.seoSetting.custom_url, category: item.id, tag: item.id },
-            name: "product-slug-category-tag",
-        },
+if (initializationData.value.site) {
+    initializationData.value.site.product_categories.forEach((item: { id: any; menu_image: any; name: any; seoSetting: any }) => {
+        product_categories.push({
+            id: item.id,
+            imgSrc: item.menu_image,
+            text: item.name,
+            url: {
+                params: { slug: item.seoSetting.custom_url, category: item.id, tag: item.id },
+                name: "product-slug-category-tag",
+            },
+        });
     });
-});
+}
 
 // 最新消息文章分類
 const newsTypes = ref<any>([]);

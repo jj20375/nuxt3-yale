@@ -38,7 +38,7 @@ export function useMyFetch<T>(url: string, opts: any) {
                 console.log("onResponse error=>", error, response);
                 Promise.reject(response);
             } else {
-                console.log("onResponse success=>", response);
+                // console.log("onResponse success=>", response);
                 Promise.resolve(response);
             }
         },

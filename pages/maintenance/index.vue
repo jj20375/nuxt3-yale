@@ -1,14 +1,13 @@
 <template>
-    <NuxtLayout name="template1">
-        <div v-if="pageLoading">
-            <div class="fixed flex items-center justify-center w-full h-screen bg-white z-[499]">
-                <font-awesome-icon class="animate-spin text-[40px] text-gray-300"  :icon="['fas', 'circle-notch']"/>
-            </div>
+    <div v-if="pageLoading">
+        <div class="fixed flex items-center justify-center w-full h-screen bg-white z-[499]">
+            <font-awesome-icon
+                class="animate-spin text-[40px] text-gray-300"
+                :icon="['fas', 'circle-notch']"
+            />
         </div>
-        <component
-            :is="AsyncComp"
-        ></component>
-    </NuxtLayout>
+    </div>
+    <component :is="AsyncComp"></component>
 </template>
 
 <script setup lang="ts">

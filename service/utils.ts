@@ -1,5 +1,6 @@
 // 日期套件
 import moment from "moment";
+import CryptoJS from "crypto-js";
 
 import { setStorage, getStorage, removeStorage } from "~/service/localstorage";
 //判斷是否為空值或空物件
@@ -272,7 +273,7 @@ export const openNewWindow = (url: string | URL | undefined, pageWidth = 500, pa
     const left = (screenWidth - pageWidth) / 2 + dualScreenLeft;
     const top = (screenHeight - pageHeight) / 2 + dualScreenTop;
 
-    window.open(url, 'newwindow', `height=${pageHeight}, width=${pageWidth}, left=${left}, top=${top}`);
+    window.open(url, "newwindow", `height=${pageHeight}, width=${pageWidth}, left=${left}, top=${top}`);
 };
 
 /**
@@ -346,9 +347,25 @@ export const receiptStatus = (status: string) => {
  */
 export const cellphoneFormat = (phone: string) => {
     // 移除所有非數字字符
-    const sanitizedValue = phone.replace(/\D/g, '');
+    const sanitizedValue = phone.replace(/\D/g, "");
     // 將數字格式化為 XXXX-XXX-XXX 的形式
-    const formatted = sanitizedValue.replace(/(\d{4})(\d{3})(\d{3})/, '$1-$2-$3');
+    const formatted = sanitizedValue.replace(/(\d{4})(\d{3})(\d{3})/, "$1-$2-$3");
 
-    return formatted
+    return formatted;
+};
+
+/**
+ * 解密網址判斷是否可以查看非維護狀態中的網站
+ */
+export const decryptData = ({ hashData, randData }: any) => {
+    const encryptData = hashData as string;
+    const key = CryptoJS.enc.Utf8.parse(randData.slice(0, 32) as string);
+    const iv = CryptoJS.enc.Utf8.parse(randData.slice(32, 48) as string);
+
+    const decryptData = CryptoJS.AES.decrypt(encryptData, key, {
+        mode: CryptoJS.mode.CBC,
+        iv: iv,
+        padding: CryptoJS.pad.Pkcs7,
+    });
+    return decryptData.toString(CryptoJS.enc.Utf8);
 };
