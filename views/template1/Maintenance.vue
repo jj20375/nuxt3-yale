@@ -1,5 +1,5 @@
 <template>
-    <section class="mt-headerMb xl:mt-header py-[70px] sm:py-[140px] border-t border-gray-300">
+    <section class="flex items-center min-h-screen xl:mt-header md:min-h-auto">
         <div class="container flex justify-center">
             <div class="max-w-[500px] text-gray-800">
                 <Vue3Lottie

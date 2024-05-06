@@ -2,9 +2,10 @@ import { useUserStore } from "~~/store/userStore";
 import { useShoppingCarStore } from "~~/store/shoppingCarStore";
 import { useInitializationStore } from "~/store/initializationStore";
 import { storeToRefs } from "pinia";
+import Cookies from "js-cookie";
 
 export default defineNuxtRouteMiddleware(async (to, from) => {
-    const { $shoppingCarService, $api } = useNuxtApp();
+    const { $shoppingCarService, $api, $utils } = useNuxtApp();
     const userStore = useUserStore();
     const initializationStore = useInitializationStore();
     const shoppingCarStore = useShoppingCarStore();
@@ -20,8 +21,38 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
             }
             const initialData = (data.value as any).data;
             initializationStore.initializationData = initialData;
+            // console.log("from =>", from.query.rand);
+
+            // 判斷是維修狀態時 倒頁至 維修頁面
             if (initializationStore.initializationData.site.maintenance_mode) {
-                if (to.name !== "maintenance") {
+                // 判斷是否有傳送加密值 有傳送加密值又是維修狀態時 解密成功一樣可以正常訪問網頁
+                if (from.query.rand && from.query.hash && to.name !== "maintenance") {
+                    // 加密值
+                    const hashData = from.query.hash as string;
+                    // 解密 key 與 iv 值
+                    const randData = from.query.rand as string;
+                    // 將加密值存在 cookie 以防重新整理時 無法正常訪問網頁
+                    Cookies.set("maintenanceHashData", hashData, { expires: 1 });
+                    // 將解密 key 與 iv 值存在 cookie 以防重新整理時 無法正常訪問網頁
+                    Cookies.set("maintenanceRandData", randData, { expires: 1 });
+                    // 解密函示 如果有值 且為 1 代表解密成功
+                    const decryptData = $utils().decryptData({ hashData, randData });
+                    if (!decryptData) {
+                        // 解密失敗導向維修頁
+                        return navigateTo("/maintenance", { external: true });
+                    }
+                } else if (Cookies.get("maintenanceHashData") && Cookies.get("maintenanceRandData") && to.name !== "maintenance") {
+                    // 取得 cookie 加密值
+                    const hashData = Cookies.get("maintenanceHashData") as string;
+                    // 取得 cookie 解密 key 值 與 iv 值
+                    const randData = Cookies.get("maintenanceRandData") as string;
+                    // 解密函示 如果有值 且為 1 代表解密成功
+                    const decryptData = $utils().decryptData({ hashData, randData });
+                    if (!decryptData) {
+                        // 解密失敗導向維修頁
+                        return navigateTo("/maintenance", { external: true });
+                    }
+                } else if (to.name !== "maintenance") {
                     return navigateTo("/maintenance", { external: true });
                 }
             }
