@@ -313,7 +313,8 @@ function selectProduct(val) {
     emit("update:selectProductIds", val);
 }
 
-function init() {
+async function init() {
+    await shoppingCarStore.getUserCustomShoppingCar();
     // 瀏覽器才執行
     if (process.client) {
         // 當購物車不為空時執行

@@ -741,8 +741,8 @@ const setCustomShoppingCarData = (datas: any) => {
     datas.forEach((item: any) => {
         const result: ShoppingCarCustomInterface = {};
         result.count = item.quantity;
+        const service: any = [];
         item.orderItems.forEach((item2: any, index: number) => {
-            const service: any = [];
             // 判斷是 門扇 的時候執行
             if (item2.productable.customProductType.id === CustomProductListIdEnum.door) {
                 const door = setDoorData(item2.productable, item2.productVariationable.values, item2.productVariationable.stock);
