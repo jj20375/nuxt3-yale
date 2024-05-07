@@ -39,7 +39,7 @@ const breadcrumbs = ref([
     {
         name: "other-privacy-slug",
         text: "隱私權條款",
-        params: { slug: "耶魯隱私權條款" },
+        params: { slug: "隱私權政策" },
     },
 ]);
 

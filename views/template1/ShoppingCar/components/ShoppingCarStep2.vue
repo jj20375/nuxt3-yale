@@ -74,7 +74,7 @@
                         <NuxtLink
                             target="_blank"
                             class="font-medium YaleSolisW-Bd text-gray-800 underline cursor-pointer underline-offset-2 hover:no-underline text-[14px]"
-                            :to="{ name: 'other-privacy-slug', params: { slug: '耶魯隱私權政權' } }"
+                            :to="{ name: 'other-privacy-slug', params: { slug: '隱私權政策' } }"
                             >隱私權政策</NuxtLink
                         >
                     </slot>

@@ -278,7 +278,7 @@ const copyright = {
             text: "隱私權政策",
             url: {
                 name: "other-privacy-slug",
-                params: { slug: "耶魯隱私權政權" },
+                params: { slug: "隱私權政策" },
             },
         },
         {
