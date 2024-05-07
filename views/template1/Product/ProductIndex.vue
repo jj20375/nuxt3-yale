@@ -78,7 +78,7 @@
                         </el-select>
                     </div>
                 </div>
-                <div class="grid grid-cols-2 md:grid-cols-3 gap-x-[20px] gap-y-[40px]">
+                <div id="productListRef" class="grid grid-cols-2 md:grid-cols-3 gap-x-[20px] gap-y-[40px]">
                     <div
                         v-for="(product, index) in datas"
                         :key="index"
@@ -319,6 +319,12 @@ const pagination = ref<any>({
 
 const handlePageChange = (val: any) => {
     getList({ per_page: pagination.value.pageSize, page: val });
+    const anchor = document.querySelector('#productListRef')
+    var scrollOptions = {
+      top: anchor.offsetTop - 150,
+      behavior: "smooth",
+    };
+    window.scrollTo(scrollOptions);
 };
 
 const datas = ref<ProductList[]>([]);
