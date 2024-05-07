@@ -204,15 +204,15 @@ const footerDatas = ref({
             {
                 text: "最新消息",
                 url: {
-                    name: "news-slug-id",
-                    params: { slug: "slug", id: "4" },
+                    name: "news-page-slug",
+                    params: { slug: "slug" },
                 },
             },
             {
                 text: "裝修實績",
                 url: {
-                    name: "sample-slug-id",
-                    params: { slug: "耶魯裝修實績", id: "3" },
+                    name: "sample-page-slug",
+                    params: { slug: "slug" },
                 },
             },
             {

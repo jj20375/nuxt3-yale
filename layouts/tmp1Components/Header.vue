@@ -382,58 +382,22 @@ if (initializationData.value.site) {
 }
 
 // 最新消息文章分類
-const newsTypes = ref<any>([]);
-/**
- * 取得裝修實績分類
- */
-async function getNewsType() {
-    try {
-        const { data } = await $api().ArticalTypeAPI({ type: "news" });
-        console.log("home sampleType api 123 => ", data.value);
-
-        const rows = (data.value as any).data;
-
-        rows.forEach((item: { name: any; id: any; seoSetting: any }) => {
-            newsTypes.value.push({
-                text: item.name,
-                id: item.id,
-                url: {
-                    params: { slug: item.seoSetting.custom_url, id: item.id },
-                    name: "news-slug-id",
-                },
-            });
-        });
-    } catch (err) {}
-}
-await getNewsType();
+const newsTypes = ref<any>([{
+    text: "最新消息",
+    url: {
+        name: "news-page-slug",
+        params: { slug: "slug" },
+    },
+}]);
 
 // 裝修時機文章分類
-const sampleTypes = ref<any>([]);
-/**
- * 取得裝修實績分類
- */
-async function getSampleType() {
-    try {
-        const { data } = await $api().ArticalTypeAPI({ type: "renovation" });
-
-        const rows = (data.value as any).data;
-
-        rows.forEach((item: { name: any; id: any; seoSetting: any }) => {
-            sampleTypes.value.push({
-                text: item.name,
-                id: item.id,
-                url: {
-                    params: { slug: item.seoSetting.custom_url, id: item.id },
-                    name: "sample-slug-id",
-                },
-            });
-        });
-        console.log("sampleTypes.value =>", sampleTypes.value);
-    } catch (err) {
-        console.log("getSampleType err =>", err);
-    }
-}
-await getSampleType();
+const sampleTypes = ref<any>([{
+    text: "裝修實績",
+    url: {
+        name: "sample-page-slug",
+        params: { slug: "slug" },
+    },
+}]);
 
 const menus = ref<any>({
     menu1: {
