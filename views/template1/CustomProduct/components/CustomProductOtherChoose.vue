@@ -50,7 +50,7 @@
                         >
                             {{ product.name }}
                         </p>
-                        <p class="text-gray-800">+NT${{ $utils().formatCurrency(product.price) }}</p>
+                        <p class="text-gray-800">+NT$ {{ $utils().formatCurrency(product.price) }}</p>
                     </div>
                 </div>
             </div>
