@@ -3,8 +3,8 @@
         id="addToCarDialog"
         v-model="showDialog2"
         :before-close="closeDialog"
-        class="custom-dialog h-[400px]"
-        width="400"
+        class="custom-dialog h-5/6"
+        width="1280"
         close-on-click-modal
         lock-scroll
         show-close
