@@ -118,10 +118,14 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
      */
     const getUserCustomShoppingCar = async () => {
         try {
-            const { data } = await $api().GetCustomCarAPI();
-            console.log("getUserCustomShoppingCar =>", data.value.data);
-            if (data.value) {
-                setCustomShoppingCarData(data.value.data.cartItems);
+            if (isAuth.value) {
+                const { data } = await $api().GetCustomCarAPI();
+                console.log("getUserCustomShoppingCar =>", data.value.data);
+                if (data.value) {
+                    setCustomShoppingCarData(data.value.data.cartItems);
+                }
+            } else {
+                setShoppingCustomCar($shoppingCarService().getCustomProductShoppingCar());
             }
         } catch (err) {
             console.log(err);
