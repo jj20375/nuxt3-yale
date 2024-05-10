@@ -297,6 +297,8 @@ export const orderStatus = (status: string) => {
             return "已退款";
         case "return":
             return "已退貨";
+        case "overdue":
+            return "逾期未付款";
         case "complete":
             return "訂單完成";
         case "waiting_deposit":
