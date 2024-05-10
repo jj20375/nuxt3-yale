@@ -130,7 +130,7 @@
                                         target="_blank"
                                         :to="{
                                             name: 'other-terms-slug',
-                                            params: { slug: '耶魯網站服務條款' },
+                                            params: { slug: '網站服務條款' },
                                         }"
                                         >網站服務條款</NuxtLink
                                     >

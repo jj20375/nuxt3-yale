@@ -39,7 +39,7 @@ const breadcrumbs = ref([
     {
         name: "other-terms-slug",
         text: "網站服務條款",
-        params: { slug: "耶魯網站服務條款" },
+        params: { slug: "網站服務條款" },
     },
 ]);
 

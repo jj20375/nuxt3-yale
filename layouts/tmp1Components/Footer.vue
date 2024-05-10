@@ -285,7 +285,7 @@ const copyright = {
             text: "網站服務條款",
             url: {
                 name: "other-terms-slug",
-                params: { slug: "耶魯網站服務條款" },
+                params: { slug: "網站服務條款" },
             },
         },
     ],
