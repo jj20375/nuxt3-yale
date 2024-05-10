@@ -280,7 +280,17 @@ const selectProduct = (id: number) => {
     //     alert("請先登入");
     //     return;
     // }
-    emit("update:selectProductIds", id);
+    const selectIds: number[] = []
+    shoppingCar.value.forEach(item => {
+        if (item.is_add_on_purchase == 1 && id.includes(item.parent_id)) {
+            selectIds.push(item.id)
+        } else if (item.is_add_on_purchase == 0 && id.includes(item.id)) {
+            selectIds.push(item.id)
+        }
+    })
+    console.log(selectIds)
+
+    emit("update:selectProductIds", selectIds);
 };
 
 watch(
