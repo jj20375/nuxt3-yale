@@ -614,7 +614,7 @@ const orderRepay = async () => {
     const params = {
         orderId: orderData.value.orderId,
         orderPaymentId: orderPaymentId,
-        redirect_url: `${hostUrl}/order/normal`,
+        redirect_url: `${hostUrl}/order/combination`,
     };
     const loading = ElLoading.service({
         lock: true,
