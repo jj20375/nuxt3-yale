@@ -288,6 +288,7 @@ const selectProduct = (id: number) => {
             selectIds.push(item.id)
         }
     })
+    checkList.value = selectIds
     console.log(selectIds)
 
     emit("update:selectProductIds", selectIds);
