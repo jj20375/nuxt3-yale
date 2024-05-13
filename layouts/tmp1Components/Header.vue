@@ -70,6 +70,7 @@
                         >
                             <div
                                 class="border-t border-gray-300 shadow-header"
+                                :class="currentMenu === key && showSubMenu ? '' : 'transition-opacity'"
                                 v-if="currentMenu === key && showSubMenu"
                             >
                                 <ul
@@ -638,13 +639,19 @@ const showSubMenu = ref<boolean>(false);
 const active = ref(false);
 
 function changeMenu(key: string) {
-    currentMenu.value = key;
-    showSubMenu.value = true;
+    setTimeout(function() {
+        currentMenu.value = key;
+        showSubMenu.value = true;
+    }, 300)
+    // currentMenu.value = key;
+    // showSubMenu.value = true;
 }
 
 function closeMenu() {
-    currentMenu.value = null;
-    showSubMenu.value = false;
+    setTimeout(function() {
+        currentMenu.value = null;
+        showSubMenu.value = false;
+    }, 300)
 }
 
 // 預設下拉選單為關閉狀態
