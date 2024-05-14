@@ -27,7 +27,7 @@
                         @click="
                             router.push({
                                 name: 'product-detail-slug-id',
-                                params: { slug: cart.name, id: cart.productID },
+                                params: { slug: cart.seoSetting?.custom_url ? cart.seoSetting?.custom_url : cart.name,  id: cart.productID },
                             })
                         "
                     />
@@ -38,7 +38,7 @@
                         @click="
                             router.push({
                                 name: 'product-detail-slug-id',
-                                params: { slug: cart.name, id: cart.productID },
+                                params: { slug: cart.seoSetting?.custom_url ? cart.seoSetting?.custom_url : cart.name,  id: cart.productID },
                             })
                         "
                     >

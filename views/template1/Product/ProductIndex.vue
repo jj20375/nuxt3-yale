@@ -367,6 +367,7 @@ async function getList(params: { per_page: number; page: number }) {
                 is_favorite: item.is_favorite,
                 main_image: item.main_image,
                 tags: item.tags,
+                seoSetting: item.seoSetting,
                 is_single_variation: item.is_single_variation,
                 stock: item.stock,
             });

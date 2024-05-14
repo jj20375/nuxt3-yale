@@ -98,6 +98,7 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
                         productVariationable: productVariationable,
                         is_add_on_purchase: i.is_add_on_purchase,
                         parent_id: i.parent_id,
+                        seoSetting: i.productable.seoSetting,
                     };
                 });
                 if (process.client) {

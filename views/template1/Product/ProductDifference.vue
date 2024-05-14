@@ -207,6 +207,7 @@ function productsCompareData(init = true) {
             style: item?.model,
             category: item?.shape,
             imgSrc: item?.main_image,
+            seoSetting: item?.seoSetting,
             ...obj,
         });
     });
