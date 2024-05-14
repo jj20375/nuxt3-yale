@@ -732,7 +732,7 @@ const addToShoppingCar = async (isGoToShoppingCarPage: boolean = false) => {
             if (!isAuth.value) {
                 selectAddData.forEach((item: { is_single_variation: number; discount_id: any; count: number; id: any; spec: any; name: any; imgUrl: any; price: any; stock: any }) => {
                     const addInput: ShoppingCarInterface = {
-                        id: item.discount_id,
+                        id: detailData.value.product_id + 'discount_id' + item.discount_id,
                         parent_id: detailData.value.product_id,
                         productID: item.id,
                         name: item.name,

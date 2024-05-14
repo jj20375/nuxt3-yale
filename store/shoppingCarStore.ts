@@ -625,11 +625,7 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
         if (!isAuth.value) {
             // 未登入
             shoppingCar.value = shoppingCar.value.filter((i) => {
-                if (data.product_variationable_id) {
-                    return (i.productID != data.productID && i.parent_id != data.productID) || (i.product_variationable_id != data.product_variationable_id && i.parent_id != data.productID);
-                } else {
-                    return i.productID != data.productID && i.parent_id != data.productID;
-                }
+                return i.id != data.cart_item_id && i.parent_id != data.cart_item_id;
             });
             $shoppingCarService().setShoppingCar(shoppingCar.value);
         } else if (isAuth.value && data.cart_item_id) {
