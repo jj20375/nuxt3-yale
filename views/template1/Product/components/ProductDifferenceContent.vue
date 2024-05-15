@@ -276,7 +276,7 @@ function goToDetail(product: any) {
 
     router.push({
         name: routeName,
-        params: { slug: product.name, id: product.id },
+        params: { slug: product.seoSetting?.custom_url ? product.seoSetting?.custom_url : product.name, id: product.id },
     });
 }
 

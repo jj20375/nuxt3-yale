@@ -37,9 +37,9 @@ const breadcrumbs = ref([
         text: "首頁",
     },
     {
-        name: "other-privacy-slug",
+        name: "other-privacy-page-slug",
         text: "隱私權條款",
-        params: { slug: "耶魯隱私權條款" },
+        params: { slug: "slug" },
     },
 ]);
 

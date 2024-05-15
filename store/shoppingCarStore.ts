@@ -98,6 +98,7 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
                         productVariationable: productVariationable,
                         is_add_on_purchase: i.is_add_on_purchase,
                         parent_id: i.parent_id,
+                        seoSetting: i.productable.seoSetting,
                     };
                 });
                 if (process.client) {
@@ -118,10 +119,14 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
      */
     const getUserCustomShoppingCar = async () => {
         try {
-            const { data } = await $api().GetCustomCarAPI();
-            console.log("getUserCustomShoppingCar =>", data.value.data);
-            if (data.value) {
-                setCustomShoppingCarData(data.value.data.cartItems);
+            if (isAuth.value) {
+                const { data } = await $api().GetCustomCarAPI();
+                console.log("getUserCustomShoppingCar =>", data.value.data);
+                if (data.value) {
+                    setCustomShoppingCarData(data.value.data.cartItems);
+                }
+            } else {
+                setShoppingCustomCar($shoppingCarService().getCustomProductShoppingCar());
             }
         } catch (err) {
             console.log(err);
@@ -136,8 +141,8 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
         const arr: ShoppingCarCustomInterface[] = [];
         datas.forEach((item: any) => {
             const result: ShoppingCarCustomInterface = {};
+            const service: any = [];
             item.cartItems.forEach((item2: any, index: number) => {
-                const service: any = [];
                 // 判斷是 門扇 的時候執行
                 if (item2.productable.customProductType.id === CustomProductListIdEnum.door) {
                     const door = setDoorData(item2.productable, item2.productVariationable.values, item2.productVariationable.stock);
@@ -621,11 +626,7 @@ export const useShoppingCarStore = defineStore("shoppingCarStore", () => {
         if (!isAuth.value) {
             // 未登入
             shoppingCar.value = shoppingCar.value.filter((i) => {
-                if (data.product_variationable_id) {
-                    return (i.productID != data.productID && i.parent_id != data.productID) || (i.product_variationable_id != data.product_variationable_id && i.parent_id != data.productID);
-                } else {
-                    return i.productID != data.productID && i.parent_id != data.productID;
-                }
+                return i.id != data.cart_item_id && i.parent_id != data.cart_item_id;
             });
             $shoppingCarService().setShoppingCar(shoppingCar.value);
         } else if (isAuth.value && data.cart_item_id) {

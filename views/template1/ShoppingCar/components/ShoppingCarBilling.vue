@@ -51,6 +51,8 @@
             <span class="mr-[4px]">NT$ </span>
             <slot name="depositBig"></slot>
         </div>
+        <span v-if="currentTab === 'type1' && currentStep === 1" class="flex text-red-500 text-[14px] mt-[14px] lg:mt-[20px]">買家須於7天内完成付款，若買家逾期未結帳付款，逾期訂單將被取消。</span>
+        <span v-if="currentTab === 'type2' && currentStep === 1" class="flex text-red-500 text-[14px] mt-[14px] lg:mt-[20px]">買家須於7天内完成30%訂金付款，若買家逾期未結帳付款，逾期訂單將被取消。</span>
         <slot name="button"></slot>
     </div>
 </template>

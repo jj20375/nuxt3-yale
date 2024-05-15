@@ -30,7 +30,8 @@
         />
         <ShoppingCarStep2FormCustomProductRule
             v-model:showDialog="showDialogByCustomRule"
-            :customRuleData="customRuleData"
+            :title="ruleData.title"
+            :customRuleData="ruleData.content"
         />
 
         <div class="flex flex-col gap-2 mt-[30px] mb-[20px]">
@@ -46,7 +47,7 @@
                     <slot name="label"
                         ><span class="text-[14px] font-normal text-gray-800">我已閱讀並同意 </span>
                         <span
-                            @click="showDialogByCustomRule = !showDialogByCustomRule"
+                            @click.prevent="handleShowDialogRule('customRule')"
                             class="text-gray-800 font-medium underline underline-offset-2 cursor-pointer hover:no-underline YaleSolisW-Bd text-[14px]"
                             >定型化契約</span
                         >
@@ -61,21 +62,16 @@
                 >
                     <slot name="label"
                         ><span class="text-[14px] font-normal text-gray-800">我已閱讀並同意 </span>
-                        <NuxtLink
-                            target="_blank"
-                            class="font-medium YaleSolisW-Bd text-gray-800 underline cursor-pointer underline-offset-2 hover:no-underline text-[14px]"
-                            :to="{
-                                name: 'other-terms-slug',
-                                params: { slug: '耶魯網站服務條款' },
-                            }"
-                            >網站服務條款</NuxtLink
+                        <span
+                            @click.prevent="handleShowDialogRule('otherTerms')"
+                            class="text-gray-800 font-medium underline underline-offset-2 cursor-pointer hover:no-underline YaleSolisW-Bd text-[14px]"
+                            >網站服務條款</span
                         >
                         <span class="text-[14px] font-normal text-gray-800"> 與 </span>
-                        <NuxtLink
-                            target="_blank"
-                            class="font-medium YaleSolisW-Bd text-gray-800 underline cursor-pointer underline-offset-2 hover:no-underline text-[14px]"
-                            :to="{ name: 'other-privacy-slug', params: { slug: '耶魯隱私權政權' } }"
-                            >隱私權政策</NuxtLink
+                        <span
+                            @click.prevent="handleShowDialogRule('privacy')"
+                            class="text-gray-800 font-medium underline underline-offset-2 cursor-pointer hover:no-underline YaleSolisW-Bd text-[14px]"
+                            >隱私權政策</span
                         >
                     </slot>
                 </el-checkbox>
@@ -164,8 +160,34 @@ const props: Props = withDefaults(defineProps<Props>(), {
 // 顯示定型化契約彈窗
 const showDialogByCustomRule = ref(false);
 
+// 彈窗資料
+const ruleData = ref<any>({
+    content: '',
+    title: ''
+});
+
 // 定型化契約資料
 const customRuleData = ref<any>(``);
+
+// 網站服務條款資料
+const otherTermsData = ref<any>(``);
+
+// 定型化契約資料
+const privacyData = ref<any>(``);
+
+const handleShowDialogRule = (type: string) => {
+    showDialogByCustomRule.value = true
+    if (type === 'customRule') {
+        ruleData.value.content = customRuleData.value
+        ruleData.value.title = '定型化契約'
+    } else if (type === 'otherTerms') {
+        ruleData.value.content = otherTermsData.value
+        ruleData.value.title = '網站服務條款'
+    } else if (type === 'privacy') {
+        ruleData.value.content = privacyData.value
+        ruleData.value.title = '隱私權政策'
+    }
+}
 
 // 訂單主表單
 const formMain = ref({
@@ -233,16 +255,17 @@ const formConfirm = ref({
 const selectGiftIds = ref<number | string[]>([]);
 
 const getPageData = async () => {
-    try {
-        const params = { code: "standardized_contract_popup" };
-        const { data } = await $api().getPageAPI(params);
-        console.log("getPageData api => ", data.value);
+    await $api().getPageAPI({ code: "standardized_contract_popup" }).then(res => {
+        customRuleData.value = (res.data.value as any).data.schema.content
+    })
 
-        const pageData = (data.value as any).data.schema;
-        customRuleData.value = pageData.content;
-    } catch (err) {
-        console.log("HomeSampleAPI => ", err);
-    }
+    await $api().getPageAPI({ code: "privacy_policy" }).then(res => {
+        privacyData.value = (res.data.value as any).data.schema.content
+    })
+
+    await $api().getPageAPI({ code: "terms_of_service" }).then(res => {
+        otherTermsData.value = (res.data.value as any).data.schema.content
+    })
 };
 
 const initialVal = () => {

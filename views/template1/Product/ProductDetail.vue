@@ -473,22 +473,20 @@ const getData = async () => {
     const product = detailData.value;
     is_favorite.value = product.is_favorite;
 
-    if (product.breadcrumbs[0] && product.breadcrumbs[1]) {
-        breadcrumbs.value.push({
-            name: "product-slug-category-tag",
-            text: product.breadcrumbs[0].name,
-            params: { slug: product.breadcrumbs[0].id, category: product.breadcrumbs[0].id, tag: product.breadcrumbs[1].id },
-        });
-        breadcrumbs.value.push({
-            name: "product-slug-category-tag",
-            text: product.breadcrumbs[1].name,
-            params: { slug: product.breadcrumbs[0].id, category: product.breadcrumbs[0].id, tag: product.breadcrumbs[1].id },
-        });
-    }
+    breadcrumbs.value.push({
+        name: "product-slug-category-tag",
+        text: product.breadcrumbs[0].name,
+        params: { slug: product.breadcrumbs[0].id, category: product.breadcrumbs[0].id, tag: product.breadcrumbs[1].id },
+    });
+    breadcrumbs.value.push({
+        name: "product-slug-category-tag",
+        text: product.breadcrumbs[1].name,
+        params: { slug: product.breadcrumbs[0].id, category: product.breadcrumbs[0].id, tag: product.breadcrumbs[1].id },
+    });
     breadcrumbs.value.push({
         name: "product-detail-slug-id",
         text: detailData.value.name,
-        params: { slug: product.seoSetting.custom_url, id: detailData.value.product_id },
+        params: { slug: product.seoSetting?.custom_url ? product.seoSetting?.custom_url : product.name, id: detailData.value.product_id },
     });
 
     if (productDetail.value.productRelations) {
@@ -715,6 +713,7 @@ const addToShoppingCar = async (isGoToShoppingCarPage: boolean = false) => {
         imgSrc: currentImage.value,
         count: count.value,
         price: detailData.value.price,
+        seoSetting: detailData.value.seoSetting,
         totalPrice: Number(detailData.value.price) * count.value,
         product_variationable_id: currentItem.value ? currentItem.value.id : undefined,
         colorName: colorName.value ? colorName.value : undefined,
@@ -732,13 +731,14 @@ const addToShoppingCar = async (isGoToShoppingCarPage: boolean = false) => {
             if (!isAuth.value) {
                 selectAddData.forEach((item: { is_single_variation: number; discount_id: any; count: number; id: any; spec: any; name: any; imgUrl: any; price: any; stock: any }) => {
                     const addInput: ShoppingCarInterface = {
-                        id: item.discount_id,
+                        id: detailData.value.product_id + 'discount_id' + item.discount_id,
                         parent_id: detailData.value.product_id,
                         productID: item.id,
                         name: item.name,
                         imgSrc: item.imgUrl,
                         count: item.count,
                         price: item.price,
+                        seoSetting: item.seoSetting,
                         market_price: Number(item.market_price),
                         market_price_total: Number(item.market_price) * item.count,
                         totalPrice: Number(item.price) * item.count,

@@ -70,7 +70,7 @@
                                 v-if="currentStep == 0 || currentStep == 1"
                                 #button
                             >
-                                <div class="mt-[28px] lg:mt-[40px]">
+                                <div class="mt-[14px] lg:mt-[20px]">
                                     <button
                                         v-if="currentStep == 0"
                                         @click="goStepCheckout"

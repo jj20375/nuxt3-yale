@@ -25,7 +25,7 @@
                 </div>
             </div>
             <div
-                class="flex justify-between w-full gap-4 text-gray-800 cursor-pointer"
+                class="flex justify-between w-full gap-4 text-gray-800"
             >
                 <h5 class="text-[18px] font-bold mb-4 YaleSolisW-Bd">{{ product.name }}</h5>
                 <p class="hidden sm:block font-medium YaleSolisW-Bd text-[18px] whitespace-nowrap">NT$ {{ $utils().formatCurrency(product.totalPrice) }}</p>

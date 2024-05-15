@@ -130,7 +130,7 @@
                                         target="_blank"
                                         :to="{
                                             name: 'other-terms-slug',
-                                            params: { slug: '耶魯網站服務條款' },
+                                            params: { slug: '網站服務條款' },
                                         }"
                                         >網站服務條款</NuxtLink
                                     >
@@ -138,7 +138,7 @@
                                     <NuxtLink
                                         class="font-bold underline cursor-pointer underline-offset-2 hover:no-underline text-[14px]"
                                         target="_blank"
-                                        :to="{ name: 'other-privacy-slug', params: { slug: '耶魯隱私權政權' } }"
+                                        :to="{ name: 'other-terms-page-slug', params: { slug: 'slug' } }"
                                         >隱私權政策</NuxtLink
                                     >
                                 </slot>

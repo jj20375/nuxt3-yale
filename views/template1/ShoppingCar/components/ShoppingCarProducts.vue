@@ -27,7 +27,7 @@
                         @click="
                             router.push({
                                 name: 'product-detail-slug-id',
-                                params: { slug: cart.name, id: cart.productID },
+                                params: { slug: cart.seoSetting?.custom_url ? cart.seoSetting?.custom_url : cart.name,  id: cart.productID },
                             })
                         "
                     />
@@ -38,7 +38,7 @@
                         @click="
                             router.push({
                                 name: 'product-detail-slug-id',
-                                params: { slug: cart.name, id: cart.productID },
+                                params: { slug: cart.seoSetting?.custom_url ? cart.seoSetting?.custom_url : cart.name,  id: cart.productID },
                             })
                         "
                     >
@@ -280,7 +280,18 @@ const selectProduct = (id: number) => {
     //     alert("請先登入");
     //     return;
     // }
-    emit("update:selectProductIds", id);
+    const selectIds: number[] = []
+    shoppingCar.value.forEach(item => {
+        if (item.is_add_on_purchase == 1 && id.includes(item.parent_id)) {
+            selectIds.push(item.id)
+        } else if (item.is_add_on_purchase == 0 && id.includes(item.id)) {
+            selectIds.push(item.id)
+        }
+    })
+    checkList.value = selectIds
+    console.log(selectIds)
+
+    emit("update:selectProductIds", selectIds);
 };
 
 watch(

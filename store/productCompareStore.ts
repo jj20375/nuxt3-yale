@@ -10,6 +10,7 @@ export const useProductCompareStore = defineStore({
             compareStore: [
                 {
                     attributes: {},
+                    seoSetting: {},
                     id: null,
                     main_image: "",
                     model: "",
@@ -18,6 +19,7 @@ export const useProductCompareStore = defineStore({
                 },
                 {
                     attributes: {},
+                    seoSetting: {},
                     id: null,
                     main_image: "",
                     model: "",
@@ -26,6 +28,7 @@ export const useProductCompareStore = defineStore({
                 },
                 {
                     attributes: {},
+                    seoSetting: {},
                     id: null,
                     main_image: "",
                     model: "",
@@ -40,6 +43,7 @@ export const useProductCompareStore = defineStore({
             this.compareStore = [
                 {
                     attributes: {},
+                    seoSetting: {},
                     id: null,
                     main_image: "",
                     model: "",
@@ -48,6 +52,7 @@ export const useProductCompareStore = defineStore({
                 },
                 {
                     attributes: {},
+                    seoSetting: {},
                     id: null,
                     main_image: "",
                     model: "",
@@ -56,6 +61,7 @@ export const useProductCompareStore = defineStore({
                 },
                 {
                     attributes: {},
+                    seoSetting: {},
                     id: null,
                     main_image: "",
                     model: "",

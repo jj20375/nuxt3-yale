@@ -167,6 +167,7 @@ async function getList(params: { product_type_id: string }) {
                 main_image: item.main_image,
                 attributes: item.attributes,
                 shape: item.shape,
+                seoSetting: item.seoSetting,
             });
         });
 

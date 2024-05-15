@@ -3,16 +3,17 @@
         id="addToCarDialog"
         v-model="showDialog2"
         :before-close="closeDialog"
-        class="custom-dialog h-[400px]"
-        width="400"
+        class="custom-dialog h-5/6"
+        width="1280"
         close-on-click-modal
+        destroy-on-close
         lock-scroll
         show-close
         center
         align-center
         append-to-body
     >
-        <h2 class="text-gray-800 text-center font-bold text-[24px] mb-4">定型化契約</h2>
+        <h2 class="text-gray-800 text-center font-bold text-[24px] mb-4">{{title}}</h2>
         <div
             v-html="customRuleData"
         ></div>
@@ -26,6 +27,11 @@ const props = defineProps({
     showDialog: {
         type: Boolean,
         default: false,
+    },
+    // 定型化契約資料
+    title: {
+        type: String,
+        default: "",
     },
     // 定型化契約資料
     customRuleData: {

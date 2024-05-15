@@ -21,6 +21,7 @@
                             :key="item"
                         >
                             <ProductCard
+                                :breadcrumbs="breadcrumbs"
                                 :product="item"
                                 @handleFavorite="handleFavorite"
                             />
@@ -57,6 +58,13 @@ function onSlideChange() {
     console.log("slide change");
 }
 
+const breadcrumbs = ref([
+    {
+        name: "index",
+        text: "首頁",
+    },
+]);
+
 const datas = ref<ProductList[]>([]);
 /**
  * 取得商品列表
@@ -84,6 +92,7 @@ async function getList() {
                     main_image: item.main_image,
                     is_favorite: item.is_favorite,
                     tags: item.tags,
+                    seoSetting: item.seoSetting,
                     is_single_variation: item.is_single_variation,
                 });
             });

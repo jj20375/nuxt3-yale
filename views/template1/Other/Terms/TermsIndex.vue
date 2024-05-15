@@ -37,9 +37,9 @@ const breadcrumbs = ref([
         text: "首頁",
     },
     {
-        name: "other-terms-slug",
+        name: "other-terms-page-slug",
         text: "網站服務條款",
-        params: { slug: "耶魯網站服務條款" },
+        params: { slug: "slug" },
     },
 ]);
 

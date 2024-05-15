@@ -8,7 +8,7 @@
                         alt=""
                     />
                 </span>
-                <span class="page-main-title text-bold vertical-center">一般商品訂購單</span>
+                <span class="page-main-title text-bold vertical-center">訂製門扇訂購單</span>
             </div>
             <div class="d-inline-block float-right">
                 <div class="text-right">訂單編號</div>

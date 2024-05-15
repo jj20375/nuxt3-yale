@@ -79,7 +79,7 @@ async function getList() {
 
         const rows = (data.value as any).data;
 
-        rows.forEach((item: { id: any; model: any; name: any; shape: any; price: any; market_price: any; main_image: any; other_images: any; is_favorite: boolean; is_single_variation: boolean }) => {
+        rows.forEach((item: { id: any; model: any; name: any; shape: any; price: any; market_price: any; main_image: any; other_images: any; is_favorite: boolean; is_single_variation: boolean; seoSetting: any }) => {
             datas.value.push({
                 id: item.id,
                 model: item.model,
@@ -89,6 +89,7 @@ async function getList() {
                 market_price: item.market_price,
                 main_image: item.main_image,
                 is_single_variation: item.is_single_variation,
+                seoSetting: item.seoSetting,
                 is_favorite: item.is_favorite,
                 tags: item.tags,
             });

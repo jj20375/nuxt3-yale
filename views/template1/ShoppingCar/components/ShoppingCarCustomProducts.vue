@@ -313,13 +313,13 @@ function selectProduct(val) {
     emit("update:selectProductIds", val);
 }
 
-function init() {
+async function init() {
     // 瀏覽器才執行
     if (process.client) {
         // 當購物車不為空時執行
         if ($shoppingCarService().getCustomProductShoppingCar() !== null) {
             // 購物車資料(過濾購物車重複資料)
-            shoppingCarStore.setShoppingCustomCar($shoppingCarService().getCustomProductShoppingCar());
+            await shoppingCarStore.getUserCustomShoppingCar();
             // 設定購物車商品全選
             checkList.value = shoppingCar.value.map((item: any) => item.id);
             // 選中商品參數傳給母組件
