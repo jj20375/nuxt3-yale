@@ -44,7 +44,7 @@
                 >
                     <div
                         v-if="menu.submenus.length > 0"
-                        @mouseover="isLargePad ? null : changeMenu(key)"
+                        @mouseenter="isLargePad ? null : changeMenu(key)"
                         @mouseleave="closeMenu"
                         @click="isLargePad ? toggleMenu(key) : null"
                         class="text-gray-800 transition-all duration-300 cursor-pointer xl:px-3 2xl:px-4 3xl:px-5 hover:text-gray-500"
