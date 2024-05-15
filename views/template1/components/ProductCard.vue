@@ -168,7 +168,7 @@ function addToShoppingCar(data: any) {
     // 判斷有多商品型號時 跳轉商品細節頁
     if (data.is_single_variation === 0) {
         ElMessage({ type: "warning", message: "請選擇商品規格加入購物車" });
-        goToDetail({ name: data.name, id: data.id, seoSetting: product.seoSetting });
+        goToDetail({ name: data.name, id: data.id, seoSetting: data.seoSetting });
         return;
     }
     const input: ShoppingCarInterface = {
