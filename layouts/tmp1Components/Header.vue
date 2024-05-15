@@ -639,19 +639,13 @@ const showSubMenu = ref<boolean>(false);
 const active = ref(false);
 
 function changeMenu(key: string) {
-    setTimeout(function() {
-        currentMenu.value = key;
-        showSubMenu.value = true;
-    }, 300)
-    // currentMenu.value = key;
-    // showSubMenu.value = true;
+    currentMenu.value = key;
+    showSubMenu.value = true;
 }
 
 function closeMenu() {
-    setTimeout(function() {
-        currentMenu.value = null;
-        showSubMenu.value = false;
-    }, 300)
+    currentMenu.value = null;
+    showSubMenu.value = false;
 }
 
 // 預設下拉選單為關閉狀態
