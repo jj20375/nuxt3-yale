@@ -3,7 +3,7 @@
         <div class="container">
             <div class="w-full xl:w-3/4 px-[24px] py-[36px] sm:p-[60px] bg-white mx-auto rounded-[24px] border-[1px] border-gray-200">
                 <h3 class="text-[24px] font-bold mb-6">社群登入</h3>
-                <p>歡迎使用FB、Google、Line帳號快速登入，連結YALE網站會員帳號，設定完成後可直接使用社群帳號登入</p>
+                <p>歡迎使用Google、Line帳號快速登入，連結YALE網站會員帳號，設定完成後可直接使用社群帳號登入</p>
                 <div class="border-gray-200 border-b-[1px] my-[30px]"></div>
                 <el-form
                     class="custom-form"
