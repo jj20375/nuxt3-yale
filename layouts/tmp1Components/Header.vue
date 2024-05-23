@@ -44,7 +44,7 @@
                 >
                     <div
                         v-if="menu.submenus.length > 0"
-                        @mouseover="isLargePad ? null : changeMenu(key)"
+                        @mouseenter="isLargePad ? null : changeMenu(key)"
                         @mouseleave="closeMenu"
                         @click="isLargePad ? toggleMenu(key) : null"
                         class="text-gray-800 transition-all duration-300 cursor-pointer xl:px-3 2xl:px-4 3xl:px-5 hover:text-gray-500"
@@ -639,19 +639,13 @@ const showSubMenu = ref<boolean>(false);
 const active = ref(false);
 
 function changeMenu(key: string) {
-    setTimeout(function() {
-        currentMenu.value = key;
-        showSubMenu.value = true;
-    }, 300)
-    // currentMenu.value = key;
-    // showSubMenu.value = true;
+    currentMenu.value = key;
+    showSubMenu.value = true;
 }
 
 function closeMenu() {
-    setTimeout(function() {
-        currentMenu.value = null;
-        showSubMenu.value = false;
-    }, 300)
+    currentMenu.value = null;
+    showSubMenu.value = false;
 }
 
 // 預設下拉選單為關閉狀態
