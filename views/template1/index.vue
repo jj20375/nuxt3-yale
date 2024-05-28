@@ -1,9 +1,8 @@
 <template>
-    <div class="min-h-screen">
-        <HomeCustomProduct :custom_door="schema.custom_door" />
+    <div class="min-h-screen relative">
+        <HomeVideo v-if="schema.video" :videoUrl="schema.video" @goAnchor="goAnchor" />
+        <HomeCustomProduct ref="customProductRef" :custom_door="schema.custom_door" />
         <TopBanner :carousel="schema.carousel" />
-        <HomeVideo v-if="schema.video" :videoUrl="schema.video" />
-        <!-- <HomeSample /> -->
         <HomeProduct />
         <HomeApp :yale_home_app="schema.yale_home_app" />
         <HomeService :four_promises="schema.four_promises" />
@@ -14,7 +13,7 @@
 <script setup lang="ts">
 import TopBanner from "~/views/template1/Home/HomeTopBanner.vue";
 import StoreCarousel from "~/views/template1/Home/HomeStoreCarousel.vue";
-import HomeVideo from "~/views/template1/Home/HomeVideo.tsx";
+import HomeVideo from "~/views/template1/Home/HomeVideo.vue";
 import HomeCustomProduct from "~/views/template1/Home/HomeCustomProduct.vue";
 import HomeSample from "~/views/template1/Home/HomeSample.vue";
 import HomeProduct from "~/views/template1/Home/HomeProduct.vue";
@@ -62,6 +61,14 @@ async function getPageData() {
     } catch (err) {
         console.log("HomeSampleAPI => ", err);
     }
+}
+
+const customProductRef = ref<any>(null);
+// console.log(customProductRef.value.domRef)
+
+const goAnchor = () => {
+    console.log(customProductRef.value)
+    customProductRef.value.domRef.scrollIntoView({ block: "start", behavior: "smooth" });
 }
 
 onMounted(async () => {
