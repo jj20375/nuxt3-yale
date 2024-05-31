@@ -12,7 +12,7 @@
             >
                 <div class="flex">
                     <span class="flex-1 min-w-[100px] font-medium YaleSolisW-Bd"> {{ service.name }} </span>
-                    <span class="ml-[16px]">NT$ {{ $utils().formatCurrency(service.price) }}</span>
+                    <span class="ml-[16px]">+NT$ {{ $utils().formatCurrency(service.price) }}</span>
                 </div>
             </el-checkbox>
         </el-checkbox-group>

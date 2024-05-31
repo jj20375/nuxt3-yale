@@ -425,7 +425,7 @@ const currentPlanId = ref<number | null>(null);
 // 對應場景顯示方案
 const findPlans = ref({ customPlans: [] });
 // 預設選擇門的角度
-const currentAngle = ref(route.query.angle ?? "front");
+const currentAngle = ref(route.query.angle ?? "backend");
 // 預覽視窗 dom 寬度 用來計算 正面｜背面｜半開顯示位置
 const previewWidth = ref(0);
 const viewAngle = ref([

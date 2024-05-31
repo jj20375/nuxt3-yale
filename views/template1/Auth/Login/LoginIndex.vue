@@ -80,7 +80,8 @@
                                 src="/img/icons/medias/line.svg"
                             />
                         </div>
-                        <div
+                        <!-- TODO FB登入先隱藏 -->
+                        <!-- <div
                             v-if="ssoLogingSite.facebook"
                             @click="ssoLogin('facebook')"
                         >
@@ -88,7 +89,7 @@
                                 class="object-cover w-10 transition-all cursor-pointer aspect-square duration-400 hover:opacity-80 hover:transition-all hover:duration-400"
                                 src="/img/icons/medias/facebook.svg"
                             />
-                        </div>
+                        </div> -->
                     </div>
                     <div class="flex justify-center gap-3 mt-[30px]">
                         <div class="text-gray-400 text-[15px]">還不是會員?</div>
