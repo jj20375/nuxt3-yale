@@ -15,7 +15,7 @@
 <script setup lang="ts">
 const AsyncComp = defineAsyncComponent(() => import("~/views/template1/Auth/Verification/VerificationIndex.vue"));
 definePageMeta({
-    middleware: ["auth-middleware"],
+    middleware: ["auth-middleware", "verification-middleware"],
 });
 const pageLoading = ref(useState("loading"));
 onMounted(() => {
