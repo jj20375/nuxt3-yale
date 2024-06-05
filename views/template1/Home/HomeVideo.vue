@@ -1,7 +1,7 @@
 <template>
     <div class="videoDiv w-full relative">
         <video class="videoSection w-full" :src=props.videoUrl playsinline autoplay muted></video>
-        <div class="videoFlow absolute">
+        <div :class="[isLargePad ? 'videoFlowMobile' : '']" class="videoFlow absolute">
             <div class="relative h-full">
                 <div @click="goAnchor" class="anchorArrow">
                     <IconArrowDown/>
@@ -13,6 +13,7 @@
 
 <script setup lang="ts">
 import { ref, defineProps, defineEmits } from "vue";
+const { isDesktop, isMobile, isLargePad } = useWindowResize();
 import IconArrowDown from "~/assets/img/icons/arrow-line-down.svg";
 export interface Props {
     videoUrl?: any
@@ -50,6 +51,13 @@ const goAnchor = () => {
 .videoFlow {
     top: 0;
     width: 100%;
+}
+.videoFlowMobile {
+    .anchorArrow {
+        height: 2.8rem;
+        width: 2.8rem;
+        padding: 0rem .75rem;
+    }
 }
 .anchorArrow {
     display: inline-block;
