@@ -1,6 +1,6 @@
 <template>
     <div class="videoDiv w-full relative">
-        <video class="videoSection w-full" :src=props.videoUrl playsinline autoplay muted></video>
+        <video class="videoSection w-full" :src=videoUrl playsinline autoplay muted></video>
         <div :class="[isLargePad ? 'videoFlowMobile' : '']" class="videoFlow absolute">
             <div class="relative h-full">
                 <div @click="goAnchor" class="anchorArrow">
@@ -46,6 +46,15 @@ const goAnchor = () => {
     emits("goAnchor");
 }
 
+const videoUrl = computed(() => {
+    let result = props.videoUrl.desktop
+    if (isLargePad.value) {
+        result = props.videoUrl.mobile
+    }
+
+    return result
+})
+
 </script>
 <style lang="scss" scoped>
 .videoFlow {
@@ -57,13 +66,15 @@ const goAnchor = () => {
         height: 2.8rem;
         width: 2.8rem;
         padding: 0rem .75rem;
+        top: 73%;
+        left: 82%;
     }
 }
 .anchorArrow {
     display: inline-block;
     position: sticky;
     top: 80%;
-    left: 100%;
+    left: 95%;
     z-index: 1000;
     cursor: pointer;
     :hover {
@@ -76,12 +87,12 @@ const goAnchor = () => {
         align-items: center;
         flex-shrink: 0;
         font-size: 0;
-        height: 5.8rem;
+        height: 48px;
         justify-content: center;
         overflow: hidden;
-        padding: 1rem 2rem;
+        padding: 12px;
         position: relative;
-        width: 5.8rem;
+        width: 48px;
         border-radius: 6rem;
         border-width: 0;
         background-color: #0000000d;
