@@ -62,7 +62,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const selectedServices = ref([]);
 
-const descriptions = ref(["1. 實際價格將依現場丈量評估後為準，費用加在尾款", "2. 加購此服務後續不可取消，丈量後可加購此服務"]);
+const descriptions = ref(["1. 實際價格將依現場丈量評估後為準，費用加在尾款"]);
 
 /**
  * 選擇服務
