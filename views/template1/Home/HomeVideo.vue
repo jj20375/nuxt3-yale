@@ -1,6 +1,6 @@
 <template>
     <div class="videoDiv w-full relative">
-        <video class="videoSection w-full" :src=videoUrl playsinline autoplay muted></video>
+        <video class="videoSection w-full" :src=videoUrl playsinline autoplay muted loop></video>
         <div :class="[isLargePad ? 'videoFlowMobile' : '']" class="videoFlow absolute">
             <div class="relative h-full">
                 <div @click="goAnchor" class="anchorArrow">
