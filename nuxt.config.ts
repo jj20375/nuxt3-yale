@@ -24,6 +24,9 @@ export default defineNuxtConfig({
                 { src: "https://www.googletagmanager.com/gtag/js?id=G-R8MLETTSC3" },
             ],
             link: [{ rel: "stylesheet", href: "https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" }],
+            meta: [
+                { name: 'google-site-verification', content: 'fQBLco6pQOjPC4nmN0KWEqHOUf9bFPJqYtrUxZ6TgZ8' },
+            ],
         },
         // pageTransition: { name: "page", mode: "out-in" },
     },
