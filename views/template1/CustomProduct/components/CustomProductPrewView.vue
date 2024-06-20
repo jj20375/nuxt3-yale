@@ -1,59 +1,62 @@
 <template>
     <div ref="customProductPreviewRefDom">
-        <div
-            v-if="currentBgData[currentViewAngleData]"
-            class="absolute object-cover w-full h-full"
-        >
-            <NuxtImg
+        <template v-for="(item, index) in ['front', 'backend', 'half']" :key="index">
+            <div
+                v-show="item === currentViewAngleData"
                 class="absolute object-cover w-full h-full"
-                :src="currentBgData[currentViewAngleData]"
-            />
-            <div
-                v-if="productData.door[currentViewAngleData]"
-                class="absolute z-10 w-full h-full"
             >
                 <NuxtImg
-                    class="relative object-cover w-full h-full"
-                    :src="productData.door[currentViewAngleData]"
+                    v-if="currentBgData && currentBgData[item]"
+                    class="absolute object-cover w-full h-full"
+                    :src="currentBgData[item]"
                 />
+                <div
+                    v-if="productData.door && productData.door[item]"
+                    class="absolute z-10 w-full h-full"
+                >
+                    <NuxtImg
+                        class="relative object-cover w-full h-full"
+                        :src="productData.door[item]"
+                    />
+                </div>
+                <div
+                    v-if="productData.doorOut && productData.doorOut[item]"
+                    class="absolute w-full h-full"
+                >
+                    <NuxtImg
+                        class="object-cover w-full h-full"
+                        :src="productData.doorOut[item]"
+                    />
+                </div>
+                <div
+                    v-if="productData.lock && productData.door[item] && productData.lock[item]"
+                    class="absolute z-20 w-full h-full"
+                >
+                    <NuxtImg
+                        class="object-cover w-full h-full"
+                        :src="productData.lock[item]"
+                    />
+                </div>
+                <div
+                    class="absolute z-20 w-full h-full"
+                    v-if="productData.tool1Data && productData.tool1Data[item]"
+                >
+                    <NuxtImg
+                        class="object-cover w-full h-full"
+                        :src="productData.tool1Data[item]"
+                    />
+                </div>
+                <div
+                    class="absolute z-20 w-full h-full"
+                    v-if="productData.other3Data && productData.other3Data[item]"
+                >
+                    <NuxtImg
+                        class="object-cover w-full h-full"
+                        :src="productData.other3Data[item]"
+                    />
+                </div>
             </div>
-            <div
-                v-if="productData.doorOut[currentViewAngleData]"
-                class="absolute w-full h-full"
-            >
-                <NuxtImg
-                    class="object-cover w-full h-full"
-                    :src="productData.doorOut[currentViewAngleData]"
-                />
-            </div>
-            <div
-                v-if="productData.lock[currentViewAngleData]"
-                class="absolute z-20 w-full h-full"
-            >
-                <NuxtImg
-                    class="object-cover w-full h-full"
-                    :src="productData.lock[currentViewAngleData]"
-                />
-            </div>
-            <div
-                class="absolute z-20 w-full h-full"
-                v-if="productData.tool1Data[currentViewAngleData]"
-            >
-                <NuxtImg
-                    class="object-cover w-full h-full"
-                    :src="productData.tool1Data[currentViewAngleData]"
-                />
-            </div>
-            <div
-                class="absolute z-20 w-full h-full"
-                v-if="productData.other3Data[currentViewAngleData]"
-            >
-                <NuxtImg
-                    class="object-cover w-full h-full"
-                    :src="productData.other3Data[currentViewAngleData]"
-                />
-            </div>
-        </div>
+        </template>
     </div>
 </template>
 

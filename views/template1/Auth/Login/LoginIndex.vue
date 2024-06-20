@@ -110,6 +110,7 @@ import { useShoppingCarStore } from "~/store/shoppingCarStore";
 import { useInitializationStore } from "~/store/initializationStore";
 import Cookies from "js-cookie";
 
+const { isMobile, isLargePad } = useWindowResize();
 const { $api, $utils } = useNuxtApp();
 const route = useRoute();
 const userStore = useUserStore();
@@ -245,6 +246,12 @@ async function ssoLogin(site: string) {
         ssoSite = ssoLogingSite.value.google;
     } else if (site === "line") {
         ssoSite = ssoLogingSite.value.line;
+        console.log('isLargePad', isLargePad, isMobile)
+        if (isLargePad.value) {
+            ssoSite = ssoSite + '?redirect=1'
+            window.location.href = ssoSite
+            return
+        }
     } else if (site === "facebook") {
         ssoSite = ssoLogingSite.value.facebook;
     }
@@ -254,6 +261,7 @@ async function ssoLogin(site: string) {
 async function getMessage(e: any) {
     if (e.origin === $config.public.thirdURL) {
         const SSOLoginData = e.data;
+        console.log(SSOLoginData)
         if (!SSOLoginData.registered) {
             userStore.ssoLogingData = SSOLoginData;
             router.push({ name: "auth-login-sso-slug", params: { slug: "快速登入" } });
@@ -270,10 +278,53 @@ async function getMessage(e: any) {
             await shoppingCarStore.syncCustomCart();
             await userStore.reGetUserProfile();
 
+            router.push({ name: "auth-panel-slug", params: { slug: "user-panel" } });
+
             emit("onCloseDialog", false);
             loading.close();
         }
         // router.push({ name: 'auth-login-sso-slug', params: { slug: '快速登入' } });
+    }
+}
+
+async function ssoDirectLogin () {
+    console.log(route.query)
+    if (route.query.provider === 'line') {
+        const SSOLoginData = {
+            message: null,
+            provider: route.query?.provider,
+            user: {
+                name: route.query['user[name]'],
+                email: null,
+                avatar: route.query['user[avatar]'],
+                openid: route.query['user[openid]']
+            },
+            registered: route.query?.registered,
+            token: route.query?.token,
+        }
+        if (SSOLoginData?.registered != 1) {
+            userStore.ssoLogingData = SSOLoginData;
+            router.push({ name: "auth-login-sso-slug", params: { slug: "快速登入" } });
+        } else {
+            if (route.query?.token) {
+                const loading = ElLoading.service({
+                    lock: true,
+                    text: "登入中...",
+                    background: "rgba(0, 0, 0, 0.7)",
+                });
+                const token = SSOLoginData?.token;
+                Cookies.set("token", token);
+                userStore.setIsAuth(true);
+                await shoppingCarStore.syncCart();
+                await shoppingCarStore.syncCustomCart();
+                await userStore.reGetUserProfile();
+
+                router.push({ name: "auth-panel-slug", params: { slug: "user-panel" } });
+
+                emit("onCloseDialog", false);
+                loading.close();
+            }
+        }
     }
 }
 
@@ -294,6 +345,7 @@ watch(
 onMounted(async () => {
     nextTick(async () => {
         if (process.client) {
+            ssoDirectLogin()
             window.onmessage = function (e) {
                 getMessage(e)
             }
