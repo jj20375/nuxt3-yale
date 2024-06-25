@@ -21,7 +21,13 @@ export default defineNuxtConfig({
                 // google js sdk
                 { src: "https://accounts.google.com/gsi/client", onload: "console.log('TODO: add onload function')" },
                 // google ga
-                { src: "https://www.googletagmanager.com/gtag/js?id=G-R8MLETTSC3" },
+                { src: "https://www.googletagmanager.com/gtag/js?id=G-1HQ2HPE397", async: true },
+                { children: `
+                    window.dataLayer = window.dataLayer || [];
+                    function gtag(){dataLayer.push(arguments);}
+                    gtag('js', new Date());
+                    gtag('config', 'G-1HQ2HPE397');
+                ` },
             ],
             link: [{ rel: "stylesheet", href: "https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" }],
             meta: [

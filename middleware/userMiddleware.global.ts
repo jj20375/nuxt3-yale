@@ -57,6 +57,20 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
                 }
             }
 
+            let externalScriptSrc = ''
+            let inlineScriptContent = ''
+            if (initializationStore.initializationData.site.google_analytic_code) {
+                const google_analytic_code = initializationStore.initializationData.site.google_analytic_code
+                // 提取外部腳本的 src 屬性
+                const externalScriptSrcMatch = google_analytic_code.match(/<script.*?src="(.*?)".*?><\/script>/);
+                externalScriptSrc = externalScriptSrcMatch ? externalScriptSrcMatch[1] : '';
+
+                // 提取內嵌腳本的內容
+                const inlineScriptContentMatch = google_analytic_code.match(/<script>([\s\S]*?)<\/script>/);
+                inlineScriptContent = inlineScriptContentMatch ? inlineScriptContentMatch[1].trim() : '';         
+            }
+            
+
             useHead({
                 title: initializationStore.initializationData.site.meta_title,
                 meta: [
@@ -84,6 +98,16 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
                         content: initializationStore.initializationData.site.site_logo,
                     },
                 ],
+                script: [
+                    {
+                        src: externalScriptSrc,
+                        async: true
+                    },
+                    {
+                        children: inlineScriptContent,
+                        type: 'text/javascript'
+                    }
+                ]
             });
         } catch (err) {
             console.log("GetInitializationDatasAPI err =>", err);
