@@ -20,29 +20,29 @@
                     </el-radio>
                 </el-radio-group>
             </el-form-item>
-            <el-form-item
-                prop="offlineStore"
-                v-if="route.query.tab === 'type2'"
+        </el-form>
+    </div>
+    <div class="mt-[30px] sm:mt-[60px]" v-if="route.query.tab === 'type2'">
+        <h5 class="bg-gray-50 py-[8px] pl-[16px] YaleSolisW-Bd font-medium w-full mb-[20px]">您是在哪裏體驗我們的門扇服務？</h5>
+        <el-form
+            class="custom-form"
+            :model="formData"
+            :rules="rules"
+            require-asterisk-position="right"
+        >
+            <el-select
+                class="w-full"
+                v-model="form.offlineStore"
+                placeholder="請選擇"
             >
-                <div class="flex flex-col md:grid grid-cols-2 gap-[30px] w-full mt-4">
-                    <div>
-                        <label class="block w-full text-gray-800 text-[15px]">您是在哪裏體驗我們的門扇服務？</label>
-                        <el-select
-                            class="w-full"
-                            v-model="form.offlineStore"
-                            placeholder="請選擇"
-                        >
-                            <el-option
-                                v-for="(option, index) in offlinePaymentStores"
-                                :key="option.id"
-                                :label="option.name"
-                                :value="option.id"
-                            >
-                            </el-option>
-                        </el-select>
-                    </div>
-                </div>
-            </el-form-item>
+                <el-option
+                    v-for="(option, index) in offlinePaymentStores"
+                    :key="option.id"
+                    :label="option.name"
+                    :value="option.id"
+                >
+                </el-option>
+            </el-select>
         </el-form>
     </div>
 </template>
