@@ -22,11 +22,11 @@
             </el-form-item>
             <el-form-item
                 prop="offlineStore"
-                v-if="form.paymentType === 'stronghold'"
+                v-if="route.query.tab === 'type2'"
             >
                 <div class="flex flex-col md:grid grid-cols-2 gap-[30px] w-full mt-4">
                     <div>
-                        <label class="block w-full text-gray-800 text-[15px]">選擇門市<span class="ml-1 text-red-500">*</span></label>
+                        <label class="block w-full text-gray-800 text-[15px]">您是在哪裏體驗我們的門扇服務？</label>
                         <el-select
                             class="w-full"
                             v-model="form.offlineStore"
@@ -77,12 +77,6 @@ const rules = ref<any>({
             trigger: ["change", "blur"],
         },
     ],
-    offlineStore: [
-        {
-            trigger: ["change", "blur"],
-            validator: checkHaveSelectOfflinePaymentStore,
-        },
-    ],
 });
 
 // 線下付款門市
@@ -96,27 +90,9 @@ const options = ref([
     },
 ]);
 
-// 只有訂製門才會出現選項
-if (route.query.tab === "type2") {
-    options.value.push({
-        label: "門市付款",
-        value: "stronghold",
-    });
-}
-
 watch(formData.value, (val) => {
     emit("update:form", val);
 });
-
-// 判斷是否有選擇線下付款門市
-function checkHaveSelectOfflinePaymentStore(rule: any, value: any, callback: any) {
-    if ($utils().isEmpty(value) && formData.value.paymentType === "stronghold") {
-        callback(new Error("請選擇付款門市"));
-        return;
-    }
-    return callback();
-}
-
 // 表單驗證
 const validForm = async () => {
     if (!formRefDom.value) return false;

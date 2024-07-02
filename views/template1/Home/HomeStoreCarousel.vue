@@ -3,7 +3,7 @@
         <div class="container">
             <div class="pb-[48px] md:pb-[90px] xl:pb-[120px]">
                 <h2 class="text-gray-100 text-center xl:text-start text-[32px] sm:text-[48px] xl:text-[66px] font-medium YaleSolisW-Bd leading-none">STORE</h2>
-                <h3 class="text-center xl:text-start text-[28px] sm:text-[32px] xl:text-[40px] md:mt-[14px] mb-6 md:mb-8 leading-[50px] YaleSolisW-Bd font-medium">直營門市</h3>
+                <h3 class="text-center xl:text-start text-[28px] sm:text-[32px] xl:text-[40px] md:mt-[14px] mb-6 md:mb-8 leading-[50px] YaleSolisW-Bd font-medium">{{title}}</h3>
                 <Swiper
                     :slidesPerView="isMobile ? 1.2 : isLargePad ? 2 : 3.2"
                     :spaceBetween="isMobile ? 16 : 24"
@@ -58,7 +58,22 @@ function onSlideChange() {
 }
 
 const stores = ref<any>([]);
+const title = ref('直營門市')
 
+/**
+* 取得據點分類
+ */
+async function getType() {
+    try {
+        const { data } = await $api().StoreTypeAPI();
+
+        const rows = (data.value as any).data;
+        title.value = rows.find((item: { id: number; }) => item.id == 1).name
+    } catch (err) {
+        console.log("HomeSampleAPI => ", err);
+    }
+}
+getType()
 /**
  * 取得直營門市列表
  */

@@ -331,6 +331,7 @@ const checkout = async () => {
         req.cart_combination_id = props.selectProductIds;
         delete req.shipping_method;
         delete req.cart_item_id;
+        req.stronghold_id = formPayment.value.offlineStore;
         if (formPayment.value.paymentType === "stronghold") {
             req.stronghold_id = formPayment.value.offlineStore;
             // 線下付款發票參數寫死 offline

@@ -155,6 +155,10 @@
                             發票號碼：{{ orderData?.receipt[1]?.number }}
                         </div>
                     </div>
+                    <h4 v-if="orderData.stronghold" class="border-t-[1px] pt-5 mt-5 mb-3 font-bold">您是在哪裏體驗我們的門扇服務？</h4>
+                    <div v-if="orderData.stronghold" class=" border-gray-200 pb-5">
+                        <div class="text-gray-700">{{ orderData.stronghold }}</div>
+                    </div>
                 </div>
                 <div class="mt-8 sm:mt-12">
                     <div class="bg-gray-100 px-[20px] py-[10px] font-bold">配送商品</div>
@@ -445,6 +449,7 @@ const orderData = ref({
         totalPrice: 43399,
         memo: "備註內容備註內容備註內容備註內容備註內容備註內容備註內容備註內容備註內容備註內容備註內容備註內容",
     },
+    stronghold: null
 });
 
 // 商品詳情彈窗資料
@@ -696,6 +701,7 @@ const getData = async () => {
         orderData.value.payment[0].orderStatus = paymentStatus(resProductDetail.value.orderPayments[0].status);
         orderData.value.payment[1].method = paymentMethod(resProductDetail.value.orderPayments[1]);
         orderData.value.payment[1].orderStatus = paymentStatus(resProductDetail.value.orderPayments[1].status);
+        orderData.value.stronghold = resProductDetail.value.orderPayments[0].stronghold?.name;
         orderData.value.orderPayments = resProductDetail.value.orderPayments;
         orderData.value.timeline = [];
         resProductDetail.value.orderTimelines.forEach((item: { id: any; changed_at: moment.MomentInput; after_status: string }) => {
