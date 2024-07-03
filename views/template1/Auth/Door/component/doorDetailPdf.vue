@@ -21,6 +21,7 @@
             <div class="text-sm text-dark">聯絡電話：{{ props.orderData.info.phone }}</div>
             <div class="text-sm text-dark">Email：{{ props.orderData.info.email }}</div>
             <div class="text-sm text-dark">安裝地址：{{ props.orderData.info.address }}</div>
+            <div class="text-sm text-dark">您是在哪裏體驗我們的門扇服務： {{ props.orderData.stronghold }}</div>
         </div>
         <div class="divider"></div>
         <div class="mb-2">

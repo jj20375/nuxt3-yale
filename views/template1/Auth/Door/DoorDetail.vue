@@ -701,7 +701,7 @@ const getData = async () => {
         orderData.value.payment[0].orderStatus = paymentStatus(resProductDetail.value.orderPayments[0].status);
         orderData.value.payment[1].method = paymentMethod(resProductDetail.value.orderPayments[1]);
         orderData.value.payment[1].orderStatus = paymentStatus(resProductDetail.value.orderPayments[1].status);
-        orderData.value.stronghold = resProductDetail.value.orderPayments[0].stronghold?.name;
+        orderData.value.stronghold = resProductDetail.value.stronghold?.name;
         orderData.value.orderPayments = resProductDetail.value.orderPayments;
         orderData.value.timeline = [];
         resProductDetail.value.orderTimelines.forEach((item: { id: any; changed_at: moment.MomentInput; after_status: string }) => {
