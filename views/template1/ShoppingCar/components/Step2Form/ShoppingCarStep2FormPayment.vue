@@ -30,19 +30,21 @@
             :rules="rules"
             require-asterisk-position="right"
         >
-            <el-select
-                class="w-full"
-                v-model="form.offlineStore"
-                placeholder="請選擇"
-            >
-                <el-option
-                    v-for="(option, index) in offlinePaymentStores"
-                    :key="option.id"
-                    :label="option.name"
-                    :value="option.id"
+            <el-form-item :prop="'paymentType'">
+                <el-select
+                    class="w-full"
+                    v-model="form.offlineStore"
+                    placeholder="請選擇"
                 >
-                </el-option>
-            </el-select>
+                    <el-option
+                        v-for="(option, index) in offlinePaymentStores"
+                        :key="option.id"
+                        :label="option.name"
+                        :value="option.id"
+                    >
+                    </el-option>
+                </el-select>
+        </el-form-item>
         </el-form>
     </div>
 </template>
