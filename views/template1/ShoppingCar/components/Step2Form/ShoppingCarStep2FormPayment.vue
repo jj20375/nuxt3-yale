@@ -30,6 +30,7 @@
             :rules="rules"
             require-asterisk-position="right"
         >
+        <div class="flex flex-col md:grid grid-cols-2 gap-[16px] sm:gap-6">
             <el-form-item :prop="'paymentType'">
                 <el-select
                     class="w-full"
@@ -44,7 +45,8 @@
                     >
                     </el-option>
                 </el-select>
-        </el-form-item>
+            </el-form-item>
+        </div>
         </el-form>
     </div>
 </template>
