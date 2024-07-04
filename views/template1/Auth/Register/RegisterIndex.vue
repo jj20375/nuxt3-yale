@@ -138,7 +138,7 @@
                                     <NuxtLink
                                         class="font-bold underline cursor-pointer underline-offset-2 hover:no-underline text-[14px]"
                                         target="_blank"
-                                        :to="{ name: 'other-terms-page-slug', params: { slug: 'slug' } }"
+                                        :to="{ name: 'other-privacy-page-slug', params: { slug: 'slug' } }"
                                         >隱私權政策</NuxtLink
                                     >
                                 </slot>
