@@ -112,7 +112,9 @@ async function handleChange(file: any, fcFileList: any) {
         console.log("UploadAPI api => ", data.value);
         if (status.value === "success") {
             const file = (data.value as any).data;
-            fileDataList.value.push(file.path);
+            const fileDataListTemp = JSON.parse(JSON.stringify(fileDataList.value))
+            fileDataListTemp.push(file.path);
+            fileDataList.value = JSON.parse(JSON.stringify(fileDataListTemp))
             fileList.value[fileList.value.length - 1].url = file.preview_url;
             emit("tempPath", fileDataList.value, props.prop);
         } else {
