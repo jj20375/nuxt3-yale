@@ -1,7 +1,7 @@
 <template>
     <div v-if="videoUrl" class="videoDiv w-full relative">
         <video class="videoSection w-full" :src=videoUrl playsinline autoplay muted loop></video>
-        <div :class="[isLargePad ? 'videoFlowMobile' : '']" class="videoFlow absolute">
+        <div :class="[isMobile ? 'videoFlowMobile' : '']" class="videoFlow absolute">
             <div class="relative h-full">
                 <div @click="goAnchor" class="anchorArrow">
                     <IconArrowDown/>
@@ -26,10 +26,21 @@ const props = withDefaults(defineProps<Props>(), {
         default: "/video/homeVideo.mp4"
     }
 })
+
+function updateVideoSectionHeight() {
+    const videoDivEl = document.querySelector('.videoDiv');
+    const videoSectionEl = document.querySelector('.videoSection');
+    const videoFlow = document.querySelector('.videoFlow');
+    const videoHeight = videoSectionEl.offsetHeight
+    videoDivEl.style.height = videoHeight + 'px'
+    videoFlow.style.height = videoHeight + 'px'
+}
 const emits = defineEmits(["goAnchor"]);
 onMounted(() => {
     nextTick(async () => {
         if (process.client) {
+            updateVideoSectionHeight();
+            window.addEventListener('resize', updateVideoSectionHeight);
             setTimeout(() => {
                 const videoDivEl = document.querySelector('.videoDiv');
                 const videoSectionEl = document.querySelector('.videoSection');
@@ -48,7 +59,7 @@ const goAnchor = () => {
 
 const videoUrl = computed(() => {
     let result = props.videoUrl.desktop
-    if (isLargePad.value) {
+    if (isMobile.value) {
         result = props.videoUrl.mobile
     }
 
@@ -66,7 +77,7 @@ const videoUrl = computed(() => {
         height: 2.8rem;
         width: 2.8rem;
         padding: 0rem .75rem;
-        top: 73%;
+        top: 40%;
         left: 82%;
     }
 }
