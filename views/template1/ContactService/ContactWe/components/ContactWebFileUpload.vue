@@ -56,7 +56,7 @@
 </template>
 
 <script setup lang="ts">
-import { ElMessage } from "element-plus";
+import { ElMessage, ElLoading } from "element-plus";
 import type { UploadProps, UploadFile } from "element-plus";
 const { $api, $utils } = useNuxtApp();
 
@@ -84,6 +84,9 @@ const showDialog = ref(false);
  * @param file
  * @param fcFileList
  */
+const fileData = ref({})
+
+let processingQueue:any = []; // 用於管理正在處理的檔案佇列
 async function handleChange(file: any, fcFileList: any) {
     console.log("fcFileList =>", file, fcFileList);
     fileList.value = fcFileList;
@@ -104,29 +107,51 @@ async function handleChange(file: any, fcFileList: any) {
         fileList.value.pop();
         return;
     }
+
+    processingQueue.push(file); // 將文件新增至隊列
+    if (processingQueue.length === 1) {
+        // 如果這是佇列中的第一個文件，開始處理
+        processNextFile();
+    }
+}
+
+async function processNextFile() {
+    if (processingQueue.length === 0) return;
+
+    const file = processingQueue[0]; // 取得隊列中的下一個文件
     const formData = new FormData();
     formData.append("file", file.raw);
     formData.append("scene", props.scene);
+    const loading = ElLoading.service({
+        lock: true,
+        text: "上傳文件中...",
+        background: "rgba(0, 0, 0, 0.7)",
+    });
+
     try {
         const { data, status, error } = await $api().UploadAPI(formData);
-        console.log("UploadAPI api => ", data.value);
+
         if (status.value === "success") {
-            const file = (data.value as any).data;
-            const fileDataListTemp = JSON.parse(JSON.stringify(fileDataList.value))
-            fileDataListTemp.push(file.path);
-            fileDataList.value = JSON.parse(JSON.stringify(fileDataListTemp))
-            fileList.value[fileList.value.length - 1].url = file.preview_url;
+            const fileData = (data.value as any).data;
+            const fileDataListTemp = JSON.parse(JSON.stringify(fileDataList.value));
+            fileDataListTemp.push(fileData.path);
+            fileDataList.value = JSON.parse(JSON.stringify(fileDataListTemp));
+            fileList.value[fileList.value.length - 1].url = fileData.preview_url;
             emit("tempPath", fileDataList.value, props.prop);
         } else {
             ElMessage({
                 type: "error",
                 message: (error.value as any).data.message,
             });
-            fileList.value.pop();
         }
+        loading.close();
     } catch (err) {
         console.log("HomeSampleAPI => ", err);
+        loading.close();
     }
+
+    processingQueue.shift();
+    processNextFile();
 }
 
 const handleRemove: UploadProps["onRemove"] = (removeFile) => {
